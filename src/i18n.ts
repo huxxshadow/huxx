@@ -58,13 +58,29 @@ export function useTranslations(lang: Lang) {
  * @returns - The list of locale paths
  */
 export function getLocalePaths(url: URL): LocalePath[] {
+    const basePath = import.meta.env.BASE_URL;
+
     return Object.keys(LOCALES).map((lang) => {
+        let pathWithoutBase = url.pathname;
+
+        // 1. 如果存在 base 配置，先从 URL 中剔除 base (例如剔除 /huxx)
+        if (basePath !== '/' && pathWithoutBase.startsWith(basePath)) {
+            pathWithoutBase = pathWithoutBase.slice(basePath.length);
+            if (!pathWithoutBase.startsWith('/')) {
+                pathWithoutBase = '/' + pathWithoutBase;
+            }
+        }
+
+        // 2. 剔除语言前缀 (例如剔除 /en 或 /zh)
+        const pathWithoutLocale = pathWithoutBase.replace(/^\/[a-zA-Z-]+/, '');
+
         return {
             lang: lang as Lang,
-            path: getRelativeLocaleUrl(lang, url.pathname.replace(/^\/[a-zA-Z-]+/, ''))
+            path: getRelativeLocaleUrl(lang, pathWithoutLocale)
         };
     });
 }
+
 type LocalePath = {
     lang: Lang;
     path: string;

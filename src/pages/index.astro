@@ -13,7 +13,10 @@ import { SITE_TITLE, SITE_DESCRIPTION, X_ACCOUNT } from "@/consts";
 
 const t = useTranslations(Astro.currentLocale as Lang);
 const langs = Object.keys(LOCALES);
-const baseUrl = import.meta.env.PROD ? Astro.site : "/";
+let baseUrl = import.meta.env.BASE_URL;
+if (!baseUrl.endsWith('/')) {
+    baseUrl += '/';
+}
 const defaultLocale = DEFAULT_LOCALE;
 ---
 
@@ -53,7 +56,7 @@ const defaultLocale = DEFAULT_LOCALE;
     <noscript>
         <meta
                 http-equiv="refresh"
-                content={`0;url=${baseUrl + DEFAULT_LOCALE}/`}
+                content={`0;url=${baseUrl}${DEFAULT_LOCALE}/`}
         />
     </noscript>
 
@@ -62,16 +65,15 @@ const defaultLocale = DEFAULT_LOCALE;
             localStorage.selectedLang &&
             langs.includes(localStorage.selectedLang)
         ) {
-            location.href = `${baseUrl + localStorage.selectedLang}/`;
+            location.href = `${baseUrl}${localStorage.selectedLang}/`;
         } else {
             const browserLang = navigator.language.toLowerCase();
-
             if (langs.includes(browserLang)) {
-                location.href = `${baseUrl + browserLang}/`;
+                location.href = `${baseUrl}${browserLang}/`;
             } else if (langs.includes(browserLang.split("-")[0])) {
-                location.href = `${baseUrl + browserLang.split("-")[0]}/`;
+                location.href = `${baseUrl}${browserLang.split("-")[0]}/`;
             } else {
-                location.href = `${baseUrl + defaultLocale}/`;
+                location.href = `${baseUrl}${defaultLocale}/`;
             }
         }
     </script>
