@@ -1,0 +1,235 @@
+﻿---
+// 1. 新增引入 useTranslations
+import { LOCALES, getLocalePaths, type Lang, useTranslations } from "@/i18n";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import Avatar from "@/assets/avater.svg";
+import { SOCIALS } from "@/consts";
+
+// 2. 引入我们刚刚创建的字典
+import { navTranslations } from "@/i18n/components/Header_i18";
+
+interface Props {
+    bgColor?: string;
+    textColor?: string;
+}
+
+const {
+    bgColor = "#98cdae",
+    textColor = "#2d5a41",
+} = Astro.props;
+
+const currentLocale = (Astro.currentLocale || "en") as Lang;
+const localePaths = getLocalePaths(Astro.url);
+const getPath = (path: string) => getRelativeLocaleUrl(currentLocale, path);
+
+// 3. 实例化翻译函数 t
+const t = useTranslations(currentLocale);
+
+// 4. 使用 t() 动态包裹 label
+const NAV_LINKS = [
+    { label: t(navTranslations.home), path: "/" },
+    { label: t(navTranslations.blog), path: "/blog" },
+    { label: t(navTranslations.portfolio), path: "/portfolio" },
+    { label: t(navTranslations.about), path: "/about" },
+];
+---
+
+<header
+        style={`background-color: ${bgColor}; color: ${textColor};`}
+        class="w-full flex items-center justify-between px-3 pt-0 shadow-sm font-sans"
+>
+    <div class="flex items-center gap-4">
+        <div class="h-20 md:h-24 shrink-0 flex items-center">
+            <Avatar class="h-full w-auto block" fill="currentColor" />
+        </div>
+
+        <div class="flex items-baseline gap-4">
+            <a href={getPath("/")} class="nav-link-animated text-[2rem] md:text-[2.7rem] font-black tracking-wider leading-none">
+                huxx
+            </a>
+
+            <div class="hidden md:block w-1 h-10 bg-current rounded-sm self-center"></div>
+
+            <nav class="hidden md:flex items-baseline gap-3 text-[2.1rem]">
+                {
+                    SOCIALS.map((item) => (
+                            <a
+                                    href={item.href}
+                                    class="social-link hover:opacity-80 transition-opacity"
+                                    aria-label={item.name}
+                            >
+                                <i class={`fa-brands ${item.icon}`}></i>
+                            </a>
+                    ))
+                }
+            </nav>
+        </div>
+    </div>
+
+    <div class="hidden md:flex items-center gap-6 text-2xl font-semibold mr-5">
+        {
+            NAV_LINKS.map((link) => (
+                    <a
+                            href={getPath(link.path)}
+                            class="relative nav-link-animated px-1"
+                    >
+                        {link.label}
+                    </a>
+            ))
+        }
+
+        <div class="relative group">
+            <button class="relative nav-link-animated flex items-center gap-1 py-2 cursor-pointer" aria-label="Language options">
+                <span>{LOCALES[currentLocale].label}</span>
+                <i class="fa-solid fa-chevron-down text-xs ml-1"></i>
+            </button>
+
+            <div class="absolute left-1/2 -translate-x-1/2 top-full pt-2 invisible opacity-0 translate-y-1 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 z-50">
+                <div
+                        class="flex flex-col shadow-sm rounded-sm py-2"
+                        style={`background-color: ${bgColor}; color: ${textColor};`}
+                >
+                    {
+                        localePaths.map((lp) => (
+                                <a
+                                        href={lp.path}
+                                        class="px-5 py-2 hover:bg-black/5 transition-colors text-center whitespace-nowrap"
+                                >
+                                    {LOCALES[lp.lang].label}
+                                </a>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button
+            id="mobile-menu-btn"
+            class="md:hidden relative z-50 text-3xl pr-2 focus:outline-none cursor-pointer"
+            aria-label="Toggle Menu"
+    >
+        <i class="fa-solid fa-bars transition-transform duration-300"></i>
+    </button>
+
+    <div
+            id="mobile-menu"
+            class="fixed inset-0 z-40 translate-x-full transition-transform duration-300 flex flex-col items-center justify-center gap-8 text-2xl font-semibold"
+            style={`background-color: ${bgColor}; color: ${textColor};`}
+    >
+        {/* 手机端导航链接 */}
+        {
+            NAV_LINKS.map((link) => (
+                    <a href={getPath(link.path)} class="relative nav-link-animated px-1 text-3xl">
+                        {link.label}
+                    </a>
+            ))
+        }
+
+        <div class="w-16 h-[2px] bg-current opacity-30 my-2"></div>
+
+        {/* 手机端多语言切换 */}
+        <div class="flex flex-col items-center gap-4 text-xl">
+            <span class="opacity-70 text-sm tracking-widest uppercase"><i class="fa-solid fa-globe mr-1"></i> Language</span>
+            <div class="flex gap-4">
+                {
+                    localePaths.map((lp) => (
+                            <a
+                                    href={lp.path}
+                                    class={`px-1 transition-opacity ${
+                                        lp.lang === currentLocale
+                                            ? 'border-b-2 border-current opacity-100 font-bold'
+                                            : 'opacity-50 hover:opacity-100'
+                                    }`}
+                            >
+                                {LOCALES[lp.lang].label}
+                            </a>
+                    ))
+                }
+            </div>
+        </div>
+
+        {/* 手机端社交图标 */}
+        <div class="flex gap-6 mt-8 text-[2.5rem]">
+            {
+                SOCIALS.map((item) => (
+                        <a href={item.href} class="social-link hover:opacity-80 transition-opacity" aria-label={item.name}>
+                            <i class={`fa-brands ${item.icon}`}></i>
+                        </a>
+                ))
+            }
+        </div>
+    </div>
+</header>
+
+<style>
+    /* 当鼠标悬停在链接上时，让内部的 i 标签执行 fa-bounce 动画 */
+    .social-link:hover i {
+        animation: fa-bounce 1s infinite;
+        /* 还原 FontAwesome 原生的贝塞尔曲线，让弹跳更自然 */
+        animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);
+    }
+
+    /* 极简下划线：左侧滑入，右侧滑出 */
+    .nav-link-animated {
+        position: relative;
+        text-decoration: none;
+    }
+
+    .nav-link-animated::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        bottom: -2px;
+        left: 0;
+        /* 使用 currentColor 自动跟随当前文字颜色，最干净 */
+        background-color: currentColor;
+        transform: scaleX(0);
+        transform-origin: right; /* 默认右侧，离开时向右收缩 */
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .nav-link-animated:hover::after {
+        transform: scaleX(1);
+        transform-origin: left; /* Hover时改为左侧，从左向右展开 */
+    }
+</style>
+
+<script>
+    // Astro 组件中的交互脚本，用于控制手机端菜单的开关
+    const setupMobileMenu = () => {
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        const icon = btn?.querySelector('i');
+
+        if (!btn || !menu || !icon) return;
+
+        // 防止重复绑定
+        btn.onclick = () => {
+            const isOpen = menu.classList.contains('translate-x-0');
+
+            if (isOpen) {
+                // 关闭菜单
+                menu.classList.remove('translate-x-0');
+                menu.classList.add('translate-x-full');
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+                document.body.style.overflow = ''; // 恢复背景滚动
+            } else {
+                // 打开菜单
+                menu.classList.remove('translate-x-full');
+                menu.classList.add('translate-x-0');
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+                document.body.style.overflow = 'hidden'; // 禁止背景滚动
+            }
+        };
+    };
+
+    // 页面加载时执行
+    setupMobileMenu();
+
+    // 如果你开启了 Astro 的 View Transitions (视图过渡动画)，需要加上这一行确保页面切换后脚本依然生效
+    document.addEventListener('astro:after-swap', setupMobileMenu);
+</script>

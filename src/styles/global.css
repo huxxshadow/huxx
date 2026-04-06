@@ -373,31 +373,37 @@
 }
 
 
-/* 设置全局字体 fallback */
+/* 1. 先定义各个语言的字体包 */
 :root {
-    --font-sans-en: 'Roboto', system-ui, sans-serif;
-    --font-sans-zh: 'Roboto','Noto Sans SC', system-ui, sans-serif;
-    --font-sans-ja: 'Roboto','Noto Sans JP', system-ui, sans-serif;
-    --font-sans-ko: 'Roboto','Noto Sans KR', system-ui, sans-serif;
+    --font-sans-en: 'Roboto','Noto Sans SC','Noto Sans JP','Noto Sans KR', system-ui, sans-serif;
+    --font-sans-zh: 'Roboto', 'Noto Sans SC','Noto Sans JP','Noto Sans KR', system-ui, sans-serif;
+    --font-sans-ja: 'Roboto', 'Noto Sans JP','Noto Sans SC','Noto Sans KR', system-ui, sans-serif;
+    --font-sans-ko: 'Roboto', 'Noto Sans KR','Noto Sans SC','Noto Sans JP', system-ui, sans-serif;
+
+    /* 2. 定义一个“当前激活”的字体变量，默认使用英文 */
+    --theme-font-active: var(--font-sans-en);
 }
+
+/* 3. 根据 HTML 的 lang 属性，动态改变激活的字体变量 */
+html[lang='zh-cn'],
+html[lang='zh'] {
+    --theme-font-active: var(--font-sans-zh);
+}
+
+html[lang='ja'] {
+    --theme-font-active: var(--font-sans-ja);
+}
+
+html[lang='ko'] {
+    --theme-font-active: var(--font-sans-ko);
+}
+
+/* 4. 给原生的 body 标签打底，防止漏网之鱼 */
 body {
-    font-family: var(--font-sans-en);
+    font-family: var(--theme-font-active);
 }
 
-
-html[lang='en'] body {
-    font-family: var(--font-sans-en);
-}
-
-html[lang='zh-cn'] body,
-html[lang='zh'] body {
-    font-family: var(--font-sans-zh);
-}
-
-html[lang='ja'] body {
-    font-family: var(--font-sans-ja);
-}
-
-html[lang='ko'] body {
-    font-family: var(--font-sans-ko);
+/* 5. 关键步：告诉 Tailwind 的 font-sans 使用我们动态切换的变量！ */
+@theme {
+    --font-sans: var(--theme-font-active);
 }
