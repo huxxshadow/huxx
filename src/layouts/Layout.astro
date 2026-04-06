@@ -1,5 +1,13 @@
 ---
 import "../styles/global.css";
+
+import { LOCALES } from "@/i18n.ts";
+
+export const getStaticPaths = () =>
+	Object.keys(LOCALES).map((lang) => ({
+		params: { lang },
+	}));
+
 ---
 
 <html lang="en">

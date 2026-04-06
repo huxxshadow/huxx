@@ -380,6 +380,10 @@
     --font-sans-ja: 'Roboto','Noto Sans JP', system-ui, sans-serif;
     --font-sans-ko: 'Roboto','Noto Sans KR', system-ui, sans-serif;
 }
+body {
+    font-family: var(--font-sans-en);
+}
+
 
 html[lang='en'] body {
     font-family: var(--font-sans-en);

@@ -1,0 +1,20 @@
+﻿---
+import { LOCALES, useTranslations, type Lang } from "@/i18n";
+import Layout from "@/layouts/Base.astro";
+const t = useTranslations(Astro.currentLocale as Lang);
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+
+const locale = Astro.currentLocale as Lang;
+
+export const getStaticPaths = () =>
+    Object.keys(LOCALES).map((lang) => ({
+        params: { lang },
+    }));
+---
+
+<Layout>
+    <div class="font-black">
+        Hello你好한국어
+    </div>
+</Layout>

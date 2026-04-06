@@ -1,10 +1,11 @@
 import { defineConfig } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
+import { DEFAULT_LOCALE_SETTING, LOCALES_SETTING } from './src/locales';
+import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://huxxshadow.github.io',
-  base: '/huxx',
 
   vite: {
     plugins: [tailwindcss()],
@@ -12,13 +13,23 @@ export default defineConfig({
 
   // 开启 i18n 支持
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'zh', 'ja', 'ko'],
+    defaultLocale: DEFAULT_LOCALE_SETTING,
+    locales: Object.keys(LOCALES_SETTING),
     routing: {
-      // false 表示默认语言 (en) 放在 /pages 根目录
-      // 其他语言放在对应文件夹，比如 /pages/zh/
-      prefixDefaultLocale: false
-    }
-  }
+      prefixDefaultLocale: true,
+      redirectToDefaultLocale: false,
+    },
+  },
+
+  integrations: [sitemap({
+    i18n: {
+      defaultLocale: DEFAULT_LOCALE_SETTING,
+      locales: Object.fromEntries(
+          Object.entries(LOCALES_SETTING).map(
+              ([key, value]) => [key, value.lang ?? key]
+          )
+      ),
+    },
+  })],
 
 });
