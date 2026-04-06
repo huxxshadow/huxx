@@ -9,7 +9,7 @@ import { SITE_TITLE, SITE_DESCRIPTION, X_ACCOUNT } from "@/consts";
 import { useTranslations, LOCALES, getLocalePaths, type Lang } from "@/i18n";
 const t = useTranslations(Astro.currentLocale as Lang);
 import "@/styles/global.css";
-
+import { ClientRouter } from "astro:transitions";
 interface Props {
     title?: string;
     description?: string;
@@ -63,7 +63,7 @@ const localeDescription = description || t(SITE_DESCRIPTION);
     <meta property="og:locale" content={LOCALES[locale].lang || locale} />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content={t(X_ACCOUNT)} />
-
+    <ClientRouter />
     <!-- External Resource -->
 
 
