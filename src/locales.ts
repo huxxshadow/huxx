@@ -12,6 +12,10 @@ interface LocaleSetting {
 } // refer: https://starlight.astro.build/reference/configuration/#locales
 
 export const LOCALES_SETTING: LocaleSetting = {
+    zh: {
+        label: "简体中文",
+        lang: "zh",
+    },
     en: {
         label: "English",
         lang: "en",
@@ -24,9 +28,6 @@ export const LOCALES_SETTING: LocaleSetting = {
         label: "한국어",
         lang: "ko",
     },
-    zh: {
-        label: "简体中文",
-        lang: "zh",
-    },
+
 
 };

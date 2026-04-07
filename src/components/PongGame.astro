@@ -1,0 +1,493 @@
+﻿---
+// src/components/PongGame.astro
+import { type Lang, useTranslations } from "@/i18n";
+import { pongTranslations } from "@/i18n/components/PongGame_i18";
+// 引入全局颜色常量
+import { COLORS } from "@/consts";
+
+// 初始化当前语言
+const currentLocale = (Astro.currentLocale || "en") as Lang;
+const t = useTranslations(currentLocale);
+
+// 提取六大关卡主题，保持现有的绿->黄->蓝->橙->紫->红的顺序
+const GAME_THEMES = [
+    COLORS.green,
+    COLORS.yellow,
+    COLORS.blue,
+    COLORS.orange,
+    COLORS.purple,
+    COLORS.red
+];
+---
+
+<div id="pong-container" class="w-full min-h-[220px] overflow-hidden relative font-sans transition-colors duration-300"
+     style={`height: 25vh; background-color: var(--theme-light); --theme-light: ${COLORS.green.light}; --theme-dark: ${COLORS.green.dark};`}
+     data-i18n-start={t(pongTranslations.startGame)}
+     data-i18n-try={t(pongTranslations.tryNow)}
+     data-i18n-resume={t(pongTranslations.resumeGame)}
+     data-i18n-press={t(pongTranslations.pressWS)}
+     data-i18n-touch={t(pongTranslations.touchScreen)}
+     data-i18n-level={t(pongTranslations.level)}
+     data-themes={JSON.stringify(GAME_THEMES)}
+>
+
+    <div id="start-screen" class="absolute inset-0 z-10 flex flex-col items-center justify-center transition-opacity duration-500 ease-out pb-3" style="background-color: var(--theme-light);">
+        <h1 class="text-4xl lg:text-5xl font-bold text-center leading-tight mb-5 tracking-tight" style="color: var(--theme-dark);" set:html={t(pongTranslations.title)}>
+        </h1>
+
+        <div class="flex items-center gap-3 px-5 py-2.5 rounded-2xl shadow-sm scale-90 lg:scale-100 transition-transform" style="background-color: rgba(255, 255, 255, 0.6);">
+            <div id="key-hint-wrapper" class="flex flex-col items-center gap-1">
+                <div class="w-7 h-7 bg-white rounded-md flex items-center justify-center shadow-[0_2px_4px_rgba(0,0,0,0.05)] font-bold text-base" style="color: var(--theme-dark);">W</div>
+                <div class="w-7 h-7 bg-white rounded-md flex items-center justify-center shadow-[0_2px_4px_rgba(0,0,0,0.05)] font-bold text-base" style="color: var(--theme-dark);">S</div>
+            </div>
+            <div class="text-left ml-1.5">
+                <div id="btn-title" class="font-bold text-lg tracking-wide leading-tight" style="color: var(--theme-dark);">{t(pongTranslations.startGame)}</div>
+                <div id="btn-subtitle" class="text-xs mt-1 leading-none opacity-80" style="color: var(--theme-dark);">{t(pongTranslations.tryNow)}</div>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="pong" tabindex="0" class="block w-full h-full focus:outline-none cursor-pointer"></canvas>
+
+    <div id="drag-handle" class="absolute bottom-0 left-0 w-full h-2.5 cursor-ns-resize z-20 flex items-center justify-center opacity-40 hover:opacity-100 transition-opacity" style="background-color: var(--theme-dark);">
+        <div class="w-12 h-[2px] bg-white/80 rounded-full"></div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('astro:page-load', () => {
+        const container = document.getElementById("pong-container");
+        const canvas = document.getElementById("pong") as HTMLCanvasElement;
+        const startScreen = document.getElementById("start-screen");
+        const btnTitle = document.getElementById("btn-title");
+        const btnSubtitle = document.getElementById("btn-subtitle");
+        const keyHintWrapper = document.getElementById("key-hint-wrapper");
+
+        if (!container || !canvas || !startScreen || !btnTitle || !btnSubtitle) return;
+
+        // 将相对高度 (vh) 立即锁定为固定的像素值 (px)，防止 resize 时高度跳动
+        if (container.style.height.includes('vh')) {
+            container.style.height = `${container.clientHeight}px`;
+        }
+
+        const isTouchDevice = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+            (window.matchMedia("(pointer: coarse)").matches && window.innerWidth <= 1024);
+
+        if (isTouchDevice && keyHintWrapper) {
+            keyHintWrapper.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--theme-dark);"><path d="M12 5v14"/><path d="m15 8-3-3-3 3"/><path d="m9 16 3 3 3-3"/></svg>`;
+        }
+
+        const i18nStart = container.getAttribute("data-i18n-start") || "Start Game";
+        const i18nTry = container.getAttribute("data-i18n-try") || "Try now";
+        const i18nResume = container.getAttribute("data-i18n-resume") || "Resume Game";
+        const i18nLevel = container.getAttribute("data-i18n-level") || "LV ";
+
+        const i18nPress = isTouchDevice
+            ? (container.getAttribute("data-i18n-touch") || "Swipe Screen")
+            : (container.getAttribute("data-i18n-press") || "Press WS");
+
+        const themesRaw = container.getAttribute("data-themes");
+        const THEMES = themesRaw ? JSON.parse(themesRaw) : [{ light: "#BDF1CD", dark: "#16A062" }];
+
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        const controller = new AbortController();
+        const { signal } = controller;
+
+        let currentLevel = parseInt(sessionStorage.getItem('pongLevel') || '1', 10);
+
+        const initialThemeIndex = (currentLevel - 1) % THEMES.length;
+        let currentTheme = THEMES[initialThemeIndex];
+        let oldTheme = currentTheme;
+
+        container.style.setProperty('--theme-light', currentTheme.light);
+        container.style.setProperty('--theme-dark', currentTheme.dark);
+        container.style.backgroundColor = currentTheme.light;
+
+        let hasStarted = false;
+        let isPaused = false;
+        let isResetting = false;
+        let resetTimer = 0;
+        let gameWidth = 0;
+        let gameHeight = 0;
+
+        let isTransitioning = false;
+        let transitionRadius = 0;
+        let maxTransitionRadius = 0;
+
+        let particles: any[] = [];
+
+        const paddleWidth = 10;
+        const paddleHeight = 60;
+        // 基准速度（在250px高度时的速度）
+        const basePaddleSpeed = 7;
+        const keys: Record<string, boolean> = {};
+
+        const user = { x: 20, y: 0, width: paddleWidth, height: paddleHeight };
+        const com  = { x: 0, y: 0, width: paddleWidth, height: paddleHeight };
+
+        const ball = {
+            x: 0, y: 0, radius: 8, currentRadius: 8,
+            startSpeed: 3, speed: 3, velocityX: 0, velocityY: 0
+        };
+
+        function createParticles(x: number, y: number, color: string) {
+            for (let i = 0; i < 25; i++) {
+                particles.push({
+                    x: x, y: y, vx: (Math.random() - 0.5) * 12, vy: (Math.random() - 0.5) * 12,
+                    life: 1, decay: Math.random() * 0.02 + 0.01,
+                    color: color, size: Math.random() * 3 + 1
+                });
+            }
+        }
+
+        function updateParticles() {
+            for (let i = particles.length - 1; i >= 0; i--) {
+                let p = particles[i];
+                p.x += p.vx; p.y += p.vy; p.life -= p.decay;
+                p.vx *= 0.96; p.vy *= 0.96;
+                if (p.life <= 0) particles.splice(i, 1);
+            }
+        }
+
+        function triggerReset(explodeX: number, explodeY: number, doExplode: boolean = true) {
+            if (doExplode) {
+                createParticles(explodeX, explodeY, currentTheme.dark);
+            }
+            isResetting = true;
+            resetTimer = 80;
+            ball.x = gameWidth / 2; ball.y = gameHeight / 2; ball.currentRadius = 0;
+        }
+
+        function levelUp(explodeX: number, explodeY: number) {
+            createParticles(explodeX, explodeY, currentTheme.dark);
+
+            oldTheme = currentTheme;
+            currentLevel++;
+
+            sessionStorage.setItem('pongLevel', currentLevel.toString());
+
+            const themeIndex = (currentLevel - 1) % THEMES.length;
+            currentTheme = THEMES[themeIndex];
+
+            isTransitioning = true;
+            transitionRadius = 0;
+            maxTransitionRadius = Math.sqrt((gameWidth/2)**2 + (gameHeight/2)**2) + 50;
+
+            ball.currentRadius = 0;
+            ball.velocityX = 0; ball.velocityY = 0;
+        }
+
+        function easeOutBack(x: number): number {
+            const c1 = 1.70158; const c3 = c1 + 1;
+            return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+        }
+
+        function toggleUI(show: boolean, isResuming: boolean = false) {
+            if (show) {
+                if (isResuming) {
+                    btnTitle!.innerText = i18nResume;
+                    btnSubtitle!.innerText = i18nPress;
+                } else {
+                    btnTitle!.innerText = i18nStart;
+                    btnSubtitle!.innerText = i18nTry;
+                }
+                startScreen!.style.opacity = '1';
+                startScreen!.style.pointerEvents = 'auto';
+            } else {
+                startScreen!.style.opacity = '0';
+                startScreen!.style.pointerEvents = 'none';
+            }
+        }
+
+        function activateGame() {
+            if (!hasStarted) {
+                hasStarted = true;
+                toggleUI(false);
+                triggerReset(0, 0, false);
+            } else if (isPaused) {
+                isPaused = false;
+                toggleUI(false);
+            }
+            canvas.focus();
+        }
+
+        function pauseGame() {
+            if (hasStarted && !isPaused) {
+                isPaused = true;
+                toggleUI(true, true);
+            }
+        }
+
+        // --- 键盘与鼠标事件 ---
+        window.addEventListener('keydown', (e) => {
+            keys[e.code] = true;
+            if (['KeyW', 'KeyS'].includes(e.code) && (!hasStarted || isPaused)) activateGame();
+        }, { signal });
+
+        window.addEventListener('keyup', (e) => { keys[e.code] = false; }, { signal });
+        window.addEventListener('resize', () => { resizeCanvas(); pauseGame(); }, { signal });
+        window.addEventListener('blur', pauseGame, { signal });
+
+        document.addEventListener('click', (e) => {
+            if (!container.contains(e.target as Node)) pauseGame();
+        }, { signal });
+
+        // --- 移动端触屏事件 ---
+        let isTouching = false;
+
+        function handleTouch(e: TouchEvent) {
+            if (hasStarted && !isPaused && e.cancelable) {
+                e.preventDefault();
+            }
+            if (e.touches.length > 0) {
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                const touchY = touch.clientY - rect.top;
+                user.y = touchY - user.height / 2;
+                if (user.y < 0) user.y = 0;
+                if (user.y + user.height > gameHeight) user.y = gameHeight - user.height;
+            }
+        }
+
+        container.addEventListener('touchstart', (e) => {
+            if (!hasStarted || isPaused) {
+                activateGame();
+                if (e.cancelable) e.preventDefault();
+            }
+            isTouching = true;
+            handleTouch(e as TouchEvent);
+        }, { signal, passive: false });
+
+        container.addEventListener('touchmove', (e) => {
+            if (isTouching) handleTouch(e as TouchEvent);
+        }, { signal, passive: false });
+
+        container.addEventListener('touchend', () => { isTouching = false; }, { signal });
+        container.addEventListener('touchcancel', () => { isTouching = false; }, { signal });
+
+        function resizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            gameWidth = container!.clientWidth;
+            gameHeight = container!.clientHeight;
+            canvas.width = gameWidth * dpr;
+            canvas.height = gameHeight * dpr;
+            ctx!.scale(dpr, dpr);
+            com.x = gameWidth - paddleWidth - 20;
+            user.x = 20;
+            if (user.y === 0) user.y = gameHeight / 2 - paddleHeight / 2;
+            if (com.y === 0) com.y = gameHeight / 2 - paddleHeight / 2;
+        }
+        resizeCanvas();
+
+        // --- 拖拽改变高度逻辑 ---
+        const dragHandle = document.getElementById('drag-handle');
+        let isResizingContainer = false;
+        let startY = 0;
+        let startHeight = 0;
+
+        if (dragHandle) {
+            const startDrag = (e: MouseEvent | TouchEvent) => {
+                e.stopPropagation();
+                if (e.cancelable) e.preventDefault();
+
+                isResizingContainer = true;
+                startY = e.type.includes('mouse') ? (e as MouseEvent).clientY : (e as TouchEvent).touches[0].clientY;
+                startHeight = container.getBoundingClientRect().height;
+                document.body.style.cursor = 'ns-resize';
+            };
+
+            const doDrag = (e: MouseEvent | TouchEvent) => {
+                if (!isResizingContainer) return;
+                const currentY = e.type.includes('mouse') ? (e as MouseEvent).clientY : (e as TouchEvent).touches[0].clientY;
+                const dy = currentY - startY;
+                let newHeight = startHeight + dy;
+
+                const minHeight = 260;
+                if (newHeight < minHeight) newHeight = minHeight;
+                const maxHeight = window.innerHeight * 0.8;
+                if (newHeight > maxHeight) newHeight = maxHeight;
+
+                container.style.height = `${newHeight}px`;
+                resizeCanvas();
+            };
+
+            const stopDrag = () => {
+                if (isResizingContainer) {
+                    isResizingContainer = false;
+                    document.body.style.cursor = '';
+                }
+            };
+
+            dragHandle.addEventListener('mousedown', startDrag as EventListener, { signal });
+            dragHandle.addEventListener('touchstart', startDrag as EventListener, { signal, passive: false });
+
+            window.addEventListener('mousemove', doDrag as EventListener, { signal });
+            window.addEventListener('touchmove', doDrag as EventListener, { signal, passive: false });
+            window.addEventListener('mouseup', stopDrag, { signal });
+            window.addEventListener('touchend', stopDrag, { signal });
+        }
+
+        function collision(b: any, p: any) {
+            return b.x + b.radius > p.x && b.x - b.radius < p.x + p.width && b.y + b.radius > p.y && b.y - b.radius < p.y + p.height;
+        }
+
+        function update() {
+            if (isPaused || !hasStarted) return;
+            updateParticles();
+
+            // 【关键修改】根据当前高度等比例计算玩家的速度
+            const currentPaddleSpeed = basePaddleSpeed * (gameHeight / 250);
+
+            if (keys['KeyW']) user.y -= currentPaddleSpeed;
+            if (keys['KeyS']) user.y += currentPaddleSpeed;
+            if (user.y < 0) user.y = 0;
+            if (user.y + user.height > gameHeight) user.y = gameHeight - user.height;
+
+            if (isTransitioning) {
+                transitionRadius += maxTransitionRadius / 45;
+                if (transitionRadius >= maxTransitionRadius) {
+                    isTransitioning = false;
+                    container!.style.setProperty('--theme-light', currentTheme.light);
+                    container!.style.setProperty('--theme-dark', currentTheme.dark);
+                    container!.style.backgroundColor = currentTheme.light;
+                    triggerReset(gameWidth / 2, gameHeight / 2, false);
+                }
+                return;
+            }
+
+            if (isResetting) {
+                resetTimer--;
+                if (resetTimer > 25) {
+                    ball.currentRadius = 0;
+                } else if (resetTimer > 0) {
+                    let progress = 1 - (resetTimer / 25);
+                    ball.currentRadius = ball.radius * Math.max(0, easeOutBack(progress));
+                } else {
+                    isResetting = false;
+                    ball.currentRadius = ball.radius;
+                    ball.speed = ball.startSpeed;
+                    let angle = (Math.random() * Math.PI / 4) - (Math.PI / 8);
+                    ball.velocityX = (Math.random() > 0.5 ? 1 : -1) * ball.speed * Math.cos(angle);
+                    ball.velocityY = (Math.random() > 0.5 ? 1 : -1) * ball.speed * Math.sin(angle);
+                }
+                com.y += (gameHeight / 2 - paddleHeight / 2 - com.y) * 0.05;
+                return;
+            }
+
+            let baseCruiseSpeed = 6 + (currentLevel - 1) * 0.8;
+            let aiSpeed = 0.05 + (currentLevel - 1) * 0.015;
+
+            if (ball.speed < baseCruiseSpeed) {
+                ball.speed += 0.04;
+                let currentV = Math.sqrt(ball.velocityX**2 + ball.velocityY**2);
+                if (currentV > 0) {
+                    ball.velocityX = (ball.velocityX / currentV) * ball.speed;
+                    ball.velocityY = (ball.velocityY / currentV) * ball.speed;
+                }
+            }
+
+            ball.x += ball.velocityX;
+            ball.y += ball.velocityY;
+
+            com.y += (ball.y - (com.y + com.height / 2)) * aiSpeed;
+            if (com.y < 0) com.y = 0;
+            if (com.y + com.height > gameHeight) com.y = gameHeight - com.height;
+
+            if (ball.y + ball.radius > gameHeight || ball.y - ball.radius < 0) ball.velocityY = -ball.velocityY;
+
+            let player = (ball.x < gameWidth / 2) ? user : com;
+            if (collision(ball, player)) {
+                let collidePoint = (ball.y - (player.y + player.height / 2)) / (player.height / 2);
+                let angleRad = (Math.PI / 4) * collidePoint;
+                let direction = (ball.x < gameWidth / 2) ? 1 : -1;
+
+                if (ball.speed < baseCruiseSpeed) ball.speed = baseCruiseSpeed;
+                ball.velocityX = direction * ball.speed * Math.cos(angleRad);
+                ball.velocityY = ball.speed * Math.sin(angleRad);
+                if (ball.speed < 12) ball.speed += 0.4;
+
+                for(let i=0; i<5; i++) {
+                    particles.push({
+                        x: ball.x, y: ball.y,
+                        vx: -ball.velocityX * 0.5 * Math.random(), vy: (Math.random() - 0.5) * 5,
+                        life: 0.6, decay: 0.03, color: currentTheme.dark, size: 2
+                    });
+                }
+            }
+
+            if (ball.x < 0) {
+                triggerReset(ball.x, ball.y, true);
+            } else if (ball.x > gameWidth) {
+                levelUp(ball.x, ball.y);
+            }
+        }
+
+        function drawGameScene(theme: any, levelNum: number) {
+            ctx!.fillStyle = theme.light;
+            ctx!.fillRect(0, 0, gameWidth, gameHeight);
+
+            ctx!.fillStyle = theme.dark;
+            ctx!.globalAlpha = 0.1;
+            for (let i = 0; i <= gameHeight; i += 20) {
+                ctx!.fillRect(gameWidth / 2 - 1, i, 2, 10);
+            }
+
+            ctx!.globalAlpha = 0.15;
+            ctx!.font = "bold 80px sans-serif";
+            ctx!.textAlign = "center";
+            ctx!.textBaseline = "middle";
+            ctx!.fillText(i18nLevel + levelNum, gameWidth / 2, gameHeight / 2);
+
+            particles.forEach(p => {
+                ctx!.globalAlpha = p.life;
+                ctx!.fillStyle = p.color;
+                ctx!.beginPath();
+                ctx!.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx!.fill();
+            });
+            ctx!.globalAlpha = 1.0;
+
+            ctx!.fillStyle = theme.dark;
+            ctx!.fillRect(user.x, user.y, user.width, user.height);
+            ctx!.fillRect(com.x, com.y, com.width, com.height);
+
+            if (ball.currentRadius > 0) {
+                ctx!.fillStyle = theme.dark;
+                ctx!.beginPath();
+                ctx!.arc(ball.x, ball.y, ball.currentRadius, 0, Math.PI * 2);
+                ctx!.fill();
+            }
+        }
+
+        function render() {
+            if (!hasStarted) return;
+
+            if (isTransitioning) {
+                drawGameScene(oldTheme, currentLevel - 1);
+                ctx!.save();
+                ctx!.beginPath();
+                ctx!.arc(gameWidth / 2, gameHeight / 2, transitionRadius, 0, Math.PI * 2);
+                ctx!.clip();
+                drawGameScene(currentTheme, currentLevel);
+                ctx!.restore();
+            } else {
+                drawGameScene(currentTheme, currentLevel);
+            }
+        }
+
+        let animationFrameId: number;
+        function gameLoop() {
+            update();
+            render();
+            animationFrameId = requestAnimationFrame(gameLoop);
+        }
+        gameLoop();
+
+        document.addEventListener('astro:before-swap', () => {
+            cancelAnimationFrame(animationFrameId);
+            controller.abort();
+        }, { once: true });
+    });
+</script>

@@ -3,7 +3,7 @@
 import { LOCALES, getLocalePaths, type Lang, useTranslations } from "@/i18n";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import Avatar from "@/assets/avater.svg";
-import { SOCIALS } from "@/consts";
+import { SOCIALS,COLORS } from "@/consts";
 
 // 2. 引入我们刚刚创建的字典
 import { navTranslations } from "@/i18n/components/Header_i18";
@@ -14,8 +14,8 @@ interface Props {
 }
 
 const {
-    bgColor = "#98cdae",
-    textColor = "#2d5a41",
+    bgColor = COLORS.green.light,
+    textColor = COLORS.green.dark,
 } = Astro.props;
 
 const currentLocale = (Astro.currentLocale || "en") as Lang;
@@ -39,18 +39,18 @@ const NAV_LINKS = [
         class="w-full flex items-center justify-between px-3 pt-0 shadow-sm font-sans"
 >
     <div class="flex items-center gap-4">
-        <div class="h-20 md:h-24 shrink-0 flex items-center">
+        <div class="h-20 lg:h-24 shrink-0 flex items-center">
             <Avatar class="h-full w-auto block"  fill="currentColor" />
         </div>
 
         <div class="flex items-baseline gap-4">
-            <a href={getPath("/")} class="nav-link-animated text-[2rem] md:text-[2.7rem] font-black tracking-wider leading-none">
+            <a href={getPath("/")} class="nav-link-animated text-[2rem] lg:text-[2.7rem] font-black tracking-wider leading-none">
                 huxx
             </a>
 
-            <div class="hidden md:block w-1 h-10 bg-current rounded-sm self-center"></div>
+            <div class="hidden lg:block w-1 h-10 bg-current rounded-sm self-center"></div>
 
-            <nav class="hidden md:flex items-baseline gap-3 text-[2.1rem]">
+            <nav class="hidden lg:flex items-baseline gap-3 text-[2.1rem]">
                 {
                     SOCIALS.map((item) => (
                             <a
@@ -66,7 +66,7 @@ const NAV_LINKS = [
         </div>
     </div>
 
-    <div class="hidden md:flex items-center gap-6 text-2xl font-semibold mr-5">
+    <div class="hidden lg:flex items-center gap-6 text-2xl font-semibold mr-5">
         {
             NAV_LINKS.map((link) => (
                     <a
@@ -106,7 +106,7 @@ const NAV_LINKS = [
 
     <button
             id="mobile-menu-btn"
-            class="md:hidden relative z-50 text-3xl pr-2 focus:outline-none cursor-pointer"
+            class="lg:hidden relative z-50 text-3xl pr-2 focus:outline-none cursor-pointer"
             aria-label="Toggle Menu"
     >
         <i class="fa-solid fa-bars transition-transform duration-300"></i>

@@ -1,6 +1,4 @@
-﻿// Place any global data in this file.
-// You can import this data from anywhere in your site by using the `import` keyword.
-
+﻿
 import type { Multilingual } from "@/i18n.ts";
 
 export const SITE_TITLE: string | Multilingual = {
@@ -51,3 +49,51 @@ export const SOCIALS: SocialLink[] = [
         icon: "fa-bilibili",
     },
 ];
+
+
+export interface ColorShade {
+    light: string;
+    dark: string;
+}
+
+export interface ColorPalette {
+    red: ColorShade;
+    yellow: ColorShade;
+    blue: ColorShade;
+    orange: ColorShade;
+    green: ColorShade;
+    purple: ColorShade;
+    black: string;
+    white: string;
+    khakiMilan: string;
+}
+
+export const COLORS: ColorPalette = {
+    red: {
+        light: "#FFCABD",
+        dark: "#D30000",
+    },
+    yellow: {
+        light: "#FEF8BB",
+        dark: "#F6A200",
+    },
+    blue: {
+        light: "#CFE1EF",
+        dark: "#0058C0",
+    },
+    orange: {
+        light: "#FDCEA4",
+        dark: "#F06E1C",
+    },
+    green: {
+        light: "#BDF1CD",
+        dark: "#16A062",
+    },
+    purple: {
+        light: "#E8D6F4",
+        dark: "#7B1897",
+    },
+    black: "#494949",
+    white: "#FFFFFF",
+    khakiMilan: "#F6EBD8",
+};

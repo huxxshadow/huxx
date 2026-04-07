@@ -3,7 +3,7 @@ import { LOCALES, useTranslations, type Lang } from "@/i18n";
 import Layout from "@/layouts/Base.astro";
 const t = useTranslations(Astro.currentLocale as Lang);
 import { getRelativeLocaleUrl } from "astro:i18n";
-
+import PongGame from "@/components/PongGame.astro";
 
 const locale = Astro.currentLocale as Lang;
 
@@ -14,7 +14,11 @@ export const getStaticPaths = () =>
 ---
 
 <Layout>
-    <div class="font-black">
-        Hello你好한국어
+    <div class="w-full">
+        <PongGame />
     </div>
+
+    <main class="max-w-4xl mx-auto px-4 mt-12">
+        <h1 class="text-3xl font-bold">Welcome to my Portfolio</h1>
+    </main>
 </Layout>
