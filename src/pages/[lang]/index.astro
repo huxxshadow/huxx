@@ -4,6 +4,8 @@ import Layout from "@/layouts/Base.astro";
 const t = useTranslations(Astro.currentLocale as Lang);
 import { getRelativeLocaleUrl } from "astro:i18n";
 import PongGame from "@/components/PongGame.astro";
+import Avatar from "@/assets/avater.svg";
+import { COLORS } from "@/consts";
 
 const locale = Astro.currentLocale as Lang;
 
@@ -18,7 +20,96 @@ export const getStaticPaths = () =>
         <PongGame />
     </div>
 
-    <main class="max-w-4xl mx-auto px-4 mt-12">
-        <h1 class="text-3xl font-bold">Welcome to my Portfolio</h1>
-    </main>
+    <section
+            class="relative overflow-hidden w-full px-6 py-12 flex justify-center"
+            style={`background-color: ${COLORS.blue.light}; color: ${COLORS.blue.dark};`}
+            data-theme-bg={COLORS.blue.light}
+            data-theme-text={COLORS.blue.dark}
+    >
+        <div class="absolute -top-32 -left-24 w-[30rem] h-[30rem] rounded-full bg-current opacity-[0.04] pointer-events-none z-0"></div>
+        <div class="absolute top-1/2 -left-20 w-[120%] h-80 -translate-y-1/2 -rotate-6 bg-current opacity-[0.02] pointer-events-none z-0 rounded-[100px]"></div>
+        <div class="absolute -bottom-32 left-1/3 w-96 h-96 rotate-45 bg-current opacity-[0.03] pointer-events-none z-0 rounded-3xl"></div>
+        <div class="relative z-10 w-full min-h-[56vh] flex flex-col">
+
+            <div class="w-full flex gap-16 flex-1">
+
+                <div class="w-2/5 flex flex-col justify-end pb-4 font-sans">
+                    <h1 class="text-[7rem] font-black leading-[0.85] tracking-tighter mb-4">
+                        Jeff Hu
+                    </h1>
+
+                    <h2 class="text-[3.5rem] font-bold leading-[1.05] tracking-tight mb-6">
+                        Designing <br />
+                        Interactive Worlds<br />
+                        Through Art and Technology
+                    </h2>
+
+                    <p class="text-3xl font-bold tracking-tight">
+                        Game Designer · Game Developer · Technical Artist
+                    </p>
+                </div>
+
+                <div class="w-3/5 flex flex-col items-start justify-start pt-12 gap-6">
+                    <div class="w-full text-6xl font-black ">
+                        Welcome to my portfolio website!
+                    </div>
+
+                    <div class="w-full text-4xl font-black ">
+                        I love video games. I’ve been making games for the past 6 years.
+                    </div>
+
+                    <div class="space-y-6 text-xl font-medium leading-relaxed opacity-90 text-left">
+                        <p>
+                            I’ve worked on a range of projects in different roles — from indie games I published on Steam to a AAA project where I worked as a Combat Design Intern at Tencent’s TiMi Studio.
+                        </p>
+                        <p>
+                            I’m not limited to a single discipline — my work spans game design, programming, and technical art.
+                        </p>
+                        <p>
+                            Recently, I have been studying Computer Science at Hong Kong Baptist University.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full mt-2 pt-4  border-current/10 flex flex-wrap gap-x-16 gap-y-8 justify-start">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-diagram-project text-[2.5rem] opacity-90"></i>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-black leading-none">15+</span>
+                        <span class="text-sm font-bold opacity-80 mt-1">Projects Completed</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-gear text-[2.5rem] opacity-90"></i>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-black leading-none">3</span>
+                        <span class="text-sm font-bold opacity-80 mt-1">Commercial Projects</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-trophy text-[2.5rem] opacity-90"></i>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-black leading-none">7</span>
+                        <span class="text-sm font-bold opacity-80 mt-1">Honors And Awards</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-graduation-cap text-[2.5rem] opacity-90"></i>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-black leading-none">Education</span>
+                        <span class="text-sm font-bold opacity-80 mt-1">HKBU Bachelor</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="pointer-events-none absolute bottom-0 right-0 z-0 opacity-20">
+            <Avatar class="w-[320px] h-auto block" fill="currentColor" />
+        </div>
+    </section>
 </Layout>

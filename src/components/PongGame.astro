@@ -2,14 +2,11 @@
 // src/components/PongGame.astro
 import { type Lang, useTranslations } from "@/i18n";
 import { pongTranslations } from "@/i18n/components/PongGame_i18";
-// 引入全局颜色常量
 import { COLORS } from "@/consts";
 
-// 初始化当前语言
 const currentLocale = (Astro.currentLocale || "en") as Lang;
 const t = useTranslations(currentLocale);
 
-// 提取六大关卡主题，保持现有的绿->黄->蓝->橙->紫->红的顺序
 const GAME_THEMES = [
     COLORS.green,
     COLORS.yellow,
@@ -29,6 +26,8 @@ const GAME_THEMES = [
      data-i18n-touch={t(pongTranslations.touchScreen)}
      data-i18n-level={t(pongTranslations.level)}
      data-themes={JSON.stringify(GAME_THEMES)}
+     data-theme-bg={COLORS.green.light}
+     data-theme-text={COLORS.green.dark}
 >
 
     <div id="start-screen" class="absolute inset-0 z-10 flex flex-col items-center justify-center transition-opacity duration-500 ease-out pb-3" style="background-color: var(--theme-light);">
@@ -65,7 +64,6 @@ const GAME_THEMES = [
 
         if (!container || !canvas || !startScreen || !btnTitle || !btnSubtitle) return;
 
-        // 将相对高度 (vh) 立即锁定为固定的像素值 (px)，防止 resize 时高度跳动
         if (container.style.height.includes('vh')) {
             container.style.height = `${container.clientHeight}px`;
         }
@@ -95,15 +93,27 @@ const GAME_THEMES = [
         const controller = new AbortController();
         const { signal } = controller;
 
+        // ========== 广播主题色给 Header ==========
+        function broadcastTheme(theme: { light: string; dark: string }) {
+            container!.setAttribute('data-theme-bg', theme.light);
+            container!.setAttribute('data-theme-text', theme.dark);
+            document.dispatchEvent(new CustomEvent('section-theme-change', {
+                detail: { bg: theme.light, text: theme.dark, source: container }
+            }));
+        }
+
         let currentLevel = parseInt(sessionStorage.getItem('pongLevel') || '1', 10);
 
-        const initialThemeIndex = (currentLevel - 1) % THEMES.length;
+        const initialThemeIndex = (currentLevel <= THEMES.length) ? (currentLevel - 1) : 0;
         let currentTheme = THEMES[initialThemeIndex];
         let oldTheme = currentTheme;
 
         container.style.setProperty('--theme-light', currentTheme.light);
         container.style.setProperty('--theme-dark', currentTheme.dark);
         container.style.backgroundColor = currentTheme.light;
+
+        // 初始化时立即广播当前主题给 Header
+        broadcastTheme(currentTheme);
 
         let hasStarted = false;
         let isPaused = false;
@@ -120,7 +130,6 @@ const GAME_THEMES = [
 
         const paddleWidth = 10;
         const paddleHeight = 60;
-        // 基准速度（在250px高度时的速度）
         const basePaddleSpeed = 7;
         const keys: Record<string, boolean> = {};
 
@@ -166,10 +175,15 @@ const GAME_THEMES = [
             oldTheme = currentTheme;
             currentLevel++;
 
+            localStorage.setItem('pongLevel', currentLevel.toString());
             sessionStorage.setItem('pongLevel', currentLevel.toString());
+            document.dispatchEvent(new CustomEvent('pong-level-update', { detail: { level: currentLevel } }));
 
-            const themeIndex = (currentLevel - 1) % THEMES.length;
+            const themeIndex = (currentLevel <= THEMES.length) ? (currentLevel - 1) : 0;
             currentTheme = THEMES[themeIndex];
+
+            // 升级时立即广播新主题，让 Header 同步开始过渡动画
+            broadcastTheme(currentTheme);
 
             isTransitioning = true;
             transitionRadius = 0;
@@ -204,6 +218,9 @@ const GAME_THEMES = [
         function activateGame() {
             if (!hasStarted) {
                 hasStarted = true;
+                localStorage.setItem('pongHasStarted', 'true');
+                sessionStorage.setItem('pongHasStarted', 'true');
+                document.dispatchEvent(new CustomEvent('pong-level-update', { detail: { level: currentLevel } }));
                 toggleUI(false);
                 triggerReset(0, 0, false);
             } else if (isPaused) {
@@ -220,7 +237,6 @@ const GAME_THEMES = [
             }
         }
 
-        // --- 键盘与鼠标事件 ---
         window.addEventListener('keydown', (e) => {
             keys[e.code] = true;
             if (['KeyW', 'KeyS'].includes(e.code) && (!hasStarted || isPaused)) activateGame();
@@ -234,7 +250,6 @@ const GAME_THEMES = [
             if (!container.contains(e.target as Node)) pauseGame();
         }, { signal });
 
-        // --- 移动端触屏事件 ---
         let isTouching = false;
 
         function handleTouch(e: TouchEvent) {
@@ -281,7 +296,6 @@ const GAME_THEMES = [
         }
         resizeCanvas();
 
-        // --- 拖拽改变高度逻辑 ---
         const dragHandle = document.getElementById('drag-handle');
         let isResizingContainer = false;
         let startY = 0;
@@ -337,7 +351,6 @@ const GAME_THEMES = [
             if (isPaused || !hasStarted) return;
             updateParticles();
 
-            // 【关键修改】根据当前高度等比例计算玩家的速度
             const currentPaddleSpeed = basePaddleSpeed * (gameHeight / 250);
 
             if (keys['KeyW']) user.y -= currentPaddleSpeed;
@@ -352,6 +365,8 @@ const GAME_THEMES = [
                     container!.style.setProperty('--theme-light', currentTheme.light);
                     container!.style.setProperty('--theme-dark', currentTheme.dark);
                     container!.style.backgroundColor = currentTheme.light;
+                    // 过渡完成后再次广播，确保数据属性和 Header 状态一致
+                    broadcastTheme(currentTheme);
                     triggerReset(gameWidth / 2, gameHeight / 2, false);
                 }
                 return;
@@ -391,7 +406,7 @@ const GAME_THEMES = [
             ball.x += ball.velocityX;
             ball.y += ball.velocityY;
 
-            com.y += (ball.y - (com.y + com.height / 2)) * aiSpeed;
+            com.y += (ball.y - (com.y + com.height / 2)) * aiSpeed*0;
             if (com.y < 0) com.y = 0;
             if (com.y + com.height > gameHeight) com.y = gameHeight - com.height;
 
