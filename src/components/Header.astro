@@ -30,17 +30,17 @@ const NAV_LINKS = [
 
 <header
         style={`--hdr-bg: ${bgColor}; --hdr-text: ${textColor};`}
-        class="sticky top-0 z-30 w-full flex items-center justify-between px-3 pt-0  font-sans"
+        class="sticky top-0 z-30 w-full flex items-center justify-between px-2 sm:px-3 pt-0 font-sans"
 >
-    <div class="flex items-center gap-4">
-        <div class="h-24 lg:h-28 shrink-0 flex items-center">
+    <div class="flex items-center gap-2 sm:gap-4">
+        <div class="h-16 sm:h-20 lg:h-28 shrink-0 flex items-center">
             <Avatar class="h-full w-auto block" fill="currentColor" />
         </div>
 
-        <div class="flex flex-col justify-center gap-1">
+        <div class="flex flex-col justify-center gap-0.5 sm:gap-1">
 
-            <div class="flex items-baseline gap-4">
-                <a href={getPath("/")} class="nav-link-animated text-[2rem] lg:text-[2.7rem] font-black tracking-wider leading-none">
+            <div class="flex items-baseline gap-2 sm:gap-4">
+                <a href={getPath("/")} class="nav-link-animated text-[1.5rem] sm:text-[2rem] lg:text-[2.7rem] font-black tracking-wider leading-none">
                     huxx
                 </a>
 
@@ -61,10 +61,10 @@ const NAV_LINKS = [
                 </nav>
             </div>
 
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1.5 sm:gap-3 flex-wrap sm:flex-nowrap">
                 {/* ——— Level 显示 + Tooltip ——— */}
                 <div class="relative group flex items-center cursor-help">
-                    <span id="player-level" class="font-bold text-base tracking-wider">Lv 0</span>
+                    <span id="player-level" class="font-bold text-sm sm:text-base tracking-wider">Lv 0</span>
 
                     <div class="absolute left-1/2 -translate-x-1/2 top-full mt-2 invisible opacity-0 translate-y-1 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 z-50 pointer-events-none">
                         <div class="hdr-tooltip-reversed px-3 py-1.5 text-xs rounded-md shadow-md whitespace-nowrap font-medium">
@@ -74,7 +74,7 @@ const NAV_LINKS = [
                 </div>
 
                 {/* ——— EXP 进度条 + Tooltip ——— */}
-                <div class="relative group flex items-center w-24 lg:w-32 h-2.5 cursor-help">
+                <div class="relative group flex items-center w-16 sm:w-24 lg:w-32 h-2.5 cursor-help">
                     <div class="absolute inset-0 rounded-full opacity-20 hdr-bg-text"></div>
                     <div id="player-exp-bar" class="absolute left-0 top-0 h-full rounded-full transition-all duration-500 ease-out hdr-bg-text" style="width: 0%;"></div>
 
@@ -86,16 +86,16 @@ const NAV_LINKS = [
                 </div>
 
                 {/* ——— EXP 速率 ——— */}
-                <div id="player-exp-rate" class="font-mono text-base font-semibold opacity-80 tracking-tight">
+                <div id="player-exp-rate" class="font-mono text-sm sm:text-base font-semibold opacity-80 tracking-tight">
                     +1{t(headerTooltipsTranslations.expRateSuffix)}
                 </div>
 
                 {/* ——— Pong 勋章 ——— */}
                 <div id="pong-badge-wrapper" data-lang={currentLocale} class="hidden relative group items-center cursor-help">
                     <span
-                            class="hdr-tooltip-reversed flex items-center gap-1.5 px-3 py-0.5 text-base tracking-wide font-semibold rounded-md shadow-sm w-max"
+                            class="hdr-tooltip-reversed flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-0.5 text-sm sm:text-base tracking-wide font-semibold rounded-md shadow-sm w-max"
                     >
-                        <i class="fa-solid fa-table-tennis-paddle-ball text-sm"></i>
+                        <i class="fa-solid fa-table-tennis-paddle-ball text-xs sm:text-sm"></i>
                         <span>Pong</span>
                     </span>
 
@@ -152,7 +152,7 @@ const NAV_LINKS = [
     {/* ——— 手机端菜单按钮 ——— */}
     <button
             id="mobile-menu-btn"
-            class="lg:hidden relative z-50 text-3xl pr-2 focus:outline-none cursor-pointer"
+            class="lg:hidden relative z-50 text-2xl sm:text-3xl pr-2 focus:outline-none cursor-pointer"
             aria-label="Toggle Menu"
     >
         <i class="fa-solid fa-bars transition-transform duration-300"></i>
@@ -314,7 +314,7 @@ const NAV_LINKS = [
         let expPerSec = calculateExpRate();
 
         // ============================================
-        // ===== 内容驱动的 Header 主题色系统 (修复版) =====
+        // ===== 内容驱动的 Header 主题色系统 (高灵敏度版) =====
         // ============================================
 
         const applyHeaderTheme = (bg: string, text: string) => {
@@ -322,84 +322,65 @@ const NAV_LINKS = [
             header.style.setProperty('--hdr-text', text);
         };
 
-        // 用 Set 跟踪当前所有处于视口中的主题区域
-        let visibleThemeSections = new Set<Element>();
+        // 获取页面中所有的主题区域 (querySelectorAll 返回的顺序就是 DOM 从上到下的顺序)
+        const themeSections = Array.from(document.querySelectorAll('[data-theme-bg]'));
         let activeThemeSection: Element | null = null;
-        let themeObserver: IntersectionObserver | null = null;
+        let isScrolling = false;
 
-        const themeSections = document.querySelectorAll('[data-theme-bg]');
-
-        // 从所有可见区域中，选出最靠近视口顶部的那个
-        const getTopVisibleSection = (): Element | null => {
-            let topSection: Element | null = null;
-            let topY = Infinity;
-            visibleThemeSections.forEach(s => {
-                const y = s.getBoundingClientRect().top;
-                // 选取距离视口顶部最近（但 top 值最小）的区域
-                if (y < topY) {
-                    topY = y;
-                    topSection = s;
-                }
-            });
-            return topSection;
-        };
-
-        // 重新判定激活区域并应用主题色
+        // 重新判定当前正垫在 Header 下方的区域
         const syncActiveSection = () => {
-            const top = getTopVisibleSection();
-            if (top && top !== activeThemeSection) {
-                activeThemeSection = top;
-                const bg = top.getAttribute('data-theme-bg');
-                const text = top.getAttribute('data-theme-text');
+            if (themeSections.length === 0) return;
+
+            // 设定触发线：大约是 Header 的高度加上少许缓冲（约 100px）
+            const TRIGGER_Y = 100;
+            let currentSection: Element | null = null;
+
+            // 倒序遍历：找到 DOM 中最后一个顶部触及或越过触发线的元素
+            for (let i = themeSections.length - 1; i >= 0; i--) {
+                const rect = themeSections[i].getBoundingClientRect();
+                if (rect.top <= TRIGGER_Y) {
+                    currentSection = themeSections[i];
+                    break;
+                }
+            }
+
+            // 兜底：如果页面在最顶部，所有的元素的 top 都大于触发线，就默认取第一个
+            if (!currentSection) {
+                currentSection = themeSections[0];
+            }
+
+            // 发现需要切换主题时才执行，避免冗余重绘
+            if (currentSection !== activeThemeSection) {
+                activeThemeSection = currentSection;
+                const bg = currentSection.getAttribute('data-theme-bg');
+                const text = currentSection.getAttribute('data-theme-text');
                 if (bg && text) applyHeaderTheme(bg, text);
             }
+
+            isScrolling = false;
         };
 
+        // 替换掉 IntersectionObserver，使用 scroll + rAF 实现帧级灵敏度
         if (themeSections.length > 0) {
-            themeObserver = new IntersectionObserver((entries) => {
-                for (const entry of entries) {
-                    if (entry.isIntersecting) {
-                        visibleThemeSections.add(entry.target);
-                    } else {
-                        visibleThemeSections.delete(entry.target);
-                    }
+            document.addEventListener('scroll', () => {
+                if (!isScrolling) {
+                    window.requestAnimationFrame(syncActiveSection);
+                    isScrolling = true;
                 }
-                syncActiveSection();
-            }, {
-                // 仅关注视口上方 40% 的区域
-                rootMargin: '0px 0px -60% 0px',
-                threshold: 0
-            });
-
-            themeSections.forEach(s => themeObserver!.observe(s));
+            }, { passive: true, signal }); // 绑定了 signal，页面卸载时自动清理
         }
 
         // 监听内容区域的动态主题变化事件（如 Pong 升级换色）
         document.addEventListener('section-theme-change', ((e: CustomEvent) => {
             const { bg, text, source } = e.detail || {};
-            if (!bg || !text) return;
+            if (!bg || !text || !(source instanceof Element)) return;
 
-            // 更新来源元素的 data 属性，供 Observer 后续读取
-            if (source instanceof Element) {
-                source.setAttribute('data-theme-bg', bg);
-                source.setAttribute('data-theme-text', text);
-            }
+            source.setAttribute('data-theme-bg', bg);
+            source.setAttribute('data-theme-text', text);
 
-            // 情况 A: 来源就是当前激活区域 → 直接应用
-            if (source === activeThemeSection) {
-                applyHeaderTheme(bg, text);
-                return;
-            }
-
-            // 情况 B: 来源在可见列表中 → 重新判定谁是最靠上的
-            if (source instanceof Element && visibleThemeSections.has(source)) {
-                syncActiveSection();
-                return;
-            }
-
-            // 情况 C: 还没有任何激活区域（Observer 尚未触发）→ 直接应用
-            if (!activeThemeSection) {
-                activeThemeSection = source instanceof Element ? source : null;
+            // 如果触发更新的正是当前激活的区域，或者尚未初始化，直接应用
+            if (source === activeThemeSection || !activeThemeSection) {
+                activeThemeSection = source;
                 applyHeaderTheme(bg, text);
             }
         }) as EventListener, { signal });
@@ -433,17 +414,16 @@ const NAV_LINKS = [
             }
         };
 
-        // ——— 首次渲染：跳过过渡，同步读取第一个主题区域的颜色 ———
+        // ——— 首次渲染：跳过过渡，精准应用当前位置的区域颜色 ———
         header.style.transition = 'none';
+        syncActiveSection();  // 直接测算当前滚动位置对应的颜色
+        updateUI();
 
-        if (themeSections.length > 0) {
-            const first = themeSections[0];
-            const bg = first.getAttribute('data-theme-bg');
-            const text = first.getAttribute('data-theme-text');
-            if (bg && text) applyHeaderTheme(bg, text);
-            activeThemeSection = first;
-            visibleThemeSections.add(first);
-        }
+        void header.offsetHeight;
+        // 用 rAF 延迟恢复过渡，给其他脚本（PongGame）一帧时间完成初始化
+        requestAnimationFrame(() => {
+            header.style.transition = '';
+        });
 
         updateUI();
         void header.offsetHeight;
@@ -479,7 +459,6 @@ const NAV_LINKS = [
         document.addEventListener('astro:before-swap', () => {
             clearInterval(gameLoop);
             controller.abort();
-            if (themeObserver) themeObserver.disconnect();
         }, { once: true });
     });
 
@@ -493,6 +472,7 @@ const NAV_LINKS = [
 
         btn.onclick = () => {
             const isOpen = menu.classList.contains('translate-x-0');
+
             if (isOpen) {
                 menu.classList.remove('translate-x-0');
                 menu.classList.add('translate-x-full');

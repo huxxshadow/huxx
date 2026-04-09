@@ -1,13 +1,116 @@
 ﻿---
 import { LOCALES, useTranslations, type Lang } from "@/i18n";
 import Layout from "@/layouts/Base.astro";
-const t = useTranslations(Astro.currentLocale as Lang);
 import { getRelativeLocaleUrl } from "astro:i18n";
 import PongGame from "@/components/PongGame.astro";
 import Avatar from "@/assets/avater.svg";
 import { COLORS } from "@/consts";
 
+import { indexTranslations } from "@/i18n/index_i18";
 const locale = Astro.currentLocale as Lang;
+const t = useTranslations(locale);
+
+// 按照你要求的方式直接作为组件导入
+import TimiLogo from "@/assets/timi.svg";
+import MedmindLogo from "@/assets/Medmind.svg";
+import SoftenLogo from "@/assets/softengravity.svg";
+
+// 将原有的硬编码数组替换为翻译调用：
+const experiences = [
+    {
+        company: t(indexTranslations.exp1_company),
+        fullName: t(indexTranslations.exp1_fullName),
+        role: t(indexTranslations.exp1_role),
+        date: t(indexTranslations.exp1_date),
+        Logo: TimiLogo,
+        logoSize: "w-32 h-32 lg:w-40 lg:h-40",
+        bullets: [
+            t(indexTranslations.exp1_bullet1),
+            t(indexTranslations.exp1_bullet2),
+            t(indexTranslations.exp1_bullet3)
+        ],
+        tags: [
+            t(indexTranslations.exp1_tag1),
+            t(indexTranslations.exp1_tag2),
+            t(indexTranslations.exp1_tag3),
+            t(indexTranslations.exp1_tag4)
+        ]
+    },
+    {
+        company: t(indexTranslations.exp2_company),
+        fullName: t(indexTranslations.exp2_fullName),
+        role: t(indexTranslations.exp2_role),
+        date: t(indexTranslations.exp2_date),
+        Logo: MedmindLogo,
+        logoSize: "w-32 h-32 lg:w-40 lg:h-40",
+        bullets: [
+            t(indexTranslations.exp2_bullet1),
+            t(indexTranslations.exp2_bullet2),
+            t(indexTranslations.exp2_bullet3)
+        ],
+        tags: [
+            t(indexTranslations.exp2_tag1),
+            t(indexTranslations.exp2_tag2),
+            t(indexTranslations.exp2_tag3),
+            t(indexTranslations.exp2_tag4)
+        ]
+    },
+    {
+        company: t(indexTranslations.exp3_company),
+        fullName: t(indexTranslations.exp3_fullName),
+        role: t(indexTranslations.exp3_role),
+        date: t(indexTranslations.exp3_date),
+        Logo: SoftenLogo,
+        logoSize: "w-32 h-32 lg:w-40 lg:h-40",
+        bullets: [
+            t(indexTranslations.exp3_bullet1),
+            t(indexTranslations.exp3_bullet2),
+            t(indexTranslations.exp3_bullet3)
+        ],
+        tags: [
+            t(indexTranslations.exp3_tag1),
+            t(indexTranslations.exp3_tag2),
+            t(indexTranslations.exp3_tag3),
+            t(indexTranslations.exp3_tag4)
+        ]
+    }
+];
+
+// 未激活时的默认色系（蓝）
+const defaultTheme = COLORS.blue;
+// 激活展开时的默认色系（红）
+const activeTheme = COLORS.red;
+
+// 在顶部 --- 区域内追加以下数据
+const gamesData = [
+    {
+        id: "game-1",
+        title: "空王座 Empty Throne",
+        platformText: "就在 Steam",
+        desc: "《空王座》是一款剧情驱动的黑暗童话风格解谜游戏。你是一位作曲家，被皇室召入宫廷，为白雪皇后谱写她的“故事”。但这剧本似乎不止一稿...",
+        theme: COLORS.blue,
+        imgPlaceholder: "bg-blue-300",
+        link: "https://store.steampowered.com/app/123456" // 替换为真实链接
+    },
+    {
+        id: "game-2",
+        title: "代号：橙色",
+        platformText: "就在 Steam",
+        desc: "这是一款快节奏的动作Rogue-like游戏，探索未知的地下城，收集强力武器组合。准备好迎接挑战了吗？",
+        theme: COLORS.orange,
+        imgPlaceholder: "bg-orange-300",
+        link: "https://store.steampowered.com/app/234567" // 替换为真实链接
+    },
+    {
+        id: "game-3",
+        title: "猩红危机",
+        platformText: "就在 Steam",
+        desc: "在末日生存的废土中寻找希望。你需要管理资源，建立庇护所，并抵御夜晚成群结队的变异生物攻击。",
+        theme: COLORS.red,
+        imgPlaceholder: "bg-red-300",
+        link: "https://store.steampowered.com/app/345678" // 替换为真实链接
+    }
+];
 
 export const getStaticPaths = () =>
     Object.keys(LOCALES).map((lang) => ({
@@ -21,87 +124,85 @@ export const getStaticPaths = () =>
     </div>
 
     <section
-            class="relative overflow-hidden w-full px-6 py-12 flex justify-center"
+            class="relative overflow-hidden w-full px-4 sm:px-6 py-8 lg:py-12 flex justify-center"
             style={`background-color: ${COLORS.blue.light}; color: ${COLORS.blue.dark};`}
             data-theme-bg={COLORS.blue.light}
             data-theme-text={COLORS.blue.dark}
     >
-        <div class="absolute -top-32 -left-24 w-[30rem] h-[30rem] rounded-full bg-current opacity-[0.04] pointer-events-none z-0"></div>
+        {/* Background Decorative Shapes */}
+        <div class="absolute -top-32 -left-24 w-[20rem] lg:w-[30rem] h-[20rem] lg:h-[30rem] rounded-full bg-current opacity-[0.04] pointer-events-none z-0"></div>
         <div class="absolute top-1/2 -left-20 w-[120%] h-80 -translate-y-1/2 -rotate-6 bg-current opacity-[0.02] pointer-events-none z-0 rounded-[100px]"></div>
-        <div class="absolute -bottom-32 left-1/3 w-96 h-96 rotate-45 bg-current opacity-[0.03] pointer-events-none z-0 rounded-3xl"></div>
+        <div class="absolute -bottom-32 left-1/4 lg:left-1/3 w-64 lg:w-96 h-64 lg:h-96 rotate-45 bg-current opacity-[0.03] pointer-events-none z-0 rounded-3xl"></div>
+
         <div class="relative z-10 w-full min-h-[56vh] flex flex-col">
 
-            <div class="w-full flex gap-16 flex-1">
-
-                <div class="w-2/5 flex flex-col justify-end pb-4 font-sans">
-                    <h1 class="text-[7rem] font-black leading-[0.85] tracking-tighter mb-4">
+            <div class="w-full flex flex-col lg:flex-row gap-10 lg:gap-16 flex-1">
+                <div class="w-full lg:w-2/5 flex flex-col justify-end pb-4 font-sans text-center lg:text-left">
+                    <h1 class="text-[4.5rem] lg:text-[7rem] font-black leading-[0.85] tracking-tighter mb-4">
                         Jeff Hu
                     </h1>
 
-                    <h2 class="text-[3.5rem] font-bold leading-[1.05] tracking-tight mb-6">
-                        Designing <br />
-                        Interactive Worlds<br />
-                        Through Art and Technology
-                    </h2>
+                    <h2
+                            class="text-[2rem] lg:text-[3.5rem] font-bold leading-[1.05] tracking-tight mb-6"
+                            set:html={t(indexTranslations.heroTitle)}
+                    />
 
-                    <p class="text-3xl font-bold tracking-tight">
-                        Game Designer · Game Developer · Technical Artist
+                    <p class="text-xl lg:text-3xl font-bold tracking-tight">
+                        {t(indexTranslations.role)}
                     </p>
                 </div>
 
-                <div class="w-3/5 flex flex-col items-start justify-start pt-12 gap-6">
-                    <div class="w-full text-6xl font-black ">
-                        Welcome to my portfolio website!
+                <div class="w-full lg:w-3/5 flex flex-col items-center lg:items-start justify-start pt-4 lg:pt-12 gap-5 lg:gap-6 text-center lg:text-left">
+                    <div class="w-full text-4xl lg:text-6xl font-black">
+                        {t(indexTranslations.welcome)}
                     </div>
 
-                    <div class="w-full text-4xl font-black ">
-                        I love video games. I’ve been making games for the past 6 years.
+                    <div class="w-full text-2xl lg:text-4xl font-black">
+                        {t(indexTranslations.loveGames)}<br />
                     </div>
 
-                    <div class="space-y-6 text-xl font-medium leading-relaxed opacity-90 text-left">
-                        <p>
-                            I’ve worked on a range of projects in different roles — from indie games I published on Steam to a AAA project where I worked as a Combat Design Intern at Tencent’s TiMi Studio.
-                        </p>
-                        <p>
-                            I’m not limited to a single discipline — my work spans game design, programming, and technical art.
-                        </p>
-                        <p>
-                            Recently, I have been studying Computer Science at Hong Kong Baptist University.
-                        </p>
+                    <div class="w-full text-xl lg:text-3xl font-black">
+                        {t(indexTranslations.experience1)}
+                    </div>
+
+                    <div class="space-y-4 lg:space-y-6 text-lg lg:text-xl font-medium leading-relaxed opacity-90 text-center lg:text-left">
+                        <p>{t(indexTranslations.experience2)}</p>
+                        <p>{t(indexTranslations.experience3)}</p>
+                        <p>{t(indexTranslations.experience4)}</p>
                     </div>
                 </div>
             </div>
 
-            <div class="w-full mt-2 pt-4  border-current/10 flex flex-wrap gap-x-16 gap-y-8 justify-start">
+            <div class="w-full mt-10 lg:mt-2 pt-4 border-current/10 flex flex-wrap gap-x-8 lg:gap-x-16 gap-y-6 lg:gap-y-8 justify-center lg:justify-start">
                 <div class="flex items-center gap-3">
-                    <i class="fa-solid fa-diagram-project text-[2.5rem] opacity-90"></i>
+                    <i class="fa-solid fa-diagram-project text-[2rem] lg:text-[2.5rem] opacity-90"></i>
                     <div class="flex flex-col">
-                        <span class="text-2xl font-black leading-none">15+</span>
-                        <span class="text-sm font-bold opacity-80 mt-1">Projects Completed</span>
+                        <span class="text-xl lg:text-2xl font-black leading-none">15+</span>
+                        <span class="text-sm lg:text-base font-bold opacity-80 mt-1">{t(indexTranslations.statProjects)}</span>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-3">
-                    <i class="fa-solid fa-gear text-[2.5rem] opacity-90"></i>
+                    <i class="fa-solid fa-gamepad text-[2rem] lg:text-[2.5rem] opacity-90"></i>
                     <div class="flex flex-col">
-                        <span class="text-2xl font-black leading-none">3</span>
-                        <span class="text-sm font-bold opacity-80 mt-1">Commercial Projects</span>
+                        <span class="text-xl lg:text-2xl font-black leading-none">4</span>
+                        <span class="text-sm lg:text-base font-bold opacity-80 mt-1">{t(indexTranslations.statGames)}</span>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-3">
-                    <i class="fa-solid fa-trophy text-[2.5rem] opacity-90"></i>
+                    <i class="fa-solid fa-trophy text-[2rem] lg:text-[2.5rem] opacity-90"></i>
                     <div class="flex flex-col">
-                        <span class="text-2xl font-black leading-none">7</span>
-                        <span class="text-sm font-bold opacity-80 mt-1">Honors And Awards</span>
+                        <span class="text-xl lg:text-2xl font-black leading-none">7</span>
+                        <span class="text-sm lg:text-base font-bold opacity-80 mt-1">{t(indexTranslations.statAwards)}</span>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-3">
-                    <i class="fa-solid fa-graduation-cap text-[2.5rem] opacity-90"></i>
+                    <i class="fa-solid fa-graduation-cap text-[2rem] lg:text-[2.5rem] opacity-90"></i>
                     <div class="flex flex-col">
-                        <span class="text-2xl font-black leading-none">Education</span>
-                        <span class="text-sm font-bold opacity-80 mt-1">HKBU Bachelor</span>
+                        <span class="text-xl lg:text-2xl font-black leading-none">{t(indexTranslations.statEducationTitle)}</span>
+                        <span class="text-sm lg:text-base font-bold opacity-80 mt-1">{t(indexTranslations.statEducationDesc)}</span>
                     </div>
                 </div>
             </div>
@@ -109,7 +210,460 @@ export const getStaticPaths = () =>
         </div>
 
         <div class="pointer-events-none absolute bottom-0 right-0 z-0 opacity-20">
-            <Avatar class="w-[320px] h-auto block" fill="currentColor" />
+            <Avatar class="w-[180px] lg:w-[320px] h-auto block" fill="currentColor" />
         </div>
     </section>
+
+    <section
+            id="experience-section"
+            class="relative w-full overflow-hidden "
+            data-theme-bg={activeTheme.light}
+            data-theme-text={activeTheme.dark}
+            style={`background-color: ${defaultTheme.light}; color: ${defaultTheme.dark};`}
+    >
+        <div class="flex flex-col lg:flex-row w-full h-auto lg:h-[720px]">
+            {experiences.map((exp, index) => (
+                    <div
+                            class={`exp-card group cursor-pointer relative overflow-hidden transition-[flex,background-color]  rounded-t-3xl duration-700 ease-[cubic-bezier(0.2,1,0.3,1)] ${index === 0 ? 'active lg:flex-[5]' : 'lg:flex-[1]'}`}
+                            data-active-bg={activeTheme.light}
+                            data-active-text={activeTheme.dark}
+                            data-default-bg={defaultTheme.light}
+                            data-default-text={defaultTheme.dark}
+                            style={index === 0
+                                ? `background-color: ${activeTheme.light}; color: ${activeTheme.dark};`
+                                : `background-color: ${defaultTheme.light}; color: ${defaultTheme.dark};`}
+                    >
+                        {/* 1. 未展开状态：注意去掉了原本 HTML 上的 absolute inset-0，把布局控制交给下方的 CSS */}
+                        <div class="exp-collapsed-view flex flex-col items-center justify-center p-6 lg:p-6 transition-all duration-500 gap-0 w-full h-full">
+                            <div
+                                    class={`${exp.logoSize} bg-current transition-transform duration-500 group-hover:scale-110 flex-shrink-0`}
+                                    style={`
+                            mask: url(${exp.Logo.src || exp.Logo}) no-repeat center / contain;
+                            -webkit-mask: url(${exp.Logo.src || exp.Logo}) no-repeat center / contain;
+                        `}
+                            ></div>
+                            <h3 class="text-3xl lg:text-3xl font-black tracking-normal duration-500 group-hover:scale-110  text-center">
+                                {exp.role}
+                            </h3>
+                        </div>
+
+                        {/* 2. 展开状态内容：同理去掉了 absolute inset-0 */}
+                        <div class="exp-expanded-view p-8 lg:p-12 flex flex-col opacity-0 pointer-events-none  transition-all duration-500 translate-y-10 w-full h-full">
+
+                            {/* 新增：右下角背景 Logo，使用低透明度 */}
+                            <div
+                                    class="absolute -bottom-20 right-20 w-80 h-150 lg:w-150 lg:h-150 bg-current opacity-5 pointer-events-none z-0"
+                                    style={`
+                                mask: url(${exp.Logo.src || exp.Logo}) no-repeat center right / contain;
+                                -webkit-mask: url(${exp.Logo.src || exp.Logo}) no-repeat center right / contain;
+                            `}
+                            ></div>
+
+                            {/* 将内容包裹在 z-10 内，防止被右下角背景盖住 */}
+                            <div class="relative z-10 flex flex-col h-full">
+                                <div class="flex items-center gap-6 mb-10">
+                                    <div>
+                                        <h3 class="text-4xl lg:text-7xl font-black leading-none italic">{exp.company}</h3>
+                                        <p class="text-lg lg:text-xl font-bold opacity-70 mt-3">{exp.fullName}</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col lg:flex-row lg:items-end justify-between border-b-4 border-current pb-6 mb-10 gap-4">
+                                    <span class="text-3xl lg:text-5xl font-black">{exp.role}</span>
+                                    <span class="text-xl lg:text-2xl font-bold opacity-80 ">{exp.date}</span>
+                                </div>
+
+                                <ul class="flex flex-col gap-6 text-lg lg:text-2xl font-bold max-w-[95%] leading-tight">
+                                    {exp.bullets.map(bullet => (
+                                            <li class="flex items-start gap-4">
+                                                <span class="mt-2 w-3 h-3 rotate-45 bg-current flex-shrink-0"></span>
+                                                <span>{bullet}</span>
+                                            </li>
+                                    ))}
+                                </ul>
+
+                                {/* 新增：线框标签区域 */}
+                                {exp.tags && exp.tags.length > 0 && (
+                                        <div class="mt-8 flex flex-wrap gap-3">
+                                            {exp.tags.map(tag => (
+                                                    <span class="px-5 py-1.5 border-2 border-current rounded-full text-sm lg:text-lg font-bold bg-transparent">
+                                                {tag}
+                                            </span>
+                                            ))}
+                                        </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+            ))}
+        </div>
+    </section>
+
+    <section
+            id="games-sticker-section"
+            class="relative w-full h-[var(--mobile-height)] lg:h-[1000px] overflow-hidden pt-12 lg:pt-16"
+            style={`--mobile-height: ${gamesData.length * 120}vw; background-color: ${COLORS.khakiMilan}; color: ${COLORS.black};`}
+            data-theme-bg={COLORS.khakiMilan}
+            data-theme-text={COLORS.black}
+    >
+        {/* 顶部标题与按钮容器（同行显示） */}
+        <div class="absolute top-12 lg:top-16 inset-x-0 mx-auto w-full  px-4 sm:px-8 z-0 pointer-events-none flex justify-start">
+            <h2 class="inline-flex items-center px-6 py-3 bg-white text-black font-black text-3xl lg:text-4xl border-2 border-black rounded-xl shadow-[4px_4px_0px_rgba(0,0,0,1)] select-none">
+                游戏项目
+            </h2>
+        </div>
+
+        {/* 交互层：按钮 (z-20)，位于物理卡片(z-10)上方，且靠右对齐 */}
+        <div class="absolute top-12 lg:top-16 inset-x-0 mx-auto w-full  px-4 sm:px-8 z-20 pointer-events-none flex justify-end">
+            <div class="flex gap-3 sm:gap-4 pointer-events-auto">
+                <button id="btn-shake" class="flex items-center gap-2 px-4 sm:px-6 py-2.5 bg-white text-black font-black text-base sm:text-lg border-2 border-black rounded-xl shadow-[4px_4px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-[0px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span class="hidden sm:inline">震动</span>
+                </button>
+                <button id="btn-reset" class="flex items-center gap-2 px-4 sm:px-6 py-2.5 bg-white text-black font-black text-base sm:text-lg border-2 border-black rounded-xl shadow-[4px_4px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-[0px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    <span class="hidden sm:inline">重置</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="physics-container" class="absolute inset-0 z-10 w-full h-full touch-pan-y overflow-hidden">
+            {gamesData.map((game, i) => (
+                    <div
+                            id={game.id}
+                            data-link={game.link}
+                            class="game-sticker absolute top-0 left-0 group flex flex-col sm:flex-row w-[80vw] sm:w-[680px] rounded-2xl overflow-hidden shadow-[6px_6px_0px_rgba(73,73,73,1)] hover:shadow-[10px_10px_0px_rgba(73,73,73,1)] transition-[box-shadow] cursor-grab active:cursor-grabbing border-2 select-none touch-none bg-white"
+                            style={`border-color: ${COLORS.black};`}
+                    >
+                        {/* 左侧图片：强制 16:9，固定宽度，手机端铺满宽度 */}
+                        <div class={`w-full sm:w-[320px] aspect-video flex-shrink-0 ${game.imgPlaceholder} border-b-2 sm:border-b-0 sm:border-r-2 flex items-center justify-center pointer-events-none`} style={`border-color: ${COLORS.black}; background-color: ${game.theme.light}; color: ${game.theme.dark};`}>
+                            <i class="fa-solid fa-image text-4xl opacity-50"></i>
+                        </div>
+
+                        {/* 右侧内容 */}
+                        <div class="flex-1 p-5 flex flex-col justify-between pointer-events-none" style={`background-color: ${game.theme.light}; color: ${game.theme.dark};`}>
+                            <div>
+                                <div class="flex justify-between items-start mb-2 gap-2">
+                                    <h3 class="font-black text-2xl leading-tight">
+                                        {game.title}
+                                    </h3>
+                                    <i class="fa-brands fa-steam text-2xl flex-shrink-0"></i>
+                                </div>
+                                <span class="text-xs font-bold opacity-70 px-2 py-1 border border-current rounded-md inline-block mb-2">{game.platformText}</span>
+                                <p class="text-sm font-bold opacity-90 line-clamp-3 leading-relaxed mt-1">
+                                    {game.desc}
+                                </p>
+                            </div>
+
+                            <div class="flex justify-between items-end mt-4">
+                                <div class="flex gap-2 text-xl opacity-80">
+                                    <i class="fa-brands fa-windows"></i>
+                                </div>
+                                <div class="px-5 py-2 rounded-lg font-black text-sm pointer-events-none" style={`background-color: ${game.theme.dark}; color: ${game.theme.light};`}>
+                                    了解更多
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            ))}
+        </div>
+    </section>
+
+
+    <style>
+        /* 全局/PC端：默认使用绝对定位相互覆盖 */
+        .exp-collapsed-view, .exp-expanded-view {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .exp-card.active .exp-collapsed-view {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+
+        .exp-card.active .exp-expanded-view {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+            transition-delay: 300ms;
+        }
+
+        .exp-card:not(.active):hover {
+            filter: brightness(0.97);
+        }
+
+        /* 手机端适配：取消绝对定位限制，允许内容撑开高度 */
+        @media (max-width: 1024px) {
+            .exp-card {
+                /* 覆盖 JS 的 flex-1 和 flex-5，手机端直接按内容堆叠 */
+                flex: none !important;
+                height: auto !important;
+            }
+
+            /* 未激活卡片：展开折叠视图并自然撑开，隐藏完整内容视图 */
+            .exp-card:not(.active) .exp-collapsed-view {
+                position: relative;
+                min-height: 260px; /* 给予最小高度，确保 Logo 不被裁切 */
+            }
+            .exp-card:not(.active) .exp-expanded-view {
+                position: absolute; /* 防止占用空间 */
+            }
+
+            /* 激活卡片：折叠视图隐藏，完整内容视图自然撑开高度 */
+            .exp-card.active .exp-collapsed-view {
+                position: absolute; /* 防止占用空间 */
+            }
+            .exp-card.active .exp-expanded-view {
+                position: relative;
+                height: auto;
+                padding-bottom: 4rem; /* 增加手机端展开时的底部留白 */
+            }
+        }
+    </style>
+
+    <script>
+        import Matter from 'matter-js';
+
+        document.addEventListener('astro:page-load', () => {
+            const cards = document.querySelectorAll('.exp-card');
+            const expSection = document.getElementById('experience-section');
+
+            // ==========================================
+            // 经验部分卡片展开逻辑 (不变)
+            // ==========================================
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    if (card.classList.contains('active')) return;
+                    const activeBg = card.getAttribute('data-active-bg');
+                    const activeText = card.getAttribute('data-active-text');
+
+                    cards.forEach(c => {
+                        c.classList.remove('active', 'lg:flex-[5]');
+                        c.classList.add('lg:flex-[1]');
+                        const dBg = c.getAttribute('data-default-bg');
+                        const dText = c.getAttribute('data-default-text');
+                        (c as HTMLElement).style.backgroundColor = dBg || '';
+                        (c as HTMLElement).style.color = dText || '';
+                    });
+
+                    card.classList.remove('lg:flex-[1]');
+                    card.classList.add('active', 'lg:flex-[5]');
+                    (card as HTMLElement).style.backgroundColor = activeBg || '';
+                    (card as HTMLElement).style.color = activeText || '';
+
+                    if (activeBg && activeText && expSection) {
+                        const event = new CustomEvent('section-theme-change', {
+                            detail: { bg: activeBg, text: activeText, source: expSection }
+                        });
+                        document.dispatchEvent(event);
+                    }
+                });
+            });
+
+            // ==========================================
+            // --- Matter.js 物理贴纸逻辑 ---
+            // ==========================================
+            const container = document.getElementById('physics-container');
+            if (!container) return;
+
+            const { Engine, Runner, Bodies, World, Mouse, MouseConstraint, Events } = Matter;
+
+            const engine = Engine.create();
+            engine.world.gravity.y = 1.2;
+
+            let width = container.clientWidth;
+            let height = container.clientHeight;
+            const wallThickness = 200; // 加厚墙壁防止飞出
+
+            // 创建边界 (增加厚度与封闭性)
+            const wallOptions = { isStatic: true, render: { visible: false } };
+            const ground = Bodies.rectangle(width / 2, height + wallThickness / 2, width * 2, wallThickness, wallOptions);
+            const leftWall = Bodies.rectangle(-wallThickness / 2, height / 2, wallThickness, height * 3, wallOptions);
+            const rightWall = Bodies.rectangle(width + wallThickness / 2, height / 2, wallThickness, height * 3, wallOptions);
+            // 天花板放高一点，允许重置时掉落，但防止震动时彻底飞出去
+            const ceiling = Bodies.rectangle(width / 2, -1500, width * 2, wallThickness, wallOptions);
+
+            World.add(engine.world, [ground, ceiling, leftWall, rightWall]);
+
+            const stickers = document.querySelectorAll('.game-sticker');
+            const bodiesMap: { body: Matter.Body; el: HTMLElement }[] = [];
+
+            stickers.forEach((sticker, index) => {
+                const el = sticker as HTMLElement;
+                const w = el.offsetWidth;
+                const h = el.offsetHeight;
+
+                // 初始化物理刚体
+                const body = Bodies.rectangle(
+                    width / 2 ,
+                    -(h * (index + 1)) + 200, // 初始位置在上方错开掉落
+                    w,
+                    h,
+                    {
+                        restitution: 0.6, // 弹性
+                        friction: 0.3,
+                        density: 0.002,
+                        chamfer: { radius: 16 }
+                    }
+                );
+
+                Matter.Body.setAngle(body, (Math.random() - 0.5) * 0.4);
+                bodiesMap.push({ body, el });
+                World.add(engine.world, body);
+
+                // ★ 区分点击与拖拽的核心逻辑 ★
+                let startX = 0, startY = 0;
+                el.addEventListener('pointerdown', (e) => {
+                    startX = e.clientX;
+                    startY = e.clientY;
+                });
+
+                el.addEventListener('pointerup', (e) => {
+                    const dx = Math.abs(e.clientX - startX);
+                    const dy = Math.abs(e.clientY - startY);
+                    // 如果移动距离小于 10 像素，判定为点击而非拖拽
+                    if (dx < 10 && dy < 10) {
+                        const link = el.getAttribute('data-link');
+                        if (link) {
+                            window.open(link, '_blank'); // 新标签页打开 Steam 链接
+                        }
+                    }
+                });
+            });
+
+            // --- 按钮逻辑 ---
+            const btnShake = document.getElementById('btn-shake');
+            const btnReset = document.getElementById('btn-reset');
+
+            btnShake?.addEventListener('click', () => {
+                bodiesMap.forEach(({ body }) => {
+                    // 直接赋予向上的线速度和随机角速度，实现干脆的弹跳感
+                    Matter.Body.setVelocity(body, {
+                        x: (Math.random() - 0.5) * 15,
+                        y: -25 - (Math.random() * 10)
+                    });
+                    Matter.Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.4);
+                });
+            });
+
+            btnReset?.addEventListener('click', () => {
+                bodiesMap.forEach((item, index) => {
+                    const { body, el } = item;
+
+                    // 1. 从物理世界彻底移除现有刚体
+                    World.remove(engine.world, body);
+
+                    // 2. 获取目前 DOM 节点实时的宽/高 (确保适配 resize 后的尺寸)
+                    const w = el.offsetWidth;
+                    const h = el.offsetHeight;
+
+                    // 3. 重新创建全新的刚体 (从上方高空掉落)
+                    const newBody = Bodies.rectangle(
+                        width / 2 ,
+                        -(h * (index + 1)) + 200,
+                        w,
+                        h,
+                        {
+                            restitution: 0.6,
+                            friction: 0.3,
+                            density: 0.002,
+                            chamfer: { radius: 16 }
+                        }
+                    );
+
+                    // 4. 重置旋转角度并加入世界
+                    Matter.Body.setAngle(newBody, (Math.random() - 0.5) * 0.4);
+                    item.body = newBody; // 同步更新 map 中的引用
+                    World.add(engine.world, newBody);
+                });
+            });
+
+            // 创建鼠标与约束 (兼容触摸代码保持不变)
+            const mouse = Mouse.create(container);
+            mouse.element.removeEventListener('mousewheel', (mouse as any).mousewheel);
+            mouse.element.removeEventListener('DOMMouseScroll', (mouse as any).mousewheel);
+            mouse.element.removeEventListener('wheel', (mouse as any).mousewheel);
+            mouse.element.removeEventListener('touchmove', (mouse as any).mousemove);
+            mouse.element.removeEventListener('touchstart', (mouse as any).mousedown);
+            mouse.element.removeEventListener('touchend', (mouse as any).mouseup);
+
+            const mouseConstraint = MouseConstraint.create(engine, {
+                mouse: mouse,
+                constraint: { stiffness: 0.1, render: { visible: false } }
+            });
+            World.add(engine.world, mouseConstraint);
+
+            // ... (触摸阻止滚动逻辑保持完全原样) ...
+
+            const runner = Runner.create();
+            Runner.run(runner, engine);
+
+            Events.on(engine, 'afterUpdate', () => {
+                bodiesMap.forEach(({ body, el }) => {
+                    const { x, y } = body.position;
+                    const angle = body.angle;
+                    el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) rotate(${angle}rad)`;
+                });
+            });
+
+            // --- 窗口 Resize 逻辑 ---
+            let resizeTimeout;
+            const handleResize = () => {
+                // 使用防抖 (Debounce) 避免拖拽窗口时高频触发引发卡顿
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    width = container!.clientWidth;
+                    height = container!.clientHeight;
+
+                    // 更新墙壁和地板位置
+                    Matter.Body.setPosition(ground, { x: width / 2, y: height + wallThickness / 2 });
+                    Matter.Body.setPosition(ceiling, { x: width / 2, y: -1500 });
+                    Matter.Body.setPosition(leftWall, { x: -wallThickness / 2, y: height / 2 });
+                    Matter.Body.setPosition(rightWall, { x: width + wallThickness / 2, y: height / 2 });
+
+                    // 动态更新已有刚体的尺寸匹配 DOM 元素的 CSS 变化
+                    bodiesMap.forEach((item) => {
+                        const el = item.el;
+                        const newW = el.offsetWidth;
+                        const newH = el.offsetHeight;
+
+                        const { position, velocity, angularVelocity, angle } = item.body;
+
+                        // 移除旧尺寸刚体
+                        World.remove(engine.world, item.body);
+
+                        // 原地使用新尺寸生成刚体
+                        const newBody = Bodies.rectangle(position.x, position.y, newW, newH, {
+                            restitution: 0.6,
+                            friction: 0.3,
+                            density: 0.002,
+                            chamfer: { radius: 16 }
+                        });
+
+                        // 恢复物理状态(位置/速度/角动量)，使其看起来只是变大了或缩小了
+                        Matter.Body.setAngle(newBody, angle);
+                        Matter.Body.setVelocity(newBody, velocity);
+                        Matter.Body.setAngularVelocity(newBody, angularVelocity);
+
+                        item.body = newBody;
+                        World.add(engine.world, newBody);
+                    });
+                }, 150);
+            };
+
+
+            window.addEventListener('resize', handleResize);
+
+            document.addEventListener('astro:before-swap', () => {
+                Runner.stop(runner);
+                Engine.clear(engine);
+                World.clear(engine.world, false);
+                window.removeEventListener('resize', handleResize);
+            }, { once: true });
+        });
+    </script>
 </Layout>
