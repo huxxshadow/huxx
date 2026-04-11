@@ -1,0 +1,294 @@
+﻿---
+// src/components/GameStickerSection.astro
+import { useTranslations, type Lang } from "@/i18n";
+import { COLORS } from "@/consts";
+import { gamesListData, gameSectionUI } from "@/i18n/components/GameStickerSection_i18";
+
+const locale = Astro.currentLocale as Lang;
+const t = useTranslations(locale);
+
+// 将 i18n 数据转换为当前语言可用的扁平数据
+const gamesData = gamesListData.map(game => ({
+    ...game,
+    title: t(game.title),
+    platformText: t(game.platformText),
+    desc: t(game.desc)
+}));
+---
+
+<section
+        id="games-sticker-section"
+        class="relative w-full h-[var(--mobile-height)] lg:h-[1000px] overflow-hidden pt-12 lg:pt-16"
+        style={`--mobile-height: ${gamesData.length * 120}vw; background-color: ${COLORS.khakiMilan}; color: ${COLORS.black};`}
+        data-theme-bg={COLORS.khakiMilan}
+        data-theme-text={COLORS.black}
+>
+    <div class="absolute top-12 lg:top-16 inset-x-0 mx-auto w-full px-4 sm:px-8 z-0 pointer-events-none flex justify-start">
+        <h2 class="inline-flex items-center px-6 py-3 bg-white text-black font-black text-3xl lg:text-4xl border-2 border-black rounded-xl shadow-[4px_4px_0px_rgba(0,0,0,1)] select-none">
+            {t(gameSectionUI.sectionTitle)}
+        </h2>
+    </div>
+
+    <div class="absolute top-12 lg:top-16 inset-x-0 mx-auto w-full px-4 sm:px-8 z-20 pointer-events-none flex justify-end">
+        <div class="flex gap-3 sm:gap-4 pointer-events-auto">
+            <button id="btn-shake" class="flex items-center gap-2 px-4 sm:px-6 py-2.5 bg-white text-black font-black text-base sm:text-lg border-2 border-black rounded-xl shadow-[4px_4px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-[0px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer">
+                <i class="fa-solid fa-bolt"></i>
+                <span class="hidden sm:inline">{t(gameSectionUI.shake)}</span>
+            </button>
+            <button id="btn-reset" class="flex items-center gap-2 px-4 sm:px-6 py-2.5 bg-white text-black font-black text-base sm:text-lg border-2 border-black rounded-xl shadow-[4px_4px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-[0px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer">
+                <i class="fa-solid fa-rotate-right"></i>
+                <span class="hidden sm:inline">{t(gameSectionUI.reset)}</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="physics-container" class="absolute inset-0 z-10 w-full h-full touch-pan-y overflow-hidden">
+        {gamesData.map((game, i) => (
+                <div
+                        id={game.id}
+                        data-link={game.link}
+                        class="game-sticker absolute top-0 left-0 group flex flex-col sm:flex-row w-[80vw] sm:w-[680px] rounded-2xl overflow-hidden shadow-[6px_6px_0px_rgba(73,73,73,1)] hover:shadow-[10px_10px_0px_rgba(73,73,73,1)] transition-[box-shadow] border-2 select-none bg-white"
+                        style={`border-color: ${COLORS.black};`}
+                >
+                    <div
+                            class="relative w-full sm:w-[320px] flex-shrink-0 border-b-2 sm:border-b-0 sm:border-r-2 overflow-hidden pointer-events-none"
+                            style={`border-color: ${COLORS.black}; background-color: ${game.theme.light}; aspect-ratio: 1232 / 706;`}
+                    >
+                        <img
+                                src={game.image?.src || game.image}
+                                alt={game.title}
+                                class="absolute inset-0 w-full h-full object-cover"
+                                loading="lazy"
+                                draggable="false"
+                        />
+
+                        <!-- 主题色柔和染色层 -->
+                        <div
+                                class="absolute inset-0 opacity-10 mix-blend-multiply"
+                                style={`background-color: ${game.theme.dark};`}
+                        ></div>
+
+                    </div>
+
+                    <div class="flex-1 p-5 flex flex-col justify-between pointer-events-none" style={`background-color: ${game.theme.light}; color: ${game.theme.dark};`}>
+                        <div>
+                            <div class="flex justify-between items-start mb-2 gap-2">
+                                <h3 class="font-black text-2xl leading-tight">
+                                    {game.title}
+                                </h3>
+                                <i class="fa-brands fa-steam text-2xl flex-shrink-0"></i>
+                            </div>
+                            <span class="text-xs font-bold opacity-70 px-2 py-1 border border-current rounded-md inline-block mb-2">{game.platformText}</span>
+                            <p class="text-sm font-bold opacity-90 line-clamp-3 leading-relaxed mt-1">
+                                {game.desc}
+                            </p>
+                        </div>
+
+                        <div class="flex justify-between items-end mt-4">
+                            <div class="flex gap-2 text-xl opacity-80">
+                                <i class="fa-brands fa-windows"></i>
+                            </div>
+                            <div class="px-5 py-2 rounded-lg font-black text-sm pointer-events-none" style={`background-color: ${game.theme.dark}; color: ${game.theme.light};`}>
+                                {t(gameSectionUI.learnMore)}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        ))}
+    </div>
+</section>
+
+<script>
+    import Matter from 'matter-js';
+
+    document.addEventListener('astro:page-load', () => {
+        // ==========================================
+        // --- Matter.js 物理贴纸逻辑 ---
+        // ==========================================
+        const container = document.getElementById('physics-container');
+        if (!container) return;
+
+        // 检测是否为移动端
+        const isMobile = window.matchMedia('(max-width: 1024px)').matches;
+
+        const { Engine, Runner, Bodies, World, Mouse, MouseConstraint, Events } = Matter;
+
+        const engine = Engine.create();
+        engine.world.gravity.y = 1.2;
+
+        let width = container.clientWidth;
+        let height = container.clientHeight;
+        const wallThickness = 200;
+
+        const wallOptions = { isStatic: true, render: { visible: false } };
+        const ground = Bodies.rectangle(width / 2, height + wallThickness / 2, width * 2, wallThickness, wallOptions);
+        const leftWall = Bodies.rectangle(-wallThickness / 2, height / 2, wallThickness, height * 3, wallOptions);
+        const rightWall = Bodies.rectangle(width + wallThickness / 2, height / 2, wallThickness, height * 3, wallOptions);
+        const ceiling = Bodies.rectangle(width / 2, -1500, width * 2, wallThickness, wallOptions);
+
+        World.add(engine.world, [ground, ceiling, leftWall, rightWall]);
+        const stickers = document.querySelectorAll('.game-sticker');
+        const bodiesMap: { body: Matter.Body; el: HTMLElement }[] = [];
+
+        stickers.forEach((sticker, index) => {
+            const el = sticker as HTMLElement;
+            const w = el.offsetWidth;
+            const h = el.offsetHeight;
+
+            const body = Bodies.rectangle(
+                width / 2 ,
+                -(h * (index + 1)) + 200,
+                w,
+                h,
+                {
+                    restitution: 0.6,
+                    friction: 0.3,
+                    density: 0.002,
+                    chamfer: { radius: 16 }
+                }
+            );
+
+            Matter.Body.setAngle(body, (Math.random() - 0.5) * 0.4);
+            bodiesMap.push({ body, el });
+            World.add(engine.world, body);
+
+            // 桌面端添加拖拽样式和 touch-none；手机端保持可滚动
+            if (!isMobile) {
+                el.classList.add('touch-none', 'cursor-grab');
+            }
+
+            // 点击跳转逻辑（桌面和手机端都保留）
+            let startX = 0, startY = 0;
+            el.addEventListener('pointerdown', (e) => {
+                startX = e.clientX;
+                startY = e.clientY;
+            });
+            el.addEventListener('pointerup', (e) => {
+                const dx = Math.abs(e.clientX - startX);
+                const dy = Math.abs(e.clientY - startY);
+                if (dx < 10 && dy < 10) {
+                    const link = el.getAttribute('data-link');
+                    if (link) {
+                        window.open(link, '_blank');
+                    }
+                }
+            });
+        });
+
+        // --- 按钮逻辑 ---
+        const btnShake = document.getElementById('btn-shake');
+        const btnReset = document.getElementById('btn-reset');
+
+        btnShake?.addEventListener('click', () => {
+            bodiesMap.forEach(({ body }) => {
+                Matter.Body.setVelocity(body, {
+                    x: (Math.random() - 0.5) * 15,
+                    y: -25 - (Math.random() * 10)
+                });
+                Matter.Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.4);
+            });
+        });
+
+        btnReset?.addEventListener('click', () => {
+            bodiesMap.forEach((item, index) => {
+                const { body, el } = item;
+
+                World.remove(engine.world, body);
+
+                const w = el.offsetWidth;
+                const h = el.offsetHeight;
+
+                const newBody = Bodies.rectangle(
+                    width / 2 ,
+                    -(h * (index + 1)) + 200,
+                    w,
+                    h,
+                    {
+                        restitution: 0.6,
+                        friction: 0.3,
+                        density: 0.002,
+                        chamfer: { radius: 16 }
+                    }
+                );
+
+                Matter.Body.setAngle(newBody, (Math.random() - 0.5) * 0.4);
+                item.body = newBody;
+                World.add(engine.world, newBody);
+            });
+        });
+
+        // 仅在桌面端创建 MouseConstraint，手机端完全跳过
+        if (!isMobile) {
+            const mouse = Mouse.create(container);
+            // 移除 Matter.js 默认的滚轮监听，避免干扰页面滚动
+            mouse.element.removeEventListener('mousewheel', (mouse as any).mousewheel);
+            mouse.element.removeEventListener('DOMMouseScroll', (mouse as any).mousewheel);
+            mouse.element.removeEventListener('wheel', (mouse as any).mousewheel);
+
+            const mouseConstraint = MouseConstraint.create(engine, {
+                mouse: mouse,
+                constraint: { stiffness: 0.1, render: { visible: false } }
+            });
+            World.add(engine.world, mouseConstraint);
+        }
+
+        const runner = Runner.create();
+        Runner.run(runner, engine);
+
+        Events.on(engine, 'afterUpdate', () => {
+            bodiesMap.forEach(({ body, el }) => {
+                const { x, y } = body.position;
+                const angle = body.angle;
+                el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) rotate(${angle}rad)`;
+            });
+        });
+
+        // --- 窗口 Resize 逻辑 ---
+        let resizeTimeout: ReturnType<typeof setTimeout>;
+        const handleResize = () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                width = container!.clientWidth;
+                height = container!.clientHeight;
+
+                Matter.Body.setPosition(ground, { x: width / 2, y: height + wallThickness / 2 });
+                Matter.Body.setPosition(ceiling, { x: width / 2, y: -1500 });
+                Matter.Body.setPosition(leftWall, { x: -wallThickness / 2, y: height / 2 });
+                Matter.Body.setPosition(rightWall, { x: width + wallThickness / 2, y: height / 2 });
+
+                bodiesMap.forEach((item) => {
+                    const el = item.el;
+                    const newW = el.offsetWidth;
+                    const newH = el.offsetHeight;
+
+                    const { position, velocity, angularVelocity, angle } = item.body;
+
+                    World.remove(engine.world, item.body);
+
+                    const newBody = Bodies.rectangle(position.x, position.y, newW, newH, {
+                        restitution: 0.6,
+                        friction: 0.3,
+                        density: 0.002,
+                        chamfer: { radius: 16 }
+                    });
+
+                    Matter.Body.setAngle(newBody, angle);
+                    Matter.Body.setVelocity(newBody, velocity);
+                    Matter.Body.setAngularVelocity(newBody, angularVelocity);
+
+                    item.body = newBody;
+                    World.add(engine.world, newBody);
+                });
+            }, 150);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        document.addEventListener('astro:before-swap', () => {
+            Runner.stop(runner);
+            Engine.clear(engine);
+            World.clear(engine.world, false);
+            window.removeEventListener('resize', handleResize);
+        }, { once: true });
+    });
+</script>
