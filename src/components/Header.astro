@@ -3,6 +3,7 @@ import { LOCALES, getLocalePaths, type Lang, useTranslations } from "@/i18n";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import Avatar from "@/assets/avater.svg";
 import { SOCIALS, COLORS } from "@/consts";
+import { BADGE_CONFIGS } from "@/consts/Header";
 import { navTranslations, headerTooltipsTranslations } from "@/i18n/components/Header_i18";
 
 interface Props {
@@ -31,6 +32,7 @@ const NAV_LINKS = [
 <header
         style={`--hdr-bg: ${bgColor}; --hdr-text: ${textColor};`}
         class="sticky top-0 z-30 w-full flex items-center justify-between px-2 sm:px-3 pt-0 font-sans"
+        data-lang={currentLocale}
 >
     <div class="flex items-center gap-2 sm:gap-4">
         <div class="h-16 sm:h-20 lg:h-28 shrink-0 flex items-center">
@@ -40,7 +42,7 @@ const NAV_LINKS = [
         <div class="flex flex-col justify-center gap-0.5 sm:gap-1">
 
             <div class="flex items-baseline gap-2 sm:gap-4">
-                <a href={getPath("/")} class="nav-link-animated text-[1.5rem] sm:text-[2rem] lg:text-[2.7rem] font-black tracking-wider leading-none">
+                <a href={getPath("/")} class="nav-link-animated text-[2rem]  lg:text-[2.7rem] font-black tracking-wider leading-none">
                     huxx
                 </a>
 
@@ -61,11 +63,11 @@ const NAV_LINKS = [
                 </nav>
             </div>
 
-            <div class="flex items-center gap-1.5 sm:gap-3 flex-wrap sm:flex-nowrap">
-                {/* ——— Level 显示 + Tooltip ——— */}
+            {/* ——— 桌面端：经验值 / 等级 / 徽章 ——— */}
+            <div class="hidden lg:flex items-center gap-1.5 sm:gap-3 flex-nowrap">
+                {/* Level */}
                 <div class="relative group flex items-center cursor-help">
-                    <span id="player-level" class="font-bold text-sm sm:text-base tracking-wider">Lv 0</span>
-
+                    <span id="player-level" class="font-bold text-base tracking-wider">Lv 0</span>
                     <div class="absolute left-1/2 -translate-x-1/2 top-full mt-2 invisible opacity-0 translate-y-1 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 z-50 pointer-events-none">
                         <div class="hdr-tooltip-reversed px-3 py-1.5 text-xs rounded-md shadow-md whitespace-nowrap font-medium">
                             {t(headerTooltipsTranslations.levelTooltip)}
@@ -73,11 +75,10 @@ const NAV_LINKS = [
                     </div>
                 </div>
 
-                {/* ——— EXP 进度条 + Tooltip ——— */}
-                <div class="relative group flex items-center w-16 sm:w-24 lg:w-32 h-2.5 cursor-help">
+                {/* EXP Bar */}
+                <div class="relative group flex items-center w-32 h-2.5 cursor-help">
                     <div class="absolute inset-0 rounded-full opacity-20 hdr-bg-text"></div>
                     <div id="player-exp-bar" class="absolute left-0 top-0 h-full rounded-full transition-all duration-500 ease-out hdr-bg-text" style="width: 0%;"></div>
-
                     <div class="absolute left-1/2 -translate-x-1/2 top-full mt-2 invisible opacity-0 translate-y-1 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 z-50 pointer-events-none">
                         <div class="hdr-tooltip-reversed px-3 py-1.5 text-xs rounded-md shadow-md whitespace-nowrap font-medium flex items-center gap-1">
                             <span id="player-exp-text">{t(headerTooltipsTranslations.expTooltipPrefix)} 0 / 10</span>
@@ -85,42 +86,41 @@ const NAV_LINKS = [
                     </div>
                 </div>
 
-                {/* ——— EXP 速率 ——— */}
-                <div id="player-exp-rate" class="font-mono text-sm sm:text-base font-semibold opacity-80 tracking-tight">
+                {/* EXP Rate */}
+                <div id="player-exp-rate" class="font-mono text-base font-semibold opacity-80 tracking-tight">
                     +1{t(headerTooltipsTranslations.expRateSuffix)}
                 </div>
 
-                {/* ——— Pong 勋章 ——— */}
-                <div id="pong-badge-wrapper" data-lang={currentLocale} class="hidden relative group items-center cursor-help">
-                    <span
-                            class="hdr-tooltip-reversed flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-0.5 text-sm sm:text-base tracking-wide font-semibold rounded-md shadow-sm w-max"
-                    >
-                        <i class="fa-solid fa-table-tennis-paddle-ball text-xs sm:text-sm"></i>
-                        <span>Pong</span>
-                    </span>
-
-                    <div class="absolute left-1/2 -translate-x-1/2 top-full mt-2 invisible opacity-0 translate-y-1 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 z-50 pointer-events-none">
-                        <div class="hdr-tooltip-reversed px-3 py-2 text-xs rounded-md shadow-md whitespace-nowrap flex flex-col gap-1 font-medium">
-                            <div id="pong-tooltip-name" class="font-bold border-b border-current/20 pb-1"></div>
-                            <div id="pong-tooltip-bonus" class="opacity-90"></div>
-                            <div id="pong-tooltip-desc" class="opacity-75 italic text-[11px]"></div>
+                {/* Badges (desktop) */}
+                {BADGE_CONFIGS.map((badge) => (
+                        <div
+                                id={`badge-${badge.key}-wrapper`}
+                                data-badge-key={badge.key}
+                                class="hidden relative group items-center cursor-help"
+                        >
+                        <span class="hdr-tooltip-reversed flex items-center gap-1.5 px-3 py-0.5 text-base tracking-wide font-semibold rounded-md shadow-sm w-max">
+                            <i class={`${badge.icon} text-sm`}></i>
+                            <span>{badge.label}</span>
+                        </span>
+                            <div class="absolute left-1/2 -translate-x-1/2 top-full mt-2 invisible opacity-0 translate-y-1 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 z-50 pointer-events-none">
+                                <div class="hdr-tooltip-reversed px-3 py-2 text-xs rounded-md shadow-md whitespace-nowrap flex flex-col gap-1 font-medium">
+                                    <div id={`badge-${badge.key}-tooltip-name`} class="font-bold border-b border-current/20 pb-1"></div>
+                                    <div id={`badge-${badge.key}-tooltip-bonus`} class="opacity-90"></div>
+                                    <div id={`badge-${badge.key}-tooltip-desc`} class="opacity-75 italic text-[11px]"></div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                ))}
             </div>
 
         </div>
-
     </div>
 
     {/* ——— 桌面端导航 ——— */}
     <div class="hidden lg:flex items-center gap-6 text-2xl font-semibold mr-5">
         {
             NAV_LINKS.map((link) => (
-                    <a
-                            href={getPath(link.path)}
-                            class="relative nav-link-animated px-1"
-                    >
+                    <a href={getPath(link.path)} class="relative nav-link-animated px-1">
                         {link.label}
                     </a>
             ))
@@ -131,15 +131,11 @@ const NAV_LINKS = [
                 <span>{LOCALES[currentLocale].label}</span>
                 <i class="fa-solid fa-chevron-down text-xs ml-1"></i>
             </button>
-
             <div class="absolute left-1/2 -translate-x-1/2 top-full pt-2 invisible opacity-0 translate-y-1 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 z-50">
                 <div class="hdr-dropdown flex flex-col shadow-sm rounded-sm py-2">
                     {
                         localePaths.map((lp) => (
-                                <a
-                                        href={lp.path}
-                                        class="px-5 py-2 hover:bg-black/5 transition-colors text-center whitespace-nowrap"
-                                >
+                                <a href={lp.path} class="px-5 py-2 hover:bg-black/5 transition-colors text-center whitespace-nowrap">
                                     {LOCALES[lp.lang].label}
                                 </a>
                         ))
@@ -161,8 +157,47 @@ const NAV_LINKS = [
     {/* ——— 手机端全屏菜单 ——— */}
     <div
             id="mobile-menu"
-            class="hdr-dropdown fixed inset-0 z-40 translate-x-full transition-transform duration-300 flex flex-col items-center justify-center gap-8 text-2xl font-semibold"
+            class="hdr-dropdown fixed inset-0 z-40 translate-x-full transition-transform duration-300 flex flex-col items-center justify-center gap-6 text-2xl font-semibold"
     >
+        {/* ——— 移动端：经验值 / 等级 / 徽章 ——— */}
+        <div class="flex flex-col items-center gap-3 w-full px-8">
+            <div class="flex items-center gap-3 justify-center">
+                <span id="player-level-m" class="font-bold text-lg tracking-wider">Lv 0</span>
+
+                <div class="relative w-28 h-3">
+                    <div class="absolute inset-0 rounded-full opacity-20 hdr-bg-text"></div>
+                    <div id="player-exp-bar-m" class="absolute left-0 top-0 h-full rounded-full transition-all duration-500 ease-out hdr-bg-text" style="width: 0%;"></div>
+                </div>
+
+                <div id="player-exp-rate-m" class="font-mono text-base font-semibold opacity-80 tracking-tight">
+                    +1{t(headerTooltipsTranslations.expRateSuffix)}
+                </div>
+            </div>
+
+            <div id="player-exp-text-m" class="text-sm font-medium opacity-70">
+                {t(headerTooltipsTranslations.expTooltipPrefix)} 0 / 10
+            </div>
+
+            {/* Badges (mobile — inline info, no tooltip) */}
+            <div class="flex items-center gap-2 flex-wrap justify-center">
+                {BADGE_CONFIGS.map((badge) => (
+                        <div
+                                id={`badge-${badge.key}-wrapper-m`}
+                                data-badge-key={badge.key}
+                                class="hidden items-center"
+                        >
+                        <span class="hdr-tooltip-reversed flex items-center gap-1.5 px-3 py-1 text-sm tracking-wide font-semibold rounded-md shadow-sm">
+                            <i class={`${badge.icon} text-xs`}></i>
+                            <span>{badge.label}</span>
+                            <span id={`badge-${badge.key}-info-m`} class="text-xs opacity-80"></span>
+                        </span>
+                        </div>
+                ))}
+            </div>
+        </div>
+
+        <div class="w-16 h-[2px] bg-current opacity-30"></div>
+
         {
             NAV_LINKS.map((link) => (
                     <a href={getPath(link.path)} class="relative nav-link-animated px-1 text-3xl">
@@ -171,7 +206,7 @@ const NAV_LINKS = [
             ))
         }
 
-        <div class="w-16 h-[2px] bg-current opacity-30 my-2"></div>
+        <div class="w-16 h-[2px] bg-current opacity-30"></div>
 
         <div class="flex flex-col items-center gap-4 text-xl">
             <span class="opacity-70 text-sm tracking-widest uppercase"><i class="fa-solid fa-globe mr-1"></i> Language</span>
@@ -193,7 +228,7 @@ const NAV_LINKS = [
             </div>
         </div>
 
-        <div class="flex gap-6 mt-8 text-[2.5rem]">
+        <div class="flex gap-6 mt-4 text-[2.5rem]">
             {
                 SOCIALS.map((item) => (
                         <a href={item.href} class="social-link hover:opacity-80 transition-opacity" aria-label={item.name}>
@@ -263,31 +298,30 @@ const NAV_LINKS = [
 </style>
 
 <script>
-    import { PONG_BADGE_DATA, getRequiredExp } from "@/consts/Header";
+    import { BADGE_CONFIGS, getRequiredExp } from "@/consts/Header";
     import { badgeTranslations, headerTooltipsTranslations } from "@/i18n/components/Header_i18";
-    import { COLORS } from "@/consts";
     import type { Lang } from "@/i18n";
 
     document.addEventListener('astro:page-load', () => {
         const header = document.querySelector('header');
+        // Desktop elements
         const uiLevel = document.getElementById('player-level');
         const uiExpBar = document.getElementById('player-exp-bar');
         const uiExpText = document.getElementById('player-exp-text');
         const uiExpRate = document.getElementById('player-exp-rate');
+        // Mobile elements
+        const uiLevelM = document.getElementById('player-level-m');
+        const uiExpBarM = document.getElementById('player-exp-bar-m');
+        const uiExpTextM = document.getElementById('player-exp-text-m');
+        const uiExpRateM = document.getElementById('player-exp-rate-m');
 
-        const badgeWrapper = document.getElementById('pong-badge-wrapper');
-        const tooltipName = document.getElementById('pong-tooltip-name');
-        const tooltipBonus = document.getElementById('pong-tooltip-bonus');
-        const tooltipDesc = document.getElementById('pong-tooltip-desc');
-
-        if (!header || !uiLevel || !uiExpBar || !uiExpText || !uiExpRate) return;
+        if (!header) return;
 
         const controller = new AbortController();
         const { signal } = controller;
 
         // ——— 语言环境 ———
-        const lang = (badgeWrapper?.getAttribute('data-lang') as Lang) || 'en';
-        const tPong = badgeTranslations.pong;
+        const lang = (header.getAttribute('data-lang') as Lang) || 'en';
         const tHeader = headerTooltipsTranslations;
 
         const getExpPrefix = () => tHeader.expTooltipPrefix[lang] || tHeader.expTooltipPrefix['en'] || 'EXP:';
@@ -296,46 +330,136 @@ const NAV_LINKS = [
         // ——— 挂机数据 ———
         let playerLevel = parseInt(localStorage.getItem('idle_playerLevel') || '0', 10);
         let playerExp = parseInt(localStorage.getItem('idle_playerExp') || '0', 10);
-
-        let pongLevel = parseInt(localStorage.getItem('pongLevel') || sessionStorage.getItem('pongLevel') || '1', 10);
-        let pongHasStarted = localStorage.getItem('pongHasStarted') === 'true' || sessionStorage.getItem('pongHasStarted') === 'true';
-
-        let pongBadgeLv = pongHasStarted ? Math.min(pongLevel, 6) : 0;
         let requiredExp = getRequiredExp(playerLevel);
+
+        // ========== 通用 Badge 状态管理 ==========
+        interface BadgeState {
+            key: string;
+            hasStarted: boolean;
+            level: number;
+            maxLevel: number;
+            levels: Record<number, { bonusRate: number }>;
+        }
+
+        const badgeStates: Record<string, BadgeState> = {};
+
+        BADGE_CONFIGS.forEach(badge => {
+            const hasStarted =
+                localStorage.getItem(badge.startedKey) === 'true' ||
+                sessionStorage.getItem(badge.startedKey) === 'true';
+            const rawLevel = parseInt(
+                localStorage.getItem(badge.storageKey) ||
+                sessionStorage.getItem(badge.storageKey) || '1', 10);
+
+            badgeStates[badge.key] = {
+                key: badge.key,
+                hasStarted,
+                level: hasStarted ? Math.min(rawLevel, badge.maxLevel) : 0,
+                maxLevel: badge.maxLevel,
+                levels: badge.levels,
+            };
+        });
 
         const calculateExpRate = () => {
             let rate = 1;
-            if (pongBadgeLv > 0 && PONG_BADGE_DATA[pongBadgeLv]) {
-                rate += PONG_BADGE_DATA[pongBadgeLv].bonusRate;
-            }
+            Object.values(badgeStates).forEach(state => {
+                if (state.level > 0 && state.levels[state.level]) {
+                    rate += state.levels[state.level].bonusRate;
+                }
+            });
             return rate;
         };
 
         let expPerSec = calculateExpRate();
 
-        // ============================================
-        // ===== 内容驱动的 Header 主题色系统 (高灵敏度版) =====
-        // ============================================
+        // ========== Badge UI 更新（桌面端） ==========
+        const updateBadgeDesktop = (key: string) => {
+            const wrapper = document.getElementById(`badge-${key}-wrapper`);
+            const tooltipName = document.getElementById(`badge-${key}-tooltip-name`);
+            const tooltipBonus = document.getElementById(`badge-${key}-tooltip-bonus`);
+            const tooltipDesc = document.getElementById(`badge-${key}-tooltip-desc`);
 
+            if (!wrapper) return;
+
+            const state = badgeStates[key];
+            const i18n = badgeTranslations[key];
+            if (!state || !i18n) return;
+
+            if (state.level > 0 && state.levels[state.level]) {
+                const data = state.levels[state.level];
+                const levelI18n = i18n.levels?.[state.level];
+
+                wrapper.classList.remove('hidden');
+                wrapper.classList.add('flex');
+
+                if (tooltipName && tooltipBonus && tooltipDesc && levelI18n) {
+                    tooltipName.innerText = levelI18n.name?.[lang] || levelI18n.name?.['en'] || '';
+                    const bonusPrefix = i18n.bonusPrefix?.[lang] || i18n.bonusPrefix?.['en'] || 'Bonus: +';
+                    const unit = i18n.unit?.[lang] || i18n.unit?.['en'] || ' EXP/s';
+                    tooltipBonus.innerText = `${bonusPrefix}${data.bonusRate}${unit}`;
+                    tooltipDesc.innerText = levelI18n.desc?.[lang] || levelI18n.desc?.['en'] || '';
+                }
+            } else {
+                wrapper.classList.add('hidden');
+                wrapper.classList.remove('flex');
+            }
+        };
+
+        // ========== Badge UI 更新（移动端 — inline info） ==========
+        const updateBadgeMobile = (key: string) => {
+            const wrapper = document.getElementById(`badge-${key}-wrapper-m`);
+            const info = document.getElementById(`badge-${key}-info-m`);
+
+            if (!wrapper) return;
+
+            const state = badgeStates[key];
+            const i18n = badgeTranslations[key];
+            if (!state || !i18n) return;
+
+            if (state.level > 0 && state.levels[state.level]) {
+                wrapper.classList.remove('hidden');
+                wrapper.classList.add('flex');
+
+                if (info) {
+                    const levelI18n = i18n.levels?.[state.level];
+                    const name = levelI18n?.name?.[lang] || levelI18n?.name?.['en'] || '';
+                    info.innerText = `· ${name}`;
+                }
+            } else {
+                wrapper.classList.add('hidden');
+                wrapper.classList.remove('flex');
+            }
+        };
+
+        // ========== 监听所有 badge 事件 ==========
+        BADGE_CONFIGS.forEach(badge => {
+            document.addEventListener(badge.eventName, ((e: CustomEvent) => {
+                const state = badgeStates[badge.key];
+                if (!state) return;
+                state.hasStarted = true;
+                state.level = Math.min(e.detail.level, badge.maxLevel);
+                expPerSec = calculateExpRate();
+                updateUI();
+            }) as EventListener, { signal });
+        });
+
+        // ============================================
+        // ===== 内容驱动的 Header 主题色系统 =====
+        // ============================================
         const applyHeaderTheme = (bg: string, text: string) => {
             header.style.setProperty('--hdr-bg', bg);
             header.style.setProperty('--hdr-text', text);
         };
 
-        // 获取页面中所有的主题区域 (querySelectorAll 返回的顺序就是 DOM 从上到下的顺序)
         const themeSections = Array.from(document.querySelectorAll('[data-theme-bg]'));
         let activeThemeSection: Element | null = null;
         let isScrolling = false;
 
-        // 重新判定当前正垫在 Header 下方的区域
         const syncActiveSection = () => {
             if (themeSections.length === 0) return;
-
-            // 设定触发线：大约是 Header 的高度加上少许缓冲（约 100px）
             const TRIGGER_Y = 100;
             let currentSection: Element | null = null;
 
-            // 倒序遍历：找到 DOM 中最后一个顶部触及或越过触发线的元素
             for (let i = themeSections.length - 1; i >= 0; i--) {
                 const rect = themeSections[i].getBoundingClientRect();
                 if (rect.top <= TRIGGER_Y) {
@@ -344,12 +468,8 @@ const NAV_LINKS = [
                 }
             }
 
-            // 兜底：如果页面在最顶部，所有的元素的 top 都大于触发线，就默认取第一个
-            if (!currentSection) {
-                currentSection = themeSections[0];
-            }
+            if (!currentSection) currentSection = themeSections[0];
 
-            // 发现需要切换主题时才执行，避免冗余重绘
             if (currentSection !== activeThemeSection) {
                 activeThemeSection = currentSection;
                 const bg = currentSection.getAttribute('data-theme-bg');
@@ -360,17 +480,15 @@ const NAV_LINKS = [
             isScrolling = false;
         };
 
-        // 替换掉 IntersectionObserver，使用 scroll + rAF 实现帧级灵敏度
         if (themeSections.length > 0) {
             document.addEventListener('scroll', () => {
                 if (!isScrolling) {
                     window.requestAnimationFrame(syncActiveSection);
                     isScrolling = true;
                 }
-            }, { passive: true, signal }); // 绑定了 signal，页面卸载时自动清理
+            }, { passive: true, signal });
         }
 
-        // 监听内容区域的动态主题变化事件（如 Pong 升级换色）
         document.addEventListener('section-theme-change', ((e: CustomEvent) => {
             const { bg, text, source } = e.detail || {};
             if (!bg || !text || !(source instanceof Element)) return;
@@ -378,57 +496,44 @@ const NAV_LINKS = [
             source.setAttribute('data-theme-bg', bg);
             source.setAttribute('data-theme-text', text);
 
-            // 如果触发更新的正是当前激活的区域，或者尚未初始化，直接应用
             if (source === activeThemeSection || !activeThemeSection) {
                 activeThemeSection = source;
                 applyHeaderTheme(bg, text);
             }
         }) as EventListener, { signal });
 
-        // ——— 统一 UI 刷新 ———
+        // ——— 统一 UI 刷新（桌面 + 移动端） ———
         const updateUI = () => {
-            uiLevel.innerText = `Lv ${playerLevel}`;
-            uiExpBar.style.width = `${Math.min((playerExp / requiredExp) * 100, 100)}%`;
-            uiExpText.innerText = `${getExpPrefix()} ${playerExp} / ${requiredExp}`;
-            uiExpRate.innerText = `+${expPerSec}${getExpRateSuffix()}`;
+            const levelStr = `Lv ${playerLevel}`;
+            const expWidth = `${Math.min((playerExp / requiredExp) * 100, 100)}%`;
+            const expStr = `${getExpPrefix()} ${playerExp} / ${requiredExp}`;
+            const rateStr = `+${expPerSec}${getExpRateSuffix()}`;
 
-            if (badgeWrapper && tooltipName && tooltipBonus && tooltipDesc) {
-                if (pongBadgeLv > 0 && PONG_BADGE_DATA[pongBadgeLv]) {
-                    const data = PONG_BADGE_DATA[pongBadgeLv];
-                    const i18nLevel = tPong.levels[pongBadgeLv];
+            // Desktop
+            if (uiLevel) uiLevel.innerText = levelStr;
+            if (uiExpBar) uiExpBar.style.width = expWidth;
+            if (uiExpText) uiExpText.innerText = expStr;
+            if (uiExpRate) uiExpRate.innerText = rateStr;
 
-                    badgeWrapper.classList.remove('hidden');
-                    badgeWrapper.classList.add('flex');
+            // Mobile
+            if (uiLevelM) uiLevelM.innerText = levelStr;
+            if (uiExpBarM) uiExpBarM.style.width = expWidth;
+            if (uiExpTextM) uiExpTextM.innerText = expStr;
+            if (uiExpRateM) uiExpRateM.innerText = rateStr;
 
-                    tooltipName.innerText = i18nLevel.name[lang] || i18nLevel.name['en'];
-
-                    const bonusPrefix = tPong.bonusPrefix[lang] || tPong.bonusPrefix['en'];
-                    const unit = tPong.unit[lang] || tPong.unit['en'];
-                    tooltipBonus.innerText = `${bonusPrefix}${data.bonusRate}${unit}`;
-
-                    tooltipDesc.innerText = i18nLevel.desc[lang] || i18nLevel.desc['en'];
-                } else {
-                    badgeWrapper.classList.add('hidden');
-                    badgeWrapper.classList.remove('flex');
-                }
-            }
+            // Badges — 双端更新
+            Object.keys(badgeStates).forEach(key => {
+                updateBadgeDesktop(key);
+                updateBadgeMobile(key);
+            });
         };
 
-        // ——— 首次渲染：跳过过渡，精准应用当前位置的区域颜色 ———
+        // ——— 首次渲染 ———
         header.style.transition = 'none';
-        syncActiveSection();  // 直接测算当前滚动位置对应的颜色
+        syncActiveSection();
         updateUI();
 
         void header.offsetHeight;
-        // 用 rAF 延迟恢复过渡，给其他脚本（PongGame）一帧时间完成初始化
-        requestAnimationFrame(() => {
-            header.style.transition = '';
-        });
-
-        updateUI();
-        void header.offsetHeight;
-
-        // 用 rAF 延迟恢复过渡，给其他脚本（PongGame）一帧时间完成初始化
         requestAnimationFrame(() => {
             header.style.transition = '';
         });
@@ -445,15 +550,6 @@ const NAV_LINKS = [
             localStorage.setItem('idle_playerExp', playerExp.toString());
             updateUI();
         }, 1000);
-
-        // ——— 监听 Pong 游戏进度事件 ———
-        document.addEventListener('pong-level-update', ((e: CustomEvent) => {
-            pongLevel = e.detail.level;
-            pongHasStarted = true;
-            pongBadgeLv = Math.min(pongLevel, 6);
-            expPerSec = calculateExpRate();
-            updateUI();
-        }) as EventListener, { signal });
 
         // ——— 清理 ———
         document.addEventListener('astro:before-swap', () => {

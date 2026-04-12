@@ -1,7 +1,7 @@
 ﻿---
 // Basic Layout for All Pages
 
-// import Footer from "@/components/Footer.astro";
+import Footer from "@/components/Footer.astro";
 // import LocaleHtmlHead from "@/components/i18n/LocaleHtmlHead.astro";
 // import LocaleSuggest from "@/components/i18n/LocaleSuggest.astro";
 import Header from "@/components/Header.astro";
@@ -46,8 +46,8 @@ const localeDescription = description || t(SITE_DESCRIPTION);
     }
 
     <!-- icon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"/>
+    <link rel="icon" type="image/svg+xml" href="/src/assets/icons/Astro.svg" />
     <link rel="icon alternate" sizes="64x64" type="image/png" href="/favicon.png">
     <link rel="icon" sizes="192x192" href="/android-chrome.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -80,7 +80,7 @@ const localeDescription = description || t(SITE_DESCRIPTION);
     <slot />
 </main>
 
-
+<Footer />
 <!--{ import.meta.env.DEV && <style>:root { scroll-behavior: auto }</style> }-->
 
 

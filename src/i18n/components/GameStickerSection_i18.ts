@@ -69,7 +69,7 @@ export const gamesListData: GameData[] = [
         },
         theme: COLORS.orange,
         image: EelOnMaskPoster,
-        link: "https://store.steampowered.com/app/439118"
+        link: "https://store.steampowered.com/app/4391180"
     },
     {
         id: "game-5",
@@ -93,6 +93,6 @@ export const gamesListData: GameData[] = [
         },
         theme: COLORS.green,
         image: ClickClickUniversePoster,
-        link: "https://store.steampowered.com/"
+        link: "https://store.steampowered.com/app/4287740"
     }
 ];

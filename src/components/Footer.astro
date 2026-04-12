@@ -1,0 +1,163 @@
+﻿---
+// src/components/Footer.astro
+import { SOCIALS, COLORS } from "@/consts";
+import { useTranslations, type Lang } from "@/i18n";
+import Avatar from "@/assets/avater.svg";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { navTranslations } from "@/i18n/components/Header_i18";
+import { footerTranslations } from "@/i18n/components/Footer_i18";
+
+interface Props {
+    bgColor?: string;
+    textColor?: string;
+}
+
+const {
+    bgColor = COLORS.green.light,
+    textColor = COLORS.green.dark,
+} = Astro.props;
+
+const currentLocale = (Astro.currentLocale || "en") as Lang;
+const t = useTranslations(currentLocale);
+const currentYear = new Date().getFullYear();
+
+const aboutPath = getRelativeLocaleUrl(currentLocale, "/about");
+const getPath = (path: string) => getRelativeLocaleUrl(currentLocale, path);
+
+const NAV_LINKS = [
+    { label: t(navTranslations.home), path: "/" },
+    { label: t(navTranslations.blog), path: "/blog" },
+    { label: t(navTranslations.portfolio), path: "/portfolio" },
+    { label: t(navTranslations.about), path: "/about" },
+];
+---
+
+<footer
+        id="page-footer"
+        style={`--ftr-bg: ${bgColor}; --ftr-text: ${textColor};`}
+        class="w-full pt-10 pb-6 px-4 sm:px-6 font-sans border-t border-current/20"
+>
+    {/* 上半部分：左侧信息 + 右侧导航链接 */}
+    <div class="w-full flex flex-col lg:flex-row justify-between items-start gap-10">
+
+        {/* 左側：Avatar + 文字 */}
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 max-w-3xl">
+            <div class="w-32 h-32 sm:w-50 sm:h-50 shrink-0 opacity-90">
+                <Avatar class="w-full h-full block" fill="currentColor" />
+            </div>
+
+            <div class="flex flex-col justify-center space-y-4">
+                <div class="space-y-1">
+                    <h3 class="text-4xl font-black tracking-tight">{t(footerTranslations.aboutTitle)}</h3>
+                    <p class="text-xl opacity-75 font-medium leading-snug">
+                        {t(footerTranslations.aboutDesc)}
+                    </p>
+                </div>
+
+                <a
+                        href={aboutPath}
+                        class="ftr-about-btn inline-flex items-center w-fit px-6 py-2 border-2 border-current font-bold rounded-full transition-all duration-300 group text-sm uppercase tracking-widest"
+                >
+                    {t(footerTranslations.aboutButton)}
+                    <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            </div>
+        </div>
+
+        {/* 右側：导航 + 分隔线 + 社媒 */}
+        <div class="flex flex-col items-stretch w-full lg:mr-8 mt-4 lg:mt-8">
+
+            {/* ====== 导航链接区域（可替换为方案 1–5） ====== */}
+            <div class="grid grid-cols-2 gap-x-12 sm:gap-x-20 gap-y-4 sm:gap-y-6">
+                {
+                    NAV_LINKS.map((link) => (
+                            <a
+                                    href={getPath(link.path)}
+                                    class="group flex items-center text-lg font-bold transition-all duration-300 hover:opacity-80"
+                            >
+                                <i class="fa-solid fa-chevron-right opacity-0 -ml-4 mr-0 group-hover:opacity-100 group-hover:ml-0 group-hover:mr-2 transition-all duration-300"></i>
+                                <span class="group-hover:translate-x-1 transition-transform duration-300">
+                                    {link.label}
+                                </span>
+                            </a>
+                    ))
+                }
+            </div>
+            {/* ====== /导航链接区域 ====== */}
+
+            {/* 社媒图标 */}
+            <div class="mt-10 pt-5 border-t-[1.5px] border-current/70 flex justify-end">
+                <div class="flex items-center gap-5 text-2xl">
+                    {
+                        SOCIALS.map((item) => (
+                                <a
+                                        href={item.href}
+                                        class="social-link hover:opacity-80 transition-opacity duration-300"
+                                        aria-label={item.name}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                >
+                                    <i class={`fa-brands ${item.icon}`}></i>
+                                </a>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {/* 下部：版权 */}
+    <div class="w-full mt-10 pt-6 border-t border-current/10 flex justify-center items-center text-center text-xl font-black tracking-widest opacity-80">
+        <span>&copy; {currentYear} huxx.me. {t(footerTranslations.copyright)}</span>
+    </div>
+</footer>
+
+{/* ——— 注册 CSS 自定义属性，与 Header 保持一致 ——— */}
+<style is:global>
+    @property --ftr-bg {
+        syntax: '<color>';
+        inherits: true;
+        initial-value: #BDF1CD;
+    }
+    @property --ftr-text {
+        syntax: '<color>';
+        inherits: true;
+        initial-value: #16A062;
+    }
+</style>
+
+<style>
+    #page-footer {
+        background-color: var(--ftr-bg);
+        color: var(--ftr-text);
+        transition: --ftr-bg 0.7s ease, --ftr-text 0.7s ease;
+    }
+    .ftr-about-btn:hover {
+        background-color: var(--ftr-text);
+        color: var(--ftr-bg);
+    }
+    .social-link:hover i {
+        animation: fa-bounce 1s infinite;
+        animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);
+    }
+</style>
+
+<script>
+    document.addEventListener('astro:page-load', () => {
+        const footer = document.getElementById('page-footer');
+        if (!footer) return;
+
+        const themedElements = document.querySelectorAll('[data-theme-bg][data-theme-text]');
+
+        if (themedElements.length > 0) {
+            const lastElement = themedElements[themedElements.length - 1];
+            const bgColor = lastElement.getAttribute('data-theme-bg');
+            const textColor = lastElement.getAttribute('data-theme-text');
+
+            if (bgColor && textColor) {
+                footer.style.setProperty('--ftr-bg', bgColor);
+                footer.style.setProperty('--ftr-text', textColor);
+            }
+        }
+    });
+</script>
