@@ -1,10 +1,10 @@
 ﻿---
-import { LOCALES, getLocalePaths, type Lang, useTranslations } from "@/i18n";
+import { LOCALES, getLocalePaths, type Lang, useTranslations } from "@/i18n.ts";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import Avatar from "@/assets/avater.svg";
-import { SOCIALS, COLORS } from "@/consts";
-import { BADGE_CONFIGS } from "@/consts/Header";
-import { navTranslations, headerTooltipsTranslations } from "@/i18n/components/Header_i18";
+import { SOCIALS, COLORS } from "@/consts.ts";
+import { BADGE_CONFIGS } from "@/consts/Header.ts";
+import { navTranslations, headerTooltipsTranslations } from "@/i18n/components/Header_i18.ts";
 
 interface Props {
     bgColor?: string;
@@ -25,7 +25,7 @@ const NAV_LINKS = [
     { label: t(navTranslations.home), path: "/" },
     { label: t(navTranslations.blog), path: "/blog" },
     { label: t(navTranslations.portfolio), path: "/portfolio" },
-    { label: t(navTranslations.about), path: "/about" },
+    { label: t(navTranslations.about), path: "/aboutme" },
 ];
 ---
 
@@ -298,9 +298,9 @@ const NAV_LINKS = [
 </style>
 
 <script>
-    import { BADGE_CONFIGS, getRequiredExp } from "@/consts/Header";
-    import { badgeTranslations, headerTooltipsTranslations } from "@/i18n/components/Header_i18";
-    import type { Lang } from "@/i18n";
+    import { BADGE_CONFIGS, getRequiredExp } from "@/consts/Header.ts";
+    import { badgeTranslations, headerTooltipsTranslations } from "@/i18n/components/Header_i18.ts";
+    import type { Lang } from "@/i18n.ts";
 
     document.addEventListener('astro:page-load', () => {
         const header = document.querySelector('header');

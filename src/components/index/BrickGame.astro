@@ -1,0 +1,693 @@
+﻿---
+// src/components/BrickGame.astro
+import { type Lang, useTranslations } from "@/i18n.ts";
+import { brickTranslations } from "@/i18n/components/index/BrickGame_i18.ts";
+import { COLORS } from "@/consts.ts";
+import type { SvgComponent } from "astro/types";
+
+// =========================
+// SVG icon imports
+// =========================
+import CSharpIcon from "@/assets/icons/CSharp.svg";
+import CppIcon from "@/assets/icons/cpp.svg";
+import KotlinIcon from "@/assets/icons/Kotlin.svg";
+import UnrealIcon from "@/assets/icons/Unreal.svg";
+import GodotIcon from "@/assets/icons/Godot.svg";
+import AstroIcon from "@/assets/icons/Astro.svg";
+import TypeScriptIcon from "@/assets/icons/TypeScript.svg";
+import MatlabIcon from "@/assets/icons/Matlab.svg";
+import BlenderIcon from "@/assets/icons/blender.svg";
+import PhotoshopIcon from "@/assets/icons/photoshop.svg";
+import AftereffectsIcon from "@/assets/icons/aftereffects.svg";
+import AsepriteIcon from "@/assets/icons/aseprite.svg";
+import NukeIcon from "@/assets/icons/nuke.svg";
+import PremiereProIcon from "@/assets/icons/premierepro.svg";
+import HoudiniIcon from "@/assets/icons/houdini.svg";
+
+const currentLocale = (Astro.currentLocale || "en") as Lang;
+const t = useTranslations(currentLocale);
+
+// =========================
+// Constants
+// =========================
+const DEFAULT_CUSTOM_ICON_SIZE = 24;
+const SECTION_ID = "skill-brick-section";
+const THEMES = [COLORS.green, COLORS.yellow, COLORS.blue, COLORS.orange, COLORS.purple, COLORS.red];
+
+// =========================
+// Types
+// =========================
+type SkillIcon =
+    | { type: "fa"; value: string }
+    | { type: "svg"; key: string; size?: number };
+
+type Skill = {
+    name: string;
+    icon: SkillIcon;
+    level: "proficient" | "experienced";
+};
+
+type SkillGroup = {
+    groupName: string;
+    skills: Skill[];
+};
+
+type SkillCategory = {
+    title: string;
+    groups: SkillGroup[];
+};
+
+// =========================
+// SVG icon registry
+// =========================
+const CUSTOM_SVG_ICONS: Record<string, SvgComponent> = {
+    CSharpIcon,
+    CppIcon,
+    KotlinIcon,
+    UnrealIcon,
+    GodotIcon,
+    AstroIcon,
+    TypescriptIcon: TypeScriptIcon,
+    MatlabIcon,
+    BlenderIcon,
+    PhotoshopIcon,
+    AEIcon: AftereffectsIcon,
+    PRIcon: PremiereProIcon,
+    AsepriteIcon,
+    NukeIcon,
+    HoudiniIcon,
+};
+
+// =========================
+// Skill data (with i18n)
+// =========================
+const SKILL_CATEGORIES: SkillCategory[] = [
+    {
+        title: t(brickTranslations.categoryDevelopment),
+        groups: [
+            {
+                groupName: t(brickTranslations.groupGameEngines),
+                skills: [
+                    { name: "Unity", icon: { type: "fa", value: "fa-brands fa-unity" }, level: "proficient" },
+                    { name: "Unreal Engine", icon: { type: "svg", key: "UnrealIcon", size: 26 }, level: "proficient" },
+                    { name: "Godot", icon: { type: "svg", key: "GodotIcon", size: 24 }, level: "proficient" },
+                ],
+            },
+            {
+                groupName: t(brickTranslations.groupLanguages),
+                skills: [
+                    { name: "Python", icon: { type: "fa", value: "fa-brands fa-python" }, level: "proficient" },
+                    { name: "Java", icon: { type: "fa", value: "fa-brands fa-java" }, level: "proficient" },
+                    { name: "C#", icon: { type: "svg", key: "CSharpIcon", size: 22 }, level: "proficient" },
+                    { name: "SQL", icon: { type: "fa", value: "fa-solid fa-database" }, level: "proficient" },
+                    { name: "C++", icon: { type: "svg", key: "CppIcon", size: 22 }, level: "experienced" },
+                    { name: "Kotlin", icon: { type: "svg", key: "KotlinIcon", size: 18 }, level: "experienced" },
+                    { name: "TypeScript", icon: { type: "svg", key: "TypescriptIcon", size: 22 }, level: "experienced" },
+                    { name: "HLSL", icon: { type: "svg", key: "Null", size: 20 }, level: "experienced" },
+                ],
+            },
+            {
+                groupName: t(brickTranslations.groupFullStack),
+                skills: [
+                    { name: "Vue", icon: { type: "fa", value: "fa-brands fa-vuejs" }, level: "proficient" },
+                    { name: "Astro", icon: { type: "svg", key: "AstroIcon", size: 24 }, level: "proficient" },
+                    { name: "HTML", icon: { type: "fa", value: "fa-brands fa-html5" }, level: "proficient" },
+                    { name: "CSS", icon: { type: "fa", value: "fa-brands fa-css3-alt" }, level: "proficient" },
+                    { name: "JavaScript", icon: { type: "fa", value: "fa-brands fa-js" }, level: "proficient" },
+                    { name: "Three.js", icon: { type: "svg", key: "Null", size: 20 }, level: "proficient" },
+                    { name: "Express", icon: { type: "fa", value: "fa-solid fa-server" }, level: "proficient" },
+                    { name: "Springboot", icon: { type: "fa", value: "fa-solid fa-leaf" }, level: "proficient" },
+                    { name: "Android", icon: { type: "fa", value: "fa-brands fa-android" }, level: "proficient" },
+                    { name: "WordPress", icon: { type: "fa", value: "fa-brands fa-wordpress" }, level: "experienced" },
+                    { name: "React", icon: { type: "fa", value: "fa-brands fa-react" }, level: "experienced" },
+                    { name: "Node.js", icon: { type: "fa", value: "fa-brands fa-node-js" }, level: "experienced" },
+                    { name: "Oracle SQL", icon: { type: "fa", value: "fa-solid fa-database" }, level: "experienced" },
+                    { name: "Raspberry Pi", icon: { type: "fa", value: "fa-brands fa-raspberry-pi" }, level: "experienced" },
+                    { name: "MATLAB", icon: { type: "svg", key: "MatlabIcon", size: 20 }, level: "experienced" },
+                    { name: "Processing", icon: { type: "svg", key: "Null", size: 20 }, level: "experienced" },
+                ],
+            },
+            {
+                groupName: t(brickTranslations.groupFields),
+                skills: [
+                    { name: t(brickTranslations.skillGameDevelopment), icon: { type: "fa", value: "fa-solid fa-gamepad" }, level: "proficient" },
+                    { name: t(brickTranslations.skillMachineLearning), icon: { type: "fa", value: "fa-solid fa-brain" }, level: "proficient" },
+                    { name: t(brickTranslations.skillDataScience), icon: { type: "fa", value: "fa-solid fa-chart-line" }, level: "proficient" },
+                    { name: t(brickTranslations.skillComputerGraphics), icon: { type: "fa", value: "fa-solid fa-cubes" }, level: "proficient" },
+                    { name: t(brickTranslations.skillSoftwareEngineering), icon: { type: "fa", value: "fa-solid fa-laptop-code" }, level: "proficient" },
+                    { name: t(brickTranslations.skillWebDevelopment), icon: { type: "fa", value: "fa-solid fa-globe" }, level: "proficient" },
+                    { name: t(brickTranslations.skillSignalProcessing), icon: { type: "fa", value: "fa-solid fa-wave-square" }, level: "experienced" },
+                    { name: t(brickTranslations.skillComputerVision), icon: { type: "fa", value: "fa-solid fa-eye" }, level: "experienced" },
+                    { name: t(brickTranslations.skillMobileAppDev), icon: { type: "fa", value: "fa-solid fa-mobile-screen-button" }, level: "experienced" },
+                    { name: t(brickTranslations.skillDatabaseManagement), icon: { type: "fa", value: "fa-solid fa-database" }, level: "experienced" },
+                ],
+            },
+        ],
+    },
+    {
+        title: t(brickTranslations.categoryDesign),
+        groups: [
+            {
+                groupName: t(brickTranslations.groupGameDesign),
+                skills: [
+                    { name: t(brickTranslations.skillCombatDesign), icon: { type: "fa", value: "fa-solid fa-hand-fist" }, level: "proficient" },
+                    { name: t(brickTranslations.skillSystemDesign), icon: { type: "fa", value: "fa-solid fa-cogs" }, level: "proficient" },
+                    { name: t(brickTranslations.skillUIUXDesign), icon: { type: "fa", value: "fa-solid fa-object-group" }, level: "proficient" },
+                    { name: t(brickTranslations.skillLevelDesign), icon: { type: "fa", value: "fa-solid fa-map" }, level: "experienced" },
+                ],
+            },
+            {
+                groupName: t(brickTranslations.groupArt),
+                skills: [
+                    { name: "Blender", icon: { type: "svg", key: "BlenderIcon", size: 20 }, level: "proficient" },
+                    { name: "Figma", icon: { type: "fa", value: "fa-brands fa-figma" }, level: "proficient" },
+                    { name: "Photoshop", icon: { type: "svg", key: "PhotoshopIcon", size: 20 }, level: "proficient" },
+                    { name: "AE", icon: { type: "svg", key: "AEIcon", size: 20 }, level: "proficient" },
+                    { name: "PR", icon: { type: "svg", key: "PRIcon", size: 20 }, level: "proficient" },
+                    { name: "Aseprite", icon: { type: "svg", key: "AsepriteIcon", size: 20 }, level: "proficient" },
+                    { name: "Nuke", icon: { type: "svg", key: "NukeIcon", size: 20 }, level: "experienced" },
+                    { name: "Houdini", icon: { type: "svg", key: "HoudiniIcon", size: 20 }, level: "experienced" },
+                    { name: "WorldCreator", icon: { type: "svg", key: "Null", size: 20 }, level: "experienced" },
+                ],
+            },
+        ],
+    },
+];
+
+const FLAT_SKILLS = SKILL_CATEGORIES
+    .flatMap((category) => category.groups)
+    .flatMap((group) => group.skills);
+
+// =========================
+// Helpers
+// =========================
+const getSkillClass = (level: string) => {
+    const baseClass = "px-4 py-2 rounded-full font-bold flex items-center gap-2 transition-transform duration-300 hover:scale-105";
+    if (level === "proficient") {
+        return `${baseClass} border-[3px] bg-white/70 border-current shadow-sm`;
+    }
+    return `${baseClass} border-[2px] border-dashed bg-white/20 border-current opacity-80`;
+};
+---
+
+<section
+        id={SECTION_ID}
+        class="relative overflow-hidden w-full px-4 sm:px-6 py-12 flex flex-col lg:flex-row gap-12 items-stretch transition-colors duration-700"
+        style={`--theme-light: ${COLORS.orange.light}; --theme-dark: ${COLORS.orange.dark}; background-color: var(--theme-light); color: var(--theme-dark);`}
+        data-theme-bg={COLORS.orange.light}
+        data-theme-text={COLORS.orange.dark}
+>
+    {/* ====== Left: Skill List ====== */}
+    <div class="w-full lg:w-7/12 flex flex-col gap-10 z-10 font-sans text-center lg:text-left">
+        {SKILL_CATEGORIES.map((category) => (
+                <div class="flex flex-col gap-5">
+                    <h3 class="text-3xl font-black  tracking-widest opacity-90 border-b-2 border-current/60 pb-2">
+                        {category.title}
+                    </h3>
+
+                    <div class="flex flex-col gap-6">
+                        {category.groups.map((group) => (
+                                <div class="flex flex-col gap-3">
+                                    {group.groupName && (
+                                            <h4 class="text-xl font-bold opacity-75  tracking-widest text-center lg:text-left">
+                                                {group.groupName}
+                                            </h4>
+                                    )}
+                                    <div class="flex flex-wrap gap-3 justify-center lg:justify-start">
+                                        {group.skills.map((skill) => {
+                                            const SvgIcon = skill.icon.type === "svg" ? CUSTOM_SVG_ICONS[skill.icon.key] : null;
+                                            const iconSize = skill.icon.type === "svg"
+                                                ? (skill.icon.size ?? DEFAULT_CUSTOM_ICON_SIZE)
+                                                : DEFAULT_CUSTOM_ICON_SIZE;
+
+                                            return (
+                                                    <div class={getSkillClass(skill.level)}>
+                                                        {skill.icon.type === "fa" ? (
+                                                                <i class={`${skill.icon.value} text-xl`} aria-hidden="true"></i>
+                                                        ) : SvgIcon ? (
+                                                                <span
+                                                                        class="inline-flex items-center justify-center shrink-0"
+                                                                        aria-hidden="true"
+                                                                        style={`width: ${iconSize}px; height: ${iconSize}px;`}
+                                                                >
+                                                    <SvgIcon
+                                                            width={iconSize}
+                                                            height={iconSize}
+                                                            fill="currentColor"
+                                                            stroke="currentColor"
+                                                    />
+                                                </span>
+                                                        ) : null}
+
+                                                        <span>{skill.name}</span>
+                                                    </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                        ))}
+                    </div>
+                </div>
+        ))}
+
+        {/* Legend */}
+        <div class="flex items-center gap-6 justify-center lg:justify-start mt-2  text-base font-bold opacity-80">
+            <div class="flex items-center gap-2">
+                <div class="w-5 h-5 rounded-full border-[3px] bg-white/70 border-current shadow-sm"></div>
+                <span>{t(brickTranslations.legendProficient)}</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="w-5 h-5 rounded-full border-[2px] border-dashed bg-white/20 border-current"></div>
+                <span>{t(brickTranslations.legendExperienced)}</span>
+            </div>
+        </div>
+    </div>
+
+    {/* ====== Right: Brick Game ====== */}
+    <div class="w-full lg:w-5/12 flex z-10 font-sans py-8 lg:p-24">
+        <div
+                id="bb-container"
+                class="relative flex-1 w-full min-h-[600px] max-h-[70vh] min-w-[320px] sm:min-w-[320px] rounded-[2rem] overflow-hidden border-4 bg-white/30 shadow-inner"
+                style="border-color: var(--theme-dark);"
+                data-skills={JSON.stringify(FLAT_SKILLS)}
+                data-custom-icon-size={DEFAULT_CUSTOM_ICON_SIZE}
+                data-themes={JSON.stringify(THEMES)}
+                data-section-id={SECTION_ID}
+                data-i18n-start={t(brickTranslations.startGame)}
+                data-i18n-press={t(brickTranslations.pressAD)}
+                data-i18n-touch={t(brickTranslations.touchScreen)}
+                data-i18n-try-again={t(brickTranslations.tryAgain)}
+                data-i18n-next-level={t(brickTranslations.nextLevel)}
+                data-i18n-level={t(brickTranslations.level)}
+        >
+            <!-- Start Screen Overlay -->
+            <div id="bb-start-screen" class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/40 backdrop-blur-[2px] transition-opacity duration-300 pb-3">
+                <h3 class="text-4xl lg:text-5xl font-black mb-6 drop-shadow-md tracking-tight">
+                    {t(brickTranslations.level)} <span id="bb-level-text">1</span>
+                </h3>
+
+                <div id="bb-start-hint" class="flex items-center gap-3 px-5 py-2.5 rounded-2xl shadow-sm scale-90 lg:scale-100" style="background-color: rgba(255, 255, 255, 0.8);">
+                    <div id="bb-key-hint-wrapper" class="flex flex-row items-center gap-1">
+                        <div class="w-7 h-7 bg-white rounded-md flex items-center justify-center shadow-[0_2px_4px_rgba(0,0,0,0.05)] font-bold text-base" style="color: var(--theme-dark);">A</div>
+                        <div class="w-7 h-7 bg-white rounded-md flex items-center justify-center shadow-[0_2px_4px_rgba(0,0,0,0.05)] font-bold text-base" style="color: var(--theme-dark);">D</div>
+                    </div>
+                    <div class="text-left ml-1.5">
+                        <div id="bb-btn-title" class="font-bold text-lg tracking-wide leading-tight" style="color: var(--theme-dark);">{t(brickTranslations.startGame)}</div>
+                        <div id="bb-btn-subtitle" class="text-xs mt-1 leading-none opacity-80" style="color: var(--theme-dark);">{t(brickTranslations.pressAD)}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Elements -->
+            <div id="bb-bricks-container" class="absolute top-6 left-4 right-4 flex flex-wrap gap-3 justify-center z-10 pointer-events-none"></div>
+            <div id="bb-ball" class="absolute w-5 h-5 rounded-full z-10 shadow-sm transition-none" style="background-color: var(--theme-dark);"></div>
+            <div id="bb-paddle" class="absolute bottom-6 w-32 h-5 rounded-full z-10 shadow-sm transition-none" style="background-color: var(--theme-dark);"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Hidden SVG icon templates (for game brick rendering) -->
+<div class="hidden" aria-hidden="true">
+    {Object.entries(CUSTOM_SVG_ICONS).map(([key, SvgIcon]) => (
+            <template data-icon-key={key}>
+                <SvgIcon
+                        width={DEFAULT_CUSTOM_ICON_SIZE}
+                        height={DEFAULT_CUSTOM_ICON_SIZE}
+                        fill="currentColor"
+                        stroke="currentColor"
+                />
+            </template>
+    ))}
+</div>
+
+<style>
+    .skill-svg-icon svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+</style>
+
+<script>
+    document.addEventListener('astro:page-load', () => {
+        const container = document.getElementById('bb-container');
+        if (!container) return;
+
+        const sectionId = container.getAttribute('data-section-id');
+        const section = sectionId ? document.getElementById(sectionId) : null;
+
+        const rawSkills = container.getAttribute('data-skills');
+        const SKILLS: any[] = rawSkills ? JSON.parse(rawSkills) : [];
+        const DEFAULT_CUSTOM_ICON_SIZE = Number(container.getAttribute('data-custom-icon-size') || 24);
+
+        const rawThemes = container.getAttribute('data-themes');
+        const THEMES: { light: string; dark: string }[] = rawThemes ? JSON.parse(rawThemes) : [{ light: "#FDCEA4", dark: "#F06E1C" }];
+
+        const i18nStart = container.getAttribute('data-i18n-start') || 'Start Game';
+        const i18nTryAgain = container.getAttribute('data-i18n-try-again') || 'Try Again';
+        const i18nNextLevel = container.getAttribute('data-i18n-next-level') || 'Next Level';
+        const i18nLevel = container.getAttribute('data-i18n-level') || 'Level';
+
+        const isTouchDevice = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+            (window.matchMedia("(pointer: coarse)").matches && window.innerWidth <= 1024);
+
+        const i18nPress = isTouchDevice
+            ? (container.getAttribute('data-i18n-touch') || 'Swipe Screen')
+            : (container.getAttribute('data-i18n-press') || 'Press AD');
+
+        const startScreen = document.getElementById('bb-start-screen');
+        const btnTitle = document.getElementById('bb-btn-title');
+        const btnSubtitle = document.getElementById('bb-btn-subtitle');
+        const keyHintWrapper = document.getElementById('bb-key-hint-wrapper');
+        const levelText = document.getElementById('bb-level-text');
+        const bricksContainer = document.getElementById('bb-bricks-container');
+        const ball = document.getElementById('bb-ball');
+        const paddle = document.getElementById('bb-paddle');
+
+        if (!startScreen || !btnTitle || !btnSubtitle || !levelText || !bricksContainer || !ball || !paddle) return;
+
+        const controller = new AbortController();
+        const { signal } = controller;
+
+        // Mobile hint
+        if (isTouchDevice && keyHintWrapper) {
+            keyHintWrapper.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--theme-dark);"><path d="M5 12h14"/><path d="m8 15-3-3 3-3"/><path d="m16 9 3 3-3 3"/></svg>`;
+            btnSubtitle.innerText = i18nPress;
+        }
+
+        // ========== Seeded PRNG (mulberry32) ==========
+        function mulberry32(a: number) {
+            return function () {
+                a |= 0; a = a + 0x6D2B79F5 | 0;
+                let t = Math.imul(a ^ a >>> 15, 1 | a);
+                t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+                return ((t ^ t >>> 14) >>> 0) / 4294967296;
+            };
+        }
+
+        function seededShuffle(arr: any[], seed: number) {
+            const rng = mulberry32(seed);
+            const shuffled = [...arr];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(rng() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Session seed — 同一会话内同一关卡砖块相同，跨会话产生变化
+        let sessionSeed = parseInt(sessionStorage.getItem('brickSessionSeed') || '0', 10);
+        if (!sessionSeed) {
+            sessionSeed = Math.floor(Math.random() * 100000);
+            sessionStorage.setItem('brickSessionSeed', sessionSeed.toString());
+        }
+
+        // ========== Theme broadcast ==========
+        function broadcastTheme(theme: { light: string; dark: string }) {
+            if (section) {
+                section.setAttribute('data-theme-bg', theme.light);
+                section.setAttribute('data-theme-text', theme.dark);
+                section.style.setProperty('--theme-light', theme.light);
+                section.style.setProperty('--theme-dark', theme.dark);
+            }
+            document.dispatchEvent(new CustomEvent('section-theme-change', {
+                detail: { bg: theme.light, text: theme.dark, source: section || container }
+            }));
+        }
+
+        // ========== Keyboard ==========
+        const keys: Record<string, boolean> = {};
+        let isPlaying = false;
+        let currentLevel = 1;
+
+        window.addEventListener('keydown', (e) => {
+            keys[e.code] = true;
+            if (['KeyA', 'KeyD'].includes(e.code) && !isPlaying && startScreen.style.opacity !== '0') {
+                startGame();
+            }
+        }, { signal });
+        window.addEventListener('keyup', (e) => { keys[e.code] = false; }, { signal });
+
+        // ========== Touch handling (mobile) ==========
+        let touchInsideContainer = false;
+
+        container.addEventListener('touchstart', (e) => {
+            touchInsideContainer = true;
+
+            // 触摸启动游戏
+            if (!isPlaying && startScreen.style.opacity !== '0') {
+                startGame();
+            }
+
+            // 阻止页面滚动
+            if (e.cancelable) e.preventDefault();
+
+            if (isPlaying && e.touches.length > 0) {
+                movePaddleToTouch(e as TouchEvent);
+            }
+        }, { signal, passive: false });
+
+        container.addEventListener('touchmove', (e) => {
+            if (!touchInsideContainer) return;
+            // 始终阻止滚动
+            if (e.cancelable) e.preventDefault();
+            if (isPlaying) movePaddleToTouch(e as TouchEvent);
+        }, { signal, passive: false });
+
+        container.addEventListener('touchend', () => { touchInsideContainer = false; }, { signal });
+        container.addEventListener('touchcancel', () => { touchInsideContainer = false; }, { signal });
+
+        function movePaddleToTouch(e: TouchEvent) {
+            const rect = container.getBoundingClientRect();
+            const clientX = e.touches[0].clientX;
+            const mouseX = clientX - rect.left;
+            paddleX = mouseX - paddleWidth / 2;
+            if (paddleX < 0) paddleX = 0;
+            if (paddleX + paddleWidth > rect.width) paddleX = rect.width - paddleWidth;
+            paddle.style.left = `${paddleX}px`;
+        }
+
+        // ========== Skill brick rendering ==========
+        const getSkillClassJS = (level: string) => {
+            const baseClass = "px-4 py-2 rounded-full font-bold flex items-center gap-2 transition-all duration-300";
+            if (level === "proficient") {
+                return `${baseClass} border-[3px] bg-white/70 border-current shadow-sm`;
+            }
+            return `${baseClass} border-[2px] border-dashed bg-white/20 border-current opacity-80`;
+        };
+
+        const getSvgIconMarkup = (key: string) => {
+            const tpl = document.querySelector(`template[data-icon-key="${key}"]`);
+            return tpl ? tpl.innerHTML.trim() : '';
+        };
+
+        const isValidIcon = (icon: any): boolean => {
+            if (icon.type === 'fa' && icon.value) return true;
+            if (icon.type === 'svg' && icon.key && icon.key !== 'Null') {
+                return !!document.querySelector(`template[data-icon-key="${icon.key}"]`);
+            }
+            return false;
+        };
+
+        const renderSkillIcon = (icon: any) => {
+            if (!isValidIcon(icon)) return '';
+            if (icon.type === 'fa') {
+                return `<i class="${icon.value} text-xl" aria-hidden="true"></i>`;
+            }
+            if (icon.type === 'svg') {
+                const iconSize = icon.size || DEFAULT_CUSTOM_ICON_SIZE;
+                return `<span class="inline-flex items-center justify-center shrink-0 skill-svg-icon" aria-hidden="true" style="width: ${iconSize}px; height: ${iconSize}px;">${getSvgIconMarkup(icon.key)}</span>`;
+            }
+            return '';
+        };
+
+        // ========== Game state ==========
+        currentLevel = parseInt(sessionStorage.getItem('brickLevel') || localStorage.getItem('brickLevel') || '1', 10);
+        let hasActivatedThisSession = false;
+        let animationId: number;
+
+        let containerRect = container.getBoundingClientRect();
+        const ballRadius = 10;
+        let ballX = 0, ballY = 0, ballDX = 0, ballDY = 0;
+
+        const paddleWidth = 128;
+        const paddleHeight = 20;
+        let paddleX = 0;
+        const PADDLE_BOTTOM = 24;
+
+        let brickData: any[] = [];
+
+        // ========== Load level (seeded) ==========
+        function loadLevel(level: number) {
+            currentLevel = level;
+            levelText.innerText = level.toString();
+
+            const theme = THEMES[(level - 1) % THEMES.length];
+            broadcastTheme(theme);
+
+            bricksContainer.innerHTML = '';
+            brickData = [];
+
+            const brickCount = Math.min(4 + (level - 1) * 2, 16);
+            const levelSeed = sessionSeed * 100 + level;
+            const shuffledSkills = seededShuffle(SKILLS, levelSeed);
+
+            for (let i = 0; i < brickCount; i++) {
+                const skill = shuffledSkills[i % shuffledSkills.length];
+                const brickEl = document.createElement('div');
+                brickEl.className = getSkillClassJS(skill.level);
+                brickEl.innerHTML = `${renderSkillIcon(skill.icon)}<span>${skill.name}</span>`;
+                bricksContainer.appendChild(brickEl);
+            }
+
+            setTimeout(() => {
+                const parentRect = container.getBoundingClientRect();
+                const domBricks = bricksContainer.children;
+                for (let i = 0; i < domBricks.length; i++) {
+                    const el = domBricks[i] as HTMLElement;
+                    const rect = el.getBoundingClientRect();
+                    brickData.push({
+                        el,
+                        x: rect.left - parentRect.left,
+                        y: rect.top - parentRect.top,
+                        w: rect.width,
+                        h: rect.height,
+                        active: true,
+                    });
+                }
+            }, 150);
+
+            resetPositions();
+        }
+
+        function resetPositions() {
+            containerRect = container.getBoundingClientRect();
+            paddleX = containerRect.width / 2 - paddleWidth / 2;
+            ballX = containerRect.width / 2;
+            ballY = containerRect.height - PADDLE_BOTTOM - paddleHeight - ballRadius - 2;
+            ball.style.left = `${ballX - ballRadius}px`;
+            ball.style.top = `${ballY - ballRadius}px`;
+            paddle.style.left = `${paddleX}px`;
+        }
+
+        // ========== Start game ==========
+        function startGame() {
+            startScreen.style.opacity = '0';
+            startScreen.style.pointerEvents = 'none';
+            isPlaying = true;
+
+            if (!hasActivatedThisSession) {
+                hasActivatedThisSession = true;
+                localStorage.setItem('brickHasStarted', 'true');
+                sessionStorage.setItem('brickHasStarted', 'true');
+                document.dispatchEvent(new CustomEvent('brick-level-update', { detail: { level: currentLevel } }));
+            }
+
+            const speed = Math.min(4 + currentLevel * 0.5, 12);
+            const angle = (Math.random() * Math.PI / 3) - (Math.PI / 6);
+            ballDX = speed * Math.sin(angle);
+            ballDY = -speed * Math.cos(angle);
+
+            cancelAnimationFrame(animationId);
+            gameLoop();
+        }
+
+        // ========== Game loop ==========
+        function gameLoop() {
+            if (!isPlaying) return;
+
+            const currentPaddleSpeed = 10;
+            if (keys['KeyA']) paddleX -= currentPaddleSpeed;
+            if (keys['KeyD']) paddleX += currentPaddleSpeed;
+            if (paddleX < 0) paddleX = 0;
+            containerRect = container.getBoundingClientRect();
+            if (paddleX + paddleWidth > containerRect.width) paddleX = containerRect.width - paddleWidth;
+            paddle.style.left = `${paddleX}px`;
+
+            ballX += ballDX;
+            ballY += ballDY;
+
+            const w = containerRect.width;
+            const h = containerRect.height;
+
+            if (ballX - ballRadius < 0) { ballX = ballRadius; ballDX *= -1; }
+            if (ballX + ballRadius > w) { ballX = w - ballRadius; ballDX *= -1; }
+            if (ballY - ballRadius < 0) { ballY = ballRadius; ballDY *= -1; }
+
+            // 失败：重新加载同一关（seeded shuffle 保证砖块不变）
+            if (ballY + ballRadius > h) {
+                isPlaying = false;
+                startScreen.style.opacity = '1';
+                startScreen.style.pointerEvents = 'auto';
+                btnTitle.innerText = i18nTryAgain;
+                btnSubtitle.innerText = i18nPress;
+                loadLevel(currentLevel);
+                return;
+            }
+
+            const paddleY = h - PADDLE_BOTTOM - paddleHeight;
+            if (
+                ballDY > 0 &&
+                ballY + ballRadius > paddleY &&
+                ballY - ballRadius < paddleY + paddleHeight &&
+                ballX + ballRadius > paddleX &&
+                ballX - ballRadius < paddleX + paddleWidth
+            ) {
+                ballDY *= -1;
+                ballY = paddleY - ballRadius;
+                const hitPoint = (ballX - (paddleX + paddleWidth / 2)) / (paddleWidth / 2);
+                ballDX = hitPoint * 6;
+            }
+
+            for (let i = 0; i < brickData.length; i++) {
+                const b = brickData[i];
+                if (!b.active) continue;
+                if (
+                    ballX + ballRadius > b.x && ballX - ballRadius < b.x + b.w &&
+                    ballY + ballRadius > b.y && ballY - ballRadius < b.y + b.h
+                ) {
+                    b.active = false;
+                    b.el.style.opacity = '0';
+                    b.el.style.transform = 'scale(0.8)';
+                    ballDY *= -1;
+                    checkWin();
+                    break;
+                }
+            }
+
+            ball.style.left = `${ballX - ballRadius}px`;
+            ball.style.top = `${ballY - ballRadius}px`;
+            animationId = requestAnimationFrame(gameLoop);
+        }
+
+        function checkWin() {
+            if (brickData.every((b: any) => !b.active)) {
+                isPlaying = false;
+                startScreen.style.opacity = '1';
+                startScreen.style.pointerEvents = 'auto';
+
+                currentLevel++;
+                localStorage.setItem('brickLevel', currentLevel.toString());
+                sessionStorage.setItem('brickLevel', currentLevel.toString());
+
+                document.dispatchEvent(new CustomEvent('brick-level-update', { detail: { level: currentLevel } }));
+
+                loadLevel(currentLevel);
+                btnTitle.innerText = i18nNextLevel;
+                btnSubtitle.innerText = i18nPress;
+            }
+        }
+
+        // ========== Init ==========
+        loadLevel(currentLevel);
+
+        window.addEventListener('resize', () => {
+            if (!isPlaying) loadLevel(currentLevel || 1);
+        }, { signal });
+
+        document.addEventListener('astro:before-swap', () => {
+            cancelAnimationFrame(animationId);
+            controller.abort();
+        }, { once: true });
+    });
+</script>

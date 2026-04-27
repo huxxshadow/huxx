@@ -8,10 +8,10 @@ import { indexTranslations } from "@/i18n/index_i18";
 const locale = Astro.currentLocale as Lang;
 const t = useTranslations(locale);
 
-import PongGame from "@/components/PongGame.astro";
-import ExperienceSection from "@/components/ExperienceSection.astro";
-import GameStickerSection from "@/components/GameStickerSection.astro";
-import BrickGame from "@/components/BrickGame.astro";
+import PongGame from "@/components/index/PongGame.astro";
+import ExperienceSection from "@/components/index/ExperienceSection.astro";
+import GameStickerSection from "@/components/index/GameStickerSection.astro";
+import BrickGame from "@/components/index/BrickGame.astro";
 
 export const getStaticPaths = () =>
     Object.keys(LOCALES).map((lang) => ({

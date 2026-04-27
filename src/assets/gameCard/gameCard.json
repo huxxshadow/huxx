@@ -1,0 +1,2396 @@
+[
+  {
+    "id": "minecraft",
+    "order": 1,
+    "title": {
+      "en": "Minecraft",
+      "zh": "我的世界",
+      "ja": "マインクラフト",
+      "ko": "마인크래프트"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Minecraft.webp",
+    "favorite": true
+  },
+  {
+    "id": "redalert2",
+    "order": 2,
+    "title": {
+      "en": "Command & Conquer: Red Alert 2",
+      "zh": "红色警戒2",
+      "ja": "コマンド＆コンカー：レッドアラート2",
+      "ko": "커맨드 앤 컨커: 레드 얼럿 2"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./RedAlert2.webp",
+    "favorite": false
+  },
+  {
+    "id": "dynasty-warriors-6",
+    "order": 3,
+    "title": {
+      "en": "Dynasty Warriors 6",
+      "zh": "真·三国无双5",
+      "ja": "真・三國無双5",
+      "ko": "진·삼국무쌍 5"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Dynasty Warriors 6.webp",
+    "favorite": false
+  },
+  {
+    "id": "warcraft-3the-frozen-throne",
+    "order": 4,
+    "title": {
+      "en": "Warcraft III: The Frozen Throne",
+      "zh": "魔兽争霸III：冰封王座",
+      "ja": "ウォークラフトIII: フローズン・スローン",
+      "ko": "워크래프트 3: 프로즌 쓰론"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Warcraft 3The Frozen Throne.webp",
+    "favorite": false
+  },
+  {
+    "id": "counter-strike",
+    "order": 5,
+    "title": {
+      "en": "Counter-Strike",
+      "zh": "反恐精英",
+      "ja": "カウンターストライク",
+      "ko": "카운터 스트라이크"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Counter-Strike.webp",
+    "favorite": false
+  },
+  {
+    "id": "machinarium",
+    "order": 6,
+    "title": {
+      "en": "Machinarium",
+      "zh": "机械迷城",
+      "ja": "マシナリウム",
+      "ko": "머시나리움"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Machinarium.webp",
+    "favorite": false
+  },
+  {
+    "id": "the-elder-scrolls-vskyrim",
+    "order": 7,
+    "title": {
+      "en": "The Elder Scrolls V: Skyrim",
+      "zh": "上古卷轴V：天际",
+      "ja": "The Elder Scrolls V: Skyrim",
+      "ko": "엘더 스크롤 5: 스카이림"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./The Elder Scrolls VSkyrim.webp",
+    "favorite": false
+  },
+  {
+    "id": "league-of-legends",
+    "order": 8,
+    "title": {
+      "en": "League of Legends",
+      "zh": "英雄联盟",
+      "ja": "リーグ・オブ・レジェンド",
+      "ko": "리그 오브 레전드"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./legend of league.webp",
+    "favorite": false
+  },
+  {
+    "id": "war-trigger-2",
+    "order": 9,
+    "title": {
+      "en": "War Trigger 2",
+      "zh": "战争扳机2",
+      "ja": "War Trigger 2",
+      "ko": "워 트리거 2"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./War trigger 2.webp",
+    "favorite": false
+  },
+  {
+    "id": "evoland",
+    "order": 10,
+    "title": {
+      "en": "Evoland",
+      "zh": "进化之地",
+      "ja": "エボランド",
+      "ko": "에볼랜드"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./evoland.webp",
+    "favorite": false
+  },
+  {
+    "id": "maplestory",
+    "order": 11,
+    "title": {
+      "en": "MapleStory",
+      "zh": "冒险岛",
+      "ja": "メイプルストーリー",
+      "ko": "메이플스토리"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./MapleStory.webp",
+    "favorite": false
+  },
+  {
+    "id": "intrusion-2",
+    "order": 12,
+    "title": {
+      "en": "Intrusion 2",
+      "zh": "入侵2",
+      "ja": "Intrusion 2",
+      "ko": "인트루전 2"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Intrusion 2.webp",
+    "favorite": false
+  },
+  {
+    "id": "super-mario-bros",
+    "order": 13,
+    "title": {
+      "en": "Super Mario Bros.",
+      "zh": "超级马力欧兄弟",
+      "ja": "スーパーマリオブラザーズ",
+      "ko": "슈퍼 마리오 브라더스"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./super mario bros.webp",
+    "favorite": false
+  },
+  {
+    "id": "kirby-the-amazing-mirror",
+    "order": 14,
+    "title": {
+      "en": "Kirby & The Amazing Mirror",
+      "zh": "星之卡比：镜之大迷宫",
+      "ja": "星のカービィ 鏡の大迷宮",
+      "ko": "별의 커비 거울의 대미궁"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Kirby & The Amazing Mirror.webp",
+    "favorite": false
+  },
+  {
+    "id": "metal-slug",
+    "order": 15,
+    "title": {
+      "en": "Metal Slug",
+      "zh": "合金弹头",
+      "ja": "メタルスラッグ",
+      "ko": "메탈슬러그"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Metal Slug.webp",
+    "favorite": false
+  },
+  {
+    "id": "grand-theft-auto-iii",
+    "order": 16,
+    "title": {
+      "en": "Grand Theft Auto III",
+      "zh": "侠盗猎车手3",
+      "ja": "グランド・セフト・オートIII",
+      "ko": "그랜드 테프트 오토 III"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Grand Theft Auto III.webp",
+    "favorite": false
+  },
+  {
+    "id": "overwatch",
+    "order": 17,
+    "title": {
+      "en": "Overwatch",
+      "zh": "守望先锋",
+      "ja": "オーバーウォッチ",
+      "ko": "오버워치"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./overwatch.webp",
+    "favorite": false
+  },
+  {
+    "id": "hearthstone",
+    "order": 18,
+    "title": {
+      "en": "Hearthstone",
+      "zh": "炉石传说",
+      "ja": "ハースストーン",
+      "ko": "하스스톤"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Hearthstone.webp",
+    "favorite": false
+  },
+  {
+    "id": "warframe",
+    "order": 19,
+    "title": {
+      "en": "Warframe",
+      "zh": "星际战甲",
+      "ja": "ウォーフレーム",
+      "ko": "워프레임"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./warframe.webp",
+    "favorite": false
+  },
+  {
+    "id": "grand-theft-auto-v",
+    "order": 20,
+    "title": {
+      "en": "Grand Theft Auto V",
+      "zh": "侠盗猎车手V",
+      "ja": "グランド・セフト・オートV",
+      "ko": "그랜드 테프트 오토 V"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Grand Theft Auto V.webp",
+    "favorite": false
+  },
+  {
+    "id": "terraria",
+    "order": 21,
+    "title": {
+      "en": "Terraria",
+      "zh": "泰拉瑞亚",
+      "ja": "テラリア",
+      "ko": "테라리아"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Terraria.webp",
+    "favorite": true
+  },
+  {
+    "id": "sid-meiers-civilization-vi",
+    "order": 22,
+    "title": {
+      "en": "Sid Meier's Civilization VI",
+      "zh": "文明VI",
+      "ja": "シドマイヤーズ シヴィライゼーション VI",
+      "ko": "문명 VI"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Sid Meier's Civilization VI.webp",
+    "favorite": false
+  },
+  {
+    "id": "dynasty-warriors-8",
+    "order": 23,
+    "title": {
+      "en": "Dynasty Warriors 8",
+      "zh": "真·三国无双7",
+      "ja": "真・三國無双7",
+      "ko": "진·삼국무쌍 7"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./DYNASTY WARRIORS 8.webp",
+    "favorite": false
+  },
+  {
+    "id": "arksurvival-evolved",
+    "order": 24,
+    "title": {
+      "en": "ARK: Survival Evolved",
+      "zh": "方舟：生存进化",
+      "ja": "アーク：サバイバル エボルブド",
+      "ko": "아크: 서바이벌 이볼브드"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./ARKSurvival Evolved.webp",
+    "favorite": false
+  },
+  {
+    "id": "the-witcher-3-wild-hunt",
+    "order": 25,
+    "title": {
+      "en": "The Witcher 3: Wild Hunt",
+      "zh": "巫师3：狂猎",
+      "ja": "ウィッチャー3 ワイルドハント",
+      "ko": "위쳐 3: 와일드 헌트"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./The Witcher 3 Wild Hunt.webp",
+    "favorite": false
+  },
+  {
+    "id": "fantasy-of-expedition",
+    "order": 26,
+    "title": {
+      "en": "Fantasy of Expedition",
+      "zh": "奇幻东征",
+      "ja": "Fantasy of Expedition",
+      "ko": "판타지 오브 엑스페디션"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Fantasy of Expedition.webp",
+    "favorite": false
+  },
+  {
+    "id": "sands-of-salzaar",
+    "order": 27,
+    "title": {
+      "en": "Sands of Salzaar",
+      "zh": "部落与弯刀",
+      "ja": "Sands of Salzaar",
+      "ko": "샌즈 오브 살자르"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./sands of salzaar.webp",
+    "favorite": false
+  },
+  {
+    "id": "no-man's-sky",
+    "order": 28,
+    "title": {
+      "en": "No Man's Sky",
+      "zh": "无人深空",
+      "ja": "ノーマンズスカイ",
+      "ko": "노 맨즈 스카이"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./No Man's Sky.webp",
+    "favorite": false
+  },
+  {
+    "id": "shadow-tactics-blades-of-the-shogun",
+    "order": 29,
+    "title": {
+      "en": "Shadow Tactics: Blades of the Shogun",
+      "zh": "影子战术：将军之刃",
+      "ja": "Shadow Tactics: Blades of the Shogun",
+      "ko": "섀도우 택틱스: 블레이드 오브 더 쇼군"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Shadow TacticsBlades of the Shogun.webp",
+    "favorite": true
+  },
+  {
+    "id": "for-the-king",
+    "order": 30,
+    "title": {
+      "en": "For The King",
+      "zh": "为了国王",
+      "ja": "フォー・ザ・キング",
+      "ko": "포 더 킹"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./For the king.webp",
+    "favorite": false
+  },
+  {
+    "id": "middle-earth-shadow-of-war",
+    "order": 31,
+    "title": {
+      "en": "Middle-earth: Shadow of War",
+      "zh": "中土世界：战争之影",
+      "ja": "シャドウ・オブ・ウォー",
+      "ko": "섀도우 오브 워"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Middle-earth Shadow of War.webp",
+    "favorite": false
+  },
+  {
+    "id": "divinity-original-sin-2",
+    "order": 32,
+    "title": {
+      "en": "Divinity: Original Sin 2",
+      "zh": "神界：原罪2",
+      "ja": "ディヴィニティ：オリジナル・シン 2",
+      "ko": "디비니티: 오리지널 신 2"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Divinity Original Sin 2.webp",
+    "favorite": true
+  },
+  {
+    "id": "bloons-td-6",
+    "order": 33,
+    "title": {
+      "en": "Bloons TD 6",
+      "zh": "气球塔防6",
+      "ja": "Bloons TD 6",
+      "ko": "블루스 TD 6"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Bloons TD 6.webp",
+    "favorite": false
+  },
+  {
+    "id": "rise-of-the-tomb-raider",
+    "order": 34,
+    "title": {
+      "en": "Rise of the Tomb Raider",
+      "zh": "古墓丽影：崛起",
+      "ja": "ライズ オブ ザ トゥームレイダー",
+      "ko": "라이즈 오브 더 툼 레이더"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Rise of the Tomb Raider.webp",
+    "favorite": false
+  },
+  {
+    "id": "bioshock-infinite",
+    "order": 35,
+    "title": {
+      "en": "BioShock Infinite",
+      "zh": "生化奇兵：无限",
+      "ja": "バイオショック インフィニット",
+      "ko": "바이오쇼크 인피니트"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./BioShock Infinite.webp",
+    "favorite": true
+  },
+  {
+    "id": "xcom-2",
+    "order": 36,
+    "title": {
+      "en": "XCOM 2",
+      "zh": "XCOM 2",
+      "ja": "エックスコム2",
+      "ko": "엑스컴 2"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./XCOM 2.webp",
+    "favorite": false
+  },
+  {
+    "id": "detroitbecome-human",
+    "order": 37,
+    "title": {
+      "en": "Detroit: Become Human",
+      "zh": "底特律：化身为人",
+      "ja": "デトロイト ビカム ヒューマン",
+      "ko": "디트로이트: 비컴 휴먼"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./DetroitBecome Human.webp",
+    "favorite": true
+  },
+  {
+    "id": "total-warwarhammer-ii",
+    "order": 38,
+    "title": {
+      "en": "Total War: WARHAMMER II",
+      "zh": "全面战争：战锤2",
+      "ja": "トータルウォー：ウォーハンマー2",
+      "ko": "토탈 워: 워해머 2"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Total WarWarhammer II.webp",
+    "favorite": false
+  },
+  {
+    "id": "hades",
+    "order": 39,
+    "title": {
+      "en": "Hades",
+      "zh": "哈迪斯",
+      "ja": "ハデス",
+      "ko": "하데스"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Hades.webp",
+    "favorite": false
+  },
+  {
+    "id": "final-fantasy-xv",
+    "order": 40,
+    "title": {
+      "en": "Final Fantasy XV",
+      "zh": "最终幻想15",
+      "ja": "ファイナルファンタジーXV",
+      "ko": "파이널 판타지 15"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Final Fantasy XV.webp",
+    "favorite": false
+  },
+  {
+    "id": "dark-souls-iii",
+    "order": 41,
+    "title": {
+      "en": "Dark Souls III",
+      "zh": "黑暗之魂3",
+      "ja": "ダークソウルIII",
+      "ko": "다크 소울 3"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Dark Souls III.webp",
+    "favorite": false
+  },
+  {
+    "id": "need-for-speed-heat",
+    "order": 42,
+    "title": {
+      "en": "Need for Speed Heat",
+      "zh": "极品飞车：热度",
+      "ja": "ニード・フォー・スピード ヒート",
+      "ko": "니드 포 스피드 히트"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Need for Speed Heat.webp",
+    "favorite": false
+  },
+  {
+    "id": "desperados-iii",
+    "order": 43,
+    "title": {
+      "en": "Desperados III",
+      "zh": "赏金奇兵3",
+      "ja": "デスペラードスIII",
+      "ko": "데스페라도스 3"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Desperados III.webp",
+    "favorite": false
+  },
+  {
+    "id": "titanfall-2",
+    "order": 44,
+    "title": {
+      "en": "Titanfall 2",
+      "zh": "泰坦陨落2",
+      "ja": "タイタンフォール2",
+      "ko": "타이탄폴 2"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Titanfall 2.webp",
+    "favorite": false
+  },
+  {
+    "id": "lost-castle",
+    "order": 45,
+    "title": {
+      "en": "Lost Castle",
+      "zh": "失落城堡",
+      "ja": "ロストキャッスル",
+      "ko": "로스트 캐슬"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Lost Castle.webp",
+    "favorite": false
+  },
+  {
+    "id": "the-binding-of-isaacrebirth",
+    "order": 46,
+    "title": {
+      "en": "The Binding of Isaac: Rebirth",
+      "zh": "以撒的结合：重生",
+      "ja": "アイザックの伝説：リバース",
+      "ko": "아이작의 번제: 리버스"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./The Binding of IsaacRebirth.webp",
+    "favorite": false
+  },
+  {
+    "id": "journey",
+    "order": 47,
+    "title": {
+      "en": "Journey",
+      "zh": "风之旅人",
+      "ja": "風ノ旅ビト",
+      "ko": "저니"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Journey.webp",
+    "favorite": false
+  },
+  {
+    "id": "forza-horizon-5",
+    "order": 48,
+    "title": {
+      "en": "Forza Horizon 5",
+      "zh": "极限竞速：地平线5",
+      "ja": "Forza Horizon 5",
+      "ko": "포르자 호라이즌 5"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Forza Horizon 5.webp",
+    "favorite": false
+  },
+  {
+    "id": "nier-automata",
+    "order": 49,
+    "title": {
+      "en": "NieR: Automata",
+      "zh": "尼尔：机械纪元",
+      "ja": "ニーア オートマタ",
+      "ko": "니어 오토마타"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./NieR Automata.webp",
+    "favorite": true
+  },
+  {
+    "id": "slay-the-spire",
+    "order": 50,
+    "title": {
+      "en": "Slay the Spire",
+      "zh": "杀戮尖塔",
+      "ja": "スレイ・ザ・スパイア",
+      "ko": "슬레이 더 스파이어"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Slay the Spire.webp",
+    "favorite": false
+  },
+  {
+    "id": "elden-ring",
+    "order": 51,
+    "title": {
+      "en": "Elden Ring",
+      "zh": "艾尔登法环",
+      "ja": "エルデンリング",
+      "ko": "엘든 링"
+    },
+    "comment": {
+      "en": "Unparalleled open world",
+      "zh": "无与伦比的开放世界",
+      "ja": "比類なきオープンワールド",
+      "ko": "비교할 수 없는 오픈 월드"
+    },
+    "image": "./Elden Ring.webp",
+    "favorite": false
+  },
+  {
+    "id": "final-fantasy-vii",
+    "order": 52,
+    "title": {
+      "en": "Final Fantasy VII",
+      "zh": "最终幻想7",
+      "ja": "ファイナルファンタジーVII",
+      "ko": "파이널 판타지 7"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Final Fantasy VII.webp",
+    "favorite": false
+  },
+  {
+    "id": "ghostrunner",
+    "order": 53,
+    "title": {
+      "en": "Ghostrunner",
+      "zh": "幽灵行者",
+      "ja": "ゴーストランナー",
+      "ko": "고스트러너"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Ghostrunner.webp",
+    "favorite": false
+  },
+  {
+    "id": "frostpunk",
+    "order": 54,
+    "title": {
+      "en": "Frostpunk",
+      "zh": "冰汽时代",
+      "ja": "フロストパンク",
+      "ko": "프로스트펑크"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Frostpunk.webp",
+    "favorite": false
+  },
+  {
+    "id": "cyberpunk-2077",
+    "order": 55,
+    "title": {
+      "en": "Cyberpunk 2077",
+      "zh": "赛博朋克2077",
+      "ja": "サイバーパンク2077",
+      "ko": "사이버펑크 2077"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Cyberpunk 2077.webp",
+    "favorite": false
+  },
+  {
+    "id": "melvor-idle",
+    "order": 56,
+    "title": {
+      "en": "Melvor Idle",
+      "zh": "梅尔沃放置",
+      "ja": "メルボア・アイドル",
+      "ko": "멜보어 아이들"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Melvor Idle.webp",
+    "favorite": false
+  },
+  {
+    "id": "mortal-kombat-11",
+    "order": 57,
+    "title": {
+      "en": "Mortal Kombat 11",
+      "zh": "真人快打11",
+      "ja": "モータルコンバット11",
+      "ko": "모탈 컴뱃 11"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Mortal Kombat 11.webp",
+    "favorite": false
+  },
+  {
+    "id": "pathfinderwrath-of-the-righteous",
+    "order": 58,
+    "title": {
+      "en": "Pathfinder: Wrath of the Righteous",
+      "zh": "开拓者：正义之怒",
+      "ja": "パスファインダー：正義の怒り",
+      "ko": "패스파인더: 의인의 분노"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./PathfinderWrath of the Righteous.webp",
+    "favorite": true
+  },
+  {
+    "id": "persona-5-royal",
+    "order": 59,
+    "title": {
+      "en": "Persona 5 Royal",
+      "zh": "女神异闻录5 皇家版",
+      "ja": "ペルソナ5 ザ・ロイヤル",
+      "ko": "페르소나 5 더 로열"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Persona 5 Royal.webp",
+    "favorite": false
+  },
+  {
+    "id": "tsuki-ni-yorisou-otome-no-sahou",
+    "order": 60,
+    "title": {
+      "en": "Tsuki ni Yorisou Otome no Sahou",
+      "zh": "近月少女的礼仪",
+      "ja": "月に寄りそう乙女の作法",
+      "ko": "달에 다가가는 소녀의 작법"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Tsuki ni Yorisou Otome no Sahou.webp",
+    "favorite": false
+  },
+  {
+    "id": "mirrors-edge-catalyst",
+    "order": 61,
+    "title": {
+      "en": "Mirror's Edge Catalyst",
+      "zh": "镜之边缘：催化剂",
+      "ja": "ミラーズエッジ カタリスト",
+      "ko": "미러즈 엣지 카탈리스트"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Mirror's Edge Catalyst.webp",
+    "favorite": true
+  },
+  {
+    "id": "control",
+    "order": 62,
+    "title": {
+      "en": "Control",
+      "zh": "控制",
+      "ja": "コントロール",
+      "ko": "컨트롤"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Control.webp",
+    "favorite": false
+  },
+  {
+    "id": "octopath-traveler",
+    "order": 63,
+    "title": {
+      "en": "Octopath Traveler",
+      "zh": "八方旅人",
+      "ja": "オクトパストラベラー",
+      "ko": "옥토패스 트래블러"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Octopath Traveler.webp",
+    "favorite": false
+  },
+  {
+    "id": "a-plague-tale-innocence",
+    "order": 64,
+    "title": {
+      "en": "A Plague Tale: Innocence",
+      "zh": "瘟疫传说：无罪",
+      "ja": "プレイグ テイル -イノセンス-",
+      "ko": "플래그 테일: 이노센스"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./A Plague Tale Innocence.webp",
+    "favorite": true
+  },
+  {
+    "id": "astlibra",
+    "order": 65,
+    "title": {
+      "en": "ASTLIBRA Revision",
+      "zh": "神之天平",
+      "ja": "アストリブラ",
+      "ko": "아스트리브라"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./ASTLIBRA.webp",
+    "favorite": false
+  },
+  {
+    "id": "a-plague-tale-requiem",
+    "order": 66,
+    "title": {
+      "en": "A Plague Tale: Requiem",
+      "zh": "瘟疫传说：安魂曲",
+      "ja": "プレイグ テイル -レクイエム-",
+      "ko": "플래그 테일: 레퀴엠"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./A Plague Tale Requiem.webp",
+    "favorite": false
+  },
+  {
+    "id": "death-stranding",
+    "order": 67,
+    "title": {
+      "en": "Death Stranding",
+      "zh": "死亡搁浅",
+      "ja": "デス・ストランディング",
+      "ko": "데스 스트랜딩"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Death Stranding.webp",
+    "favorite": true
+  },
+  {
+    "id": "devil-may-cry-5",
+    "order": 68,
+    "title": {
+      "en": "Devil May Cry 5",
+      "zh": "鬼泣5",
+      "ja": "デビル メイ クライ 5",
+      "ko": "데빌 메이 크라이 5"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Devil May Cry 5.webp",
+    "favorite": false
+  },
+  {
+    "id": "guilty-gear-strive",
+    "order": 69,
+    "title": {
+      "en": "Guilty Gear -Strive-",
+      "zh": "罪恶装备：奋战",
+      "ja": "ギルティギア ストライヴ",
+      "ko": "길티기어 스트라이브"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Guilty Gear Strive.webp",
+    "favorite": false
+  },
+  {
+    "id": "total-war-warhammer-iii",
+    "order": 70,
+    "title": {
+      "en": "Total War: WARHAMMER III",
+      "zh": "全面战争：战锤3",
+      "ja": "トータルウォー：ウォーハンマー3",
+      "ko": "토탈 워: 워해머 3"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Total War Warhammer III.webp",
+    "favorite": true
+  },
+  {
+    "id": "horizon-zero-dawn",
+    "order": 71,
+    "title": {
+      "en": "Horizon Zero Dawn",
+      "zh": "地平线：零之曙光",
+      "ja": "ホライゾン ゼロ ドーン",
+      "ko": "호라이즌 제로 던"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Horizon Zero Dawn.webp",
+    "favorite": false
+  },
+  {
+    "id": "nier-replicant-ver122474487139",
+    "order": 72,
+    "title": {
+      "en": "NieR Replicant ver.1.22474487139...",
+      "zh": "尼尔：人工生命 ver.1.22...",
+      "ja": "ニーア レプリカント ver.1.22...",
+      "ko": "니어 레플리칸트 ver.1.22..."
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./NieR Replicant ver.1.22474487139....webp",
+    "favorite": true
+  },
+  {
+    "id": "darkest-dungeon",
+    "order": 73,
+    "title": {
+      "en": "Darkest Dungeon",
+      "zh": "暗黑地牢",
+      "ja": "ダーケストダンジョン",
+      "ko": "다키스트 던전"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Darkest Dungeon.webp",
+    "favorite": false
+  },
+  {
+    "id": "hollow-knight",
+    "order": 74,
+    "title": {
+      "en": "Hollow Knight",
+      "zh": "空洞骑士",
+      "ja": "ホロウナイト",
+      "ko": "할로우 나이트"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Hollow Knight.webp",
+    "favorite": true
+  },
+  {
+    "id": "god-of-war",
+    "order": 75,
+    "title": {
+      "en": "God of War",
+      "zh": "战神",
+      "ja": "ゴッド・オブ・ウォー",
+      "ko": "갓 오브 워"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./God of War.webp",
+    "favorite": false
+  },
+  {
+    "id": "red-dead-redemption-ii",
+    "order": 76,
+    "title": {
+      "en": "Red Dead Redemption 2",
+      "zh": "荒野大镖客2",
+      "ja": "レッド・デッド・リデンプション2",
+      "ko": "레드 데드 리뎀션 2"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Red Dead Redemption II.webp",
+    "favorite": true
+  },
+  {
+    "id": "anno-1800",
+    "order": 77,
+    "title": {
+      "en": "Anno 1800",
+      "zh": "纪元1800",
+      "ja": "アノ1800",
+      "ko": "아노 1800"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Anno 1800.webp",
+    "favorite": false
+  },
+  {
+    "id": "rimworld",
+    "order": 78,
+    "title": {
+      "en": "RimWorld",
+      "zh": "环世界",
+      "ja": "リムワールド",
+      "ko": "림월드"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./RimWorld.webp",
+    "favorite": true
+  },
+  {
+    "id": "stellaris",
+    "order": 79,
+    "title": {
+      "en": "Stellaris",
+      "zh": "群星",
+      "ja": "ステラリス",
+      "ko": "스테라리스"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Stellaris.webp",
+    "favorite": false
+  },
+  {
+    "id": "tasty-planet",
+    "order": 80,
+    "title": {
+      "en": "Tasty Planet",
+      "zh": "美味星球",
+      "ja": "Tasty Planet",
+      "ko": "맛있는 행성"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Tasty Planet.webp",
+    "favorite": false
+  },
+  {
+    "id": "life-is-strange",
+    "order": 81,
+    "title": {
+      "en": "Life Is Strange",
+      "zh": "奇异人生",
+      "ja": "ライフ イズ ストレンジ",
+      "ko": "라이프 이즈 스트레인지"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Life Is Strange.webp",
+    "favorite": false
+  },
+  {
+    "id": "otome-riron-to-sono-shuuhen--ecole-de-paris-",
+    "order": 82,
+    "title": {
+      "en": "Otome Riron to Sono Shuuhen -École de Paris-",
+      "zh": "少女理论及其周边 -École de Paris-",
+      "ja": "乙女理論とその周辺 -École de Paris-",
+      "ko": "을녀이론과 그 주변 -École de Paris-"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Otome Riron to Sono Shuuhen -École de Paris-.webp",
+    "favorite": false
+  },
+  {
+    "id": "thronefall",
+    "order": 83,
+    "title": {
+      "en": "Thronefall",
+      "zh": "王权陨落",
+      "ja": "Thronefall",
+      "ko": "쓰론폴"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Thronefall.webp",
+    "favorite": false
+  },
+  {
+    "id": "otome-domain",
+    "order": 84,
+    "title": {
+      "en": "Otome Domain",
+      "zh": "少女领域",
+      "ja": "乙女ドメイン",
+      "ko": "오토메 도메인"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Otome Domain.webp",
+    "favorite": false
+  },
+  {
+    "id": "donut-county",
+    "order": 85,
+    "title": {
+      "en": "Donut County",
+      "zh": "甜甜圈都市",
+      "ja": "ドーナツ カウンティ",
+      "ko": "도넛 카운티"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Donut County.webp",
+    "favorite": false
+  },
+  {
+    "id": "baldurs-gate-3",
+    "order": 86,
+    "title": {
+      "en": "Baldur's Gate 3",
+      "zh": "博德之门3",
+      "ja": "バルダーズ・ゲート3",
+      "ko": "발더스 게이트 3"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Baldur's Gate III.webp",
+    "favorite": true
+  },
+  {
+    "id": "ultimate-chicken-horse",
+    "order": 87,
+    "title": {
+      "en": "Ultimate Chicken Horse",
+      "zh": "超级鸡马",
+      "ja": "アルティメット・チキン・ホース",
+      "ko": "얼티밋 치킨 호스"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Ultimate Chicken Horse.webp",
+    "favorite": false
+  },
+  {
+    "id": "witch-on-the-holy-night",
+    "order": 88,
+    "title": {
+      "en": "Witch on the Holy Night",
+      "zh": "魔法使之夜",
+      "ja": "魔法使いの夜",
+      "ko": "마법사의 밤"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Witch on the Holy Night.webp",
+    "favorite": true
+  },
+  {
+    "id": "brotato",
+    "order": 89,
+    "title": {
+      "en": "Brotato",
+      "zh": "土豆兄弟",
+      "ja": "ブロテイト",
+      "ko": "브로테이토"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Brotato.webp",
+    "favorite": false
+  },
+  {
+    "id": "the-silent-age",
+    "order": 90,
+    "title": {
+      "en": "The Silent Age",
+      "zh": "沉默年代",
+      "ja": "サイレント・エイジ",
+      "ko": "더 사일런트 에이지"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./The Silent Age.webp",
+    "favorite": false
+  },
+  {
+    "id": "palworld",
+    "order": 91,
+    "title": {
+      "en": "Palworld",
+      "zh": "幻兽帕鲁",
+      "ja": "パルワールド",
+      "ko": "팰월드"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Palworld.webp",
+    "favorite": false
+  },
+  {
+    "id": "crusader-kings-iii",
+    "order": 92,
+    "title": {
+      "en": "Crusader Kings III",
+      "zh": "十字军之王3",
+      "ja": "クルセイダーキングスIII",
+      "ko": "크루세이더 킹즈 3"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Crusader Kings III.webp",
+    "favorite": false
+  },
+  {
+    "id": "age-of-wonders-4",
+    "order": 93,
+    "title": {
+      "en": "Age of Wonders 4",
+      "zh": "奇迹时代4",
+      "ja": "エイジ・オブ・ワンダー 4",
+      "ko": "에이지 오브 원더 4"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Age of Wonders 4.webp",
+    "favorite": false
+  },
+  {
+    "id": "victoria-3",
+    "order": 94,
+    "title": {
+      "en": "Victoria 3",
+      "zh": "维多利亚3",
+      "ja": "Victoria 3",
+      "ko": "빅토리아 3"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Victoria 3.webp",
+    "favorite": false
+  },
+  {
+    "id": "unravel-two",
+    "order": 95,
+    "title": {
+      "en": "Unravel Two",
+      "zh": "毛线小精灵2",
+      "ja": "Unravel Two",
+      "ko": "언레블 투"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Unravel Two.webp",
+    "favorite": false
+  },
+  {
+    "id": "kingdom-two-crowns",
+    "order": 96,
+    "title": {
+      "en": "Kingdom Two Crowns",
+      "zh": "王国：两位君主",
+      "ja": "Kingdom Two Crowns",
+      "ko": "킹덤 투 크라운"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Kingdom Two Crowns.webp",
+    "favorite": false
+  },
+  {
+    "id": "untitled-goose-game",
+    "order": 97,
+    "title": {
+      "en": "Untitled Goose Game",
+      "zh": "无名鹅爱捣蛋",
+      "ja": "Untitled Goose Game 〜いたずらガチョウがやって来た!〜",
+      "ko": "거위 이름 없는 게임"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Untitled Goose Game.webp",
+    "favorite": false
+  },
+  {
+    "id": "umineko-when-they-cry---answer-arcs",
+    "order": 98,
+    "title": {
+      "en": "Umineko When They Cry - Answer Arcs",
+      "zh": "海猫鸣泣之时 散",
+      "ja": "うみねこのなく頃に散",
+      "ko": "괭이갈매기 울 적에 산"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Umineko When They Cry - Answer Arcs.webp",
+    "favorite": true
+  },
+  {
+    "id": "umineko-when-they-cry---question-arcs",
+    "order": 99,
+    "title": {
+      "en": "Umineko When They Cry - Question Arcs",
+      "zh": "海猫鸣泣之时",
+      "ja": "うみねこのなく頃に",
+      "ko": "괭이갈매기 울 적에"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Umineko When They Cry - Question Arcs.webp",
+    "favorite": true
+  },
+  {
+    "id": "shadow-tactics-blades-of-the-shogun---aikos-choice",
+    "order": 100,
+    "title": {
+      "en": "Shadow Tactics: Blades of the Shogun - Aiko's Choice",
+      "zh": "影子战术：将军之刃 - 爱子的选择",
+      "ja": "Shadow Tactics: Blades of the Shogun - アイコの選択",
+      "ko": "섀도우 택틱스: 블레이드 오브 더 쇼군 - 아이코의 선택"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Shadow Tactics Blades of the Shogun - Aiko's Choice.webp",
+    "favorite": false
+  },
+  {
+    "id": "world-of-goo",
+    "order": 101,
+    "title": {
+      "en": "World of Goo",
+      "zh": "粘粘世界",
+      "ja": "グーの惑星",
+      "ko": "월드 오브 구"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./World of Goo.webp",
+    "favorite": false
+  },
+  {
+    "id": "cuphead",
+    "order": 102,
+    "title": {
+      "en": "Cuphead",
+      "zh": "茶杯头",
+      "ja": "カップヘッド",
+      "ko": "컵헤드"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Cuphead.webp",
+    "favorite": false
+  },
+  {
+    "id": "cookie-clicker",
+    "order": 103,
+    "title": {
+      "en": "Cookie Clicker",
+      "zh": "无尽饼干",
+      "ja": "クッキークリッカー",
+      "ko": "쿠키 클리커"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Cookie Clicker.webp",
+    "favorite": false
+  },
+  {
+    "id": "for-the-king-ii",
+    "order": 104,
+    "title": {
+      "en": "For The King II",
+      "zh": "为了国王2",
+      "ja": "フォー・ザ・キング2",
+      "ko": "포 더 킹 2"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./For The King II.webp",
+    "favorite": false
+  },
+  {
+    "id": "rustys-retirement",
+    "order": 105,
+    "title": {
+      "en": "Rusty's Retirement",
+      "zh": "拉斯蒂的退休生活",
+      "ja": "ラスティのリタイアメント",
+      "ko": "러스티의 은퇴"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Rusty's Retirement.webp",
+    "favorite": false
+  },
+  {
+    "id": "gris",
+    "order": 106,
+    "title": {
+      "en": "GRIS",
+      "zh": "GRIS",
+      "ja": "GRIS",
+      "ko": "GRIS"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./GRIS.webp",
+    "favorite": false
+  },
+  {
+    "id": "total-war-three-kingdoms",
+    "order": 107,
+    "title": {
+      "en": "Total War: Three Kingdoms",
+      "zh": "全面战争：三国",
+      "ja": "トータルウォー：三國志",
+      "ko": "토탈 워: 삼국"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Total War Three Kingdoms.webp",
+    "favorite": false
+  },
+  {
+    "id": "neva",
+    "order": 108,
+    "title": {
+      "en": "Neva",
+      "zh": "Neva",
+      "ja": "Neva",
+      "ko": "Neva"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Neva.webp",
+    "favorite": false
+  },
+  {
+    "id": "rusty-lake-roots",
+    "order": 109,
+    "title": {
+      "en": "Rusty Lake: Roots",
+      "zh": "锈湖：根源",
+      "ja": "ラスティ・レイク：ルーツ",
+      "ko": "러스티 레이크: 루츠"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Rusty Lake Roots.webp",
+    "favorite": false
+  },
+  {
+    "id": "spiritfarer",
+    "order": 110,
+    "title": {
+      "en": "Spiritfarer",
+      "zh": "灵魂旅人",
+      "ja": "スピリットファーラー",
+      "ko": "스피릿페어러"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Spiritfarer.webp",
+    "favorite": false
+  },
+  {
+    "id": "ori-and-the-blind-forest",
+    "order": 111,
+    "title": {
+      "en": "Ori and the Blind Forest",
+      "zh": "奥日与黑暗森林",
+      "ja": "オリとくらやみの森",
+      "ko": "오리와 눈먼 숲"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Ori and the Blind Forest.webp",
+    "favorite": true
+  },
+  {
+    "id": "a-way-out",
+    "order": 112,
+    "title": {
+      "en": "A Way Out",
+      "zh": "逃出生天",
+      "ja": "A Way Out",
+      "ko": "에이 웨이 아웃"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./A Way Out.webp",
+    "favorite": false
+  },
+  {
+    "id": "phoenix-wright-ace-attorney",
+    "order": 113,
+    "title": {
+      "en": "Phoenix Wright: Ace Attorney Trilogy",
+      "zh": "逆转裁判123：成步堂精选集",
+      "ja": "逆転裁判123 成歩堂セレクション",
+      "ko": "역전재판 123 나루호도 셀렉션"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Phoenix Wright Ace Attorney.webp",
+    "favorite": false
+  },
+  {
+    "id": "they-are-billions",
+    "order": 114,
+    "title": {
+      "en": "They Are Billions",
+      "zh": "亿万僵尸",
+      "ja": "ゼイ・アー・ビリオンズ",
+      "ko": "데이 아 빌리언즈"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./They Are Billions.webp",
+    "favorite": false
+  },
+  {
+    "id": "sifu",
+    "order": 115,
+    "title": {
+      "en": "Sifu",
+      "zh": "师父",
+      "ja": "Sifu",
+      "ko": "시푸"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Sifu.webp",
+    "favorite": false
+  },
+  {
+    "id": "balatro",
+    "order": 116,
+    "title": {
+      "en": "Balatro",
+      "zh": "小丑牌",
+      "ja": "Balatro",
+      "ko": "발라트로"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Balatro.webp",
+    "favorite": false
+  },
+  {
+    "id": "the-dungeon-of-naheulbeuk-the-amulet-of-chaos",
+    "order": 117,
+    "title": {
+      "en": "The Dungeon Of Naheulbeuk: The Amulet Of Chaos",
+      "zh": "纳赫鲁博王国地下城：混沌护身符",
+      "ja": "The Dungeon Of Naheulbeuk: The Amulet Of Chaos",
+      "ko": "나흴벡의 던전: 혼돈의 부적"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./The Dungeon Of Naheulbeuk The Amulet Of Chaos.webp",
+    "favorite": false
+  },
+  {
+    "id": "diplomacy-is-not-an-option",
+    "order": 118,
+    "title": {
+      "en": "Diplomacy is Not an Option",
+      "zh": "要战便战",
+      "ja": "Diplomacy is Not an Option",
+      "ko": "외교는 선택사항이 아니다"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Diplomacy is Not an Option.webp",
+    "favorite": false
+  },
+  {
+    "id": "symphony-of-war-the-nephilim-saga",
+    "order": 119,
+    "title": {
+      "en": "Symphony of War: The Nephilim Saga",
+      "zh": "战争交响曲：尼非林传奇",
+      "ja": "シンフォニー・オブ・ウォー",
+      "ko": "심포니 오브 워"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Symphony of War The Nephilim Saga.webp",
+    "favorite": false
+  },
+  {
+    "id": "frostpunk-2",
+    "order": 120,
+    "title": {
+      "en": "Frostpunk 2",
+      "zh": "冰汽时代2",
+      "ja": "フロストパンク2",
+      "ko": "프로스트펑크 2"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Frostpunk 2.webp",
+    "favorite": false
+  },
+  {
+    "id": "lobotomy-corporation",
+    "order": 121,
+    "title": {
+      "en": "Lobotomy Corporation",
+      "zh": "脑叶公司",
+      "ja": "ロボトミーコーポレーション",
+      "ko": "로보토미 코퍼레이션"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Lobotomy Corporation.webp",
+    "favorite": true
+  },
+  {
+    "id": "revue-starlight-el-dorado",
+    "order": 122,
+    "title": {
+      "en": "Revue Starlight El Dorado",
+      "zh": "少女☆歌剧 Revue Starlight El Dorado",
+      "ja": "少女☆歌劇 レヴュースタァライト 舞台奏像劇 遙かなるエルドラド",
+      "ko": "소녀☆가극 레뷰 스타라이트 El Dorado"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Revue Starlight El Dorado.webp",
+    "favorite": false
+  },
+  {
+    "id": "it-takes-two",
+    "order": 123,
+    "title": {
+      "en": "It Takes Two",
+      "zh": "双人成行",
+      "ja": "It Takes Two",
+      "ko": "잇 테익스 투"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./It Takes Two.webp",
+    "favorite": false
+  },
+  {
+    "id": "tsuki-ni-yorisou-otome-no-sahou-2",
+    "order": 124,
+    "title": {
+      "en": "Tsuki ni Yorisou Otome no Sahou 2",
+      "zh": "近月少女的礼仪2",
+      "ja": "月に寄りそう乙女の作法2",
+      "ko": "달에 다가가는 소녀의 작법 2"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Tsuki ni Yorisou Otome no Sahou 2.webp",
+    "favorite": false
+  },
+  {
+    "id": "library-of-ruina",
+    "order": 125,
+    "title": {
+      "en": "Library Of Ruina",
+      "zh": "废墟图书馆",
+      "ja": "ライブラリー・オブ・ルイナ",
+      "ko": "라이브러리 오브 루이나"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Library Of Ruina.webp",
+    "favorite": false
+  },
+  {
+    "id": "ori-and-the-will-of-the-wisps",
+    "order": 126,
+    "title": {
+      "en": "Ori and the Will of the Wisps",
+      "zh": "奥日与萤火意志",
+      "ja": "オリとウィスプの意志",
+      "ko": "오리와 도깨비불"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Ori and the Will of the Wisps.webp",
+    "favorite": false
+  },
+  {
+    "id": "evil-genius-2",
+    "order": 127,
+    "title": {
+      "en": "Evil Genius 2: World Domination",
+      "zh": "邪恶天才2：世界统治",
+      "ja": "イービルジーニアス 2",
+      "ko": "이볼 지니어스 2"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Evil Genius 2.webp",
+    "favorite": false
+  },
+  {
+    "id": "sea-of-stars",
+    "order": 128,
+    "title": {
+      "en": "Sea of Stars",
+      "zh": "星之海",
+      "ja": "シー・オブ・スターズ",
+      "ko": "씨 오브 스타즈"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Sea of Stars.webp",
+    "favorite": false
+  },
+  {
+    "id": "bloodstained-ritual-of-the-night",
+    "order": 129,
+    "title": {
+      "en": "Bloodstained: Ritual of the Night",
+      "zh": "赤痕：夜之仪式",
+      "ja": "ブラッドステインド: リチュアル・オブ・ザ・ナイト",
+      "ko": "블러드스테인드: 리추얼 오브 더 나이트"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Bloodstained Ritual of the Night.webp",
+    "favorite": false
+  },
+  {
+    "id": "granblue-fantasy-relink",
+    "order": 130,
+    "title": {
+      "en": "Granblue Fantasy: Relink",
+      "zh": "碧蓝幻想：Relink",
+      "ja": "グランブルーファンタジー リリンク",
+      "ko": "그랑블루 판타지 리링크"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Granblue Fantasy Relink.webp",
+    "favorite": false
+  },
+  {
+    "id": "manifold-garden",
+    "order": 131,
+    "title": {
+      "en": "Manifold Garden",
+      "zh": "曼尼福德花园",
+      "ja": "マニフォールド ガーデン",
+      "ko": "매니폴드 가든"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Manifold Garden.webp",
+    "favorite": false
+  },
+  {
+    "id": "atomic-heart",
+    "order": 132,
+    "title": {
+      "en": "Atomic Heart",
+      "zh": "原子之心",
+      "ja": "アトミックハート",
+      "ko": "아토믹 하트"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./Atomic Heart.webp",
+    "favorite": false
+  },
+  {
+    "id": "dynasty-warriors-origins",
+    "order": 133,
+    "title": {
+      "en": "Dynasty Warriors Origins",
+      "zh": "真·三国无双 起源",
+      "ja": "真・三國無双 ORIGINS",
+      "ko": "진·삼국무쌍 오리진"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "./DYNASTY WARRIORS ORIGINS.webp",
+    "favorite": false
+  }
+]

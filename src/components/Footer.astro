@@ -1,11 +1,11 @@
 ﻿---
 // src/components/Footer.astro
-import { SOCIALS, COLORS } from "@/consts";
-import { useTranslations, type Lang } from "@/i18n";
+import { SOCIALS, COLORS } from "@/consts.ts";
+import { useTranslations, type Lang } from "@/i18n.ts";
 import Avatar from "@/assets/avater.svg";
 import { getRelativeLocaleUrl } from "astro:i18n";
-import { navTranslations } from "@/i18n/components/Header_i18";
-import { footerTranslations } from "@/i18n/components/Footer_i18";
+import { navTranslations } from "@/i18n/components/Header_i18.ts";
+import { footerTranslations } from "@/i18n/components/Footer_i18.ts";
 
 interface Props {
     bgColor?: string;
@@ -147,17 +147,38 @@ const NAV_LINKS = [
         const footer = document.getElementById('page-footer');
         if (!footer) return;
 
-        const themedElements = document.querySelectorAll('[data-theme-bg][data-theme-text]');
+        // Helper function to apply the colors to the footer
+        const updateFooterTheme = (bg: string, text: string) => {
+            footer.style.setProperty('--ftr-bg', bg);
+            footer.style.setProperty('--ftr-text', text);
+        };
 
+        // 1. Set initial color on page load (Existing logic)
+        const themedElements = document.querySelectorAll('[data-theme-bg][data-theme-text]');
         if (themedElements.length > 0) {
             const lastElement = themedElements[themedElements.length - 1];
             const bgColor = lastElement.getAttribute('data-theme-bg');
             const textColor = lastElement.getAttribute('data-theme-text');
 
             if (bgColor && textColor) {
-                footer.style.setProperty('--ftr-bg', bgColor);
-                footer.style.setProperty('--ftr-text', textColor);
+                updateFooterTheme(bgColor, textColor);
             }
         }
+
+        // 2. Listen for dynamic theme changes from BrickGame
+        const handleThemeChange = (e: Event) => {
+            const customEvent = e as CustomEvent;
+            const { bg, text } = customEvent.detail;
+            if (bg && text) {
+                updateFooterTheme(bg, text);
+            }
+        };
+
+        document.addEventListener('section-theme-change', handleThemeChange);
+
+        // 3. Clean up the event listener when navigating to a new page (prevents memory leaks)
+        document.addEventListener('astro:before-swap', () => {
+            document.removeEventListener('section-theme-change', handleThemeChange);
+        }, { once: true });
     });
 </script>
