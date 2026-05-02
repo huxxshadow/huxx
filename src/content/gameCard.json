@@ -9,12 +9,12 @@
       "ko": "마인크래프트"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "A formative childhood game.",
+      "zh": "童年启蒙作品。",
+      "ja": "子どもの頃の原点となった作品。",
+      "ko": "어린 시절의 원점이 된 작품."
     },
-    "image": "./Minecraft.webp",
+    "image": "../assets/gameCard/Minecraft.webp",
     "favorite": true
   },
   {
@@ -32,7 +32,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./RedAlert2.webp",
+    "image": "../assets/gameCard/RedAlert2.webp",
     "favorite": false
   },
   {
@@ -50,7 +50,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Dynasty Warriors 6.webp",
+    "image": "../assets/gameCard/Dynasty Warriors 6.webp",
     "favorite": false
   },
   {
@@ -68,7 +68,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Warcraft 3The Frozen Throne.webp",
+    "image": "../assets/gameCard/Warcraft 3The Frozen Throne.webp",
     "favorite": false
   },
   {
@@ -86,7 +86,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Counter-Strike.webp",
+    "image": "../assets/gameCard/Counter-Strike.webp",
     "favorite": false
   },
   {
@@ -104,7 +104,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Machinarium.webp",
+    "image": "../assets/gameCard/Machinarium.webp",
     "favorite": false
   },
   {
@@ -122,7 +122,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./The Elder Scrolls VSkyrim.webp",
+    "image": "../assets/gameCard/The Elder Scrolls VSkyrim.webp",
     "favorite": false
   },
   {
@@ -140,7 +140,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./legend of league.webp",
+    "image": "../assets/gameCard/legend of league.webp",
     "favorite": false
   },
   {
@@ -158,7 +158,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./War trigger 2.webp",
+    "image": "../assets/gameCard/War trigger 2.webp",
     "favorite": false
   },
   {
@@ -176,7 +176,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./evoland.webp",
+    "image": "../assets/gameCard/evoland.webp",
     "favorite": false
   },
   {
@@ -194,7 +194,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./MapleStory.webp",
+    "image": "../assets/gameCard/MapleStory.webp",
     "favorite": false
   },
   {
@@ -212,7 +212,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Intrusion 2.webp",
+    "image": "../assets/gameCard/Intrusion 2.webp",
     "favorite": false
   },
   {
@@ -230,7 +230,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./super mario bros.webp",
+    "image": "../assets/gameCard/super mario bros.webp",
     "favorite": false
   },
   {
@@ -248,7 +248,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Kirby & The Amazing Mirror.webp",
+    "image": "../assets/gameCard/Kirby & The Amazing Mirror.webp",
     "favorite": false
   },
   {
@@ -266,7 +266,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Metal Slug.webp",
+    "image": "../assets/gameCard/Metal Slug.webp",
     "favorite": false
   },
   {
@@ -284,7 +284,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Grand Theft Auto III.webp",
+    "image": "../assets/gameCard/Grand Theft Auto III.webp",
     "favorite": false
   },
   {
@@ -302,7 +302,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./overwatch.webp",
+    "image": "../assets/gameCard/overwatch.webp",
     "favorite": false
   },
   {
@@ -320,7 +320,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Hearthstone.webp",
+    "image": "../assets/gameCard/Hearthstone.webp",
     "favorite": false
   },
   {
@@ -338,7 +338,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./warframe.webp",
+    "image": "../assets/gameCard/warframe.webp",
     "favorite": false
   },
   {
@@ -356,7 +356,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Grand Theft Auto V.webp",
+    "image": "../assets/gameCard/Grand Theft Auto V.webp",
     "favorite": false
   },
   {
@@ -369,12 +369,12 @@
       "ko": "테라리아"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "A sandbox classic.",
+      "zh": "沙盒游戏神作。",
+      "ja": "サンドボックスゲームの名作。",
+      "ko": "샌드박스 게임의 명작."
     },
-    "image": "./Terraria.webp",
+    "image": "../assets/gameCard/Terraria.webp",
     "favorite": true
   },
   {
@@ -392,7 +392,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Sid Meier's Civilization VI.webp",
+    "image": "../assets/gameCard/Sid Meier's Civilization VI.webp",
     "favorite": false
   },
   {
@@ -410,7 +410,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./DYNASTY WARRIORS 8.webp",
+    "image": "../assets/gameCard/DYNASTY WARRIORS 8.webp",
     "favorite": false
   },
   {
@@ -428,7 +428,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./ARKSurvival Evolved.webp",
+    "image": "../assets/gameCard/ARKSurvival Evolved.webp",
     "favorite": false
   },
   {
@@ -446,7 +446,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./The Witcher 3 Wild Hunt.webp",
+    "image": "../assets/gameCard/The Witcher 3 Wild Hunt.webp",
     "favorite": false
   },
   {
@@ -464,7 +464,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Fantasy of Expedition.webp",
+    "image": "../assets/gameCard/Fantasy of Expedition.webp",
     "favorite": false
   },
   {
@@ -482,7 +482,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./sands of salzaar.webp",
+    "image": "../assets/gameCard/sands of salzaar.webp",
     "favorite": false
   },
   {
@@ -500,7 +500,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./No Man's Sky.webp",
+    "image": "../assets/gameCard/No Man's Sky.webp",
     "favorite": false
   },
   {
@@ -513,12 +513,12 @@
       "ko": "섀도우 택틱스: 블레이드 오브 더 쇼군"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "A standout RTT title, with some of the strongest narrative and aesthetic execution in the genre.",
+      "zh": "RTT类型中的代表作，叙事与美学表现都处于这一类型的顶尖水准。",
+      "ja": "RTTを代表する作品であり、物語と美学表現はいずれもこのジャンルの中でも最上級の水準にある。",
+      "ko": "RTT 장르를 대표하는 작품으로, 서사와 미학적 표현 모두 이 장르 최고 수준에 속한다."
     },
-    "image": "./Shadow TacticsBlades of the Shogun.webp",
+    "image": "../assets/gameCard/Shadow TacticsBlades of the Shogun.webp",
     "favorite": true
   },
   {
@@ -536,7 +536,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./For the king.webp",
+    "image": "../assets/gameCard/For the king.webp",
     "favorite": false
   },
   {
@@ -554,7 +554,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Middle-earth Shadow of War.webp",
+    "image": "../assets/gameCard/Middle-earth Shadow of War.webp",
     "favorite": false
   },
   {
@@ -567,12 +567,12 @@
       "ko": "디비니티: 오리지널 신 2"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "A defining CRPG, with virtually no obvious weaknesses across its systems.",
+      "zh": "CRPG的代表作之一，整体表现极为均衡，几乎没有明显短板。",
+      "ja": "CRPGを代表する作品の一つであり、全体の完成度が非常に高く、目立った弱点がほとんどない。",
+      "ko": "CRPG를 대표하는 작품 중 하나로, 전반적인 완성도가 매우 높고 뚜렷한 약점이 거의 없다."
     },
-    "image": "./Divinity Original Sin 2.webp",
+    "image": "../assets/gameCard/Divinity Original Sin 2.webp",
     "favorite": true
   },
   {
@@ -590,7 +590,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Bloons TD 6.webp",
+    "image": "../assets/gameCard/Bloons TD 6.webp",
     "favorite": false
   },
   {
@@ -608,7 +608,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Rise of the Tomb Raider.webp",
+    "image": "../assets/gameCard/Rise of the Tomb Raider.webp",
     "favorite": false
   },
   {
@@ -621,12 +621,12 @@
       "ko": "바이오쇼크 인피니트"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "A rare all-rounder, with standout character work, narrative, aesthetic design, and combat-driven gameplay.",
+      "zh": "少见的六边形战士，人物塑造、剧情、美学与玩法表现都相当突出。",
+      "ja": "稀有な“六角形型”の完成度を持つ作品で、人物描写、物語、美学、そしてゲームプレイのいずれも水準が高い。",
+      "ko": "드문 ‘육각형형’ 완성도를 지닌 작품으로, 인물 묘사와 서사, 미학, 그리고 게임플레이까지 전반적으로 높은 수준을 보여준다."
     },
-    "image": "./BioShock Infinite.webp",
+    "image": "../assets/gameCard/BioShock Infinite.webp",
     "favorite": true
   },
   {
@@ -644,7 +644,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./XCOM 2.webp",
+    "image": "../assets/gameCard/XCOM 2.webp",
     "favorite": false
   },
   {
@@ -657,12 +657,12 @@
       "ko": "디트로이트: 비컴 휴먼"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "A standout example of the interactive drama genre, worldbuilding and branching narrative design.",
+      "zh": "交互式电影游戏的代表作，世界观设定与多线剧情设计尤为突出。",
+      "ja": "インタラクティブドラマの代表作であり、世界観設定とマルチラインの物語設計が際立っている。",
+      "ko": "인터랙티브 드라마를 대표하는 작품으로, 세계관 설정과 멀티라인 서사 설계가 특히 돋보인다."
     },
-    "image": "./DetroitBecome Human.webp",
+    "image": "../assets/gameCard/DetroitBecome Human.webp",
     "favorite": true
   },
   {
@@ -680,7 +680,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Total WarWarhammer II.webp",
+    "image": "../assets/gameCard/Total WarWarhammer II.webp",
     "favorite": false
   },
   {
@@ -698,7 +698,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Hades.webp",
+    "image": "../assets/gameCard/Hades.webp",
     "favorite": false
   },
   {
@@ -716,7 +716,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Final Fantasy XV.webp",
+    "image": "../assets/gameCard/Final Fantasy XV.webp",
     "favorite": false
   },
   {
@@ -734,7 +734,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Dark Souls III.webp",
+    "image": "../assets/gameCard/Dark Souls III.webp",
     "favorite": false
   },
   {
@@ -752,7 +752,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Need for Speed Heat.webp",
+    "image": "../assets/gameCard/Need for Speed Heat.webp",
     "favorite": false
   },
   {
@@ -770,7 +770,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Desperados III.webp",
+    "image": "../assets/gameCard/Desperados III.webp",
     "favorite": false
   },
   {
@@ -788,7 +788,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Titanfall 2.webp",
+    "image": "../assets/gameCard/Titanfall 2.webp",
     "favorite": false
   },
   {
@@ -806,7 +806,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Lost Castle.webp",
+    "image": "../assets/gameCard/Lost Castle.webp",
     "favorite": false
   },
   {
@@ -824,7 +824,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./The Binding of IsaacRebirth.webp",
+    "image": "../assets/gameCard/The Binding of IsaacRebirth.webp",
     "favorite": false
   },
   {
@@ -842,7 +842,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Journey.webp",
+    "image": "../assets/gameCard/Journey.webp",
     "favorite": false
   },
   {
@@ -860,7 +860,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Forza Horizon 5.webp",
+    "image": "../assets/gameCard/Forza Horizon 5.webp",
     "favorite": false
   },
   {
@@ -873,12 +873,12 @@
       "ko": "니어 오토마타"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "Building on the strengths of its predecessor, it pushes further in both gameplay and music.",
+      "zh": "延续了前作的优点，并在玩法与音乐表现上更进一步。",
+      "ja": "前作の長所を受け継ぎつつ、ゲームプレイと音楽表現の両面でさらに発展させている。",
+      "ko": "전작의 장점을 계승하면서도, 게임플레이와 음악 양면에서 한층 더 발전시켰다."
     },
-    "image": "./NieR Automata.webp",
+    "image": "../assets/gameCard/NieR Automata.webp",
     "favorite": true
   },
   {
@@ -896,7 +896,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Slay the Spire.webp",
+    "image": "../assets/gameCard/Slay the Spire.webp",
     "favorite": false
   },
   {
@@ -914,7 +914,7 @@
       "ja": "比類なきオープンワールド",
       "ko": "비교할 수 없는 오픈 월드"
     },
-    "image": "./Elden Ring.webp",
+    "image": "../assets/gameCard/Elden Ring.webp",
     "favorite": false
   },
   {
@@ -932,7 +932,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Final Fantasy VII.webp",
+    "image": "../assets/gameCard/Final Fantasy VII.webp",
     "favorite": false
   },
   {
@@ -950,7 +950,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Ghostrunner.webp",
+    "image": "../assets/gameCard/Ghostrunner.webp",
     "favorite": false
   },
   {
@@ -968,7 +968,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Frostpunk.webp",
+    "image": "../assets/gameCard/Frostpunk.webp",
     "favorite": false
   },
   {
@@ -986,7 +986,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Cyberpunk 2077.webp",
+    "image": "../assets/gameCard/Cyberpunk 2077.webp",
     "favorite": false
   },
   {
@@ -1004,7 +1004,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Melvor Idle.webp",
+    "image": "../assets/gameCard/Melvor Idle.webp",
     "favorite": false
   },
   {
@@ -1022,7 +1022,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Mortal Kombat 11.webp",
+    "image": "../assets/gameCard/Mortal Kombat 11.webp",
     "favorite": false
   },
   {
@@ -1035,12 +1035,12 @@
       "ko": "패스파인더: 의인의 분노"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "A D&D-style CRPG, notable for its dense character-building systems and considerable tactical depth.",
+      "zh": "D&D风格的 CRPG，拥有复杂扎实的角色构筑系统与出色的策略深度。",
+      "ja": "D&DスタイルのCRPGで、重厚なキャラクタービルドと高い戦術的奥行きが特徴。",
+      "ko": "D&D 스타일의 CRPG로, 밀도 높은 캐릭터 빌드와 뛰어난 전술적 깊이가 돋보인다."
     },
-    "image": "./PathfinderWrath of the Righteous.webp",
+    "image": "../assets/gameCard/PathfinderWrath of the Righteous.webp",
     "favorite": true
   },
   {
@@ -1058,7 +1058,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Persona 5 Royal.webp",
+    "image": "../assets/gameCard/Persona 5 Royal.webp",
     "favorite": false
   },
   {
@@ -1076,7 +1076,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Tsuki ni Yorisou Otome no Sahou.webp",
+    "image": "../assets/gameCard/Tsuki ni Yorisou Otome no Sahou.webp",
     "favorite": false
   },
   {
@@ -1089,12 +1089,12 @@
       "ko": "미러즈 엣지 카탈리스트"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "A standout example of parkour gameplay, minimalist futuristic architectural aesthetics, and fluid parkour movement.",
+      "zh": "跑酷玩法的优秀代表作，极简的未来建筑美学与流畅的跑酷移动。",
+      "ja": "パルクールアクションの秀作、ミニマルな未来建築の美学と流麗なパルクール移動。",
+      "ko": "파쿠르 플레이의 뛰어난 대표작, 미니멀한 미래 건축 미학과 유려한 파쿠르 이동."
     },
-    "image": "./Mirror's Edge Catalyst.webp",
+    "image": "../assets/gameCard/Mirror's Edge Catalyst.webp",
     "favorite": true
   },
   {
@@ -1112,7 +1112,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Control.webp",
+    "image": "../assets/gameCard/Control.webp",
     "favorite": false
   },
   {
@@ -1130,7 +1130,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Octopath Traveler.webp",
+    "image": "../assets/gameCard/Octopath Traveler.webp",
     "favorite": false
   },
   {
@@ -1143,12 +1143,12 @@
       "ko": "플래그 테일: 이노센스"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "Its evocative medieval setting, cinematic presentation, and strong art direction come together to create a deeply immersive experience.",
+      "zh": "沉浸感十足的中世纪氛围、电影化的演出与出色的美术表现，共同营造出极具代入感的体验。",
+      "ja": "没入感のある中世的な空気感、映画的な演出、そして優れたアート表現が組み合わさり、強い没入感を生み出している。",
+      "ko": "몰입감 있는 중세적 분위기와 영화적인 연출, 그리고 뛰어난 아트 표현이 어우러져 강한 몰입감을 만들어낸다."
     },
-    "image": "./A Plague Tale Innocence.webp",
+    "image": "../assets/gameCard/A Plague Tale Innocence.webp",
     "favorite": true
   },
   {
@@ -1166,7 +1166,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./ASTLIBRA.webp",
+    "image": "../assets/gameCard/ASTLIBRA.webp",
     "favorite": false
   },
   {
@@ -1184,7 +1184,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./A Plague Tale Requiem.webp",
+    "image": "../assets/gameCard/A Plague Tale Requiem.webp",
     "favorite": false
   },
   {
@@ -1197,12 +1197,12 @@
       "ko": "데스 스트랜딩"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "Its highly original gameplay design, cinematic presentation, and distinctive worldbuilding come together in an unusually compelling action-adventure experience.",
+      "zh": "极具原创性的玩法设计、电影化的演出与独特的世界观设定，一部气质鲜明的动作冒险游戏。",
+      "ja": "独創性の高いゲームデザイン、映画的な演出、そして個性的な世界観設定が組み合わさり、強い作品性を備えたアクションアドベンチャーとして成立している。",
+      "ko": "독창성이 뛰어난 게임플레이 설계와 영화적인 연출, 그리고 개성적인 세계관 설정이 결합되어 뚜렷한 작품성을 지닌 액션 어드벤처로 완성되었다."
     },
-    "image": "./Death Stranding.webp",
+    "image": "../assets/gameCard/Death Stranding.webp",
     "favorite": true
   },
   {
@@ -1220,7 +1220,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Devil May Cry 5.webp",
+    "image": "../assets/gameCard/Devil May Cry 5.webp",
     "favorite": false
   },
   {
@@ -1238,7 +1238,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Guilty Gear Strive.webp",
+    "image": "../assets/gameCard/Guilty Gear Strive.webp",
     "favorite": false
   },
   {
@@ -1251,12 +1251,12 @@
       "ko": "토탈 워: 워해머 3"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "Notable for its strategic depth and the strong asymmetry that defines each faction’s campaign mechanics.",
+      "zh": "以出色的策略纵深，以及由高度非对称设计所支撑的阵营战役机制而见长。",
+      "ja": "優れた戦略的奥行きと、高い非対称性によって形作られた各勢力の戦役メカニクスが特徴。",
+      "ko": "뛰어난 전략적 깊이와 높은 비대칭 설계로 구축된 각 진영의 캠페인 메커니즘이 특징이다."
     },
-    "image": "./Total War Warhammer III.webp",
+    "image": "../assets/gameCard/Total War Warhammer III.webp",
     "favorite": true
   },
   {
@@ -1274,7 +1274,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Horizon Zero Dawn.webp",
+    "image": "../assets/gameCard/Horizon Zero Dawn.webp",
     "favorite": false
   },
   {
@@ -1287,12 +1287,12 @@
       "ko": "니어 레플리칸트 ver.1.22..."
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "Known for its deeply immersive atmosphere, distinctive worldbuilding, and excellent narrative across multiple playthroughs.",
+      "zh": "极具沉浸感的氛围、独特而完整的世界观，以及优秀的多周目剧情。",
+      "ja": "強い没入感を生む雰囲気、独自性のある完成された世界観、そして周回を重ねることで深まる優れた物語が魅力。",
+      "ko": "깊은 몰입감을 주는 분위기와 독창적이면서도 완성도 높은 세계관, 그리고 반복 플레이를 통해 더욱 깊어지는 뛰어난 서사가 돋보인다."
     },
-    "image": "./NieR Replicant ver.1.22474487139....webp",
+    "image": "../assets/gameCard/NieR Replicant ver.1.22474487139....webp",
     "favorite": true
   },
   {
@@ -1310,7 +1310,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Darkest Dungeon.webp",
+    "image": "../assets/gameCard/Darkest Dungeon.webp",
     "favorite": false
   },
   {
@@ -1323,12 +1323,12 @@
       "ko": "할로우 나이트"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "One of the standout Metroidvanias, remembered for its precise combat, striking aesthetic, and richly realized world.",
+      "zh": "银河恶魔城代表作，优秀的战斗设计、鲜明的美学风格与塑造出色的世界观。",
+      "ja": "メトロイドヴァニアを代表する作品の一つであり、精密な戦闘、鮮烈な美学、そして豊かに構築された世界観が強く印象に残る。",
+      "ko": "메트로배니아를 대표하는 작품 중 하나로, 정교한 전투와 선명한 미학, 그리고 풍부하게 구축된 세계관이 특히 인상적이다."
     },
-    "image": "./Hollow Knight.webp",
+    "image": "../assets/gameCard/Hollow Knight.webp",
     "favorite": true
   },
   {
@@ -1346,7 +1346,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./God of War.webp",
+    "image": "../assets/gameCard/God of War.webp",
     "favorite": false
   },
   {
@@ -1359,12 +1359,12 @@
       "ko": "레드 데드 리뎀션 2"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "To me, it is one of the defining open-world games, elevated by extraordinary immersion, meticulous detail, and a powerful story carried by unforgettable characters.",
+      "zh": "最能代表开放世界魅力的作品之一：沉浸感、细节与角色驱动的剧情都近乎无可挑剔。",
+      "ja": "自分にとって本作は、オープンワールドの魅力を最も体現した作品の一つだ。没入感、ディテール、そして人物が牽引する物語、そのどれもが際立っている。",
+      "ko": "내게 이 작품은 오픈월드의 매력을 가장 잘 보여주는 작품 중 하나다. 몰입감, 디테일, 그리고 인물이 이끄는 서사까지 모두 인상적이다."
     },
-    "image": "./Red Dead Redemption II.webp",
+    "image": "../assets/gameCard/Red Dead Redemption II.webp",
     "favorite": true
   },
   {
@@ -1382,7 +1382,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Anno 1800.webp",
+    "image": "../assets/gameCard/Anno 1800.webp",
     "favorite": false
   },
   {
@@ -1395,12 +1395,12 @@
       "ko": "림월드"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "One of the finest sandbox games ever made, distinguished by its boundless emergent storytelling, immense freedom, and virtually endless community content.",
+      "zh": "堪称沙盒游戏中的最佳作品之一，近乎无限的涌现式叙事、自由度与社区内容",
+      "ja": "サンドボックスゲームを代表する傑作の一つであり、尽きることのない創発的な物語、高い自由度、そして膨大なコミュニティコンテンツによって、ほとんど無限とも言える遊びの可能性を備えている。",
+      "ko": "샌드박스 게임을 대표하는 걸작 중 하나로, 끝없이 만들어지는 창발적 서사와 높은 자유도, 그리고 방대한 커뮤니티 콘텐츠를 통해 거의 무한에 가까운 가능성을 보여준다."
     },
-    "image": "./RimWorld.webp",
+    "image": "../assets/gameCard/RimWorld.webp",
     "favorite": true
   },
   {
@@ -1418,7 +1418,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Stellaris.webp",
+    "image": "../assets/gameCard/Stellaris.webp",
     "favorite": false
   },
   {
@@ -1436,7 +1436,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Tasty Planet.webp",
+    "image": "../assets/gameCard/Tasty Planet.webp",
     "favorite": false
   },
   {
@@ -1454,7 +1454,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Life Is Strange.webp",
+    "image": "../assets/gameCard/Life Is Strange.webp",
     "favorite": false
   },
   {
@@ -1472,7 +1472,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Otome Riron to Sono Shuuhen -École de Paris-.webp",
+    "image": "../assets/gameCard/Otome Riron to Sono Shuuhen -École de Paris-.webp",
     "favorite": false
   },
   {
@@ -1490,7 +1490,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Thronefall.webp",
+    "image": "../assets/gameCard/Thronefall.webp",
     "favorite": false
   },
   {
@@ -1508,7 +1508,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Otome Domain.webp",
+    "image": "../assets/gameCard/Otome Domain.webp",
     "favorite": false
   },
   {
@@ -1526,7 +1526,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Donut County.webp",
+    "image": "../assets/gameCard/Donut County.webp",
     "favorite": false
   },
   {
@@ -1539,12 +1539,12 @@
       "ko": "발더스 게이트 3"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "One of the finest modern CRPGs, standing out for its immersion, presentation, and visual polish.",
+      "zh": "堪称新时代CRPG中的综合最佳之一，以沉浸感、演出与画面表现见长。",
+      "ja": "現代CRPGの総合的な到達点の一つであり、没入感、演出、ビジュアルの完成度に優れている。",
+      "ko": "현대 CRPG의 종합적 완성형에 가까운 작품으로, 몰입감과 연출, 비주얼 완성도가 강점이다."
     },
-    "image": "./Baldur's Gate III.webp",
+    "image": "../assets/gameCard/Baldur's Gate III.webp",
     "favorite": true
   },
   {
@@ -1562,7 +1562,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Ultimate Chicken Horse.webp",
+    "image": "../assets/gameCard/Ultimate Chicken Horse.webp",
     "favorite": false
   },
   {
@@ -1575,12 +1575,12 @@
       "ko": "마법사의 밤"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "Its distinctive prose, excellent presentation, and outstanding soundtrack give it a remarkably memorable identity.",
+      "zh": "独特的文本风格、优秀的演出与出色的配乐，共同塑造了令人印象深刻的作品气质。",
+      "ja": "独特な文体と優れた演出、そして印象的な音楽が、本作ならではの強い個性を形作っている。",
+      "ko": "독특한 문체와 뛰어난 연출, 인상적인 음악이 작품만의 강한 개성을 만들어낸다."
     },
-    "image": "./Witch on the Holy Night.webp",
+    "image": "../assets/gameCard/Witch on the Holy Night.webp",
     "favorite": true
   },
   {
@@ -1598,7 +1598,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Brotato.webp",
+    "image": "../assets/gameCard/Brotato.webp",
     "favorite": false
   },
   {
@@ -1616,7 +1616,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./The Silent Age.webp",
+    "image": "../assets/gameCard/The Silent Age.webp",
     "favorite": false
   },
   {
@@ -1634,7 +1634,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Palworld.webp",
+    "image": "../assets/gameCard/Palworld.webp",
     "favorite": false
   },
   {
@@ -1652,7 +1652,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Crusader Kings III.webp",
+    "image": "../assets/gameCard/Crusader Kings III.webp",
     "favorite": false
   },
   {
@@ -1670,7 +1670,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Age of Wonders 4.webp",
+    "image": "../assets/gameCard/Age of Wonders 4.webp",
     "favorite": false
   },
   {
@@ -1688,7 +1688,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Victoria 3.webp",
+    "image": "../assets/gameCard/Victoria 3.webp",
     "favorite": false
   },
   {
@@ -1706,7 +1706,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Unravel Two.webp",
+    "image": "../assets/gameCard/Unravel Two.webp",
     "favorite": false
   },
   {
@@ -1724,7 +1724,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Kingdom Two Crowns.webp",
+    "image": "../assets/gameCard/Kingdom Two Crowns.webp",
     "favorite": false
   },
   {
@@ -1742,7 +1742,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Untitled Goose Game.webp",
+    "image": "../assets/gameCard/Untitled Goose Game.webp",
     "favorite": false
   },
   {
@@ -1755,12 +1755,12 @@
       "ko": "괭이갈매기 울 적에 산"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "An excellent answer arc, elevated by striking presentation, powerful emotional payoff, and a compelling thematic resolution.",
+      "zh": "作为解题篇，其极具张力的演出、充沛的情感回收与富有说服力的主题收束尤为优秀。",
+      "ja": "解答編として、張り詰めた演出、豊かな感情の回収、そして説得力のある主題の着地がとりわけ優れている。",
+      "ko": "해답편으로서, 긴장감 있는 연출과 풍부한 감정의 회수, 그리고 설득력 있는 주제 의식의 마무리가 특히 인상적이다."
     },
-    "image": "./Umineko When They Cry - Answer Arcs.webp",
+    "image": "../assets/gameCard/Umineko When They Cry - Answer Arcs.webp",
     "favorite": true
   },
   {
@@ -1773,12 +1773,12 @@
       "ko": "괭이갈매기 울 적에"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "An outstanding question arc, distinguished by its layered narrative, intricate mystery, and haunting atmosphere.",
+      "zh": "作为出题篇，其层层递进的叙事、繁复精巧的谜团与压迫感十足的氛围都极为出色。",
+      "ja": "出題編として、幾重にも積み重なる物語運び、精緻な謎、そして張り詰めた空気感が際立っている。",
+      "ko": "출제편으로서, 층층이 쌓아 올리는 서사와 정교한 수수께끼, 그리고 강한 압박감을 주는 분위기가 특히 뛰어나다."
     },
-    "image": "./Umineko When They Cry - Question Arcs.webp",
+    "image": "../assets/gameCard/Umineko When They Cry - Question Arcs.webp",
     "favorite": true
   },
   {
@@ -1796,7 +1796,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Shadow Tactics Blades of the Shogun - Aiko's Choice.webp",
+    "image": "../assets/gameCard/Shadow Tactics Blades of the Shogun - Aiko's Choice.webp",
     "favorite": false
   },
   {
@@ -1814,7 +1814,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./World of Goo.webp",
+    "image": "../assets/gameCard/World of Goo.webp",
     "favorite": false
   },
   {
@@ -1832,7 +1832,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Cuphead.webp",
+    "image": "../assets/gameCard/Cuphead.webp",
     "favorite": false
   },
   {
@@ -1850,7 +1850,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Cookie Clicker.webp",
+    "image": "../assets/gameCard/Cookie Clicker.webp",
     "favorite": false
   },
   {
@@ -1868,7 +1868,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./For The King II.webp",
+    "image": "../assets/gameCard/For The King II.webp",
     "favorite": false
   },
   {
@@ -1886,7 +1886,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Rusty's Retirement.webp",
+    "image": "../assets/gameCard/Rusty's Retirement.webp",
     "favorite": false
   },
   {
@@ -1904,7 +1904,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./GRIS.webp",
+    "image": "../assets/gameCard/GRIS.webp",
     "favorite": false
   },
   {
@@ -1922,7 +1922,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Total War Three Kingdoms.webp",
+    "image": "../assets/gameCard/Total War Three Kingdoms.webp",
     "favorite": false
   },
   {
@@ -1940,7 +1940,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Neva.webp",
+    "image": "../assets/gameCard/Neva.webp",
     "favorite": false
   },
   {
@@ -1958,7 +1958,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Rusty Lake Roots.webp",
+    "image": "../assets/gameCard/Rusty Lake Roots.webp",
     "favorite": false
   },
   {
@@ -1976,7 +1976,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Spiritfarer.webp",
+    "image": "../assets/gameCard/Spiritfarer.webp",
     "favorite": false
   },
   {
@@ -1989,12 +1989,12 @@
       "ko": "오리와 눈먼 숲"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "With outstanding aesthetics and map design, it stands as a masterpiece of the Metroidvania genre.",
+      "zh": "凭借出色的美学表现与地图设计，堪称银河恶魔城类型中的杰作。",
+      "ja": "優れた美術表現とマップデザインによって、メトロイドヴァニアというジャンルを代表する傑作となっている。",
+      "ko": "뛰어난 미학적 표현과 맵 디자인을 바탕으로, 메트로배니아 장르를 대표하는 걸작으로 평가받는다."
     },
-    "image": "./Ori and the Blind Forest.webp",
+    "image": "../assets/gameCard/Ori and the Blind Forest.webp",
     "favorite": true
   },
   {
@@ -2012,7 +2012,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./A Way Out.webp",
+    "image": "../assets/gameCard/A Way Out.webp",
     "favorite": false
   },
   {
@@ -2030,7 +2030,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Phoenix Wright Ace Attorney.webp",
+    "image": "../assets/gameCard/Phoenix Wright Ace Attorney.webp",
     "favorite": false
   },
   {
@@ -2048,7 +2048,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./They Are Billions.webp",
+    "image": "../assets/gameCard/They Are Billions.webp",
     "favorite": false
   },
   {
@@ -2066,7 +2066,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Sifu.webp",
+    "image": "../assets/gameCard/Sifu.webp",
     "favorite": false
   },
   {
@@ -2084,7 +2084,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Balatro.webp",
+    "image": "../assets/gameCard/Balatro.webp",
     "favorite": false
   },
   {
@@ -2102,7 +2102,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./The Dungeon Of Naheulbeuk The Amulet Of Chaos.webp",
+    "image": "../assets/gameCard/The Dungeon Of Naheulbeuk The Amulet Of Chaos.webp",
     "favorite": false
   },
   {
@@ -2120,7 +2120,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Diplomacy is Not an Option.webp",
+    "image": "../assets/gameCard/Diplomacy is Not an Option.webp",
     "favorite": false
   },
   {
@@ -2138,7 +2138,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Symphony of War The Nephilim Saga.webp",
+    "image": "../assets/gameCard/Symphony of War The Nephilim Saga.webp",
     "favorite": false
   },
   {
@@ -2156,7 +2156,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Frostpunk 2.webp",
+    "image": "../assets/gameCard/Frostpunk 2.webp",
     "favorite": false
   },
   {
@@ -2169,12 +2169,12 @@
       "ko": "로보토미 코퍼레이션"
     },
     "comment": {
-      "en": "",
-      "zh": "",
-      "ja": "",
-      "ko": ""
+      "en": "Its mechanics and narrative are deeply intertwined, presenting a distinctive and fully realized world.",
+      "zh": "机制与叙事深度结合，呈现出独特而完整的世界观。",
+      "ja": "システムと物語が深く結びつき、独自性と完成度を兼ね備えた世界観を描き出している。",
+      "ko": "시스템과 서사가 깊이 결합되어 독창적이고 완성도 높은 세계관을 보여준다."
     },
-    "image": "./Lobotomy Corporation.webp",
+    "image": "../assets/gameCard/Lobotomy Corporation.webp",
     "favorite": true
   },
   {
@@ -2192,7 +2192,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Revue Starlight El Dorado.webp",
+    "image": "../assets/gameCard/Revue Starlight El Dorado.webp",
     "favorite": false
   },
   {
@@ -2210,7 +2210,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./It Takes Two.webp",
+    "image": "../assets/gameCard/It Takes Two.webp",
     "favorite": false
   },
   {
@@ -2228,7 +2228,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Tsuki ni Yorisou Otome no Sahou 2.webp",
+    "image": "../assets/gameCard/Tsuki ni Yorisou Otome no Sahou 2.webp",
     "favorite": false
   },
   {
@@ -2246,7 +2246,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Library Of Ruina.webp",
+    "image": "../assets/gameCard/Library Of Ruina.webp",
     "favorite": false
   },
   {
@@ -2264,7 +2264,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Ori and the Will of the Wisps.webp",
+    "image": "../assets/gameCard/Ori and the Will of the Wisps.webp",
     "favorite": false
   },
   {
@@ -2282,7 +2282,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Evil Genius 2.webp",
+    "image": "../assets/gameCard/Evil Genius 2.webp",
     "favorite": false
   },
   {
@@ -2300,7 +2300,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Sea of Stars.webp",
+    "image": "../assets/gameCard/Sea of Stars.webp",
     "favorite": false
   },
   {
@@ -2318,7 +2318,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Bloodstained Ritual of the Night.webp",
+    "image": "../assets/gameCard/Bloodstained Ritual of the Night.webp",
     "favorite": false
   },
   {
@@ -2336,7 +2336,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Granblue Fantasy Relink.webp",
+    "image": "../assets/gameCard/Granblue Fantasy Relink.webp",
     "favorite": false
   },
   {
@@ -2354,7 +2354,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Manifold Garden.webp",
+    "image": "../assets/gameCard/Manifold Garden.webp",
     "favorite": false
   },
   {
@@ -2372,7 +2372,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./Atomic Heart.webp",
+    "image": "../assets/gameCard/Atomic Heart.webp",
     "favorite": false
   },
   {
@@ -2390,7 +2390,7 @@
       "ja": "",
       "ko": ""
     },
-    "image": "./DYNASTY WARRIORS ORIGINS.webp",
+    "image": "../assets/gameCard/DYNASTY WARRIORS ORIGINS.webp",
     "favorite": false
   }
 ]

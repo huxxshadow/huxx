@@ -1,0 +1,117 @@
+﻿---
+import { COLORS } from "@/consts";
+import { useTranslations, type Lang } from "@/i18n";
+import { introLabels, rolesData } from "@/i18n/components/aboutme/DndIntroSection_i18";
+
+const locale = Astro.currentLocale as Lang || 'en';
+const t = useTranslations(locale);
+
+const roleList = rolesData[locale] || rolesData.en;
+---
+
+<section
+        class="relative overflow-hidden w-full px-4 lg:px-24 py-12 lg:py-20 flex justify-center border-b-[4px] border-dashed border-current/20"
+        style={`background-color: ${COLORS.red.light}; color: ${COLORS.red.dark};`}
+>
+    <!-- 主体内容容器 -->
+    <div class="w-full flex flex-col  lg:flex-row gap-8 lg:gap-16 relative z-10 items-stretch">
+
+        <!-- 右侧区域：核心自我介绍内容 -->
+        <div class="flex-1 w-full flex flex-col justify-center gap-8">
+
+            <!-- 问候语 & 标签 -->
+            <div class="flex flex-col gap-4">
+                <div class="flex items-center gap-4">
+                    <i class="fa-solid fa-hand-spock text-[2.5rem] lg:text-[3.5rem]"></i>
+                    <h3 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight">{t(introLabels.greeting)}</h3>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-3">
+                    {roleList.map((role) => (
+                            <span
+                                    class="text-sm lg:text-base font-bold opacity-90 inline-flex items-center gap-2 border-2 px-4 py-1.5 rounded-full shadow-[2px_2px_0px_currentColor]"
+                                    style={`border-color: ${COLORS.red.dark}; background-color: ${COLORS.red.light};`}
+                            >
+                            <span class="w-2 h-2 rounded-full inline-block" style={`background-color: ${COLORS.red.dark};`}></span>
+                                {role}
+                        </span>
+                    ))}
+                </div>
+            </div>
+
+            <!-- 自我介绍段落 -->
+            <div class="text-base sm:text-lg lg:text-xl font-medium leading-relaxed opacity-95 border-l-[4px] pl-5 py-1 flex flex-col gap-5" style={`border-color: ${COLORS.red.dark};`}>
+                <p>{t(introLabels.descTop)}</p>
+                <p>{t(introLabels.descBottom)}</p>
+            </div>
+
+            <!-- 数据/能力矩阵 -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-fire text-[2rem] lg:text-[2.5rem] opacity-90"></i>
+                    <div class="flex flex-col">
+                        <span class="text-xl lg:text-2xl font-black leading-none">{t(introLabels.stat1Title)}</span>
+                        {t(introLabels.stat1Desc) && (
+                                <span class="text-xs lg:text-sm font-bold opacity-80 mt-1">{t(introLabels.stat1Desc)}</span>
+                        )}
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-people-group text-[2rem] lg:text-[2.5rem] opacity-90"></i>
+                    <div class="flex flex-col">
+                        <span class="text-xl lg:text-2xl font-black leading-none">{t(introLabels.stat2Title)}</span>
+                        {t(introLabels.stat2Desc) && (
+                                <span class="text-xs lg:text-sm font-bold opacity-80 mt-1">{t(introLabels.stat2Desc)}</span>
+                        )}
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-hammer text-[2rem] lg:text-[2.5rem] opacity-90"></i>
+                    <div class="flex flex-col">
+                        <span class="text-xl lg:text-2xl font-black leading-none">{t(introLabels.stat3Title)}</span>
+                        {t(introLabels.stat3Desc) && (
+                                <span class="text-xs lg:text-sm font-bold opacity-80 mt-1">{t(introLabels.stat3Desc)}</span>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            <!-- 向下过渡：引入DND卡片模块 -->
+            <div class="mt-4   border-current/15">
+                <div
+                        class="group flex items-start lg:items-center gap-5 p-5 sm:p-8 rounded-2xl border-[3px] transition-all duration-300 hover:-translate-y-1 cursor-pointer shadow-[6px_6px_0px_currentColor] hover:shadow-[10px_10px_0px_currentColor]"
+                        style={`border-color: ${COLORS.red.dark}; background-color: ${COLORS.red.light};`}
+                >
+                    <i class="fa-solid fa-dice-d20 text-[2.5rem] lg:text-[3rem] fa-bounce " style={`color: ${COLORS.red.dark};`}></i>
+                    <div class="flex-1">
+                        <p class="text-base sm:text-lg font-bold italic opacity-95 leading-snug whitespace-pre-line">
+                            {t(introLabels.transition)}
+                        </p>
+                    </div>
+                    <!-- 桌面端向下跳动的箭头图标 -->
+                    <div
+                            class="hidden lg:flex items-center justify-center w-12 h-12 rounded-full border-[3px] opacity-80 group-hover:opacity-100 transition-opacity"
+                            style={`border-color: ${COLORS.red.dark};`}
+                    >
+                        <i class="fa-solid fa-arrow-down text-xl animate-pulse"></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<style>
+    /* 实现 Portfolio 第一部分的竖向大标题风格 */
+    .title-vertical-mode {
+        writing-mode: horizontal-tb;
+    }
+
+    @media (min-width: 1024px) {
+        .title-vertical-mode {
+            writing-mode: vertical-lr;
+            text-orientation: upright;
+        }
+    }
+</style>

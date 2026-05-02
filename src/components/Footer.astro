@@ -166,10 +166,12 @@ const NAV_LINKS = [
         }
 
         // 2. Listen for dynamic theme changes from BrickGame
+// 改成：
         const handleThemeChange = (e: Event) => {
             const customEvent = e as CustomEvent;
-            const { bg, text } = customEvent.detail;
-            if (bg && text) {
+            const { bg, text, source } = customEvent.detail;
+            // 只响应 BrickGame 的主题变化
+            if (source && source.id === 'skill-brick-section' && bg && text) {
                 updateFooterTheme(bg, text);
             }
         };

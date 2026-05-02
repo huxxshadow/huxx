@@ -1,0 +1,15 @@
+﻿---
+import Layout from "@/layouts/Base.astro";
+import PortfolioIntroSection from "@/components/portfolio/PortfolioIntroSection.astro";
+import GameProjectsSection from "@/components/portfolio/GameProjectsSection.astro";
+import TechnicalProjectsSection from "@/components/portfolio/TechnicalProjectsSection.astro";
+
+export const getStaticPaths = () =>
+    [{ params: { lang: 'en' } }, { params: { lang: 'ja' } }, { params: { lang: 'ko' } }, { params: { lang: 'zh' } }];
+---
+
+<Layout>
+    <PortfolioIntroSection />
+    <GameProjectsSection />
+    <TechnicalProjectsSection/>
+</Layout>

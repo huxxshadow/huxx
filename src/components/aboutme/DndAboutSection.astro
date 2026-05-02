@@ -118,44 +118,15 @@ const showSpellSubtitle = locale !== "en";
         data-theme-bg={COLORS.red.light}
         data-theme-text={COLORS.red.dark}
 >
-    <!-- ========== Full-Width D&D Header ========== -->
-    <div class="relative z-10 w-full mb-6 lg:mb-8">
-        <div class="flex items-center gap-3 mb-4">
-            <div class="h-0.5 flex-1 bg-current/20 rounded-full"></div>
-            <i class="fa-solid fa-dice-d20 text-sm opacity-30"></i>
-            <div class="h-0.5 w-8 bg-current/40 rounded-full"></div>
-            <i class="fa-solid fa-dragon text-sm opacity-30"></i>
-            <div class="h-0.5 w-8 bg-current/40 rounded-full"></div>
-            <i class="fa-solid fa-dice-d20 text-sm opacity-30"></i>
-            <div class="h-0.5 flex-1 bg-current/20 rounded-full"></div>
-        </div>
 
-        <div class="flex flex-col items-center gap-1">
-            <h2 class="text-5xl font-black tracking-widest uppercase opacity-90">
-                {t(dndLabels.sectionTitle)}
-            </h2>
-            <span class="text-base font-bold tracking-widest uppercase opacity-40">
-            {t(dndLabels.sectionSubtitle)}
-        </span>
-        </div>
 
-        <div class="flex items-center gap-3 mt-4">
-            <div class="h-0.5 flex-1 bg-current/20 rounded-full"></div>
-            <div class="w-2 h-2 rotate-45 border border-current/30 bg-current/10"></div>
-            <div class="h-px w-12 bg-current/30"></div>
-            <div class="w-1.5 h-1.5 rounded-full bg-current/40"></div>
-            <div class="h-px w-12 bg-current/30"></div>
-            <div class="w-2 h-2 rotate-45 border border-current/30 bg-current/10"></div>
-            <div class="h-0.5 flex-1 bg-current/20 rounded-full"></div>
-        </div>
-    </div>
-    <div class="flex flex-col lg:flex-row w-full">
+    <div class="flex flex-col px-8 lg:flex-row w-full">
         <!-- ========== Column 1: Character Card ========== -->
-        <div class="relative z-10 w-full lg:w-2/6 flex flex-col border-r-0 lg:border-r border-current/20 pr-0 lg:pr-6 mb-8 lg:mb-0">
+        <div class="relative z-10 w-full lg:w-2/6 flex flex-col  pr-0 lg:pr-6 mb-8 lg:mb-0">
 
             <div class="flex flex-col lg:flex-row gap-4 lg:min-h-[380px] lg:flex-shrink-0">
 
-                <div class="w-full lg:w-[300px] relative flex flex-col rounded-xl overflow-hidden border-2 border-current/30 bg-current/5 shadow-sm">
+                <div class="w-full lg:w-[300px] relative flex flex-col rounded-xl overflow-hidden border-2 border-current  shadow-[3px_3px_0px_currentColor]">
                     <div class="w-full text-center pt-4 pb-2">
                         <span class="text-5xl lg:text-5xl font-black opacity-90">{character.name}</span>
                     </div>
@@ -166,29 +137,29 @@ const showSpellSubtitle = locale !== "en";
 
                 <div class="flex-1 min-w-0 flex flex-col lg:h-full justify-between py-1">
 
-                    <div class="w-full text-center pb-2 border-b-2 border-current/20 mb-3">
-                        <span class="text-2xl font-black tracking-widest uppercase opacity-90">{character.alignment}</span>
+                    <div class="w-full text-center pb-2 border-b-3 border-current mb-3">
+                        <span class="text-2xl font-black tracking-widest opacity-90">{character.alignment}</span>
                     </div>
 
                     <div class="flex-1 flex flex-col mb-3">
-                        <div class="flex items-center justify-center gap-2 mb-2 text-xl font-bold opacity-80">
+                        <div class="flex items-center justify-center gap-2 mb-2 text-xl font-black opacity-80">
                             <i class="fa-solid fa-mars"></i>
                             <span>{character.race}</span>
                         </div>
 
-                        <div class="bg-current/5 rounded-md p-2">
-                            <table class="w-full text-left text-base">
+                        <div class="bg-current/5 rounded-md  p-2">
+                            <table class="w-full text-left text-base ">
                                 <tbody class="divide-y divide-current/10">
                                 {character.stats.map((stat) => (
                                         <tr class="hover:bg-current/10 transition-colors">
-                                            <td class="py-1 font-bold opacity-70">
+                                            <td class="py-1 font-black opacity-70">
                                                 {stat.label}
                                                 {stat.name && (
-                                                        <span class="text-xs font-normal opacity-50 ml-1">{stat.name}</span>
+                                                        <span class="text-sm font-bold opacity-80 ml-1">{stat.name}</span>
                                                 )}
                                             </td>
                                             <td class="font-black text-center">{stat.value}</td>
-                                            <td class="text-right font-bold">{stat.modifier}</td>
+                                            <td class="text-right font-black">{stat.modifier}</td>
                                         </tr>
                                 ))}
                                 </tbody>
@@ -200,12 +171,12 @@ const showSpellSubtitle = locale !== "en";
                         <div class="flex flex-col gap-4 w-full pr-4">
                             {character.classes.map((cls) => (
                                     <div class="flex flex-col gap-1.5">
-                                        <div class="flex justify-between items-end gap-2">
-                                            <span class:list={[classNameSize, "font-bold leading-none whitespace-nowrap"]}>{cls.name}</span>
-                                            <span class="text-xs font-black opacity-60 tracking-widest flex-shrink-0">{cls.level}</span>
+                                        <div class="flex justify-between items-end gap-2 ">
+                                            <span class:list={[classNameSize, "font-black leading-none whitespace-nowrap"]}>{cls.name}</span>
+                                            <span class="text-sm font-black opacity-70 tracking-widest flex-shrink-0">{cls.level}</span>
                                         </div>
-                                        <div class="w-full h-1 bg-current/10 rounded-full overflow-hidden">
-                                            <div class="h-full bg-current opacity-80" style={`width: ${cls.progress}%;`}></div>
+                                        <div class="w-full h-1.5  bg-current/10 rounded-full overflow-hidden">
+                                            <div class="h-full bg-current opacity-70" style={`width: ${cls.progress}%;`}></div>
                                         </div>
                                     </div>
                             ))}
@@ -215,27 +186,26 @@ const showSpellSubtitle = locale !== "en";
                 </div>
             </div>
 
-            <div class="mt-6 lg:flex-1 border border-current/30 rounded-xl bg-current/5 p-5 flex flex-col gap-4">
+            <div class="mt-6 lg:flex-1 border-2 border-current  shadow-[3px_3px_0px_currentColor]  rounded-xl  p-5 flex flex-col gap-4">
 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="flex flex-col gap-1">
                         <div class="flex items-center gap-1.5">
                             <i class="fa-solid fa-dice-d20 text-xs opacity-60"></i>
-                            <span class="text-sm font-black uppercase tracking-widest opacity-60">{t(dndLabels.hobbiesLabel)}</span>
+                            <span class="text-sm font-black uppercase tracking-widest opacity-70">{t(dndLabels.hobbiesLabel)}</span>
                         </div>
                         <span class="text-base font-bold leading-tight opacity-90 pl-1">{character.hobbies}</span>
                     </div>
 
                     <div class="flex flex-col gap-1">
                         <div class="flex items-center gap-1.5">
-                            <i class="fa-solid fa-heart text-xs opacity-60"></i>
+                            <i class="fa-solid fa-heart text-xs opacity-70"></i>
                             <span class="text-sm font-black uppercase tracking-widest opacity-60">{t(dndLabels.likesLabel)}</span>
                         </div>
                         <span class="text-base font-bold leading-tight opacity-90 pl-1">{character.likes}</span>
                     </div>
                 </div>
 
-                <div class="h-px w-full bg-current/10"></div>
 
                 <div class="flex flex-col gap-1">
                     <div class="flex items-center gap-1.5">
@@ -244,7 +214,7 @@ const showSpellSubtitle = locale !== "en";
                     </div>
                     <div class="flex flex-wrap items-center gap-2 mt-0.5 pl-1 opacity-90">
                         {character.favMusic.map((m) => (
-                                <span class="text-base font-medium underline decoration-current/30 underline-offset-4">{m}</span>
+                                <span class="text-base font-bold underline decoration-current/30 underline-offset-4">{m}</span>
                         ))}
                     </div>
                 </div>
@@ -256,26 +226,26 @@ const showSpellSubtitle = locale !== "en";
                     </div>
                     <div class="flex flex-wrap items-center gap-2 mt-0.5 pl-1 opacity-90">
                         {character.favAnime.map((a) => (
-                                <span class="text-base font-medium underline decoration-current/30 underline-offset-4">{a}</span>
+                                <span class="text-base font-bold underline decoration-current/30 underline-offset-4">{a}</span>
                         ))}
                     </div>
                 </div>
 
             </div>
 
-            <div class="lg:flex-1 mt-6 border border-current/30 rounded-xl bg-current/5 p-5 flex flex-col gap-4">
-                <div class="flex flex-col gap-1">
-                    <p class="text-lg font-bold leading-tight pl-1">
+            <div class="lg:flex-1 mt-6 border-2 border-current  shadow-[3px_3px_0px_currentColor] rounded-xl  p-5 flex flex-col gap-4">
+                <div class="flex  flex-col gap-1">
+                    <p class="text-lg font-black leading-tight pl-1">
                         {character.personalityTitle}
                     </p>
-                    <p class="text-xs leading-relaxed opacity-80 pl-1 mt-1">{character.personalityDesc1}</p>
-                    <p class="text-xs leading-relaxed opacity-80 pl-1">{character.personalityDesc2}</p>
+                    <p class="text-base font-bold leading-relaxed opacity-80 pl-1 mt-1">{character.personalityDesc1}</p>
+                    <p class="text-sm leading-relaxed  opacity-80 pl-1">{character.personalityDesc2}</p>
                 </div>
 
                 <div class="h-px w-full bg-current/10"></div>
 
                 <div class="flex flex-col gap-1">
-                    <p class="text-sm italic font-medium leading-relaxed border-l-2 border-current/30 pl-3 py-0.5 opacity-90">
+                    <p class="text-sm italic font-medium leading-relaxed   py-0.5 opacity-90">
                         {character.quote}
                     </p>
                 </div>
@@ -291,7 +261,7 @@ const showSpellSubtitle = locale !== "en";
                 <i class="fa-solid fa-crosshairs"></i> {t(dndLabels.equipmentHeader)}
             </h3>
 
-            <div class="flex-1 border border-current/30 rounded-xl bg-current/5 p-4 mb-6 shadow-inner relative hidden lg:flex flex-col">
+            <div class="flex-1  p-4 mb-6  relative hidden lg:flex flex-col">
                 <div class="flex-1 grid grid-cols-5 gap-y-3 gap-x-2 relative z-10" style="grid-auto-rows: 1fr;">
                     {equipments.map((eq) => (
                             <div class:list={[
@@ -299,7 +269,7 @@ const showSpellSubtitle = locale !== "en";
                                 eq.mt && "translate-y-4",
                                 "group relative hover:z-50"
                             ]}>
-                                <div class="relative w-full h-full border-2 border-current/20 rounded bg-current/5 flex items-center justify-center hover:bg-current/10 hover:border-current/60 transition-all cursor-help">
+                                <div class="relative w-full h-full shadow-[1px_1px_0px_currentColor] border-2 border-current rounded flex items-center justify-center hover:bg-current/10 hover:border-current/60 transition-all cursor-help">
                                     <i class:list={[eq.icon, "text-lg opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all"]} />
 
                                     <div
@@ -322,24 +292,22 @@ const showSpellSubtitle = locale !== "en";
                 </div>
             </div>
 
-            <h3 class="text-xl font-bold mb-4 flex items-center gap-2 opacity-90">
+            <h3 class="text-xl font-black mb-4 flex items-center gap-2 opacity-90">
                 <i class="fa-solid fa-wand-magic-sparkles"></i> {t(dndLabels.traitsHeader)}
             </h3>
 
-            <div class="border border-current/30 rounded-xl bg-current/5 p-5 flex flex-col gap-5">
-                <div class="flex flex-col gap-4">
-                    {traits.map((trait) => (
-                            <div class="flex items-start gap-3 group">
-                                <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-current/10 flex items-center justify-center group-hover:bg-current/20 transition-colors">
-                                    <i class:list={[trait.icon, "text-xl"]} />
-                                </div>
-                                <div class="flex flex-col">
-                                    <span class="font-bold text-base leading-none mb-1.5">{trait.name}</span>
-                                    <p class="text-xs opacity-70 leading-relaxed">{trait.description}</p>
-                                </div>
+            <div class="flex flex-col gap-4">
+                {traits.map((trait) => (
+                        <div class="border-2 border-current  shadow-[3px_3px_0px_currentColor] rounded-xl p-4 flex items-start gap-3 group">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-current/10 flex items-center justify-center group-hover:bg-current/20 transition-colors">
+                                <i class:list={[trait.icon, "text-xl"]} />
                             </div>
-                    ))}
-                </div>
+                            <div class="flex flex-col">
+                                <span class="font-black text-base leading-none mb-1.5">{trait.name}</span>
+                                <p class="text-sm opacity-70 leading-relaxed">{trait.description}</p>
+                            </div>
+                        </div>
+                ))}
             </div>
 
         </div>
@@ -349,12 +317,12 @@ const showSpellSubtitle = locale !== "en";
 
             <!-- Feats Table -->
             <div class="flex flex-col">
-                <h3 class="text-xl font-bold mb-4 flex items-center gap-2 opacity-90">
+                <h3 class="text-xl font-black mb-4 flex items-center gap-2 opacity-90">
                     <i class="fa-solid fa-dice-d20"></i> {t(dndLabels.featsHeader)}
                 </h3>
-                <div class="flex border border-current/20 rounded-xl overflow-hidden bg-current/5">
+                <div class="flex border-2 border-current  shadow-[3px_3px_0px_currentColor] rounded-xl overflow-hidden">
                     <table class="w-1/2 text-left text-sm font-bold">
-                        <tbody class="divide-y divide-current/10">
+                        <tbody class="divide-y-2 divide-current">
                         {skillsLeft.map((s) => (
                                 <tr>
                                     <td class="py-2.5 pl-4 pr-2 font-black text-base w-12 text-right">{s.modifier}</td>
@@ -363,9 +331,11 @@ const showSpellSubtitle = locale !== "en";
                         ))}
                         </tbody>
                     </table>
-                    <div class="w-px bg-current/20"></div>
+
+                    <div class="border-l-2 border-current"></div>
+
                     <table class="w-1/2 text-left text-sm font-bold">
-                        <tbody class="divide-y divide-current/10">
+                        <tbody class="divide-y-2 divide-current">
                         {skillsRight.map((s) => (
                                 <tr>
                                     <td class="py-2.5 pl-4 pr-2 font-black text-base w-12 text-right">{s.modifier}</td>
@@ -377,80 +347,65 @@ const showSpellSubtitle = locale !== "en";
                 </div>
             </div>
 
-            <!-- Spell Book -->
             <div class="flex flex-col flex-1">
-                <h3 class="text-xl font-bold mb-4 flex items-center gap-2 opacity-90">
+                <h3 class="text-xl font-black mb-4 flex items-center gap-2 opacity-90">
                     <i class="fa-solid fa-wand-sparkles"></i> {t(dndLabels.grimoireHeader)}
                 </h3>
-                <div class="border border-current/20 rounded-xl overflow-hidden bg-current/5 flex-1 flex flex-col">
 
-                    <!-- Spell table header -->
-                    <div class="flex items-center justify-between px-4 py-2 bg-current/10 border-b border-current/15">
-                        <span class="text-sm font-black uppercase tracking-widest opacity-50">{t(dndLabels.spellLabel)}</span>
-                        <span class="text-sm font-black uppercase tracking-widest opacity-50">{t(dndLabels.slotsLabel)}</span>
-                    </div>
+                <div class="flex-1 flex flex-col gap-4">
+                    {spellBook.map((level) => (
+                            <div class="flex flex-col gap-2"> <div class="flex items-center justify-between px-3 py-2 border-2 border-current  shadow-[3px_3px_0px_currentColor] rounded-lg relative z-10">
+                                <div class="flex items-center gap-2 min-w-0">
+                            <span class="text-[10px] font-black uppercase tracking-widest opacity-50 whitespace-nowrap">
+                                {t(dndLabels.spellLabel)}
+                            </span>
+                                    <span class="text-sm font-black opacity-90 truncate">
+                                ▸ {level.label}
+                            </span>
+                                </div>
 
-                    <table class="w-full text-left text-sm flex-1">
-                        <tbody class="divide-y divide-current/10">
+                                {level.totalSlots > 0 && (
+                                        <div class="flex items-center gap-1.5 flex-shrink-0">
+                                    <span class="text-[10px] font-black uppercase tracking-widest opacity-40 whitespace-nowrap">
+                                        {t(dndLabels.slotsLabel)}
+                                    </span>
+                                            <span class="inline-flex gap-1">
+                                        {Array.from({ length: level.totalSlots }).map((_, i) => (
+                                                <span
+                                                        class:list={[
+                                                            "w-2 h-2 rounded-full bg-current inline-block",
+                                                            i < level.filledSlots ? "opacity-70" : "opacity-20",
+                                                        ]}
+                                                ></span>
+                                        ))}
+                                    </span>
+                                        </div>
+                                )}
+                            </div>
 
-                        {spellBook.map((level) => (
-                                <>
-                                    {/* Level Header */}
-                                    <tr class="bg-current/5">
-                                        <td colspan={level.totalSlots > 0 ? "3" : "4"} class="py-1.5 px-4">
-                                            <span class="text-[11px] font-black uppercase tracking-widest opacity-40">▸ {level.label}</span>
-                                        </td>
-                                        {level.totalSlots > 0 && (
-                                                <td class="py-1.5 pr-4 text-right">
-                                                <span class="inline-flex gap-1">
-                                                    {Array.from({ length: level.totalSlots }).map((_, i) => (
-                                                            <span class:list={[
-                                                                "w-2 h-2 rounded-full bg-current inline-block",
-                                                                i < level.filledSlots ? "opacity-70" : "opacity-20",
-                                                            ]}></span>
-                                                    ))}
+                                <div class="grid grid-cols-1 sm:grid-cols-2 ml-2 sm:ml-3">
+                                    {level.spells.map((sp) => (
+                                            <div class=" flex items-center gap-2  py-2 hover:bg-current/10 transition-colors min-w-0">
+
+                                                <div class="flex-shrink-0 w-5 h-5 rounded bg-current/10 flex items-center justify-center">
+                                                    <i class:list={[sp.icon, "text-[10px] opacity-70"]} />
+                                                </div>
+
+                                                <div class="min-w-0 flex-1 truncate leading-none">
+                                                    <span class="text-sm font-black opacity-90">{sp.name}</span>
+                                                    {showSpellSubtitle && (
+                                                            <span class="text-xs font-normal opacity-60 ml-1">
+                                                    {sp.subtitle}
                                                 </span>
-                                                </td>
-                                        )}
-                                    </tr>
-
-                                    {/* Spell Rows (2 spells per row) */}
-                                    {Array.from({ length: Math.ceil(level.spells.length / 2) }).map((_, rowIdx) => {
-                                        const sp1 = level.spells[rowIdx * 2];
-                                        const sp2 = level.spells[rowIdx * 2 + 1];
-                                        return (
-                                                <tr class="hover:bg-current/10 transition-colors">
-                                                    <td class="py-2 pl-4 pr-2 w-8"><i class:list={[sp1.icon, "text-xs opacity-60"]} /></td>
-                                                    <td class="py-2 font-bold">
-                                                        {sp1.name}
-                                                        {showSpellSubtitle && (
-                                                                <span class="text-xs font-normal opacity-50 ml-1">{sp1.subtitle}</span>
-                                                        )}
-                                                    </td>
-                                                    {sp2 ? (
-                                                            <>
-                                                                <td class="py-2 pr-2 w-8"><i class:list={[sp2.icon, "text-xs opacity-60"]} /></td>
-                                                                <td class="py-2 font-bold pr-4">
-                                                                    {sp2.name}
-                                                                    {showSpellSubtitle && (
-                                                                            <span class="text-xs font-normal opacity-50 ml-1">{sp2.subtitle}</span>
-                                                                    )}
-                                                                </td>
-                                                            </>
-                                                    ) : (
-                                                            <>
-                                                                <td class="py-2 pr-2 w-8"></td>
-                                                                <td class="py-2 pr-4"></td>
-                                                            </>
                                                     )}
-                                                </tr>
-                                        );
-                                    })}
-                                </>
-                        ))}
+                                                </div>
 
-                        </tbody>
-                    </table>
+                                            </div>
+                                    ))}
+                                </div>
+
+                            </div>
+                    ))}
                 </div>
             </div>
 
@@ -461,72 +416,68 @@ const showSpellSubtitle = locale !== "en";
 
             <!-- Quest Log -->
             <div class="flex flex-col gap-3">
-                <h3 class="text-xl font-bold flex items-center gap-2 opacity-90">
+                <h3 class="text-xl font-black flex items-center gap-2 opacity-90">
                     <i class="fa-solid fa-list-check"></i> {t(dndLabels.questsHeader)}
                 </h3>
 
                 <!-- Main Quest -->
-                <div class="border border-current/20 rounded-lg px-4 py-3 bg-current/5 flex flex-col gap-2">
+                <div class="border-2 border-current  shadow-[3px_3px_0px_currentColor] rounded-lg px-4 py-3 flex flex-col gap-2">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <i class:list={[mainQuest.icon, "text-xs opacity-50"]}></i>
                             <span class="font-black text-base">{mainQuest.title}</span>
                         </div>
-                        <span class="text-sm font-black opacity-40 border border-current/20 px-1.5 py-0.5 rounded">{t(dndLabels.mainQuestTag)}</span>
+                        <span class="text-base font-black opacity-60 border border-current/20 px-1.5 py-0.5 rounded">{t(dndLabels.mainQuestTag)}</span>
                     </div>
-                    <p class="text-xs opacity-70 leading-relaxed">{mainQuest.description}</p>
+                    <p class="text-sm opacity-70 leading-relaxed">{mainQuest.description}</p>
                     <div class="flex items-center gap-2">
                         <div class="flex-1 bg-current/10 rounded-full h-1.5 overflow-hidden">
-                            <div class="bg-current h-full rounded-full opacity-60" style={`width: ${mainQuest.progress}%`}></div>
+                            <div class="bg-current font-bold h-full rounded-full opacity-80" style={`width: ${mainQuest.progress}%`}></div>
                         </div>
-                        <span class="text-xs font-black opacity-40">{mainQuest.progress}%</span>
+                        <span class="text-xs font-black opacity-60">{mainQuest.progress}%</span>
                     </div>
                 </div>
 
                 <!-- Side Quests -->
                 {sideQuests.map((sq) => (
-                        <div class="border border-current/15 rounded-lg px-4 py-3 bg-current/5 flex flex-col gap-2">
+                        <div class="border-2 border-current shadow-[3px_3px_0px_currentColor] rounded-lg px-4 py-3 flex flex-col gap-2">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2">
                                     <i class:list={[sq.icon, "text-xs opacity-50"]}></i>
                                     <span class="font-bold text-sm">{sq.title}</span>
                                 </div>
-                                <span class="text-xs font-black opacity-40">{sq.progress}%</span>
+                                <span class="text-xs font-black opacity-60">{sq.progress}%</span>
                             </div>
                         </div>
                 ))}
             </div>
 
-            <!-- Adventure Timeline -->
             <div class="flex flex-col gap-4 mt-2">
-                <h3 class="text-xl font-bold flex items-center gap-2 opacity-90">
-                    <i class="fa-solid fa-timeline"></i> {t(dndLabels.adventureHeader)}
+                <h3 class="text-xl font-black flex items-center gap-2 opacity-90">
+                    <i class="fa-solid fa-scroll"></i> {t(dndLabels.adventureHeader)}
                 </h3>
-                <div class="flex items-center gap-2">
-                    <div class="h-px bg-current/20 flex-1"></div>
-                </div>
 
-                <div class="relative pl-5 border-l-2 border-current/15 flex flex-col gap-0">
-
+                <div class="flex flex-col gap-4">
                     {timeline.map((entry) => (
-                            <div class:list={["relative group", entry.isNow ? "" : "pb-6"]}>
+                            <div class="flex items-start gap-3 relative group">
                                 <div class:list={[
-                                    "absolute -left-[calc(1.25rem+5px)] top-0.5 w-2.5 h-2.5 rounded-full",
-                                    entry.isNow
-                                        ? "bg-current ring-2 ring-current/20 animate-pulse"
-                                        : "bg-current/80 ring-2 ring-current/10 group-hover:ring-current/30 transition-all",
+                                    "w-1.5 rounded-full flex-shrink-0 h-full absolute left-0 top-0 bottom-0",
+                                    entry.isNow ? "bg-current animate-pulse" : "bg-current/20 group-hover:bg-current/50 transition-colors"
                                 ]}></div>
-                                <span class="text-[10px] font-black tracking-widest opacity-40">{entry.year}</span>
-                                <p class="text-sm font-bold leading-tight mt-0.5">
-                                    {entry.title}
-                                    {entry.isNow && (
-                                            <span class="inline-block w-1 h-3.5 bg-current opacity-50 animate-pulse ml-0.5 align-text-bottom"></span>
-                                    )}
-                                </p>
-                                <p class="text-[11px] opacity-60 leading-relaxed mt-0.5">{entry.description}</p>
+
+                                <div class="flex flex-col pl-4 w-full">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="text-xs font-black tracking-widest opacity-50 uppercase">{entry.year}</span>
+                                        <div class="h-px bg-current/20 flex-1"></div>
+                                    </div>
+
+                                    <p class="text-base font-bold leading-tight">
+                                        {entry.title}
+                                    </p>
+                                    <p class="text-sm opacity-70 leading-relaxed mt-1">{entry.description}</p>
+                                </div>
                             </div>
                     ))}
-
                 </div>
             </div>
 

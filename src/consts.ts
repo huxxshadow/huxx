@@ -9,7 +9,10 @@ export const SITE_TITLE: string | Multilingual = {
 };
 
 export const SITE_DESCRIPTION: string | Multilingual = {
-    en: "ToDo",
+    en: "A portfolio of game design, game development, technical art, and full-stack projects by huxx.",
+    zh: "huxx 的作品集网站，展示游戏设计、游戏开发、技术美术与全栈开发等方向的项目实践。",
+    ja: "huxx のポートフォリオサイト。ゲームデザイン、ゲーム開発、テクニカルアート、フルスタック開発に関するプロジェクトを紹介しています。",
+    ko: "huxx의 포트폴리오 사이트로, 게임 디자인, 게임 개발, 테크니컬 아트, 풀스택 개발 프로젝트를 소개합니다."
 };
 
 export const X_ACCOUNT: string | Multilingual = "@huxxshadow";

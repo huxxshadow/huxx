@@ -5,6 +5,7 @@ import { navTranslations } from "@/i18n/components/Header_i18";
 
 import DndAboutSection from "@/components/aboutme/DndAboutSection.astro";
 import GameJourneySection from "@/components/aboutme/GameJourneySection.astro";
+import DndIntroSection from "@/components/aboutme/DndIntroSection.astro";
 
 const locale = Astro.currentLocale as Lang;
 const t = useTranslations(locale);
@@ -16,6 +17,7 @@ export const getStaticPaths = () =>
 ---
 
 <Layout title={t(navTranslations.about)} description="About Me">
+    <DndIntroSection />
     <DndAboutSection />
     <GameJourneySection />
 </Layout>

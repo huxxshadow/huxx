@@ -1,0 +1,205 @@
+﻿---
+// src/components/portfolio/GameProjectsSection.astro
+import { COLORS } from "@/consts.ts";
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import type { Lang } from "@/i18n.ts";
+import { useTranslations } from "@/i18n.ts";
+import { gameProjectsLabels } from "@/i18n/components/portfolio/GameProjectsSection_i18.ts";
+
+const allProjects = await getCollection("projects");
+// 只筛选 category 为 "game" 的项目，并按 order 倒序排列
+const orderedProjects = allProjects
+    .filter((p) => p.data.category === "game")
+    .sort((a, b) => b.data.order - a.data.order);
+
+const currentLang = (Astro.currentLocale || "en") as Lang;
+const t = useTranslations(currentLang);
+
+// 默认主题色（如果项目没有自定义颜色）
+const defaultTheme = COLORS.green;
+
+/**
+ * 根据卡片总数计算每行的数量分布
+ * 规则：每行最多 4 张，避免出现只有 1 张的尾行
+ */
+function getRowLayout(total: number): number[] {
+    if (total <= 0) return [];
+    if (total <= 4) return [total];
+
+    const rows: number[] = [];
+    let remaining = total;
+
+    while (remaining > 0) {
+        if (remaining <= 4) {
+            rows.push(remaining);
+            remaining = 0;
+        } else if (remaining === 5) {
+            rows.push(3);
+            rows.push(2);
+            remaining = 0;
+        } else {
+            rows.push(4);
+            remaining -= 4;
+        }
+    }
+
+    return rows;
+}
+
+const rowLayout = getRowLayout(orderedProjects.length);
+
+let cardIndex = 0;
+const projectRows = rowLayout.map((count) => {
+    const row = orderedProjects.slice(cardIndex, cardIndex + count);
+    cardIndex += count;
+    return row;
+});
+
+function getGridClasses(count: number): string {
+    if (count === 1) return "grid grid-cols-1 gap-6 lg:gap-8";
+    if (count === 2) return "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-6 lg:gap-8";
+    if (count === 3) return "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8";
+    return "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-8";
+}
+
+/**
+ * 获取项目的主题色
+ */
+function getProjectColors(project: typeof orderedProjects[number]) {
+    const textColor = project.data.colorText || defaultTheme.dark;
+    const bgColor = project.data.colorBackground || defaultTheme.light;
+    return { text: textColor, bg: bgColor };
+}
+---
+
+<section
+        class="relative overflow-hidden w-full px-4 sm:px-8 py-24"
+        style={`background-color: ${defaultTheme.light}; color: ${defaultTheme.dark};`}
+        data-theme-bg={defaultTheme.light}
+        data-theme-text={defaultTheme.dark}
+>
+    {/* 背景装饰元素 */}
+    <div class="absolute -top-20 -right-24 w-96 lg:w-[40rem] h-96 lg:h-[40rem] rounded-full bg-current opacity-[0.04] pointer-events-none z-0"></div>
+    <div class="absolute top-2/3 -left-10 w-full h-72 -translate-y-1/2 rotate-12 bg-current opacity-[0.03] pointer-events-none z-0 rounded-[80px]"></div>
+    <div class="absolute bottom-10 left-1/4 lg:left-1/3 w-48 lg:w-80 h-48 lg:h-80 -rotate-12 bg-current opacity-[0.04] pointer-events-none z-0 rounded-3xl"></div>
+
+    <div class="w-full relative z-10">
+
+        {/* ===== 标题：移动端正常文档流水平显示，桌面端绝对定位竖排 ===== */}
+        <div class="w-full flex items-center justify-center mb-8 lg:mb-0 lg:absolute lg:top-0 lg:bottom-0 lg:left-0 lg:items-center lg:w-auto">
+            <h2
+                    class="title-vertical-mode flex lg:block w-full lg:w-auto items-center justify-center px-8 py-6 font-black text-4xl sm:text-5xl lg:text-6xl border-[3px] rounded-xl select-none tracking-[0.1em] lg:tracking-[0.35em] uppercase lg:text-center"
+                    style={`background-color: ${defaultTheme.light}; color: ${defaultTheme.dark}; border-color: ${defaultTheme.dark}; box-shadow: 6px 6px 0px ${defaultTheme.dark};`}
+            >
+                {t(gameProjectsLabels.sectionTitle)}
+            </h2>
+        </div>
+
+        {/* ===== 卡片区域：grid 响应式布局 ===== */}
+        <div class="lg:pl-48">
+            <div class="flex flex-col p-4 sm:p-6 lg:p-12 gap-6 lg:gap-8">
+                {projectRows.map((row) => (
+                        <div class={getGridClasses(row.length)}>
+                            {row.map((project) => {
+                                const colors = getProjectColors(project);
+                                const displayTitle = project.data.title[currentLang] || project.data.title.en || project.data.title.zh || project.id;
+                                const displayDesc = project.data.desc[currentLang] || project.data.desc.en || project.data.desc.zh || "";
+                                const displayRoles = project.data.roles[currentLang] || project.data.roles.en || project.data.roles.zh || [];
+                                const displayTags = project.data.tags[currentLang] || project.data.tags.en || project.data.tags.zh || [];
+
+                                return (
+                                        <div
+                                                class="game-project-card group flex flex-col rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 border-2"
+                                                style={`--theme: ${colors.text}; border-color: ${colors.text}; background-color: ${colors.bg};`}
+                                        >
+                                            {/* Cover Image */}
+                                            {project.data.coverImage && (
+                                                    <div
+                                                            class="relative w-full aspect-video border-b-2 overflow-hidden"
+                                                            style={`border-color: ${colors.text}; background-color: ${colors.bg};`}
+                                                    >
+                                                        <Image
+                                                                src={project.data.coverImage}
+                                                                alt={displayTitle}
+                                                                class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                                                loading="lazy"
+                                                                decoding="async"
+                                                        />
+
+                                                    </div>
+                                            )}
+
+                                            {/* Card Content */}
+                                            <div
+                                                    class="flex-1 p-5 sm:p-6 flex flex-col"
+                                                    style={`background-color: ${colors.bg}; color: ${colors.text};`}
+                                            >
+                                                <h3 class="font-black text-xl sm:text-2xl lg:text-3xl leading-tight mb-4">
+                                                    {displayTitle}
+                                                </h3>
+
+                                                <div class="flex flex-wrap gap-2 mb-4">
+                                                    {/* Roles */}
+                                                    {displayRoles.map((role: string) => (
+                                                            <span
+                                                                    class="text-sm font-black px-3 py-1 border-2 rounded-lg"
+                                                                    style={`background-color: ${colors.text}; color: ${colors.bg}; border-color: ${colors.text};`}
+                                                            >
+                                                    <i class="fa-solid fa-user-gear mr-1"></i> {role}
+                                                </span>
+                                                    ))}
+
+                                                    {/* tags / Tech Stack */}
+                                                    {displayTags.map((field: string) => (
+                                                            <span
+                                                                    class="text-sm font-bold px-3 py-1 border-2 rounded-lg bg-transparent backdrop-blur-sm"
+                                                                    style={`border-color: ${colors.text}; color: ${colors.text};`}
+                                                            >
+                                                    {field}
+                                                </span>
+                                                    ))}
+                                                </div>
+
+                                                <p class="text-base lg:text-lg font-bold opacity-90 leading-relaxed mb-8 flex-1">
+                                                    {displayDesc}
+                                                </p>
+
+                                                <button
+                                                        class="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-black text-base lg:text-lg border-2 active:translate-y-1 transition-transform cursor-pointer"
+                                                        style={`background-color: ${colors.text}; color: ${colors.bg}; border-color: ${colors.text};`}
+                                                >
+                                                    <span>{t(gameProjectsLabels.exploreButton)}</span>
+                                                    <i class="fa-solid fa-arrow-right"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                );
+                            })}
+                        </div>
+                ))}
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<style>
+    .title-vertical-mode {
+        writing-mode: horizontal-tb;
+    }
+
+    @media (min-width: 1024px) {
+        .title-vertical-mode {
+            writing-mode: vertical-lr;
+            text-orientation: upright;
+        }
+    }
+
+    .game-project-card {
+        box-shadow: 8px 8px 0px color(from var(--theme) srgb r g b / 1);
+    }
+    .game-project-card:hover {
+        box-shadow: 12px 12px 0px color(from var(--theme) srgb r g b / 1);
+    }
+</style>

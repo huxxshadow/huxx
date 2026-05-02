@@ -1,0 +1,88 @@
+﻿---
+import { COLORS } from "@/consts";
+import { useTranslations, type Lang } from "@/i18n";
+import { portfolioIntroSectionLabels } from "@/i18n/components/portfolio/PortfolioIntroSection_i18";
+
+const locale = (Astro.currentLocale as Lang) || "en";
+const t = useTranslations(locale);
+
+const tags = [
+    t(portfolioIntroSectionLabels.tagGameDesign),
+    t(portfolioIntroSectionLabels.tagGameDevelopment),
+    t(portfolioIntroSectionLabels.tagTechnicalArt),
+];
+---
+
+<section
+        class="relative overflow-hidden w-full px-4 py-24 flex flex-col items-center "
+        style={`background-color: ${COLORS.yellow.light}; color: ${COLORS.yellow.dark};`}
+        data-theme-bg={COLORS.yellow.light}
+        data-theme-text={COLORS.yellow.dark}
+>
+    <div class="absolute -top-20 -right-24 w-[25rem] lg:w-[40rem] h-[25rem] lg:h-[40rem] rounded-full bg-current opacity-[0.04] pointer-events-none z-0"></div>
+    <div class="absolute top-2/3 -left-10 w-[120%] h-72 -translate-y-1/2 rotate-12 bg-current opacity-[0.03] pointer-events-none z-0 rounded-[80px]"></div>
+    <div class="absolute bottom-10 left-1/4 lg:left-1/3 w-48 lg:w-80 h-48 lg:h-80 -rotate-12 bg-current opacity-[0.04] pointer-events-none z-0 rounded-3xl"></div>
+
+    <div class="relative z-10 w-full min-h-[20vh] flex flex-col justify-center max-w-7xl">
+        <div class="w-full flex flex-col lg:flex-row gap-10 lg:gap-20 items-center lg:items-start">
+            <div class="w-full lg:w-5/12 flex flex-col justify-center font-sans text-center lg:text-left">
+                <h1 class="text-[4.5rem] lg:text-[7rem] font-black leading-[0.85] tracking-tighter mb-6">
+                    {t(portfolioIntroSectionLabels.title)}
+                </h1>
+
+                <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-6">
+                    {tags.map((tag) => (
+                            <span
+                                    class="text-sm lg:text-base font-bold opacity-90 inline-flex items-center gap-2 border-2 px-4 py-1.5 rounded-full shadow-[2px_2px_0px_currentColor]"
+                                    style={`border-color: ${COLORS.yellow.dark}; background-color: ${COLORS.yellow.light};`}
+                            >
+              <span
+                      class="w-2 h-2 rounded-full inline-block"
+                      style={`background-color: ${COLORS.yellow.dark};`}
+              ></span>
+                                {tag}
+            </span>
+                    ))}
+                </div>
+            </div>
+
+            <div class="w-full lg:w-7/12 flex flex-col justify-center pt-2 lg:pt-8 gap-6 lg:gap-8 text-center lg:text-left">
+                <div class="w-full  text-5xl font-black">
+                    {t(portfolioIntroSectionLabels.header)}
+                </div>
+
+                <div
+                        class="text-base sm:text-lg lg:text-xl font-medium leading-relaxed opacity-95 lg:border-l-[4px] pl-5 py-1 text-center lg:text-left"
+                        style={`border-color: ${COLORS.yellow.dark};`}
+                >
+                    <p class="whitespace-pre-line">{t(portfolioIntroSectionLabels.description)}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-16 border-current/15">
+            <div
+                    class="group flex items-start lg:items-center gap-5 p-5 sm:p-8 rounded-2xl border-[3px] transition-all duration-300 hover:-translate-y-1 cursor-pointer shadow-[6px_6px_0px_currentColor] hover:shadow-[10px_10px_0px_currentColor]"
+                    style={`border-color: ${COLORS.yellow.dark}; background-color: ${COLORS.yellow.light};`}
+            >
+                <i
+                        class="fa-solid fa-layer-group text-[2.5rem] lg:text-[3rem]"
+                        style={`color: ${COLORS.yellow.dark};`}
+                ></i>
+
+                <div class="flex-1">
+                    <p class="text-base sm:text-xl font-bold opacity-95 leading-snug whitespace-pre-line text-left">
+                        {t(portfolioIntroSectionLabels.ctaHint)}
+                    </p>
+                </div>
+
+                <div
+                        class="hidden lg:flex items-center justify-center w-12 h-12 rounded-full border-[3px] opacity-80 group-hover:opacity-100 transition-opacity"
+                        style={`border-color: ${COLORS.yellow.dark};`}
+                >
+                    <i class="fa-solid fa-arrow-down text-xl animate-pulse"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,603 @@
+[
+  {
+    "id": "game-project-empty-throne",
+    "order": 1,
+    "category": "game",
+    "title": {
+      "en": "Empty Throne",
+      "zh": "空王座 (Empty Throne)",
+      "ja": "エンプティ・スローン (Empty Throne)",
+      "ko": "엠프티 스론 (Empty Throne)"
+    },
+    "roles": {
+      "en": [
+        "Lead Developer",
+        "Designer"
+      ],
+      "zh": [
+        "主程序",
+        "游戏策划"
+      ],
+      "ja": [
+        "リードデベロッパー",
+        "メインデザイナー"
+      ],
+      "ko": [
+        "리드 개발자",
+        "메인 디자이너"
+      ]
+    },
+    "desc": {
+      "en": "My first team-developed indie game officially released on Steam. Empty Throne is a dark fairytale puzzle music game that blends point-and-click investigation with rhythm gameplay.",
+      "zh": "首款团队开发并正式上架 Steam 的独立游戏。《空王座》是一款黑暗童话风格的解谜音乐游戏，将点击式解谜与节奏音游相结合。",
+      "ja": "チームで開発し、Steamで正式リリースした初のインディーゲームです。『Empty Throne』は、ダーク童話の世界観をベースに、ポイント＆クリック型の謎解きとリズムゲーム要素を組み合わせた作品です。",
+      "ko": "팀으로 개발하여 Steam에 정식 출시한 첫 번째 인디 게임입니다. Empty Throne은 어두운 동화풍의 퍼즐 음악 게임으로, 포인트 앤 클릭 방식의 탐색과 리듬 게임플레이를 결합한 작품입니다."
+    },
+    "tags": {
+      "en": [
+        "Unity",
+        "Narrative Design",
+        "Rhythm Game Design",
+        "Steam",
+        "Windows"
+      ],
+      "zh": [
+        "Unity",
+        "叙事设计",
+        "音游设计",
+        "Steam",
+        "Windows"
+      ],
+      "ja": [
+        "Unity",
+        "ナラティブデザイン",
+        "リズムゲームデザイン",
+        "Steam",
+        "Windows"
+      ],
+      "ko": [
+        "Unity",
+        "내러티브 디자인",
+        "리듬 게임 디자인",
+        "Steam",
+        "Windows"
+      ]
+    },
+    "coverImage": "../assets/projects/EmptyThornePoster.webp"
+  },
+  {
+    "id": "game-project-eel-on-mask",
+    "order": 2,
+    "category": "game",
+    "title": {
+      "en": "Eel On Mask",
+      "zh": "鳗! (Eel On Mask)",
+      "ja": "イール・オン・マスク (Eel On Mask)",
+      "ko": "일 온 마스크 (Eel On Mask)"
+    },
+    "roles": {
+      "en": [
+        "Team Leader",
+        "Lead Developer",
+        "Designer"
+      ],
+      "zh": [
+        "队长",
+        "主程序",
+        "游戏策划"
+      ],
+      "ja": [
+        "チームリーダー",
+        "リードデベロッパー",
+        "ゲームデザイナー"
+      ],
+      "ko": [
+        "팀 리더",
+        "리드 개발자",
+        "게임 디자이너"
+      ]
+    },
+    "desc": {
+      "en": "A 2D puzzle-platformer created for Global Game Jam 2026 Hong Kong and developed within 48 hours. In Eel On Mask, players use the mysterious power of the Clipping Mask to alter sticker materials, solve puzzles across different worlds, and uncover the truth.",
+      "zh": "一款为 Global Game Jam 2026 香港站制作、并在 48 小时内完成开发的 2D 解谜平台游戏。在《Eel On Mask》中，玩家将使用神秘的“剪贴蒙版”能力改变贴纸材质，在不同世界中解谜并揭开最终真相。",
+      "ja": "Global Game Jam 2026 香港会場向けに制作され、48時間で開発された2Dパズルプラットフォーマーです。『Eel On Mask』では、不思議な「クリッピングマスク」の力でステッカーの材質を変化させ、さまざまな世界の謎を解きながら真実へと迫ります。",
+      "ko": "Global Game Jam 2026 홍콩 사이트에서 48시간 동안 개발한 2D 퍼즐 플랫포머 게임입니다. Eel On Mask에서 플레이어는 신비한 ‘클리핑 마스크’의 힘으로 스티커의 재질을 바꾸고, 여러 세계를 탐험하며 퍼즐을 해결하고 진실을 밝혀 나갑니다."
+    },
+    "tags": {
+      "en": [
+        "Unity",
+        "Puzzle Design",
+        "Game Jam",
+        "Steam",
+        "Windows"
+      ],
+      "zh": [
+        "Unity",
+        "2D 平台跳跃",
+        "解谜设计",
+        "Game Jam",
+        "Steam",
+        "Windows"
+      ],
+      "ja": [
+        "Unity",
+        "パズルデザイン",
+        "Game Jam",
+        "Steam",
+        "Windows"
+      ],
+      "ko": [
+        "Unity",
+        "퍼즐 디자인",
+        "게임잼",
+        "Steam",
+        "Windows"
+      ]
+    },
+    "coverImage": "../assets/projects/EelOnMaskPoster.webp"
+  },
+  {
+    "id": "game-project-click-click-universe",
+    "order": 3,
+    "category": "game",
+    "title": {
+      "en": "Click Click Universe",
+      "zh": "点点宇宙 (Click Click Universe)",
+      "ja": "タップ宇宙 (Click Click Universe)",
+      "ko": "클릭 클릭 유니버스 (Click Click Universe)"
+    },
+    "roles": {
+      "en": [
+        "Solo Developer"
+      ],
+      "zh": [
+        "独立开发者"
+      ],
+      "ja": [
+        "個人開発者"
+      ],
+      "ko": [
+        "개인 개발자"
+      ]
+    },
+    "desc": {
+      "en": "My undergraduate graduation project, independently designed and developed by myself. Click Click Universe is a relaxing top-down 3D incremental clicker game where players freely explore an open world made of geometric polyhedrons, collect items, trigger interactions, unlock companions, and upgrade equipment.",
+      "zh": "我的本科毕业设计项目，由我独立完成设计与开发。《点点宇宙》是一款轻松治愈的俯视角 3D 增量式点击游戏，玩家可以自由探索由几何多面体构成的开放世界，收集物品、触发交互，解锁伙伴，升级装备。",
+      "ja": "私の学部卒業制作プロジェクトであり、企画から開発までを一人で担当しました。『タップ宇宙』は、幾何学的な多面体で構成されたオープンワールドを自由に探索し、アイテムを収集し、インタラクションを発生させ、仲間を解放し、装備をアップグレードしていく、リラックス系の俯瞰視点3Dインクリメンタル・クリッカーゲームです。",
+      "ko": "제가 기획과 개발을 모두 혼자서 진행한 학부 졸업 프로젝트입니다. 『클릭 클릭 유니버스』는 기하학적 다면체로 이루어진 오픈 월드를 자유롭게 탐험하며, 아이템을 수집하고 상호작용을 발생시키고, 동료를 해금하고, 장비를 업그레이드하는 편안한 탑다운 3D 인크리멘털 클리커 게임입니다."
+    },
+    "tags": {
+      "en": [
+        "Unity",
+        "Mid-scale Game Framework Design",
+        "Steam",
+        "Windows"
+      ],
+      "zh": [
+        "Unity",
+        "中型游戏框架设计",
+        "Steam",
+        "Windows"
+      ],
+      "ja": [
+        "Unity",
+        "中規模ゲームフレームワーク設計",
+        "Steam",
+        "Windows"
+      ],
+      "ko": [
+        "Unity",
+        "중형 게임 프레임워크 설계",
+        "Steam",
+        "Windows"
+      ]
+    },
+    "coverImage": "../assets/projects/ClickClickUniversePoster.webp"
+  },
+  {
+    "id": "game-project-yuanmengstar-shanhai-xunling",
+    "order": 4,
+    "category": "game",
+    "title": {
+      "en": "YuanMeng Star: Shanhai Xunling",
+      "zh": "元梦之星 山海寻灵",
+      "ja": "元夢之星 山海尋靈",
+      "ko": "원몽지성 산해심령"
+    },
+    "roles": {
+      "en": [
+        "Combat Designer"
+      ],
+      "zh": [
+        "战斗策划"
+      ],
+      "ja": [
+        "バトルプランナー"
+      ],
+      "ko": [
+        "전투 기획자"
+      ]
+    },
+    "desc": {
+      "en": "YuanMeng Star is a light social party game developed by Tencent TiMi Studio Group for the Chinese market. Shanhai Xunling is a massive built-in open-world game mode introduced in YuanMeng Star, featuring an art style inspired by the Classic of Mountains and Seas. Its core gameplay revolves around capturing, training, and battling creatures called \"JiuLing,\" while integrating open-map exploration, class switching, base building, and breeding systems.",
+      "zh": "《元梦之星》是腾讯天美工作室群面向中国市场推出的一款轻松社交派对游戏。《山海寻灵》是《元梦之星》推出的山海经风格美术的超大型内置开放世界玩法，核心围绕“啾灵”的捕捉、培育与对战展开，融合了开放地图探索、角色转职、基地建设与繁育养成等系统。",
+      "ja": "『元梦之星』は、Tencent TiMi Studio Groupが中国市場向けに展開した、気軽に楽しめるソーシャルパーティーゲームです。『山海尋靈』は、『元梦之星』に実装された山海経風アートスタイルの大規模な内蔵型オープンワールドコンテンツであり、「啾靈」の捕獲・育成・対戦を中核に、オープンマップ探索、クラスチェンジ、拠点建設、繁殖育成システムを融合したゲームプレイを特徴としています。",
+      "ko": "『원몽지성』은 Tencent TiMi Studio Group이 중국 시장을 대상으로 선보인 가벼운 소셜 파티 게임입니다. 『산해심령』은 『원몽지성』에 추가된 산해경풍 아트 스타일의 초대형 내장형 오픈월드 콘텐츠로, ‘쥬링’의 포획, 육성, 전투를 핵심으로 하며 오픈 맵 탐험, 직업 전환, 기지 건설, 번식 육성 시스템을 결합한 것이 특징입니다."
+    },
+    "tags": {
+      "en": [
+        "3C Design",
+        "Tencent Game",
+        "AAA Project",
+        "Open World",
+        "PC/Mobile"
+      ],
+      "zh": [
+        "战斗3C设计",
+        "腾讯游戏",
+        "3A大型项目",
+        "开放世界",
+        "PC/Mobile"
+      ],
+      "ja": [
+        "戦闘3C設計",
+        "Tencent Game",
+        "AAA大型プロジェクト",
+        "オープンワールド",
+        "PC/Mobile"
+      ],
+      "ko": [
+        "전투 3C 설계",
+        "Tencent Game",
+        "AAA 대형 프로젝트",
+        "오픈월드",
+        "PC/Mobile"
+      ]
+    },
+    "coverImage": "src/assets/projects/YuanMengStarPoster.webp"
+  },
+  {
+    "id": "technical-project-vbgmm",
+    "order": 994,
+    "category": "technical",
+    "title": {
+      "en": "Variational Bayesian Inference for Gaussian Mixture",
+      "zh": "高斯混合模型的变分贝叶斯推断",
+      "ja": "ガウス混合モデルの変分ベイズ推論",
+      "ko": "가우시안 혼합 모델의 변분 베이즈 추론"
+    },
+    "roles": {
+      "en": [
+        "Data Scientist"
+      ],
+      "zh": [
+        "数据科学家"
+      ],
+      "ja": [
+        "データサイエンティスト"
+      ],
+      "ko": [
+        "데이터 사이언티스트"
+      ]
+    },
+    "desc": {
+      "en": "This project focuses on manually implementing a Variational Bayesian Gaussian Mixture Model (VB-GMM) and comparing it with Scikit-learn's BayesianGaussianMixture model. It covers multivariate Gaussian data generation, parameter updates for means, covariances, alpha, and beta, ELBO-based convergence optimization, and visualization of clustering results through Gaussian ellipses.",
+      "zh": "本项目手动实现高斯混合模型的变分贝叶斯推断（VB-GMM），并与 Scikit-learn 提供的 BayesianGaussianMixture 模型进行对比。项目内容涵盖多元高斯数据生成、均值、协方差、alpha 与 beta 参数更新、基于 ELBO 的收敛优化，以及通过高斯椭圆对聚类结果进行可视化分析。",
+      "ja": "本プロジェクトでは、変分ベイズガウス混合モデル（VB-GMM）を手動で実装し、Scikit-learn の BayesianGaussianMixture モデルと比較しました。多変量ガウスデータの生成、平均・共分散・alpha・beta パラメータの更新、ELBO に基づく収束最適化、そしてガウス楕円によるクラスタリング結果の可視化を含みます。",
+      "ko": "이 프로젝트는 변분 베이즈 가우시안 혼합 모델(VB-GMM)을 직접 구현하고 Scikit-learn의 BayesianGaussianMixture 모델과 비교하는 데 중점을 둡니다. 다변량 가우시안 데이터 생성, 평균·공분산·alpha·beta 파라미터 업데이트, ELBO 기반 수렴 최적화, 그리고 가우시안 타원을 통한 클러스터링 결과 시각화를 포함합니다."
+    },
+    "tags": {
+      "en": [
+        "Mathematics",
+        "Machine Learning",
+        "Variational Inference",
+        "Data Science"
+      ],
+      "zh": [
+        "数学",
+        "机器学习",
+        "变分推断",
+        "数据科学"
+      ],
+      "ja": [
+        "数学",
+        "機械学習",
+        "変分推論",
+        "データサイエンス"
+      ],
+      "ko": [
+        "수학",
+        "머신러닝",
+        "변분 추론",
+        "데이터 사이언스"
+      ]
+    },
+    "coverImage": "src/assets/projects/VBGMMPoster.webp"
+  },
+  {
+    "id": "technical-project-smart-pot-joi",
+    "order": 995,
+    "category": "technical",
+    "title": {
+      "en": "Smart Pot Joi",
+      "zh": "AI智能花盆 Joi",
+      "ja": "AIスマート植木鉢 Joi",
+      "ko": "AI 스마트 화분 Joi"
+    },
+    "roles": {
+      "en": [
+        "Technical Team Leader"
+      ],
+      "zh": [
+        "技术组长"
+      ],
+      "ja": [
+        "技術チームリーダー"
+      ],
+      "ko": [
+        "기술팀 리더"
+      ]
+    },
+    "desc": {
+      "en": "AI Smart Pot Joi is an award-winning AI-powered IoT plant care project that combines emotional interaction with environmental monitoring. It integrates speech recognition, natural language processing, emotion detection, sensor connectivity, and server communication to support multilingual voice interaction, real-time plant status monitoring, and expressive feedback through animated facial responses.",
+      "zh": "《AI智能花盆 Joi》是一个结合情感交互与环境监测的获奖 AI IoT 植物照护项目。项目整合了语音识别、自然语言处理、情绪检测、传感器接入与服务器通信等技术，实现了多语言语音交互、植物状态实时监测，以及通过动态表情反馈的互动体验。",
+      "ja": "『AIスマート植木鉢 Joi』は、感情的なインタラクションと環境モニタリングを組み合わせた受賞歴のあるAI搭載IoT植物ケアプロジェクトです。音声認識、自然言語処理、感情検出、センサー接続、サーバー通信を統合し、多言語音声対話、植物状態のリアルタイム監視、アニメーションによる表情フィードバックを実現しています。",
+      "ko": "『AI 스마트 화분 Joi』는 감성적 상호작용과 환경 모니터링을 결합한 수상 경력의 AI 기반 IoT 식물 케어 프로젝트입니다. 음성 인식, 자연어 처리, 감정 인식, 센서 연동, 서버 통신 기술을 통합하여 다국어 음성 상호작용, 실시간 식물 상태 모니터링, 그리고 애니메이션 표정 피드백을 구현했습니다."
+    },
+    "tags": {
+      "en": [
+        "IoT Development",
+        "Spring Boot",
+        "System Design",
+        "AI Development"
+      ],
+      "zh": [
+        "物联网开发",
+        "Spring Boot",
+        "系统设计",
+        "AI开发"
+      ],
+      "ja": [
+        "IoT開発",
+        "Spring Boot",
+        "システム設計",
+        "AI開発"
+      ],
+      "ko": [
+        "IoT 개발",
+        "Spring Boot",
+        "시스템 설계",
+        "AI 개발"
+      ]
+    },
+    "coverImage": "src/assets/projects/SmartPotJoiPoster.webp"
+  },
+  {
+    "id": "technical-project-ai-pixelart-repair-tool",
+    "order": 996,
+    "category": "technical",
+    "title": {
+      "en": "AI PixelArt Repair Tool",
+      "zh": "AI 像素画修复工具",
+      "ja": "AIピクセルアート修復ツール",
+      "ko": "AI 픽셀아트 보정 도구"
+    },
+    "roles": {
+      "en": [
+        "Technical Artist",
+        "AI Application Developer"
+      ],
+      "zh": [
+        "技术美术",
+        "AI 应用开发"
+      ],
+      "ja": [
+        "テクニカルアーティスト",
+        "AIアプリケーション開発"
+      ],
+      "ko": [
+        "테크니컬 아ーティ스트"
+      ]
+    },
+    "desc": {
+      "en": "AI PixelArt Repair Tool is an image processing project designed to optimize pixel-style assets generated by AI drawing tools such as MidJourney. Built with Gradio, Pillow, and Scikit-learn, it integrates pixelation, color quantization, edge repair, and pixel block detection into an interactive workflow, with optional GPU acceleration through cuML and cuPy.",
+      "zh": "《AI 像素画修复工具》是一个面向 AI 生成像素风素材优化的图像处理项目，基于 Gradio、Pillow 与 Scikit-learn 开发，集成了像素化、颜色量化、边缘修复与像素块检测等功能，并通过 cuML 与 cuPy 提供可选的 GPU 加速能力。",
+      "ja": "『AIピクセルアート修復ツール』は、MidJourneyなどのAI描画ツールで生成されたピクセル風アセットを最適化するための画像処理プロジェクトです。Gradio、Pillow、Scikit-learnを基盤とし、ピクセル化、色量子化、エッジ修復、ピクセルブロック検出を統合したインタラクティブなワークフローを備え、cuMLとcuPyによるGPUアクセラレーションにも対応しています。",
+      "ko": "『AI 픽셀아트 보정 도구』는 MidJourney와 같은 AI 드로잉 도구로 생성된 픽셀 스타일 에셋을 최적화하기 위한 이미지 처리 프로젝트입니다. Gradio, Pillow, Scikit-learn을 기반으로 픽셀화, 색상 양자화, 엣지 보정, 픽셀 블록 검출 기능을 통합했으며, cuML과 cuPy를 통한 선택적 GPU 가속도 지원합니다."
+    },
+    "tags": {
+      "en": [
+        "Machine Learning",
+        "Computer Vision"
+      ],
+      "zh": [
+        "机器学习",
+        "计算机视觉"
+      ],
+      "ja": [
+        "機械学習",
+        "コンピュータビジョン"
+      ],
+      "ko": [
+        "머신러닝",
+        "컴퓨터 비전"
+      ]
+    },
+    "coverImage": "src/assets/projects/AIPixelArtRepairToolPoster.webp"
+  },
+  {
+    "id": "technical-project-lego-voxelizer",
+    "order": 997,
+    "category": "technical",
+    "title": {
+      "en": "Lego Voxelizer",
+      "zh": "乐高体素化生成器",
+      "ja": "レゴ・ボクセライザー",
+      "ko": "레고 복셀라이저"
+    },
+    "roles": {
+      "en": [
+        "Technical Artist"
+      ],
+      "zh": [
+        "技术美术"
+      ],
+      "ja": [
+        "テクニカルアーティスト"
+      ],
+      "ko": [
+        "테크니컬 아ーティ스트"
+      ]
+    },
+    "desc": {
+      "en": "Lego Voxelizer is a web-based technical graphics project built with WebGL and Three.js. It implements techniques such as adaptive surface sampling and flood-fill interior detection, and combines custom GLSL shaders to support multiple visual styles, including toon, wireframe, and retro rendering.",
+      "zh": "《乐高体素化生成器》是一个基于 WebGL 与 Three.js 的网页端技术图形项目，实现了自适应表面采样、洪水填充内部检测等技术，并结合自定义 GLSL Shader，支持卡通、线框、复古等多种视觉风格。",
+      "ja": "『レゴ・ボクセライザー』は、WebGLとThree.jsを基盤としたWeb向けのテクニカルグラフィックスプロジェクトです。適応的なサーフェスサンプリングやフラッドフィルによる内部領域の検出などの技術を実装し、さらにカスタムGLSLシェーダーを組み合わせることで、トゥーン、ワイヤーフレーム、レトロといった複数のビジュアルスタイルに対応しています。",
+      "ko": "『레고 복셀라이저』는 WebGL과 Three.js를 기반으로 한 웹 기술 그래픽스 프로젝트입니다. 적응형 표면 샘플링, 플러드 필 기반 내부 영역 검출 등의 기술을 구현했으며, 사용자 정의 GLSL 셰이더를 결합하여 카툰, 와이어프레임, 레트로 등 다양한 시각 스타일을 지원합니다."
+    },
+    "tags": {
+      "en": [
+        "Voxelization",
+        "WebGL",
+        "Three.js",
+        "GLSL"
+      ],
+      "zh": [
+        "体素化",
+        "WebGL",
+        "Three.js",
+        "GLSL"
+      ],
+      "ja": [
+        "ボクセル化",
+        "WebGL",
+        "Three.js",
+        "GLSL"
+      ],
+      "ko": [
+        "복셀화",
+        "WebGL",
+        "Three.js",
+        "GLSL"
+      ]
+    },
+    "coverImage": "src/assets/projects/LegoVoxelizerPoster.webp"
+  },
+  {
+    "id": "technical-project-raymarching-fractal-morphing",
+    "order": 998,
+    "category": "technical",
+    "title": {
+      "en": "Ray Marching Fractal Morphing",
+      "zh": "光线步进 Fractal Morphing",
+      "ja": "レイマーチング・Fractal Morphing",
+      "ko": "레이 마칭 Fractal Morphing"
+    },
+    "roles": {
+      "en": [
+        "Technical Artist"
+      ],
+      "zh": [
+        "技术美术"
+      ],
+      "ja": [
+        "テクニカルアーティスト"
+      ],
+      "ko": [
+        "테크니컬 아티스트"
+      ]
+    },
+    "desc": {
+      "en": "Ray Marching Fractal Morphing is a technical graphics project that explores the real-time fusion of 3D models and Mandelbulb fractals in Three.js to enhance surface detail and visual complexity. Built on WebGL, the project uses signed distance functions (SDF) and ray marching to render both procedural geometry and fractal structures, then blends them mathematically to achieve smooth morphing transitions.",
+      "zh": "《光线步进 Fractal Morphing》是一个基于 Three.js 的技术图形项目，探索将三维模型与 Mandelbulb 分形在网页端进行实时融合，以增强模型表面细节与视觉层次。项目基于 WebGL，使用有符号距离场（SDF）与光线步进技术渲染程序化几何和分形结构，并在数学层面对二者进行混合，从而实现平滑的形态过渡效果。",
+      "ja": "『レイマーチング・Fractal Morphing』は、Three.jsを基盤に、3DモデルとMandelbulbフラクタルをWeb上でリアルタイムに融合させ、表面ディテールと視覚的な情報量を高めることを目指したテクニカルグラフィックスプロジェクトです。WebGL上で構築されており、符号付き距離関数（SDF）とレイマーチングを用いて、プロシージャルジオメトリとフラクタル構造を描画し、それらを数学的にブレンドすることで滑らかなモーフィング表現を実現しています。",
+      "ko": "『레이 마칭 Fractal Morphing』은 Three.js를 기반으로 3D 모델과 Mandelbulb 프랙탈을 웹 환경에서 실시간으로 융합하여, 표면 디테일과 시각적 밀도를 향상시키는 기술 그래픽스 프로젝트입니다. 이 프로젝트는 WebGL 위에서 구현되었으며, Signed Distance Function(SDF)과 레이 마칭 기법을 사용해 절차적 기하와 프랙탈 구조를 렌더링하고, 이를 수학적으로 블렌딩하여 부드러운 형태 전환을 구현합니다."
+    },
+    "tags": {
+      "en": [
+        "Mandelbulb",
+        "WebGL",
+        "Three.js",
+        "Real-time Rendering"
+      ],
+      "zh": [
+        "曼德尔球",
+        "WebGL",
+        "Three.js",
+        "实时渲染"
+      ],
+      "ja": [
+        "Mandelbulb",
+        "WebGL",
+        "Three.js",
+        "リアルタイムレンダリング"
+      ],
+      "ko": [
+        "Mandelbulb",
+        "WebGL",
+        "Three.js",
+        "실시간 렌더링"
+      ]
+    },
+    "coverImage": "src/assets/projects/RayMarchingFractalMorphingPoster.webp"
+  },
+  {
+    "id": "technical-project-windy-grass",
+    "order": 999,
+    "category": "technical",
+    "title": {
+      "en": "PCG Bezier Wind Grass",
+      "zh": "PCG 贝塞尔曲线风场草地",
+      "ja": "PCGベジェ曲線風場グラス",
+      "ko": "PCG 베지어 곡선 바람장 잔디"
+    },
+    "roles": {
+      "en": [
+        "Technical Artist"
+      ],
+      "zh": [
+        "技术美术"
+      ],
+      "ja": [
+        "テクニカルアーティスト"
+      ],
+      "ko": [
+        "테크니컬 아티스트"
+      ]
+    },
+    "desc": {
+      "en": "PCG Bezier Wind Grass is a technical rendering project focused on procedural vegetation generation and real-time wind presentation. The project uses Bezier curves to build a grass blade shader, enabling dynamic shape control, bending adjustment, and wind-driven animation for individual blades. Combined with UE5's PCG module, it supports large-scale procedural scattering and generation of grasslands, achieving real-time scene performance while maintaining strong parametric control.",
+      "zh": "《PCG 贝塞尔曲线风场草地》是一个聚焦于程序化植被生成与实时风场表现的技术型渲染项目。项目基于贝塞尔曲线设计草叶 Shader，实现了草叶动态形态控制、弯曲调节与风场驱动模拟，并结合 UE5 PCG 模块完成大规模草地的程序化散布与生成，在兼顾参数化控制能力的同时实现可实时运行的场景表现。",
+      "ja": "『PCGベジェ曲線風場グラス』は、プロシージャルな植生生成とリアルタイム風表現に焦点を当てた技術レンダリングプロジェクトです。本プロジェクトでは、ベジェ曲線を用いて草ブレード用のシェーダーを設計し、各草葉に対する動的な形状制御、しなりの調整、風場によるアニメーション表現を実現しています。さらに、UE5のPCGモジュールと組み合わせることで、大規模な草地のプロシージャル配置と生成を行い、パラメトリックな制御性を保ちながらリアルタイムで動作するシーン表現を実現しています。",
+      "ko": "『PCG 베지어 곡선 바람장 잔디』는 절차적 식생 생성과 실시간 바람 표현에 초점을 맞춘 기술 렌더링 프로젝트입니다. 이 프로젝트는 베지어 곡선을 기반으로 잔디 블레이드 셰이더를 설계하여, 각 잔디의 동적 형태 제어, 휘어짐 조절, 그리고 바람장 기반 애니메이션을 구현했습니다. 또한 UE5의 PCG 모듈과 결합해 대규모 초원의 절차적 배치 및 생성을 수행하며, 파라메트릭 제어 성능을 유지하는 동시에 실시간으로 동작하는 장면 표현을 구현했습니다."
+    },
+    "tags": {
+      "en": [
+        "PCG",
+        "Unreal Engine 5",
+        "Wind Field Simulation",
+        "Real-time Rendering"
+      ],
+      "zh": [
+        "PCG",
+        "虚幻引擎5",
+        "风场模拟",
+        "实时渲染"
+      ],
+      "ja": [
+        "PCG",
+        "Unreal Engine 5",
+        "風場シミュレーション",
+        "リアルタイムレンダリング"
+      ],
+      "ko": [
+        "PCG",
+        "Unreal Engine 5",
+        "바람장 시뮬레이션",
+        "실시간 렌더링"
+      ]
+    },
+    "coverImage": "src/assets/projects/WindyGrassPoster.webp"
+  }
+
+]

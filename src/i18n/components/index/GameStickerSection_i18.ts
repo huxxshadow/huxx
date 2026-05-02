@@ -1,9 +1,9 @@
 ﻿// src/i18n/components/GameStickerSection_i18.ts
 import type { Multilingual } from "@/i18n.ts";
 import { COLORS } from "@/consts.ts";
-import EmptyThronePoster from "@/assets/EmptyThornePoster.png";
-import EelOnMaskPoster from "@/assets/EelOnMaskPoster.png";
-import ClickClickUniversePoster from "@/assets/ClickClickUniversePoster.png";
+import EmptyThronePoster from "@/assets/projects/EmptyThornePoster.webp";
+import EelOnMaskPoster from "@/assets/projects/EelOnMaskPoster.webp";
+import ClickClickUniversePoster from "@/assets/projects/ClickClickUniversePoster.webp";
 export interface GameData {
     id: string;
     title: Multilingual;

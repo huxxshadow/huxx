@@ -48,19 +48,6 @@ export const dndLabels = {
         ko: "메인",
     } as Multilingual,
 
-    // 加在 dndLabels 对象内任意位置
-    sectionTitle: {
-        en: "Character Sheet",
-        zh: "角色卡",
-        ja: "キャラクターシート",
-        ko: "캐릭터 시트",
-    } as Multilingual,
-    sectionSubtitle: {
-        en: "D&D 5e · Personal Profile",
-        zh: "D&D 5e · 个人档案",
-        ja: "D&D 5e · パーソナルプロフィール",
-        ko: "D&D 5e · 개인 프로필",
-    } as Multilingual,
 };
 
 // ============================================================
@@ -69,7 +56,7 @@ export const dndLabels = {
 export const characterCardData = {
     name: "huxx",
     alignment: {
-        en: "LAWFUL NEUTRAL",
+        en: "Lawful Neutral",
         zh: "守序中立",
         ja: "秩序にして中立",
         ko: "질서 중립",
