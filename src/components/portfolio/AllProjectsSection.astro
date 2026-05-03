@@ -1,0 +1,275 @@
+﻿---
+// src/components/portfolio/AllProjectsSection.astro
+import { COLORS } from "@/consts.ts";
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import type { Lang } from "@/i18n.ts";
+import { useTranslations } from "@/i18n.ts";
+import { allProjectsLabels } from "@/i18n/components/portfolio/AllProjectsSection_i18.ts";
+
+// 获取所有的 projects 并按 order 倒序排列
+const allProjects = await getCollection("projects");
+const orderedProjects = allProjects.sort((a, b) => b.data.order - a.data.order);
+
+const currentLang = (Astro.currentLocale || "en") as Lang;
+const t = useTranslations(currentLang);
+
+/**
+ * 获取项目的主题色（用于无图时的底色占位）
+ */
+function getProjectColors(project: typeof orderedProjects[number]) {
+    const textColor = project.data.colorText || COLORS.black;
+    const bgColor = project.data.colorBackground || COLORS.white;
+    return { text: textColor, bg: bgColor };
+}
+---
+
+<section
+        id="all-projects-section"
+        class="relative w-full overflow-hidden py-12 lg:py-20"
+        style={`
+            background-color: ${COLORS.khakiMilan};
+            color: ${COLORS.black};
+            --card-size: 400px;
+        `}
+        data-theme-bg={COLORS.khakiMilan}
+        data-theme-text={COLORS.black}
+        data-card-mode="full"
+>
+    <div class="mx-auto px-4 sm:px-6 lg:px-8">
+
+        {/* ===== 标题与调节滑块 ===== */}
+        <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-8 sm:mb-12">
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black shrink-0" style={`color: ${COLORS.black};`}>
+                {t(allProjectsLabels.libraryHeader)}
+                <span class="opacity-50 ">({orderedProjects.length})</span>
+            </h2>
+            <div class="hidden sm:block h-2 flex-grow" style={`background-color: ${COLORS.black};`}></div>
+
+            {/* 卡片大小调节滑块 */}
+            <div class="flex items-center gap-3 shrink-0 bg-white px-4 py-2 rounded-xl border-4" style={`border-color: ${COLORS.black}; box-shadow: 3px 3px 0px ${COLORS.black};`}>
+                <i class="fa-solid fa-compress text-lg opacity-60"></i>
+                <input
+                        type="range"
+                        id="project-card-size-slider"
+                        min="200"
+                        max="600"
+                        value="400"
+                        step="10"
+                        class="w-24 sm:w-32 h-2 rounded-lg appearance-none cursor-pointer"
+                        style={`background-color: ${COLORS.black};`}
+                />
+                <i class="fa-solid fa-expand text-xl opacity-60"></i>
+            </div>
+        </div>
+
+        {/* ===== 所有项目卡片网格 ===== */}
+        <div
+                id="all-projects-grid"
+                class="grid gap-6 sm:gap-8 transition-all duration-300"
+                style="grid-template-columns: repeat(auto-fill, minmax(var(--card-size), 1fr));"
+        >
+            {orderedProjects.map((project) => {
+                const { data } = project;
+                const displayTitle = data.title[currentLang] || data.title.en || data.title.zh || project.id;
+                const displayDesc = data.desc[currentLang] || data.desc.en || data.desc.zh || "";
+                const displayRoles = data.roles[currentLang] || data.roles.en || data.roles.zh || [];
+                const displayTags = data.tags[currentLang] || data.tags.en || data.tags.zh || [];
+                const colors = getProjectColors(project);
+                const displayCover = data.coverImage || data.backupCoverImage;
+                const hasCover = !!displayCover;
+
+                return (
+                        <div
+                                class="project-hover-card group relative rounded-xl overflow-hidden border-4 cursor-pointer"
+                                style={`border-color: ${COLORS.black}; box-shadow: 3px 3px 0px ${COLORS.black}; background-color: ${COLORS.black};`}
+                        >
+                            {/* 图片区域 (16:9) */}
+                            <div class="relative w-full aspect-video" style={`background-color: ${colors.bg};`}>
+                                {hasCover ? (
+                                        <Image
+                                                src={displayCover!}
+                                                alt={displayTitle}
+                                                class="block w-full h-full object-cover"
+                                                loading="lazy"
+                                                decoding="async"
+                                                draggable="false"
+                                        />
+                                ) : (
+                                        <div class="absolute inset-0 flex items-center justify-center p-4">
+                                            <i class="fa-solid fa-image text-5xl opacity-20" style={`color: ${colors.text};`}></i>
+                                        </div>
+                                )}
+                            </div>
+
+                            {/* 悬浮面板：标题 + 详情 */}
+                            <div class="project-slide-panel absolute inset-x-0 bottom-0 flex flex-col">
+                                {/* 标题栏 */}
+                                <div
+                                        class="project-title-bar h-14 w-full flex items-center px-5 border-t-4"
+                                        style={`background-color: #ffffff; border-color: ${COLORS.black}; color: ${COLORS.black};`}
+                                >
+                                    <h3 class="font-black text-lg truncate" title={displayTitle}>{displayTitle}</h3>
+                                </div>
+
+                                {/* 详情区（Hover 时可见）— 参考 Technical 无封面卡片布局 */}
+                                <div
+                                        class="project-detail-area w-full px-5 pb-5 pt-3 flex flex-col"
+                                        style={`background-color: #ffffff; color: ${COLORS.black};`}
+                                >
+                                    {/* 描述 */}
+                                    {displayDesc && (
+                                            <p class="text-sm font-bold opacity-90 leading-relaxed line-clamp-3">
+                                                {displayDesc}
+                                            </p>
+                                    )}
+
+                                    {/* 虚线分隔线 */}
+                                    {(displayRoles.length > 0 || displayTags.length > 0) && (
+                                            <hr
+                                                    class="w-full border-t-2 my-3 opacity-40 border-dashed"
+                                                    style={`border-color: ${COLORS.black};`}
+                                            />
+                                    )}
+
+                                    {/* Roles + Tags 混排 */}
+                                    {(displayRoles.length > 0 || displayTags.length > 0) && (
+                                            <div class="flex flex-wrap gap-1.5">
+                                                {displayRoles.map((role: string) => (
+                                                        <span
+                                                                class="text-xs font-bold px-2 py-0.5 border-2 rounded-md"
+                                                                style={`background-color: ${COLORS.black}; color: #ffffff; border-color: ${COLORS.black};`}
+                                                        >
+                                                            {role}
+                                                        </span>
+                                                ))}
+                                                {displayTags.map((tag: string) => (
+                                                        <span
+                                                                class="text-xs font-bold px-2 py-0.5 border-2 rounded-md bg-transparent"
+                                                                style={`border-color: ${COLORS.black}; color: ${COLORS.black};`}
+                                                        >
+                                                            {tag}
+                                                        </span>
+                                                ))}
+                                            </div>
+                                    )}
+                                </div>
+                            </div>
+
+                        </div>
+                );
+            })}
+        </div>
+    </div>
+</section>
+
+<style>
+    /* 滑块自定义样式 */
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: white;
+        border: 4px solid black;
+        cursor: pointer;
+        transition: transform 0.1s;
+    }
+    input[type="range"]::-webkit-slider-thumb:active {
+        transform: scale(1.2);
+    }
+    input[type="range"]::-moz-range-thumb {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: white;
+        border: 4px solid black;
+        cursor: pointer;
+        transition: transform 0.1s;
+    }
+    input[type="range"]::-moz-range-thumb:active {
+        transform: scale(1.2);
+    }
+
+    /* ===== 卡片基础悬浮效果 ===== */
+    .project-hover-card {
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .project-hover-card:hover {
+        transform: translate(0px, -3px);
+        box-shadow: 6px 6px 0px #494949 !important;
+    }
+
+    /* 消除标题栏和详情区之间的子像素缝隙 */
+    .project-slide-panel > div + div {
+        margin-top: -1px;
+    }
+
+    /* ===== Full 模式：hover 上滑展示详情 ===== */
+    [data-card-mode="full"] .project-hover-card {
+        padding-bottom: 56px;
+    }
+    [data-card-mode="full"] .project-slide-panel {
+        transform: translateY(calc(100% - 56px));
+        transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    [data-card-mode="full"] .project-hover-card:hover .project-slide-panel {
+        transform: translateY(0);
+    }
+
+    /* ===== Compact 模式：只显示标题栏，不 hover 上滑 ===== */
+    [data-card-mode="compact"] .project-hover-card {
+        padding-bottom: 56px;
+    }
+    [data-card-mode="compact"] .project-slide-panel {
+        transform: translateY(calc(100% - 56px));
+        transition: none;
+    }
+    [data-card-mode="compact"] .project-hover-card:hover .project-slide-panel {
+        transform: translateY(calc(100% - 56px));
+    }
+    [data-card-mode="compact"] .project-detail-area {
+        visibility: hidden;
+    }
+
+    /* ===== Minimal 模式：不显示标题栏，只有图片 ===== */
+    [data-card-mode="minimal"] .project-hover-card {
+        padding-bottom: 0;
+    }
+    [data-card-mode="minimal"] .project-slide-panel {
+        display: none;
+    }
+</style>
+
+<script>
+    function initProjectSlider() {
+        const slider = document.getElementById('project-card-size-slider') as HTMLInputElement;
+        const section = document.getElementById('all-projects-section');
+
+        if (slider && section) {
+            function updateCardMode(val: number) {
+                section!.style.setProperty('--card-size', `${val}px`);
+
+                if (val >= 340) {
+                    section!.setAttribute('data-card-mode', 'full');
+                } else if (val >= 240) {
+                    section!.setAttribute('data-card-mode', 'compact');
+                } else {
+                    section!.setAttribute('data-card-mode', 'minimal');
+                }
+            }
+
+            slider.addEventListener('input', (e) => {
+                const val = parseInt((e.target as HTMLInputElement).value);
+                updateCardMode(val);
+            });
+
+            // 初始化
+            updateCardMode(parseInt(slider.value));
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', initProjectSlider);
+    document.addEventListener('astro:page-load', initProjectSlider);
+</script>

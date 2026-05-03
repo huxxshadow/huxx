@@ -86,18 +86,18 @@ function getProjectColors(project: typeof orderedProjects[number]) {
 
     <div class="w-full relative z-10">
 
-        {/* ===== 标题：移动端正常文档流水平显示，桌面端绝对定位竖排 ===== */}
-        <div class="w-full flex items-center justify-center mb-8 lg:mb-0 lg:absolute lg:top-0 lg:bottom-0 lg:left-0 lg:items-center lg:w-auto">
+        {/* ===== 标题：顶部水平显示 ===== */}
+        <div class="w-full flex items-center justify-center mb-12 lg:mb-16">
             <h2
-                    class="title-vertical-mode flex lg:block w-full lg:w-auto items-center justify-center px-8 py-6 font-black text-4xl sm:text-5xl lg:text-6xl border-[3px] rounded-xl select-none tracking-[0.1em] lg:tracking-[0.35em] uppercase lg:text-center"
-                    style={`background-color: ${defaultTheme.light}; color: ${defaultTheme.dark}; border-color: ${defaultTheme.dark}; box-shadow: 6px 6px 0px ${defaultTheme.dark};`}
+                    class="flex items-center justify-center px-8 py-6 font-black text-4xl sm:text-5xl lg:text-6xl border-[3px] rounded-xl select-none tracking-[0.1em] lg:tracking-[0.2em] uppercase text-center"
+                    style={`background-color: ${defaultTheme.light}; color: ${defaultTheme.dark}; border-color: ${defaultTheme.dark}; box-shadow: 6px 6px 0px ${defaultTheme.dark};text-indent: 0.2em;`}
             >
                 {t(gameProjectsLabels.sectionTitle)}
             </h2>
         </div>
 
         {/* ===== 卡片区域：grid 响应式布局 ===== */}
-        <div class="lg:pl-48">
+        <div>
             <div class="flex flex-col p-4 sm:p-6 lg:p-12 gap-6 lg:gap-8">
                 {projectRows.map((row) => (
                         <div class={getGridClasses(row.length)}>
@@ -185,17 +185,6 @@ function getProjectColors(project: typeof orderedProjects[number]) {
 </section>
 
 <style>
-    .title-vertical-mode {
-        writing-mode: horizontal-tb;
-    }
-
-    @media (min-width: 1024px) {
-        .title-vertical-mode {
-            writing-mode: vertical-lr;
-            text-orientation: upright;
-        }
-    }
-
     .game-project-card {
         box-shadow: 8px 8px 0px color(from var(--theme) srgb r g b / 1);
     }

@@ -3,13 +3,20 @@ import Layout from "@/layouts/Base.astro";
 import PortfolioIntroSection from "@/components/portfolio/PortfolioIntroSection.astro";
 import GameProjectsSection from "@/components/portfolio/GameProjectsSection.astro";
 import TechnicalProjectsSection from "@/components/portfolio/TechnicalProjectsSection.astro";
+import {LOCALES} from "@/i18n.ts";
+import ArtProjectsSection from "@/components/portfolio/ArtProjectsSection.astro";
+import AllProjectsSection from "@/components/portfolio/AllProjectsSection.astro";
 
 export const getStaticPaths = () =>
-    [{ params: { lang: 'en' } }, { params: { lang: 'ja' } }, { params: { lang: 'ko' } }, { params: { lang: 'zh' } }];
+    Object.keys(LOCALES).map((lang) => ({
+        params: { lang },
+    }));
 ---
 
 <Layout>
     <PortfolioIntroSection />
     <GameProjectsSection />
     <TechnicalProjectsSection/>
+    <ArtProjectsSection/>
+    <AllProjectsSection/>
 </Layout>

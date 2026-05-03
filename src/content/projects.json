@@ -1,7 +1,981 @@
 [
   {
-    "id": "game-project-empty-throne",
+    "id": "technical-project-colourful-pinball",
     "order": 1,
+    "category": "technical",
+    "title": {
+      "en": "Colourful Pinball",
+      "zh": "彩色弹珠台",
+      "ja": "カラフルピンボール",
+      "ko": "컬러풀 핀볼"
+    },
+    "roles": {
+      "en": [
+        "Game Developer"
+      ],
+      "zh": [
+        "游戏开发"
+      ],
+      "ja": [
+        "ゲーム開発者"
+      ],
+      "ko": [
+        "게임 개발자"
+      ]
+    },
+    "desc": {
+      "en": "Colourful Pinball is a pinball game project built with Processing.py, combining Box2D physics simulation, colorful visual design, and music visualization effects.",
+      "zh": "《彩色弹珠台》是一个基于 Processing.py 并结合 Box2D 物理模拟、多彩视觉设计与音乐可视化效果的弹珠台游戏项目。",
+      "ja": "『カラフルピンボール』は、Processing.pyをベースに、Box2D物理シミュレーション、カラフルなビジュアルデザイン、音楽ビジュアライゼーション効果を組み合わせたピンボールゲームプロジェクトです。",
+      "ko": "『컬러풀 핀볼』은 Processing.py를 기반으로 Box2D 물리 시뮬레이션, 다채로운 비주얼 디자인, 음악 시각화 효과를 결합한 핀볼 게임 프로젝트입니다."
+    },
+    "tags": {
+      "en": [
+        "Physics Simulation",
+        "Music Visualization"
+      ],
+      "zh": [
+        "物理模拟",
+        "音乐可视化"
+      ],
+      "ja": [
+        "物理シミュレーション",
+        "音楽ビジュアライゼーション"
+      ],
+      "ko": [
+        "물리 시뮬레이션",
+        "음악 시각화"
+      ]
+    },
+    "backupCoverImage": "src/assets/projects/ColourfulPinballPoster.webp"
+  },
+  {
+    "id": "art-project-island-cinematic",
+    "order": 2,
+    "category": "art",
+    "title": {
+      "en": "Island Cinematic Scene",
+      "zh": "岛屿影视化场景",
+      "ja": "アイランド・シネマティックシーン",
+      "ko": "아일랜드 시네마틱 씬"
+    },
+    "roles": {
+      "en": [
+        "3D Designer"
+      ],
+      "zh": [
+        "3D 设计"
+      ],
+      "ja": [
+        "3Dデザイナー"
+      ],
+      "ko": [
+        "3D 디자이너"
+      ]
+    },
+    "desc": {
+      "en": "Island Cinematic Scene is a short-form 3D environment project created in Unreal Engine 5, focused on cinematic visual storytelling and atmospheric scene building. The project combines UE5's Ocean System for Rendered Cinematics, UDS dynamic sky, Quixel assets, and CineCamera sequencing to create a realistic island environment with dynamic lighting, expressive camera motion, and film-inspired visual tension.",
+      "zh": "《岛屿影视化场景》是一个基于 Unreal Engine 5 制作的短篇 3D 场景项目，重点探索影视化视觉叙事与氛围场景构建。项目结合 UE5 的 Ocean System for Rendered Cinematics、UDS 动态天空、Quixel 资产以及 CineCamera 镜头系统与 Sequencer，打造了一个具有真实海面效果、动态光照变化与电影感镜头张力的岛屿环境。",
+      "ja": "『アイランド・シネマティックシーン』は、Unreal Engine 5 を用いて制作した短編3D環境プロジェクトであり、シネマティックな映像表現と雰囲気重視のシーン構築に焦点を当てています。UE5の Ocean System for Rendered Cinematics、UDS Dynamic Sky、Quixelアセット、そして CineCamera と Sequencer を組み合わせることで、リアルな海面表現、動的なライティング変化、映画的な緊張感を持つカメラワークを備えた島の環境を制作しました。",
+      "ko": "『아일랜드 시네마틱 씬』은 Unreal Engine 5로 제작한 단편 3D 환경 프로젝트로, 시네마틱한 비주얼 스토리텔링과 분위기 중심의 장면 구성에 초점을 맞추고 있습니다. UE5의 Ocean System for Rendered Cinematics, UDS 다이내믹 스카이, Quixel 에셋, 그리고 CineCamera 및 Sequencer를 결합하여 사실적인 해수면 표현, 동적 조명 변화, 영화적 긴장감을 지닌 카메라 연출이 포함된 섬 환경을 구현했습니다."
+    },
+    "tags": {
+      "en": [
+        "Unreal Engine 5",
+        "Cinematic",
+        "Environment Art"
+      ],
+      "zh": [
+        "虚幻引擎5",
+        "影视化",
+        "环境美术"
+      ],
+      "ja": [
+        "Unreal Engine 5",
+        "シネマティック",
+        "環境アート"
+      ],
+      "ko": [
+        "Unreal Engine 5",
+        "시네마틱",
+        "환경 아트"
+      ]
+    },
+    "coverImage": "src/assets/projects/IslandCinematicPoster.webp"
+  },
+  {
+    "id": "art-project-fractured-space",
+    "order": 3,
+    "category": "art",
+    "title": {
+      "en": "Fractured Space",
+      "zh": "破碎空间",
+      "ja": "フラクチャード・スペース",
+      "ko": "프랙처드 스페이스"
+    },
+    "roles": {
+      "en": [
+        "3D Designer"
+      ],
+      "zh": [
+        "3D 设计"
+      ],
+      "ja": [
+        "3Dデザイナー"
+      ],
+      "ko": [
+        "3D 디자이너"
+      ]
+    },
+    "desc": {
+      "en": "Fractured Space is a 3D CG short film created in Blender, centered on procedural animation, fracture effects, and surreal spatial expression. Built with Geometry Nodes, fracture tools, and a custom PBR material workflow, the project explores the interaction between reflection, transparency, light, and symmetry to create a futuristic visual experience featuring collapsing walls, infinite mirror-like space, and dynamically generated structures.",
+      "zh": "《破碎空间》是一个使用 Blender 制作的 3D CG 短片项目，聚焦于程序化动画、破碎效果与超现实空间表达。项目基于 Geometry Nodes、破碎工具以及自定义 PBR 材质流程，围绕反射、透明、光影与对称结构之间的关系展开探索，构建出一个包含墙体坍塌、镜面无限空间与程序化结构生成的未来感视觉场景。",
+      "ja": "『フラクチャード・スペース』は、Blenderで制作した3D CG短編映像プロジェクトであり、プロシージャルアニメーション、破砕表現、そしてシュールな空間演出に焦点を当てています。Geometry Nodes、Fracture Tool、そして独自のPBRマテリアルワークフローを基盤として、反射、透明感、光、対称構造の相互作用を探求し、崩壊する壁、無限に広がる鏡面空間、動的に生成される構造体を備えた未来的なビジュアルシーンを構築しました。",
+      "ko": "『프랙처드 스페이스』는 Blender로 제작한 3D CG 단편 프로젝트로, 절차적 애니메이션, 파괴 효과, 그리고 초현실적 공간 연출에 초점을 맞추고 있습니다. Geometry Nodes, 파괴 도구, 그리고 커스텀 PBR 머티리얼 워크플로를 기반으로 반사, 투명성, 조명, 대칭 구조의 상호작용을 탐구했으며, 벽의 붕괴, 무한 거울 공간, 절차적으로 생성된 구조물이 어우러진 미래적인 비주얼 장면을 구현했습니다."
+    },
+    "tags": {
+      "en": [
+        "Blender",
+        "Geometry Nodes",
+        "3D Animation",
+        "Procedural Modeling"
+      ],
+      "zh": [
+        "Blender",
+        "几何节点",
+        "3D 动画",
+        "程序化建模"
+      ],
+      "ja": [
+        "Blender",
+        "ジオメトリノード",
+        "3Dアニメーション",
+        "プロシージャルモデリング"
+      ],
+      "ko": [
+        "Blender",
+        "지오메트리 노드",
+        "3D 애니메이션",
+        "절차적 모델링"
+      ]
+    },
+    "coverImage": "src/assets/projects/FracturedSpacePoster.webp"
+  },
+  {
+    "id": "art-project-fractal-skull",
+    "order": 4,
+    "category": "art",
+    "title": {
+      "en": "Fractal Skull",
+      "zh": "分形骷髅",
+      "ja": "フラクタル・スカル",
+      "ko": "프랙탈 스컬"
+    },
+    "roles": {
+      "en": [
+        "3D Designer"
+      ],
+      "zh": [
+        "3D 设计"
+      ],
+      "ja": [
+        "3Dデザイナー"
+      ],
+      "ko": [
+        "3D 디자이너"
+      ]
+    },
+    "desc": {
+      "en": "Fractal Skull is a Blender-based 3D artwork that explores the intersection of fractal geometry, symbolic form, and material storytelling. Using the Fractal Machine plugin to deform a skull model with Mandelbulb-based structures, the project combines abstract geometric complexity with wax-like translucent materials, metallic gold accents, and three-point lighting to create a visually striking piece centered on the theme of death and hidden treasure.",
+      "zh": "《分形骷髅》是一个基于 Blender 制作的 3D 艺术作品，探索分形几何、象征性造型与材质叙事之间的结合。项目使用 Fractal Machine 插件，以 Mandelbulb 分形结构对骷髅模型进行变形，在抽象几何复杂性之上，结合蜡质半透明材质、金属金色细节以及三点布光，构建出一个围绕“死亡与隐藏宝藏”主题展开的视觉作品。",
+      "ja": "『フラクタル・スカル』は、Blenderを用いて制作した3Dアート作品であり、フラクタル幾何学、象徴的な造形、そしてマテリアルによる物語表現の交差を探求しています。Fractal Machineプラグインを使用し、Mandelbulbベースの構造でスカルモデルを変形させ、抽象的な幾何学的複雑さに加えて、蝋のような半透明マテリアル、金属的なゴールドのアクセント、三点照明を組み合わせることで、「死と隠された宝」というテーマを視覚的に表現しました。",
+      "ko": "『프랙탈 스컬』은 Blender 기반의 3D 아트워크로, 프랙탈 기하학, 상징적 형태, 그리고 머티리얼 내러티브의 결합을 탐구한 작품입니다. Fractal Machine 플러그인을 사용해 Mandelbulb 기반 구조로 해골 모델을 변형했으며, 추상적인 기하학적 복잡성 위에 왁스 같은 반투명 재질, 금속성 골드 디테일, 그리고 3점 조명을 결합해 ‘죽음과 숨겨진 보물’이라는 주제를 시각적으로 표현했습니다."
+    },
+    "tags": {
+      "en": [
+        "Blender",
+        "Fractal Art",
+        "Lighting Design"
+      ],
+      "zh": [
+        "Blender",
+        "分形艺术",
+        "灯光设计"
+      ],
+      "ja": [
+        "Blender",
+        "フラクタルアート",
+        "ライティングデザイン"
+      ],
+      "ko": [
+        "Blender",
+        "프랙탈 아트",
+        "라이팅 디자인"
+      ]
+    },
+    "coverImage": "src/assets/projects/FractalSkullPoster.webp"
+  },
+  {
+    "id": "technical-project-mario-ddqn",
+    "order": 5,
+    "category": "technical",
+    "title": {
+      "en": "Mario Reinforcement Learning",
+      "zh": "马里奥强化学习",
+      "ja": "マリオ強化学習",
+      "ko": "마리오 강화학습"
+    },
+    "roles": {
+      "en": [
+        "AI Application Developer"
+      ],
+      "zh": [
+        "AI 应用开发"
+      ],
+      "ja": [
+        "AIアプリケーション開発"
+      ],
+      "ko": [
+        "테크니컬 아ーティ스트"
+      ]
+    },
+    "desc": {
+      "en": "Mario Reinforcement Learning is an AI development project based on TensorFlow, implementing a Double Deep Q-Network (DDQN) model for autonomous gameplay training in Mario. The project combines convolutional neural networks, experience replay, target network synchronization, and an ε-greedy strategy to improve decision-making performance in complex game environments.",
+      "zh": "《马里奥强化学习》是一个基于 TensorFlow 的 AI 开发项目，实现了用于马里奥自主游玩的双重深度 Q 网络（DDQN）模型训练流程。项目结合卷积神经网络、经验回放、目标网络同步与 ε-greedy 策略，以提升马里奥在复杂游戏环境中的决策能力。",
+      "ja": "『マリオ強化学習』は、TensorFlowを用いてマリオの自律プレイ学習のためのDouble Deep Q-Network（DDQN）モデルを実装したAI開発プロジェクトです。畳み込みニューラルネットワーク、経験再生、ターゲットネットワーク同期、ε-greedy戦略を組み合わせ、複雑なゲーム環境における意思決定性能の向上を目指しました。",
+      "ko": "『마리오 강화학습』은 TensorFlow를 기반으로 마리오 자율 플레이 학습을 위한 Double Deep Q-Network(DDQN) 모델을 구현한 AI 개발 프로젝트입니다. 합성곱 신경망, 경험 재현, 타깃 네트워크 동기화, ε-greedy 전략을 결합하여 복잡한 게임 환경에서의 의사결정 성능을 향상시키는 것을 목표로 했습니다."
+    },
+    "tags": {
+      "en": [
+        "Reinforcement Learning",
+        "Deep Learning",
+        "TensorFlow"
+      ],
+      "zh": [
+        "强化学习",
+        "深度学习",
+        "TensorFlow"
+      ],
+      "ja": [
+        "強化学習",
+        "深層学習",
+        "TensorFlow"
+      ],
+      "ko": [
+        "강화학습",
+        "딥러닝",
+        "TensorFlow"
+      ]
+    },
+    "coverImage": "src/assets/projects/MarioDDQN.webp"
+  },
+  {
+    "id": "technical-project-discord-bot",
+    "order": 6,
+    "category": "technical",
+    "title": {
+      "en": "Discord Bot",
+      "zh": "Discord 机器人",
+      "ja": "Discordボット",
+      "ko": "Discord 봇"
+    },
+    "roles": {
+      "en": [
+        "Software Developer"
+      ],
+      "zh": [
+        "软件开发"
+      ],
+      "ja": [
+        "ソフトウェア開発者"
+      ],
+      "ko": [
+        "소프트웨어 개발자"
+      ]
+    },
+    "desc": {
+      "en": "Discord Bot is a bot project developed with Java and JDA. The project modularly implements functions such as ping response, seat number checking, user registration, identity verification, and score inquiry.",
+      "zh": "《Discord 机器人》是一个基于 Java 与 JDA 开发的机器人项目。项目以模块化方式实现了 ping 响应、座位号查询、用户注册、身份验证与成绩查询等功能。",
+      "ja": "『Discordボット』は、JavaとJDAを用いて開発したボットプロジェクトです。ping応答、座席番号確認、ユーザー登録、本人確認、成績照会などの機能をモジュール化して実装しました。",
+      "ko": "『Discord 봇』은 Java와 JDA를 기반으로 개발한 봇 프로젝트입니다. 프로젝트는 ping 응답, 좌석 번호 조회, 사용자 등록, 신원 확인, 성적 조회 기능을 모듈화하여 구현했습니다."
+    },
+    "tags": {
+      "en": [
+        "Java",
+        "JDA"
+      ],
+      "zh": [
+        "Java",
+        "JDA"
+      ],
+      "ja": [
+        "Java",
+        "JDA"
+      ],
+      "ko": [
+        "Java",
+        "JDA"
+      ]
+    },
+    "backupCoverImage": "src/assets/projects/DiscordBotPoster.webp"
+  },
+  {
+    "id": "technical-project-oracle-database-application",
+    "order": 7,
+    "category": "technical",
+    "title": {
+      "en": "Oracle Database Application",
+      "zh": "Oracle 数据库应用",
+      "ja": "Oracleデータベースアプリケーション",
+      "ko": "Oracle 데이터베이스 애플리케이션"
+    },
+    "roles": {
+      "en": [
+        "Software Developer",
+        "Database Design"
+      ],
+      "zh": [
+        "软件开发",
+        "数据库设计"
+      ],
+      "ja": [
+        "ソフトウェア開発",
+        "データベース設計"
+      ],
+      "ko": [
+        "소프트웨어 개발",
+        "데이터베이스 설계"
+      ]
+    },
+    "desc": {
+      "en": "Oracle Database Application is a flight booking system project built with Java, JDBC, and Oracle Database. The project covers ER diagram design, relational schema conversion, normalization, PL/SQL trigger design, and application development, implementing core functions such as flight management, search, booking, and cancellation.",
+      "zh": "《Oracle 数据库应用》是一个基于 Java、JDBC 与 Oracle Database 开发的航班预订系统项目。项目涵盖 ER 图设计、关系模式转换、数据库规范化、PL/SQL 触发器设计与应用程序开发，实现了航班管理、航班查询、预订与取消等核心功能。",
+      "ja": "『Oracleデータベースアプリケーション』は、Java、JDBC、Oracle Databaseを用いて構築した航空券予約システムプロジェクトです。ER図設計、関係スキーマへの変換、正規化、PL/SQLトリガー設計、アプリケーション開発を含み、フライト管理、検索、予約、キャンセルなどの主要機能を実装しました。",
+      "ko": "『Oracle 데이터베이스 애플리케이션』은 Java, JDBC, Oracle Database를 기반으로 개발한 항공권 예약 시스템 프로젝트입니다. ER 다이어그램 설계, 관계 스키마 변환, 정규화, PL/SQL 트리거 설계, 애플리케이션 개발을 포함하며, 항공편 관리, 검색, 예약, 취소 등의 핵심 기능을 구현했습니다."
+    },
+    "tags": {
+      "en": [
+        "Database",
+        "Oracle",
+        "JDBC"
+      ],
+      "zh": [
+        "数据库",
+        "Oracle",
+        "JDBC"
+      ],
+      "ja": [
+        "データベース",
+        "Oracle",
+        "JDBC"
+      ],
+      "ko": [
+        "데이터베이스",
+        "Oracle",
+        "JDBC"
+      ]
+    },
+    "backupCoverImage": "src/assets/projects/OracleDatabaseApplicationPoster.webp"
+  },
+  {
+    "id": "technical-project-music-genre-classification",
+    "order": 8,
+    "category": "technical",
+    "title": {
+      "en": "AI Music Genre Classification",
+      "zh": "AI 音乐风格分类",
+      "ja": "AI 音楽ジャンル分類",
+      "ko": "AI 음악 장르 분류"
+    },
+    "roles": {
+      "en": [
+        "Team Leader",
+        "AI Application Developer"
+      ],
+      "zh": [
+        "组长",
+        "AI 应用开发"
+      ],
+      "ja": [
+        "チームリーダー",
+        "AIアプリケーション開発"
+      ],
+      "ko": [
+        "팀 리더",
+        "AI 애플리케이션 개발"
+      ]
+    },
+    "desc": {
+      "en": "AI Music Genre Classification is a music recognition project that combines signal processing and machine learning techniques to classify music genres automatically. The project uses audio feature extraction, data visualization, and Mel spectrogram-based model training to recognize ten different music genres.",
+      "zh": "《AI 音乐风格分类》是一个结合信号处理与机器学习技术的音乐识别项目，用于自动分类音乐风格。项目通过音频特征提取、数据可视化与基于 Mel 频谱图的模型训练，实现了对十种不同音乐风格的识别。",
+      "ja": "『AI音楽ジャンル分類』は、信号処理と機械学習技術を組み合わせて音楽ジャンルを自動分類する音楽認識プロジェクトです。音声特徴量抽出、データ可視化、Melスペクトログラムを用いたモデル学習により、10種類の音楽ジャンル認識を実現しました。",
+      "ko": "『AI 음악 장르 분류』는 신호 처리와 머신러닝 기술을 결합하여 음악 장르를 자동으로 분류하는 음악 인식 프로젝트입니다. 오디오 특징 추출, 데이터 시각화, Mel 스펙트로그램 기반 모델 학습을 통해 10가지 음악 장르 인식을 구현했습니다."
+    },
+    "tags": {
+      "en": [
+        "Signal Processing",
+        "Machine Learning"
+      ],
+      "zh": [
+        "信号处理",
+        "机器学习"
+      ],
+      "ja": [
+        "信号処理",
+        "機械学習"
+      ],
+      "ko": [
+        "신호 처리",
+        "머신러닝"
+      ]
+    },
+    "backupCoverImage": "src/assets/projects/MusicGenreClassificationPoster.webp"
+  },
+  {
+    "id": "technical-project-dog-breed-classification",
+    "order": 9,
+    "category": "technical",
+    "title": {
+      "en": "Dog Breeds Classification",
+      "zh": "犬种分类",
+      "ja": "犬種分類",
+      "ko": "견종 분류"
+    },
+    "roles": {
+      "en": [
+        "Team Leader",
+        "AI Application Developer"
+      ],
+      "zh": [
+        "组长",
+        "AI 应用开发"
+      ],
+      "ja": [
+        "チームリーダー",
+        "AIアプリケーション開発"
+      ],
+      "ko": [
+        "팀 리더",
+        "AI 애플리케이션 개발"
+      ]
+    },
+    "desc": {
+      "en": "Dog Breeds Classification is an image recognition project completed during the Oxford Artificial Intelligence Summer School. The project uses deep learning methods to classify different dog breeds from images, and improves classification accuracy through transfer learning, model optimization, and data augmentation.",
+      "zh": "《犬种分类》是一个在牛津人工智能暑期课程期间完成的图像识别项目，利用深度学习方法对不同犬种进行分类。项目通过迁移学习、模型优化与数据增强等手段，不断提升图像分类准确率。",
+      "ja": "『犬種分類』は、オックスフォード人工知能サマースクールで取り組んだ画像認識プロジェクトです。深層学習を用いて異なる犬種画像を分類し、転移学習、モデル最適化、データ拡張によって分類精度を向上させました。",
+      "ko": "『견종 분류』는 옥스퍼드 인공지능 서머스쿨에서 진행한 이미지 인식 프로젝트입니다. 딥러닝을 활용해 다양한 견종 이미지를 분류했으며, 전이 학습, 모델 최적화, 데이터 증강을 통해 분류 정확도를 향상시켰습니다."
+    },
+    "tags": {
+      "en": [
+        "Deep Learning",
+        "Image Classification"
+      ],
+      "zh": [
+        "深度学习",
+        "图像分类"
+      ],
+      "ja": [
+        "深層学習",
+        "画像分類"
+      ],
+      "ko": [
+        "딥러닝",
+        "이미지 분류"
+      ]
+    },
+    "coverImage": "src/assets/projects/DogBreedClassificationPoster.webp"
+  },
+  {
+    "id": "game-project-lost-realm",
+    "order": 10,
+    "category": "game",
+    "title": {
+      "en": "Lost Realm",
+      "zh": "失落领域 (Lost Realm)",
+      "ja": "ロストレルム (Lost Realm)",
+      "ko": "로스트 렐름 (Lost Realm)"
+    },
+    "roles": {
+      "en": [
+        "Solo Developer"
+      ],
+      "zh": [
+        "独立开发者"
+      ],
+      "ja": [
+        "個人開発者"
+      ],
+      "ko": [
+        "개인 개발자"
+      ]
+    },
+    "desc": {
+      "en": "Lost Realm is a 2D pixel art Metroidvania game demo developed with Unity. The project focuses on combat, skill progression, UI/UX design, and modular system development, featuring finite state machines, a card-based action editor, boss AI behavior design, and pixel-style visual effects.",
+      "zh": "《失落领域》是一个使用 Unity 开发的 2D 像素风银河恶魔城游戏 Demo。项目围绕战斗、技能成长、UI/UX 设计与模块化系统开发展开，包含有限状态机、卡牌式动作编辑系统、Boss AI 行为设计与像素化视觉特效表现等内容。",
+      "ja": "『ロストレルム』は、Unityで開発した2Dピクセルアートのメトロイドヴァニアゲームデモです。戦闘、スキル成長、UI/UX設計、モジュール型システム開発を中心に、有限状態機械、カード式アクションエディタ、ボスAI行動設計、ピクセル調のビジュアルエフェクト表現を実装しました。",
+      "ko": "『로스트 렐름』은 Unity로 개발한 2D 픽셀 아트 메트로배니아 게임 데모입니다. 전투, 스킬 성장, UI/UX 설계, 모듈형 시스템 개발을 중심으로, 유한 상태 머신, 카드 기반 액션 에디터, 보스 AI 행동 설계, 픽셀 스타일의 시각 효과 연출 등을 구현했습니다."
+    },
+    "tags": {
+      "en": [
+        "Unity",
+        "Metroidvania",
+        "Combat 3C Design"
+      ],
+      "zh": [
+        "Unity",
+        "银河恶魔城",
+        "战斗3C设计"
+      ],
+      "ja": [
+        "Unity",
+        "メトロイドヴァニア",
+        "戦闘3C設計"
+      ],
+      "ko": [
+        "Unity",
+        "메트로배니아",
+        "전투 3C 설계"
+      ]
+    },
+    "coverImage": "../assets/projects/LostRealmPoster.webp"
+  },
+  {
+    "id": "technical-project-smart-pot-joi",
+    "order": 11,
+    "category": "technical",
+    "title": {
+      "en": "Smart Pot Joi",
+      "zh": "AI智能花盆 Joi",
+      "ja": "AIスマート植木鉢 Joi",
+      "ko": "AI 스마트 화분 Joi"
+    },
+    "roles": {
+      "en": [
+        "Technical Team Leader"
+      ],
+      "zh": [
+        "技术组长"
+      ],
+      "ja": [
+        "技術チームリーダー"
+      ],
+      "ko": [
+        "기술팀 리더"
+      ]
+    },
+    "desc": {
+      "en": "AI Smart Pot Joi is an award-winning AI-powered IoT plant care project that combines emotional interaction with environmental monitoring. It integrates speech recognition, natural language processing, emotion detection, sensor connectivity, and server communication to support multilingual voice interaction, real-time plant status monitoring, and expressive feedback through animated facial responses.",
+      "zh": "《AI智能花盆 Joi》是一个结合情感交互与环境监测的获奖 AI IoT 植物照护项目。项目整合了语音识别、自然语言处理、情绪检测、传感器接入与服务器通信等技术，实现了多语言语音交互、植物状态实时监测，以及通过动态表情反馈的互动体验。",
+      "ja": "『AIスマート植木鉢 Joi』は、感情的なインタラクションと環境モニタリングを組み合わせた受賞歴のあるAI搭載IoT植物ケアプロジェクトです。音声認識、自然言語処理、感情検出、センサー接続、サーバー通信を統合し、多言語音声対話、植物状態のリアルタイム監視、アニメーションによる表情フィードバックを実現しています。",
+      "ko": "『AI 스마트 화분 Joi』는 감성적 상호작용과 환경 모니터링을 결합한 수상 경력의 AI 기반 IoT 식물 케어 프로젝트입니다. 음성 인식, 자연어 처리, 감정 인식, 센서 연동, 서버 통신 기술을 통합하여 다국어 음성 상호작용, 실시간 식물 상태 모니터링, 그리고 애니메이션 표정 피드백을 구현했습니다."
+    },
+    "tags": {
+      "en": [
+        "IoT Development",
+        "Spring Boot",
+        "System Design",
+        "AI Development"
+      ],
+      "zh": [
+        "物联网开发",
+        "Spring Boot",
+        "系统设计",
+        "AI开发"
+      ],
+      "ja": [
+        "IoT開発",
+        "Spring Boot",
+        "システム設計",
+        "AI開発"
+      ],
+      "ko": [
+        "IoT 개발",
+        "Spring Boot",
+        "시스템 설계",
+        "AI 개발"
+      ]
+    },
+    "coverImage": "src/assets/projects/SmartPotJoiPoster.webp"
+  },
+  {
+    "id": "technical-project-vbgmm",
+    "order": 12,
+    "category": "technical",
+    "title": {
+      "en": "Variational Bayesian Inference for Gaussian Mixture",
+      "zh": "高斯混合模型的变分贝叶斯推断",
+      "ja": "ガウス混合モデルの変分ベイズ推論",
+      "ko": "가우시안 혼합 모델의 변분 베이즈 추론"
+    },
+    "roles": {
+      "en": [
+        "Data Scientist"
+      ],
+      "zh": [
+        "数据科学家"
+      ],
+      "ja": [
+        "データサイエンティスト"
+      ],
+      "ko": [
+        "데이터 사이언티스트"
+      ]
+    },
+    "desc": {
+      "en": "This project focuses on manually implementing a Variational Bayesian Gaussian Mixture Model (VB-GMM) and comparing it with Scikit-learn's BayesianGaussianMixture model. It covers multivariate Gaussian data generation, parameter updates for means, covariances, alpha, and beta, ELBO-based convergence optimization, and visualization of clustering results through Gaussian ellipses.",
+      "zh": "本项目手动实现高斯混合模型的变分贝叶斯推断（VB-GMM），并与 Scikit-learn 提供的 BayesianGaussianMixture 模型进行对比。项目内容涵盖多元高斯数据生成、均值、协方差、alpha 与 beta 参数更新、基于 ELBO 的收敛优化，以及通过高斯椭圆对聚类结果进行可视化分析。",
+      "ja": "本プロジェクトでは、変分ベイズガウス混合モデル（VB-GMM）を手動で実装し、Scikit-learn の BayesianGaussianMixture モデルと比較しました。多変量ガウスデータの生成、平均・共分散・alpha・beta パラメータの更新、ELBO に基づく収束最適化、そしてガウス楕円によるクラスタリング結果の可視化を含みます。",
+      "ko": "이 프로젝트는 변분 베이즈 가우시안 혼합 모델(VB-GMM)을 직접 구현하고 Scikit-learn의 BayesianGaussianMixture 모델과 비교하는 데 중점을 둡니다. 다변량 가우시안 데이터 생성, 평균·공분산·alpha·beta 파라미터 업데이트, ELBO 기반 수렴 최적화, 그리고 가우시안 타원을 통한 클러스터링 결과 시각화를 포함합니다."
+    },
+    "tags": {
+      "en": [
+        "Mathematics",
+        "Machine Learning",
+        "Variational Inference",
+        "Data Science"
+      ],
+      "zh": [
+        "数学",
+        "机器学习",
+        "变分推断",
+        "数据科学"
+      ],
+      "ja": [
+        "数学",
+        "機械学習",
+        "変分推論",
+        "データサイエンス"
+      ],
+      "ko": [
+        "수학",
+        "머신러닝",
+        "변분 추론",
+        "데이터 사이언스"
+      ]
+    },
+    "coverImage": "src/assets/projects/VBGMMPoster.webp"
+  },
+  {
+    "id": "technical-project-ai-pixelart-repair-tool",
+    "order": 13,
+    "category": "technical",
+    "title": {
+      "en": "AI PixelArt Repair Tool",
+      "zh": "AI 像素画修复工具",
+      "ja": "AIピクセルアート修復ツール",
+      "ko": "AI 픽셀아트 보정 도구"
+    },
+    "roles": {
+      "en": [
+        "Technical Artist",
+        "AI Application Developer"
+      ],
+      "zh": [
+        "技术美术",
+        "AI 应用开发"
+      ],
+      "ja": [
+        "テクニカルアーティスト",
+        "AIアプリケーション開発"
+      ],
+      "ko": [
+        "테크니컬 아티스트",
+        "AI 애플리케이션 개발"
+      ]
+    },
+    "desc": {
+      "en": "AI PixelArt Repair Tool is an image processing project designed to optimize pixel-style assets generated by AI drawing tools such as MidJourney. Built with Gradio, Pillow, and Scikit-learn, it integrates pixelation, color quantization, edge repair, and pixel block detection into an interactive workflow, with optional GPU acceleration through cuML and cuPy.",
+      "zh": "《AI 像素画修复工具》是一个面向 AI 生成像素风素材优化的图像处理项目，基于 Gradio、Pillow 与 Scikit-learn 开发，集成了像素化、颜色量化、边缘修复与像素块检测等功能，并通过 cuML 与 cuPy 提供可选的 GPU 加速能力。",
+      "ja": "『AIピクセルアート修復ツール』は、MidJourneyなどのAI描画ツールで生成されたピクセル風アセットを最適化するための画像処理プロジェクトです。Gradio、Pillow、Scikit-learnを基盤とし、ピクセル化、色量子化、エッジ修復、ピクセルブロック検出を統合したインタラクティブなワークフローを備え、cuMLとcuPyによるGPUアクセラレーションにも対応しています。",
+      "ko": "『AI 픽셀아트 보정 도구』는 MidJourney와 같은 AI 드로잉 도구로 생성된 픽셀 스타일 에셋을 최적화하기 위한 이미지 처리 프로젝트입니다. Gradio, Pillow, Scikit-learn을 기반으로 픽셀화, 색상 양자화, 엣지 보정, 픽셀 블록 검출 기능을 통합했으며, cuML과 cuPy를 통한 선택적 GPU 가속도 지원합니다."
+    },
+    "tags": {
+      "en": [
+        "Machine Learning",
+        "Computer Vision"
+      ],
+      "zh": [
+        "机器学习",
+        "计算机视觉"
+      ],
+      "ja": [
+        "機械学習",
+        "コンピュータビジョン"
+      ],
+      "ko": [
+        "머신러닝",
+        "컴퓨터 비전"
+      ]
+    },
+    "coverImage": "src/assets/projects/AIPixelArtRepairToolPoster.webp"
+  },
+  {
+    "id": "technical-project-web-system-for-equipment-rental",
+    "order": 14,
+    "category": "technical",
+    "title": {
+      "en": "Equipment Rental Web System",
+      "zh": "设备租赁 Web 系统",
+      "ja": "設備レンタルWebシステム",
+      "ko": "장비 대여 웹 시스템"
+    },
+    "roles": {
+      "en": [
+        "Software Developer"
+      ],
+      "zh": [
+        "软件开发"
+      ],
+      "ja": [
+        "ソフトウェア開発"
+      ],
+      "ko": [
+        "소프트웨어 개발"
+      ]
+    },
+    "desc": {
+      "en": "Equipment Rental Web System is a web-based system developed for the Science Faculty to support equipment rental and related management tasks. Built with Vue 3, Node.js, Express.js, and MongoDB, the project supports equipment and user management, searchable equipment listings, calendar-based rental tracking, JWT authentication, and role-based access control.",
+      "zh": "《设备租赁 Web 系统》是一个为理学院开发的 Web 系统，用于支持设备租赁及相关管理流程。项目基于 Vue 3、Node.js、Express.js 与 MongoDB 构建，支持设备与用户管理、设备检索、基于日历的租赁追踪、JWT 身份验证以及基于角色的访问控制。",
+      "ja": "『設備レンタルWebシステム』は、理学部向けに開発した、機材の貸出と関連管理業務を支援するWebシステムです。Vue 3、Node.js、Express.js、MongoDBを用いて構築されており、機材・ユーザー管理、機材検索、カレンダーベースのレンタル追跡、JWT認証、ロールベースアクセス制御に対応しています。",
+      "ko": "『장비 대여 웹 시스템』은 이학부를 위해 개발한 웹 시스템으로, 장비 대여 및 관련 관리 업무를 지원합니다. Vue 3, Node.js, Express.js, MongoDB를 기반으로 구축되었으며, 장비 및 사용자 관리, 장비 검색, 캘린더 기반 대여 추적, JWT 인증, 역할 기반 접근 제어를 지원합니다."
+    },
+    "tags": {
+      "en": [
+        "Web Development",
+        "Vue",
+        "MongoDB"
+      ],
+      "zh": [
+        "网页开发",
+        "Vue",
+        "MongoDB"
+      ],
+      "ja": [
+        "Web開発",
+        "Vue",
+        "MongoDB"
+      ],
+      "ko": [
+        "웹 개발",
+        "Vue",
+        "MongoDB"
+      ]
+    },
+    "backupCoverImage": "src/assets/projects/EquipmentRentalWebSystemPoster.webp"
+  },
+  {
+    "id": "technical-project-battle-joker",
+    "order": 15,
+    "category": "technical",
+    "title": {
+      "en": "Battle Joker Multiplayer",
+      "zh": "Battle Joker多人版",
+      "ja": "Battle Jokerマルチプレイヤー版",
+      "ko": "Battle Joker 멀티플레이어 버전"
+    },
+    "roles": {
+      "en": [
+        "Team Leader",
+        "Game Developer"
+      ],
+      "zh": [
+        "队长",
+        "游戏开发"
+      ],
+      "ja": [
+        "チームリーダー",
+        "ゲーム開発者"
+      ],
+      "ko": [
+        "팀 리더",
+        "게임 개발자"
+      ]
+    },
+    "desc": {
+      "en": "Battle Joker Multiplayer is a multiplayer card-combination game project that extends an existing single-player prototype into an online experience for up to four players. The project implements a server-client architecture to support real-time synchronization, turn-based gameplay, score broadcasting, and concurrent game sessions, while also improving scalability and performance through layered architecture, thread pools, and object pools.",
+      "zh": "《Battle Joker多人版》是一个多人卡牌合成游戏项目，在原有单人原型基础上扩展为支持最多四名玩家联机对战的在线游戏。项目实现了基于服务器—客户端架构的实时同步、回合制流程、分数广播与并发对局支持，并通过分层架构、线程池与对象池等机制提升系统的可扩展性与性能表现。",
+      "ja": "『Battle Jokerマルチプレイヤー版』は、既存のシングルプレイヤー向けカード合成ゲームを、最大4人まで参加可能なオンラインマルチプレイ体験へ拡張したプロジェクトです。サーバー・クライアント構成により、リアルタイム同期、ターン制進行、スコア配信、並行対戦を実装し、さらにレイヤードアーキテクチャ、スレッドプール、オブジェクトプールによって拡張性と性能を向上させました。",
+      "ko": "『Battle Joker 멀티플레이어 버전』은 기존의 싱글플레이 카드 조합 게임 프로토타입을 최대 4인까지 참여 가능한 온라인 멀티플레이 게임으로 확장한 프로젝트입니다. 서버-클라이언트 아키텍처를 통해 실시간 동기화, 턴제 진행, 점수 브로드캐스트, 동시 게임 세션을 구현했으며, 계층형 아키텍처, 스레드 풀, 오브젝트 풀을 적용해 확장성과 성능을 향상시켰습니다."
+    },
+    "tags": {
+      "en": [
+        "Network Development"
+      ],
+      "zh": [
+        "网络开发"
+      ],
+      "ja": [
+        "ネットワーク開発"
+      ],
+      "ko": [
+        "네트워크 개발"
+      ]
+    },
+    "backupCoverImage": "src/assets/projects/BattleJokerMultiplayerPoster.webp"
+  },
+  {
+    "id": "technical-project-equipment-rental-android-app",
+    "order": 16,
+    "category": "technical",
+    "title": {
+      "en": "Equipment Rental Android App",
+      "zh": "设备租赁安卓App",
+      "ja": "設備レンタルAndroidアプリ",
+      "ko": "장비 대여 안드로이드 앱"
+    },
+    "roles": {
+      "en": [
+        "App Developer"
+      ],
+      "zh": [
+        "应用开发"
+      ],
+      "ja": [
+        "アプリ開発"
+      ],
+      "ko": [
+        "앱 개발"
+      ]
+    },
+    "desc": {
+      "en": "Equipment Rental Android App is an Android application developed with Kotlin for equipment browsing, searching, and reservation management. Built with MVVM architecture and Jetpack Compose, the project integrates backend APIs to support user authentication, location-based equipment browsing, keyword search, and reservation workflows.",
+      "zh": "《设备租赁安卓App》是一个使用 Kotlin 开发的 Android 应用，用于实现设备浏览、搜索与预约流程。项目基于 MVVM 架构与 Jetpack Compose 构建，并集成后端 API，以支持用户认证、按地点浏览设备、关键词搜索与设备预约功能。",
+      "ja": "『設備レンタルAndroidアプリ』は、Kotlinで開発した、機材の閲覧、検索、予約フローに対応するAndroidアプリです。MVVMアーキテクチャとJetpack Composeを採用し、バックエンドAPIと連携して、ユーザー認証、場所別の機材閲覧、キーワード検索、予約機能を実現しました。",
+      "ko": "『장비 대여 안드로이드 앱』은 Kotlin으로 개발한 Android 애플리케이션으로, 장비 조회, 검색 및 예약 절차를 지원합니다. MVVM 아키텍처와 Jetpack Compose를 기반으로 구축되었으며, 백엔드 API 연동을 통해 사용자 인증, 위치별 장비 조회, 키워드 검색, 장비 예약 기능을 구현했습니다."
+    },
+    "tags": {
+      "en": [
+        "Android Development",
+        "Kotlin"
+      ],
+      "zh": [
+        "Android 开发",
+        "Kotlin"
+      ],
+      "ja": [
+        "Android開発",
+        "Kotlin"
+      ],
+      "ko": [
+        "안드로이드 개발",
+        "Kotlin"
+      ]
+    },
+    "backupCoverImage": "src/assets/projects/EquipmentRentalAndroidAppPoster.webp"
+  },
+  {
+    "id": "technical-project-variational-applications",
+    "order": 17,
+    "category": "technical",
+    "title": {
+      "en": "Variational Applications",
+      "zh": "变分方法应用",
+      "ja": "変分手法の応用",
+      "ko": "변분 기법 응용"
+    },
+    "roles": {
+      "en": [
+        "Team Leader",
+        "Data Scientist"
+      ],
+      "zh": [
+        "组长",
+        "数据科学家"
+      ],
+      "ja": [
+        "チームリーダー",
+        "データサイエンティスト"
+      ],
+      "ko": [
+        "팀 리더",
+        "데이터 사이언티스트"
+      ]
+    },
+    "desc": {
+      "en": "Variational Applications is an AI project that explores the use of variational methods on real-world datasets, with a primary focus on dengue fever prediction in Hong Kong. Using Temporal Variational Autoencoders and Transformer-based architectures, the project models spatiotemporal patterns from surveillance and demographic data, while also investigating land use reconstruction and old photo restoration to evaluate the strengths and limitations of generative approaches.",
+      "zh": "《变分方法应用》是一个探索变分方法在真实数据集上应用的 AI 项目，重点聚焦于香港登革热预测。项目基于时序变分自编码器与 Transformer 架构，对监测数据和人口统计数据中的时空模式进行建模，同时也尝试了土地利用重建与老照片修复，用于评估生成式方法的能力与局限性。",
+      "ja": "『変分手法の応用』は、実データセットに対する変分手法の活用を検証したAIプロジェクトであり、主に香港におけるデング熱予測に焦点を当てています。Temporal VAE と Transformer ベースのアーキテクチャを用いて、監視データと人口統計データに含まれる時空間パターンをモデリングし、さらに土地利用再構成や古写真修復も試みることで、生成モデルの強みと限界を評価しました。",
+      "ko": "『변분 기법 응용』은 실제 데이터셋에 대한 변분 기법의 활용을 탐구한 AI 프로젝트로, 홍콩의 뎅기열 예측에 중점을 두고 있습니다. Temporal VAE와 Transformer 기반 아키텍처를 사용해 감시 데이터와 인구통계 데이터의 시공간 패턴을 모델링했으며, 동시에 토지 이용 복원과 오래된 사진 복원도 실험하여 생성 모델의 강점과 한계를 평가했습니다."
+    },
+    "tags": {
+      "en": [
+        "Deep Learning",
+        "Mathematics"
+      ],
+      "zh": [
+        "深度学习",
+        "数学"
+      ],
+      "ja": [
+        "深層学習",
+        "数学"
+      ],
+      "ko": [
+        "딥러닝",
+        "수학"
+      ]
+    },
+    "backupCoverImage": "src/assets/projects/VariationalApplicationsPoster.webp"
+  },
+  {
+    "id": "game-project-speed-pixel",
+    "order": 18,
+    "category": "game",
+    "title": {
+      "en": "Speed Pixel",
+      "zh": "极速像素 (Speed Pixel)",
+      "ja": "スピードピクセル (Speed Pixel)",
+      "ko": "스피드 픽셀 (Speed Pixel)"
+    },
+    "roles": {
+      "en": [
+        "Solo Developer"
+      ],
+      "zh": [
+        "独立开发者"
+      ],
+      "ja": [
+        "個人開発者"
+      ],
+      "ko": [
+        "개인 개발자"
+      ]
+    },
+    "desc": {
+      "en": "A minimalist 2D platformer roguelite game demo developed as a solo project. Speed Pixel combines momentum-based movement, speed-driven combat, procedural level generation, and permanent progression systems into a fast-paced pixel-style experience built around the idea that speed equals power.",
+      "zh": "一款由个人独立开发的极简风 2D 平台 Roguelite 游戏 Demo。《极速像素》结合了基于动量的移动机制、以速度驱动的战斗、程序化关卡生成与永久成长系统，围绕“速度即力量”的核心理念打造出快节奏的像素风游戏体验。",
+      "ja": "個人で開発したミニマルな2Dプラットフォーマー・ローグライトのゲームデモです。『Speed Pixel』は、慣性ベースの移動、高速化によって強化される戦闘、プロシージャルなレベル生成、恒久的な成長要素を組み合わせ、「スピードこそ力」というコンセプトを軸にしたハイテンポなピクセルゲーム体験を実現しています。",
+      "ko": "개인으로 개발한 미니멀 스타일의 2D 플랫포머 로그라이트 게임 데모입니다. 『Speed Pixel』은 관성 기반 이동, 속도 중심 전투, 절차적 레벨 생성, 영구 성장 시스템을 결합하여 ‘속도가 곧 힘’이라는 핵심 콘셉트 아래 빠른 템포의 픽셀 스타일 게임 경험을 구현했습니다."
+    },
+    "tags": {
+      "en": [
+        "Unity",
+        "Roguelite",
+        "Windows"
+      ],
+      "zh": [
+        "Unity",
+        "Roguelite",
+        "Windows"
+      ],
+      "ja": [
+        "Unity",
+        "ローグライト",
+        "Windows"
+      ],
+      "ko": [
+        "Unity",
+        "로그라이트",
+        "Windows"
+      ]
+    },
+    "coverImage": "../assets/projects/SpeedPixelPoster.webp"
+  },
+
+
+  {
+    "id": "game-project-empty-throne",
+    "order": 19,
     "category": "game",
     "title": {
       "en": "Empty Throne",
@@ -66,8 +1040,125 @@
     "coverImage": "../assets/projects/EmptyThornePoster.webp"
   },
   {
+    "id": "technical-project-lego-voxelizer",
+    "order": 20,
+    "category": "technical",
+    "title": {
+      "en": "Lego Voxelizer",
+      "zh": "乐高体素化生成器",
+      "ja": "レゴ・ボクセライザー",
+      "ko": "레고 복셀라이저"
+    },
+    "roles": {
+      "en": [
+        "Technical Artist"
+      ],
+      "zh": [
+        "技术美术"
+      ],
+      "ja": [
+        "テクニカルアーティスト"
+      ],
+      "ko": [
+        "테크니컬 아ーティ스트"
+      ]
+    },
+    "desc": {
+      "en": "Lego Voxelizer is a web-based technical graphics project built with WebGL and Three.js. It implements techniques such as adaptive surface sampling and flood-fill interior detection, and combines custom GLSL shaders to support multiple visual styles, including toon, wireframe, and retro rendering.",
+      "zh": "《乐高体素化生成器》是一个基于 WebGL 与 Three.js 的网页端技术图形项目，实现了自适应表面采样、洪水填充内部检测等技术，并结合自定义 GLSL Shader，支持卡通、线框、复古等多种视觉风格。",
+      "ja": "『レゴ・ボクセライザー』は、WebGLとThree.jsを基盤としたWeb向けのテクニカルグラフィックスプロジェクトです。適応的なサーフェスサンプリングやフラッドフィルによる内部領域の検出などの技術を実装し、さらにカスタムGLSLシェーダーを組み合わせることで、トゥーン、ワイヤーフレーム、レトロといった複数のビジュアルスタイルに対応しています。",
+      "ko": "『레고 복셀라이저』는 WebGL과 Three.js를 기반으로 한 웹 기술 그래픽스 프로젝트입니다. 적응형 표면 샘플링, 플러드 필 기반 내부 영역 검출 등의 기술을 구현했으며, 사용자 정의 GLSL 셰이더를 결합하여 카툰, 와이어프레임, 레트로 등 다양한 시각 스타일을 지원합니다."
+    },
+    "tags": {
+      "en": [
+        "Voxelization",
+        "WebGL",
+        "Three.js",
+        "GLSL"
+      ],
+      "zh": [
+        "体素化",
+        "WebGL",
+        "Three.js",
+        "GLSL"
+      ],
+      "ja": [
+        "ボクセル化",
+        "WebGL",
+        "Three.js",
+        "GLSL"
+      ],
+      "ko": [
+        "복셀화",
+        "WebGL",
+        "Three.js",
+        "GLSL"
+      ]
+    },
+    "coverImage": "src/assets/projects/LegoVoxelizerPoster.webp"
+  },
+  {
+    "id": "technical-project-raymarching-fractal-morphing",
+    "order": 21,
+    "category": "technical",
+    "title": {
+      "en": "Ray Marching Fractal Morphing",
+      "zh": "光线步进 Fractal Morphing",
+      "ja": "レイマーチング・Fractal Morphing",
+      "ko": "레이 마칭 Fractal Morphing"
+    },
+    "roles": {
+      "en": [
+        "Technical Artist"
+      ],
+      "zh": [
+        "技术美术"
+      ],
+      "ja": [
+        "テクニカルアーティスト"
+      ],
+      "ko": [
+        "테크니컬 아티스트"
+      ]
+    },
+    "desc": {
+      "en": "Ray Marching Fractal Morphing is a technical graphics project that explores the real-time fusion of 3D models and Mandelbulb fractals in Three.js to enhance surface detail and visual complexity. Built on WebGL, the project uses signed distance functions (SDF) and ray marching to render both procedural geometry and fractal structures, then blends them mathematically to achieve smooth morphing transitions.",
+      "zh": "《光线步进 Fractal Morphing》是一个基于 Three.js 的技术图形项目，探索将三维模型与 Mandelbulb 分形在网页端进行实时融合，以增强模型表面细节与视觉层次。项目基于 WebGL，使用有符号距离场（SDF）与光线步进技术渲染程序化几何和分形结构，并在数学层面对二者进行混合，从而实现平滑的形态过渡效果。",
+      "ja": "『レイマーチング・Fractal Morphing』は、Three.jsを基盤に、3DモデルとMandelbulbフラクタルをWeb上でリアルタイムに融合させ、表面ディテールと視覚的な情報量を高めることを目指したテクニカルグラフィックスプロジェクトです。WebGL上で構築されており、符号付き距離関数（SDF）とレイマーチングを用いて、プロシージャルジオメトリとフラクタル構造を描画し、それらを数学的にブレンドすることで滑らかなモーフィング表現を実現しています。",
+      "ko": "『레이 마칭 Fractal Morphing』은 Three.js를 기반으로 3D 모델과 Mandelbulb 프랙탈을 웹 환경에서 실시간으로 융합하여, 표면 디테일과 시각적 밀도를 향상시키는 기술 그래픽스 프로젝트입니다. 이 프로젝트는 WebGL 위에서 구현되었으며, Signed Distance Function(SDF)과 레이 마칭 기법을 사용해 절차적 기하와 프랙탈 구조를 렌더링하고, 이를 수학적으로 블렌딩하여 부드러운 형태 전환을 구현합니다."
+    },
+    "tags": {
+      "en": [
+        "Mandelbulb",
+        "WebGL",
+        "Three.js",
+        "Real-time Rendering"
+      ],
+      "zh": [
+        "曼德尔球",
+        "WebGL",
+        "Three.js",
+        "实时渲染"
+      ],
+      "ja": [
+        "Mandelbulb",
+        "WebGL",
+        "Three.js",
+        "リアルタイムレンダリング"
+      ],
+      "ko": [
+        "Mandelbulb",
+        "WebGL",
+        "Three.js",
+        "실시간 렌더링"
+      ]
+    },
+    "coverImage": "src/assets/projects/RayMarchingFractalMorphingPoster.webp"
+  },
+
+  {
     "id": "game-project-eel-on-mask",
-    "order": 2,
+    "order": 22,
     "category": "game",
     "title": {
       "en": "Eel On Mask",
@@ -113,7 +1204,6 @@
       ],
       "zh": [
         "Unity",
-        "2D 平台跳跃",
         "解谜设计",
         "Game Jam",
         "Steam",
@@ -138,7 +1228,7 @@
   },
   {
     "id": "game-project-click-click-universe",
-    "order": 3,
+    "order": 23,
     "category": "game",
     "title": {
       "en": "Click Click Universe",
@@ -196,7 +1286,7 @@
   },
   {
     "id": "game-project-yuanmengstar-shanhai-xunling",
-    "order": 4,
+    "order": 24,
     "category": "game",
     "title": {
       "en": "YuanMeng Star: Shanhai Xunling",
@@ -256,294 +1346,64 @@
     },
     "coverImage": "src/assets/projects/YuanMengStarPoster.webp"
   },
+
   {
-    "id": "technical-project-vbgmm",
-    "order": 994,
+    "id": "data-project-online-shoppers-intention",
+    "order": 25,
     "category": "technical",
     "title": {
-      "en": "Variational Bayesian Inference for Gaussian Mixture",
-      "zh": "高斯混合模型的变分贝叶斯推断",
-      "ja": "ガウス混合モデルの変分ベイズ推論",
-      "ko": "가우시안 혼합 모델의 변분 베이즈 추론"
+      "en": "Online Shoppers Intention Analysis",
+      "zh": "在线购物者购买意图分析",
+      "ja": "オンライン購買意図分析",
+      "ko": "온라인 쇼핑 구매 의도 분석"
     },
     "roles": {
       "en": [
+        "Team Leader",
         "Data Scientist"
       ],
       "zh": [
+        "组长",
         "数据科学家"
       ],
       "ja": [
+        "チームリーダー",
         "データサイエンティスト"
       ],
       "ko": [
+        "팀 리더",
         "데이터 사이언티스트"
       ]
     },
     "desc": {
-      "en": "This project focuses on manually implementing a Variational Bayesian Gaussian Mixture Model (VB-GMM) and comparing it with Scikit-learn's BayesianGaussianMixture model. It covers multivariate Gaussian data generation, parameter updates for means, covariances, alpha, and beta, ELBO-based convergence optimization, and visualization of clustering results through Gaussian ellipses.",
-      "zh": "本项目手动实现高斯混合模型的变分贝叶斯推断（VB-GMM），并与 Scikit-learn 提供的 BayesianGaussianMixture 模型进行对比。项目内容涵盖多元高斯数据生成、均值、协方差、alpha 与 beta 参数更新、基于 ELBO 的收敛优化，以及通过高斯椭圆对聚类结果进行可视化分析。",
-      "ja": "本プロジェクトでは、変分ベイズガウス混合モデル（VB-GMM）を手動で実装し、Scikit-learn の BayesianGaussianMixture モデルと比較しました。多変量ガウスデータの生成、平均・共分散・alpha・beta パラメータの更新、ELBO に基づく収束最適化、そしてガウス楕円によるクラスタリング結果の可視化を含みます。",
-      "ko": "이 프로젝트는 변분 베이즈 가우시안 혼합 모델(VB-GMM)을 직접 구현하고 Scikit-learn의 BayesianGaussianMixture 모델과 비교하는 데 중점을 둡니다. 다변량 가우시안 데이터 생성, 평균·공분산·alpha·beta 파라미터 업데이트, ELBO 기반 수렴 최적화, 그리고 가우시안 타원을 통한 클러스터링 결과 시각화를 포함합니다."
-    },
-    "tags": {
-      "en": [
-        "Mathematics",
-        "Machine Learning",
-        "Variational Inference",
-        "Data Science"
-      ],
-      "zh": [
-        "数学",
-        "机器学习",
-        "变分推断",
-        "数据科学"
-      ],
-      "ja": [
-        "数学",
-        "機械学習",
-        "変分推論",
-        "データサイエンス"
-      ],
-      "ko": [
-        "수학",
-        "머신러닝",
-        "변분 추론",
-        "데이터 사이언스"
-      ]
-    },
-    "coverImage": "src/assets/projects/VBGMMPoster.webp"
-  },
-  {
-    "id": "technical-project-smart-pot-joi",
-    "order": 995,
-    "category": "technical",
-    "title": {
-      "en": "Smart Pot Joi",
-      "zh": "AI智能花盆 Joi",
-      "ja": "AIスマート植木鉢 Joi",
-      "ko": "AI 스마트 화분 Joi"
-    },
-    "roles": {
-      "en": [
-        "Technical Team Leader"
-      ],
-      "zh": [
-        "技术组长"
-      ],
-      "ja": [
-        "技術チームリーダー"
-      ],
-      "ko": [
-        "기술팀 리더"
-      ]
-    },
-    "desc": {
-      "en": "AI Smart Pot Joi is an award-winning AI-powered IoT plant care project that combines emotional interaction with environmental monitoring. It integrates speech recognition, natural language processing, emotion detection, sensor connectivity, and server communication to support multilingual voice interaction, real-time plant status monitoring, and expressive feedback through animated facial responses.",
-      "zh": "《AI智能花盆 Joi》是一个结合情感交互与环境监测的获奖 AI IoT 植物照护项目。项目整合了语音识别、自然语言处理、情绪检测、传感器接入与服务器通信等技术，实现了多语言语音交互、植物状态实时监测，以及通过动态表情反馈的互动体验。",
-      "ja": "『AIスマート植木鉢 Joi』は、感情的なインタラクションと環境モニタリングを組み合わせた受賞歴のあるAI搭載IoT植物ケアプロジェクトです。音声認識、自然言語処理、感情検出、センサー接続、サーバー通信を統合し、多言語音声対話、植物状態のリアルタイム監視、アニメーションによる表情フィードバックを実現しています。",
-      "ko": "『AI 스마트 화분 Joi』는 감성적 상호작용과 환경 모니터링을 결합한 수상 경력의 AI 기반 IoT 식물 케어 프로젝트입니다. 음성 인식, 자연어 처리, 감정 인식, 센서 연동, 서버 통신 기술을 통합하여 다국어 음성 상호작용, 실시간 식물 상태 모니터링, 그리고 애니메이션 표정 피드백을 구현했습니다."
-    },
-    "tags": {
-      "en": [
-        "IoT Development",
-        "Spring Boot",
-        "System Design",
-        "AI Development"
-      ],
-      "zh": [
-        "物联网开发",
-        "Spring Boot",
-        "系统设计",
-        "AI开发"
-      ],
-      "ja": [
-        "IoT開発",
-        "Spring Boot",
-        "システム設計",
-        "AI開発"
-      ],
-      "ko": [
-        "IoT 개발",
-        "Spring Boot",
-        "시스템 설계",
-        "AI 개발"
-      ]
-    },
-    "coverImage": "src/assets/projects/SmartPotJoiPoster.webp"
-  },
-  {
-    "id": "technical-project-ai-pixelart-repair-tool",
-    "order": 996,
-    "category": "technical",
-    "title": {
-      "en": "AI PixelArt Repair Tool",
-      "zh": "AI 像素画修复工具",
-      "ja": "AIピクセルアート修復ツール",
-      "ko": "AI 픽셀아트 보정 도구"
-    },
-    "roles": {
-      "en": [
-        "Technical Artist",
-        "AI Application Developer"
-      ],
-      "zh": [
-        "技术美术",
-        "AI 应用开发"
-      ],
-      "ja": [
-        "テクニカルアーティスト",
-        "AIアプリケーション開発"
-      ],
-      "ko": [
-        "테크니컬 아ーティ스트"
-      ]
-    },
-    "desc": {
-      "en": "AI PixelArt Repair Tool is an image processing project designed to optimize pixel-style assets generated by AI drawing tools such as MidJourney. Built with Gradio, Pillow, and Scikit-learn, it integrates pixelation, color quantization, edge repair, and pixel block detection into an interactive workflow, with optional GPU acceleration through cuML and cuPy.",
-      "zh": "《AI 像素画修复工具》是一个面向 AI 生成像素风素材优化的图像处理项目，基于 Gradio、Pillow 与 Scikit-learn 开发，集成了像素化、颜色量化、边缘修复与像素块检测等功能，并通过 cuML 与 cuPy 提供可选的 GPU 加速能力。",
-      "ja": "『AIピクセルアート修復ツール』は、MidJourneyなどのAI描画ツールで生成されたピクセル風アセットを最適化するための画像処理プロジェクトです。Gradio、Pillow、Scikit-learnを基盤とし、ピクセル化、色量子化、エッジ修復、ピクセルブロック検出を統合したインタラクティブなワークフローを備え、cuMLとcuPyによるGPUアクセラレーションにも対応しています。",
-      "ko": "『AI 픽셀아트 보정 도구』는 MidJourney와 같은 AI 드로잉 도구로 생성된 픽셀 스타일 에셋을 최적화하기 위한 이미지 처리 프로젝트입니다. Gradio, Pillow, Scikit-learn을 기반으로 픽셀화, 색상 양자화, 엣지 보정, 픽셀 블록 검출 기능을 통합했으며, cuML과 cuPy를 통한 선택적 GPU 가속도 지원합니다."
+      "en": "An end-to-end machine learning project on online shoppers' purchasing intention, covering EDA, feature engineering, classification modeling, threshold optimization, SHAP-based interpretability, and K-Means customer segmentation.",
+      "zh": "一个围绕在线购物者购买意图展开的端到端机器学习项目，涵盖 EDA、特征工程、分类建模、阈值优化、基于 SHAP 的可解释性分析以及 K-Means 客户分群。",
+      "ja": "オンライン購買意図を対象としたエンドツーエンドの機械学習プロジェクトであり、EDA、特徴量エンジニアリング、分類モデリング、閾値最適化、SHAP による解釈性分析、K-Means による顧客セグメンテーションを含みます。",
+      "ko": "온라인 쇼핑 구매 의도를 주제로 한 엔드투엔드 머신러닝 프로젝트로, EDA, 피처 엔지니어링, 분류 모델링, 임계값 최적화, SHAP 기반 해석 가능성 분석, K-Means 고객 세분화를 포함합니다."
     },
     "tags": {
       "en": [
         "Machine Learning",
-        "Computer Vision"
+        "Data Analysis"
       ],
       "zh": [
         "机器学习",
-        "计算机视觉"
+        "数据分析"
       ],
       "ja": [
         "機械学習",
-        "コンピュータビジョン"
+        "データ分析"
       ],
       "ko": [
         "머신러닝",
-        "컴퓨터 비전"
+        "데이터 분석"
       ]
     },
-    "coverImage": "src/assets/projects/AIPixelArtRepairToolPoster.webp"
-  },
-  {
-    "id": "technical-project-lego-voxelizer",
-    "order": 997,
-    "category": "technical",
-    "title": {
-      "en": "Lego Voxelizer",
-      "zh": "乐高体素化生成器",
-      "ja": "レゴ・ボクセライザー",
-      "ko": "레고 복셀라이저"
-    },
-    "roles": {
-      "en": [
-        "Technical Artist"
-      ],
-      "zh": [
-        "技术美术"
-      ],
-      "ja": [
-        "テクニカルアーティスト"
-      ],
-      "ko": [
-        "테크니컬 아ーティ스트"
-      ]
-    },
-    "desc": {
-      "en": "Lego Voxelizer is a web-based technical graphics project built with WebGL and Three.js. It implements techniques such as adaptive surface sampling and flood-fill interior detection, and combines custom GLSL shaders to support multiple visual styles, including toon, wireframe, and retro rendering.",
-      "zh": "《乐高体素化生成器》是一个基于 WebGL 与 Three.js 的网页端技术图形项目，实现了自适应表面采样、洪水填充内部检测等技术，并结合自定义 GLSL Shader，支持卡通、线框、复古等多种视觉风格。",
-      "ja": "『レゴ・ボクセライザー』は、WebGLとThree.jsを基盤としたWeb向けのテクニカルグラフィックスプロジェクトです。適応的なサーフェスサンプリングやフラッドフィルによる内部領域の検出などの技術を実装し、さらにカスタムGLSLシェーダーを組み合わせることで、トゥーン、ワイヤーフレーム、レトロといった複数のビジュアルスタイルに対応しています。",
-      "ko": "『레고 복셀라이저』는 WebGL과 Three.js를 기반으로 한 웹 기술 그래픽스 프로젝트입니다. 적응형 표면 샘플링, 플러드 필 기반 내부 영역 검출 등의 기술을 구현했으며, 사용자 정의 GLSL 셰이더를 결합하여 카툰, 와이어프레임, 레트로 등 다양한 시각 스타일을 지원합니다."
-    },
-    "tags": {
-      "en": [
-        "Voxelization",
-        "WebGL",
-        "Three.js",
-        "GLSL"
-      ],
-      "zh": [
-        "体素化",
-        "WebGL",
-        "Three.js",
-        "GLSL"
-      ],
-      "ja": [
-        "ボクセル化",
-        "WebGL",
-        "Three.js",
-        "GLSL"
-      ],
-      "ko": [
-        "복셀화",
-        "WebGL",
-        "Three.js",
-        "GLSL"
-      ]
-    },
-    "coverImage": "src/assets/projects/LegoVoxelizerPoster.webp"
-  },
-  {
-    "id": "technical-project-raymarching-fractal-morphing",
-    "order": 998,
-    "category": "technical",
-    "title": {
-      "en": "Ray Marching Fractal Morphing",
-      "zh": "光线步进 Fractal Morphing",
-      "ja": "レイマーチング・Fractal Morphing",
-      "ko": "레이 마칭 Fractal Morphing"
-    },
-    "roles": {
-      "en": [
-        "Technical Artist"
-      ],
-      "zh": [
-        "技术美术"
-      ],
-      "ja": [
-        "テクニカルアーティスト"
-      ],
-      "ko": [
-        "테크니컬 아티스트"
-      ]
-    },
-    "desc": {
-      "en": "Ray Marching Fractal Morphing is a technical graphics project that explores the real-time fusion of 3D models and Mandelbulb fractals in Three.js to enhance surface detail and visual complexity. Built on WebGL, the project uses signed distance functions (SDF) and ray marching to render both procedural geometry and fractal structures, then blends them mathematically to achieve smooth morphing transitions.",
-      "zh": "《光线步进 Fractal Morphing》是一个基于 Three.js 的技术图形项目，探索将三维模型与 Mandelbulb 分形在网页端进行实时融合，以增强模型表面细节与视觉层次。项目基于 WebGL，使用有符号距离场（SDF）与光线步进技术渲染程序化几何和分形结构，并在数学层面对二者进行混合，从而实现平滑的形态过渡效果。",
-      "ja": "『レイマーチング・Fractal Morphing』は、Three.jsを基盤に、3DモデルとMandelbulbフラクタルをWeb上でリアルタイムに融合させ、表面ディテールと視覚的な情報量を高めることを目指したテクニカルグラフィックスプロジェクトです。WebGL上で構築されており、符号付き距離関数（SDF）とレイマーチングを用いて、プロシージャルジオメトリとフラクタル構造を描画し、それらを数学的にブレンドすることで滑らかなモーフィング表現を実現しています。",
-      "ko": "『레이 마칭 Fractal Morphing』은 Three.js를 기반으로 3D 모델과 Mandelbulb 프랙탈을 웹 환경에서 실시간으로 융합하여, 표면 디테일과 시각적 밀도를 향상시키는 기술 그래픽스 프로젝트입니다. 이 프로젝트는 WebGL 위에서 구현되었으며, Signed Distance Function(SDF)과 레이 마칭 기법을 사용해 절차적 기하와 프랙탈 구조를 렌더링하고, 이를 수학적으로 블렌딩하여 부드러운 형태 전환을 구현합니다."
-    },
-    "tags": {
-      "en": [
-        "Mandelbulb",
-        "WebGL",
-        "Three.js",
-        "Real-time Rendering"
-      ],
-      "zh": [
-        "曼德尔球",
-        "WebGL",
-        "Three.js",
-        "实时渲染"
-      ],
-      "ja": [
-        "Mandelbulb",
-        "WebGL",
-        "Three.js",
-        "リアルタイムレンダリング"
-      ],
-      "ko": [
-        "Mandelbulb",
-        "WebGL",
-        "Three.js",
-        "실시간 렌더링"
-      ]
-    },
-    "coverImage": "src/assets/projects/RayMarchingFractalMorphingPoster.webp"
+    "backupCoverImage": "src/assets/projects/OnlineShoppersIntentionPoster.webp"
   },
   {
     "id": "technical-project-windy-grass",
-    "order": 999,
+    "order": 27,
     "category": "technical",
     "title": {
       "en": "PCG Bezier Wind Grass",
@@ -598,6 +1458,60 @@
       ]
     },
     "coverImage": "src/assets/projects/WindyGrassPoster.webp"
+  },
+  {
+    "id": "technical-project-comfyui-ai-eco-film",
+    "order": 26,
+    "category": "technical",
+    "title": {
+      "en": "ComfyUI Video Workflow for an AI Environmental Short Film",
+      "zh": "ComfyUI 视频工作流 AI 环保短片",
+      "ja": "ComfyUI映像ワークフローによるAI環境短編映画",
+      "ko": "ComfyUI 비디오 워크플로우 기반 AI 환경 단편영화"
+    },
+    "roles": {
+      "en": [
+        "Team Leader",
+        "Technical Artist"
+      ],
+      "zh": [
+        "组长",
+        "技术美术"
+      ],
+      "ja": [
+        "チームリーダー",
+        "テクニカルアーティスト"
+      ],
+      "ko": [
+        "팀장",
+        "테크니컬 아티스트"
+      ]
+    },
+    "desc": {
+      "en": "An AI-assisted environmental short film built with ComfyUI video workflows, covering storyboard generation, image enhancement, WAN2.2 first-and-last-frame video synthesis, Real-ESRGAN super-resolution, GIMM-VFI interpolation, and audio generation with ACE-Step and Qwen3-TTS.",
+      "zh": "一个基于 ComfyUI 视频工作流制作的 AI 环保短片项目，涵盖分镜生成、图像增强、WAN2.2 首尾帧视频合成、Real-ESRGAN 超分辨率、GIMM-VFI 插帧，以及 ACE-Step 与 Qwen3-TTS 音频生成。",
+      "ja": "本プロジェクトは、ComfyUI の映像ワークフローを用いて制作したAI環境短編映像であり、ストーリーボード生成、画像強調、WAN2.2 による始点・終点フレーム動画合成、Real-ESRGAN 超解像、GIMM-VFI 補間、ACE-Step と Qwen3-TTS による音声生成を含みます。",
+      "ko": "이 프로젝트는 ComfyUI 비디오 워크플로우를 기반으로 제작한 AI 환경 단편영상으로, 스토리보드 생성, 이미지 향상, WAN2.2 첫 프레임-마지막 프레임 비디오 합성, Real-ESRGAN 초해상도, GIMM-VFI 프레임 보간, ACE-Step 및 Qwen3-TTS 오디오 생성을 포함합니다."
+    },
+    "tags": {
+      "en": [
+        "ComfyUI",
+        "AI Video"
+      ],
+      "zh": [
+        "ComfyUI",
+        "AI 视频"
+      ],
+      "ja": [
+        "ComfyUI",
+        "AI映像"
+      ],
+      "ko": [
+        "ComfyUI",
+        "AI 비디오"
+      ]
+    },
+    "coverImage": "src/assets/projects/ComfyUIEcoFilmPoster.webp"
   }
 
 ]

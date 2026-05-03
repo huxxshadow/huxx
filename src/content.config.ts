@@ -37,11 +37,10 @@ const projects = defineCollection({
         roles: multilingualArraySchema,
         desc: multilingualSchema,
         tags: multilingualArraySchema,
-        // colorText / colorBackground:
-        // 项目卡片的前景色与背景色。若不指定，默认继承所在 section 的主题色。
         colorText: z.string().optional(),
         colorBackground: z.string().optional(),
         coverImage: image().optional(),
+        backupCoverImage: image().optional(),
     }),
 });
 

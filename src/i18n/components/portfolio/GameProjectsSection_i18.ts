@@ -3,7 +3,7 @@ import type { Multilingual } from "@/i18n";
 
 export const gameProjectsLabels = {
     sectionTitle: {
-        en: "Games",
+        en: "Game Projects",
         zh: "游戏项目",
         ja: "ゲームプロジェクト",
         ko: "게임 프로젝트",
