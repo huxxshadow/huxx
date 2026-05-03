@@ -101,104 +101,53 @@ const gamesData = gamesListData.map(game => ({
 <script>
     import Matter from 'matter-js';
 
-    document.addEventListener('astro:page-load', () => {
-        // ==========================================
-        // --- Matter.js 物理贴纸逻辑 ---
-        // ==========================================
-        const container = document.getElementById('physics-container');
-        if (!container) return;
+        document.addEventListener('astro:page-load', () => {
+            // ==========================================
+            // --- Matter.js 物理贴纸逻辑 ---
+            // ==========================================
+            const container = document.getElementById('physics-container');
+            if (!container) return;
 
-        // 检测是否为移动端
-        const isMobile = window.matchMedia('(max-width: 1024px)').matches;
+            // 检测是否为移动端
+            const isMobile = window.matchMedia('(max-width: 1024px)').matches;
 
-        const { Engine, Runner, Bodies, World, Mouse, MouseConstraint, Events } = Matter;
+            const { Engine, Runner, Bodies, World, Mouse, MouseConstraint, Events } = Matter;
 
-        const engine = Engine.create();
-        engine.world.gravity.y = 1.2;
+            const engine = Engine.create();
+            engine.world.gravity.y = 1.2;
 
-        let width = container.clientWidth;
-        let height = container.clientHeight;
-        const wallThickness = 200;
+            let width = container.clientWidth;
+            let height = container.clientHeight;
+            const wallThickness = 200;
 
-        const wallOptions = { isStatic: true, render: { visible: false } };
-        const ground = Bodies.rectangle(width / 2, height + wallThickness / 2, width * 2, wallThickness, wallOptions);
-        const leftWall = Bodies.rectangle(-wallThickness / 2, height / 2, wallThickness, height * 3, wallOptions);
-        const rightWall = Bodies.rectangle(width + wallThickness / 2, height / 2, wallThickness, height * 3, wallOptions);
-        const ceiling = Bodies.rectangle(width / 2, -1500, width * 2, wallThickness, wallOptions);
-
-        World.add(engine.world, [ground, ceiling, leftWall, rightWall]);
-        const stickers = document.querySelectorAll('.game-sticker');
-        const bodiesMap: { body: Matter.Body; el: HTMLElement }[] = [];
-
-        stickers.forEach((sticker, index) => {
-            const el = sticker as HTMLElement;
-            const w = el.offsetWidth;
-            const h = el.offsetHeight;
-
-            const body = Bodies.rectangle(
-                width / 2 ,
-                -(h * (index + 1)) + 200,
-                w,
-                h,
-                {
-                    restitution: 0.6,
-                    friction: 0.3,
-                    density: 0.002,
-                    chamfer: { radius: 16 }
+            // ===== Zoom 补偿工具函数 =====
+            // 当祖先元素有 CSS zoom 时，getBoundingClientRect() 返回视口像素，
+            // 而 clientWidth/offsetWidth 返回 CSS 像素。两者不再相等。
+            function getZoomCompensation() {
+                const rect = container!.getBoundingClientRect();
+                if (rect.width === 0 || rect.height === 0) return { scaleX: 1, scaleY: 1 };
+                return {
+                    scaleX: container!.clientWidth / rect.width,
+                    scaleY: container!.clientHeight / rect.height,
+                    };
                 }
-            );
 
-            Matter.Body.setAngle(body, (Math.random() - 0.5) * 0.4);
-            bodiesMap.push({ body, el });
-            World.add(engine.world, body);
+            const wallOptions = { isStatic: true, render: { visible: false } };
+            const ground = Bodies.rectangle(width / 2, height + wallThickness / 2, width * 2, wallThickness, wallOptions);
+            const leftWall = Bodies.rectangle(-wallThickness / 2, height / 2, wallThickness, height * 3, wallOptions);
+            const rightWall = Bodies.rectangle(width + wallThickness / 2, height / 2, wallThickness, height * 3, wallOptions);
+            const ceiling = Bodies.rectangle(width / 2, -1500, width * 2, wallThickness, wallOptions);
 
-            // 桌面端添加拖拽样式和 touch-none；手机端保持可滚动
-            if (!isMobile) {
-                el.classList.add('touch-none', 'cursor-grab');
-            }
+            World.add(engine.world, [ground, ceiling, leftWall, rightWall]);
+            const stickers = document.querySelectorAll('.game-sticker');
+            const bodiesMap: { body: Matter.Body; el: HTMLElement }[] = [];
 
-            // 点击跳转逻辑（桌面和手机端都保留）
-            let startX = 0, startY = 0;
-            el.addEventListener('pointerdown', (e) => {
-                startX = e.clientX;
-                startY = e.clientY;
-            });
-            el.addEventListener('pointerup', (e) => {
-                const dx = Math.abs(e.clientX - startX);
-                const dy = Math.abs(e.clientY - startY);
-                if (dx < 10 && dy < 10) {
-                    const link = el.getAttribute('data-link');
-                    if (link) {
-                        window.open(link, '_blank');
-                    }
-                }
-            });
-        });
-
-        // --- 按钮逻辑 ---
-        const btnShake = document.getElementById('btn-shake');
-        const btnReset = document.getElementById('btn-reset');
-
-        btnShake?.addEventListener('click', () => {
-            bodiesMap.forEach(({ body }) => {
-                Matter.Body.setVelocity(body, {
-                    x: (Math.random() - 0.5) * 15,
-                    y: -25 - (Math.random() * 10)
-                });
-                Matter.Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.4);
-            });
-        });
-
-        btnReset?.addEventListener('click', () => {
-            bodiesMap.forEach((item, index) => {
-                const { body, el } = item;
-
-                World.remove(engine.world, body);
-
+            stickers.forEach((sticker, index) => {
+                const el = sticker as HTMLElement;
                 const w = el.offsetWidth;
                 const h = el.offsetHeight;
 
-                const newBody = Bodies.rectangle(
+                const body = Bodies.rectangle(
                     width / 2 ,
                     -(h * (index + 1)) + 200,
                     w,
@@ -208,87 +157,169 @@ const gamesData = gamesListData.map(game => ({
                         friction: 0.3,
                         density: 0.002,
                         chamfer: { radius: 16 }
+                        }
+                    );
+
+                Matter.Body.setAngle(body, (Math.random() - 0.5) * 0.4);
+                bodiesMap.push({ body, el });
+                World.add(engine.world, body);
+
+                // 桌面端添加拖拽样式和 touch-none；手机端保持可滚动
+                if (!isMobile) {
+                    el.classList.add('touch-none', 'cursor-grab');
                     }
-                );
 
-                Matter.Body.setAngle(newBody, (Math.random() - 0.5) * 0.4);
-                item.body = newBody;
-                World.add(engine.world, newBody);
-            });
-        });
-
-        // 仅在桌面端创建 MouseConstraint，手机端完全跳过
-        if (!isMobile) {
-            const mouse = Mouse.create(container);
-            // 移除 Matter.js 默认的滚轮监听，避免干扰页面滚动
-            mouse.element.removeEventListener('mousewheel', (mouse as any).mousewheel);
-            mouse.element.removeEventListener('DOMMouseScroll', (mouse as any).mousewheel);
-            mouse.element.removeEventListener('wheel', (mouse as any).mousewheel);
-
-            const mouseConstraint = MouseConstraint.create(engine, {
-                mouse: mouse,
-                constraint: { stiffness: 0.1, render: { visible: false } }
-            });
-            World.add(engine.world, mouseConstraint);
-        }
-
-        const runner = Runner.create();
-        Runner.run(runner, engine);
-
-        Events.on(engine, 'afterUpdate', () => {
-            bodiesMap.forEach(({ body, el }) => {
-                const { x, y } = body.position;
-                const angle = body.angle;
-                el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) rotate(${angle}rad)`;
-            });
-        });
-
-        // --- 窗口 Resize 逻辑 ---
-        let resizeTimeout: ReturnType<typeof setTimeout>;
-        const handleResize = () => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                width = container!.clientWidth;
-                height = container!.clientHeight;
-
-                Matter.Body.setPosition(ground, { x: width / 2, y: height + wallThickness / 2 });
-                Matter.Body.setPosition(ceiling, { x: width / 2, y: -1500 });
-                Matter.Body.setPosition(leftWall, { x: -wallThickness / 2, y: height / 2 });
-                Matter.Body.setPosition(rightWall, { x: width + wallThickness / 2, y: height / 2 });
-
-                bodiesMap.forEach((item) => {
-                    const el = item.el;
-                    const newW = el.offsetWidth;
-                    const newH = el.offsetHeight;
-
-                    const { position, velocity, angularVelocity, angle } = item.body;
-
-                    World.remove(engine.world, item.body);
-
-                    const newBody = Bodies.rectangle(position.x, position.y, newW, newH, {
-                        restitution: 0.6,
-                        friction: 0.3,
-                        density: 0.002,
-                        chamfer: { radius: 16 }
+                // 点击跳转逻辑（桌面和手机端都保留）
+                let startX = 0, startY = 0;
+                el.addEventListener('pointerdown', (e) => {
+                    startX = e.clientX;
+                    startY = e.clientY;
                     });
+                el.addEventListener('pointerup', (e) => {
+                    const dx = Math.abs(e.clientX - startX);
+                    const dy = Math.abs(e.clientY - startY);
+                    if (dx < 10 && dy < 10) {
+                        const link = el.getAttribute('data-link');
+                        if (link) {
+                            window.open(link, '_blank');
+                            }
+                        }
+                    });
+                });
 
-                    Matter.Body.setAngle(newBody, angle);
-                    Matter.Body.setVelocity(newBody, velocity);
-                    Matter.Body.setAngularVelocity(newBody, angularVelocity);
+            // --- 按钮逻辑 ---
+            const btnShake = document.getElementById('btn-shake');
+            const btnReset = document.getElementById('btn-reset');
 
+            btnShake?.addEventListener('click', () => {
+                bodiesMap.forEach(({ body }) => {
+                    Matter.Body.setVelocity(body, {
+                        x: (Math.random() - 0.5) * 15,
+                        y: -25 - (Math.random() * 10)
+                        });
+                    Matter.Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.4);
+                    });
+                });
+
+            btnReset?.addEventListener('click', () => {
+                bodiesMap.forEach((item, index) => {
+                    const { body, el } = item;
+
+                    World.remove(engine.world, body);
+
+                    const w = el.offsetWidth;
+                    const h = el.offsetHeight;
+
+                    const newBody = Bodies.rectangle(
+                        width / 2 ,
+                        -(h * (index + 1)) + 200,
+                        w,
+                        h,
+                        {
+                            restitution: 0.6,
+                            friction: 0.3,
+                            density: 0.002,
+                            chamfer: { radius: 16 }
+                            }
+                        );
+
+                    Matter.Body.setAngle(newBody, (Math.random() - 0.5) * 0.4);
                     item.body = newBody;
                     World.add(engine.world, newBody);
+                    });
                 });
-            }, 150);
-        };
 
-        window.addEventListener('resize', handleResize);
+            // 仅在桌面端创建 MouseConstraint，手机端完全跳过
+            if (!isMobile) {
+                const mouse = Mouse.create(container);
+                // 移除 Matter.js 默认的滚轮监听，避免干扰页面滚动
+                mouse.element.removeEventListener('mousewheel', (mouse as any).mousewheel);
+                mouse.element.removeEventListener('DOMMouseScroll', (mouse as any).mousewheel);
+                mouse.element.removeEventListener('wheel', (mouse as any).mousewheel);
 
-        document.addEventListener('astro:before-swap', () => {
-            Runner.stop(runner);
-            Engine.clear(engine);
-            World.clear(engine.world, false);
-            window.removeEventListener('resize', handleResize);
-        }, { once: true });
-    });
+                const mouseConstraint = MouseConstraint.create(engine, {
+                    mouse: mouse,
+                    constraint: { stiffness: 0.1, render: { visible: false } }
+                    });
+                World.add(engine.world, mouseConstraint);
+
+                // ===== Zoom 补偿：修正 Matter.js 鼠标位置 =====
+                // Matter.js 内部用 getBoundingClientRect + clientWidth 算鼠标位置，
+                // 在 CSS zoom 环境下公式方向反了，导致拖拽偏移。
+                // 这里在 Matter.js 处理完事件后，覆写为正确的 CSS 像素坐标。
+                function correctMousePosition(e: MouseEvent) {
+                    const rect = container!.getBoundingClientRect();
+                    const cw = container!.clientWidth;
+                    const ch = container!.clientHeight;
+                    const rw = rect.width || 1;
+                    const rh = rect.height || 1;
+                    // 将视口像素偏移转换为 CSS 像素（物理世界坐标）
+                    mouse.position.x = (e.clientX - rect.left) * (cw / rw);
+                    mouse.position.y = (e.clientY - rect.top) * (ch / rh);
+                    }
+
+                // 注册在 Matter.js 的监听器之后，确保覆写其计算结果
+                container.addEventListener('mousemove', correctMousePosition);
+                container.addEventListener('mousedown', correctMousePosition);
+                }
+
+            const runner = Runner.create();
+            Runner.run(runner, engine);
+
+            Events.on(engine, 'afterUpdate', () => {
+                bodiesMap.forEach(({ body, el }) => {
+                    const { x, y } = body.position;
+                    const angle = body.angle;
+                    el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) rotate(${angle}rad)`;
+                    });
+                });
+
+            // --- 窗口 Resize 逻辑 ---
+            let resizeTimeout: ReturnType<typeof setTimeout>;
+            const handleResize = () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    width = container!.clientWidth;
+                    height = container!.clientHeight;
+
+                    Matter.Body.setPosition(ground, { x: width / 2, y: height + wallThickness / 2 });
+                    Matter.Body.setPosition(ceiling, { x: width / 2, y: -1500 });
+                    Matter.Body.setPosition(leftWall, { x: -wallThickness / 2, y: height / 2 });
+                    Matter.Body.setPosition(rightWall, { x: width + wallThickness / 2, y: height / 2 });
+
+                    bodiesMap.forEach((item) => {
+                        const el = item.el;
+                        const newW = el.offsetWidth;
+                        const newH = el.offsetHeight;
+
+                        const { position, velocity, angularVelocity, angle } = item.body;
+
+                        World.remove(engine.world, item.body);
+
+                        const newBody = Bodies.rectangle(position.x, position.y, newW, newH, {
+                            restitution: 0.6,
+                            friction: 0.3,
+                            density: 0.002,
+                            chamfer: { radius: 16 }
+                            });
+
+                        Matter.Body.setAngle(newBody, angle);
+                        Matter.Body.setVelocity(newBody, velocity);
+                        Matter.Body.setAngularVelocity(newBody, angularVelocity);
+
+                        item.body = newBody;
+                        World.add(engine.world, newBody);
+                        });
+                    }, 150);
+                };
+
+            window.addEventListener('resize', handleResize);
+
+            document.addEventListener('astro:before-swap', () => {
+                Runner.stop(runner);
+                Engine.clear(engine);
+                World.clear(engine.world, false);
+                window.removeEventListener('resize', handleResize);
+                }, { once: true });
+            });
 </script>

@@ -33,21 +33,25 @@ const localeDescription = description || t(SITE_DESCRIPTION);
     <title>{localeTitle}</title>
     <meta name="description" content={localeDescription} />
     <meta name="viewport" id="viewport-meta" content="width=device-width, initial-scale=1" />
+
     <script is:inline>
-        (function() {
-            var baseDPR = 1.5;
-            var currentDPR = window.devicePixelRatio || 1;
-            // 只对宽屏（桌面）设备做适配，避免影响手机
-            var isDesktop = window.screen.width > 1024;
-            if (isDesktop && Math.abs(currentDPR - baseDPR) > 0.01) {
-                var scale = baseDPR / currentDPR;
-                var meta = document.getElementById('viewport-meta');
-                if (meta) {
-                    meta.setAttribute('content', 'width=device-width, initial-scale=' + scale);
-                }
-            }
+        (() => {
+            const baseDPR = 1.5;
+
+            const applyZoom = () => {
+                const currentDPR = window.devicePixelRatio || 1;
+                const scale = Math.abs(currentDPR - baseDPR) > 0.01 ? baseDPR / currentDPR : 1;
+                document.documentElement.style.zoom = String(scale);
+            };
+
+            applyZoom();
+
+            document.addEventListener("astro:page-load", applyZoom);
+            window.addEventListener("resize", applyZoom);
         })();
     </script>
+
+
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="generator" content={Astro.generator} />
     {

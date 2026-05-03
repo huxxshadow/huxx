@@ -18,7 +18,8 @@ const GAME_THEMES = [
 ---
 
 <div id="pong-container" class="w-full min-h-[220px] overflow-hidden relative font-sans transition-colors duration-300"
-     style={`height: 25vh; background-color: var(--theme-light); --theme-light: ${COLORS.green.light}; --theme-dark: ${COLORS.green.dark};`}
+     style={`height: 260px; background-color: var(--theme-light); --theme-light: ${COLORS.green.light};
+--theme-dark: ${COLORS.green.dark};`}
      data-i18n-start={t(pongTranslations.startGame)}
      data-i18n-try={t(pongTranslations.tryNow)}
      data-i18n-resume={t(pongTranslations.resumeGame)}
@@ -93,6 +94,16 @@ const GAME_THEMES = [
         const controller = new AbortController();
         const { signal } = controller;
 
+        // ===== Zoom 补偿工具函数 =====
+        function getZoomCompensation() {
+            const rect = container!.getBoundingClientRect();
+            if (rect.width === 0 || rect.height === 0) return { scaleX: 1, scaleY: 1 };
+            return {
+                scaleX: container!.clientWidth / rect.width,
+                scaleY: container!.clientHeight / rect.height,
+            };
+        }
+
         // ========== 广播主题色给 Header ==========
         function broadcastTheme(theme: { light: string; dark: string }) {
             container!.setAttribute('data-theme-bg', theme.light);
@@ -112,7 +123,6 @@ const GAME_THEMES = [
         container.style.setProperty('--theme-dark', currentTheme.dark);
         container.style.backgroundColor = currentTheme.light;
 
-        // 初始化时立即广播当前主题给 Header
         broadcastTheme(currentTheme);
 
         let hasStarted = false;
@@ -182,7 +192,6 @@ const GAME_THEMES = [
             const themeIndex = (currentLevel <= THEMES.length) ? (currentLevel - 1) : 0;
             currentTheme = THEMES[themeIndex];
 
-            // 升级时立即广播新主题，让 Header 同步开始过渡动画
             broadcastTheme(currentTheme);
 
             isTransitioning = true;
@@ -252,6 +261,7 @@ const GAME_THEMES = [
 
         let isTouching = false;
 
+        // ===== 修复：touch 坐标转换为 CSS 像素 =====
         function handleTouch(e: TouchEvent) {
             if (hasStarted && !isPaused && e.cancelable) {
                 e.preventDefault();
@@ -259,7 +269,9 @@ const GAME_THEMES = [
             if (e.touches.length > 0) {
                 const touch = e.touches[0];
                 const rect = canvas.getBoundingClientRect();
-                const touchY = touch.clientY - rect.top;
+                const { scaleY } = getZoomCompensation();
+                // 将视口像素偏移转换为 CSS 像素（游戏坐标）
+                const touchY = (touch.clientY - rect.top) * scaleY;
                 user.y = touchY - user.height / 2;
                 if (user.y < 0) user.y = 0;
                 if (user.y + user.height > gameHeight) user.y = gameHeight - user.height;
@@ -296,6 +308,7 @@ const GAME_THEMES = [
         }
         resizeCanvas();
 
+        // ===== 修复：拖拽手柄用 CSS 像素 =====
         const dragHandle = document.getElementById('drag-handle');
         let isResizingContainer = false;
         let startY = 0;
@@ -308,19 +321,21 @@ const GAME_THEMES = [
 
                 isResizingContainer = true;
                 startY = e.type.includes('mouse') ? (e as MouseEvent).clientY : (e as TouchEvent).touches[0].clientY;
-                startHeight = container.getBoundingClientRect().height;
+                startHeight = container.clientHeight; // 使用 clientHeight（CSS 像素）而非 getBoundingClientRect
                 document.body.style.cursor = 'ns-resize';
             };
 
             const doDrag = (e: MouseEvent | TouchEvent) => {
                 if (!isResizingContainer) return;
                 const currentY = e.type.includes('mouse') ? (e as MouseEvent).clientY : (e as TouchEvent).touches[0].clientY;
-                const dy = currentY - startY;
+                const { scaleY } = getZoomCompensation();
+                // 鼠标移动量是视口像素，转换为 CSS 像素
+                const dy = (currentY - startY) * scaleY;
                 let newHeight = startHeight + dy;
 
                 const minHeight = 260;
                 if (newHeight < minHeight) newHeight = minHeight;
-                const maxHeight = window.innerHeight * 0.8;
+                const maxHeight = window.innerHeight * scaleY * 0.8;
                 if (newHeight > maxHeight) newHeight = maxHeight;
 
                 container.style.height = `${newHeight}px`;
@@ -365,7 +380,6 @@ const GAME_THEMES = [
                     container!.style.setProperty('--theme-light', currentTheme.light);
                     container!.style.setProperty('--theme-dark', currentTheme.dark);
                     container!.style.backgroundColor = currentTheme.light;
-                    // 过渡完成后再次广播，确保数据属性和 Header 状态一致
                     broadcastTheme(currentTheme);
                     triggerReset(gameWidth / 2, gameHeight / 2, false);
                 }
