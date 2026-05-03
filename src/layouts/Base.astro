@@ -32,7 +32,22 @@ const localeDescription = description || t(SITE_DESCRIPTION);
     <meta charset="UTF-8" />
     <title>{localeTitle}</title>
     <meta name="description" content={localeDescription} />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" id="viewport-meta" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+        (function() {
+            var baseDPR = 1.5;
+            var currentDPR = window.devicePixelRatio || 1;
+            // 只对宽屏（桌面）设备做适配，避免影响手机
+            var isDesktop = window.screen.width > 1024;
+            if (isDesktop && Math.abs(currentDPR - baseDPR) > 0.01) {
+                var scale = baseDPR / currentDPR;
+                var meta = document.getElementById('viewport-meta');
+                if (meta) {
+                    meta.setAttribute('content', 'width=device-width, initial-scale=' + scale);
+                }
+            }
+        })();
+    </script>
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="generator" content={Astro.generator} />
     {

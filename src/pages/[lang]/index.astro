@@ -20,13 +20,12 @@ export const getStaticPaths = () =>
 ---
 
 <Layout>
-    <div class="w-full">
-        <PongGame />
-    </div>
+    <PongGame />
 
     <section
             class="relative overflow-hidden w-full px-4 sm:px-6 py-8 lg:py-12 flex justify-center"
-            style={`background-color: ${COLORS.blue.light}; color: ${COLORS.blue.dark};`}
+            style={`background-color: ${COLORS.blue.light};
+color: ${COLORS.blue.dark};`}
             data-theme-bg={COLORS.blue.light}
             data-theme-text={COLORS.blue.dark}
     >
@@ -46,9 +45,20 @@ export const getStaticPaths = () =>
                             set:html={t(indexTranslations.heroTitle)}
                     />
 
-                    <p class="text-xl lg:text-3xl font-bold tracking-tight">
-                        {t(indexTranslations.role)}
-                    </p>
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 mt-2">
+                        {t(indexTranslations.role).split('·').map((tag) => (
+                                <span
+                                        class="text-sm lg:text-base font-bold opacity-90 inline-flex items-center gap-2 border-2 px-4 py-1.5 rounded-full shadow-[2px_2px_0px_currentColor]"
+                                        style={`border-color: ${COLORS.blue.dark}; background-color: ${COLORS.blue.light};`}
+                                >
+                                <span
+                                        class="w-2 h-2 rounded-full inline-block"
+                                        style={`background-color: ${COLORS.blue.dark};`}
+                                ></span>
+                                    {tag.trim()}
+                            </span>
+                        ))}
+                    </div>
                 </div>
 
                 <div class="w-full lg:w-3/5 flex flex-col items-center lg:items-start justify-start pt-4 lg:pt-12 gap-5 lg:gap-6 text-center lg:text-left">
@@ -64,7 +74,10 @@ export const getStaticPaths = () =>
                         {t(indexTranslations.experience1)}
                     </div>
 
-                    <div class="space-y-4 lg:space-y-6 text-lg lg:text-xl font-medium leading-relaxed opacity-90 text-center lg:text-left">
+                    <div
+                            class="space-y-4 lg:space-y-6 text-lg lg:text-xl font-medium leading-relaxed opacity-95 lg:border-l-[4px] lg:pl-5 py-1 text-center lg:text-left"
+                            style={`border-color: ${COLORS.blue.dark};`}
+                    >
                         <p>{t(indexTranslations.experience2)}</p>
                         <p>{t(indexTranslations.experience3)}</p>
                         <p>{t(indexTranslations.experience4)}</p>
