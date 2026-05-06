@@ -72,19 +72,13 @@ function getProjectColors(project: typeof technicalProjects[number]) {
                                     class="tech-project-card group flex flex-col rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 border-2"
                                     style={`--theme: ${colors.text}; border-color: ${colors.text}; background-color: ${colors.bg};`}
                             >
-                                {/* Cover Image */}
-                                <div
-                                        class="relative w-full aspect-video border-b-2 overflow-hidden"
+                                <a
+                                        href={`/${currentLang}/projects/${project.id}`}
+                                        class="relative block w-full aspect-video border-b-2 overflow-hidden"
                                         style={`border-color: ${colors.text}; background-color: ${colors.bg};`}
                                 >
-                                    <Image
-                                            src={project.data.coverImage}
-                                            alt={displayTitle}
-                                            class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                            loading="lazy"
-                                            decoding="async"
-                                    />
-                                </div>
+                                    <Image src={project.data.coverImage} alt={displayTitle} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async" />
+                                </a>
 
                                 {/* Card Content */}
                                 <div
@@ -121,13 +115,15 @@ function getProjectColors(project: typeof technicalProjects[number]) {
                                         {displayDesc}
                                     </p>
 
-                                    <button
-                                            class="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-black text-base border-2 active:translate-y-1 transition-transform cursor-pointer"
+                                    {/* 底部按钮 */}
+                                    <a
+                                            href={`/${currentLang}/projects/${project.id}`}
+                                            class="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-black text-base border-2 active:translate-y-1 transition-transform cursor-pointer mt-auto"
                                             style={`background-color: ${colors.text}; color: ${colors.bg}; border-color: ${colors.text};`}
                                     >
                                         <span>{t(technicalProjectsLabels.exploreButton)}</span>
                                         <i class="fa-solid fa-arrow-right"></i>
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                     );
@@ -149,12 +145,13 @@ function getProjectColors(project: typeof technicalProjects[number]) {
                                     style={`--theme: ${colors.text}; border-color: ${colors.text}; background-color: ${colors.bg}; color: ${colors.text};`}
                             >
                                 {/* 右上角跳转小圆钮 */}
-                                <button
+                                <a
+                                        href={`/${currentLang}/projects/${project.id}`}
                                         class="absolute top-6 right-6 w-12 h-12 flex items-center justify-center rounded-full border-2 hover:scale-110 active:scale-95 transition-transform cursor-pointer z-10"
                                         style={`background-color: ${colors.text}; color: ${colors.bg}; border-color: ${colors.text};`}
                                 >
                                     <i class="fa-solid fa-arrow-right -rotate-45 text-lg"></i>
-                                </button>
+                                </a>
 
                                 {/* 顶部：文案 */}
                                 <div class="pr-16"> {/* 预留右侧按钮空间防止文字重叠 */}

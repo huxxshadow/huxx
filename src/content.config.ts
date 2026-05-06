@@ -1,6 +1,6 @@
 ﻿// src/content.config.ts
 import { defineCollection } from 'astro:content';
-import { file } from 'astro/loaders';
+import { file, glob } from 'astro/loaders'; // 引入 glob
 import { z } from 'astro/zod';
 
 const multilingualSchema = z.object({
@@ -41,7 +41,23 @@ const projects = defineCollection({
         colorBackground: z.string().optional(),
         coverImage: image().optional(),
         backupCoverImage: image().optional(),
+        links: z.array(
+            z.object({
+                name: z.string(),
+                url: z.string(),
+                icon: z.string(),
+            })
+        ).optional(),
     }),
 });
 
-export const collections = { games, projects };
+
+const projectDetails = defineCollection({
+    loader: glob({ pattern: "**/*.mdx", base: "./src/content/projectDetails" }),
+    schema: z.object({
+        // 这里可以为空，因为标题、标签等元数据已经都在 JSON 里了
+        // 如果个别页面需要特殊的 MDX 组件配置，可以加在这里
+    }).optional(),
+});
+
+export const collections = { games, projects, projectDetails };

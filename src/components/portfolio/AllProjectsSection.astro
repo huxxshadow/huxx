@@ -80,9 +80,10 @@ function getProjectColors(project: typeof orderedProjects[number]) {
                 const hasCover = !!displayCover;
 
                 return (
-                        <div
-                                class="project-hover-card group relative rounded-xl overflow-hidden border-4 cursor-pointer"
-                                style={`border-color: ${COLORS.black}; box-shadow: 3px 3px 0px ${COLORS.black}; background-color: ${COLORS.black};`}
+                        <a
+                                href={`/${currentLang}/projects/${project.id}`}
+                                class="project-hover-card block group relative rounded-xl overflow-hidden border-4 cursor-pointer"
+                                style={`...`}
                         >
                             {/* 图片区域 (16:9) */}
                             <div class="relative w-full aspect-video" style={`background-color: ${colors.bg};`}>
@@ -156,7 +157,7 @@ function getProjectColors(project: typeof orderedProjects[number]) {
                                 </div>
                             </div>
 
-                        </div>
+                        </a>
                 );
             })}
         </div>

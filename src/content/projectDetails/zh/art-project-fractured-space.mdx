@@ -1,0 +1,83 @@
+﻿---
+
+---
+
+import { Image } from 'astro:assets';
+import img1 from '@/assets/projects/art-project-fractured-space/art-project-fractured-space1.webp';
+import img2 from '@/assets/projects/art-project-fractured-space/art-project-fractured-space2.webp';
+import img3 from '@/assets/projects/art-project-fractured-space/art-project-fractured-space3.webp';
+import img4 from '@/assets/projects/art-project-fractured-space/art-project-fractured-space4.webp';
+import img5 from '@/assets/projects/art-project-fractured-space/art-project-fractured-space5.webp';
+import img6 from '@/assets/projects/art-project-fractured-space/art-project-fractured-space6.webp';
+
+
+## 我的职责
+
+在这个为期三周的个人项目中，我独立完成了所有的创作与技术实现，主要职责包括：
+
+* **程序化系统开发**：利用三维软件的几何节点系统，程序化生成城市建筑剪影与不断自组织重构的中心动态球体结构。
+* **物理破碎特效模拟**：结合破碎工具与程序化节点，精确提取并控制碎片顶点数据，模拟并渲染出逼真且充满张力的墙体坍塌动态特效。
+* **光影与材质渲染**：在光线追踪渲染引擎中设计冷色调的未来感光影，并基于物理渲染工作流，开发出具有复杂反射、折射高光与纯净玻璃质感的定制材质系统。
+* **空间视觉设计**：利用多重镜面反射与封闭结构，打造具有无限延伸错觉的超现实空间环境，平衡视觉冲击力与整体悬疑氛围。
+
+---
+
+## 项目细节
+
+### 基础环境构建
+
+场景的基础概念是在一个封闭环境中，通过镜面反射创造出极具沉浸感的无限空间。通过在墙壁、地板和天花板上巧妙放置镜面，我试图让物体与光线产生无尽的折射与重复，从而模拟出空间无边无际的视觉错觉。
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={img1} alt="封闭空间内的多重镜面反射" width={1600} height={900} />
+        <figcaption>利用多重镜面反射构建的封闭空间基础框架</figcaption>
+    </figure>
+
+    <figure>
+        <Image src={img2} alt="光线折射与空间无限延伸错觉" width={1600} height={900} />
+        <figcaption>光线在反射表面上的折射效果，营造出空间无边无际的错觉</figcaption>
+    </figure>
+</div>
+
+### 破碎动画特效
+
+为了丰富场景的动态表现，我决定引入几何节点系统和破碎工具来制作墙体坍塌特效。首先，利用破碎工具将墙面分割成多个基础碎片。随后，将这些碎片导入节点网络中，以获取每个碎片的独立顶点数据。
+
+凭借强大的程序化能力，我组合了属性邻近和位置设置等核心节点，基于距离或特定触发器精准控制碎片的运动和旋转，模拟出墙体逐渐瓦解的过程。同时，配合点缩放节点动态调整下落碎片的大小，进一步增强了坍塌效果的深度与真实感。这种程序化的方法提供了极高的灵活性，使我不必手动制作庞杂的关键帧动画，就能在控制与混乱之间找到完美的平衡，展现出空间支离破碎的戏剧张力。
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={img3} alt="墙体瓦解的几何节点系统" width={1600} height={900} />
+        <figcaption>用于控制墙体碎片提取与运动轨迹的几何节点树</figcaption>
+    </figure>
+
+    <figure>
+        <Image src={img4} alt="墙体坍塌的物理破碎效果" width={1600} height={900} />
+        <figcaption>配合点缩放与位置设置节点模拟出的动态坍塌特效过程</figcaption>
+    </figure>
+</div>
+
+### 光影与材质调整
+
+在光影调优阶段，我选择了冷色调的蓝色光源为整个场景奠定未来感基调，并通过点光源与面光源加深阴影层次。这一过程的核心在于精准控制光源的衰减与范围，确保光线不会过度干扰大面积的镜面反射，从而打破虚拟空间的沉浸感。
+
+在材质处理上，我重点攻克了中心球体的透明与折射属性。通过调整玻璃材质的折射率，并叠加噪波纹理与微妙的凹凸贴图，球体在镜面反射中呈现出了极度丰富的光影变幻。此外，墙面的发光灯带被用作核心的视觉引导线条，进一步强化了空间的纵深与几何层次。
+
+### 程序化结构生成
+
+为了进一步提升视觉复杂度，我大量运用了几何节点为场景添加动态细节。一方面，在中心球体表面实例化了不同的几何元素，赋予其不断生长和重组的生命力感，精准控制着表面方块的排列与变化速度；另一方面，通过调整节点参数，在场景底部批量生成了高低错落、形态各异的建筑群，最终构建出一座超现实的庞大虚拟城市剪影。
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={img5} alt="中心动态球体结构" width={1600} height={900} />
+        <figcaption>不断自组织重构的中心动态球体结构及其纯净玻璃材质表现</figcaption>
+    </figure>
+
+    <figure>
+        <Image src={img6} alt="程序化生成的城市剪影" width={1600} height={900} />
+        <figcaption>通过调整节点参数，在场景底部批量生成的超现实虚拟城市群</figcaption>
+    </figure>
+</div>
+
+

@@ -4,6 +4,8 @@ import tailwindcss from '@tailwindcss/vite';
 import { DEFAULT_LOCALE_SETTING, LOCALES_SETTING } from './src/locales';
 import sitemap from '@astrojs/sitemap';
 
+import mdx from '@astrojs/mdx';
+
 export default defineConfig({
   site: 'https://huxxshadow.github.io',
   base: '/huxx',
@@ -31,6 +33,6 @@ export default defineConfig({
           )
       ),
     },
-  })],
+  }), mdx()],
 
 });

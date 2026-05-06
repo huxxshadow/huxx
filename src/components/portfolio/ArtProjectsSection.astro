@@ -75,17 +75,14 @@ function getProjectColors(project: typeof artProjects[number]) {
                                                 class="art-project-card group flex flex-col lg:flex-row rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 border-[3px]"
                                                 style={`--theme: ${colors.text}; border-color: ${colors.text}; background-color: ${colors.bg};`}
                                         >
-                                            {/* 大尺寸封面 */}
-                                            <div class="relative w-full lg:w-3/5 aspect-video border-b-[3px] lg:border-b-0 lg:border-r-[3px] overflow-hidden" style={`border-color: ${colors.text}; background-color: ${colors.bg};`}>
-
-                                                <Image
-                                                        src={project.data.coverImage!}
-                                                        alt={displayTitle}
-                                                        class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                                        loading="lazy"
-                                                        decoding="async"
-                                                />
-                                            </div>
+                                            {/* 大尺寸封面 (特色项目) */}
+                                            <a
+                                                    href={`/${currentLang}/projects/${project.id}`}
+                                                    class="relative block w-full lg:w-3/5 aspect-video border-b-[3px] lg:border-b-0 lg:border-r-[3px] overflow-hidden"
+                                                    style={`border-color: ${colors.text}; background-color: ${colors.bg};`}
+                                            >
+                                                <Image src={project.data.coverImage!} alt={displayTitle} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" decoding="async" />
+                                            </a>
 
                                             {/* 内容区 */}
                                             <div class="w-full lg:w-2/5 p-6 lg:p-10 flex flex-col justify-center" style={`background-color: ${colors.bg}; color: ${colors.text};`}>
@@ -110,10 +107,14 @@ function getProjectColors(project: typeof artProjects[number]) {
                                                     {displayDesc}
                                                 </p>
 
-                                                <button class="w-full lg:w-auto flex items-center justify-center gap-2 py-4 px-8 rounded-xl font-black text-lg border-[3px] active:translate-y-1 transition-transform cursor-pointer hover:opacity-90" style={`background-color: ${colors.text}; color: ${colors.bg}; border-color: ${colors.text};`}>
+                                                <a
+                                                        href={`/${currentLang}/projects/${project.id}`}
+                                                        class="w-full lg:w-auto flex items-center justify-center gap-2 py-4 px-8 rounded-xl font-black text-lg border-[3px] active:translate-y-1 transition-transform cursor-pointer hover:opacity-90"
+                                                        style={`background-color: ${colors.text}; color: ${colors.bg}; border-color: ${colors.text};`}
+                                                >
                                                     <span>{t(artProjectsLabels.exploreButton)}</span>
                                                     <i class="fa-solid fa-arrow-right"></i>
-                                                </button>
+                                                </a>
                                             </div>
                                         </div>
                                 );
@@ -137,7 +138,11 @@ function getProjectColors(project: typeof artProjects[number]) {
                                                 style={`--theme: ${colors.text}; border-color: ${colors.text}; background-color: ${colors.bg};`}
                                         >
                                             {/* Cover Image */}
-                                            <div class="relative w-full aspect-video border-b-2 overflow-hidden" style={`border-color: ${colors.text}; background-color: ${colors.bg};`}>
+                                            <a
+                                                    href={`/${currentLang}/projects/${project.id}`}
+                                                    class="block relative w-full aspect-video border-b-2 overflow-hidden"
+                                                    style={`border-color: ${colors.text}; background-color: ${colors.bg};`}
+                                            >
                                                 <Image
                                                         src={project.data.coverImage!}
                                                         alt={displayTitle}
@@ -145,7 +150,7 @@ function getProjectColors(project: typeof artProjects[number]) {
                                                         loading="lazy"
                                                         decoding="async"
                                                 />
-                                            </div>
+                                            </a>
 
                                             {/* Card Content */}
                                             <div class="flex-1 p-5 sm:p-6 flex flex-col" style={`background-color: ${colors.bg}; color: ${colors.text};`}>
@@ -165,9 +170,13 @@ function getProjectColors(project: typeof artProjects[number]) {
                                                     {displayDesc}
                                                 </p>
 
-                                                <button class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-black text-sm border-2 active:translate-y-1 transition-transform cursor-pointer" style={`background-color: ${colors.text}; color: ${colors.bg}; border-color: ${colors.text};`}>
+                                                <a
+                                                        href={`/${currentLang}/projects/${project.id}`}
+                                                        class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-black text-sm border-2 active:translate-y-1 transition-transform cursor-pointer"
+                                                        style={`background-color: ${colors.text}; color: ${colors.bg}; border-color: ${colors.text};`}
+                                                >
                                                     <span>{t(artProjectsLabels.exploreButton)}</span>
-                                                </button>
+                                                </a>
                                             </div>
                                         </div>
                                 );

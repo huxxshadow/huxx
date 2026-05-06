@@ -1,0 +1,513 @@
+﻿---
+// src/pages/[lang]/projects/[id].astro
+import Base from "@/layouts/Base.astro";
+import { getCollection, render } from "astro:content";
+import { LOCALES, type Lang } from "@/i18n";
+import { COLORS } from "@/consts";
+import { Image } from "astro:assets";
+import ProjectLinks from "@/components/mdx/ProjectLinks.astro";
+
+export async function getStaticPaths() {
+    const projects = await getCollection("projects");
+
+    return Object.keys(LOCALES).flatMap((lang) => {
+        return projects.map((project) => ({
+            params: { lang, id: project.id },
+            props: { project },
+        }));
+    });
+}
+
+const { lang, id } = Astro.params;
+const { project } = Astro.props;
+const currentLang = lang as Lang;
+
+// === 1. 解析当前语言对应的多语言字段 ===
+const title = project.data.title[currentLang] || project.data.title.en || project.data.title.zh || project.id;
+const desc = project.data.desc[currentLang] || project.data.desc.en || project.data.desc.zh || "";
+const roles = project.data.roles[currentLang] || project.data.roles.en || project.data.roles.zh || [];
+const tags = project.data.tags[currentLang] || project.data.tags.en || project.data.tags.zh || [];
+
+// === 2. 提取通用字段 ===
+const category = project.data.category;
+const order = project.data.order;
+const heroImage = project.data.coverImage || project.data.backupCoverImage;
+const projectLinks = project.data.links || [];
+
+// === 3. 计算页面主题色 ===
+let defaultTheme = { light: COLORS.khakiMilan, dark: COLORS.black };
+if (category === 'game') defaultTheme = COLORS.green;
+if (category === 'technical') defaultTheme = COLORS.blue;
+if (category === 'art') defaultTheme = COLORS.purple;
+
+// 如果填了字符串而且属于 COLORS 的 key，就提取里面的 dark/light，否则直接用填写的字符串（假设填的是 hex 色值）
+const colorText = (COLORS[project.data.colorText]?.dark) || project.data.colorText || defaultTheme.dark;
+const colorBg = (COLORS[project.data.colorBackground]?.light) || project.data.colorBackground || defaultTheme.light;
+
+// === 4. 获取 MDX 内容 ===
+const allDetails = await getCollection("projectDetails");
+const detailEntry = allDetails.find(entry => entry.id === `${lang}/${id}`);
+
+let Content = null;
+
+if (detailEntry) {
+    const rendered = await render(detailEntry);
+    Content = rendered.Content;
+}
+---
+
+<Base title={`${title} - huxx`} description={desc}>
+    {/* ================= HERO SECTION ================= */}
+    <header
+            class="relative overflow-hidden w-full px-4 sm:px-8 pt-16 pb-8 lg:pt-24 lg:pb-12 border-b-[4px]"
+            style={`background-color: ${colorBg}; color: ${colorText}; border-color: ${colorText}; --theme-text: ${colorText}; --theme-bg: ${colorBg};`}
+            data-theme-bg={colorBg}
+            data-theme-text={colorText}
+    >
+        <div class="absolute -top-20 -right-24 w-96 lg:w-[40rem] h-96 lg:h-[40rem] rounded-full bg-current opacity-[0.04] pointer-events-none z-0"></div>
+        <div class="absolute bottom-10 left-10 w-full h-72 -translate-y-1/2 rotate-12 bg-current opacity-[0.03] pointer-events-none z-0 rounded-[80px]"></div>
+
+        <div class="relative z-10 max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
+
+            {/* 左侧：文字信息 */}
+            <div class="flex-1 w-full flex flex-col items-start text-left gap-6">
+
+                {/* 🌟 修改后的 Order 和 Category：增加 border-[3px] border-solid */}
+                <div class="flex flex-wrap items-center gap-3">
+                    <span class="brutalist-badge border-[3px] border-solid font-black text-sm sm:text-base tracking-widest uppercase">
+                        #{order < 10 ? `0${order}` : order}
+                    </span>
+                    <span class="brutalist-badge border-[3px] border-solid font-black text-sm sm:text-base tracking-widest uppercase flex items-center gap-2">
+                        {category === 'game' && <i class="fa-solid fa-gamepad"></i>}
+                        {category === 'technical' && <i class="fa-solid fa-code"></i>}
+                        {category === 'art' && <i class="fa-solid fa-palette"></i>}
+                        {category}
+                    </span>
+                </div>
+
+                <h1 class="text-4xl sm:text-5xl lg:text-[5rem] font-black leading-[1.1] tracking-tight">
+                    {title}
+                </h1>
+
+                {/* 🌟 修改后的 Roles 和 Tags：增加 border-[3px] border-solid */}
+                <div class="flex flex-wrap items-center gap-3 mt-2">
+                    {roles.map((role: string) => (
+                            <span class="brutalist-badge border-[3px] border-solid text-sm sm:text-base font-black flex items-center gap-1.5">
+                            <i class="fa-solid fa-user-gear"></i> {role}
+                        </span>
+                    ))}
+                    {tags.map((tag: string) => (
+                            <span class="brutalist-badge border-[3px] border-solid text-sm sm:text-base font-bold">
+                            {tag}
+                        </span>
+                    ))}
+                </div>
+
+                <div
+                        class="mt-4 text-base sm:text-lg lg:text-xl font-medium leading-relaxed opacity-95 border-l-[4px] pl-5 py-2"
+                        style={`border-color: ${colorText};`}
+                >
+                    <p class="whitespace-pre-line">{desc}</p>
+                </div>
+
+                {projectLinks.length > 0 && <ProjectLinks links={projectLinks} />}
+
+            </div>
+
+            {/* 右侧：封面图 */}
+            {heroImage && (
+                    <div class="w-full lg:w-5/12 flex justify-center lg:justify-end">
+                        <div
+                                class="project-hero-image group relative w-full aspect-[4/3] rounded-2xl border-[3px] overflow-hidden"
+                                style={`--theme: ${colorText}; border-color: ${colorText}; background-color: ${colorBg};`}
+                        >
+                            <Image
+                                    src={heroImage}
+                                    alt={title}
+                                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                    loading="eager"
+                                    decoding="async"
+                            />
+                        </div>
+                    </div>
+            )}
+        </div>
+    </header>
+
+    {/* ================= CONTENT SECTION ================= */}
+    <main
+            class="w-full px-4 pt-8 pb-16 lg:pt-12 lg:pb-24"
+            style={`--theme-text: ${colorText}; --theme-bg: ${colorBg}; background-color: ${colorBg}; color: ${colorText};`}
+    >
+        <article class="project-prose max-w-7xl mx-auto">
+
+            {Content ? (
+                    <Content />
+            ) : (
+                    <div class="flex flex-col items-center justify-center py-20 text-center gap-6">
+                        <i class="fa-solid fa-person-digging text-6xl opacity-20"></i>
+                        <p class="font-bold text-2xl opacity-50">Detailed description is coming soon...</p>
+                    </div>
+            )}
+        </article>
+    </main>
+</Base>
+
+<style>
+    /* ========================================= */
+    /* 粗野主义标签样式 (Header Badges) */
+    /* ========================================= */
+    .brutalist-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.35rem 0.85rem;
+        border-color: var(--theme-text) !important;
+        border-radius: 0.5rem;
+        background-color: var(--theme-bg) !important;
+        color: var(--theme-text) !important;
+        box-shadow: 3px 3px 0px var(--theme-text) !important;
+        white-space: nowrap;
+    }
+
+    .brutalist-badge-inverted {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.35rem 0.85rem;
+        border-color: var(--theme-text) !important;
+        border-radius: 0.5rem;
+        background-color: var(--theme-text) !important;
+        color: var(--theme-bg) !important;
+        /* 为了防止反色标签的背景和阴影颜色黏连，用 color-mix 稍微提高阴影的透明度区分边界 */
+        box-shadow: 3px 3px 0px color-mix(in srgb, var(--theme-text) 80%, transparent) !important;
+        white-space: nowrap;
+    }
+
+    .project-hero-image {
+        box-shadow: 12px 12px 0px color(from var(--theme) srgb r g b / 1);
+    }
+
+    /* ========== MDX PROSE TYPOGRAPHY ========== */
+
+    /* 基础段落 */
+    :global(.project-prose p) {
+        font-size: 1.125rem;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+        color: var(--theme-text);
+    }
+
+    @media (min-width: 640px) {
+        :global(.project-prose p) {
+            font-size: 1.25rem;
+        }
+    }
+
+    /* 标题通用 */
+    :global(.project-prose h1),
+    :global(.project-prose h2),
+    :global(.project-prose h3),
+    :global(.project-prose h4) {
+        font-weight: 900;
+        letter-spacing: -0.025em;
+        color: var(--theme-text);
+        line-height: 1.2;
+    }
+
+    /* ========================================= */
+    /* 统一粗野主义 H2 标题样式 */
+    /* ========================================= */
+    :global(.project-prose h2) {
+        font-size: 1.875rem; /* 原 1.5rem */
+        margin-top: 3.5rem;
+        margin-bottom: 1.5rem;
+        padding: 0.75rem 1.5rem;
+
+        /* 粗野主义核心样式 */
+        border: 3px solid var(--theme-text);
+        border-radius: 0.75rem;
+        background-color: var(--theme-bg);
+        box-shadow: 4px 4px 0px var(--theme-text);
+
+        /* 布局控制 */
+        display: flex;
+        width: fit-content;
+        align-items: center;
+        user-select: none;
+    }
+
+    @media (min-width: 640px) {
+        :global(.project-prose h2) {
+            font-size: 2.25rem; /* 原 1.875rem */
+        }
+    }
+
+    :global(.project-prose h3) {
+        font-size: 1.625rem; /* 原 1.5rem */
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    @media (min-width: 640px) {
+        :global(.project-prose h3) {
+            font-size: 1.875rem; /* 原 1.875rem，但现在 H2 更大了，层级拉开了 */
+        }
+    }
+
+    :global(.project-prose h4) {
+        font-size: 1.375rem; /* 原 1.25rem */
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+    }
+
+    /* 新增：为 H4 增加桌面端的大字体适配 */
+    @media (min-width: 640px) {
+        :global(.project-prose h4) {
+            font-size: 1.5rem;
+        }
+    }
+
+    /* 链接 */
+    :global(.project-prose a) {
+        color: var(--theme-text);
+        font-weight: 700;
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 4px;
+        transition: opacity 0.2s;
+    }
+
+    :global(.project-prose a:hover) {
+        opacity: 0.7;
+    }
+
+    /* 粗体 */
+    :global(.project-prose strong) {
+        font-weight: 900;
+        color: var(--theme-text);
+    }
+
+
+    /* ========================================= */
+    /* 列表样式 (Lists) - 原生流对齐方案          */
+    /* ========================================= */
+
+    /* 1. 列表基础容器：恢复标准的内边距缩进 */
+    :global(.project-prose ul),
+    :global(.project-prose ol) {
+        margin-top: 1rem;
+        margin-bottom: 1.5rem;
+        /* 核心修正：给整个列表一个左侧缩进，确保圆点/数字不贴着屏幕边缘 */
+        padding-left: 2rem;
+        display: block;
+    }
+
+    /* 2. 嵌套列表：清除多余上下间距 */
+    :global(.project-prose ul ul),
+    :global(.project-prose ul ol),
+    :global(.project-prose ol ul),
+    :global(.project-prose ol ol) {
+        margin-top: 0.5rem;
+        margin-bottom: 0;
+        /* 嵌套会自动继承外层的 2rem padding-left，产生完美的自然缩进 */
+    }
+
+    /* 3. 列表项通用样式 */
+    :global(.project-prose li) {
+        margin-bottom: 0.75rem;
+        font-size: 1.125rem;
+        line-height: 1.8;
+        color: var(--theme-text);
+        /* 核心修正：只给文本左侧留一点点空隙，拉开和圆点/数字的呼吸感，且不再使用 position: relative */
+        padding-left: 0.35rem;
+    }
+
+    :global(.project-prose li:last-child) {
+        margin-bottom: 0;
+    }
+
+    @media (min-width: 640px) {
+        :global(.project-prose li) {
+            font-size: 1.25rem;
+        }
+    }
+
+    /* --- 无序列表 (Unordered Lists) --- */
+    :global(.project-prose ul) {
+        list-style: disc; /* 恢复使用原生的实心圆点 */
+    }
+
+    /* --- 有序列表 (Ordered Lists) --- */
+    :global(.project-prose ol) {
+        list-style: decimal; /* 恢复使用原生的数字序号 */
+    }
+
+    /* --- 统一给原生符号(圆点和数字)加粗和上色 --- */
+    :global(.project-prose li::marker) {
+        color: var(--theme-text);
+        font-weight: 700;
+        /* 部分浏览器中，调整 marker 的大小可以通过字体设置 */
+        font-size: 1.2em;
+    }
+
+    /* ========================================= */
+    /* 通用单图及 Caption 样式                    */
+    /* ========================================= */
+    :global(.project-prose figure) {
+        margin: 2.5rem 0; /* 接管原本 img 的上下间距 */
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* 居中对齐 */
+        gap: 0.75rem; /* 图片与文字的间距 */
+    }
+
+    /* 当图片在 figure 内部时，清除其自带的 margin */
+    :global(.project-prose figure img) {
+        margin: 0 !important;
+    }
+
+    /* Caption 统一风格 */
+    :global(.project-prose figcaption) {
+        font-size: 0.95rem;
+        font-weight: 700;
+        line-height: 1.5;
+        color: var(--theme-text);
+        opacity: 0.8;
+        text-align: center;
+        max-width: 80%; /* 防止文字过长时显得太宽，保持良好的阅读视宽 */
+    }
+    /* ========================================= */
+    /* 并排图片网格 (Image Grid) + Caption        */
+    /* ========================================= */
+    :global(.project-prose .image-grid-2) {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem; /* 增加间距以容纳 Caption */
+        margin: 2.5rem 0;
+    }
+
+    @media (min-width: 640px) {
+        :global(.project-prose .image-grid-2) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    /* 容器调整 */
+    :global(.project-prose .image-grid-2 figure) {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem; /* 图片与文字的间距 */
+    }
+
+    /* 强制网格内的图片填满容器并取消自带 margin */
+    :global(.project-prose .image-grid-2 img) {
+        margin: 0 !important;
+        width: 100%;
+        height: auto;
+
+    }
+
+    /* 图片说明文字样式 */
+    :global(.project-prose .image-grid-2 figcaption) {
+        font-size: 0.95rem;
+        font-weight: 700; /* 延续加粗风格 */
+        line-height: 1.4;
+        color: var(--theme-text);
+        opacity: 0.8;
+        text-align: center; /* 居中显示 */
+        padding: 0 0.5rem;
+    }
+
+    /* 引用 */
+    :global(.project-prose blockquote) {
+        border-left: 4px solid var(--theme-text);
+        padding: 1rem 1.5rem;
+        margin: 2rem 0;
+        font-weight: 600;
+        font-style: normal;
+        opacity: 0.85;
+        color: var(--theme-text);
+    }
+
+    :global(.project-prose blockquote p) {
+        margin-bottom: 0;
+    }
+
+    /* 分割线 */
+    :global(.project-prose hr) {
+        border: none;
+        border-top: 3px dashed var(--theme-text);
+        opacity: 0.25;
+        margin: 3rem 0;
+    }
+
+    /* 图片 */
+    :global(.project-prose img) {
+        /* 核心修改：强制 16:9 并自动裁剪 */
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover; /* 关键：确保图片盖满容器且不缩放变形 */
+
+        /* 你原有的粗野主义样式 */
+        border: 3px solid var(--theme-text);
+        box-shadow: 4px 4px 0px var(--theme-text);
+        border-radius: 0.75rem;
+        margin: 2rem 0;
+        display: block;
+    }
+
+    /* 行内代码 */
+    :global(.project-prose code) {
+        color: var(--theme-text);
+        background-color: color-mix(in srgb, var(--theme-text) 10%, transparent);
+        padding: 0.15em 0.4em;
+        border-radius: 0.25rem;
+        font-weight: 600;
+        font-size: 0.9em;
+    }
+
+    /* 代码块 */
+    :global(.project-prose pre) {
+        background-color: color-mix(in srgb, var(--theme-text) 8%, var(--theme-bg));
+        border: 2px solid var(--theme-text);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        overflow-x: auto;
+    }
+
+    :global(.project-prose pre code) {
+        background: none;
+        padding: 0;
+        border-radius: 0;
+        font-weight: 400;
+        font-size: 0.875rem;
+    }
+
+    /* 表格 */
+    :global(.project-prose table) {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 2rem 0;
+        font-size: 1rem;
+    }
+
+    :global(.project-prose th) {
+        font-weight: 900;
+        color: var(--theme-text);
+        border-bottom: 3px solid var(--theme-text);
+        padding: 0.75rem 1rem;
+        text-align: left;
+    }
+
+    :global(.project-prose td) {
+        color: var(--theme-text);
+        border-bottom: 1px solid color-mix(in srgb, var(--theme-text) 20%, transparent);
+        padding: 0.75rem 1rem;
+    }
+
+    /* 第一个子元素不要上边距 */
+    :global(.project-prose > *:first-child) {
+        margin-top: 0;
+    }
+</style>

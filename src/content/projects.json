@@ -47,7 +47,24 @@
         "음악 시각화"
       ]
     },
-    "backupCoverImage": "src/assets/projects/ColourfulPinballPoster.webp"
+    "backupCoverImage": "src/assets/projects/poster/ColourfulPinballPoster.webp",
+    "links": [
+      {
+        "name": "GitHub",
+        "url": "https://github.com/huxxshadow/template",
+        "icon": "fa-brands fa-github"
+      },
+      {
+        "name": "Live Demo",
+        "url": "https://example.com",
+        "icon": "fa-solid fa-link"
+      },
+      {
+        "name": "Report",
+        "url": "https://drive.google.com/...",
+        "icon": "fa-brands fa-google-drive"
+      }
+    ]
   },
   {
     "id": "art-project-island-cinematic",
@@ -101,7 +118,21 @@
         "환경 아트"
       ]
     },
-    "coverImage": "src/assets/projects/IslandCinematicPoster.webp"
+    "coverImage": "src/assets/projects/poster/IslandCinematicPoster.webp",
+    "links": [
+      {
+        "name": "Bilibili",
+        "url": "https://www.bilibili.com/video/BV1rM4y1X723/?share_source=copy_web&vd_source=2e0b37d0ccacd91ea3fca2b1dab708e8",
+        "icon": "fa-brands fa-bilibili"
+      },
+      {
+        "name": "Youtube",
+        "url": "https://youtu.be/1F0w1yn75Mg?si=aqWgHET1kAOpJaTJ",
+        "icon": "fa-brands fa-youtube"
+      }
+    ],
+    "colorText": "blue",
+    "colorBackground": "blue"
   },
   {
     "id": "art-project-fractured-space",
@@ -159,7 +190,16 @@
         "절차적 모델링"
       ]
     },
-    "coverImage": "src/assets/projects/FracturedSpacePoster.webp"
+    "coverImage": "src/assets/projects/poster/FracturedSpacePoster.webp",
+    "links": [
+      {
+        "name": "Bilibili",
+        "url": "https://www.bilibili.com/video/BV1QA41127jq/?share_source=copy_web&vd_source=2e0b37d0ccacd91ea3fca2b1dab708e8",
+        "icon": "fa-brands fa-bilibili"
+      }
+    ],
+    "colorText": "green",
+    "colorBackground": "green"
   },
   {
     "id": "art-project-fractal-skull",
@@ -213,7 +253,21 @@
         "라이팅 디자인"
       ]
     },
-    "coverImage": "src/assets/projects/FractalSkullPoster.webp"
+    "coverImage": "src/assets/projects/poster/FractalSkullPoster.webp",
+    "links": [
+      {
+        "name": "ArtStation",
+        "url": "https://www.artstation.com/artwork/9E5OrW",
+        "icon": "fa-brands fa-artstation"
+      },
+      {
+        "name": "Youtube",
+        "url": "https://youtu.be/mWue1kSUidw?si=ZMhDXrHFpi6eKhSJ",
+        "icon": "fa-brands fa-youtube"
+      }
+    ],
+    "colorText": "blue",
+    "colorBackground": "blue"
   },
   {
     "id": "technical-project-mario-ddqn",
@@ -267,7 +321,7 @@
         "TensorFlow"
       ]
     },
-    "coverImage": "src/assets/projects/MarioDDQN.webp"
+    "coverImage": "src/assets/projects/poster/MarioDDQN.webp"
   },
   {
     "id": "technical-project-discord-bot",
@@ -317,7 +371,7 @@
         "JDA"
       ]
     },
-    "backupCoverImage": "src/assets/projects/DiscordBotPoster.webp"
+    "backupCoverImage": "src/assets/projects/poster/DiscordBotPoster.webp"
   },
   {
     "id": "technical-project-oracle-database-application",
@@ -375,7 +429,7 @@
         "JDBC"
       ]
     },
-    "backupCoverImage": "src/assets/projects/OracleDatabaseApplicationPoster.webp"
+    "backupCoverImage": "src/assets/projects/poster/OracleDatabaseApplicationPoster.webp"
   },
   {
     "id": "technical-project-music-genre-classification",
@@ -429,7 +483,7 @@
         "머신러닝"
       ]
     },
-    "backupCoverImage": "src/assets/projects/MusicGenreClassificationPoster.webp"
+    "backupCoverImage": "src/assets/projects/poster/MusicGenreClassificationPoster.webp"
   },
   {
     "id": "technical-project-dog-breed-classification",
@@ -483,7 +537,7 @@
         "이미지 분류"
       ]
     },
-    "coverImage": "src/assets/projects/DogBreedClassificationPoster.webp"
+    "coverImage": "src/assets/projects/poster/DogBreedClassificationPoster.webp"
   },
   {
     "id": "game-project-lost-realm",
@@ -537,7 +591,7 @@
         "전투 3C 설계"
       ]
     },
-    "coverImage": "../assets/projects/LostRealmPoster.webp"
+    "coverImage": "../assets/projects/poster/LostRealmPoster.webp"
   },
   {
     "id": "technical-project-smart-pot-joi",
@@ -595,7 +649,7 @@
         "AI 개발"
       ]
     },
-    "coverImage": "src/assets/projects/SmartPotJoiPoster.webp"
+    "coverImage": "src/assets/projects/poster/SmartPotJoiPoster.webp"
   },
   {
     "id": "technical-project-vbgmm",
@@ -653,7 +707,7 @@
         "데이터 사이언스"
       ]
     },
-    "coverImage": "src/assets/projects/VBGMMPoster.webp"
+    "coverImage": "src/assets/projects/poster/VBGMMPoster.webp"
   },
   {
     "id": "technical-project-ai-pixelart-repair-tool",
@@ -707,7 +761,7 @@
         "컴퓨터 비전"
       ]
     },
-    "coverImage": "src/assets/projects/AIPixelArtRepairToolPoster.webp"
+    "coverImage": "src/assets/projects/poster/AIPixelArtRepairToolPoster.webp"
   },
   {
     "id": "technical-project-web-system-for-equipment-rental",
@@ -761,7 +815,7 @@
         "MongoDB"
       ]
     },
-    "backupCoverImage": "src/assets/projects/EquipmentRentalWebSystemPoster.webp"
+    "backupCoverImage": "src/assets/projects/poster/EquipmentRentalWebSystemPoster.webp"
   },
   {
     "id": "technical-project-battle-joker",
@@ -811,7 +865,7 @@
         "네트워크 개발"
       ]
     },
-    "backupCoverImage": "src/assets/projects/BattleJokerMultiplayerPoster.webp"
+    "backupCoverImage": "src/assets/projects/poster/BattleJokerMultiplayerPoster.webp"
   },
   {
     "id": "technical-project-equipment-rental-android-app",
@@ -861,7 +915,7 @@
         "Kotlin"
       ]
     },
-    "backupCoverImage": "src/assets/projects/EquipmentRentalAndroidAppPoster.webp"
+    "backupCoverImage": "src/assets/projects/poster/EquipmentRentalAndroidAppPoster.webp"
   },
   {
     "id": "technical-project-variational-applications",
@@ -915,7 +969,7 @@
         "수학"
       ]
     },
-    "backupCoverImage": "src/assets/projects/VariationalApplicationsPoster.webp"
+    "backupCoverImage": "src/assets/projects/poster/VariationalApplicationsPoster.webp"
   },
   {
     "id": "game-project-speed-pixel",
@@ -969,7 +1023,7 @@
         "Windows"
       ]
     },
-    "coverImage": "../assets/projects/SpeedPixelPoster.webp"
+    "coverImage": "../assets/projects/poster/SpeedPixelPoster.webp"
   },
 
 
@@ -1037,7 +1091,7 @@
         "Windows"
       ]
     },
-    "coverImage": "../assets/projects/EmptyThornePoster.webp"
+    "coverImage": "../assets/projects/poster/EmptyThornePoster.webp"
   },
   {
     "id": "technical-project-lego-voxelizer",
@@ -1095,7 +1149,7 @@
         "GLSL"
       ]
     },
-    "coverImage": "src/assets/projects/LegoVoxelizerPoster.webp"
+    "coverImage": "src/assets/projects/poster/LegoVoxelizerPoster.webp"
   },
   {
     "id": "technical-project-raymarching-fractal-morphing",
@@ -1153,7 +1207,7 @@
         "실시간 렌더링"
       ]
     },
-    "coverImage": "src/assets/projects/RayMarchingFractalMorphingPoster.webp"
+    "coverImage": "src/assets/projects/poster/RayMarchingFractalMorphingPoster.webp"
   },
 
   {
@@ -1224,7 +1278,7 @@
         "Windows"
       ]
     },
-    "coverImage": "../assets/projects/EelOnMaskPoster.webp"
+    "coverImage": "../assets/projects/poster/EelOnMaskPoster.webp"
   },
   {
     "id": "game-project-click-click-universe",
@@ -1282,7 +1336,7 @@
         "Windows"
       ]
     },
-    "coverImage": "../assets/projects/ClickClickUniversePoster.webp"
+    "coverImage": "../assets/projects/poster/ClickClickUniversePoster.webp"
   },
   {
     "id": "game-project-yuanmengstar-shanhai-xunling",
@@ -1344,7 +1398,7 @@
         "PC/Mobile"
       ]
     },
-    "coverImage": "src/assets/projects/YuanMengStarPoster.webp"
+    "coverImage": "src/assets/projects/poster/YuanMengStarPoster.webp"
   },
 
   {
@@ -1399,7 +1453,7 @@
         "데이터 분석"
       ]
     },
-    "backupCoverImage": "src/assets/projects/OnlineShoppersIntentionPoster.webp"
+    "backupCoverImage": "src/assets/projects/poster/OnlineShoppersIntentionPoster.webp"
   },
   {
     "id": "technical-project-windy-grass",
@@ -1457,7 +1511,7 @@
         "실시간 렌더링"
       ]
     },
-    "coverImage": "src/assets/projects/WindyGrassPoster.webp"
+    "coverImage": "src/assets/projects/poster/WindyGrassPoster.webp"
   },
   {
     "id": "technical-project-comfyui-ai-eco-film",
@@ -1511,7 +1565,7 @@
         "AI 비디오"
       ]
     },
-    "coverImage": "src/assets/projects/ComfyUIEcoFilmPoster.webp"
+    "coverImage": "src/assets/projects/poster/ComfyUIEcoFilmPoster.webp"
   }
 
 ]
