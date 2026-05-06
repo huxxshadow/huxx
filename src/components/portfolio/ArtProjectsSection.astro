@@ -6,6 +6,7 @@ import { Image } from "astro:assets";
 import type { Lang } from "@/i18n.ts";
 import { useTranslations } from "@/i18n.ts";
 import { artProjectsLabels } from "@/i18n/components/portfolio/ArtProjectsSection_i18.ts";
+import { getRelativeLocaleUrl } from 'astro:i18n';
 
 const allProjects = await getCollection("projects");
 // 只筛选 category 为 "art" 的项目，并按 order 倒序排列
@@ -23,13 +24,16 @@ const defaultTheme = COLORS.orange;
 const featuredProject = artProjects.length > 0 ? artProjects[0] : null;
 const regularProjects = artProjects.length > 1 ? artProjects.slice(1) : [];
 
+
 /**
  * 获取项目的主题色
  */
 function getProjectColors(project: typeof artProjects[number]) {
-    const textColor = project.data.colorText || defaultTheme.dark;
-    const bgColor = project.data.colorBackground || defaultTheme.light;
-    return { text: textColor, bg: bgColor };
+    // 忽略项目自带的 colorText 和 colorBackground，强制返回 defaultTheme
+    return {
+        text: defaultTheme.dark,
+        bg: defaultTheme.light
+    };
 }
 ---
 
@@ -77,7 +81,7 @@ function getProjectColors(project: typeof artProjects[number]) {
                                         >
                                             {/* 大尺寸封面 (特色项目) */}
                                             <a
-                                                    href={`/${currentLang}/projects/${project.id}`}
+                                                    href={getRelativeLocaleUrl(currentLang, `projects/${project.id}`)}
                                                     class="relative block w-full lg:w-3/5 aspect-video border-b-[3px] lg:border-b-0 lg:border-r-[3px] overflow-hidden"
                                                     style={`border-color: ${colors.text}; background-color: ${colors.bg};`}
                                             >
@@ -139,7 +143,7 @@ function getProjectColors(project: typeof artProjects[number]) {
                                         >
                                             {/* Cover Image */}
                                             <a
-                                                    href={`/${currentLang}/projects/${project.id}`}
+                                                    href={getRelativeLocaleUrl(currentLang, `projects/${project.id}`)}
                                                     class="block relative w-full aspect-video border-b-2 overflow-hidden"
                                                     style={`border-color: ${colors.text}; background-color: ${colors.bg};`}
                                             >
@@ -171,7 +175,7 @@ function getProjectColors(project: typeof artProjects[number]) {
                                                 </p>
 
                                                 <a
-                                                        href={`/${currentLang}/projects/${project.id}`}
+                                                        href={getRelativeLocaleUrl(currentLang, `projects/${project.id}`)}
                                                         class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-black text-sm border-2 active:translate-y-1 transition-transform cursor-pointer"
                                                         style={`background-color: ${colors.text}; color: ${colors.bg}; border-color: ${colors.text};`}
                                                 >

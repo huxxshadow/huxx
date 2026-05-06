@@ -6,6 +6,7 @@ import { Image } from "astro:assets";
 import type { Lang } from "@/i18n.ts";
 import { useTranslations } from "@/i18n.ts";
 import { allProjectsLabels } from "@/i18n/components/portfolio/AllProjectsSection_i18.ts";
+import { getRelativeLocaleUrl } from 'astro:i18n';
 
 // 获取所有的 projects 并按 order 倒序排列
 const allProjects = await getCollection("projects");
@@ -81,7 +82,7 @@ function getProjectColors(project: typeof orderedProjects[number]) {
 
                 return (
                         <a
-                                href={`/${currentLang}/projects/${project.id}`}
+                                href={getRelativeLocaleUrl(currentLang, `projects/${project.id}`)}
                                 class="project-hover-card block group relative rounded-xl overflow-hidden border-4 cursor-pointer"
                                 style={`...`}
                         >

@@ -6,6 +6,7 @@ import { Image } from "astro:assets";
 import type { Lang } from "@/i18n.ts";
 import { useTranslations } from "@/i18n.ts";
 import { technicalProjectsLabels } from "@/i18n/components/portfolio/TechnicalProjectsSection_i18.ts";
+import {getRelativeLocaleUrl} from "astro:i18n";
 
 const allProjects = await getCollection("projects");
 // 只筛选 category 为 "technical" 的项目，并按 order 倒序排列
@@ -73,7 +74,7 @@ function getProjectColors(project: typeof technicalProjects[number]) {
                                     style={`--theme: ${colors.text}; border-color: ${colors.text}; background-color: ${colors.bg};`}
                             >
                                 <a
-                                        href={`/${currentLang}/projects/${project.id}`}
+                                        href={getRelativeLocaleUrl(currentLang, `projects/${project.id}`)}
                                         class="relative block w-full aspect-video border-b-2 overflow-hidden"
                                         style={`border-color: ${colors.text}; background-color: ${colors.bg};`}
                                 >
@@ -117,7 +118,7 @@ function getProjectColors(project: typeof technicalProjects[number]) {
 
                                     {/* 底部按钮 */}
                                     <a
-                                            href={`/${currentLang}/projects/${project.id}`}
+                                            href={getRelativeLocaleUrl(currentLang, `projects/${project.id}`)}
                                             class="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-black text-base border-2 active:translate-y-1 transition-transform cursor-pointer mt-auto"
                                             style={`background-color: ${colors.text}; color: ${colors.bg}; border-color: ${colors.text};`}
                                     >
@@ -146,7 +147,7 @@ function getProjectColors(project: typeof technicalProjects[number]) {
                             >
                                 {/* 右上角跳转小圆钮 */}
                                 <a
-                                        href={`/${currentLang}/projects/${project.id}`}
+                                        href={getRelativeLocaleUrl(currentLang, `projects/${project.id}`)}
                                         class="absolute top-6 right-6 w-12 h-12 flex items-center justify-center rounded-full border-2 hover:scale-110 active:scale-95 transition-transform cursor-pointer z-10"
                                         style={`background-color: ${colors.text}; color: ${colors.bg}; border-color: ${colors.text};`}
                                 >
