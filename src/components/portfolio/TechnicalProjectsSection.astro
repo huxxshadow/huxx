@@ -27,10 +27,12 @@ const defaultTheme = COLORS.blue;
 /**
  * 获取项目的主题色
  */
-function getProjectColors(project: typeof technicalProjects[number]) {
-    const textColor = project.data.colorText || defaultTheme.dark;
-    const bgColor = project.data.colorBackground || defaultTheme.light;
-    return { text: textColor, bg: bgColor };
+function getProjectColors() {
+    // 忽略项目自带的 colorText 和 colorBackground，强制返回 defaultTheme
+    return {
+        text: defaultTheme.dark,
+        bg: defaultTheme.light
+    };
 }
 ---
 

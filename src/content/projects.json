@@ -321,7 +321,16 @@
         "TensorFlow"
       ]
     },
-    "coverImage": "src/assets/projects/poster/MarioDDQN.webp"
+    "coverImage": "src/assets/projects/poster/MarioDDQN.webp",
+    "links": [
+      {
+        "name": "Github",
+        "url": "https://github.com/huxxshadow/DDQN-CNN_Mario",
+        "icon": "fa-brands fa-github"
+      }
+    ],
+    "colorText": "blue",
+    "colorBackground": "blue"
   },
   {
     "id": "technical-project-discord-bot",
@@ -371,7 +380,16 @@
         "JDA"
       ]
     },
-    "backupCoverImage": "src/assets/projects/poster/DiscordBotPoster.webp"
+    "backupCoverImage": "src/assets/projects/poster/DiscordBotPoster.webp",
+    "links": [
+      {
+        "name": "Google Drive",
+        "url": "https://drive.google.com/file/d/1xDbRBZr6__dUYaDU9plekCwfC4wNL63Y",
+        "icon": "fa-brands fa-google-drive"
+      }
+    ],
+    "colorText": "blue",
+    "colorBackground": "blue"
   },
   {
     "id": "technical-project-oracle-database-application",
@@ -429,7 +447,16 @@
         "JDBC"
       ]
     },
-    "backupCoverImage": "src/assets/projects/poster/OracleDatabaseApplicationPoster.webp"
+    "backupCoverImage": "src/assets/projects/poster/OracleDatabaseApplicationPoster.webp",
+    "links": [
+      {
+        "name": "Google Drive",
+        "url": "https://drive.google.com/file/d/1UqVsmTe-aj766C4qWTwI-98Tv2PRWmEt/",
+        "icon": "fa-brands fa-google-drive"
+      }
+    ],
+    "colorText": "green",
+    "colorBackground": "green"
   },
   {
     "id": "technical-project-music-genre-classification",
@@ -483,7 +510,21 @@
         "머신러닝"
       ]
     },
-    "backupCoverImage": "src/assets/projects/poster/MusicGenreClassificationPoster.webp"
+    "backupCoverImage": "src/assets/projects/poster/MusicGenreClassificationPoster.webp",
+    "links": [
+      {
+        "name": "Github",
+        "url": "https://github.com/huxxshadow/MuiscGenreClassification",
+        "icon": "fa-brands fa-github"
+      },
+      {
+        "name": "Google Slides",
+        "url": "https://www.canva.com/design/DAGAnPX9WWI/okpnBCgnF6RDmynv4NvHIA/view?utm_content=DAGAnPX9WWI&utm_campaign=designshare&utm_medium=link&utm_source=editor",
+        "icon": "fa-solid fa-file-powerpoint"
+      }
+    ],
+    "colorText": "red",
+    "colorBackground": "red"
   },
   {
     "id": "technical-project-dog-breed-classification",
@@ -537,7 +578,21 @@
         "이미지 분류"
       ]
     },
-    "coverImage": "src/assets/projects/poster/DogBreedClassificationPoster.webp"
+    "coverImage": "src/assets/projects/poster/DogBreedClassificationPoster.webp",
+    "links": [
+      {
+        "name": "Github",
+        "url": "https://github.com/huxxshadow/Oxford-dogs-breeds-classification",
+        "icon": "fa-brands fa-github"
+      },
+      {
+        "name": "Kaggle",
+        "url": "https://www.kaggle.com/competitions/oxford-study-abroad-ml-assignment-2024/overview",
+        "icon": "fa-brands fa-kaggle"
+      }
+    ],
+    "colorText": "orange",
+    "colorBackground": "orange"
   },
   {
     "id": "game-project-lost-realm",
@@ -545,9 +600,9 @@
     "category": "game",
     "title": {
       "en": "Lost Realm",
-      "zh": "失落领域 (Lost Realm)",
-      "ja": "ロストレルム (Lost Realm)",
-      "ko": "로스트 렐름 (Lost Realm)"
+      "zh": "失落领域",
+      "ja": "ロストレルム",
+      "ko": "로스트 렐름"
     },
     "roles": {
       "en": [
@@ -591,7 +646,32 @@
         "전투 3C 설계"
       ]
     },
-    "coverImage": "../assets/projects/poster/LostRealmPoster.webp"
+    "coverImage": "../assets/projects/poster/LostRealmPoster.webp",
+    "links": [
+
+      {
+        "name": "Bilibili",
+        "url": "https://www.bilibili.com/video/BV1x48zeXEJY/?share_source=copy_web&vd_source=2e0b37d0ccacd91ea3fca2b1dab708e8",
+        "icon": "fa-brands fa-bilibili"
+      },
+      {
+        "name": "Youtube",
+        "url": "https://youtu.be/JeamFI6e4jI?si=nR9DTYs-59t5LDFO",
+        "icon": "fa-brands fa-youtube"
+      },
+      {
+        "name": "Demo",
+        "url": "https://drive.google.com/file/d/15EWscQGZn_iomTZJ1PxeUxlKfjzNvdEu/view",
+        "icon": "fa-brands fa-google-drive"
+      },
+      {
+        "name": "Instruction",
+        "url": "https://docs.google.com/document/d/1OTs1PAHzFozQi4C-dgQDY2KAv-aUJxA04lkSluy654o/edit?tab=t.0#heading=h.prfq1ldq3k9p",
+        "icon": "fa-brands fa-google-drive"
+      }
+    ],
+    "colorText": "orange",
+    "colorBackground": "orange"
   },
   {
     "id": "technical-project-smart-pot-joi",
@@ -649,7 +729,17 @@
         "AI 개발"
       ]
     },
-    "coverImage": "src/assets/projects/poster/SmartPotJoiPoster.webp"
+    "coverImage": "src/assets/projects/poster/SmartPotJoiPoster.webp",
+    "links": [
+
+      {
+        "name": "Champion",
+        "url": "https://aihk2023.comp.hkbu.edu.hk/",
+        "icon": "fa-solid fa-medal"
+      }
+    ],
+    "colorText": "green",
+    "colorBackground": "green"
   },
   {
     "id": "technical-project-vbgmm",
@@ -707,7 +797,16 @@
         "데이터 사이언스"
       ]
     },
-    "coverImage": "src/assets/projects/poster/VBGMMPoster.webp"
+    "coverImage": "src/assets/projects/poster/VBGMMPoster.webp",
+    "links": [
+      {
+        "name": "Github",
+        "url": "https://github.com/huxxshadow/MATH4225_Project",
+        "icon": "fa-brands fa-github"
+      }
+    ],
+    "colorText": "blue",
+    "colorBackground": "blue"
   },
   {
     "id": "technical-project-ai-pixelart-repair-tool",
@@ -761,7 +860,21 @@
         "컴퓨터 비전"
       ]
     },
-    "coverImage": "src/assets/projects/poster/AIPixelArtRepairToolPoster.webp"
+    "coverImage": "src/assets/projects/poster/AIPixelArtRepairToolPoster.webp",
+    "links": [
+      {
+        "name": "Github",
+        "url": "https://github.com/huxxshadow/PixelArtRepair",
+        "icon": "fa-brands fa-github"
+      },
+      {
+        "name": "Online Demo",
+        "url": "https://huggingface.co/spaces/Huxxshadow/ImagePixelationTool_en",
+        "icon": "fa-solid fa-play"
+      }
+    ],
+    "colorText": "purple",
+    "colorBackground": "purple"
   },
   {
     "id": "technical-project-web-system-for-equipment-rental",
@@ -815,7 +928,12 @@
         "MongoDB"
       ]
     },
-    "backupCoverImage": "src/assets/projects/poster/EquipmentRentalWebSystemPoster.webp"
+    "backupCoverImage": "src/assets/projects/poster/EquipmentRentalWebSystemPoster.webp",
+    "links": [
+
+    ],
+    "colorText": "blue",
+    "colorBackground": "blue"
   },
   {
     "id": "technical-project-battle-joker",
@@ -865,7 +983,10 @@
         "네트워크 개발"
       ]
     },
-    "backupCoverImage": "src/assets/projects/poster/BattleJokerMultiplayerPoster.webp"
+    "backupCoverImage": "src/assets/projects/poster/BattleJokerMultiplayerPoster.webp",
+    "links": [
+
+    ]
   },
   {
     "id": "technical-project-equipment-rental-android-app",
@@ -969,7 +1090,21 @@
         "수학"
       ]
     },
-    "backupCoverImage": "src/assets/projects/poster/VariationalApplicationsPoster.webp"
+    "backupCoverImage": "src/assets/projects/poster/VariationalApplicationsPoster.webp",
+    "links": [
+      {
+        "name": "Report",
+        "url": "https://drive.google.com/file/d/1h4cvr17HRfcygCBb5a5zcCtjN-AyVDY0/view",
+        "icon": "fa-brands fa-google-drive"
+      },
+      {
+        "name": "Slides",
+        "url": "https://docs.google.com/presentation/d/1_QF8TnM8J93yLbT2lM5PlrjxcBW0dt1H/edit?slide=id.p1#slide=id.p1",
+        "icon": "fa-brands fa-google-drive"
+      }
+    ],
+    "colorText": "blue",
+    "colorBackground": "blue"
   },
   {
     "id": "game-project-speed-pixel",
@@ -977,9 +1112,9 @@
     "category": "game",
     "title": {
       "en": "Speed Pixel",
-      "zh": "极速像素 (Speed Pixel)",
-      "ja": "スピードピクセル (Speed Pixel)",
-      "ko": "스피드 픽셀 (Speed Pixel)"
+      "zh": "极速像素",
+      "ja": "スピードピクセル",
+      "ko": "스피드 픽셀"
     },
     "roles": {
       "en": [
@@ -1023,7 +1158,16 @@
         "Windows"
       ]
     },
-    "coverImage": "../assets/projects/poster/SpeedPixelPoster.webp"
+    "coverImage": "../assets/projects/poster/SpeedPixelPoster.webp",
+    "links": [
+      {
+        "name": "Demo",
+        "url": "https://drive.google.com/file/d/1DrBqaOLyKEHrWF4uvQ2Mn9uWrhzUcuxK/view",
+        "icon": "fa-brands fa-google-drive"
+      }
+    ],
+    "colorText": "red",
+    "colorBackground": "red"
   },
 
 
@@ -1091,7 +1235,21 @@
         "Windows"
       ]
     },
-    "coverImage": "../assets/projects/poster/EmptyThornePoster.webp"
+    "coverImage": "../assets/projects/poster/EmptyThornePoster.webp",
+    "links": [
+      {
+        "name": "Steam",
+        "url": "https://store.steampowered.com/app/3907100/_Empty_Throne/",
+        "icon": "fa-brands fa-steam"
+      },
+      {
+        "name": "Bilibili",
+        "url": "https://www.bilibili.com/video/BV1d4nwzNEem/?spm_id_from=333.1387.homepage.video_card.click&vd_source=8830dd40987e484f6914447cd547c641",
+        "icon": "fa-brands fa-bilibili"
+      }
+    ],
+    "colorText": "blue",
+    "colorBackground": "blue"
   },
   {
     "id": "technical-project-lego-voxelizer",
@@ -1149,7 +1307,16 @@
         "GLSL"
       ]
     },
-    "coverImage": "src/assets/projects/poster/LegoVoxelizerPoster.webp"
+    "coverImage": "src/assets/projects/poster/LegoVoxelizerPoster.webp",
+    "links": [
+      {
+        "name": "Report",
+        "url": "https://drive.google.com/file/d/15BpKXsjMecNUbr-YDS4G3HqVUwzFIPnh/view",
+        "icon": "fa-brands fa-google-drive"
+      }
+    ],
+    "colorText": "green",
+    "colorBackground": "green"
   },
   {
     "id": "technical-project-raymarching-fractal-morphing",
@@ -1207,7 +1374,16 @@
         "실시간 렌더링"
       ]
     },
-    "coverImage": "src/assets/projects/poster/RayMarchingFractalMorphingPoster.webp"
+    "coverImage": "src/assets/projects/poster/RayMarchingFractalMorphingPoster.webp",
+    "links": [
+      {
+        "name": "Report",
+        "url": "https://drive.google.com/file/d/15BpKXsjMecNUbr-YDS4G3HqVUwzFIPnh/view",
+        "icon": "fa-brands fa-google-drive"
+      }
+    ],
+    "colorText": "green",
+    "colorBackground": "green"
   },
 
   {
@@ -1216,9 +1392,9 @@
     "category": "game",
     "title": {
       "en": "Eel On Mask",
-      "zh": "鳗! (Eel On Mask)",
-      "ja": "イール・オン・マスク (Eel On Mask)",
-      "ko": "일 온 마스크 (Eel On Mask)"
+      "zh": "鳗!",
+      "ja": "イール・オン・マスク",
+      "ko": "일 온 마스크"
     },
     "roles": {
       "en": [
@@ -1278,7 +1454,21 @@
         "Windows"
       ]
     },
-    "coverImage": "../assets/projects/poster/EelOnMaskPoster.webp"
+    "coverImage": "../assets/projects/poster/EelOnMaskPoster.webp",
+    "links": [
+      {
+        "name": "Steam",
+        "url": "https://store.steampowered.com/app/4391180/",
+        "icon": "fa-brands fa-steam"
+      },
+      {
+        "name": "Bilibili",
+        "url": "https://www.bilibili.com/video/BV1d4nwzNEem/?spm_id_from=333.1387.homepage.video_card.click&vd_source=8830dd40987e484f6914447cd547c641",
+        "icon": "fa-brands fa-bilibili"
+      }
+    ],
+    "colorText": "blue",
+    "colorBackground": "blue"
   },
   {
     "id": "game-project-click-click-universe",

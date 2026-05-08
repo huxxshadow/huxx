@@ -443,12 +443,10 @@ if (detailEntry) {
 
     /* 图片 */
     :global(.project-prose img) {
-        /* 核心修改：强制 16:9 并自动裁剪 */
         width: 100%;
-        aspect-ratio: 16 / 9;
-        object-fit: cover; /* 关键：确保图片盖满容器且不缩放变形 */
-
-        /* 你原有的粗野主义样式 */
+        height: auto;
+        aspect-ratio: auto;
+        object-fit: contain;
         border: 3px solid var(--theme-text);
         box-shadow: 4px 4px 0px var(--theme-text);
         border-radius: 0.75rem;

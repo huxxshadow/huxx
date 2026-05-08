@@ -68,10 +68,12 @@ function getGridClasses(count: number): string {
 /**
  * 获取项目的主题色
  */
-function getProjectColors(project: typeof orderedProjects[number]) {
-    const textColor = project.data.colorText || defaultTheme.dark;
-    const bgColor = project.data.colorBackground || defaultTheme.light;
-    return { text: textColor, bg: bgColor };
+function getProjectColors() {
+    // 忽略项目自带的 colorText 和 colorBackground，强制返回 defaultTheme
+    return {
+        text: defaultTheme.dark,
+        bg: defaultTheme.light
+    };
 }
 ---
 
