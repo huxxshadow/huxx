@@ -1463,7 +1463,7 @@
       },
       {
         "name": "Bilibili",
-        "url": "https://www.bilibili.com/video/BV1d4nwzNEem/?spm_id_from=333.1387.homepage.video_card.click&vd_source=8830dd40987e484f6914447cd547c641",
+        "url": "https://www.bilibili.com/video/BV1UPFkzSE2v/?share_source=copy_web&vd_source=2e0b37d0ccacd91ea3fca2b1dab708e8",
         "icon": "fa-brands fa-bilibili"
       }
     ],
@@ -1476,9 +1476,9 @@
     "category": "game",
     "title": {
       "en": "Click Click Universe",
-      "zh": "点点宇宙 (Click Click Universe)",
-      "ja": "タップ宇宙 (Click Click Universe)",
-      "ko": "클릭 클릭 유니버스 (Click Click Universe)"
+      "zh": "点点宇宙",
+      "ja": "タップ宇宙",
+      "ko": "클릭 클릭 유니버스"
     },
     "roles": {
       "en": [
@@ -1526,7 +1526,16 @@
         "Windows"
       ]
     },
-    "coverImage": "../assets/projects/poster/ClickClickUniversePoster.webp"
+    "coverImage": "../assets/projects/poster/ClickClickUniversePoster.webp",
+    "links": [
+      {
+        "name": "Steam",
+        "url": "https://store.steampowered.com/app/4287740/",
+        "icon": "fa-brands fa-steam"
+      }
+    ],
+    "colorText": "green",
+    "colorBackground": "green"
   },
   {
     "id": "game-project-yuanmengstar-shanhai-xunling",
@@ -1588,11 +1597,16 @@
         "PC/Mobile"
       ]
     },
-    "coverImage": "src/assets/projects/poster/YuanMengStarPoster.webp"
+    "coverImage": "src/assets/projects/poster/YuanMengStarPoster.webp",
+    "links": [
+
+    ],
+    "colorText": "blue",
+    "colorBackground": "blue"
   },
 
   {
-    "id": "data-project-online-shoppers-intention",
+    "id": "technical-project-online-shoppers-intention",
     "order": 25,
     "category": "technical",
     "title": {
@@ -1643,7 +1657,70 @@
         "데이터 분석"
       ]
     },
-    "backupCoverImage": "src/assets/projects/poster/OnlineShoppersIntentionPoster.webp"
+    "backupCoverImage": "src/assets/projects/poster/OnlineShoppersIntentionPoster.webp",
+    "links": [
+      {
+        "name": "Demo",
+        "url": "https://huggingface.co/spaces/Huxxshadow/OnlineShopperIntention/tree/main",
+        "icon": "fa-solid fa-play"
+      }
+    ],
+    "colorText": "blue",
+    "colorBackground": "blue"
+  },
+  {
+    "id": "technical-project-comfyui-ai-eco-film",
+    "order": 26,
+    "category": "technical",
+    "title": {
+      "en": "ComfyUI Video Workflow for an AI Environmental Short Film",
+      "zh": "ComfyUI 视频工作流 AI 环保短片",
+      "ja": "ComfyUI映像ワークフローによるAI環境短編映画",
+      "ko": "ComfyUI 비디오 워크플로우 기반 AI 환경 단편영화"
+    },
+    "roles": {
+      "en": [
+        "Team Leader",
+        "Technical Artist"
+      ],
+      "zh": [
+        "组长",
+        "技术美术"
+      ],
+      "ja": [
+        "チームリーダー",
+        "テクニカルアーティスト"
+      ],
+      "ko": [
+        "팀장",
+        "테크니컬 아티스트"
+      ]
+    },
+    "desc": {
+      "en": "An AI-assisted environmental short film built with ComfyUI video workflows, covering storyboard generation, image enhancement, WAN2.2 first-and-last-frame video synthesis, Real-ESRGAN super-resolution, GIMM-VFI interpolation, and audio generation with ACE-Step and Qwen3-TTS.",
+      "zh": "一个基于 ComfyUI 视频工作流制作的 AI 环保短片项目，涵盖分镜生成、图像增强、WAN2.2 首尾帧视频合成、Real-ESRGAN 超分辨率、GIMM-VFI 插帧，以及 ACE-Step 与 Qwen3-TTS 音频生成。",
+      "ja": "本プロジェクトは、ComfyUI の映像ワークフローを用いて制作したAI環境短編映像であり、ストーリーボード生成、画像強調、WAN2.2 による始点・終点フレーム動画合成、Real-ESRGAN 超解像、GIMM-VFI 補間、ACE-Step と Qwen3-TTS による音声生成を含みます。",
+      "ko": "이 프로젝트는 ComfyUI 비디오 워크플로우를 기반으로 제작한 AI 환경 단편영상으로, 스토리보드 생성, 이미지 향상, WAN2.2 첫 프레임-마지막 프레임 비디오 합성, Real-ESRGAN 초해상도, GIMM-VFI 프레임 보간, ACE-Step 및 Qwen3-TTS 오디오 생성을 포함합니다."
+    },
+    "tags": {
+      "en": [
+        "ComfyUI",
+        "AI Video"
+      ],
+      "zh": [
+        "ComfyUI",
+        "AI 视频"
+      ],
+      "ja": [
+        "ComfyUI",
+        "AI映像"
+      ],
+      "ko": [
+        "ComfyUI",
+        "AI 비디오"
+      ]
+    },
+    "coverImage": "src/assets/projects/poster/ComfyUIEcoFilmPoster.webp"
   },
   {
     "id": "technical-project-windy-grass",
@@ -1701,61 +1778,17 @@
         "실시간 렌더링"
       ]
     },
-    "coverImage": "src/assets/projects/poster/WindyGrassPoster.webp"
-  },
-  {
-    "id": "technical-project-comfyui-ai-eco-film",
-    "order": 26,
-    "category": "technical",
-    "title": {
-      "en": "ComfyUI Video Workflow for an AI Environmental Short Film",
-      "zh": "ComfyUI 视频工作流 AI 环保短片",
-      "ja": "ComfyUI映像ワークフローによるAI環境短編映画",
-      "ko": "ComfyUI 비디오 워크플로우 기반 AI 환경 단편영화"
-    },
-    "roles": {
-      "en": [
-        "Team Leader",
-        "Technical Artist"
-      ],
-      "zh": [
-        "组长",
-        "技术美术"
-      ],
-      "ja": [
-        "チームリーダー",
-        "テクニカルアーティスト"
-      ],
-      "ko": [
-        "팀장",
-        "테크니컬 아티스트"
-      ]
-    },
-    "desc": {
-      "en": "An AI-assisted environmental short film built with ComfyUI video workflows, covering storyboard generation, image enhancement, WAN2.2 first-and-last-frame video synthesis, Real-ESRGAN super-resolution, GIMM-VFI interpolation, and audio generation with ACE-Step and Qwen3-TTS.",
-      "zh": "一个基于 ComfyUI 视频工作流制作的 AI 环保短片项目，涵盖分镜生成、图像增强、WAN2.2 首尾帧视频合成、Real-ESRGAN 超分辨率、GIMM-VFI 插帧，以及 ACE-Step 与 Qwen3-TTS 音频生成。",
-      "ja": "本プロジェクトは、ComfyUI の映像ワークフローを用いて制作したAI環境短編映像であり、ストーリーボード生成、画像強調、WAN2.2 による始点・終点フレーム動画合成、Real-ESRGAN 超解像、GIMM-VFI 補間、ACE-Step と Qwen3-TTS による音声生成を含みます。",
-      "ko": "이 프로젝트는 ComfyUI 비디오 워크플로우를 기반으로 제작한 AI 환경 단편영상으로, 스토리보드 생성, 이미지 향상, WAN2.2 첫 프레임-마지막 프레임 비디오 합성, Real-ESRGAN 초해상도, GIMM-VFI 프레임 보간, ACE-Step 및 Qwen3-TTS 오디오 생성을 포함합니다."
-    },
-    "tags": {
-      "en": [
-        "ComfyUI",
-        "AI Video"
-      ],
-      "zh": [
-        "ComfyUI",
-        "AI 视频"
-      ],
-      "ja": [
-        "ComfyUI",
-        "AI映像"
-      ],
-      "ko": [
-        "ComfyUI",
-        "AI 비디오"
-      ]
-    },
-    "coverImage": "src/assets/projects/poster/ComfyUIEcoFilmPoster.webp"
+    "coverImage": "src/assets/projects/poster/WindyGrassPoster.webp",
+    "links": [
+
+      {
+        "name": "Bilibili",
+        "url": "https://www.bilibili.com/video/BV1mvPSzjEbn/?share_source=copy_web&vd_source=2e0b37d0ccacd91ea3fca2b1dab708e8",
+        "icon": "fa-brands fa-bilibili"
+      }
+    ],
+    "colorText": "green",
+    "colorBackground": "green"
   }
 
 ]

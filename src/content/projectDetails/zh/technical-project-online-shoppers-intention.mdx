@@ -1,0 +1,16 @@
+﻿## 我的职责
+
+作为项目组长兼数据科学家，我负责该项目从业务问题定义到模型分析落地的完整流程，主要职责包括：
+
+- **主导端到端机器学习方案设计与推进**：围绕“在线购物者购买意图预测”这一核心问题，统筹项目选题、技术路线、实验设计与成果输出，搭建从数据理解、特征工程、建模评估到业务转化的完整分析框架。
+- **负责数据处理与特征工程**：完成原始数据清洗、变量编码、偏态分布处理与特征构造，设计了如 `TotalPages`、`TotalDuration`、`AvgProductDuration`、`ProductPageRatio`、`Bounce_Exit_Ratio` 等衍生特征，并验证特征工程对模型表现的实际贡献。
+- **完成分类模型构建、调参与不平衡处理方案对比**：基于 Logistic Regression、Decision Tree、Random Forest、XGBoost、LightGBM 等模型开展分层交叉验证，系统比较 SMOTE、`class_weight`、`scale_pos_weight` 等类别不平衡处理策略，并通过 `RandomizedSearchCV` 对核心树模型进行调优。
+- **负责模型评估与决策阈值优化**：以 F1-score、ROC-AUC、Precision、Recall 等指标为核心，结合 Precision-Recall Curve 对分类阈值进行优化，同时引入成本敏感分析，将模型输出与优惠券投放、客户转化收益等业务决策关联起来。
+- **开展模型可解释性与用户分群分析**：使用 SHAP、Permutation Importance、PDP 对关键特征影响进行解释，并结合 K-Means、Elbow Method、Silhouette Score 与 PCA 完成用户聚类分群和画像分析，为后续精准营销与运营分层提供支持。
+- **统筹结果汇报与交互展示**：将分析流程、模型结果与业务建议整合为可展示的 Demo 与可复现分析成果，支持项目对外呈现与团队内部沟通。
+
+## 项目细节
+
+该项目中，我从零开始构建了一套较完整的购买意图预测流程。前期我首先围绕数据分布、类别不平衡、变量相关性和用户行为差异完成 EDA，并在此基础上进行特征工程与编码处理。建模阶段，我系统比较了 Logistic Regression、Decision Tree、Random Forest、XGBoost 与 LightGBM 等多类分类器，并使用分层交叉验证保证实验结果稳定可靠。针对正负样本约 **5.46:1** 的不平衡问题，我进一步比较了 **SMOTE、class_weight 与 scale_pos_weight** 等策略，最终结合调参与阈值优化，确定 **XGBoost (Tuned)** 作为综合最优模型，其测试集表现达到 **F1 = 0.6750、ROC-AUC = 0.9235**。
+
+除了模型效果本身，我还特别关注结果的可解释性与业务可落地性。一方面，我使用 **SHAP、Permutation Importance、PDP** 对模型进行拆解，识别出 **PageValues、ExitRates、BounceRates、Month_Nov** 等对购买意图影响最显著的关键特征；另一方面，我将模型预测与业务收益场景结合，完成了基于不同阈值的成本敏感分析，发现若以商业净收益最大化为目标，决策阈值可进一步调整至 **0.3**。此外，我还通过 **K-Means 聚类** 将用户划分为 **3 类典型群体**，包括高活跃浏览用户、普通访客与低参与度跳出用户，为后续的精准营销、页面优化和分层运营提供了更清晰的数据依据。

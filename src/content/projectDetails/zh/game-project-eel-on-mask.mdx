@@ -1,0 +1,102 @@
+﻿---
+---
+
+import { Image } from 'astro:assets';
+import img1 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask1.webp';
+import img2 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask2.webp';
+import img3 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask3.webp';
+import img4 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask4.webp';
+import img5 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask5.webp';
+import img6 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask6.webp';
+import img7 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask7.webp';
+
+## 我的职责
+
+在这个为期 48 小时、面向 Global Game Jam 2026 香港站开发的团队项目中，我担任队长、主程序与游戏策划，主要负责了整体开发流程组织、核心机制落地与视觉表现统一，主要职责包括：
+
+* **团队协作与开发管线搭建**：作为组长带领 9 人团队完成项目立项、任务拆分、版本整合与快速迭代，搭建适用于 Game Jam 高压节奏的协作流程，保证玩法、美术、程序与音频能够并行推进。
+* **核心玩法与关卡逻辑设计**：围绕 “Clipping Mask” 这一核心概念设计游戏机制，使玩家能够通过改变贴纸材质影响场景规则、通行方式与解谜逻辑，构建平台跳跃与谜题结合的关卡体验。
+* **自定义网格与 TileMap 系统开发**：搭建支持自定义物理规则的网格系统，并扩展了可配置规则的 TileMap 方案，使不同材质区域、机关地块与特殊交互能够统一驱动和快速迭代。
+* **Shader 与画面表现优化**：基于 Unity 2D Shader 实现描边贴纸效果与 CRT 后处理，对项目整体美术风格进行统一和增强，在有限开发时间内提升游戏辨识度与画面完成度。
+
+---
+
+## 项目细节
+
+《Eel On Mask（鳗！）》是一款为 **Global Game Jam 2026 Hong Kong** 制作，并在 **48 小时** 内完成开发的 2D 解谜平台游戏。玩家将扮演主角 Eel，利用神秘的 **“Clipping Mask”** 能力改变贴纸材质，在不同世界中穿梭、解谜并逐步接近故事背后的真相。项目后续经过整理与补充后正式上线 Steam，作为一款免费独立作品公开发布。
+
+<figure>
+    <Image src={img1} alt="Eel On Mask 项目封面图" width={920} height={430} />
+    <figcaption>《Eel On Mask》项目封面：围绕贴纸世界与 Clipping Mask 核心概念构建的整体视觉形象</figcaption>
+</figure>
+
+### 团队组织与 48 小时快速开发
+
+由于项目诞生于 Game Jam，开发时间极为有限，因此团队协作效率本身就是项目能否成功落地的关键。作为队长，我在项目开始阶段快速确定了核心创意方向，并围绕“可在短时间内完成、同时又具有辨识度”的目标，组织团队完成了玩法定调、任务拆分与优先级排序。
+
+在推进过程中，我搭建了一套更适合短周期开发的协作管线：优先验证玩法原型，再逐步补充关卡、美术表现与演出内容。通过高频同步、及时联调与快速合并版本，团队能够在短短两天内持续保持一致的开发节奏，避免了多人并行开发时常见的资源脱节与系统冲突问题。这段经历也让我进一步积累了在高压条件下推进跨职能小团队协作的经验。
+
+### Clipping Mask：把图形概念转化为游戏机制
+
+本项目最核心的设计，是将图像编辑软件中的 **Clipping Mask** 概念转化为可操作、可理解的游戏规则。我希望玩家体验到的不只是“平台跳跃 + 解谜”的组合，而是通过改变对象材质本身来影响世界运行方式的乐趣。
+
+在设计上，这意味着场景中的元素不再只是静态背景或普通障碍物，而是带有“规则属性”的可变对象。玩家可以通过机制改变某些贴纸物件的材质，从而影响它们的碰撞属性、支撑能力或环境反馈，进而打开新的路径、跨越障碍，或解开基于空间与逻辑关系设计的谜题。这种设计让“材质变化”不只是视觉效果，而是直接参与到关卡推进之中。
+
+为了让机制表达足够清晰，我在关卡编排上采用了循序渐进的引导思路：先让玩家理解单一规则，再逐步叠加不同对象、不同材质与空间布局之间的组合关系。这样既保证了上手门槛不会过高，也使项目在有限流程中仍然具备一定的策略性和探索感。
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={img2} alt="Eel On Mask 游戏实际画面一" width={1920} height={1080} />
+        <figcaption>实际游戏画面（一）：玩家通过贴纸材质变化与场景规则互动，完成平台移动与谜题探索</figcaption>
+    </figure>
+
+    <figure>
+        <Image src={img3} alt="Eel On Mask 游戏实际画面二" width={1920} height={1080} />
+        <figcaption>实际游戏画面（二）：关卡将平台跳跃、空间穿行与材质切换机制组合为连续解谜体验</figcaption>
+    </figure>
+</div>
+
+### 自定义网格系统与规则驱动 TileMap
+
+为了支撑这一“规则可变”的玩法，我实现了一套带有**自定义物理逻辑的网格系统**，并在此基础上搭建了支持特殊规则扩展的 **TileMap 系统**。相比仅依赖静态碰撞器的传统做法，这种方式更适合本项目，因为同一块区域在不同状态下需要表现出不同的交互行为。
+
+通过将关卡区域抽象为统一的格子数据结构，我能够更高效地处理不同材质状态下的通行性、碰撞逻辑与机关响应。程序层面不再是为每种特殊情况单独硬编码，而是通过规则配置驱动不同格子的行为。这种设计一方面提高了系统可扩展性，另一方面也使关卡搭建效率显著提升，特别适合 Game Jam 环境下的高频试错与快速迭代。
+
+从结果来看，这套系统帮助我们在很短时间内完成了具备稳定逻辑的场景交互，也为后续补充更多材质效果与特殊关卡机制预留了空间。
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={img6} alt="Eel On Mask 自定义地图编辑器" width={1600} height={900} />
+        <figcaption>自定义地图编辑器：用于快速配置关卡网格、特殊地块规则与交互逻辑，加快 Game Jam 期间的关卡搭建效率</figcaption>
+    </figure>
+
+    <figure>
+        <Image src={img7} alt="Eel On Mask LevelData ScriptableObject 数据配置" width={1600} height={900} />
+        <figcaption>LevelData ScriptableObject：将关卡布局、规则参数与地块数据进行统一配置，便于系统驱动与后续扩展</figcaption>
+    </figure>
+</div>
+
+### 用 Shader 统一贴纸世界的视觉语言
+
+在视觉表现层面，我重点负责了项目整体风格的统一。由于 Game Jam 团队开发周期短、资产来源和制作方式多样，如果不进行统一处理，最终画面很容易出现风格割裂的问题。因此我基于 **Unity 2D Shader** 对核心视觉元素进行了二次加工，使其更符合项目的“贴纸世界”设定。
+
+首先是**描边贴纸 Shader**。这一效果强化了游戏对象的边界感与层次感，使玩家在视觉上更容易区分可交互对象与环境背景，同时也进一步强化了“贴纸被裁切、叠加和替换”的主题感受。其次，我加入了 **CRT 后处理效果**，通过轻微扫描线、颜色偏移和屏幕显示质感，为整个作品增加了统一的观看氛围。这个效果不仅提升了辨识度，也让有限时间内完成的美术资源更自然地融合为一个整体。
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={img4} alt="Eel On Mask 美术风格展示一" width={1920} height={1080} />
+        <figcaption>美术风格展示（一）：描边贴纸 Shader 强化了物件边界识别与贴纸层叠的视觉特征</figcaption>
+    </figure>
+
+    <figure>
+        <Image src={img5} alt="Eel On Mask 美术风格展示二" width={1920} height={1080} />
+        <figcaption>美术风格展示（二）：CRT 后处理与整体色彩控制共同塑造出统一而鲜明的游戏氛围</figcaption>
+    </figure>
+</div>
+
+### 从 Game Jam 原型到正式上线
+
+《Eel On Mask》并没有止步于一次短期活动中的原型展示，而是在赛后进一步整理、修复并完成了 Steam 发布。作为一款从 Game Jam 中诞生的独立作品，它保留了强烈的核心创意，也在后续打磨中逐渐补足了完整度与可玩性。
+
+这个过程让我体会到，Game Jam 项目的价值并不仅仅在于“短时间做完一个游戏”，更在于它能够验证一个核心机制是否成立，以及团队是否能够围绕这个机制高效协作。《Eel On Mask》最终能够从 48 小时原型成长为真正可以面向玩家发布的作品，也说明其核心设计具有足够的延展性和表达力。
+

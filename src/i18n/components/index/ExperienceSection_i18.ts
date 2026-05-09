@@ -39,29 +39,29 @@ export const experienceListData: ExperienceData[] = [
         },
         bullets: [
             {
-                en: "Design combat framework, skill system, and AI behavior tree, optimizing core combat experience.",
-                zh: "设计战斗框架、技能系统和AI行为树，优化核心战斗体验。",
-                ja: "戦闘フレームワーク、スキルシステム、AIビヘイビアツリーを設計し、コアの戦闘体験を最適化。",
-                ko: "전투 프레임워크, 스킬 시스템, AI 행동 트리를 설계하여 핵심 전투 경험 최적화."
+                en: "Optimized core combat experience and combat mechanics design, contributing to the 3C design, skill system, and behavior tree AI for the World Boss.",
+                zh: "优化核心战斗体验与机制设计，参与世界BOSS的战斗3C设计、技能系统以及行为树AI。",
+                ja: "コアとなる戦闘体験と戦闘メカニクスの設計を最適化し、ワールドボスの3C設計、スキルシステム、ビヘイビアツリーAIに携わりました。",
+                ko: "핵심 전투 경험과 전투 메커니즘 설계를 최적화하고, 월드 보스의 3C 설계, 스킬 시스템 및 행동 트리 AI 개발에 참여했습니다."
             },
             {
-                en: "Develop Python-based data processing automation scripts boosting pipeline efficiency.",
-                zh: "开发基于Python的数据处理自动化脚本，大幅提升管线效率。",
-                ja: "Pythonベースのデータ処理自動化スクリプトを開発し、パイプラインの効率を向上。",
-                ko: "파이프라인 효율성을 높이는 파이썬 기반 데이터 처리 자동화 스크립트 개발."
+                en: "Served as the PO for a new combat mechanic, overseeing the full process from concept design and gameplay logic construction to integration, validation, and implementation.",
+                zh: "作为新战斗机制的PO，负责该机制从方案设计、逻辑链搭建到联调验证与落地实现的完整流程。",
+                ja: "新たな戦闘メカニクスのPOとして、企画設計、ロジック構築から結合検証、実装への落とし込みまでの一連のプロセスを担当しました。",
+                ko: "신규 전투 메커니즘의 PO로서, 기획 설계와 로직 구조 설계부터 통합 검증 및 실제 구현까지의 전체 과정을 담당했습니다."
             },
             {
-                en: "Build and manage Wiki; liaised across development teams to lead full-cycle development of features.",
-                zh: "搭建并管理Wiki；跨开发团队沟通协作，主导功能模块的全生命周期开发。",
-                ja: "Wikiの構築と管理。開発チーム間で連携し、機能のフルサイクル開発を主導。",
-                ko: "Wiki 구축 및 관리; 개발 팀 간의 협력을 통해 기능의 전체 주기 개발을 주도."
+                en: "Rapidly developed and deployed Python-based automated data processing scripts, optimizing configuration logic to meet special requirements and improve workflow efficiency.",
+                zh: "快速开发部署Python数据处理自动化脚本，优化配置逻辑，满足特殊需求，提升配置效率。",
+                ja: "Pythonベースのデータ処理自動化スクリプトを迅速に開発・導入し、設定ロジックを最適化することで、特殊要件への対応と設定効率の向上を実現しました。",
+                ko: "Python 기반 데이터 처리 자동화 스크립트를 신속하게 개발 및 배포하고, 설정 로직을 최적화하여 특수 요구사항을 충족시키고 작업 효율을 향상시켰습니다."
             }
         ],
         tags: [
             { en: "Combat Design", zh: "战斗设计", ja: "コンバットデザイン", ko: "전투 기획" },
-            { en: "AI Behavior Tree", zh: "AI行为树", ja: "AIビヘイビアツリー", ko: "AI 행동 트리" },
-            { en: "Python Data Processing", zh: "Python数据处理", ja: "Pythonデータ処理", ko: "파이썬 데이터 처리" },
-            { en: "Wiki Management", zh: "Wiki管理", ja: "Wiki管理", ko: "Wiki 관리" }
+            { en: "3C Design", zh: "3C设计", ja: "3Cデザイン", ko: "3C 설계" },
+            { en: "Behavior Tree AI", zh: "行为树AI", ja: "ビヘイビアツリーAI", ko: "행동 트리 AI" },
+            { en: "Python Tools", zh: "Python工具开发", ja: "Pythonツール開発", ko: "Python 툴 개발" }
         ]
     },
 

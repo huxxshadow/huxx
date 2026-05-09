@@ -16,12 +16,7 @@ const { links = [] } = Astro.props;
 {links.length > 0 && (
 <div class="project-links-wrapper">
     {links.map((link) => (
-            <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="brutalist-btn"
-            >
+            <a href={link.url} class="brutalist-tag brutalist-tag-uppercase">
                 <i class={link.icon}></i>
                 <span>{link.name}</span>
             </a>
@@ -39,40 +34,5 @@ const { links = [] } = Astro.props;
         margin-top: 1rem;
     }
 
-    .brutalist-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.5rem 1.25rem;
-        font-size: 1.125rem;
-        font-weight: 900;
-        text-transform: uppercase;
-        text-decoration: none;
 
-        /* 继承页面主题色，与 [id].astro 保持一致 */
-        color: var(--theme-text);
-        background-color: var(--theme-bg);
-
-        /* 粗野主义核心样式：参考你的 h2 设计 */
-        border: 3px solid var(--theme-text);
-        border-radius: 0.75rem;
-        box-shadow: 4px 4px 0px var(--theme-text);
-
-        /* 增加平滑过渡效果 */
-        transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
-        user-select: none;
-    }
-
-    /* 悬浮时的交互反馈：按钮按下效果 */
-    .brutalist-btn:hover {
-        transform: translate(2px, 2px);
-        box-shadow: 2px 2px 0px var(--theme-text);
-        opacity: 1; /* 覆盖全局的 a:hover opacity 设置 */
-    }
-
-    /* 点击时的交互反馈：彻底按下 */
-    .brutalist-btn:active {
-        transform: translate(4px, 4px);
-        box-shadow: 0px 0px 0px var(--theme-text);
-    }
 </style>

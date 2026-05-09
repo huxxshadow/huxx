@@ -407,3 +407,117 @@ body {
 @theme {
     --font-sans: var(--theme-font-active);
 }
+
+
+
+
+
+
+
+@layer components {
+    /* ========================================= */
+    /* 粗野主义通用标签/按钮样式                    */
+    /* ========================================= */
+
+    .brutalist-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.25rem;
+        font-size: 0.875rem;
+        font-weight: 900;
+        /*text-transform: uppercase;*/
+        text-decoration: none;
+        color: var(--theme-text, currentColor);
+        background-color: var(--theme-bg, transparent);
+        border: 3px solid var(--theme-text, currentColor);
+        border-radius: 0.75rem;
+        box-shadow: 4px 4px 0px var(--theme-text, currentColor);
+        transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+        user-select: none;
+        white-space: nowrap;
+    }
+
+    .brutalist-tag-uppercase {
+        text-transform: uppercase;
+    }
+
+    .brutalist-tag:hover {
+        transform: translate(2px, 2px);
+        box-shadow: 2px 2px 0px var(--theme-text, currentColor);
+    }
+
+    .brutalist-tag:active {
+        transform: translate(4px, 4px);
+        box-shadow: 0px 0px 0px var(--theme-text, currentColor);
+    }
+
+    /* 尺寸变体 */
+    .brutalist-tag-sm {
+        font-size: 0.9rem;
+        box-shadow: 3px 3px 0px var(--theme-text, currentColor);
+    }
+
+    .brutalist-tag-sm:hover {
+        box-shadow: 1.5px 1.5px 0px var(--theme-text, currentColor);
+    }
+
+    .brutalist-tag-lg {
+        padding: 0.6rem 1.5rem;
+        font-size: 1.125rem;
+    }
+
+    /* 反色变体 */
+    .brutalist-tag-inverted {
+        background-color: var(--theme-text, currentColor);
+        color: var(--theme-bg, white);
+    }
+
+    @media (min-width: 1024px) {
+        .brutalist-tag {
+            font-size: 1.125rem;
+        }
+
+        .brutalist-tag-sm {
+            font-size: 0.875rem;
+        }
+
+        .brutalist-tag-lg {
+            font-size: 1.25rem;
+        }
+    }
+
+
+    /* ========================================= */
+    /* 粗野主义徽章样式 (Brutalist Badge)          */
+    /* ========================================= */
+
+    .brutalist-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.35rem 0.85rem;
+        border-color: var(--theme-text, currentColor);
+        border-radius: 0.5rem;
+        background-color: var(--theme-bg, transparent);
+        color: var(--theme-text, currentColor);
+        box-shadow: 3px 3px 0px var(--theme-text, currentColor);
+        white-space: nowrap;
+    }
+
+    .brutalist-badge-inverted {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.35rem 0.85rem;
+        border-color: var(--theme-text, currentColor);
+        border-radius: 0.5rem;
+        background-color: var(--theme-text, currentColor);
+        color: var(--theme-bg, white);
+        box-shadow: 3px 3px 0px color-mix(in srgb, var(--theme-text, currentColor) 80%, transparent);
+        white-space: nowrap;
+    }
+}
+
+
+
+
+

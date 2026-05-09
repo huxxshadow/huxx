@@ -94,9 +94,7 @@ const experiences = experienceListData.map(item => ({
                             {exp.tags && exp.tags.length > 0 && (
                                     <div class="mt-8 flex flex-wrap gap-3">
                                         {exp.tags.map(tag => (
-                                                <span class="px-5 py-1.5 border-2 border-current rounded-full text-sm lg:text-lg font-bold bg-transparent">
-                                                    {tag}
-                                                </span>
+                                                <span class="brutalist-tag">{tag}</span>
                                         ))}
                                     </div>
                             )}
