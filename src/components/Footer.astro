@@ -21,14 +21,12 @@ const currentLocale = (Astro.currentLocale || "en") as Lang;
 const t = useTranslations(currentLocale);
 const currentYear = new Date().getFullYear();
 
-const aboutPath = getRelativeLocaleUrl(currentLocale, "/about");
 const getPath = (path: string) => getRelativeLocaleUrl(currentLocale, path);
 
 const NAV_LINKS = [
     { label: t(navTranslations.home), path: "/" },
-    { label: t(navTranslations.blog), path: "/blog" },
     { label: t(navTranslations.portfolio), path: "/portfolio" },
-    { label: t(navTranslations.about), path: "/about" },
+    { label: t(navTranslations.about), path: "/aboutme" },
 ];
 ---
 
@@ -55,7 +53,7 @@ const NAV_LINKS = [
                 </div>
 
                 <a
-                        href={aboutPath}
+                        href={getPath("/aboutme")}
                         class="ftr-about-btn inline-flex items-center w-fit px-6 py-2 border-2 border-current font-bold rounded-full transition-all duration-300 group text-sm uppercase tracking-widest"
                 >
                     {t(footerTranslations.aboutButton)}

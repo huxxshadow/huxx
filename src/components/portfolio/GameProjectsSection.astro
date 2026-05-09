@@ -114,7 +114,7 @@ function getProjectColors() {
 
                                 return (
                                         <div
-                                                class="game-project-card group flex flex-col rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 border-2"
+                                                class="game-project-card group flex flex-col rounded-2xl overflow-hidden transition-all duration-100 border-2"
                                                 style={`--theme: ${colors.text}; border-color: ${colors.text}; background-color: ${colors.bg};`}
                                         >
                                             {/* Cover Image */}
@@ -188,6 +188,11 @@ function getProjectColors() {
         box-shadow: 8px 8px 0px color(from var(--theme) srgb r g b / 1);
     }
     .game-project-card:hover {
-        box-shadow: 12px 12px 0px color(from var(--theme) srgb r g b / 1);
+        transform: translate(4px, 4px);
+        box-shadow: 4px 4px 0px color(from var(--theme) srgb r g b / 1);
+    }
+    .game-project-card:active {
+        transform: translate(8px, 8px);
+        box-shadow: 0px 0px 0px color(from var(--theme) srgb r g b / 1);
     }
 </style>

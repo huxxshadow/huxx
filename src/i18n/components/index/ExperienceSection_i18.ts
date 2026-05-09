@@ -90,22 +90,22 @@ export const experienceListData: ExperienceData[] = [
         },
         bullets: [
             {
-                en: "Deploy text to speech (TTS) pipelines for generating unity in-game audio for 50+ mini games.",
-                zh: "部署文本转语音（TTS）管线，为50余款迷你游戏生成Unity游戏内音频。",
-                ja: "50以上のミニゲームのUnityゲーム内オーディオを生成するためのTTSパイプラインを展開。",
-                ko: "50개 이상의 미니 게임을 위한 Unity 게임 내 오디오를 생성하기 위해 TTS 파이프라인 배포."
+                en: "Deployed a Unity in-game text-to-speech (TTS) workflow for 50+ mini-games.",
+                zh: "部署了用于50余款小游戏的 Unity 游戏内文本转语音（TTS）工作流。",
+                ja: "50本以上のミニゲーム向けに、Unityゲーム内テキスト読み上げ（TTS）ワークフローを導入。",
+                ko: "50개 이상의 미니 게임을 위해 Unity 게임 내 텍스트 음성 변환(TTS) 워크플로를 구축했습니다."
             },
             {
-                en: "Rapid-prototype concepts into programs, such as Cantonese AI doll and end-of-life care application in one week.",
-                zh: "快速将概念制作成程序原型，例如在一周内开发出粤语AI玩偶和临终关怀应用。",
-                ja: "広東語AI人形や終末期ケアアプリなどのコンセプトを1週間でプロトタイプ化。",
-                ko: "광둥어 AI 인형 및 임종 돌봄 애플리케이션과 같은 개념을 1주일 만에 프로그램으로 신속하게 프로토타입 제작."
+                en: "Rapidly prototyped concepts such as an AI Cantonese doll and a voice-cloning AI conversation application.",
+                zh: "短时间内快速原型化了如 AI 粤语玩偶和音色提取 AI 对话应用程序等概念。",
+                ja: "AI広東語人形や音声特徴抽出を活用したAI会話アプリなどのコンセプトを短期間でプロトタイプ化。",
+                ko: "AI 광둥어 인형과 음색 추출 기반 AI 대화 애플리케이션 등의 개념을 단기간에 신속히 프로토타이핑했습니다."
             },
             {
-                en: "Deploy machine learning models for AI tools to streamline workflows, reducing costs and enhancing efficiency.",
-                zh: "为AI工具部署机器学习模型以精简工作流，降低成本并提升效率。",
-                ja: "ワークフローを合理化するAIツール用の機械学習モデルを展開し、コスト削減と効率向上を実現。",
-                ko: "AI 도구를 위한 기계 학습 모델을 배포하여 워크플로우를 간소화하고 비용을 절감하며 효율성 향상."
+                en: "Applied machine learning models and AI tools to optimize workflows, reducing costs and improving efficiency.",
+                zh: "应用机器学习模型，利用 AI 工具优化工作流，降低成本并提高效率。",
+                ja: "機械学習モデルとAIツールを活用してワークフローを最適化し、コスト削減と効率向上を実現。",
+                ko: "기계 학습 모델과 AI 도구를 활용해 워크플로를 최적화하고 비용을 절감하며 효율을 향상시켰습니다."
             }
         ],
         tags: [
@@ -153,10 +153,10 @@ export const experienceListData: ExperienceData[] = [
                 ko: "식물이 '말'할 수 있게 하고 AI 식물 관리 시스템을 통합하는 스마트 AI 화분 설계 및 구현."
             },
             {
-                en: "Lead tech team to build full-stack architecture including hardware, features, testing and system design.",
-                zh: "带领技术团队构建全栈架构，涵盖硬件、功能特性、测试及系统设计。",
-                ja: "技術チームを率いて、ハードウェア、機能、テスト、システム設計を含むフルスタックアーキテクチャを構築。",
-                ko: "하드웨어, 기능, 테스트 및 시스템 설계를 포함한 풀스택 아키텍처를 구축하기 위해 기술 팀 리드."
+                en: "Led the technical team in building full-stack architecture, developing frontend and backend systems, and overseeing the product lifecycle from hardware design to feature development, testing, and system architecture.",
+                zh: "领导技术团队构建全栈架构，开发前后端系统，并负责从硬件设计、功能开发到测试与系统架构设计的完整产品生命周期。",
+                ja: "技術チームを率いてフルスタックアーキテクチャを構築し、フロントエンド・バックエンドを開発。さらに、ハードウェア設計、機能開発、テスト、システムアーキテクチャ設計まで製品ライフサイクル全体を統括。",
+                ko: "기술 팀을 이끌며 풀스택 아키텍처를 구축하고 프론트엔드 및 백엔드 시스템을 개발했으며, 하드웨어 설계부터 기능 개발, 테스트, 시스템 아키텍처 설계까지 제품 라이프사이클 전반을 총괄했습니다."
             }
         ],
         tags: [

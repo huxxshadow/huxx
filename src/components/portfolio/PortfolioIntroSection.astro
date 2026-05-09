@@ -15,7 +15,7 @@ const tags = [
 
 <section
         class="relative overflow-hidden w-full px-4 py-24 flex flex-col items-center "
-        style={`background-color: ${COLORS.yellow.light}; color: ${COLORS.yellow.dark};`}
+        style={`background-color: ${COLORS.yellow.light}; color: ${COLORS.yellow.dark}; --theme-bg: ${COLORS.yellow.light}; --theme-text: ${COLORS.yellow.dark};`}
         data-theme-bg={COLORS.yellow.light}
         data-theme-text={COLORS.yellow.dark}
 >
@@ -32,16 +32,9 @@ const tags = [
 
                 <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-6">
                     {tags.map((tag) => (
-                            <span
-                                    class="text-sm lg:text-base font-bold opacity-90 inline-flex items-center gap-2 border-2 px-4 py-1.5 rounded-full shadow-[2px_2px_0px_currentColor]"
-                                    style={`border-color: ${COLORS.yellow.dark}; background-color: ${COLORS.yellow.light};`}
-                            >
-              <span
-                      class="w-2 h-2 rounded-full inline-block"
-                      style={`background-color: ${COLORS.yellow.dark};`}
-              ></span>
+                            <span class="brutalist-tag">
                                 {tag}
-            </span>
+                            </span>
                     ))}
                 </div>
             </div>

@@ -24,18 +24,18 @@ const gamesData = gamesListData.map(game => ({
         data-theme-text={COLORS.black}
 >
     <div class="absolute top-12 lg:top-16 inset-x-0 mx-auto w-full px-4 sm:px-8 z-0 pointer-events-none flex justify-start">
-        <h2 class="inline-flex items-center px-6 py-3 bg-white text-black font-black text-3xl lg:text-4xl border-2 border-black rounded-xl shadow-[4px_4px_0px_rgba(0,0,0,1)] select-none">
+        <h2 class="brutalist-tag bg-white text-3xl lg:text-4xl">
             {t(gameSectionUI.sectionTitle)}
         </h2>
     </div>
 
     <div class="absolute top-12 lg:top-16 inset-x-0 mx-auto w-full px-4 sm:px-8 z-20 pointer-events-none flex justify-end">
         <div class="flex gap-3 sm:gap-4 pointer-events-auto">
-            <button id="btn-shake" class="flex items-center gap-2 px-4 sm:px-6 py-2.5 bg-white text-black font-black text-base sm:text-lg border-2 border-black rounded-xl shadow-[4px_4px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-[0px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer">
+            <button id="btn-shake" class="brutalist-tag bg-white cursor-pointer">
                 <i class="fa-solid fa-bolt"></i>
                 <span class="hidden sm:inline">{t(gameSectionUI.shake)}</span>
             </button>
-            <button id="btn-reset" class="flex items-center gap-2 px-4 sm:px-6 py-2.5 bg-white text-black font-black text-base sm:text-lg border-2 border-black rounded-xl shadow-[4px_4px_0px_rgba(0,0,0,1)] active:translate-y-1 active:shadow-[0px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer">
+            <button id="btn-reset" class="brutalist-tag bg-white cursor-pointer">
                 <i class="fa-solid fa-rotate-right"></i>
                 <span class="hidden sm:inline">{t(gameSectionUI.reset)}</span>
             </button>
