@@ -25,16 +25,6 @@ const featuredProject = artProjects.length > 0 ? artProjects[0] : null;
 const regularProjects = artProjects.length > 1 ? artProjects.slice(1) : [];
 
 
-/**
- * 获取项目的主题色
- */
-function getProjectColors(project: typeof artProjects[number]) {
-    // 忽略项目自带的 colorText 和 colorBackground，强制返回 defaultTheme
-    return {
-        text: defaultTheme.dark,
-        bg: defaultTheme.light
-    };
-}
 ---
 
 <section
@@ -68,7 +58,7 @@ function getProjectColors(project: typeof artProjects[number]) {
                         <div class="w-full">
                             {(() => {
                                 const project = featuredProject;
-                                const colors = getProjectColors(project);
+                                const colors = { text: defaultTheme.dark, bg: defaultTheme.light };
                                 const displayTitle = project.data.title[currentLang] || project.data.title.en || project.data.title.zh || project.id;
                                 const displayDesc = project.data.desc[currentLang] || project.data.desc.en || project.data.desc.zh || "";
                                 const displayRoles = project.data.roles[currentLang] || project.data.roles.en || project.data.roles.zh || [];
@@ -130,7 +120,7 @@ function getProjectColors(project: typeof artProjects[number]) {
                 {regularProjects.length > 0 && (
                         <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8 mt-4">
                             {regularProjects.map((project) => {
-                                const colors = getProjectColors(project);
+                                const colors = { text: defaultTheme.dark, bg: defaultTheme.light };
                                 const displayTitle = project.data.title[currentLang] || project.data.title.en || project.data.title.zh || project.id;
                                 const displayDesc = project.data.desc[currentLang] || project.data.desc.en || project.data.desc.zh || "";
                                 const displayRoles = project.data.roles[currentLang] || project.data.roles.en || project.data.roles.zh || [];

@@ -65,16 +65,6 @@ function getGridClasses(count: number): string {
     return "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-8";
 }
 
-/**
- * 获取项目的主题色
- */
-function getProjectColors() {
-    // 忽略项目自带的 colorText 和 colorBackground，强制返回 defaultTheme
-    return {
-        text: defaultTheme.dark,
-        bg: defaultTheme.light
-    };
-}
 ---
 
 <section
@@ -106,7 +96,7 @@ function getProjectColors() {
                 {projectRows.map((row) => (
                         <div class={getGridClasses(row.length)}>
                             {row.map((project) => {
-                                const colors = getProjectColors(project);
+                                const colors = { text: defaultTheme.dark, bg: defaultTheme.light };
                                 const displayTitle = project.data.title[currentLang] || project.data.title.en || project.data.title.zh || project.id;
                                 const displayDesc = project.data.desc[currentLang] || project.data.desc.en || project.data.desc.zh || "";
                                 const displayRoles = project.data.roles[currentLang] || project.data.roles.en || project.data.roles.zh || [];

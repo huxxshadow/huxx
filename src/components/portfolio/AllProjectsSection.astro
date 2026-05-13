@@ -15,14 +15,6 @@ const orderedProjects = allProjects.sort((a, b) => b.data.order - a.data.order);
 const currentLang = (Astro.currentLocale || "en") as Lang;
 const t = useTranslations(currentLang);
 
-/**
- * 获取项目的主题色（用于无图时的底色占位）
- */
-function getProjectColors(project: typeof orderedProjects[number]) {
-    const textColor = project.data.colorText || COLORS.black;
-    const bgColor = project.data.colorBackground || COLORS.white;
-    return { text: textColor, bg: bgColor };
-}
 ---
 
 <section
@@ -76,7 +68,6 @@ function getProjectColors(project: typeof orderedProjects[number]) {
                 const displayDesc = data.desc[currentLang] || data.desc.en || data.desc.zh || "";
                 const displayRoles = data.roles[currentLang] || data.roles.en || data.roles.zh || [];
                 const displayTags = data.tags[currentLang] || data.tags.en || data.tags.zh || [];
-                const colors = getProjectColors(project);
                 const displayCover = data.coverImage || data.backupCoverImage;
                 const hasCover = !!displayCover;
 
@@ -87,7 +78,7 @@ function getProjectColors(project: typeof orderedProjects[number]) {
                                 style={`...`}
                         >
                             {/* 图片区域 (16:9) */}
-                            <div class="relative w-full aspect-video" style={`background-color: ${colors.bg};`}>
+                            <div class="relative w-full aspect-video" style={`background-color: ${COLORS.khakiMilan};`}>
                                 {hasCover ? (
                                         <Image
                                                 src={displayCover!}
@@ -99,7 +90,7 @@ function getProjectColors(project: typeof orderedProjects[number]) {
                                         />
                                 ) : (
                                         <div class="absolute inset-0 flex items-center justify-center p-4">
-                                            <i class="fa-solid fa-image text-5xl opacity-20" style={`color: ${colors.text};`}></i>
+                                            <i class="fa-solid fa-image text-5xl opacity-20" style={`color: ${COLORS.black};`}></i>
                                         </div>
                                 )}
                             </div>
