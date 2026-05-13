@@ -6,6 +6,7 @@ import { LOCALES, type Lang } from "@/i18n";
 import { COLORS } from "@/consts";
 import { Image } from "astro:assets";
 import ProjectLinks from "@/components/mdx/ProjectLinks.astro";
+import { getRelativeLocaleUrl } from "astro:i18n";
 
 export async function getStaticPaths() {
     const projects = await getCollection("projects");
@@ -66,6 +67,17 @@ if (detailEntry) {
     >
         <div class="absolute -top-20 -right-24 w-96 lg:w-[40rem] h-96 lg:h-[40rem] rounded-full bg-current opacity-[0.04] pointer-events-none z-0"></div>
         <div class="absolute bottom-10 left-10 w-full h-72 -translate-y-1/2 rotate-12 bg-current opacity-[0.03] pointer-events-none z-0 rounded-[80px]"></div>
+
+        <div class="relative z-10 max-w-7xl mx-auto mb-8">
+            <a
+                    id="back-btn"
+                    href={getRelativeLocaleUrl(currentLang, '/portfolio')}
+                    class="back-btn inline-flex items-center gap-2 font-black text-base lg:text-lg uppercase tracking-widest opacity-80 hover:opacity-100 transition-opacity cursor-pointer"
+            >
+                <i class="fa-solid fa-arrow-left"></i>
+                {currentLang === 'zh' ? '返回' : 'Back'}
+            </a>
+        </div>
 
         <div class="relative z-10 max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
 
@@ -483,3 +495,12 @@ if (detailEntry) {
         margin-top: 0;
     }
 </style>
+
+<script>
+    document.getElementById('back-btn')?.addEventListener('click', (e) => {
+        if (history.length > 1) {
+            e.preventDefault();
+            history.back();
+        }
+    });
+</script>

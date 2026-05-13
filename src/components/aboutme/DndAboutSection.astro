@@ -126,7 +126,7 @@ const showSpellSubtitle = locale !== "en";
 
             <div class="flex flex-col lg:flex-row gap-4 lg:min-h-[380px] lg:flex-shrink-0">
 
-                <div class="w-full lg:w-[300px] relative flex flex-col rounded-xl overflow-hidden border-2 border-current  shadow-[3px_3px_0px_currentColor]">
+                <div class="dnd-card w-full lg:w-[300px] relative flex flex-col rounded-xl overflow-hidden border-2 border-current  shadow-[3px_3px_0px_currentColor]">
                     <div class="w-full text-center pt-4 pb-2">
                         <span class="text-5xl lg:text-5xl font-black opacity-90">{character.name}</span>
                     </div>
@@ -186,7 +186,7 @@ const showSpellSubtitle = locale !== "en";
                 </div>
             </div>
 
-            <div class="mt-6 lg:flex-1 border-2 border-current  shadow-[3px_3px_0px_currentColor]  rounded-xl  p-5 flex flex-col gap-4">
+            <div class="dnd-card mt-6 lg:flex-1 border-2 border-current  shadow-[3px_3px_0px_currentColor]  rounded-xl  p-5 flex flex-col gap-4">
 
                 <div class="grid grid-cols-2 gap-4">
                     <div class="flex flex-col gap-1">
@@ -233,7 +233,7 @@ const showSpellSubtitle = locale !== "en";
 
             </div>
 
-            <div class="lg:flex-1 mt-6 border-2 border-current  shadow-[3px_3px_0px_currentColor] rounded-xl  p-5 flex flex-col gap-4">
+            <div class="dnd-card lg:flex-1 mt-6 border-2 border-current  shadow-[3px_3px_0px_currentColor] rounded-xl  p-5 flex flex-col gap-4">
                 <div class="flex  flex-col gap-1">
                     <p class="text-lg font-black leading-tight pl-1">
                         {character.personalityTitle}
@@ -298,7 +298,7 @@ const showSpellSubtitle = locale !== "en";
 
             <div class="flex flex-col gap-4">
                 {traits.map((trait) => (
-                        <div class="border-2 border-current  shadow-[3px_3px_0px_currentColor] rounded-xl p-4 flex items-start gap-3 group">
+                        <div class="dnd-card border-2 border-current  shadow-[3px_3px_0px_currentColor] rounded-xl p-4 flex items-start gap-3 group">
                             <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-current/10 flex items-center justify-center group-hover:bg-current/20 transition-colors">
                                 <i class:list={[trait.icon, "text-xl"]} />
                             </div>
@@ -320,7 +320,7 @@ const showSpellSubtitle = locale !== "en";
                 <h3 class="text-xl font-black mb-4 flex items-center gap-2 opacity-90">
                     <i class="fa-solid fa-dice-d20"></i> {t(dndLabels.featsHeader)}
                 </h3>
-                <div class="flex border-2 border-current  shadow-[3px_3px_0px_currentColor] rounded-xl overflow-hidden">
+                <div class="dnd-card flex border-2 border-current  shadow-[3px_3px_0px_currentColor] rounded-xl overflow-hidden">
                     <table class="w-1/2 text-left text-sm font-bold">
                         <tbody class="divide-y-2 divide-current">
                         {skillsLeft.map((s) => (
@@ -354,7 +354,7 @@ const showSpellSubtitle = locale !== "en";
 
                 <div class="flex-1 flex flex-col gap-4">
                     {spellBook.map((level) => (
-                            <div class="flex flex-col gap-2"> <div class="flex items-center justify-between px-3 py-2 border-2 border-current  shadow-[3px_3px_0px_currentColor] rounded-lg relative z-10">
+                            <div class="flex flex-col gap-2"> <div class="dnd-card flex items-center justify-between px-3 py-2 border-2 border-current  shadow-[3px_3px_0px_currentColor] rounded-lg relative z-10">
                                 <div class="flex items-center gap-2 min-w-0">
                             <span class="text-[10px] font-black uppercase tracking-widest opacity-50 whitespace-nowrap">
                                 {t(dndLabels.spellLabel)}
@@ -421,7 +421,7 @@ const showSpellSubtitle = locale !== "en";
                 </h3>
 
                 <!-- Main Quest -->
-                <div class="border-2 border-current  shadow-[3px_3px_0px_currentColor] rounded-lg px-4 py-3 flex flex-col gap-2">
+                <div class="dnd-card border-2 border-current  shadow-[3px_3px_0px_currentColor] rounded-lg px-4 py-3 flex flex-col gap-2">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <i class:list={[mainQuest.icon, "text-xs opacity-50"]}></i>
@@ -440,7 +440,7 @@ const showSpellSubtitle = locale !== "en";
 
                 <!-- Side Quests -->
                 {sideQuests.map((sq) => (
-                        <div class="border-2 border-current shadow-[3px_3px_0px_currentColor] rounded-lg px-4 py-3 flex flex-col gap-2">
+                        <div class="dnd-card border-2 border-current shadow-[3px_3px_0px_currentColor] rounded-lg px-4 py-3 flex flex-col gap-2">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2">
                                     <i class:list={[sq.icon, "text-xs opacity-50"]}></i>
@@ -484,3 +484,17 @@ const showSpellSubtitle = locale !== "en";
         </div>
     </div>
 </section>
+
+<style>
+    .dnd-card {
+        transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    }
+    .dnd-card:hover {
+        transform: translate(2px, 2px);
+        box-shadow: 1px 1px 0px currentColor !important;
+    }
+    .dnd-card:active {
+        transform: translate(3px, 3px);
+        box-shadow: 0px 0px 0px currentColor !important;
+    }
+</style>

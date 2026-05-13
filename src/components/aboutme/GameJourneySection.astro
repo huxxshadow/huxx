@@ -127,7 +127,7 @@ const t = useTranslations(currentLang);
 
                             return (
                                     <div
-                                            class="fav-card group relative flex flex-col rounded-xl overflow-hidden border-4 transition-all duration-200 ease-out hover:-translate-y-1"
+                                            class="fav-card group relative flex flex-col rounded-xl overflow-hidden border-4"
                                             style={`border-color:${COLORS.black}; box-shadow:6px 6px 0px ${COLORS.black}; background-color: ${COLORS.white};`}
                                     >
                                         {/* Cover */}
@@ -209,11 +209,8 @@ const t = useTranslations(currentLang);
 
                                 {/* Card body */}
                                 <div
-                                        class:list={[
-                                            "card-body relative flex flex-col rounded-xl overflow-hidden border-2 transition-all duration-200 ease-out",
-                                            "hover:-translate-y-1",
-                                        ]}
-                                        style={`border-color:${COLORS.black}; box-shadow:3px 3px 0px ${COLORS.black}; background-color: ${COLORS.white};`}
+                                        class="card-body relative flex flex-col rounded-xl overflow-hidden border-2"
+                                        style={`border-color:${COLORS.black}; box-shadow:6px 6px 0px ${COLORS.black}; background-color: ${COLORS.white};`}
                                 >
                                     {/* Favorite Strip */}
                                     {data.favorite && (
@@ -262,14 +259,34 @@ const t = useTranslations(currentLang);
         font-size: clamp(0.75rem, 1vw, 0.875rem);
     }
 
+    .fav-card {
+        transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    }
+    .fav-card:hover {
+        transform: translate(3px, 3px);
+        box-shadow: 3px 3px 0px var(--color-black) !important;
+    }
+    .fav-card:active {
+        transform: translate(6px, 6px);
+        box-shadow: 0px 0px 0px var(--color-black) !important;
+    }
+
     /* ---- 游戏库 网格卡片样式 ---- */
     .game-journey-card {
         container-type: inline-size;
         container-name: gamecard;
     }
 
+    .card-body {
+        transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    }
     .game-journey-card:hover .card-body {
-        box-shadow: 6px 6px 0px var(--color-black) !important;
+        transform: translate(3px, 3px);
+        box-shadow: 3px 3px 0px var(--color-black) !important;
+    }
+    .game-journey-card:active .card-body {
+        transform: translate(6px, 6px);
+        box-shadow: 0px 0px 0px var(--color-black) !important;
     }
 
     .favorite-strip {

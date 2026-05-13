@@ -30,10 +30,10 @@ export const navTranslations: Record<string, Multilingual> = {
 
 export const headerTooltipsTranslations: Record<string, Multilingual> = {
     levelTooltip: {
-        en: "Gain EXP every second. Level up to unlock features!",
-        zh: "每秒获得经验，升级解锁更多功能！",
-        ja: "毎秒経験値を獲得。レベルアップで機能解放！",
-        ko: "매초 경험치 획득. 레벨업으로 기능 해제!",
+        en: "Gain EXP every second. Complete minigames to earn more EXP!",
+        zh: "每秒获得经验值，完成小游戏以获得更多经验值！",
+        ja: "毎秒経験値を獲得。ミニゲームをクリアしてさらに多くの経験値を獲得！",
+        ko: "매초 경험치를 획득하고, 미니게임을 완료해 더 많은 경험치를 획득하세요!",
     },
     expTooltipPrefix: {
         en: "EXP:",

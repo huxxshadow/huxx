@@ -28,9 +28,9 @@ export const getStaticPaths = () =>
             data-theme-bg={COLORS.blue.light}
             data-theme-text={COLORS.blue.dark}
     >
-        <div class="absolute -top-32 -left-24 w-[20rem] lg:w-[30rem] h-[20rem] lg:h-[30rem] rounded-full bg-current opacity-[0.04] pointer-events-none z-0"></div>
-        <div class="absolute top-1/2 -left-20 w-[120%] h-80 -translate-y-1/2 -rotate-6 bg-current opacity-[0.02] pointer-events-none z-0 rounded-[100px]"></div>
-        <div class="absolute -bottom-32 left-1/4 lg:left-1/3 w-64 lg:w-96 h-64 lg:h-96 rotate-45 bg-current opacity-[0.03] pointer-events-none z-0 rounded-3xl"></div>
+        <div class="bg-orb-1 absolute -top-32 -left-24 w-[20rem] lg:w-[30rem] h-[20rem] lg:h-[30rem] rounded-full bg-current opacity-[0.04] pointer-events-none z-0"></div>
+        <div class="bg-strip absolute top-1/2 -left-20 w-[120%] h-80 bg-current opacity-[0.02] pointer-events-none z-0 rounded-[100px]"></div>
+        <div class="bg-square absolute -bottom-32 left-1/4 lg:left-1/3 w-64 lg:w-96 h-64 lg:h-96 bg-current opacity-[0.03] pointer-events-none z-0 rounded-3xl"></div>
 
         <div class="relative z-10 w-full min-h-[56vh] flex flex-col">
             <div class="w-full flex flex-col lg:flex-row gap-10 lg:gap-16 flex-1">
@@ -123,3 +123,34 @@ export const getStaticPaths = () =>
 
     <BrickGame />
 </Layout>
+
+<style>
+    .bg-orb-1 {
+        animation: float-orb 8s ease-in-out infinite;
+    }
+    @keyframes float-orb {
+        0%, 100% { transform: translateY(0px); }
+        50%       { transform: translateY(-28px); }
+    }
+
+    .bg-strip {
+        animation: drift-strip 13s ease-in-out -5s infinite;
+    }
+    @keyframes drift-strip {
+        0%, 100% { transform: translateY(-50%) rotate(-6deg); }
+        40%      { transform: translateY(-46%) rotate(-4deg) translateX(18px); }
+        70%      { transform: translateY(-54%) rotate(-8deg) translateX(-12px); }
+    }
+
+    .bg-square {
+        animation: spin-float 11s ease-in-out -2s infinite;
+    }
+    @keyframes spin-float {
+        0%, 100% { transform: rotate(45deg) scale(1); }
+        50%      { transform: rotate(53deg) scale(1.08) translateY(-14px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .bg-orb-1, .bg-strip, .bg-square { animation: none; }
+    }
+</style>

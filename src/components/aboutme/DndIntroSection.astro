@@ -11,7 +11,7 @@ const roleList = rolesData[locale] || rolesData.en;
 
 <section
         class="relative overflow-hidden w-full px-4 lg:px-24 py-12 lg:py-20 flex justify-center border-b-[4px] border-dashed border-current/20"
-        style={`background-color: ${COLORS.red.light}; color: ${COLORS.red.dark};`}
+        style={`background-color: ${COLORS.red.light}; color: ${COLORS.red.dark}; --theme-bg: ${COLORS.red.light}; --theme-text: ${COLORS.red.dark};`}
 >
     <!-- 主体内容容器 -->
     <div class="w-full flex flex-col  lg:flex-row gap-8 lg:gap-16 relative z-10 items-stretch">
@@ -28,13 +28,7 @@ const roleList = rolesData[locale] || rolesData.en;
 
                 <div class="flex flex-wrap items-center gap-3">
                     {roleList.map((role) => (
-                            <span
-                                    class="text-sm lg:text-base font-bold opacity-90 inline-flex items-center gap-2 border-2 px-4 py-1.5 rounded-full shadow-[2px_2px_0px_currentColor]"
-                                    style={`border-color: ${COLORS.red.dark}; background-color: ${COLORS.red.light};`}
-                            >
-                            <span class="w-2 h-2 rounded-full inline-block" style={`background-color: ${COLORS.red.dark};`}></span>
-                                {role}
-                        </span>
+                            <span class="brutalist-tag">{role}</span>
                     ))}
                 </div>
             </div>
@@ -79,7 +73,7 @@ const roleList = rolesData[locale] || rolesData.en;
             <!-- 向下过渡：引入DND卡片模块 -->
             <div class="mt-4   border-current/15">
                 <div
-                        class="group flex items-start lg:items-center gap-5 p-5 sm:p-8 rounded-2xl border-[3px] transition-all duration-300 hover:-translate-y-1 cursor-pointer shadow-[6px_6px_0px_currentColor] hover:shadow-[10px_10px_0px_currentColor]"
+                        class="cta-box group flex items-start lg:items-center gap-5 p-5 sm:p-8 rounded-2xl border-[3px] cursor-pointer"
                         style={`border-color: ${COLORS.red.dark}; background-color: ${COLORS.red.light};`}
                 >
                     <i class="fa-solid fa-dice-d20 text-[2.5rem] lg:text-[3rem] fa-bounce " style={`color: ${COLORS.red.dark};`}></i>
@@ -103,7 +97,6 @@ const roleList = rolesData[locale] || rolesData.en;
 </section>
 
 <style>
-    /* 实现 Portfolio 第一部分的竖向大标题风格 */
     .title-vertical-mode {
         writing-mode: horizontal-tb;
     }
@@ -113,5 +106,18 @@ const roleList = rolesData[locale] || rolesData.en;
             writing-mode: vertical-lr;
             text-orientation: upright;
         }
+    }
+
+    .cta-box {
+        box-shadow: 6px 6px 0px currentColor;
+        transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    }
+    .cta-box:hover {
+        transform: translate(3px, 3px);
+        box-shadow: 3px 3px 0px currentColor;
+    }
+    .cta-box:active {
+        transform: translate(6px, 6px);
+        box-shadow: 0px 0px 0px currentColor;
     }
 </style>

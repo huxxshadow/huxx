@@ -24,3 +24,5 @@ pnpm-debug.log*
 .idea/
 /temp
 /src/pages/temp
+/CLAUDE.md
+/.claude/settings.local.json

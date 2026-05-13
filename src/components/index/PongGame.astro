@@ -420,7 +420,7 @@ const GAME_THEMES = [
             ball.x += ball.velocityX;
             ball.y += ball.velocityY;
 
-            com.y += (ball.y - (com.y + com.height / 2)) * aiSpeed*0;
+            com.y += (ball.y - (com.y + com.height / 2)) * aiSpeed;
             if (com.y < 0) com.y = 0;
             if (com.y + com.height > gameHeight) com.y = gameHeight - com.height;
 

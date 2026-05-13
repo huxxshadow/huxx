@@ -2392,5 +2392,168 @@
     },
     "image": "../assets/gameCard/DYNASTY WARRIORS ORIGINS.webp",
     "favorite": false
+  },
+  {
+    "id": "9-kings",
+    "order": 134,
+    "title": {
+      "en": "9 Kings",
+      "zh": "九王",
+      "ja": "9 Kings",
+      "ko": "9 Kings"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/gameCard/9 Kings.webp",
+    "favorite": false
+  },
+  {
+    "id": "anno-117-pax-romana",
+    "order": 135,
+    "title": {
+      "en": "Anno 117: Pax Romana",
+      "zh": "纪元117：罗马和平",
+      "ja": "Anno 117: Pax Romana",
+      "ko": "아노 117: 팍스 로마나"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/gameCard/Anno 117 Pax Romana.webp",
+    "favorite": false
+  },
+  {
+    "id": "chrono-ark",
+    "order": 136,
+    "title": {
+      "en": "Chrono Ark",
+      "zh": "超时空方舟",
+      "ja": "クロノアーク",
+      "ko": "크로노 아크"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/gameCard/Chrono Ark.webp",
+    "favorite": false
+  },
+  {
+    "id": "cultist-simulator",
+    "order": 137,
+    "title": {
+      "en": "Cultist Simulator",
+      "zh": "密教模拟器",
+      "ja": "カルティスト・シミュレーター",
+      "ko": "컬티스트 시뮬레이터"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/gameCard/Cultist Simulator.webp",
+    "favorite": false
+  },
+  {
+    "id": "fire-emblem-three-houses",
+    "order": 138,
+    "title": {
+      "en": "Fire Emblem: Three Houses",
+      "zh": "火焰纹章：风花雪月",
+      "ja": "ファイアーエムブレム 風花雪月",
+      "ko": "파이어 엠블렘 풍화설월"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/gameCard/Fire Emblem Three Houses.webp",
+    "favorite": false
+  },
+  {
+    "id": "limbus-company",
+    "order": 139,
+    "title": {
+      "en": "Limbus Company",
+      "zh": "边狱巴士",
+      "ja": "リンバスカンパニー",
+      "ko": "림버스 컴퍼니"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/gameCard/Limbus Company.webp",
+    "favorite": false
+  },
+  {
+    "id": "rabbit-and-steel",
+    "order": 140,
+    "title": {
+      "en": "Rabbit and Steel",
+      "zh": "兔子与钢铁",
+      "ja": "Rabbit and Steel",
+      "ko": "Rabbit and Steel"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/gameCard/Rabbit and Steel.webp",
+    "favorite": false
+  },
+  {
+    "id": "slay-the-spire-2",
+    "order": 141,
+    "title": {
+      "en": "Slay the Spire 2",
+      "zh": "杀戮尖塔2",
+      "ja": "スレイ・ザ・スパイア2",
+      "ko": "슬레이 더 스파이어 2"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/gameCard/Slay the Spire 2.webp",
+    "favorite": false
+  },
+  {
+    "id": "unicorn-overlord",
+    "order": 142,
+    "title": {
+      "en": "Unicorn Overlord",
+      "zh": "圣兽之王",
+      "ja": "ユニコーンオーバーロード",
+      "ko": "유니콘 오버로드"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/gameCard/Unicorn Overlord.webp",
+    "favorite": false
   }
+
 ]
