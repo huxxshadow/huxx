@@ -1,0 +1,19 @@
+---
+---
+
+## My Role
+
+In this Oxford University AI summer course team project of four members, I served as team leader and data scientist. My main responsibilities included:
+
+* **Data Engineering and Preprocessing**: Led data cleaning and feature extraction, using computer vision libraries to perform format conversion, channel reduction, standardized scaling on high-dimensional image data, and customized differentiated data augmentation strategies for different datasets.
+* **Model Architecture Selection and Iteration**: Led the transition from traditional machine learning models (Support Vector Machines) to deep learning architectures, and tested multiple classic and state-of-the-art convolutional neural networks (CNNs) including AlexNet, ResNet, and ConvNext.
+* **Transfer Learning and Fine-Tuning**: Designed and implemented a transfer learning strategy, freezing the bottom feature extractors of pretrained models and retraining the final fully connected layers to adapt to our specific 120-class dog breed classification task.
+* **Model Optimization and Hyperparameter Tuning**: Introduced advanced optimization techniques including CosineAnnealingWarmRestarts learning rate scheduling and Label Smoothing, and explored ensemble learning strategies, successfully preventing model overfitting and significantly improving generalization performance.
+
+---
+
+## Project Details
+
+This project aimed to develop an image classification system capable of accurately identifying up to 120 dog breeds using cutting-edge AI technology. In the early stages, we attempted to use traditional machine learning methods (Support Vector Machine, SVM), but faced with high-dimensional, complex image data, the method not only struggled to converge but also had limited feature extraction capability. The team therefore pivoted decisively to deep learning and transfer learning approaches. We first fine-tuned and tested on the classic AlexNet architecture, validating the feasibility of deep feature extraction.
+
+To pursue higher classification accuracy, we subsequently introduced the Residual Network (ResNet) and the more advanced ConvNext architecture. Under extremely limited training data (only 100 images per class) and computational resource constraints, through implementing dynamic cosine annealing learning rate scheduling, label smoothing for overfitting prevention, and Test-Time Augmentation (TTA) during inference, we successfully pushed the model's accuracy steadily up to **97.2%**. Finally, we submitted our predictions generated from these combined optimization strategies to the Kaggle competition platform, and based on outstanding generalization performance and extremely low loss values, achieved the top accuracy score (best Score) on the leaderboard.

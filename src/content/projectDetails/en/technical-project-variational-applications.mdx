@@ -1,0 +1,19 @@
+---
+---
+
+## My Role
+
+In this data-driven variational inference and generative AI foundational algorithm exploration project, I served as an AI developer. My main responsibilities included:
+
+* **Temporal Variational Autoencoder Development**: Participated in designing and implementing a Temporal VAE architecture for dengue fever prediction, completing the code evolution from a dual-layer LSTM to a Transformer encoder-decoder architecture incorporating multi-head attention.
+* **Multi-Dimensional Data Engineering and Loss Function Construction**: Processed and integrated mosquito surveillance data (AGI/ADI) and population geographic data across Hong Kong districts, and designed a composite variational loss function combining Mean Squared Error (MSE), KL Divergence, and Dynamic Time Warping (DTW) to optimize temporal consistency.
+* **Diffusion Model and Image Reconstruction Practice**: Implemented a diffusion model for old photo restoration based on the UNet architecture, incorporating cosine noise scheduling and EMA parameter smoothing, and explored VAE applications in land-use grid reconstruction.
+* **Model Tuning and Limitation Analysis**: Introduced AdamW optimizer, mixed-precision training, and cosine annealing learning rate scheduling, rigorously evaluated and documented the current technical boundaries and bottlenecks of generative models when handling complex spatiotemporal correlations and fine-grained spatial features.
+
+---
+
+## Project Details
+
+This project is a comprehensive engineering exploration applying cutting-edge variational inference methods to complex real-world urban datasets. The core deliverable was a Temporal VAE built on a Transformer architecture, which successfully predicted dengue fever transmission trends across Hong Kong districts for the next six months by capturing multi-dimensional features composed of mosquito surveillance indices, population density, and temporal attributes. Architecturally, the model overcame the limitation of basic LSTMs in capturing long-range sequential dependencies, and ensured temporal prediction continuity through a composite ELBO objective incorporating Dynamic Time Warping (DTW).
+
+Beyond epidemic prediction, the project also conducted lateral experiments on VAE-based land-use pattern reconstruction and diffusion model-based old photo restoration. Although these experiments revealed numerous challenges in fine-grained spatial fidelity and training stability (such as smoothing artifacts in categorical terrain data and residual visual noise), these extremely valuable "failed attempts" substantially deepened the team's understanding of generative model capability boundaries and laid a solid theoretical and practical foundation for future introduction of Conditional Variational Autoencoders (CVAE) to achieve more precise spatiotemporal constraint control.

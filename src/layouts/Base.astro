@@ -80,6 +80,44 @@ const localeDescription = description || t(SITE_DESCRIPTION);
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content={t(X_ACCOUNT)} />
     <ClientRouter />
+    <script is:inline>
+        // 禁止浏览器自动滚动恢复，由我们全权接管
+        history.scrollRestoration = 'manual';
+
+        document.addEventListener('astro:before-preparation', function(e) {
+            var fromProject = /\/projects\//.test(location.pathname);
+            var toProject   = e.to && /\/projects\//.test(e.to.pathname);
+
+            // 从非项目页进入项目页：保存当前滚动位置
+            if (!fromProject && toProject) {
+                sessionStorage.setItem('backScroll', String(Math.round(window.scrollY)));
+                return;
+            }
+
+            // 在项目页点击 back-btn 离开：把滚动位置转为待恢复标记
+            // sourceElement 是 Astro 提供的触发导航的元素，无需拦截 click 事件
+            if (fromProject && !toProject && e.sourceElement && e.sourceElement.id === 'back-btn') {
+                var saved = sessionStorage.getItem('backScroll');
+                if (saved !== null) {
+                    sessionStorage.setItem('restoreScrollTo', saved);
+                    sessionStorage.removeItem('backScroll');
+                }
+            }
+        });
+
+        document.addEventListener('astro:page-load', function() {
+            var target = sessionStorage.getItem('restoreScrollTo');
+            if (target !== null) {
+                sessionStorage.removeItem('restoreScrollTo');
+                var y = parseInt(target, 10);
+                requestAnimationFrame(function() {
+                    setTimeout(function() {
+                        window.scrollTo({ top: y, behavior: 'instant' });
+                    }, 0);
+                });
+            }
+        });
+    </script>
     <!-- External Resource -->
 
 

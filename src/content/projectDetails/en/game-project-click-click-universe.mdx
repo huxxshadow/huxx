@@ -1,0 +1,172 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import img2 from '@/assets/projects/game-project-click-click-universe/game-project-click-click-universe_InteractionLayer.webp';
+import img3 from '@/assets/projects/game-project-click-click-universe/game-project-click-click-universe_Arch.webp';
+import img4 from '@/assets/projects/game-project-click-click-universe/game-project-click-click-universe_ArchChain.webp';
+import img5 from '@/assets/projects/game-project-click-click-universe/game-project-click-click-universe_QuestUI.webp';
+import img6 from '@/assets/projects/game-project-click-click-universe/game-project-click-click-universe_SkillTreeUI.webp';
+import img7 from '@/assets/projects/game-project-click-click-universe/game-project-click-click-universe_AnimalShader.webp';
+
+## My Role
+
+*Click Click Universe* is my undergraduate thesis project, completed entirely by me — from concept design and system architecture to programming and visual integration. My main responsibilities included:
+
+* **Overall Game Direction and System Architecture Design**: Built the core gameplay loop from scratch around a "click — collect — grow — unlock — re-explore" cycle, designing and implementing a mid-scale game framework covering combat, progression, companions, quests, rewards, equipment, collections, and UI feedback.
+* **Core Gameplay and Data-Driven System Development**: Built a click-based combat and interaction system in Unity, using ScriptableObjects, runtime data separation, manager indexing, and state machines to organize complex systems for maintainability and extensibility.
+* **UI/UX and Interaction Feedback Implementation**: Designed and implemented a wide range of interface systems supporting progression and information display — including resource bars, quests, collections, skill trees, equipment, and companion panels — reinforced with hover tooltips, outline highlights, numeric feedback, and animations to aid player understanding.
+* **Stylized Rendering and Technical Art Integration**: Built a unified flat-style rendering pipeline around the low-poly geometric universe visual direction, and extended an existing Toon Shader with texture support and particle communication to balance visual recognizability with development efficiency.
+* **Independent Testing, Iteration, and Public Release Preparation**: Independently conducted internal testing, numeric balancing, and external playtesting questionnaire collection, and set up a Steam store page with all public-facing content, advancing the project from a thesis prototype toward a publicly presentable indie game.
+
+---
+
+## Project Details
+
+*Click Click Universe* is my independently designed and developed undergraduate thesis project — a top-down 3D incremental game centered on **casual exploration, click-based interaction, and layered progression**. Players freely explore a stylized universe built from geometric polyhedra, interacting with the world through clicks to attack targets, collect resources, unlock companions, equip accessories, and gradually expand their capabilities.
+
+Unlike many action games focused on strong mechanics and high challenge, this project aimed from the start to create an experience **with no death, no failure penalty, encouraging free experimentation and relaxed exploration**. As a result, the design does not rely on complex button combos or high-pressure combat, instead focusing on **information readability, interaction feedback, progression pacing, and system interconnection**. The project has since been listed on the Steam store page, targeting Windows with English and Simplified Chinese support.
+
+### From Simple Clicks to a Mid-Scale System Framework
+
+The initial question driving this project was very simple: **if player input is simple enough, can a game still achieve meaningful depth through system design?**
+My answer was yes — but only if "depth" does not rely solely on mechanics, and must instead come from broader system connections.
+
+As a result, the core of *Click Click Universe* is not a pure clicker with number stacking, but a more complete loop:
+
+* Click and identify interactable targets;
+* Trigger attacks, collections, or world feedback;
+* Convert results into experience, currency, research points, mana, and other resources;
+* Use those resources to unlock skills, equip accessories, and strengthen player and companion abilities;
+* Enter new areas with greater power, encounter new objects, and reach the next layer of progression.
+
+To support this loop, I did not write the project as a prototype piling single features, but tried to organize systems in a way closer to a commercial project: player, weapons, entities, companions, quests, rewards, accessories, skill trees, collections, UI, data import, and runtime management all exist as interrelated modules. It is both a playable thesis project and a practice in **how an indie developer structures a mid-scale game framework**.
+
+### Core Gameplay: Lightweight Input and Layered Progression
+
+The game uses a top-down 3D view with click-based controls. Players do not need to memorize complex combos or endure high-pressure punishment — the main interactions are completed via mouse clicks, including target selection, attacks, triggering feedback, and some movement. This input approach significantly lowers the entry barrier and allows more development resources to be directed toward feedback, progression, and visualization.
+
+But "simple input" does not mean "simple experience." To prevent the click mechanic from becoming mechanical repetition, each action is designed to affect multiple systems simultaneously. A successful attack or absorption does not simply remove a target — it may simultaneously affect:
+
+* Player experience and level growth;
+* Accumulation of money, mana, and research resources;
+* Compendium and entity recognition progress;
+* Quest condition completion;
+* Companion kill and growth statistics;
+* UI unlock states and claimable rewards.
+
+This "one action, multiple gains" design is key to the project's long-term playability. Players do not focus on a single growing number, but constantly see feedback across multiple parallel progression systems, building stronger sustained motivation.
+
+<figure>
+    <Image src={img2} alt="Diagram showing how a single interaction affects multiple progression systems in Click Click Universe" width={1356} height={476} />
+    <figcaption>Multi-layer feedback from a single interaction: one click can simultaneously advance resources, quests, companions, and collection progress</figcaption>
+</figure>
+
+### Data-Driven Architecture and an Extensible Mid-Scale Framework
+
+Because the project contains many deeply coupled systems, I prioritized **data-driven design** and **separation of concerns** to avoid the codebase becoming an unmaintainable pile of hardcoded logic.
+
+A large amount of content — entities, quests, rewards, effects, accessories, growth tables, companions, skills, titles, and more — is not hardcoded directly into logic scripts, but first maintained in spreadsheets, exported as CSV, converted to ScriptableObject assets via custom Editor tools, and then indexed and queried at runtime by dedicated Managers. The direct benefits include:
+
+* Adding content does not require frequent changes to core logic;
+* Numeric adjustments are more intuitive and better suited for iterative balancing;
+* Different systems can collaborate around a unified data structure;
+* The cost of extending new entities, quests, or rewards in the future is significantly lower.
+
+At the same time, I separated **static configuration data** from **runtime data** in the architecture. For example, an entity's base HP, resistances, and reward values are configuration data, while current HP, current level, and current progress are runtime data. Companions, quests, player resources, and other systems follow a similar split. This structure keeps "content definition" and "current state" clearly separated — cleaner, easier to save, easier to extend, and easier to debug.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={img3} alt="Layered architecture diagram of Click Click Universe" width={2600} height={1600} />
+        <figcaption>Overall Architecture Layering: Separating gameplay logic, functional support, and presentation layers to support a more maintainable mid-scale project structure</figcaption>
+    </figure>
+
+    <figure>
+        <Image src={img4} alt="System interaction chain and dependency direction diagram in Click Click Universe" width={2600} height={1600} />
+        <figcaption>System Interaction Chain: Main flow relationships between input, combat, state updates, quest advancement, and UI feedback</figcaption>
+    </figure>
+</div>
+
+### Managers, State Machines, and System Interconnection
+
+To handle multi-system collaboration, I used a large number of domain-specific Managers for unified indexing and runtime coordination — covering entities, rewards, effects, accessories, animals, quests, progression data, and more, each with its own clearly defined management layer. This is not about stacking singletons, but about establishing stable access points with low maintenance cost in an indie development context, reducing scene reference chaos and repeated lookups.
+
+For objects whose behaviors switch noticeably over time, I used **state machines** to organize logic, particularly in the entity and companion systems. Entities transition between states such as idle, attacked, false-attacked, floating, and sucking; companions have states including idle, moving, chasing, attacking, and recovering. Compared to stuffing all logic into a single `Update()`, this approach makes it easier to locate issues, extend new behaviors, and keep object state transitions clear.
+
+The value of this structure is that the project, though completed solo, is not written as a "just-works" demo, but aims as closely as possible toward a genuinely iterable mid-scale project framework — one of my most important technical achievements in this thesis.
+
+### Companions, Quests, Rewards, and Collections
+
+Beyond player growth itself, the project designed multiple parallel progression paths to strengthen exploration and long-term motivation.
+
+The **companion system** is one of the more distinctive parts of the game. Companions are not simple following pets, but combat support units with independent runtime data, behavioral states, and growth logic. They can chase, attack, and recover, and progressively increase in level, affinity, kill statistics, and capability parameters as the player plays. This gives companions both a functional role and an emotional connection and collection-driving motivation.
+
+The **quest and reward system** organizes the player's everyday actions into clearer staged goals. Quest conditions are not manually incremented numbers, but dynamically read from real data within relevant systems at runtime — for example, absorption count of a certain entity type, a companion's kill count, or movement statistics. The reward system then distributes results to resources, accessories, companion unlocks, recognition levels, and other modules.
+
+The **collection system** is also not a simple compendium, but is interconnected with quests, recognition levels, family categorization, and reward unlocks. What players accumulate through exploration and clicking is not isolated data, but a gradually deepening understanding of the overall structure of this geometric universe.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={img5} alt="Quest interface design in Click Click Universe" width={1920} height={1080} />
+        <figcaption>Quest and Reward Interface: Organizing multi-system progress into trackable, understandable, and claimable staged goals</figcaption>
+    </figure>
+
+    <figure>
+        <Image src={img6} alt="Skill tree interface design in Click Click Universe" width={1920} height={1080} />
+        <figcaption>Skill Tree Interface: Translating the progression path into a clear player decision entry point through visual branching and unlock information</figcaption>
+    </figure>
+</div>
+
+### UI/UX: Making Complex Systems Understandable
+
+Because the project contains many systems, UI/UX here is not simply "displaying interfaces" — it carries the critical responsibility of **translating complex logic into information players can understand**. To this end, I implemented a fairly complete interface structure, including:
+
+* Bottom resource bar with real-time display of experience, currency, research points, and other values;
+* Hover target name, attack state, tooltips, and off-screen target indicators;
+* Quest and reward claim panels;
+* Collection, family, and entity detail panels;
+* Skill tree and unlock information panel;
+* Accessory equipment and drag-slot interface;
+* Companion state, skills, and interaction panel.
+
+These interfaces do not only display information — they also serve as operation entry points and feedback explanations. For example, attackable and non-attackable targets must be clearly visually distinguished; when players receive rewards, level up, or unlock abilities, they need immediate confirmation through the interface; when system information is dense, clear hierarchy must be maintained to prevent players from losing focus during progression.
+
+Playtesting feedback rated overall UI clarity positively, but also revealed typical issues — for example, level-up-related information sometimes appeared simultaneously in too many places, making focus harder to maintain. This feedback was valuable for continuing to refine information hierarchy and onboarding structure.
+
+### Stylized Rendering and Geometric Universe Art Direction
+
+Visually, *Click Click Universe* adopted a clear direction: **geometric polyhedra forming an open world + stylized flat rendering**. The goal was to look light, bright, and recognizable while maintaining a high level of completion under indie development constraints. Rather than pursuing high realism, I used low-poly geometry, clean color blocks, and Toon-style lighting to establish a unified cosmic aesthetic.
+
+On the technical side, I extended an existing Flat Kit Toon Shader to add support for **texture-driven base color** and **particle system communication**. The original solution relied more on material parameters for stylized shading, but some assets in my project were better suited to defining color through textures directly. I therefore implemented an additional flow where texture sampling feeds into the stylized lighting pipeline, allowing the shading result to combine Flat Kit's clear shadow layers with the flexibility of a texture-based workflow.
+
+I also extended the communication path between the Shader and Unity's particle system, allowing particles to participate in partial shading information transfer rather than existing only as additive effects. This made hit feedback and attack feedback visually more unified, rather than having "materials speaking one language and effects speaking another."
+
+<figure>
+    <Image src={img7} alt="Custom stylized Shader workflow in Click Click Universe" width={2028} height={600} />
+    <figcaption>Custom Stylized Shader: Extended texture-driven and particle communication capabilities on top of an existing Toon Shader to unify the overall visual language</figcaption>
+</figure>
+
+### Testing, Questionnaire Feedback, and Project Validation
+
+As a thesis project, I did not want it to stop at "I think it's done," so I organized systematic testing and feedback collection in the later development stages. Internal testing focused on numeric balancing, system interaction correctness, flow usability, and interaction clarity; external playtesting collected 10 valid questionnaire responses, evaluating gameplay understanding, control clarity, combat experience, readability, visual presentation, UI clarity, progression interest, and overall completion.
+
+The results showed that the project performed strongly in **visual style, control fluidity, overall completion, and interface clarity**, while relatively weaker areas were centered on **progression motivation and the appeal of the reward system**. This result aligned with my own assessment: the project has validated the viability of "simple input + multi-system interconnection," but if it is to evolve into a more mature indie game, the most important next step is strengthening long-term motivation and reward pacing design.
+
+### Public Presentation and Steam Page
+
+The project currently has a Steam store page. According to the store description, *Click Click Universe* is defined as a **casual top-down 3D clicker game**, emphasizing free exploration of an open world, click interactions, unlocking more weapons, discovering new areas, expanding the skill tree, and enhancing abilities. The page explicitly states it is a **no-death, no-failure-penalty** game, encouraging free experimentation and bold exploration.
+
+### Project Takeaways
+
+The most significant value of *Click Click Universe* for me is not only completing a playable thesis project, but that it gave me systematic practice in **how an indie developer builds a mid-scale, extensible game framework**.
+
+Through this project, I gained a complete cycle of experience:
+
+* From concept and project initiation to gameplay convergence;
+* From system design to architecture construction;
+* From data-driven logic to toolchain support;
+* From UI presentation to unified visual style;
+* From internal testing to external playtesting feedback;
+* From thesis project to public Steam presentation.
+
+It validated my ability to organize complex systems in Unity, and also gave me a clearer understanding that what truly determines whether a game can continue to grow is not the number of features, but **whether the gameplay core, system collaboration, information expression, and long-term motivation are unified**. *Click Click Universe* is one very solid step I have taken in that direction.

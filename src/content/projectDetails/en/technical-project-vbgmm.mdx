@@ -1,0 +1,17 @@
+---
+---
+
+## My Role
+
+In this data science and machine learning foundational algorithm exploration project, I independently completed the derivation and engineering implementation of the algorithm. My main responsibilities included:
+
+* **Algorithm Implementation from Scratch**: Based on Python and the NumPy scientific computing library, derived and implemented the Variational Bayesian Gaussian Mixture Model (VB-GMM) from scratch, delivering a code implementation of a complex probabilistic graphical model.
+* **Variational Inference Logic Construction**: Implemented the variational update equations for mean, covariance, Dirichlet distribution parameters (Alpha), and precision parameters (Beta) in the model's core iterative process.
+* **Numerical Computation Optimization**: Introduced a Cholesky decomposition-based precision matrix computation method, effectively avoiding singular value issues in high-dimensional matrix inversion and significantly improving algorithm computational efficiency and numerical stability.
+* **Convergence Detection and Visual Evaluation**: Designed an automatic convergence detection mechanism based on the Evidence Lower Bound (ELBO), and developed an evaluation module that visually compares the fitting performance of the custom algorithm against Scikit-learn's model by plotting Gaussian confidence ellipses.
+
+---
+
+## Project Details
+
+This project aimed to deeply explore the underlying mathematical principles and engineering applications of unsupervised learning and variational inference by manually implementing a Variational Bayesian Gaussian Mixture Model (VB-GMM) from scratch. Technically, the system first generates a multivariate Gaussian synthetic dataset containing six components with different distributional characteristics, then constructs an initial Responsibility Matrix using a KMeans or random initialization strategy. During the core model iteration phase, the algorithm strictly follows Bayesian inference logic, continuously updating the mean, covariance, Alpha parameters controlling weights, and Beta parameters controlling precision for each Gaussian component based on the current Responsibility Matrix. To resolve performance bottlenecks and matrix positive-definiteness issues during computation, the project makes clever use of Cholesky decomposition to handle precision matrices. The model's convergence condition is strictly bound to the incremental change in the Evidence Lower Bound (ELBO), declaring inference complete once the change falls below a set threshold. The project ultimately not only achieved high-precision unsupervised clustering, but also conducted a rigorous comparative analysis between the custom algorithm's fitting results and Scikit-learn's standard `BayesianGaussianMixture` model through intuitive 2D Gaussian ellipse visualization, fully validating the accuracy and robustness of the custom inference algorithm.

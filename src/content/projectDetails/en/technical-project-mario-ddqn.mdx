@@ -1,0 +1,17 @@
+---
+---
+
+## My Role
+
+In this TensorFlow-based reinforcement learning project, I was primarily responsible for algorithm model design and implementing the core training pipeline. My main responsibilities included:
+
+* **Deep Q-Network Construction**: Built a Double Deep Q-Network (DDQN) with multiple convolutional neural network (CNN) layers using TensorFlow and Keras, including an Online network for real-time decision-making and a Target network for stabilizing training.
+* **Reinforcement Learning Policy Implementation**: Developed an action selection policy based on ε-greedy exploration and implemented a dynamic decay mechanism to balance exploration in the early stages of gameplay and policy exploitation in later stages.
+* **Experience Replay and Gradient Optimization**: Built an Experience Replay buffer to store and randomly sample historical transition data, and designed customized gradient computation and backpropagation training steps combined with Huber loss and the Adam optimizer.
+* **Model Synchronization and Engineering**: Implemented periodic weight synchronization for the Target network, and completed staged automatic model weight saving and training log recording.
+
+---
+
+## Project Details
+
+This project aimed to train Mario to autonomously complete levels through reinforcement learning. Technically, I built a Double Deep Q-Network (DDQN) architecture that directly takes consecutive game screen pixels as multi-channel input data, uses multiple CNN layers to extract spatial features and flatten them, and finally outputs Q-values for each of Mario's actions in the current state. To address the common problem of training instability in deep reinforcement learning, I introduced the Experience Replay mechanism to break temporal correlations between sample data, and separated the network into two independent models — Online and Target: the Online network handles real-time action selection and parameter updates, while the Target network only synchronizes parameters every certain number of training steps. Combined with dynamic exploration rate decay via ε-greedy and the smooth constraint of the Huber loss function, the entire model can efficiently and stably learn optimal level-completion strategies and action combinations in a complex platformer environment.

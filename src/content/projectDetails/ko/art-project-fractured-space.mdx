@@ -1,0 +1,83 @@
+---
+
+---
+
+import { Image } from 'astro:assets';
+import img1 from '@/assets/projects/art-project-fractured-space/art-project-fractured-space1.webp';
+import img2 from '@/assets/projects/art-project-fractured-space/art-project-fractured-space2.webp';
+import img3 from '@/assets/projects/art-project-fractured-space/art-project-fractured-space3.webp';
+import img4 from '@/assets/projects/art-project-fractured-space/art-project-fractured-space4.webp';
+import img5 from '@/assets/projects/art-project-fractured-space/art-project-fractured-space5.webp';
+import img6 from '@/assets/projects/art-project-fractured-space/art-project-fractured-space6.webp';
+
+
+## 담당 업무
+
+이 3주간의 개인 프로젝트에서 모든 창작과 기술 구현을 독립적으로 완성했습니다. 주요 업무 내용은 다음과 같습니다.
+
+* **프로시저럴 시스템 개발**: 3D 소프트웨어의 지오메트리 노드 시스템을 활용하여 도시 건물 실루엣과 끊임없이 자기 조직화·재구성하는 중앙 다이나믹 구체 구조를 프로시저럴로 생성했습니다.
+* **물리적 파쇄 특수효과 시뮬레이션**: 파쇄 툴과 프로시저럴 노드를 결합하여 파편 정점 데이터를 정밀하게 추출·제어하고, 사실적이고 긴장감 넘치는 벽면 붕괴 동적 특수효과를 시뮬레이션·렌더링했습니다.
+* **라이팅 및 재질 렌더링**: 레이트레이싱 렌더링 엔진에서 쿨 톤의 미래적인 조명을 설계하고, 물리 기반 렌더링 워크플로우를 기반으로 복잡한 반사·굴절 하이라이트·순수한 유리 질감을 가진 커스텀 재질 시스템을 개발했습니다.
+* **공간 비주얼 설계**: 다중 거울 반사와 밀폐 구조를 활용하여 무한히 연장되는 착시를 가진 초현실적인 공간 환경을 창출하고, 시각적 충격과 전체적인 신비로운 분위기 간의 균형을 맞추었습니다.
+
+---
+
+## 프로젝트 상세
+
+### 기본 환경 구축
+
+씬의 기본 컨셉은 밀폐된 환경 내에서 거울 반사를 통해 몰입감 있는 무한 공간의 느낌을 창출하는 것입니다. 벽·바닥·천장에 거울을 교묘하게 배치하여 물체와 빛이 끝없이 굴절·반복되도록 하여 공간이 끝없이 펼쳐지는 시각적 착시를 시뮬레이션했습니다.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={img1} alt="밀폐 공간 내의 다중 거울 반사" width={1024} height={500} />
+        <figcaption>다중 거울 반사로 구축된 밀폐 공간의 기본 프레임워크</figcaption>
+    </figure>
+
+    <figure>
+        <Image src={img2} alt="빛의 굴절과 공간의 무한 연장 착시" width={1024} height={500} />
+        <figcaption>반사면에서의 빛의 굴절 효과가 공간이 끝없이 펼쳐지는 착시를 만들어냅니다</figcaption>
+    </figure>
+</div>
+
+### 파쇄 애니메이션 특수효과
+
+씬의 동적 표현을 풍부하게 하기 위해 지오메트리 노드 시스템과 파쇄 툴을 도입하여 벽면 붕괴 특수효과를 제작했습니다. 먼저 파쇄 툴로 벽면을 여러 기본 파편으로 분할했습니다. 이후 이 파편들을 노드 네트워크에 임포트하여 각 파편의 독립적인 정점 데이터를 얻었습니다.
+
+강력한 프로시저럴 능력을 활용하여 속성 근접성 및 위치 설정 등의 핵심 노드를 조합하고, 거리나 특정 트리거를 기반으로 파편의 움직임과 회전을 정밀하게 제어하여 벽면이 점차 무너지는 과정을 시뮬레이션했습니다. 동시에 포인트 스케일 노드로 떨어지는 파편의 크기를 동적으로 조정하여 붕괴 효과의 깊이와 사실감을 더욱 강화했습니다. 이 프로시저럴 방식은 매우 높은 유연성을 제공하여 복잡한 키프레임 애니메이션을 수작업으로 제작하지 않고도 제어와 혼돈 사이의 완벽한 균형을 찾아 공간이 산산조각 나는 드라마틱한 긴장감을 표현할 수 있었습니다.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={img3} alt="벽면 붕괴의 지오메트리 노드 시스템" width={1024} height={472} />
+        <figcaption>벽면 파편 추출과 운동 궤적을 제어하는 지오메트리 노드 트리</figcaption>
+    </figure>
+
+    <figure>
+        <Image src={img4} alt="벽면 붕괴의 물리적 파쇄 효과" width={1024} height={472} />
+        <figcaption>포인트 스케일과 위치 설정 노드를 조합하여 시뮬레이션한 동적 붕괴 특수효과 과정</figcaption>
+    </figure>
+</div>
+
+### 라이팅과 재질 조정
+
+라이팅 튜닝 단계에서는 쿨 톤의 파란색 광원을 선택하여 전체 씬에 미래적인 기조를 설정하고, 포인트 라이트와 에어리어 라이트로 그림자의 층감을 깊게 했습니다. 이 과정의 핵심은 광원의 감쇠와 범위를 정밀하게 제어하여 빛이 대면적의 거울 반사를 과도하게 간섭하여 가상 공간의 몰입감을 깨뜨리지 않도록 하는 것이었습니다.
+
+재질 처리에서는 중앙 구체의 투명도와 굴절 속성 구현에 집중했습니다. 유리 재질의 굴절률을 조정하고 노이즈 텍스처와 미묘한 범프 맵을 겹쳐서 구체가 거울 반사 속에서 매우 풍부한 빛과 그림자의 변화를 나타내도록 했습니다. 또한 벽면의 발광 조명 스트립은 핵심적인 시각적 가이드 라인 역할을 하여 공간의 깊이와 기하학적 층감을 더욱 강화합니다.
+
+### 프로시저럴 구조 생성
+
+시각적 복잡성을 더욱 높이기 위해 지오메트리 노드를 씬에 동적 세부 사항을 추가하는 데 광범위하게 활용했습니다. 한편으로는 중앙 구체 표면에 서로 다른 기하학적 요소를 인스턴스화하여 끊임없이 성장하고 재조직화하는 생명력 있는 느낌을 부여하고, 표면 블록의 배열과 변화 속도를 정밀하게 제어했습니다. 다른 한편으로는 노드 파라미터를 조정하여 씬 하단에 높이가 각기 다른 다양한 건물 군집을 배치 생성하여, 최종적으로 초현실적이고 광대한 가상 도시 실루엣을 구축했습니다.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={img5} alt="중앙 다이나믹 구체 구조" width={1600} height={900} />
+        <figcaption>끊임없이 자기 조직화·재구성하는 중앙 다이나믹 구체 구조와 순수한 유리 재질 표현</figcaption>
+    </figure>
+
+    <figure>
+        <Image src={img6} alt="프로시저럴로 생성된 도시 실루엣" width={1600} height={900} />
+        <figcaption>노드 파라미터 조정으로 씬 하단에 배치 생성된 초현실적인 가상 도시 군집</figcaption>
+    </figure>
+</div>
+
+

@@ -1,0 +1,83 @@
+---
+
+---
+
+import { Image } from 'astro:assets';
+import img1 from '@/assets/projects/art-project-fractured-space/art-project-fractured-space1.webp';
+import img2 from '@/assets/projects/art-project-fractured-space/art-project-fractured-space2.webp';
+import img3 from '@/assets/projects/art-project-fractured-space/art-project-fractured-space3.webp';
+import img4 from '@/assets/projects/art-project-fractured-space/art-project-fractured-space4.webp';
+import img5 from '@/assets/projects/art-project-fractured-space/art-project-fractured-space5.webp';
+import img6 from '@/assets/projects/art-project-fractured-space/art-project-fractured-space6.webp';
+
+
+## My Role
+
+In this three-week solo project, I independently completed all creative and technical work. My main responsibilities included:
+
+* **Procedural System Development**: Used the 3D software's geometry node system to procedurally generate city building silhouettes and a continuously self-organizing and reconstructing central dynamic sphere structure.
+* **Physical Fracture Effect Simulation**: Combined fracture tools with procedural nodes to precisely extract and control fragment vertex data, simulating and rendering realistic, tension-filled wall collapse dynamic effects.
+* **Lighting and Material Rendering**: Designed a cool-toned futuristic lighting scheme in a ray-traced rendering engine, and developed a custom material system with complex reflections, refractive highlights, and pure glass quality based on a physically-based rendering workflow.
+* **Spatial Visual Design**: Used multiple mirror reflections and an enclosed structure to create a surreal spatial environment with an illusion of infinite extension, balancing visual impact with an overall atmosphere of mystery.
+
+---
+
+## Project Details
+
+### Base Environment Construction
+
+The scene's foundational concept is to create an immersive sense of infinite space within an enclosed environment through mirror reflections. By cleverly placing mirrors on the walls, floor, and ceiling, I attempted to produce endless refraction and repetition of objects and light, simulating the visual illusion of boundless space.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={img1} alt="Multiple mirror reflections within an enclosed space" width={1024} height={500} />
+        <figcaption>The foundational framework of the enclosed space built using multiple mirror reflections</figcaption>
+    </figure>
+
+    <figure>
+        <Image src={img2} alt="Light refraction and the illusion of infinite spatial extension" width={1024} height={500} />
+        <figcaption>The refraction of light on reflective surfaces, creating the illusion of boundless space</figcaption>
+    </figure>
+</div>
+
+### Fracture Animation Effects
+
+To enrich the scene's dynamic expression, I decided to introduce the geometry node system and fracture tools to create wall collapse effects. First, fracture tools were used to split the wall surface into multiple base fragments. These fragments were then imported into a node network to obtain independent vertex data for each fragment.
+
+Leveraging the powerful procedural capabilities, I combined core nodes such as attribute proximity and position setting to precisely control fragment movement and rotation based on distance or specific triggers, simulating the progressive collapse of the wall. At the same time, point scale nodes dynamically adjusted the size of falling fragments, further enhancing the depth and realism of the collapse effect. This procedural approach provides extremely high flexibility, allowing me to find the perfect balance between control and chaos — showcasing the dramatic tension of space shattering apart — without manually creating complex keyframe animations.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={img3} alt="Geometry node system for wall collapse" width={1024} height={472} />
+        <figcaption>Geometry node tree for controlling wall fragment extraction and motion trajectories</figcaption>
+    </figure>
+
+    <figure>
+        <Image src={img4} alt="Physical fracture effect of wall collapse" width={1024} height={472} />
+        <figcaption>Dynamic collapse effect process simulated using point scale and position setting nodes</figcaption>
+    </figure>
+</div>
+
+### Lighting and Material Adjustment
+
+During the lighting tuning phase, I chose a cool-toned blue light source to set the futuristic tone for the entire scene, and deepened shadow layering through point and area lights. The core of this process was precisely controlling light source falloff and range, ensuring the light would not excessively interfere with large-area mirror reflections and break the immersion of the virtual space.
+
+For materials, I focused on achieving the transparency and refraction properties of the central sphere. By adjusting the glass material's index of refraction and layering noise textures with subtle bump maps, the sphere presents extremely rich light and shadow variations in the mirror reflections. Additionally, the glowing light strips on the walls serve as the core visual guide lines, further reinforcing the spatial depth and geometric layering.
+
+### Procedural Structure Generation
+
+To further increase visual complexity, I extensively used geometry nodes to add dynamic detail to the scene. On one hand, I instantiated different geometric elements on the surface of the central sphere, giving it a sense of continuous growth and reorganization — precisely controlling the arrangement and rate of change of surface blocks. On the other hand, by adjusting node parameters, I batch-generated clusters of buildings of varying heights and forms at the bottom of the scene, ultimately constructing a surreal, massive virtual city silhouette.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={img5} alt="Central dynamic sphere structure" width={1600} height={900} />
+        <figcaption>The continuously self-organizing and reconstructing central dynamic sphere structure with its pure glass material expression</figcaption>
+    </figure>
+
+    <figure>
+        <Image src={img6} alt="Procedurally generated city silhouette" width={1600} height={900} />
+        <figcaption>The surreal virtual city cluster batch-generated at the bottom of the scene through node parameter adjustment</figcaption>
+    </figure>
+</div>
+
+

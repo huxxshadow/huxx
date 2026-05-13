@@ -1,0 +1,50 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import img1 from '@/assets/projects/technical-project-windy-grass/technical-project-windy-grass1.webp';
+import img2 from '@/assets/projects/technical-project-windy-grass/technical-project-windy-grass2.webp';
+
+## My Role
+
+In this technical rendering project, I was primarily responsible for designing and implementing the **procedural grass generation pipeline** and **wind-driven grass blade material system**, centered around UE5's PCG workflow, Bézier curve-based grass blade modeling, and real-time wind animation. My specific responsibilities included:
+
+- **Grass Generation System Design**: Built a large-scale grass distribution pipeline using UE5's **PCG (Procedural Content Generation)** module, enabling procedural grass spawning across terrain surfaces with density filtering and diverse distribution control.
+- **Grass Blade Shader Construction**: Developed the grass blade material using **Bézier Curve** shape control logic, allowing parametric adjustment of individual blade width, height, curvature, and tip taper.
+- **Wind Field Animation Design**: Integrated wind disturbance into the grass blade material computation, driving natural sway, layered offset, and continuous variation in real-time rendering to enhance scene dynamism.
+- **Material Parameter Tuning and Performance Optimization**: Balanced grass density, material complexity, and real-time rendering cost to optimize both visual quality and runtime performance across large-scale grass scenes.
+- **PCG–Material System Integration**: Combined PCG distribution results with grass blade material parameters, giving different areas of grass more unified and controllable orientation, shape, density, and dynamic behavior.
+
+---
+
+## Project Details
+
+*PCG Bézier Curve Wind Grass* is a technical rendering project focused on **procedural vegetation generation** and **real-time wind field simulation**. The core objective was to build a grass generation system in Unreal Engine 5 that balances parametric control, visual naturalism, and real-time performance. I used a **PCG workflow** for large-scale grass distribution and a **Bézier Curve grass blade Shader** for individual blade shaping and wind-driven animation, enabling the scene to achieve both macro-level distribution organization and micro-level dynamic detail.
+
+### UE5 PCG Procedural Grass Generation
+
+For the grass generation, I built a complete procedural distribution pipeline using the **UE5 PCG module**. The system samples a base point set from the terrain surface, then applies density filtering, attribute noise, rotation jitter, and multiple Static Mesh Spawners to further refine the distribution. This approach allows grass blades to form more natural density variation, orientation differences, and area-level layering across large scenes, rather than appearing as mechanically repeated tiling.
+
+The PCG pipeline also supports a high degree of parametric editing — adjusting sampling density, filtering logic, and attribute write rules to quickly change coverage range, clustering tendency, and local variation characteristics. This makes the grass system not only adaptable to a single scene but also flexibly reusable across different terrain types, art styles, and performance budgets, providing a stable technical foundation for large-scale real-time environment production.
+
+<figure>
+    <Image src={img1} alt="PCG Graph node flow for procedural grass distribution in UE5" width={3021} height={1479} />
+    <figcaption>Procedural Grass Generation Module: Large-scale grass distribution, density filtering, and attribute control pipeline built with UE5 PCG Graph</figcaption>
+</figure>
+
+### Bézier Curve Grass Blade Shader and Wind Field
+
+For individual grass blade appearance, I adopted a **Bézier Curve** approach to design the blade material structure, allowing blades to go beyond fixed mesh shapes and be controlled more flexibly through parameters for overall silhouette and curvature. This enables unified adjustment of blade height, width, root-to-tip taper, and overall bend posture at the material level, producing grass blades with stronger layering and a greater sense of life.
+
+Building on this, I further integrated wind disturbance into the material computation, making blades continuously sway and shift direction over time. The wind field is not a simple uniform translation — it incorporates weight differences at different positions along the blade, keeping the root relatively stable while the tip exhibits more pronounced dynamic response, producing a wind effect closer to real vegetation behavior. The final material system achieves strong detail expressiveness and natural dynamism in close-up views while maintaining real-time performance.
+
+<figure>
+    <Image src={img2} alt="Grass blade material node network built on Bézier curve and wind field calculation" width={2915} height={1767} />
+    <figcaption>Grass Blade Material System: Real-time dynamic grass blade Shader implemented via Bézier curve shape control and wind disturbance computation</figcaption>
+</figure>
+
+### Parametric Control and Real-Time Rendering Balance
+
+Another key focus of this project was finding the right balance between **parametric control capability** and **real-time runtime performance**. Whether at the PCG distribution level (point generation and instance placement) or the material level (curve control and wind animation), trade-offs between visual quality and scene overhead are inherent. To address this, I continuously tuned grass density, instance layering, material node complexity, and wind update strategy throughout development, aiming to preserve sufficiently rich dynamic detail within acceptable performance costs.
+
+The final result demonstrates that the system meets its technical goals: on one hand, the grass scene can be quickly expanded to large terrain surfaces through PCG; on the other, individual grass blades have strong dynamic expressiveness and shape controllability, making the overall grass system both suitable for technical showcase and extensible to actual project environment production.

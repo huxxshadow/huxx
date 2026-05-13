@@ -1,0 +1,101 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import img1 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask1.webp';
+import img2 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask2.webp';
+import img3 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask3.webp';
+import img4 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask4.webp';
+import img5 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask5.webp';
+import img6 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask6.webp';
+import img7 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask7.webp';
+
+## My Role
+
+In this team project developed over 48 hours for Global Game Jam 2026 Hong Kong, I served as team leader, lead programmer, and game designer. My main responsibilities covered overall development workflow organization, core mechanic implementation, and visual cohesion. Specific responsibilities included:
+
+* **Team Collaboration and Pipeline Setup**: As team leader, I led a 9-person team through project scoping, task breakdown, version integration, and rapid iteration, establishing a collaboration workflow suited to the high-pressure pace of a Game Jam to allow gameplay, art, programming, and audio to proceed in parallel.
+* **Core Gameplay and Level Logic Design**: Designed the game's mechanics around the central concept of "Clipping Mask," enabling players to change sticker materials to affect scene rules, traversal methods, and puzzle logic, constructing a level experience that combines platforming and puzzle-solving.
+* **Custom Grid and TileMap System Development**: Built a grid system supporting custom physics rules and extended it with a configurable-rule TileMap solution, enabling different material zones, trap tiles, and special interactions to be driven by a unified system and iterated on quickly.
+* **Shader and Visual Polish**: Implemented an outline sticker effect and CRT post-processing using Unity 2D Shaders, unified and enhanced the project's overall art style, and improved visual distinctiveness and presentation quality within the limited development time.
+
+---
+
+## Project Details
+
+*Eel On Mask（鳗！）* is a 2D puzzle platformer developed in **48 hours** for **Global Game Jam 2026 Hong Kong**. Players take on the role of Eel, using the mysterious **"Clipping Mask"** ability to change sticker materials and travel between worlds, solve puzzles, and gradually uncover the truth behind the story. The project was later tidied up and officially released on Steam as a free indie title.
+
+<figure>
+    <Image src={img1} alt="Eel On Mask project cover" width={920} height={430} />
+    <figcaption>*Eel On Mask* cover: the overall visual identity built around the sticker world and the Clipping Mask core concept</figcaption>
+</figure>
+
+### Team Organization and 48-Hour Rapid Development
+
+Because the project was born from a Game Jam, development time was extremely limited — team collaboration efficiency was itself the key to whether the project could succeed. As team leader, I quickly locked in the core creative direction at the project's outset and organized the team around the goal of "achievable in a short time while still being distinctive," completing gameplay scoping, task breakdown, and priority ordering.
+
+During development, I established a collaboration pipeline better suited to short-cycle development: validate the gameplay prototype first, then progressively add levels, art presentation, and cinematic content. Through high-frequency syncing, timely integration, and rapid version merging, the team was able to maintain a consistent development rhythm across just two days, avoiding the resource misalignment and system conflicts that often arise when multiple people develop in parallel. This experience further built my skills in driving cross-functional small-team collaboration under high-pressure conditions.
+
+### Clipping Mask: Translating a Graphic Concept into Game Mechanics
+
+The most fundamental design of this project was translating the **Clipping Mask** concept from image editing software into operable, understandable game rules. I wanted players to experience not just "platforming + puzzle-solving" as a combination, but the joy of changing the material of objects to affect how the world operates.
+
+In design terms, this meant scene elements were no longer static backgrounds or ordinary obstacles, but variable objects with "rule properties." Players can change the material of certain sticker objects through the mechanic, affecting their collision properties, support capability, or environmental feedback — opening new paths, crossing barriers, or solving puzzles designed around spatial and logical relationships. This design makes "material change" not just a visual effect, but a direct participant in level progression.
+
+To ensure the mechanic communicated clearly enough, I used a step-by-step introductory approach in level design: first let players understand a single rule, then progressively layer in combinations between different objects, different materials, and spatial arrangements. This kept the entry barrier from being too high while still giving the project a degree of strategy and exploration even within a limited flow.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={img2} alt="Eel On Mask in-game screenshot 1" width={1920} height={1080} />
+        <figcaption>In-game screenshot (1): players interact with scene rules through sticker material changes to complete platform traversal and puzzle exploration</figcaption>
+    </figure>
+
+    <figure>
+        <Image src={img3} alt="Eel On Mask in-game screenshot 2" width={1920} height={1080} />
+        <figcaption>In-game screenshot (2): levels combine platform jumping, spatial traversal, and material-switching mechanics into a continuous puzzle experience</figcaption>
+    </figure>
+</div>
+
+### Custom Grid System and Rule-Driven TileMap
+
+To support this "variable rules" gameplay, I implemented a **grid system with custom physics logic** and built on top of it a **TileMap system** supporting special rule extensions. Compared to simply relying on static colliders, this approach better suited the project, since the same area needed to exhibit different interactive behavior under different states.
+
+By abstracting level areas into a unified grid data structure, I could more efficiently handle traversability, collision logic, and trap responses under different material states. At the code level, rather than hardcoding each special case, behaviors for different tiles are driven by rule configuration. This design improved system extensibility on one hand and significantly increased level building efficiency on the other, making it particularly well-suited to the high-frequency trial-and-error and rapid iteration of a Game Jam environment.
+
+In practice, this system helped us complete scene interactions with stable logic in a very short time, and also left room for adding more material effects and special level mechanics afterward.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={img6} alt="Eel On Mask custom map editor" width={1600} height={900} />
+        <figcaption>Custom map editor: used to quickly configure level grids, special tile rules, and interaction logic to speed up level building during the Game Jam</figcaption>
+    </figure>
+
+    <figure>
+        <Image src={img7} alt="Eel On Mask LevelData ScriptableObject configuration" width={1600} height={900} />
+        <figcaption>LevelData ScriptableObject: unified configuration of level layout, rule parameters, and tile data for system-driven management and future extensibility</figcaption>
+    </figure>
+</div>
+
+### Using Shaders to Unify the Sticker World's Visual Language
+
+On the visual side, I focused on unifying the project's overall style. Because Game Jam teams work under short timelines with varied asset sources and production methods, without a unifying pass the final visuals can easily feel stylistically fragmented. I therefore applied Unity 2D Shaders to reprocess core visual elements, bringing them more in line with the project's "sticker world" setting.
+
+First is the **outline sticker Shader**. This effect reinforces the edge definition and layering of game objects, making it easier for players to visually distinguish interactable objects from environmental backgrounds, while also strengthening the thematic sense of "stickers being cut, layered, and replaced." Second, I added a **CRT post-processing effect** — through subtle scanlines, color shifts, and screen texture, adding a unified visual atmosphere to the whole work. This effect not only improved recognizability, but also helped the art assets produced within the limited time period blend together more naturally into a cohesive whole.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={img4} alt="Eel On Mask art style showcase 1" width={1920} height={1080} />
+        <figcaption>Art style showcase (1): the outline sticker Shader reinforces object edge recognition and the visual characteristics of sticker layering</figcaption>
+    </figure>
+
+    <figure>
+        <Image src={img5} alt="Eel On Mask art style showcase 2" width={1920} height={1080} />
+        <figcaption>Art style showcase (2): CRT post-processing and overall color control together create a unified and distinctive game atmosphere</figcaption>
+    </figure>
+</div>
+
+### From Game Jam Prototype to Official Release
+
+*Eel On Mask* did not stop at being a prototype showcased at a short-term event — after the jam it was further organized, fixed, and released on Steam. As an indie work born from a Game Jam, it retains a strong core concept while gaining completeness and playability through subsequent polish.
+
+This process taught me that the value of a Game Jam project lies not just in "finishing a game in a short time," but in its ability to validate whether a core mechanic holds up and whether a team can collaborate efficiently around it. The fact that *Eel On Mask* was able to grow from a 48-hour prototype into a work truly ready for public release also demonstrates that its core design has sufficient extensibility and expressive power.

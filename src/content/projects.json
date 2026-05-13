@@ -51,18 +51,8 @@
     "links": [
       {
         "name": "GitHub",
-        "url": "https://github.com/huxxshadow/template",
+        "url": "https://github.com/huxxshadow/Processing.py-Pinball",
         "icon": "fa-brands fa-github"
-      },
-      {
-        "name": "Live Demo",
-        "url": "https://example.com",
-        "icon": "fa-solid fa-link"
-      },
-      {
-        "name": "Report",
-        "url": "https://drive.google.com/...",
-        "icon": "fa-brands fa-google-drive"
       }
     ]
   },
@@ -1177,9 +1167,9 @@
     "category": "game",
     "title": {
       "en": "Empty Throne",
-      "zh": "空王座 (Empty Throne)",
-      "ja": "エンプティ・スローン (Empty Throne)",
-      "ko": "엠프티 스론 (Empty Throne)"
+      "zh": "空王座",
+      "ja": "エンプティ・スローン",
+      "ko": "엠프티 스론"
     },
     "roles": {
       "en": [
@@ -1562,7 +1552,7 @@
       ]
     },
     "desc": {
-      "en": "YuanMeng Star is a light social party game developed by Tencent TiMi Studio Group for the Chinese market. Shanhai Xunling is a massive built-in open-world game mode introduced in YuanMeng Star, featuring an art style inspired by the Classic of Mountains and Seas. Its core gameplay revolves around capturing, training, and battling creatures called \"JiuLing,\" while integrating open-map exploration, class switching, base building, and breeding systems.",
+      "en": "Shanhai Xunling is a large built-in open-world mode in YuanMeng Star, featuring a Classic of Mountains and Seas-inspired art style. Players capture, train, and battle creatures called \"JiuLing\" while exploring the map, switching classes, building bases, and raising companions.",
       "zh": "《元梦之星》是腾讯天美工作室群面向中国市场推出的一款轻松社交派对游戏。《山海寻灵》是《元梦之星》推出的山海经风格美术的超大型内置开放世界玩法，核心围绕“啾灵”的捕捉、培育与对战展开，融合了开放地图探索、角色转职、基地建设与繁育养成等系统。",
       "ja": "『元梦之星』は、Tencent TiMi Studio Groupが中国市場向けに展開した、気軽に楽しめるソーシャルパーティーゲームです。『山海尋靈』は、『元梦之星』に実装された山海経風アートスタイルの大規模な内蔵型オープンワールドコンテンツであり、「啾靈」の捕獲・育成・対戦を中核に、オープンマップ探索、クラスチェンジ、拠点建設、繁殖育成システムを融合したゲームプレイを特徴としています。",
       "ko": "『원몽지성』은 Tencent TiMi Studio Group이 중국 시장을 대상으로 선보인 가벼운 소셜 파티 게임입니다. 『산해심령』은 『원몽지성』에 추가된 산해경풍 아트 스타일의 초대형 내장형 오픈월드 콘텐츠로, ‘쥬링’의 포획, 육성, 전투를 핵심으로 하며 오픈 맵 탐험, 직업 전환, 기지 건설, 번식 육성 시스템을 결합한 것이 특징입니다."

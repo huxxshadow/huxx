@@ -888,10 +888,10 @@ export const timelineData: TimelineI18nEntry[] = [
         year: "NOW",
         isNow: true,
         title: {
-            en: "Seeking the Frontier of Chaos",
-            zh: "寻找混沌边界",
-            ja: "混沌の境界を求めて",
-            ko: "혼돈의 경계를 찾아서",
+            en: "Seeking the Edge of the World",
+            zh: "寻找世界的边界",
+            ja: "世界の境界を求めて",
+            ko: "세계의 경계를 찾아서",
         },
         description: {
             en: "Still slowly advancing through the frontier where code, design, narrative, and visuals converge…",

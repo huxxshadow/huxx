@@ -1,0 +1,46 @@
+---
+---
+
+## My Role
+
+In this two-day solo project, I was responsible for all core work. My main responsibilities included:
+
+* **Environment Construction**: Used Unreal Engine's ocean system to generate high-quality realistic ocean and water surface effects; used high-precision scan asset libraries to meticulously build cliff and underwater rock ecology.
+* **Lighting and Atmosphere Control**: Configured an advanced dynamic sky plugin to achieve dynamic cloud layers and time-of-day transitions (such as day to dusk), enhancing the scene's naturalism and atmospheric quality.
+* **Cinematic Camera Design**: Used a cinematic camera and sequence editor to design and produce film-grade shots, including classic dolly zoom and rapid push-pull shots to elevate the dramatic tension of the visuals.
+* **Full Pipeline Execution**: Independently completed the full workflow from early engine new-feature testing and scene building through material adjustment to final animation sequence output.
+
+---
+
+## Project Details
+
+### Ocean Setup
+
+To quickly achieve a highly realistic ocean effect, I directly used Unreal Engine's ocean system optimized for cinematic rendering. This system provides highly optimized presets capable of generating film-grade water surface waves in a short time. Building on this, I fine-tuned key parameters including wave height, reflection intensity, and water transparency to further improve visual quality. This approach allowed me to efficiently achieve the desired ocean scene effect without sacrificing final image quality, saving the project significant time.
+
+### Rock and Cliff Construction
+
+When building the island's cliff structure, I selected three rock materials with similar geological characteristics from the asset library.
+
+* **Combination and Assembly**: By repeatedly adjusting their rotation, scale, and spatial position, I flexibly combined these three base assets to build the expansive cliff scene.
+* **Breaking Repetition**: To avoid visual repetition and rigidity, I paid particular attention to varying rock orientation and size proportions, ensuring each part of the cliff face looks unique and consistent with natural weathering patterns.
+* **Underwater Ecology**: To enhance the overall depth of the scene — particularly the underwater area's presentation — I added additional rocks on the seabed. This not only enriched the visual complexity of the underwater section but also further enhanced the realism of the water surface through the refraction and caustic effects of light penetrating the water, making the entire scene more immersive.
+
+### Sky and Lighting
+
+For the sky setup, I introduced a dynamic sky plugin that allows me to implement realistic cloud layers and atmospheric scattering effects extremely easily. By flexibly adjusting system parameters, I created smooth dynamic time-of-day transitions (for example, gradually shifting from bright daytime to a gorgeous dusk) and precisely controlled cloud density and movement speed. This setup makes the ambient lighting changes in the scene more natural, while adding flowing dynamic beauty to the otherwise static environment.
+
+### Camera Choreography and Movement
+
+For camera work, I combined a cinematic camera with a curve editor and camera motion track to design smooth and tension-filled camera movements:
+
+1. **Fast and Slow Combination**: Beyond standard push-pull and pan shots, I deliberately incorporated some rapid pans and forward pushes to enhance the sense of motion and visual impact.
+2. **Curve Control**: Through the sequence editor, I could precisely control camera acceleration and motion trajectory changes, ensuring that fast-moving sections maintain a smooth damped feel while conveying strong dynamism.
+3. **Spatial Perspective**: To further enrich the visual experience, I employed a zoom technique combining focal length changes with rapid physical camera movement — using the contrast of stillness and motion to create a sense of depth. This allows the camera to capture ocean wave details during smooth movement, while sudden rapid push-pulls and zoom changes instantly generate strong visual tension.
+
+---
+
+> **Core Plugin and Asset Reference Notes**
+> * **Cinematic Ocean Rendering System**: Provided by the Unreal Marketplace, used to generate the film-grade high-quality water surface waves and physical dynamic effects in the project.
+> * **High-Precision Scan Asset Library**: Provides 3D scan models of rocks and cliffs with realistic geological characteristics along with matching advanced materials.
+> * **Advanced Dynamic Sky Plugin**: Used to achieve physically-based cloud layer rendering, smooth lighting time-of-day transitions, and precise atmospheric control within the scene.

@@ -1,0 +1,17 @@
+---
+---
+
+## My Role
+
+In this fractal morphing project built with WebGL and Three.js, I was primarily responsible for fractal rendering algorithm design, morphing logic implementation, and the overall visualization pipeline. My main responsibilities included:
+
+* **Ray Marching Rendering**: Built a ray-marching rendering pipeline based on Signed Distance Functions (SDF), implementing real-time surface intersection and visualization of procedural geometry and fractal structures.
+* **Mandelbulb Fractal Modeling**: Implemented the distance estimation function for the 3D Mandelbulb fractal, generating a 3D fractal structure with self-similar detail through iterative formulas, spherical coordinate transforms, and derivative accumulation.
+* **Morphing System Development**: Designed and implemented a smooth morphing scheme between traditional 3D models and the Mandelbulb fractal, blending different SDFs at the mathematical level to generate continuous intermediate shapes.
+* **Interaction and Parameter Control**: Built an interactive web-based display environment with Three.js, with support for adjustable parameters including fractal iteration count, morph intensity, and smoothness to enhance visualization quality and experimental expressiveness.
+
+---
+
+## Project Details
+
+This project explores continuous shape transitions between traditional 3D models and mathematical fractals, showcasing this mode of geometric expression through interactive web-based rendering. For the technical implementation, I used a Ray Marching approach based on Signed Distance Functions as the core rendering method, enabling the system to directly intersect and shade complex programmatically defined geometry in real time. The fractal component is based on the Mandelbulb structure, inspired by an exploration of the 3D Mandelbrot form: by applying power-rotation and iteration to points in 3D spherical coordinates, a 3D fractal shape with rich self-similar detail can be generated. To achieve a smooth transition between the model and the fractal, I blended the procedural model's SDF with the Mandelbulb distance field at the mathematical level, constructing a continuous morphing process using smooth minimum and linear interpolation, so that intermediate states both preserve the original model's silhouette and progressively reveal fractal detail. The project demonstrates the application potential of WebGL, Three.js, and procedural geometry techniques in complex visual generation and interactive 3D artistic expression.

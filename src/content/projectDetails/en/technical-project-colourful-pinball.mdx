@@ -1,154 +1,25 @@
-﻿---
+## My Role
+
+In this two-month solo project **Colourful Pinball**, my main responsibilities included:
+
+* **Game Mechanics and Interaction Design**: Designed the overall gameplay and interface flow, including start menu, settings, in-game, and end screens.
+* **Physics System Implementation**: Implemented pinball movement, collision feedback, and gravity effects using **Box2D**.
+* **Visual Presentation**: Completed game visual style, particle effects, and collision feedback design.
+* **Music Visualization Adaptation**: Based on reference examples, adjusted and integrated music visualization effects into the project.
+* **Interface Optimization**: Refined UI layout, volume adjustment, and screen transition features to improve the overall experience.
 
 ---
 
-## Typography & Headers
+## Project Details
 
-This is a standard paragraph. It demonstrates the base font size, line height, and color defined in your `project-prose` class. Markdown allows you to easily make text **bold for emphasis**, *italic for styling*, or even use `inline code` for technical terms.
+This project aimed to develop a casual game **Colourful Pinball** combining **pinball gameplay, physics interaction, and music visualization**. Based on classic pinball mechanics and paired with vibrant visual style and dynamic audio-visual feedback, the game provides players with a relaxed and entertaining interactive experience.
 
-You can also use [hyperlinks](https://github.com) seamlessly within your text, which will inherit the underline and hover opacity effects you've set up.
+During development, I used the **Box2D** physics engine to build the core movement system, making the pinball's bouncing, collision, and force responses more closely resemble realistic physical behavior. At the same time, I designed a complete game interface structure — including main menu, settings screen, in-game screen, and end screen — allowing players to experience the game content within a fairly complete flow.
 
-### Header 3 (H3)
-
-This is an H3 header, typically used for sub-sections within your main H2 topics (like "My Contributions" or "Technical Highlights").
-
-#### Header 4 (H4)
-
-This is an H4, slightly smaller but still bold and distinct, perfect for minor groupings of content.
+To enhance the project's expressiveness, I further added **music visualization**: in specific scenes, the background and particle effects dynamically change in response to the rhythm and frequency of the music, giving the game not only basic playability but also a degree of artistic presentation. Ultimately, as an early work from my first year, this project not only helped me systematically practice the combination of game development, interface design, and visual presentation, but also gave me initial experience in fusing technical implementation with creative expression.
 
 ---
 
-## Lists
-
-### Unordered Lists
-
-Unordered lists are great for listing features, roles, or general bullet points:
-
-* Designed and implemented the core pinball physics with custom flipper controls.
-* Created real-time colour-blending shaders that mix hues additively.
-* Designed 3 themed pinball tables with escalating difficulty.
-* Integrated adaptive audio via FMOD with dynamic layers.
-
-### Ordered & Nested Lists
-
-Ordered lists are useful for step-by-step processes or prioritized items. You can also nest lists for deeper hierarchies:
-
-1. First, setup the custom `FlipperController` to apply angular velocity.
-    * Make sure to attach the `HingeJoint2D` component.
-    * Configure the angular limits in the inspector.
-2. Next, implement the `Color` state on the ball object.
-3. Finally, expose the blend rates to designers via Scriptable Objects.
-
-
-
----
-
-## Extended Text Formatting
-
-Sometimes you need more than just bold or italic text. You can use ~~strikethrough text~~ to indicate deprecated features or ideas that were scrapped during development.
-
-If you are writing documentation, you can use HTML tags like `<kbd>` to indicate keyboard inputs. For example: Press <kbd>Ctrl</kbd> + <kbd>C</kbd> to copy, or use <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> to move.
-
----
-
-## Blockquotes
-
-Blockquotes are excellent for highlighting important information, design philosophies, or direct quotes.
-
-> "The goal was to make a pinball game where you think about *where* to aim, not just *when* to flip."
->
-> — Lead Designer
-
----
-
-## Code and Preformatted Text
-
-For technical projects, you'll often need to share code. Your `project-prose` styles will wrap code blocks in a nice tinted background with a solid border.
-
-```csharp
-// FlipperController.cs
-public class FlipperController : MonoBehaviour
-{
-    public float hitStrength = 10000f;
-    public float flipperDamper = 150f;
-    private HingeJoint2D hinge;
-
-    void Start()
-    {
-        hinge = GetComponent<HingeJoint2D>();
-        hinge.useLimits = true;
-    }
-
-    public void ActivateFlipper()
-    {
-        // Custom angular velocity logic here instead of standard motor
-        JointMotor2D motor = hinge.motor;
-        motor.motorSpeed = hitStrength;
-        hinge.motor = motor;
-    }
-}
-```
-
----
-
-## Tables
-
-Tables are useful for structured data, comparisons, or performance metrics.
-
-| Feature | Implementation | Status |
-| :--- | :--- | :--- |
-| **Physics** | Custom `FlipperController` | Completed |
-| **Graphics** | Additive Hue Shaders | Completed |
-| **Audio** | FMOD Adaptive Layers | In Progress |
-| **UI/UX** | Brutalist Styling | Completed |
-
----
-
-## Interactive Elements (MDX)
-
-Because this is MDX, you can seamlessly use raw HTML elements. A great example is the `<details>` tag, which creates natively collapsible content sections.
-
-<details>
-    <summary><strong>👉 Click here to view the hidden debug log (Collapsible)</strong></summary>
-
-    This is very useful for long logs, extra code snippets, or spoiler content that you don't want to clutter the main page with.
-
-    ```bash
-    [INFO] Loading resources...
-    [INFO] FMOD initialized successfully.
-    [WARN] Missing texture for bumper_03.
-    [INFO] Level 1 loaded in 1.2 seconds.
-    ```
-
-</details>
-
----
-
-## Images
-
-Images will automatically get the `0.75rem` border-radius, `3px` solid border, and `6px 6px` hard shadow you defined, fitting perfectly into the brutalist aesthetic.
-
-<figure>
-    ![A placeholder image showing the brutalist style](https://picsum.photos/1200/600)
-    <figcaption>这是一个粗野主义风格的大图示例，完美适配你的项目主题色</figcaption>
-</figure>
-
----
-
-<div class="image-grid-2">
-
-    <figure>
-        ![左侧图片描述](https://picsum.photos/600/400)
-        <figcaption>这是左侧图片的说明文字，展示了核心功能的界面设计</figcaption>
-    </figure>
-
-    <figure>
-        ![右侧图片描述](https://picsum.photos/600/400)
-        <figcaption>这是右侧图片的说明文字，描述了色彩系统的实现细节</figcaption>
-    </figure>
-
-</div>
-
-
-### End of Template
-If you want to create a visual break on your page, use three dashes (`---`) to generate the styled horizontal divider you see above!
+> **Reference Notes**
+>* **良筝寻梦 (Bilibili)**: Referenced for music visualization expression style and dynamic effects.  `https://www.bilibili.com/video/BV1pb4y1t7oG/`
+>* **Aaron Reuland (OpenProcessing)**: Referenced for UI implementation approach and interaction presentation.  `https://openprocessing.org/sketch/1645787`

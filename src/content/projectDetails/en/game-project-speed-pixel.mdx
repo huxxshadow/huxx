@@ -1,0 +1,78 @@
+---
+---
+
+## My Role
+
+In this three-month solo game development project, I independently completed the full development pipeline from gameplay design and programming to testing and iteration. My main responsibilities included:
+
+* **Core Gameplay Design and Prototype**: Designed the cyclic relationship between character movement, speed growth, attack feedback, and survival pressure around the core concept of "speed is power," and implemented it as a continuously advancing parkour-combat gameplay loop.
+* **Game System Architecture and Feature Development**: Built the overall project architecture using Unity and C#, designing and implementing core modules including character control, combat system, procedural map generation, skill progression, UI management, audio control, and visual feedback.
+* **Procedural Level and Numeric Pacing Design**: Designed and implemented a map generation system based on chunk assembly and noise algorithms, giving levels a degree of randomness and replayability while maintaining playability; also responsible for numeric tuning of enemy density, obstacle frequency, speed thresholds, and growth curves.
+* **Roguelite Progression Mechanic Design**: Implemented a dual-layer progression structure combining in-run random upgrades and permanent meta-progression, giving each run immediate build variety and long-term unlock goals to enhance replayability.
+* **Testing, Iteration, and Experience Optimization**: Organized and participated in in-class playtesting, continuously adjusting the tutorial, speed bar readability, enemy spawn pacing, and control feel based on player feedback, conducting multiple rounds of optimization on the overall difficulty curve and user experience.
+
+---
+
+## Project Details
+
+*Speed Pixel* is a final project I independently completed for the course **GAME3005: 2D Platform Programming** — a fairly complete 2D platformer action Roguelite game demo. The project uses a minimal pixel art style as its visual foundation, combining high-speed movement, bullet-based combat, and in-run and meta-progression mechanics, attempting to build an action game experience centered on "rhythm, speed, and build construction." Players control a pixel block character, traversing obstacles in a world that continuously pushes forward, maintaining high speed, defeating enemies, and gradually unlocking new abilities and gameplay routes through repeated failure and restarts.
+
+The entire project's design revolves around a single, clear mechanical principle: **speed is power**. In this game, speed is not merely a movement ability — it is directly bound to the player's attack strength, survival state, and combat efficiency as the core resource. Players must maintain momentum through running, jumping, dashing, wall-sliding, and grapple-swinging; once speed drops, attack effectiveness is significantly reduced and even a danger state can be triggered. If speed reaches zero for too long, the character dies outright. This design makes the movement system not just a means of traversing terrain, but deeply integrated with combat, resource management, and survival decision-making — forming the fundamental tension of the entire game experience.
+
+### Core Gameplay Design: The Speed-Driven Combat Loop
+
+Unlike traditional platformers, *Speed Pixel* requires players to complete combat and traversal at high speed. The speed bar in the game is not just a display component — it is an important feedback system that guides player behavior. As speed increases, players enter different speed tiers and gain stronger damage output, additional attack effects, or more efficient enemy-clearing ability; when speed drops below key thresholds, the character's output capability drops noticeably and both combat and survival pressure rapidly increase. This design keeps players constantly driven by the dual motivation of "keep accelerating" and "avoid stalling."
+
+To support this core loop, I designed multiple movement mechanics linked to speed. The foundational layer includes running and jumping; the advanced layer adds energy-sphere dashes, wall-sliding, and grapple-swinging as high-mobility actions. Among these, the energy-sphere dash draws on the directional dash design from *Ori and the Blind Forest*, allowing players to rapidly displace in a specified direction upon contact with certain interaction points to cross high-risk areas or maintain continuous rhythm. The grapple mechanic further enhances map traversal expressiveness, enabling players to complete high-speed swings and movement chaining across complex terrain. Together these mechanics form a movement system highly dependent on rhythm and route judgment.
+
+### Combat System: High-Speed Suppression and Bullet Output
+
+For combat design, rather than adopting a traditional melee combo system, I combined "high-speed movement" with "automatic or semi-automatic firepower output," allowing players to clear enemies and maintain suppression while continuously advancing. Players can deal collision damage through speed directly, release energy waves upon reaching certain speed tiers, and equip different types of turrets or weapon modules that fire projectiles with differentiated effects.
+
+I designed multiple weapon expressions, including single-shot high damage, dual-shot balanced, triple-shot low-damage high-frequency, and rocket-type attacks with area explosion capability. These weapons differ not only in stats but also affect the player's combat rhythm and build direction. For example, high-burst weapons better handle elite enemies and key threats, while high-frequency bullet weapons better suit rapid clearance of dense enemy groups during high-speed advancement. Through this design, the combat system forms strong integration with the Roguelite build system, allowing players to develop different playstyles based on their upgrade choices in each run.
+
+For the projectile system implementation, I built a unified logic structure supporting multiple behaviors — straight, homing, piercing, and explosive — and used an object pool to reduce performance overhead from high-frequency creation and destruction. Particularly when enemy density is high and the number of on-screen projectiles is large, this structure keeps the combat screen stable and readable.
+
+### Roguelite Progression: In-Run Builds and Meta-Progression Together
+
+To increase replayability value, I added a fairly complete Roguelite progression framework to the project. Players return to the starting point after each failure, but retain resources earned during the run to unlock permanent upgrades, ability branches, and new equipment; within a single run, players can also gain temporary buffs through random upgrade choices, creating an in-run build experience with variety.
+
+This "dual-layer progression" mechanic satisfies both short-term feedback and long-term goals simultaneously: on one hand, players can try new upgrade combinations and experience different combat styles each run; on the other, even in failure, accumulated resources create a sense of ongoing growth that reduces the frustration of repeated challenges. For the implementation, I designed the skill tree system with a management logic based on unique IDs, unlock dependencies, and cost conditions, managing skills and abilities through a data-driven approach to make future extension of new upgrade content more convenient.
+
+### Procedural Map Generation: Balancing Randomness and Playability
+
+The map generation system is one of the modules I invested the most effort in during this project. Given that the game requires continuous forward advancement and emphasizes replayability and route variety, I adopted a modular chunk-assembly procedural generation approach. The overall scene is composed of a series of small prefab chunks with different functions and terrain characteristics, assembled into a complete level flow through a main path algorithm and branch generation logic.
+
+The main path primarily uses noise functions to generate natural elevation variation, ensuring the overall terrain has a rhythmic sense of change; branch paths generate based on parameter-controlled frequency, distance, and difficulty, preventing the map from becoming impassable or uninteresting after randomization. The system also incorporates collision detection, path continuity checking, and local density control to reduce chunk overlap, jump gaps, and invalid space issues. Through this approach, the map maintains strong replay variation without breaking the platformer's fundamental requirements for "readability" and "predictability."
+
+### Visual Style and Interface Design
+
+Visually, *Speed Pixel* uses a minimal pixel art style, emphasizing high contrast, strong recognizability, and readability during high-speed movement. Because of the game's fast pace, I prioritized information delivery efficiency over decorative complexity in all visual feedback design. Characters, enemies, traps, and interactive elements all use clear geometric outlines and distinct color differentiation as much as possible, allowing players to quickly identify hazards and path opportunities while moving at high speed.
+
+The UI design follows the principle of "minimal but highly legible." The speed bar is the single most critical information component in the entire interface, so I focused design effort on its position, color transition, and tier feedback, enabling players to grasp their current state without dividing too much attention. Beyond this, I designed upgrade selection screens, meta-shop screens, and results screens to carry the progression and feedback loops of the Roguelite gameplay. To reinforce the sense of speed and impact, the project also incorporates particle effects, hit deformation, state-change color feedback, and visual motion enhancement effects at high speed.
+
+### Technical Implementation and Engineering Organization
+
+The project was developed using **Unity 6000+ LTS** and **C#**, combined with **URP** for post-processing visual presentation in the pixel style. Architecturally, I divided the system into multiple independent modules — game flow management, player control, weapon and projectile systems, map generation, skill tree, UI management, audio control, and effect control — using event mechanisms to reduce direct coupling between modules. Core managers use a unified singleton base class to manage lifecycle; runtime data is organized by combining configuration data with state data for easier iteration and feature extension.
+
+To improve development efficiency and maintainability, I also used **DOTween** for UI and character feedback animations, **Odin Inspector** to improve editor configuration efficiency, and unified input control and time control logic to manage pausing, results screens, and non-combat state interactions. For performance optimization, focus was placed on map chunk loading/unloading, projectile and effect object pool management, and the resource consumption of post-processing and audio playback, maintaining relatively stable runtime performance throughout the development phase.
+
+### Testing and Iteration: Optimizing Through In-Class Playtesting
+
+In the project's completion phase, I participated in the course-organized in-class playtest showcase and invited classmates to play the game. This was the first time I had put my own work into direct hands-on testing by a larger group of players, which provided very genuine and valuable feedback. The most concentrated issues in testing included: too much tutorial text affecting early experience pacing; the speed bar readability could be improved further; late-game enemy pressure being insufficient, reducing tension; and some mechanics being intentionally deep but not intuitive enough for first-time players.
+
+In response to these issues, I subsequently made multiple adjustments to the project. For example, in the new player tutorial I reduced a large amount of text instructions, replacing them with more intuitive visual cues and progressive guidance; in difficulty design I increased the late-game enemy spawn frequency and added enemies and obstacles with stronger speed-suppression capabilities; I also optimized interface information hierarchy and control feedback to make it easier for players to understand the core goal of "maintain speed." This testing experience not only helped me identify design blind spots, but gave me a deeper understanding of the importance of playability validation and user feedback in game development.
+
+## Gameplay Design Document
+
+Embedded below is the Canva gameplay document for this project, which can be used to present the gameplay concept, system structure, and design thinking:
+
+<div
+    style="position: relative; width: 100%; height: 0; padding-top: 56.25%; margin-top: 1.5em; margin-bottom: 1em; overflow: hidden; border-radius: 8px; box-shadow: 0 2px 8px rgba(63,69,81,0.16);"
+>
+    <iframe
+        loading="lazy"
+        style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;"
+        src="https://www.canva.com/design/DAGi4nTZb0s/7FtNLX4d7bZdm6oOMjqtSA/watch?embed"
+    />
+</div>

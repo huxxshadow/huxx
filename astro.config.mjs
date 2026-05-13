@@ -8,7 +8,7 @@ import mdx from '@astrojs/mdx';
 
 export default defineConfig({
   site: 'https://huxxshadow.github.io',
-  base: '/huxx',
+  // base: '/huxx',
 
   vite: {
     plugins: [tailwindcss()],

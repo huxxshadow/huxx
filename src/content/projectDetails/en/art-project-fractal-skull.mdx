@@ -1,0 +1,65 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import img1 from '@/assets/projects/art-project-fractal-skull/art-project-fractal-skull1.webp';
+import img2 from '@/assets/projects/art-project-fractal-skull/art-project-fractal-skull2.webp';
+import img3 from '@/assets/projects/art-project-fractal-skull/art-project-fractal-skull3.webp';
+import img4 from '@/assets/projects/art-project-fractal-skull/art-project-fractal-skull4.webp';
+
+## My Role
+
+In this one-week solo project, I independently completed all creative and technical work. My main responsibilities included:
+
+* **Model Shape Reconstruction**: Used a fractal generation plugin in 3D software to apply complex mathematical fractal deformation to a base skull model with candle elements, giving it an abstract geometric visual form with strong mathematical regularity.
+* **Custom Material Development**: In the material node system, developed and blended a translucent waxy material with subsurface scattering properties and a metallic gold material with distribution controlled by ambient occlusion nodes.
+* **Scene Lighting Design**: Applied classic three-point lighting technique, precisely setting key, fill, and rim lights to highlight the model's geometric detail and material translucency, creating a mysterious visual atmosphere.
+* **Fractal Art Exploration**: Applied abstract mathematical fractal formulas (such as the 3D extension of the Mandelbrot set) to a concrete 3D model, exploring the visual fusion and artistic expression of mathematical patterns with natural forms.
+
+---
+
+## Project Details
+
+### Base Model and Fractal Reconstruction
+
+The foundation of this project is a skull model incorporating candle elements. The fluid streamlined form of melting wax and the rough skeletal texture of the skull create a striking contrast, providing an excellent base for subsequent deformation.
+
+For the fractal processing, I introduced a 3D extension fractal preset based on the Mandelbrot set. This complex structure perfectly combines the rigorous regularity of mathematics with the disorder of natural forms. By applying the fractal algorithm to the base model, the skull's surface grew layer upon layer of microscopic geometric detail, breaking the original smooth surface while retaining the skull's basic silhouette and endowing it with a powerful abstract aesthetic.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={img1} alt="Base skull model with candle elements in its original form" width={1024} height={779} />
+        <figcaption>Base skull model with candle elements in its original form</figcaption>
+    </figure>
+
+    <figure>
+        <Image src={img2} alt="Abstract geometric structure after high-iteration mathematical fractal deformation" width={1024} height={779} />
+        <figcaption>Abstract geometric structure after high-iteration mathematical fractal deformation</figcaption>
+    </figure>
+</div>
+
+### Custom Material System and Visual Narrative
+
+To enhance the work's visual impact and narrative depth, I conducted in-depth customization in the material node system. First, to echo the candle element at the top, I mixed a translucent waxy appearance for the skull body. By reducing surface roughness and introducing subsurface scattering effects, the model presents a soft, semi-transparent quality when light penetrates it, closely reproducing the warm luminosity and edge translucency of melting wax.
+
+At the same time, to inject metaphor and narrative into the work, I cleverly used ambient occlusion nodes to precisely detect the recessed and shadow areas of the model's surface, and blended a strong metallic gold material into these dark crevices. This design creates an extremely strong textural contrast and suggests a layer of narrative imagery: the skull and melting wax symbolize the passage of time and the end of life, while the gold seeping through the cracks alludes to the wealth and secrets hidden deep within.
+
+<figure>
+    <Image src={img3} alt="Material system layout using ambient occlusion nodes to precisely control the gold and wax blend distribution" width={1600} height={900} />
+    <figcaption>Material system layout using ambient occlusion nodes to precisely control the gold and wax blend distribution</figcaption>
+</figure>
+
+### Three-Point Lighting Design
+
+To perfectly present the extremely complex fractal surface and translucent material, I employed a classic and rigorous three-point lighting system. The key light positioned at the front-right defines the model's basic three-dimensional silhouette and activates surface reflections from the waxy material and specular highlights from the gold; the fill light at the front-left gently fills shadow dead zones, ensuring the minute geometric fractal details remain clearly visible under strong contrast; the rim light placed directly behind not only separates the skull from the dark background but further amplifies the subsurface translucency effect at the edges of the waxy surface, setting a deep and mysterious environmental tone for the entire scene.
+
+<figure>
+    <Image src={img4} alt="Three-point lighting layout for highlighting the model's three-dimensional depth and subsurface scattering texture" width={1600} height={900} />
+    <figcaption>Three-point lighting layout for highlighting the model's three-dimensional depth and subsurface scattering texture</figcaption>
+</figure>
+
+---
+
+> **Core Plugin and Asset Reference Notes**
+> * **Fractal Machine plugin**: Used to generate complex mathematical fractal geometry in 3D software, giving the model an infinitely subdivided microscopic structure and abstract expressiveness.
+> * **Open-source skull model asset**: Uses a high-precision scan model with candle details from BlenderKit as the base model for the overall shape reconstruction.

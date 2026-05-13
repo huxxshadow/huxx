@@ -1,0 +1,17 @@
+---
+---
+
+## My Role
+
+In this web-based 3D visualization project built with Three.js, I was primarily responsible for voxelization algorithm design, rendering implementation, and core interaction feature development. My main responsibilities included:
+
+* **Surface Voxelization Algorithm**: Implemented a model surface voxelization pipeline based on triangle area-weighted sampling, converting continuous mesh models into Lego-style discrete voxel structures, with thickness expansion to improve model completeness.
+* **Interior Fill System**: Implemented an interior voxel detection and fill algorithm based on Flood Fill, using breadth-first search to mark exterior space and generate more stable solid voxel models.
+* **Image Mapping and Color System**: Developed a texture projection solution supporting planar, spherical, and cylindrical mapping, allowing voxel models to retain color information from the original image or texture.
+* **Custom Shaders and Interactive Rendering**: Implemented three rendering styles in GLSL — cartoon pixel, wireframe, and retro — and used Three.js to complete the overall scene setup and real-time interactive display.
+
+---
+
+## Project Details
+
+This project aims to build a web-based 3D Lego voxelization application that converts complex 3D models into discrete Lego brick-style structures for real-time visualization in the browser. For the technical implementation, I used Three.js as the graphics foundation framework, building a complete pipeline around model voxelization, interior fill, image mapping, and stylized rendering. The project first extracts the model's shape through a triangle area-based surface sampling algorithm and combines it with thickness processing to generate a more complete voxel shell; it then uses the Flood Fill algorithm to identify the interior space of closed structures and further solidify the model. To enhance visual expressiveness, I implemented multiple texture mapping modes and custom GLSL Shaders, allowing the generated result to retain geometric structural features while also offering richer color and style expression. The project demonstrates the application capabilities of WebGL and Three.js in 3D geometry processing, interactive rendering, and stylized visualization.

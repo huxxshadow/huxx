@@ -1,0 +1,75 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import img1 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm1.webp';
+import img2 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm2.png';
+import img3 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm3.png';
+import img4 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm4.webp';
+import img5 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm5.webp';
+
+## My Role
+
+In this three-month solo development project, I independently handled the full-stack game development work. My main responsibilities included:
+
+* **Game Architecture and System Design**: Built a highly modular underlying architecture using the Unity engine, independently designing and implementing a character control system incorporating a Finite State Machine (FSM) and a node-editor-based card-style combat system.
+* **Level and Map Interaction Design**: Designed a non-linear exploration map with Metroidvania characteristics, integrating skill-unlock-driven area access restrictions and physics-based, dynamic-element puzzle terrain.
+* **UI/UX and Frontend Logic**: Designed a retro pixel-style user interface from scratch, implementing responsive combat card drag-and-drop interaction and real-time combo preview functionality.
+* **AI and Combat Logic Development**: Designed multi-phase Boss enemy combat AI through a Behavior Tree system, implementing dynamic target tracking, condition-triggered combos, and adaptive hit response.
+
+---
+
+## Project Details
+
+*Lost Realm* is my first complete mid-scale game demo independently developed using the Unity engine. The project aimed to create a 2D Metroidvania game with solid action feel and refined pixel visuals. Throughout development, I practiced every aspect of game engineering management in depth — from building core gameplay prototypes, to processing and integrating complex art assets, to polishing the final combat system — striving to simulate commercial indie game development standards comprehensively.
+
+### Modular Action and State Machine Design
+
+The character action system is the core of the game's 3C (Control, Camera, Character) design. To ensure smooth and extensible action combinations, I built the character controller based on a Finite State Machine (FSM). The system is divided into dozens of independent state nodes (such as walking, attacking, dashing, and hit stun).
+
+Through rigorous logic control and animation event callbacks, the state machine can handle smooth transitions and interruption logic between actions. For example, a character can seamlessly chain into a downward strike during an aerial dash, or trigger stun that interrupts the current skill startup upon being hit. To further enhance combat feedback, I also manually dissected and redrew multiple frame animation sets from the original art assets, and used Shaders to implement smooth sword energy effects and screen freeze-frame effects on hit.
+
+<figure>
+    <Image src={img4} alt="Character action control Finite State Machine and logic flow diagram draft" width={1600} height={900} />
+    <figcaption>Character action system foundation: draft of the Finite State Machine architecture for handling complex state transitions and input responses</figcaption>
+</figure>
+
+### Combat UI and Card Combination System
+
+To break away from traditional linear combo mechanics, I designed a high-freedom "action editor" combat system. Players can collect cards representing different "basic actions," "attribute buffs," and "effect modifiers" during exploration, and freely equip them in attack slots.
+
+To present this complex system intuitively to players, I conducted in-depth UI/UX design. As shown in the combat UI interface, players can equip cards through intuitive drag-and-drop; when a card is placed in a slot, the "action preview box" at the top of the interface plays the complete combo animation and damage data for that combination in real time. This "what-you-see-is-what-you-get" immediate feedback design greatly lowers the player's learning cost and encourages players to strategically assemble specialized combat styles — such as "heavy strike + armor break" or "high-frequency light strike + lightning core" — targeted at different Boss weaknesses.
+
+<figure>
+    <Image src={img1} alt="Card-based action editor and combat UI design" width={1600} height={900} />
+    <figcaption>Action Editor UI: including card slots, real-time attribute panel, and the real-time action combo preview box at the top</figcaption>
+</figure>
+
+### Pixel Art Repair and Scene Atmosphere Building
+
+Visually, the game established a retro yet refined high-contrast pixel aesthetic. However, during early scene construction, some pixel assets generated through AI tools like MidJourney exhibited obvious edge noise, perspective distortion, and color block discontinuities.
+
+To ensure ultimate visual unity and improve efficiency, I specifically developed an **AI PixelArt Repair Tool** to deeply optimize these original assets. This tool is built on Gradio, Pillow, and Scikit-learn, integrating automated image processing features including pixelation, color quantization, edge repair, and pixel block detection. Through this custom workflow, I successfully removed noisy artifacts from the original assets, re-standardized the scene's shadow tones and highlight outlines, and repaired broken brick and plant textures to seamlessly blend into the overall pixel environment. Additionally, combined with Unity's 2D lighting system and dynamic weather particle systems (such as raindrop splashing, water surface rippling, and multi-layer parallax scrolling backgrounds), I successfully created a deep and immersive lost ruins world. The polished scene assets shown below were processed through this custom tool:
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={img2} alt="High-quality scene asset after custom repair tool processing (1)" width={1600} height={900} />
+        <figcaption>High-quality pixel scene asset (1) after color quantization and edge repair by the custom tool</figcaption>
+    </figure>
+
+    <figure>
+        <Image src={img3} alt="High-quality scene asset after custom repair tool processing (2)" width={1600} height={900} />
+        <figcaption>High-quality pixel scene asset (2) after color quantization and edge repair by the custom tool</figcaption>
+    </figure>
+</div>
+
+### Boss AI Behavior Tree Design
+
+In the project's later stages, I focused on designing the first core Boss, the "Goblin King." To give the Boss an oppressive yet intelligent combat rhythm, I abandoned simple hardcoded logic and instead used a Behavior Tree system to drive its AI decision-making.
+
+The behavior tree dynamically selects the optimal action branch through continuous condition evaluation (such as player distance, current HP phase, and current position). For example, in the first phase the Boss primarily uses probing thrusts and blocks; when HP drops below a threshold and it enters an enraged phase, the behavior tree unlocks high-frequency combos and wide-range environmental destruction skills. This modular AI architecture not only makes the Boss's attack patterns unpredictable and highly challenging, but also provides a stable code framework for developing more diverse high-difficulty enemies in future development.
+
+<figure>
+    <Image src={img5} alt="AI behavior tree node diagram driving Boss intelligent combat decisions" width={1600} height={900} />
+    <figcaption>Complex AI behavior tree node system driving the Boss's multi-phase intelligent combat decision-making</figcaption>
+</figure>

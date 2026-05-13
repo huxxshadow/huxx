@@ -1,0 +1,30 @@
+import { Image } from 'astro:assets';
+import img1 from '@/assets/projects/technical-project-comfyui-ai-eco-film/technical-project-comfyui-ai-eco-film1.webp';
+import img2 from '@/assets/projects/technical-project-comfyui-ai-eco-film/technical-project-comfyui-ai-eco-film2.webp';
+
+## My Role
+
+As a project member, I was primarily responsible for **designing and implementing the video generation workflow**, covering two core phases: image preprocessing before video generation, and super-resolution and frame interpolation optimization after generation. My specific responsibilities included:
+
+- **Video Pre-processing Pipeline**: Preprocessed input images including image enhancement, brightness and contrast adjustment, color balance, and resolution standardization, providing clearer, more stable, and format-consistent inputs for the downstream video generation module.
+- **First-and-Last-Frame Guided Video Generation Workflow**: Built a first-and-last-frame guided video generation pipeline using **WAN2.2 Base Model**, **CLIP**, **VAE**, and **LightX2V LoRA**, using the first and last frames as temporal boundary conditions combined with positive/negative prompts to generate video sequences.
+- **Video Generation Parameter Design and Tuning**: During the sampling stage, adjusted prompt structure, noise branching, inference steps, and semantic control methods to optimize video performance in motion continuity, temporal consistency, and visual quality, improving generation efficiency and controllability.
+- **Super-Resolution Module for Video Post-Processing**: Processed generated videos by extracting frames and applying **DiT** and **VAE**-based pipelines to enhance frame-level clarity, reducing blur, compression artifacts, and texture loss to improve spatial detail and overall image quality.
+- **Frame Interpolation and Smoothness Optimization**: Used **GIMM-VFI** to generate intermediate transition frames between original frames, improving inter-frame continuity and motion smoothness while reducing the jitter caused by low frame rates.
+- **Full Video Output Integration**: After super-resolution and frame interpolation, recomposed the processed frame sequence into the final video and re-integrated it with original audio and metadata, ensuring the final output met expectations for visual quality and playback continuity.
+
+## Project Details
+
+In this project, I was primarily responsible for **the technical implementation of the main video workflow pipeline**. Before video generation, I designed and completed a preprocessing pipeline for input images, including image enhancement, brightness and contrast correction, color balance, and resolution standardization. The goal of this step was to improve the clarity and visual consistency of the raw input while ensuring it met the resolution and format requirements of the downstream video generation model. After preprocessing, I built a first-and-last-frame guided video generation pipeline based on **WAN2.2**, using **CLIP** for text semantic encoding, **VAE** for latent space mapping, and **LightX2V LoRA** to support more efficient low-step inference. By using the first and last frames as temporal boundary conditions combined with positive and negative prompts to control scene content, camera language, and motion, I achieved more coherent and controllable video generation results.
+
+<figure>
+    <Image src={img1} alt="Image preprocessing and first-and-last-frame guided video generation workflow" width={2886} height={1431} />
+    <figcaption>Video Pre-processing Pipeline: Workflow including image enhancement, resolution standardization, and first-and-last-frame guided video generation</figcaption>
+</figure>
+
+After video generation, I continued with the post-processing phase for image quality enhancement and motion optimization. First, I extracted frames from the generated video and applied **DiT** and **VAE** pipelines for frame-level super-resolution reconstruction, addressing common issues such as blur, compression artifacts, and insufficient texture, while maintaining scene content and style consistency. I then used **GIMM-VFI** for frame interpolation, generating intermediate frames between original frames to improve motion smoothness and temporal continuity during playback, reducing the stuttering and jumping common in low frame-rate videos. Finally, I recomposed the super-resolved and interpolated frame sequence into a video and re-integrated it with the original audio, resulting in noticeable improvements in clarity, stability, and viewing experience.
+
+<figure>
+    <Image src={img2} alt="Super-resolution and frame interpolation workflow in video post-processing" width={2657} height={1014} />
+    <figcaption>Video Post-processing Pipeline: Image quality enhancement and motion smoothing optimization based on super-resolution reconstruction and GIMM-VFI frame interpolation</figcaption>
+</figure>

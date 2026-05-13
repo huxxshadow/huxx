@@ -1,0 +1,72 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import img1 from '@/assets/projects/technical-project-smart-pot-joi/technical-project-smart-pot-joi1.webp';
+import img2 from '@/assets/projects/technical-project-smart-pot-joi/technical-project-smart-pot-joi2.webp';
+
+## My Role
+
+In this year-long startup-level IoT and AI project, I served as technical lead and core developer, leading the technical team to transform a concept prototype into a smart hardware product with commercial potential. My main responsibilities included:
+
+* **Core Architecture and Full-Stack Development**: Led the design and implementation of the overall architecture for both the device and server sides, independently developing multi-threaded concurrent processing, bidirectional frontend-backend communication, and seamless software-hardware data integration.
+* **AI Algorithm and Visual Tracking Integration**: Integrated speech recognition, emotion analysis and natural language generation based on a large language model (ChatGPT), and implemented an automatic pan-tilt tracking control algorithm based on facial recognition.
+* **Server Development and Optimization**: Built a high-concurrency, modular server architecture handling real-time sensor data (temperature and humidity), managing multi-user session contexts, and integrating an intelligent sensitive-word filtering mechanism.
+* **Multilingual Interaction Development**: Independently developed a real-time multilingual switching and translation module with deep integration of cloud cognitive services, enabling the device to seamlessly recognize and translate between English, Simplified Chinese, and Traditional Chinese.
+
+---
+
+## Project Details
+
+*Smart Pot Joi* is an intelligent plant care and emotional companion system combining cutting-edge AI technology. Through voice interaction, natural language processing, and emotion recognition, the system can provide warm conversation and facial expression feedback based on the user's emotional state, while also monitoring ambient temperature and humidity in real time to intelligently remind users to water their plants.
+
+### From Concept Prototype to Product Evolution
+
+In the project's early stages, we developed a microcontroller-based first-generation prototype. This prototype primarily validated the core business logic: including real-time environmental monitoring through temperature and humidity sensors, converting user voice commands to text and sending them to the cloud, then using a large language model to return brief, warm replies along with corresponding emotional states (such as smiling, surprised, etc.), and finally playing corresponding emotional short videos on the plant pot's screen. This stage validated the technical feasibility of combining plant care with emotional companionship.
+
+As the project deepened and commercial potential became apparent, we conducted a comprehensive hardware and software upgrade, releasing V1. In this version, we went beyond basic interaction, aiming to build a more natural and vibrant intelligent companion terminal.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={img1} alt="Smart Pot Joi early concept prototype" width={600} height={576} />
+        <figcaption>Early concept prototype: primarily validating the feasibility of voice interaction and basic emotional expression feedback</figcaption>
+    </figure>
+
+    <figure>
+        <Image src={img2} alt="Smart Pot Joi V1 version" width={600} height={576} />
+        <figcaption>V1 upgraded version: integrating face-tracking pan-tilt and multilingual real-time processing system</figcaption>
+    </figure>
+</div>
+
+### Face Tracking and Multilingual Real-Time Interaction
+
+In the latest generation (V1) product, we introduced a facial recognition and automatic rotating pan-tilt system, enabling the pot to track the user's face in real time and maintain "eye contact," greatly enhancing the device's sense of life and interaction naturalness.
+
+Additionally, the system integrates powerful multilingual speech processing and real-time translation capabilities. Leveraging Microsoft Azure cognitive services, the pot can automatically detect the language the user is speaking and seamlessly switch between English (en-US), Traditional Chinese (zh-HK), and Simplified Chinese (zh-CN). More importantly, we developed real-time speech translation functionality, breaking language barriers and making the pot not only an emotional companion robot but also a practical communication assistant in multilingual environments, meeting the needs of a global audience.
+
+### Modular High-Concurrency Server Architecture
+
+To support the increasingly complex device-side interactions, we refactored the server code with a highly extensible modular design. The server can now efficiently and stably handle concurrent multi-device requests, fully supporting independent context memory for multi-user conversations as well as secure verification and storage of underlying hardware data.
+
+The server not only routes voice requests to NLP models and generates speech feedback, but also integrates an intelligent sensitive-word filtering mechanism to ensure conversation content safety and compliance. Through deep software-hardware integration, this project not only meets practical smart home needs but also deeply aligns with the UN Sustainable Development Goals (SDGs, such as Good Health and Well-being and Sustainable Cities and Communities), providing a highly technology-driven emotional companion for modern life.
+
+---
+
+### Awards
+
+* **Champion and Best Creativity Award** - Open AI Cup Technology Business Competition
+* **Gold Award** - Digital Economy Innovation and Entrepreneurship Competition
+* **Selected Project** - Cyberport Greater Bay Area Youth Entrepreneurship Programme
+* **Selected Project** - Start-up Saturday
+
+### Exhibition Experience
+
+* Hong Kong Golden Age Expo
+* Po Leung Kuk Secondary School Joint-School Innovation and Technology Exhibition
+* Social Innovation Market Exhibition
+
+### Media Coverage
+
+* RTHK (Radio Television Hong Kong)
+* Hong Kong Economic Journal (信報)
+* Sing Tao Daily (星岛日报)
