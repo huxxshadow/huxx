@@ -34,24 +34,6 @@ const localeDescription = description || t(SITE_DESCRIPTION);
     <meta name="description" content={localeDescription} />
     <meta name="viewport" id="viewport-meta" content="width=device-width, initial-scale=1" />
 
-    <script is:inline>
-        (() => {
-            const baseDPR = 1.5;
-
-            const applyZoom = () => {
-                const currentDPR = window.devicePixelRatio || 1;
-                const scale = Math.abs(currentDPR - baseDPR) > 0.01 ? baseDPR / currentDPR : 1;
-                document.documentElement.style.zoom = String(scale);
-            };
-
-            applyZoom();
-
-            document.addEventListener("astro:page-load", applyZoom);
-            window.addEventListener("resize", applyZoom);
-        })();
-    </script>
-
-
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="generator" content={Astro.generator} />
     {

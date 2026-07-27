@@ -94,16 +94,6 @@ const GAME_THEMES = [
         const controller = new AbortController();
         const { signal } = controller;
 
-        // ===== Zoom 补偿工具函数 =====
-        function getZoomCompensation() {
-            const rect = container!.getBoundingClientRect();
-            if (rect.width === 0 || rect.height === 0) return { scaleX: 1, scaleY: 1 };
-            return {
-                scaleX: container!.clientWidth / rect.width,
-                scaleY: container!.clientHeight / rect.height,
-            };
-        }
-
         // ========== 广播主题色给 Header ==========
         function broadcastTheme(theme: { light: string; dark: string }) {
             container!.setAttribute('data-theme-bg', theme.light);
@@ -269,9 +259,7 @@ const GAME_THEMES = [
             if (e.touches.length > 0) {
                 const touch = e.touches[0];
                 const rect = canvas.getBoundingClientRect();
-                const { scaleY } = getZoomCompensation();
-                // 将视口像素偏移转换为 CSS 像素（游戏坐标）
-                const touchY = (touch.clientY - rect.top) * scaleY;
+                const touchY = touch.clientY - rect.top;
                 user.y = touchY - user.height / 2;
                 if (user.y < 0) user.y = 0;
                 if (user.y + user.height > gameHeight) user.y = gameHeight - user.height;
@@ -328,14 +316,12 @@ const GAME_THEMES = [
             const doDrag = (e: MouseEvent | TouchEvent) => {
                 if (!isResizingContainer) return;
                 const currentY = e.type.includes('mouse') ? (e as MouseEvent).clientY : (e as TouchEvent).touches[0].clientY;
-                const { scaleY } = getZoomCompensation();
-                // 鼠标移动量是视口像素，转换为 CSS 像素
-                const dy = (currentY - startY) * scaleY;
+                const dy = currentY - startY;
                 let newHeight = startHeight + dy;
 
                 const minHeight = 260;
                 if (newHeight < minHeight) newHeight = minHeight;
-                const maxHeight = window.innerHeight * scaleY * 0.8;
+                const maxHeight = window.innerHeight * 0.8;
                 if (newHeight > maxHeight) newHeight = maxHeight;
 
                 container.style.height = `${newHeight}px`;

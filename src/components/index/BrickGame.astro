@@ -369,16 +369,6 @@ const getSkillClass = (level: string) => {
         const controller = new AbortController();
         const { signal } = controller;
 
-        // ===== Zoom 补偿工具函数 =====
-        function getZoomCompensation() {
-            const rect = container!.getBoundingClientRect();
-            if (rect.width === 0 || rect.height === 0) return { scaleX: 1, scaleY: 1 };
-            return {
-                scaleX: container!.clientWidth / rect.width,
-                scaleY: container!.clientHeight / rect.height,
-                };
-            }
-
         // Mobile hint
         if (isTouchDevice && keyHintWrapper) {
             keyHintWrapper.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--theme-dark);"><path d="M5 12h14"/><path d="m8 15-3-3 3-3"/><path d="m16 9 3 3-3 3"/></svg>`;
@@ -466,10 +456,8 @@ const getSkillClass = (level: string) => {
         // ===== 修复：touch 坐标转换 =====
         function movePaddleToTouch(e: TouchEvent) {
             const rect = container.getBoundingClientRect();
-            const { scaleX } = getZoomCompensation();
             const clientX = e.touches[0].clientX;
-            // 视口像素偏移 → CSS 像素
-            const mouseX = (clientX - rect.left) * scaleX;
+            const mouseX = clientX - rect.left;
             const cw = container.clientWidth;
             paddleX = mouseX - paddleWidth / 2;
             if (paddleX < 0) paddleX = 0;
@@ -549,20 +537,18 @@ const getSkillClass = (level: string) => {
                 bricksContainer.appendChild(brickEl);
                 }
 
-            // ===== 修复：砖块位置用 zoom 补偿转换为 CSS 像素 =====
             setTimeout(() => {
                 const parentRect = container.getBoundingClientRect();
-                const { scaleX, scaleY } = getZoomCompensation();
                 const domBricks = bricksContainer.children;
                 for (let i = 0; i < domBricks.length; i++) {
                     const el = domBricks[i] as HTMLElement;
                     const rect = el.getBoundingClientRect();
                     brickData.push({
                         el,
-                        x: (rect.left - parentRect.left) * scaleX,
-                        y: (rect.top - parentRect.top) * scaleY,
-                        w: rect.width * scaleX,
-                        h: rect.height * scaleY,
+                        x: rect.left - parentRect.left,
+                        y: rect.top - parentRect.top,
+                        w: rect.width,
+                        h: rect.height,
                         active: true,
                         });
                     }

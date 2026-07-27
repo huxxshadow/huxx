@@ -120,18 +120,6 @@ const gamesData = gamesListData.map(game => ({
             let height = container.clientHeight;
             const wallThickness = 200;
 
-            // ===== Zoom 补偿工具函数 =====
-            // 当祖先元素有 CSS zoom 时，getBoundingClientRect() 返回视口像素，
-            // 而 clientWidth/offsetWidth 返回 CSS 像素。两者不再相等。
-            function getZoomCompensation() {
-                const rect = container!.getBoundingClientRect();
-                if (rect.width === 0 || rect.height === 0) return { scaleX: 1, scaleY: 1 };
-                return {
-                    scaleX: container!.clientWidth / rect.width,
-                    scaleY: container!.clientHeight / rect.height,
-                    };
-                }
-
             const wallOptions = { isStatic: true, render: { visible: false } };
             const ground = Bodies.rectangle(width / 2, height + wallThickness / 2, width * 2, wallThickness, wallOptions);
             const leftWall = Bodies.rectangle(-wallThickness / 2, height / 2, wallThickness, height * 3, wallOptions);
@@ -242,25 +230,6 @@ const gamesData = gamesListData.map(game => ({
                     constraint: { stiffness: 0.1, render: { visible: false } }
                     });
                 World.add(engine.world, mouseConstraint);
-
-                // ===== Zoom 补偿：修正 Matter.js 鼠标位置 =====
-                // Matter.js 内部用 getBoundingClientRect + clientWidth 算鼠标位置，
-                // 在 CSS zoom 环境下公式方向反了，导致拖拽偏移。
-                // 这里在 Matter.js 处理完事件后，覆写为正确的 CSS 像素坐标。
-                function correctMousePosition(e: MouseEvent) {
-                    const rect = container!.getBoundingClientRect();
-                    const cw = container!.clientWidth;
-                    const ch = container!.clientHeight;
-                    const rw = rect.width || 1;
-                    const rh = rect.height || 1;
-                    // 将视口像素偏移转换为 CSS 像素（物理世界坐标）
-                    mouse.position.x = (e.clientX - rect.left) * (cw / rw);
-                    mouse.position.y = (e.clientY - rect.top) * (ch / rh);
-                    }
-
-                // 注册在 Matter.js 的监听器之后，确保覆写其计算结果
-                container.addEventListener('mousemove', correctMousePosition);
-                container.addEventListener('mousedown', correctMousePosition);
                 }
 
             const runner = Runner.create();
