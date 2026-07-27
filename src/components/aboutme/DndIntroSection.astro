@@ -11,7 +11,7 @@ const roleList = rolesData[locale] || rolesData.en;
 
 <section
         class="relative overflow-hidden w-full px-4 lg:px-24 py-12 lg:py-20 flex justify-center border-b-[4px] border-dashed border-current/20"
-        style={`background-color: ${COLORS.red.light}; color: ${COLORS.red.dark}; --theme-bg: ${COLORS.red.light}; --theme-text: ${COLORS.red.dark};`}
+        style={`background-color: ${COLORS.khakiMilan}; color: ${COLORS.black}; --theme-bg: ${COLORS.khakiMilan}; --theme-text: ${COLORS.black};`}
 >
     <!-- 主体内容容器 -->
     <div class="w-full flex flex-col  lg:flex-row gap-8 lg:gap-16 relative z-10 items-stretch">
@@ -34,7 +34,7 @@ const roleList = rolesData[locale] || rolesData.en;
             </div>
 
             <!-- 自我介绍段落 -->
-            <div class="text-base sm:text-lg lg:text-xl font-medium leading-relaxed opacity-95 border-l-[4px] pl-5 py-1 flex flex-col gap-5" style={`border-color: ${COLORS.red.dark};`}>
+            <div class="text-base sm:text-lg lg:text-xl font-medium leading-relaxed opacity-95 border-l-[4px] pl-5 py-1 flex flex-col gap-5" style={`border-color: ${COLORS.black};`}>
                 <p>{t(introLabels.descTop)}</p>
                 <p>{t(introLabels.descBottom)}</p>
             </div>
@@ -70,7 +70,7 @@ const roleList = rolesData[locale] || rolesData.en;
                 </div>
             </div>
 
-            <!-- 向下过渡：引入DND卡片模块 -->
+            {/* 「凡俗的履历」引导按钮暂时隐藏
             <div class="mt-4   border-current/15">
                 <div
                         class="cta-box group flex items-start lg:items-center gap-5 p-5 sm:p-8 rounded-2xl border-[3px] cursor-pointer"
@@ -82,7 +82,7 @@ const roleList = rolesData[locale] || rolesData.en;
                             {t(introLabels.transition)}
                         </p>
                     </div>
-                    <!-- 桌面端向下跳动的箭头图标 -->
+                    桌面端向下跳动的箭头图标
                     <div
                             class="hidden lg:flex items-center justify-center w-12 h-12 rounded-full border-[3px] opacity-80 group-hover:opacity-100 transition-opacity"
                             style={`border-color: ${COLORS.red.dark};`}
@@ -91,6 +91,7 @@ const roleList = rolesData[locale] || rolesData.en;
                     </div>
                 </div>
             </div>
+            */}
 
         </div>
     </div>

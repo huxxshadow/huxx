@@ -1,7 +1,7 @@
 ﻿---
 // src/components/ExperienceSection.astro
 import { useTranslations, type Lang } from "@/i18n.ts";
-import { BLUE_THEMES } from "@/consts.ts";
+import { COLORS } from "@/consts.ts";
 import { experienceListData } from "@/i18n/components/index/ExperienceSection_i18.ts";
 
 // 引入 Logo 静态资源
@@ -12,9 +12,8 @@ import { experienceListData } from "@/i18n/components/index/ExperienceSection_i1
 const locale = Astro.currentLocale as Lang;
 const t = useTranslations(locale);
 
-// Both blue: pale surface for collapsed cards, a deeper sky-blue for the active card.
-const defaultTheme = BLUE_THEMES[0]; // #e3f2fd / #0d47a1
-const activeTheme = BLUE_THEMES[4];  // #90caf9 / #0a2f54 — stands out, still blue
+// 初始配色用 pong 起始色（蓝色）；运行时由首页脚本实时同步为 pong 当前颜色
+const initialTheme = COLORS.blue;
 
 // 将 i18n 数据转换为当前语言可用的扁平数据，方便 HTML 循环
 const experiences = experienceListData.map(item => ({
@@ -31,22 +30,16 @@ const experiences = experienceListData.map(item => ({
 
 <section
         id="experience-section"
-        class="relative w-full overflow-hidden"
-        data-theme-bg={activeTheme.light}
-        data-theme-text={activeTheme.dark}
-        style={`background-color: ${defaultTheme.light}; color: ${defaultTheme.dark};`}
+        class="relative w-full overflow-hidden transition-colors duration-300"
+        data-theme-bg={initialTheme.light}
+        data-theme-text={initialTheme.dark}
+        style={`background-color: ${initialTheme.light}; color: ${initialTheme.dark}; --theme-bg: ${initialTheme.light}; --theme-text: ${initialTheme.dark};`}
 >
     <div class="flex flex-col lg:flex-row w-full h-auto lg:h-[720px]">
         {experiences.map((exp, index) => (
                 <div
                         class={`exp-card group cursor-pointer relative overflow-hidden transition-[flex,background-color] rounded-t-3xl duration-700 ease-[cubic-bezier(0.2,1,0.3,1)] ${index === 0 ? 'active lg:flex-[5]' : 'lg:flex-[1]'}`}
-                        data-active-bg={activeTheme.light}
-                        data-active-text={activeTheme.dark}
-                        data-default-bg={defaultTheme.light}
-                        data-default-text={defaultTheme.dark}
-                        style={index === 0
-                            ? `background-color: ${activeTheme.light}; color: ${activeTheme.dark};`
-                            : `background-color: ${defaultTheme.light}; color: ${defaultTheme.dark};`}
+                        style="background-color: var(--theme-bg); color: var(--theme-text);"
                 >
                     <div class="exp-collapsed-view flex flex-col items-center justify-center p-6 lg:p-6 transition-all duration-500 gap-0 w-full h-full">
                         <div
@@ -160,41 +153,21 @@ const experiences = experienceListData.map(item => ({
 <script>
     document.addEventListener('astro:page-load', () => {
         const cards = document.querySelectorAll('.exp-card');
-        const expSection = document.getElementById('experience-section');
 
         // ==========================================
-        // 经验部分卡片展开逻辑
+        // 经验部分卡片展开逻辑（配色由首页脚本跟随 pong 统一控制）
         // ==========================================
         cards.forEach(card => {
             card.addEventListener('click', () => {
                 if (card.classList.contains('active')) return;
 
-                const activeBg = card.getAttribute('data-active-bg');
-                const activeText = card.getAttribute('data-active-text');
-
                 cards.forEach(c => {
                     c.classList.remove('active', 'lg:flex-[5]');
                     c.classList.add('lg:flex-[1]');
-
-                    const dBg = c.getAttribute('data-default-bg');
-                    const dText = c.getAttribute('data-default-text');
-
-                    (c as HTMLElement).style.backgroundColor = dBg || '';
-                    (c as HTMLElement).style.color = dText || '';
                 });
 
                 card.classList.remove('lg:flex-[1]');
                 card.classList.add('active', 'lg:flex-[5]');
-
-                (card as HTMLElement).style.backgroundColor = activeBg || '';
-                (card as HTMLElement).style.color = activeText || '';
-
-                if (activeBg && activeText && expSection) {
-                    const event = new CustomEvent('section-theme-change', {
-                        detail: { bg: activeBg, text: activeText, source: expSection }
-                    });
-                    document.dispatchEvent(event);
-                }
             });
         });
     });

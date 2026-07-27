@@ -2,7 +2,7 @@
 import { LOCALES, useTranslations, type Lang } from "@/i18n";
 import Layout from "@/layouts/Base.astro";
 import Avatar from "@/assets/avater.svg";
-import { BLUE_PRIMARY } from "@/consts";
+import { COLORS } from "@/consts";
 
 import { indexTranslations } from "@/i18n/index_i18";
 const locale = Astro.currentLocale as Lang;
@@ -23,10 +23,11 @@ export const getStaticPaths = () =>
     <PongGame />
 
     <section
-            class="relative overflow-hidden w-full px-4 sm:px-6 py-8 lg:py-12 flex justify-center"
-            style={`background-color: ${BLUE_PRIMARY.light}; color: ${BLUE_PRIMARY.dark}; --theme-text: ${BLUE_PRIMARY.dark}; --theme-bg: ${BLUE_PRIMARY.light};`}
-            data-theme-bg={BLUE_PRIMARY.light}
-            data-theme-text={BLUE_PRIMARY.dark}
+            id="hero-section"
+            class="relative overflow-hidden w-full px-4 sm:px-6 py-8 lg:py-12 flex justify-center transition-colors duration-300"
+            style={`background-color: ${COLORS.blue.light}; color: ${COLORS.blue.dark}; --theme-text: ${COLORS.blue.dark}; --theme-bg: ${COLORS.blue.light};`}
+            data-theme-bg={COLORS.blue.light}
+            data-theme-text={COLORS.blue.dark}
     >
         <div class="bg-orb-1 absolute -top-32 -left-24 w-[20rem] lg:w-[30rem] h-[20rem] lg:h-[30rem] rounded-full bg-current opacity-[0.04] pointer-events-none z-0"></div>
         <div class="bg-strip absolute top-1/2 -left-20 w-[120%] h-80 bg-current opacity-[0.02] pointer-events-none z-0 rounded-[100px]"></div>
@@ -68,7 +69,7 @@ export const getStaticPaths = () =>
 
                     <div
                             class="space-y-4 lg:space-y-6 text-lg lg:text-xl font-medium leading-relaxed opacity-95 lg:border-l-[4px] lg:pl-5 py-1 text-center lg:text-left"
-                            style={`border-color: ${BLUE_PRIMARY.dark};`}
+                            style="border-color: currentColor;"
                     >
                         <p>{t(indexTranslations.experience1Sub)}</p>
                         <p>{t(indexTranslations.experience2)}</p>
@@ -123,6 +124,49 @@ export const getStaticPaths = () =>
 
     <BrickGame />
 </Layout>
+
+<script>
+    // ================================================================
+    // 让 Hero 与 Experience 区域实时跟随 PongGame 的当前配色
+    // PongGame 每次变色都会 dispatch section-theme-change（source=pong-container），
+    // 这里监听并把颜色同步到这两个区域（含 --theme-bg/--theme-text 供卡片与标签使用）。
+    // ================================================================
+    document.addEventListener('astro:page-load', () => {
+        const targets = ['hero-section', 'experience-section']
+            .map(id => document.getElementById(id))
+            .filter((el): el is HTMLElement => el !== null);
+        if (targets.length === 0) return;
+
+        const controller = new AbortController();
+        const { signal } = controller;
+        document.addEventListener('astro:before-swap', () => controller.abort(), { once: true });
+
+        const applyPongColor = (bg: string, text: string) => {
+            targets.forEach(el => {
+                el.style.backgroundColor = bg;
+                el.style.color = text;
+                el.style.setProperty('--theme-bg', bg);
+                el.style.setProperty('--theme-text', text);
+                el.setAttribute('data-theme-bg', bg);
+                el.setAttribute('data-theme-text', text);
+            });
+        };
+
+        document.addEventListener('section-theme-change', ((e: CustomEvent) => {
+            const { bg, text, source } = e.detail || {};
+            if (!bg || !text || !(source instanceof Element) || source.id !== 'pong-container') return;
+            applyPongColor(bg, text);
+        }) as EventListener, { signal });
+
+        // 初始同步：pong 可能在监听器注册前就已广播过一次
+        const pong = document.getElementById('pong-container');
+        if (pong) {
+            const bg = pong.getAttribute('data-theme-bg');
+            const text = pong.getAttribute('data-theme-text');
+            if (bg && text) applyPongColor(bg, text);
+        }
+    });
+</script>
 
 <style>
     .bg-orb-1 {
