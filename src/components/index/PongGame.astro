@@ -2,24 +2,18 @@
 // src/components/PongGame.astro
 import { type Lang, useTranslations } from "@/i18n.ts";
 import { pongTranslations } from "@/i18n/components/index/PongGame_i18.ts";
-import { COLORS } from "@/consts.ts";
+import { BLUE_THEMES } from "@/consts.ts";
 
 const currentLocale = (Astro.currentLocale || "en") as Lang;
 const t = useTranslations(currentLocale);
 
-const GAME_THEMES = [
-    COLORS.green,
-    COLORS.yellow,
-    COLORS.blue,
-    COLORS.orange,
-    COLORS.purple,
-    COLORS.red
-];
+const GAME_THEMES = BLUE_THEMES;
+const INITIAL_THEME = GAME_THEMES[0];
 ---
 
 <div id="pong-container" class="w-full min-h-[220px] overflow-hidden relative font-sans transition-colors duration-300"
-     style={`height: 260px; background-color: var(--theme-light); --theme-light: ${COLORS.green.light};
---theme-dark: ${COLORS.green.dark};`}
+     style={`height: 260px; background-color: var(--theme-light); --theme-light: ${INITIAL_THEME.light};
+--theme-dark: ${INITIAL_THEME.dark};`}
      data-i18n-start={t(pongTranslations.startGame)}
      data-i18n-try={t(pongTranslations.tryNow)}
      data-i18n-resume={t(pongTranslations.resumeGame)}
@@ -27,8 +21,8 @@ const GAME_THEMES = [
      data-i18n-touch={t(pongTranslations.touchScreen)}
      data-i18n-level={t(pongTranslations.level)}
      data-themes={JSON.stringify(GAME_THEMES)}
-     data-theme-bg={COLORS.green.light}
-     data-theme-text={COLORS.green.dark}
+     data-theme-bg={INITIAL_THEME.light}
+     data-theme-text={INITIAL_THEME.dark}
 >
 
     <div id="start-screen" class="absolute inset-0 z-10 flex flex-col items-center justify-center transition-opacity duration-500 ease-out pb-3" style="background-color: var(--theme-light);">

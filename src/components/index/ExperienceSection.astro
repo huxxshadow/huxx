@@ -1,7 +1,7 @@
 ﻿---
 // src/components/ExperienceSection.astro
 import { useTranslations, type Lang } from "@/i18n.ts";
-import { COLORS } from "@/consts.ts";
+import { BLUE_THEMES } from "@/consts.ts";
 import { experienceListData } from "@/i18n/components/index/ExperienceSection_i18.ts";
 
 // 引入 Logo 静态资源
@@ -12,8 +12,9 @@ import { experienceListData } from "@/i18n/components/index/ExperienceSection_i1
 const locale = Astro.currentLocale as Lang;
 const t = useTranslations(locale);
 
-const defaultTheme = COLORS.blue;
-const activeTheme = COLORS.purple;
+// Both blue: pale surface for collapsed cards, a deeper sky-blue for the active card.
+const defaultTheme = BLUE_THEMES[0]; // #e3f2fd / #0d47a1
+const activeTheme = BLUE_THEMES[4];  // #90caf9 / #0a2f54 — stands out, still blue
 
 // 将 i18n 数据转换为当前语言可用的扁平数据，方便 HTML 循环
 const experiences = experienceListData.map(item => ({

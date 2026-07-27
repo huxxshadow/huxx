@@ -1,6 +1,6 @@
 ﻿// src/i18n/components/GameStickerSection_i18.ts
 import type { Multilingual } from "@/i18n.ts";
-import { COLORS } from "@/consts.ts";
+import { BLUE_THEMES } from "@/consts.ts";
 import EmptyThronePoster from "@/assets/projects/poster/EmptyThornePoster.webp";
 import EelOnMaskPoster from "@/assets/projects/poster/EelOnMaskPoster.webp";
 import ClickClickUniversePoster from "@/assets/projects/poster/ClickClickUniversePoster.webp";
@@ -43,7 +43,7 @@ export const gamesListData: GameData[] = [
             ja: "「空の玉座」はストーリー主導のダークファンタジーパズルゲームです。あなたは作曲家として宮廷に召喚され、白雪の女王の物語を書きます。しかし、この脚本には複数の原稿があるようです...",
             ko: "\"빈 왕좌\"는 스토리 중심의 다크 동화 퍼즐 게임입니다. 당신은 눈의 여왕을 위한 이야기를 쓰기 위해 왕궁으로 소환된 작곡가입니다. 하지만 이 대본에는 한 가지 초안만 있는 것이 아닌 것 같습니다..."
         },
-        theme: COLORS.blue,
+        theme: BLUE_THEMES[0], // #e3f2fd / #0d47a1
         image: EmptyThronePoster,
         link: "https://store.steampowered.com/app/3907100"
     },
@@ -67,7 +67,7 @@ export const gamesListData: GameData[] = [
             ja: "Eel On Mask は、主人公 Eel として不思議な「クリッピングマスク」の力を使い、ステッカーの材質を自在に変えながら様々な世界の謎を解いて真実に迫る、2D パズルプラットフォーマーです。",
             ko: "Eel On Mask는 주인공 Eel이 신비한 “Clipping Mask”의 힘을 사용해 스티커의 재질을 자유롭게 바꾸고, 다양한 세계의 퍼즐을 풀며 마지막 진실을 찾아가는 2D 퍼즐 플랫포머 게임입니다."
         },
-        theme: COLORS.orange,
+        theme: BLUE_THEMES[1], // #bbdefb / #0a2f54
         image: EelOnMaskPoster,
         link: "https://store.steampowered.com/app/4391180"
     },
@@ -91,7 +91,7 @@ export const gamesListData: GameData[] = [
             ja: "Click Click Universe は、心地よく楽しい見下ろし型 3D クリッカーゲームです。多面体で構成されたオープンワールドを自由に探索し、アイテムを集めたり、さまざまなインタラクションを発生させたり、クリックのたびに変化していく世界を楽しめます。",
             ko: "Click Click Universe는 편안하고 유쾌한 탑다운 3D 클리커 게임입니다. 플레이어는 다면체로 이루어진 오픈 월드를 자유롭게 탐험하며, 아이템을 수집하고, 상호작용을 일으키고, 클릭할 때마다 변화하는 세계를 관찰할 수 있습니다."
         },
-        theme: COLORS.green,
+        theme: BLUE_THEMES[4], // #90caf9 / #0a2f54
         image: ClickClickUniversePoster,
         link: "https://store.steampowered.com/app/4287740"
     }

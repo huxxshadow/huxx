@@ -2,7 +2,7 @@
 import { LOCALES, useTranslations, type Lang } from "@/i18n";
 import Layout from "@/layouts/Base.astro";
 import Avatar from "@/assets/avater.svg";
-import { COLORS } from "@/consts";
+import { BLUE_PRIMARY } from "@/consts";
 
 import { indexTranslations } from "@/i18n/index_i18";
 const locale = Astro.currentLocale as Lang;
@@ -24,9 +24,9 @@ export const getStaticPaths = () =>
 
     <section
             class="relative overflow-hidden w-full px-4 sm:px-6 py-8 lg:py-12 flex justify-center"
-            style={`background-color: ${COLORS.blue.light}; color: ${COLORS.blue.dark}; --theme-text: ${COLORS.blue.dark}; --theme-bg: ${COLORS.blue.light};`}
-            data-theme-bg={COLORS.blue.light}
-            data-theme-text={COLORS.blue.dark}
+            style={`background-color: ${BLUE_PRIMARY.light}; color: ${BLUE_PRIMARY.dark}; --theme-text: ${BLUE_PRIMARY.dark}; --theme-bg: ${BLUE_PRIMARY.light};`}
+            data-theme-bg={BLUE_PRIMARY.light}
+            data-theme-text={BLUE_PRIMARY.dark}
     >
         <div class="bg-orb-1 absolute -top-32 -left-24 w-[20rem] lg:w-[30rem] h-[20rem] lg:h-[30rem] rounded-full bg-current opacity-[0.04] pointer-events-none z-0"></div>
         <div class="bg-strip absolute top-1/2 -left-20 w-[120%] h-80 bg-current opacity-[0.02] pointer-events-none z-0 rounded-[100px]"></div>
@@ -68,7 +68,7 @@ export const getStaticPaths = () =>
 
                     <div
                             class="space-y-4 lg:space-y-6 text-lg lg:text-xl font-medium leading-relaxed opacity-95 lg:border-l-[4px] lg:pl-5 py-1 text-center lg:text-left"
-                            style={`border-color: ${COLORS.blue.dark};`}
+                            style={`border-color: ${BLUE_PRIMARY.dark};`}
                     >
                         <p>{t(indexTranslations.experience1Sub)}</p>
                         <p>{t(indexTranslations.experience2)}</p>

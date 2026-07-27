@@ -1,7 +1,7 @@
 ﻿---
 // src/components/GameStickerSection.astro
 import { useTranslations, type Lang } from "@/i18n.ts";
-import { COLORS } from "@/consts.ts";
+import { BLUE, BLUE_INK } from "@/consts.ts";
 import { gamesListData, gameSectionUI } from "@/i18n/components/index/GameStickerSection_i18.ts";
 
 const locale = Astro.currentLocale as Lang;
@@ -19,9 +19,9 @@ const gamesData = gamesListData.map(game => ({
 <section
         id="games-sticker-section"
         class="relative w-full h-[var(--mobile-height)] lg:h-[1000px] overflow-hidden pt-12 lg:pt-16"
-        style={`--mobile-height: ${gamesData.length * 120}vw; background-color: ${COLORS.khakiMilan}; color: ${COLORS.black};`}
-        data-theme-bg={COLORS.khakiMilan}
-        data-theme-text={COLORS.black}
+        style={`--mobile-height: ${gamesData.length * 120}vw; background-color: ${BLUE[50]}; color: ${BLUE_INK.navy};`}
+        data-theme-bg={BLUE[50]}
+        data-theme-text={BLUE_INK.navy}
 >
     <div class="absolute top-12 lg:top-16 inset-x-0 mx-auto w-full px-4 sm:px-8 z-0 pointer-events-none flex justify-start">
         <h2 class="brutalist-tag bg-white text-3xl lg:text-4xl">
@@ -47,12 +47,12 @@ const gamesData = gamesListData.map(game => ({
                 <div
                         id={game.id}
                         data-link={game.link}
-                        class="game-sticker absolute top-0 left-0 group flex flex-col sm:flex-row w-[80vw] sm:w-[680px] rounded-2xl overflow-hidden shadow-[6px_6px_0px_rgba(73,73,73,1)]  transition-[box-shadow] border-2 select-none bg-white"
-                        style={`border-color: ${COLORS.black};`}
+                        class="game-sticker absolute top-0 left-0 group flex flex-col sm:flex-row w-[80vw] sm:w-[680px] rounded-2xl overflow-hidden shadow-[6px_6px_0px_rgba(10,47,84,1)]  transition-[box-shadow] border-2 select-none bg-white"
+                        style={`border-color: ${BLUE_INK.navy};`}
                 >
                     <div
                             class="relative w-full sm:w-[320px] flex-shrink-0 border-b-2 sm:border-b-0 sm:border-r-2 overflow-hidden pointer-events-none"
-                            style={`border-color: ${COLORS.black}; background-color: ${game.theme.light}; aspect-ratio: 1232 / 706;`}
+                            style={`border-color: ${BLUE_INK.navy}; background-color: ${game.theme.light}; aspect-ratio: 1232 / 706;`}
                     >
                         <img
                                 src={game.image?.src || game.image}
