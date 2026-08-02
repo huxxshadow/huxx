@@ -61,21 +61,37 @@ const defaultLocale = DEFAULT_LOCALE;
     </noscript>
 
     <script is:inline define:vars={{ langs, baseUrl, defaultLocale }}>
-        if (
-            localStorage.selectedLang &&
-            langs.includes(localStorage.selectedLang)
-        ) {
-            location.href = `${baseUrl}${localStorage.selectedLang}/`;
-        } else {
-            const browserLang = navigator.language.toLowerCase();
-            if (langs.includes(browserLang)) {
-                location.href = `${baseUrl}${browserLang}/`;
-            } else if (langs.includes(browserLang.split("-")[0])) {
-                location.href = `${baseUrl}${browserLang.split("-")[0]}/`;
-            } else {
-                location.href = `${baseUrl}${defaultLocale}/`;
+        // 站点默认语言跟随用户系统 / 浏览器的语言设置。
+        // 手动选过语言（localStorage.selectedLang）时以那个为准，否则按系统偏好挑。
+        function pickLang() {
+            let stored = null;
+            try {
+                stored = localStorage.getItem("selectedLang");
+            } catch (e) {
+                // 隐私模式下 localStorage 可能直接抛错，忽略即可
             }
+            if (stored && langs.includes(stored)) return stored;
+
+            // navigator.languages 是系统里排好优先级的完整列表，
+            // 比单个 navigator.language（只是浏览器界面语言）更贴近「电脑设置的语言」
+            const prefs =
+                navigator.languages && navigator.languages.length
+                    ? navigator.languages
+                    : [navigator.language];
+
+            for (const raw of prefs) {
+                if (!raw) continue;
+                const tag = raw.toLowerCase();
+                // 先按完整标签匹配（zh），再退回主语言子标签（zh-cn -> zh、zh-hant-tw -> zh）
+                if (langs.includes(tag)) return tag;
+                const primary = tag.split("-")[0];
+                if (langs.includes(primary)) return primary;
+            }
+            return defaultLocale;
         }
+
+        // 用 replace：这个中转页不留在历史记录里，从目标页按返回不会被弹回来重定向
+        location.replace(`${baseUrl}${pickLang()}/`);
     </script>
 </head>
 <body>
