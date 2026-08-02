@@ -6,21 +6,59 @@ import type { Lang } from "@/i18n.ts";
 import { useTranslations } from "@/i18n.ts";
 import { Image } from 'astro:assets';
 import {
+    animeJourneyLabels,
     gameJourneyLabels,
+    journeyTitleParts,
     playerProfileData,
     playStyleData,
 } from "@/i18n/components/aboutme/GameJourneySection_i18.ts";
 
 const games = await getCollection("games");
+const animes = await getCollection("animes");
 
 // 按照 JSON 顺序倒序显示：JSON 最后一个 -> 页面最前面
-const orderedGames = [...games].sort((a, b) => b.data.order - a.data.order);
-
-// 筛选出最喜欢的游戏，并保持同样的倒序
-const favoriteGames = orderedGames.filter(game => game.data.favorite);
+const byOrderDesc = <T extends { data: { order: number } }>(entries: T[]) =>
+    [...entries].sort((a, b) => b.data.order - a.data.order);
 
 const currentLang = (Astro.currentLocale || "en") as Lang;
 const t = useTranslations(currentLang);
+
+// 游戏 / 动画两条旅程结构完全一致，只是数据和文案不同，
+// 下面的模板对它们各渲染一份，由标题里的按钮切换显示。
+const journeys = [
+    {
+        key: "game",
+        word: journeyTitleParts.gameWord,
+        marquee: gameJourneyLabels.marqueeBanner,
+        profileHeader: gameJourneyLabels.playerProfileHeader,
+        styleHeader: gameJourneyLabels.playStyleHeader,
+        favoritesHeader: gameJourneyLabels.allTimeFavoritesHeader,
+        libraryHeader: gameJourneyLabels.gameLibraryHeader,
+        favoriteTag: gameJourneyLabels.favoriteTag,
+        profile: playerProfileData,
+        style: playStyleData,
+        items: byOrderDesc(games),
+    },
+    {
+        key: "anime",
+        word: journeyTitleParts.animeWord,
+        // 动画旅程不要滚动类型条，也不要档案 / 偏好那两块介绍
+        marquee: null,
+        profileHeader: null,
+        styleHeader: null,
+        favoritesHeader: animeJourneyLabels.allTimeFavoritesHeader,
+        libraryHeader: animeJourneyLabels.animeLibraryHeader,
+        favoriteTag: animeJourneyLabels.favoriteTag,
+        profile: null,
+        style: null,
+        items: byOrderDesc(animes),
+    },
+].map((journey) => ({
+    ...journey,
+    favorites: journey.items.filter((entry) => entry.data.favorite),
+}));
+
+const defaultJourney = "game";
 ---
 
 <section
@@ -30,6 +68,7 @@ const t = useTranslations(currentLang);
             background-color: ${COLORS.khakiMilan}; 
             color: ${COLORS.black}; 
             --card-size: 180px;
+            --fav-card-size: 240px;
             --color-black: ${COLORS.black};
             --color-white: ${COLORS.white};
             --color-orange-dark: ${COLORS.orange.dark};
@@ -52,29 +91,45 @@ const t = useTranslations(currentLang);
                 <div class="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 w-3 h-3 sm:w-4 sm:h-4 rounded-full border-[3px]" style={`background-color: ${COLORS.black}; border-color: ${COLORS.black};`}></div>
                 <div class="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 w-3 h-3 sm:w-4 sm:h-4 rounded-full border-[3px]" style={`background-color: ${COLORS.black}; border-color: ${COLORS.black};`}></div>
 
-                <h1 class="text-4xl sm:text-6xl lg:text-8xl font-black leading-none whitespace-nowrap" style={`color: ${COLORS.black};`}>
-                    {t(gameJourneyLabels.sectionTitle)}
+                <h1 class="text-4xl sm:text-6xl lg:text-8xl font-black leading-none whitespace-nowrap flex items-baseline justify-center" style={`color: ${COLORS.black};`}>
+                    <span>{t(journeyTitleParts.prefix)}</span>
+                    <button
+                            id="journey-toggle"
+                            type="button"
+                            class="journey-word"
+                            title={t(journeyTitleParts.toggleHint)}
+                            aria-label={t(journeyTitleParts.toggleHint)}
+                            data-word-game={t(journeyTitleParts.gameWord)}
+                            data-word-anime={t(journeyTitleParts.animeWord)}
+                    ><span class="journey-word-text">{t(journeyTitleParts.gameWord)}</span></button>
+                    <span>{t(journeyTitleParts.suffix)}</span>
                 </h1>
             </div>
         </div>
     </div>
 
-    {/* 2. 满宽街机风格滚动 Banner */}
-    <div
-            class="relative w-full border-y-4 py-3 sm:py-4 flex overflow-hidden whitespace-nowrap mb-16 sm:mb-24"
-            style={`border-color: ${COLORS.black}; background-color: ${COLORS.white};`}
-    >
-        <div class="animate-marquee flex gap-8 text-xl sm:text-2xl font-black tracking-widest" style={`color: ${COLORS.black};`}>
-            <span>{t(gameJourneyLabels.marqueeBanner)}</span>
-            <span>{t(gameJourneyLabels.marqueeBanner)}</span>
-            <span>{t(gameJourneyLabels.marqueeBanner)}</span>
-            <span>{t(gameJourneyLabels.marqueeBanner)}</span>
-        </div>
-    </div>
+    {journeys.map((journey) => (
+    <div class="journey-panel" data-journey={journey.key} hidden={journey.key !== defaultJourney}>
 
-    <div class="mx-auto px-4 sm:px-6 lg:px-8 ">
+    {/* 2. 满宽街机风格滚动 Banner（只有游戏旅程有）*/}
+    {journey.marquee && (
+            <div
+                    class="relative w-full border-y-4 py-3 sm:py-4 flex overflow-hidden whitespace-nowrap mb-16 sm:mb-24"
+                    style={`border-color: ${COLORS.black}; background-color: ${COLORS.white};`}
+            >
+                <div class="animate-marquee flex gap-8 text-xl sm:text-2xl font-black tracking-widest" style={`color: ${COLORS.black};`}>
+                    <span>{t(journey.marquee)}</span>
+                    <span>{t(journey.marquee)}</span>
+                    <span>{t(journey.marquee)}</span>
+                    <span>{t(journey.marquee)}</span>
+                </div>
+            </div>
+    )}
 
-        {/* 3. 关于我的游戏经历介绍 (双栏布局) */}
+    <div class:list={["mx-auto px-4 sm:px-6 lg:px-8", !journey.marquee && "pt-4 sm:pt-8"]}>
+
+        {/* 3. 关于我的游戏经历介绍 (双栏布局，只有游戏旅程有) */}
+        {journey.profile && journey.style && (
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 mb-16 sm:mb-24">
 
             {/* 左侧：玩家档案 */}
@@ -82,11 +137,11 @@ const t = useTranslations(currentLang);
                 <div class="absolute -top-4 -left-4 w-8 h-8 sm:w-10 sm:h-10 border-4 rounded-full" style={`border-color: ${COLORS.black}; background-color: ${COLORS.orange.dark};`}></div>
 
                 <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black mb-6" style={`color: ${COLORS.black};`}>
-                    {t(gameJourneyLabels.playerProfileHeader)}
+                    {t(journey.profileHeader)}
                 </h2>
                 <div class="text-base sm:text-lg font-bold leading-relaxed space-y-4" style={`color: ${COLORS.black};`}>
-                    <p>{t(playerProfileData.description1)}</p>
-                    <p class="opacity-80">{t(playerProfileData.description2)}</p>
+                    <p>{t(journey.profile.description1)}</p>
+                    <p class="opacity-80">{t(journey.profile.description2)}</p>
                 </div>
             </div>
 
@@ -95,29 +150,47 @@ const t = useTranslations(currentLang);
                 <div class="absolute -top-4 -right-4 w-8 h-8 sm:w-10 sm:h-10 border-4 rounded-full" style={`border-color: ${COLORS.black}; background-color: ${COLORS.blue.dark};`}></div>
 
                 <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black mb-6 text-left md:text-right" style={`color: ${COLORS.black};`}>
-                    {t(gameJourneyLabels.playStyleHeader)}
+                    {t(journey.styleHeader)}
                 </h2>
                 <div class="text-base sm:text-lg font-bold leading-relaxed space-y-4 text-left md:text-right" style={`color: ${COLORS.black};`}>
-                    <p>{t(playStyleData.description1)}</p>
-                    <p class="opacity-80">{t(playStyleData.description2)}</p>
+                    <p>{t(journey.style.description1)}</p>
+                    <p class="opacity-80">{t(journey.style.description2)}</p>
                 </div>
             </div>
 
         </div>
+        )}
 
         {/* 4. 最爱游戏区 (自适应矩形网格，居中) */}
-        {favoriteGames.length > 0 && (
+        {journey.favorites.length > 0 && (
                 <div class="mb-20 sm:mb-28">
-                    <div class="flex items-center gap-4 mb-8">
-                        <h2 class="text-4xl sm:text-5xl font-black" style={`color: ${COLORS.black};`}>
-                            {t(gameJourneyLabels.allTimeFavoritesHeader)}
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
+                        <h2 class="text-4xl sm:text-5xl font-black shrink-0" style={`color: ${COLORS.black};`}>
+                            {t(journey.favoritesHeader)}
                         </h2>
-                        <div class="h-2 flex-grow" style={`background-color: ${COLORS.black};`}></div>
+                        <div class="hidden sm:block h-2 flex-grow" style={`background-color: ${COLORS.black};`}></div>
+
+                        <!-- Size Slider -->
+                        <div class="flex items-center gap-3 shrink-0">
+                            <i class="fa-solid fa-compress text-base opacity-40"></i>
+                            <input
+                                    type="range"
+                                    min="160"
+                                    max="420"
+                                    value="240"
+                                    class="card-slider fav-size-slider"
+                                    style={`--thumb-color: ${COLORS.orange.dark};`}
+                            />
+                            <i class="fa-solid fa-expand text-base opacity-40"></i>
+                        </div>
                     </div>
 
-                    {/* 改用 flex 布局，justify-center 让末行居中 */}
-                    <div id="favorites-grid" class="flex flex-wrap justify-center gap-5 sm:gap-6 pt-2">
-                        {favoriteGames.map((game) => {
+                    {/* 和下面的库一样：auto-fill 网格，由滑块控制的最小列宽决定列数 */}
+                    <div
+                            class="favorites-grid grid gap-4 sm:gap-5 lg:gap-6 pt-2"
+                            style="grid-template-columns: repeat(auto-fill, minmax(var(--fav-card-size), 1fr));"
+                    >
+                        {journey.favorites.map((game) => {
                             const { data } = game;
                             const displayTitle = data.title[currentLang] || data.title.en || data.title.zh || game.id;
                             let displayComment = "";
@@ -127,19 +200,25 @@ const t = useTranslations(currentLang);
 
                             return (
                                     <div
-                                            class="fav-card group relative flex flex-col rounded-xl overflow-hidden border-4"
+                                            class="fav-card reveal-card group relative flex flex-col rounded-xl overflow-hidden border-4"
                                             style={`border-color:${COLORS.black}; box-shadow:6px 6px 0px ${COLORS.black}; background-color: ${COLORS.white};`}
                                     >
                                         {/* Cover */}
                                         <div class="relative w-full overflow-hidden shrink-0" style={`aspect-ratio: 2 / 3; background-color: ${COLORS.khakiMilan}; border-bottom: 4px solid ${COLORS.black};`}>
-                                            <Image
-                                                    src={data.image}
-                                                    alt={displayTitle}
-                                                    class="absolute inset-0 w-full h-full object-cover"
-                                                    loading="lazy"
-                                                    decoding="async"
-                                                    draggable="false"
-                                            />
+                                            {data.image ? (
+                                                    <Image
+                                                            src={data.image}
+                                                            alt={displayTitle}
+                                                            class="absolute inset-0 w-full h-full object-cover"
+                                                            loading="lazy"
+                                                            decoding="async"
+                                                            draggable="false"
+                                                    />
+                                            ) : (
+                                                    <div class="absolute inset-0 flex items-center justify-center" aria-hidden="true">
+                                                        <i class="fa-solid fa-gamepad text-4xl opacity-25" style={`color:${COLORS.black};`}></i>
+                                                    </div>
+                                            )}
                                         </div>
 
                                         {/* Info */}
@@ -158,8 +237,8 @@ const t = useTranslations(currentLang);
         <div class="all-games-section">
             <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
                 <h2 class="text-4xl sm:text-5xl font-black shrink-0" style={`color: ${COLORS.black};`}>
-                    {t(gameJourneyLabels.gameLibraryHeader)}
-                    <span class="opacity-50">({orderedGames.length})</span>
+                    {t(journey.libraryHeader)}
+                    <span class="opacity-50">({journey.items.length})</span>
                 </h2>
                 <div class="hidden sm:block h-2 flex-grow" style={`background-color: ${COLORS.black};`}></div>
 
@@ -168,11 +247,10 @@ const t = useTranslations(currentLang);
                     <i class="fa-solid fa-compress text-base opacity-40"></i>
                     <input
                             type="range"
-                            id="card-size-slider"
                             min="100"
                             max="320"
                             value="180"
-                            class="card-slider"
+                            class="card-slider card-size-slider"
                             style={`--thumb-color: ${COLORS.orange.dark};`}
                     />
                     <i class="fa-solid fa-expand text-base opacity-40"></i>
@@ -181,17 +259,16 @@ const t = useTranslations(currentLang);
 
             <!-- Game Grid -->
             <div
-                    id="game-grid"
-                    class="grid gap-4 sm:gap-5 lg:gap-6"
+                    class="library-grid grid gap-4 sm:gap-5 lg:gap-6"
                     style="grid-template-columns: repeat(auto-fill, minmax(var(--card-size), 1fr));"
             >
-                {orderedGames.map((game) => {
+                {journey.items.map((game) => {
                     const { data } = game;
                     const displayTitle = data.title[currentLang] || data.title.en || data.title.zh || game.id;
 
                     return (
                             <div
-                                    class="game-journey-card group relative flex flex-col"
+                                    class="game-journey-card reveal-card group relative flex flex-col"
                                     data-favorite={data.favorite ? "true" : "false"}
                             >
                                 {/* 非 favorite：不可见占位，在卡片边框外部 */}
@@ -220,21 +297,27 @@ const t = useTranslations(currentLang);
                                             >
                                                 <div class="flex items-center gap-1.5 sm:gap-2">
                                                     <i class="strip-icon fa-solid fa-star" style={`color:${COLORS.black};`}></i>
-                                                    <span class="strip-text font-black tracking-wider leading-none" style={`color:${COLORS.black};`}>{t(gameJourneyLabels.favoriteTag)}</span>
+                                                    <span class="strip-text font-black tracking-wider leading-none" style={`color:${COLORS.black};`}>{t(journey.favoriteTag)}</span>
                                                 </div>
                                             </div>
                                     )}
 
                                     {/* Cover */}
                                     <div class="relative w-full overflow-hidden shrink-0" style={`aspect-ratio: 2 / 3; background-color: ${COLORS.khakiMilan};`}>
-                                        <Image
-                                                src={data.image}
-                                                alt={displayTitle}
-                                                class="absolute inset-0 w-full h-full object-cover"
-                                                loading="lazy"
-                                                decoding="async"
-                                                draggable="false"
-                                        />
+                                        {data.image ? (
+                                                <Image
+                                                        src={data.image}
+                                                        alt={displayTitle}
+                                                        class="absolute inset-0 w-full h-full object-cover"
+                                                        loading="lazy"
+                                                        decoding="async"
+                                                        draggable="false"
+                                                />
+                                        ) : (
+                                                <div class="absolute inset-0 flex items-center justify-center" aria-hidden="true">
+                                                    <i class="fa-solid fa-gamepad text-3xl opacity-25" style={`color:${COLORS.black};`}></i>
+                                                </div>
+                                        )}
                                     </div>
 
                                     {/* Info */}
@@ -248,18 +331,24 @@ const t = useTranslations(currentLang);
             </div>
         </div>
     </div>
+
+    </div>
+    ))}
 </section>
 
 <style>
-    /* ---- 最爱游戏 网格卡片字体自适应 ---- */
+    /* ---- 最爱作品 网格卡片字体自适应 ----
+       和下面游戏库的 .card-title 一套写法：跟着卡片自身宽度走，上下有封顶 */
     .fav-card-title {
-        font-size: clamp(0.875rem, 1.2vw, 1.25rem);
+        font-size: clamp(0.75rem, 8cqw, 1.25rem);
     }
     .fav-card-comment {
-        font-size: clamp(0.75rem, 1vw, 0.875rem);
+        font-size: clamp(0.7rem, 5.5cqw, 0.875rem);
     }
 
     .fav-card {
+        container-type: inline-size;
+        container-name: favcard;
         transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
     }
     .fav-card:hover {
@@ -269,6 +358,43 @@ const t = useTranslations(currentLang);
     .fav-card:active {
         transform: translate(6px, 6px);
         box-shadow: 0px 0px 0px var(--color-black) !important;
+    }
+
+    /* ---- 卡片入场动画 ----
+       用 translate / scale 这两个独立变换属性，而不是 transform，
+       这样不会和 .fav-card:hover / .card-body:hover 上的 transform 打架 */
+    .reveal-card {
+        opacity: 0;
+        translate: 0 24px;
+        scale: 0.96;
+        transition: opacity 0.5s cubic-bezier(0.2, 1, 0.3, 1),
+        translate 0.5s cubic-bezier(0.2, 1, 0.3, 1),
+        scale 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+        transition-delay: calc(var(--reveal-i, 0) * 45ms);
+    }
+
+    .reveal-card.is-revealed {
+        opacity: 1;
+        translate: none;
+        scale: 1;
+    }
+
+    /* 关闭 JS 时不做隐藏，避免整个游戏库不可见 */
+    @media (scripting: none) {
+        .reveal-card {
+            opacity: 1;
+            translate: none;
+            scale: 1;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .reveal-card {
+            opacity: 1;
+            translate: none;
+            scale: 1;
+            transition: none;
+        }
     }
 
     /* ---- 游戏库 网格卡片样式 ---- */
@@ -311,6 +437,86 @@ const t = useTranslations(currentLang);
     @container gamecard (max-width: 180px) {
         .card-info {
             display: none;
+        }
+    }
+
+    /* ---- 标题里可点击的「游戏 / 动画」词 ----
+       不加框、不加底，只在词下面留一条会流动的横线做交互提示 */
+    .journey-word {
+        position: relative;
+        display: inline-block;
+        /* 不加内边距，词的字号、字重、行高、颜色都和标题其余部分完全一致，
+           配合 h1 的 items-baseline，三段文字坐在同一条基线上 */
+        padding: 0;
+        border: none;
+        background: none;
+        color: inherit;
+        font: inherit;
+        line-height: inherit;
+        cursor: pointer;
+    }
+
+    .journey-word::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -0.14em;
+        height: 0.09em;
+        border-radius: 999px;
+        /* 线的颜色跟文字一致，流动的高光只是同色系里透出来的一段 */
+        background-image: linear-gradient(
+                90deg,
+                var(--color-black) 0%,
+                var(--color-black) 38%,
+                color-mix(in srgb, var(--color-black) 28%, transparent) 50%,
+                var(--color-black) 62%,
+                var(--color-black) 100%
+        );
+        background-size: 300% 100%;
+        background-position: 100% 0;
+        animation: journey-underline-flow 3.2s linear infinite;
+        transition: height 0.18s ease-out, bottom 0.18s ease-out;
+    }
+
+    .journey-word:hover::after,
+    .journey-word:focus-visible::after {
+        height: 0.15em;
+        bottom: -0.18em;
+    }
+
+    .journey-word:focus-visible {
+        outline: none;
+    }
+
+    @keyframes journey-underline-flow {
+        to { background-position: -200% 0; }
+    }
+
+    /* 点击换词时的一个上下交错的小切换动效 */
+    .journey-word.is-switching .journey-word-text {
+        animation: journey-word-swap 0.36s ease-in-out;
+    }
+
+    .journey-word-text {
+        display: inline-block;
+    }
+
+    @keyframes journey-word-swap {
+        0%   { opacity: 1; transform: translateY(0); }
+        45%  { opacity: 0; transform: translateY(-0.18em); }
+        55%  { opacity: 0; transform: translateY(0.18em); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .journey-word::after {
+            animation: none;
+            background-image: none;
+            background-color: var(--color-black);
+        }
+        .journey-word.is-switching .journey-word-text {
+            animation: none;
         }
     }
 
@@ -381,89 +587,116 @@ const t = useTranslations(currentLang);
 
 <script>
     document.addEventListener('astro:page-load', () => {
-        // ---- Slider 控制游戏库卡片大小 ----
-        const slider = document.getElementById("card-size-slider") as HTMLInputElement;
-        const section = document.getElementById("game-journey-section");
+        const panels = Array.from(document.querySelectorAll<HTMLElement>('.journey-panel'));
+        const toggle = document.getElementById("journey-toggle");
 
-        if (slider && section) {
-            slider.addEventListener("input", () => {
-                section.style.setProperty("--card-size", slider.value + "px");
-            });
-        }
-
-        // ---- 最爱游戏网格：动态计算最佳列数，末行自动居中 ----
-        const favGrid = document.getElementById("favorites-grid") as HTMLElement;
-        if (favGrid) {
-            function layoutFavGrid() {
-                const count = favGrid.children.length;
-                if (count === 0) return;
-
-                const containerWidth = favGrid.clientWidth;
-                const gap = 24; // gap-6
-                const minCardWidth = 200;
-                const maxCardWidth = 320;
-
-                // 当前宽度最多能放几列
-                const maxCols = Math.min(
-                    count,
-                    Math.max(1, Math.floor((containerWidth + gap) / (minCardWidth + gap)))
-                );
-
-                // 1) 优先找能整除的最大列数（完美矩形）
-                let bestCols = 0;
-                for (let c = maxCols; c >= 2; c--) {
-                    if (count % c === 0) {
-                        bestCols = c;
-                        break;
-                    }
-                }
-
-                // 2) 没找到完美整除 → 退而求其次：避免最后一行只剩1个
-                if (bestCols === 0) {
-                    bestCols = maxCols;
-                    if (count % bestCols === 1 && bestCols > 2) {
-                        for (let c = bestCols - 1; c >= 2; c--) {
-                            const rem = count % c;
-                            if (rem === 0) { bestCols = c; break; }
-                            if (rem > 1) { bestCols = c; break; }
-                        }
-                    }
-                }
-
-                // 3) 安全兜底
-                if (bestCols < 1) bestCols = 1;
-
-                // 4) 检查卡片是否过宽，如果过宽就增加列数
-                let cardWidth = (containerWidth - (bestCols - 1) * gap) / bestCols;
-                if (cardWidth > maxCardWidth && bestCols < maxCols) {
-                    for (let c = bestCols + 1; c <= maxCols; c++) {
-                        const w = (containerWidth - (c - 1) * gap) / c;
-                        const rem = count % c;
-                        if (w <= maxCardWidth && (rem === 0 || rem > 1)) {
-                            bestCols = c;
-                            break;
-                        }
-                    }
-                    cardWidth = (containerWidth - (bestCols - 1) * gap) / bestCols;
-                    if (cardWidth > maxCardWidth) {
-                        bestCols = maxCols;
-                    }
-                }
-
-                // 计算最终卡片宽度，向下取整避免溢出换行
-                const finalWidth = Math.floor((containerWidth - (bestCols - 1) * gap) / bestCols);
-
-                // 给每个子元素设定固定宽度，flexbox + justify-center 自动居中末行
-                Array.from(favGrid.children).forEach((child) => {
-                    const el = child as HTMLElement;
-                    el.style.width = `${finalWidth}px`;
+        // ---- Slider 控制卡片大小（每个面板各自一个）----
+        panels.forEach((panel) => {
+            const slider = panel.querySelector<HTMLInputElement>(".card-size-slider");
+            if (slider) {
+                slider.addEventListener("input", () => {
+                    panel.style.setProperty("--card-size", slider.value + "px");
+                    // 列数变了，入场动画的左右次序要跟着重算
+                    scheduleRevealColumns();
                 });
             }
 
-            // 用 ResizeObserver 响应容器宽度变化（窗口缩放、侧边栏开关等）
-            const ro = new ResizeObserver(() => layoutFavGrid());
-            ro.observe(favGrid);
-            layoutFavGrid();
+            const favSlider = panel.querySelector<HTMLInputElement>(".fav-size-slider");
+            if (favSlider) {
+                favSlider.addEventListener("input", () => {
+                    panel.style.setProperty("--fav-card-size", favSlider.value + "px");
+                    scheduleRevealColumns();
+                });
+            }
+        });
+
+        // ---- 卡片入场动画：进入视口播放，离开后再进入会重新触发 ----
+        const revealGrids = Array.from(
+            document.querySelectorAll<HTMLElement>('.favorites-grid, .library-grid')
+        );
+
+        // 按卡片在容器内的水平位置分组，同一列共用一个序号 → 整体从左往右依次浮现。
+        // 列数会随窗口宽度和尺寸滑块变化，所以每次布局变动都要重算。
+        function assignRevealColumns() {
+            revealGrids.forEach((grid) => {
+                const cards = Array.from(grid.querySelectorAll<HTMLElement>('.reveal-card'));
+                if (!cards.length) return;
+
+                const columns = [...new Set(cards.map((c) => c.offsetLeft))].sort((a, b) => a - b);
+                cards.forEach((card) => {
+                    card.style.setProperty('--reveal-i', String(columns.indexOf(card.offsetLeft)));
+                });
+            });
+        }
+
+        let revealRaf = 0;
+        function scheduleRevealColumns() {
+            cancelAnimationFrame(revealRaf);
+            revealRaf = requestAnimationFrame(assignRevealColumns);
+        }
+
+        const revealCards = document.querySelectorAll<HTMLElement>('.reveal-card');
+        if (revealCards.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            // 底部外扩，让卡片在还没真正进屏时就开始入场
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    entry.target.classList.toggle('is-revealed', entry.isIntersecting);
+                });
+            }, { rootMargin: '0px 0px 12% 0px', threshold: 0.05 });
+
+            revealCards.forEach((card) => revealObserver.observe(card));
+            window.addEventListener('resize', scheduleRevealColumns);
+            scheduleRevealColumns();
+
+            document.addEventListener('astro:before-swap', () => {
+                revealObserver.disconnect();
+                window.removeEventListener('resize', scheduleRevealColumns);
+            }, { once: true });
+        }
+
+        // ---- 标题里的词：在游戏 / 动画两条旅程之间切换 ----
+        const toggleText = toggle?.querySelector<HTMLElement>(".journey-word-text");
+
+        if (toggle && toggleText && panels.length > 1) {
+            const words: Record<string, string> = {
+                game: toggle.dataset.wordGame || "",
+                anime: toggle.dataset.wordAnime || "",
+            };
+            let active = "game";
+            let switching = false;
+
+            function applyJourney(next: string) {
+                toggleText!.textContent = words[next];
+
+                panels.forEach((panel) => {
+                    panel.hidden = panel.dataset.journey !== next;
+                });
+
+                // 隐藏时元素没有布局，offsetLeft 读作 0，
+                // 所以切出来之后要重算入场动画的列序
+                scheduleRevealColumns();
+            }
+
+            toggle.addEventListener("click", () => {
+                if (switching) return;
+
+                active = active === "game" ? "anime" : "game";
+                const next = active;
+
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    applyJourney(next);
+                    return;
+                }
+
+                // 等词淡出到中途再换内容，视觉上是一次完整的切换而不是闪一下
+                switching = true;
+                toggle.classList.add("is-switching");
+                window.setTimeout(() => applyJourney(next), 160);
+                window.setTimeout(() => {
+                    toggle.classList.remove("is-switching");
+                    switching = false;
+                }, 360);
+            });
         }
     });
 </script>

@@ -17,16 +17,21 @@ const multilingualArraySchema = z.object({
     ko: z.array(z.string()).optional(),
 });
 
-const games = defineCollection({
-    loader: file('src/content/gameCard.json'),
+// 游戏库 / 动画库共用同一套卡片结构
+const cardCollection = (path: string) => defineCollection({
+    loader: file(path),
     schema: ({ image }) => z.object({
         order: z.number(),
         title: multilingualSchema,
         comment: multilingualSchema.optional(),
-        image: image(),
+        // 封面可缺省：新加入的条目在图片补齐前先渲染占位卡片
+        image: image().optional(),
         favorite: z.boolean().default(false),
     }),
 });
+
+const games = cardCollection('src/content/gameCard.json');
+const animes = cardCollection('src/content/animeCard.json');
 
 const projects = defineCollection({
     loader: file('src/content/projects.json'),
@@ -60,4 +65,4 @@ const projectDetails = defineCollection({
     }).optional(),
 });
 
-export const collections = { games, projects, projectDetails };
+export const collections = { games, animes, projects, projectDetails };

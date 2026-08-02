@@ -1,13 +1,23 @@
 ﻿// src/i18n/components/PongGame_i18.ts
 import type { Multilingual } from "@/i18n.ts";
 
+// 首屏标题位随机轮播的颜文字，与语言无关，因此不走 Multilingual
+export const KAOMOJI: string[] = [
+    "( ^ω^)",
+    "( ºΔº )",
+    "(≧∀≦)ゞ",
+    "(っ´ω`c)",
+    "(๑´ڡ`๑)",
+    "=ᗜωᗜ=",
+    "( ˘ω˘ )",
+    "( •̀ω•́ )✧",
+    "(・∀・)",
+    "ヽ(*⌒▽⌒*)ﾉ",
+    "(*ﾉ∀`*)",
+    "( ๑>ᴗ<๑ )",
+];
+
 export const pongTranslations: Record<string, Multilingual> = {
-    title: {
-        en: "I want to spend my life <br /> making games",
-        zh: "我想做一辈子 <br /> 游戏",
-        ja: "私は一生を <br /> ゲーム制作に捧げたい",
-        ko: "나는 내 인생을 <br /> 게임 만드는 데 쓰고 싶다",
-    },
     startGame: {
         en: "Start Game",
         zh: "开始游戏",

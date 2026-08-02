@@ -2554,6 +2554,131 @@
     },
     "image": "../assets/gameCard/Unicorn Overlord.webp",
     "favorite": false
+  },
+  {
+    "id": "13-sentinels-aegis-rim",
+    "order": 143,
+    "title": {
+      "en": "13 Sentinels: Aegis Rim",
+      "zh": "十三机兵防卫圈",
+      "ja": "十三機兵防衛圏",
+      "ko": "13 센티널스: 이지스 림"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/gameCard/13 Sentinels Aegis Rim.webp",
+    "favorite": false
+  },
+  {
+    "id": "tsukihime-remake",
+    "order": 144,
+    "title": {
+      "en": "Tsukihime -A piece of blue glass moon-",
+      "zh": "月姬 Remake",
+      "ja": "月姫 -A piece of blue glass moon-",
+      "ko": "월희 리메이크"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/gameCard/Tsukihime Remake.webp",
+    "favorite": false
+  },
+  {
+    "id": "tsukihime",
+    "order": 145,
+    "title": {
+      "en": "Tsukihime",
+      "zh": "月姬",
+      "ja": "月姫",
+      "ko": "월희"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/gameCard/Tsukihime.webp",
+    "favorite": false
+  },
+  {
+    "id": "divinity-original-sin",
+    "order": 146,
+    "title": {
+      "en": "Divinity: Original Sin",
+      "zh": "神界：原罪",
+      "ja": "ディヴィニティ：オリジナル・シン",
+      "ko": "디비니티: 오리지널 신"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/gameCard/Divinity Original Sin.webp",
+    "favorite": false
+  },
+  {
+    "id": "stacklands",
+    "order": 147,
+    "title": {
+      "en": "Stacklands",
+      "zh": "堆叠大陆",
+      "ja": "スタックランズ",
+      "ko": "스택랜즈"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/gameCard/Stacklands.webp",
+    "favorite": false
+  },
+  {
+    "id": "shogun-showdown",
+    "order": 148,
+    "title": {
+      "en": "Shogun Showdown",
+      "zh": "将军对决",
+      "ja": "ショーグン・ショーダウン",
+      "ko": "쇼군 쇼다운"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/gameCard/Shogun Showdown.webp",
+    "favorite": false
+  },
+  {
+    "id": "what-remains-of-edith-finch",
+    "order": 149,
+    "title": {
+      "en": "What Remains of Edith Finch",
+      "zh": "艾迪芬奇的记忆",
+      "ja": "フィンチ家の奇妙な屋敷でおきたこと",
+      "ko": "이디스 핀치의 유산"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/gameCard/What Remains of Edith Finch.webp",
+    "favorite": false
   }
-
 ]

@@ -1,7 +1,7 @@
 ﻿---
 // src/components/PongGame.astro
 import { type Lang, useTranslations } from "@/i18n.ts";
-import { pongTranslations } from "@/i18n/components/index/PongGame_i18.ts";
+import { KAOMOJI, pongTranslations } from "@/i18n/components/index/PongGame_i18.ts";
 import { COLORS } from "@/consts.ts";
 
 const currentLocale = (Astro.currentLocale || "en") as Lang;
@@ -27,13 +27,15 @@ const GAME_THEMES = [
      data-i18n-touch={t(pongTranslations.touchScreen)}
      data-i18n-level={t(pongTranslations.level)}
      data-themes={JSON.stringify(GAME_THEMES)}
+     data-kaomoji={JSON.stringify(KAOMOJI)}
      data-theme-bg={COLORS.blue.light}
      data-theme-text={COLORS.blue.dark}
 >
 
     <div id="start-screen" class="absolute inset-0 z-10 flex flex-col items-center justify-center transition-opacity duration-500 ease-out pb-3" style="background-color: var(--theme-light);">
-        <h1 class="text-4xl lg:text-5xl font-bold text-center leading-tight mb-5 tracking-tight" style="color: var(--theme-dark);" set:html={t(pongTranslations.title)}>
-        </h1>
+        <div id="pong-kaomoji" aria-hidden="true"
+             class="kaomoji text-4xl lg:text-5xl font-bold text-center leading-tight mb-5 tracking-tight transition-opacity duration-200 ease-out select-none"
+             style="color: var(--theme-dark);">{KAOMOJI[0]}</div>
 
         <div class="flex items-center gap-3 px-5 py-2.5 rounded-2xl shadow-sm scale-90 lg:scale-100 transition-transform" style="background-color: rgba(255, 255, 255, 0.6);">
             <div id="key-hint-wrapper" class="flex flex-col items-center gap-1">
@@ -48,6 +50,14 @@ const GAME_THEMES = [
     </div>
 
     <canvas id="pong" tabindex="0" class="block w-full h-full focus:outline-none cursor-pointer"></canvas>
+
+    <style>
+        /* 颜文字混用了假名、西里尔、泰文等字符，单独给一条覆盖面更广的字体栈，避免缺字变豆腐块 */
+        .kaomoji {
+            font-family: "Segoe UI Symbol", "Segoe UI", "Yu Gothic", "Hiragino Sans",
+            "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+        }
+    </style>
 
     <div id="drag-handle" class="absolute bottom-0 left-0 w-full h-2.5 cursor-ns-resize z-20 flex items-center justify-center opacity-40 hover:opacity-100 transition-opacity" style="background-color: var(--theme-dark);">
         <div class="w-12 h-[2px] bg-white/80 rounded-full"></div>
@@ -84,6 +94,34 @@ const GAME_THEMES = [
         const i18nPress = isTouchDevice
             ? (container.getAttribute("data-i18n-touch") || "Swipe Screen")
             : (container.getAttribute("data-i18n-press") || "Press WS");
+
+        // ========== 首屏颜文字随机轮播 ==========
+        const kaomojiEl = document.getElementById("pong-kaomoji");
+        const kaomojiRaw = container.getAttribute("data-kaomoji");
+        const KAOMOJI: string[] = kaomojiRaw ? JSON.parse(kaomojiRaw) : [];
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        let kaomojiTimer = 0;
+
+        if (kaomojiEl && KAOMOJI.length > 1 && !prefersReducedMotion) {
+            let kaomojiIndex = 0;
+
+            kaomojiTimer = window.setInterval(() => {
+                // 开始屏隐藏（游戏进行中）时不必空转
+                if (startScreen!.style.opacity === '0') return;
+
+                let next = kaomojiIndex;
+                while (next === kaomojiIndex) {
+                    next = Math.floor(Math.random() * KAOMOJI.length);
+                }
+                kaomojiIndex = next;
+
+                kaomojiEl.style.opacity = '0';
+                window.setTimeout(() => {
+                    kaomojiEl.textContent = KAOMOJI[kaomojiIndex];
+                    kaomojiEl.style.opacity = '1';
+                }, 200);
+            }, 2000);
+        }
 
         const themesRaw = container.getAttribute("data-themes");
         const THEMES = themesRaw ? JSON.parse(themesRaw) : [{ light: "#BDF1CD", dark: "#16A062" }];
@@ -502,6 +540,7 @@ const GAME_THEMES = [
 
         document.addEventListener('astro:before-swap', () => {
             cancelAnimationFrame(animationFrameId);
+            clearInterval(kaomojiTimer);
             controller.abort();
         }, { once: true });
     });

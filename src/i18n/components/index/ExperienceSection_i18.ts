@@ -1,4 +1,5 @@
 ﻿import type { Multilingual } from "@/i18n.ts";
+import NeteaseLogo from "@/assets/netease.svg";
 import TimiLogo from "@/assets/timi.svg";
 import MedmindLogo from "@/assets/Medmind.svg";
 import SoftenLogo from "@/assets/softengravity.svg";
@@ -14,7 +15,58 @@ export interface ExperienceData {
 }
 
 export const experienceListData: ExperienceData[] = [
-    // --- Experience 1: Timi Studio ---
+    // --- Experience 1: NetEase Games ---
+    {
+        logo: NeteaseLogo,
+        logoSize: "w-36 h-36 lg:w-44 lg:h-44",
+        company: { en: "NetEase Games", zh: "网易互娱", ja: "NetEase Games", ko: "NetEase Games" },
+        fullName: {
+            en: "NetEase Interactive Entertainment (Guangzhou) Co., Ltd. — Technology Center",
+            zh: "网易互娱（广州）有限公司 技术中心",
+            ja: "網易互娯（広州）有限公司 テクノロジーセンター",
+            ko: "넷이즈 게임즈 (광저우) — 기술 센터"
+        },
+        role: {
+            en: "AI Application Engineer Intern",
+            zh: "AI应用工程师实习生",
+            ja: "AIアプリケーションエンジニアインターン",
+            ko: "AI 애플리케이션 엔지니어 인턴"
+        },
+        date: {
+            en: "Jun 2026 – Aug 2026",
+            zh: "2026年6月 – 2026年8月",
+            ja: "2026年6月 – 2026年8月",
+            ko: "2026년 6월 – 2026년 8월"
+        },
+        bullets: [
+            {
+                en: "Contributed to building an AI agent toolchain for game development, covering the programming, design, art, and audio stages of the 2D game production pipeline.",
+                zh: "参与游戏研发智能体工具链建设，面向 2D 游戏研发流程中的开发、策划、美术、音频等环节。",
+                ja: "ゲーム開発向けAIエージェントツールチェーンの構築に参加し、2Dゲーム開発フローにおけるプログラミング、企画、アート、オーディオの各工程をカバーしました。",
+                ko: "게임 개발용 AI 에이전트 툴체인 구축에 참여하여, 2D 게임 개발 파이프라인의 개발·기획·아트·오디오 단계를 지원했습니다."
+            },
+            {
+                en: "Designed and implemented a general-purpose 2D game screen understanding agent tool, enabling LLMs to perform game state recognition, behavioral decision-making, and automated testing.",
+                zh: "设计并实现通用性 2D 游戏画面理解 Agent 工具，辅助大模型进行游戏状态判断、行为决策与自动化测试。",
+                ja: "汎用的な2Dゲーム画面理解エージェントツールを設計・実装し、大規模言語モデルによるゲーム状態の判定、行動判断、自動テストを支援しました。",
+                ko: "범용 2D 게임 화면 이해 Agent 툴을 설계 및 구현하여, 대규모 언어 모델의 게임 상태 판단, 행동 결정 및 자동화 테스트를 지원했습니다."
+            },
+            {
+                en: "Prototyped game demos built around AI-native gameplay concepts.",
+                zh: "围绕 AI 原生玩法进行游戏Demo原型开发。",
+                ja: "AIネイティブなゲームプレイを軸としたゲームデモのプロトタイプ開発を行いました。",
+                ko: "AI 네이티브 게임플레이를 중심으로 게임 데모 프로토타입을 개발했습니다."
+            }
+        ],
+        tags: [
+            { en: "AI Agent", zh: "AI Agent", ja: "AIエージェント", ko: "AI 에이전트" },
+            { en: "Dev Toolchain", zh: "游戏研发工具链", ja: "開発ツールチェーン", ko: "개발 툴체인" },
+            { en: "2D Screen Understanding", zh: "2D画面理解", ja: "2D画面理解", ko: "2D 화면 이해" },
+            { en: "AI-Native Gameplay", zh: "AI原生玩法", ja: "AIネイティブなゲームプレイ", ko: "AI 네이티브 게임플레이" }
+        ]
+    },
+
+    // --- Experience 2: Timi Studio ---
     {
         logo: TimiLogo,
         logoSize: "w-32 h-32 lg:w-40 lg:h-40",
@@ -65,7 +117,7 @@ export const experienceListData: ExperienceData[] = [
         ]
     },
 
-    // --- Experience 2: Medmind ---
+    // --- Experience 3: Medmind ---
     {
         logo: MedmindLogo,
         logoSize: "w-32 h-32 lg:w-40 lg:h-40",
@@ -116,7 +168,7 @@ export const experienceListData: ExperienceData[] = [
         ]
     },
 
-    // --- Experience 3: SoftenGravity ---
+    // --- Experience 4: SoftenGravity ---
     {
         logo: SoftenLogo,
         logoSize: "w-32 h-32 lg:w-40 lg:h-40",

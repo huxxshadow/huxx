@@ -5,14 +5,46 @@ import type { Multilingual } from "@/i18n";
 // ============================================================
 //  Section Headers & Labels
 // ============================================================
-export const gameJourneyLabels = {
-    sectionTitle: {
-        en: "My Game Journey",
-        zh: "我的游戏旅程",
-        ja: "ゲームの旅路",
-        ko: "게임 여정",
+// 大标题被拆成「前缀 + 可点击的词 + 后缀」，点那个词就在游戏／动画两条旅程之间切换。
+// 前后缀里的空格是给英文留的，中日韩本来就不需要词间空格。
+export const journeyTitleParts = {
+    prefix: {
+        en: "My ",
+        zh: "我的",
+        ja: "",
+        ko: "",
     } as Multilingual,
 
+    suffix: {
+        en: " Journey",
+        zh: "旅程",
+        ja: "の旅路",
+        ko: " 여정",
+    } as Multilingual,
+
+    gameWord: {
+        en: "Game",
+        zh: "游戏",
+        ja: "ゲーム",
+        ko: "게임",
+    } as Multilingual,
+
+    animeWord: {
+        en: "Anime",
+        zh: "动画",
+        ja: "アニメ",
+        ko: "애니메이션",
+    } as Multilingual,
+
+    toggleHint: {
+        en: "Click to switch between my game and anime journey",
+        zh: "点击可在游戏旅程与动画旅程之间切换",
+        ja: "クリックでゲームとアニメの旅路を切り替えられます",
+        ko: "클릭하면 게임 여정과 애니메이션 여정을 전환할 수 있습니다",
+    } as Multilingual,
+};
+
+export const gameJourneyLabels = {
     marqueeBanner: {
         en: "CRPG • RTS • RTT • ARPG • Action • FPS • TPS • MOBA • JRPG • SRPG • Strategy • TBS • 4X • Roguelike • Roguelite • Metroidvania • Survival • Sandbox • Open World • MMORPG • Idle • Card Game • Battle Royale •",
         zh: "CRPG • RTS • RTT • ARPG • 动作 • FPS • TPS • MOBA • JRPG • 战棋 • 策略 • 回合制策略 • 4X • Roguelike • Roguelite • 银河恶魔城 • 生存 • 沙盒 • 开放世界 • MMORPG • 放置 • 卡牌 • 大逃杀 •",
@@ -91,5 +123,31 @@ export const playStyleData = {
         zh: "除此之外，我也广泛接触各类游戏，喜欢在不同类型与风格的作品中发现各自独特的乐趣。",
         ja: "そのほかにも、私は幅広いジャンルのゲームに触れており、それぞれの作品やスタイルが持つ独自の魅力を見つけることを楽しんでいます。",
         ko: "그 밖에도 저는 다양한 장르의 게임을 폭넓게 접하며, 서로 다른 작품과 스타일이 지닌 고유한 매력을 발견하는 일을 즐깁니다.",
+    } as Multilingual,
+};
+
+// ============================================================
+//  Anime Journey — Headers & Labels
+// ============================================================
+export const animeJourneyLabels = {
+    allTimeFavoritesHeader: {
+        en: "All-Time Favorite",
+        zh: "最喜欢的作品",
+        ja: "ずっと好きな作品",
+        ko: "오랫동안 가장 좋아해 온 작품",
+    } as Multilingual,
+
+    animeLibraryHeader: {
+        en: "Anime Library",
+        zh: "动画库",
+        ja: "アニメライブラリ",
+        ko: "애니메이션 라이브러리",
+    } as Multilingual,
+
+    favoriteTag: {
+        en: "Fav",
+        zh: "最爱",
+        ja: "お気に入り",
+        ko: "최애",
     } as Multilingual,
 };
