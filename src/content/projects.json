@@ -638,7 +638,6 @@
     },
     "coverImage": "../assets/projects/poster/LostRealmPoster.webp",
     "links": [
-
       {
         "name": "Bilibili",
         "url": "https://www.bilibili.com/video/BV1x48zeXEJY/?share_source=copy_web&vd_source=2e0b37d0ccacd91ea3fca2b1dab708e8",
@@ -721,7 +720,6 @@
     },
     "coverImage": "src/assets/projects/poster/SmartPotJoiPoster.webp",
     "links": [
-
       {
         "name": "Champion",
         "url": "https://aihk2023.comp.hkbu.edu.hk/",
@@ -919,9 +917,7 @@
       ]
     },
     "backupCoverImage": "src/assets/projects/poster/EquipmentRentalWebSystemPoster.webp",
-    "links": [
-
-    ],
+    "links": [],
     "colorText": "blue",
     "colorBackground": "blue"
   },
@@ -974,9 +970,7 @@
       ]
     },
     "backupCoverImage": "src/assets/projects/poster/BattleJokerMultiplayerPoster.webp",
-    "links": [
-
-    ]
+    "links": []
   },
   {
     "id": "technical-project-equipment-rental-android-app",
@@ -1159,8 +1153,6 @@
     "colorText": "red",
     "colorBackground": "red"
   },
-
-
   {
     "id": "game-project-empty-throne",
     "order": 19,
@@ -1375,7 +1367,6 @@
     "colorText": "green",
     "colorBackground": "green"
   },
-
   {
     "id": "game-project-eel-on-mask",
     "order": 22,
@@ -1588,13 +1579,10 @@
       ]
     },
     "coverImage": "src/assets/projects/poster/YuanMengStarPoster.webp",
-    "links": [
-
-    ],
+    "links": [],
     "colorText": "blue",
     "colorBackground": "blue"
   },
-
   {
     "id": "technical-project-online-shoppers-intention",
     "order": 25,
@@ -1770,7 +1758,6 @@
     },
     "coverImage": "src/assets/projects/poster/WindyGrassPoster.webp",
     "links": [
-
       {
         "name": "Bilibili",
         "url": "https://www.bilibili.com/video/BV1mvPSzjEbn/?share_source=copy_web&vd_source=2e0b37d0ccacd91ea3fca2b1dab708e8",
@@ -1779,6 +1766,148 @@
     ],
     "colorText": "green",
     "colorBackground": "green"
+  },
+  {
+    "id": "game-project-night-watch",
+    "order": 28,
+    "category": "game",
+    "title": {
+      "en": "Night Watch",
+      "zh": "守夜人",
+      "ja": "ナイトウォッチ",
+      "ko": "나이트 워치"
+    },
+    "roles": {
+      "en": [
+        "Solo Developer"
+      ],
+      "zh": [
+        "独立开发者"
+      ],
+      "ja": [
+        "個人開発者"
+      ],
+      "ko": [
+        "1인 개발자"
+      ]
+    },
+    "desc": {
+      "zh": "《守夜人》是我在网易推进的实验性课题：一款维多利亚哥特题材的 AI 原生卡牌 Roguelike。项目旨在探索 AI 原生游戏的玩法设计与开发工作流，通过直观但具深度的卡牌系统，以及严格的内容、数值和规则约束，让 AI 稳定参与局内随机拓展，成为可控的系统变量，而非内容噪声。",
+      "en": "Night Watch is an experimental project I ran at NetEase: a Victorian-gothic AI-native card roguelike. It explores how gameplay and development workflows are designed for AI-native games — using a card system that stays intuitive while carrying real depth, plus strict content, numeric and rule constraints, so that AI takes part reliably in the random expansion inside a run as a controllable system variable rather than content noise.",
+      "ja": "『ナイトウォッチ』は、私がネットイース（NetEase）で進めた実験的な課題です。ヴィクトリア朝ゴシックを題材としたAIネイティブ・カードローグライクであり、AIネイティブゲームの遊びの設計と開発ワークフローを探ります。直感的でありながら深さを備えたカードシステムと、コンテンツ・数値・ルールの厳密な制約によって、AIを制御不能なコンテンツのノイズではなく制御可能なシステム変数として、局内のランダム拡張へ安定的に参加させます。",
+      "ko": "《나이트 워치》는 제가 넷이즈(NetEase)에서 진행한 실험적 과제로, 빅토리아 고딕을 소재로 한 AI 네이티브 카드 로그라이크입니다. AI 네이티브 게임의 플레이 설계와 개발 워크플로를 탐색하며, 직관적이면서도 깊이를 갖춘 카드 시스템과 콘텐츠·수치·규칙의 엄격한 제약을 통해 AI가 통제 불가능한 콘텐츠 노이즈가 아니라 통제 가능한 시스템 변수로서 런 내부의 무작위 확장에 안정적으로 참여하도록 합니다."
+    },
+    "tags": {
+      "en": [
+        "AI-Native Game",
+        "Card Roguelike",
+        "React + Three.js"
+      ],
+      "zh": [
+        "AI原生游戏",
+        "卡牌Roguelike",
+        "React + Three.js"
+      ],
+      "ja": [
+        "AIネイティブゲーム",
+        "カードローグライク",
+        "React + Three.js"
+      ],
+      "ko": [
+        "AI 네이티브 게임",
+        "카드 로그라이크",
+        "React + Three.js"
+      ]
+    },
+    "coverImage": "src/assets/projects/poster/NightWatchPoster.webp",
+    "links": [
+      {
+        "name": "Play",
+        "url": "/games/night-watch/index.html",
+        "icon": "fa-solid fa-gamepad"
+      }
+    ],
+    "colorText": "blue",
+    "colorBackground": "blue"
+  },
+  {
+    "id": "technical-project-parkour-motion-system",
+    "order": 29,
+    "category": "technical",
+    "title": {
+      "en": "Parkour Motion System",
+      "zh": "跑酷运动系统",
+      "ja": "パルクール・モーションシステム",
+      "ko": "파쿠르 모션 시스템"
+    },
+    "roles": {
+      "en": [
+        "Combat Designer",
+        "Gameplay Programmer"
+      ],
+      "zh": [
+        "战斗策划",
+        "Gameplay 程序"
+      ],
+      "ja": [
+        "バトルプランナー",
+        "ゲームプレイプログラマー"
+      ],
+      "ko": [
+        "전투 기획자",
+        "게임플레이 프로그래머"
+      ]
+    },
+    "desc": {
+      "zh": "一个用七天时间在 Unreal Engine 5 里搭出来的跑酷运动与镜头系统，作为练习项目。目标是探索跑酷系统的基本构成与 3C 设计，以及镜头叙事。系统包含翻越、贴墙跑、蹬墙跳、滑铲、冲刺、空中控制、转身与八向移动，以及相机迟滞、滑动变焦、转向动态、镜头畸变、相机抖动、腾空构图、视角窗口与时间缩放等镜头效果。",
+      "en": "A parkour movement and camera system built in Unreal Engine 5 over seven days as a practice project. The goal was to explore the fundamentals of parkour systems, 3C design, and camera storytelling. It covers traversal, wall running, wall jumping, sliding, sprinting, air control, turning and 8-way locomotion, alongside camera effects including camera lag, dolly zoom, turn dynamics, lens distortion, camera shake, airborne framing, a camera view window, and time scaling.",
+      "ja": "Unreal Engine 5 で7日間かけて作った、練習用のパルクール・モーション＆カメラシステムです。パルクールシステムの基本構成と3C設計、そしてカメラ演出を探ることを目的としています。障害物の踏破、壁走り、壁ジャンプ、スライディング、スプリント、空中制御、方向転換、8方向ロコモーションに加え、カメララグ、ドリーズーム、ターンダイナミクス、レンズ歪み、カメラシェイク、空中の構図、視点ウィンドウ、タイムスケーリングといったカメラ演出を備えています。",
+      "ko": "Unreal Engine 5에서 7일 동안 만든 연습용 파쿠르 모션 및 카메라 시스템입니다. 파쿠르 시스템의 기본 구성과 3C 디자인, 그리고 카메라 연출을 탐색하는 것이 목표였습니다. 장애물 돌파, 월 러닝, 월 점프, 슬라이딩, 스프린트, 공중 제어, 방향 전환, 8방향 로코모션을 포함하며, 카메라 랙, 달리 줌, 턴 다이내믹스, 렌즈 왜곡, 카메라 셰이크, 공중 프레이밍, 시야 윈도우, 타임 스케일링 같은 카메라 연출을 갖추고 있습니다."
+    },
+    "tags": {
+      "en": [
+        "Unreal Engine 5",
+        "C++",
+        "Movement System",
+        "3C Design",
+        "Camera Storytelling"
+      ],
+      "zh": [
+        "Unreal Engine 5",
+        "C++",
+        "运动系统",
+        "3C 设计",
+        "镜头叙事"
+      ],
+      "ja": [
+        "Unreal Engine 5",
+        "C++",
+        "ムーブメントシステム",
+        "3C設計",
+        "カメラ演出"
+      ],
+      "ko": [
+        "Unreal Engine 5",
+        "C++",
+        "무브먼트 시스템",
+        "3C 디자인",
+        "카메라 연출"
+      ]
+    },
+    "coverImage": "src/assets/projects/poster/ParkourMotionSystemPoster.webp",
+    "links": [
+      {
+        "name": "YouTube",
+        "url": "https://youtu.be/ttajBsbz1Ls?si=Yksr3zhjDvxdJxtN",
+        "icon": "fa-brands fa-youtube"
+      },
+      {
+        "name": "Bilibili",
+        "url": "https://www.bilibili.com/video/BV1CD8Z6EEs7/?share_source=copy_web&vd_source=2e0b37d0ccacd91ea3fca2b1dab708e8",
+        "icon": "fa-brands fa-bilibili"
+      }
+    ],
+    "colorText": "red",
+    "colorBackground": "red"
   }
-
 ]

@@ -11,12 +11,19 @@ interface Props {
 }
 
 const { links = [] } = Astro.props;
+
+// 站内自带的游戏（/games/...）带上当前页面语言，让游戏进去就是对应语言
+const currentLang = Astro.currentLocale ?? "en";
+const withLang = (url: string) =>
+    url.startsWith("/games/")
+        ? `${url}${url.includes("?") ? "&" : "?"}lang=${currentLang}`
+        : url;
 ---
 
 {links.length > 0 && (
 <div class="project-links-wrapper">
     {links.map((link) => (
-            <a href={link.url} class="brutalist-tag brutalist-tag-uppercase">
+            <a href={withLang(link.url)} class="brutalist-tag brutalist-tag-uppercase">
                 <i class={link.icon}></i>
                 <span>{link.name}</span>
             </a>

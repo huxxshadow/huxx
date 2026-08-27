@@ -1,0 +1,92 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import imgKeyArt from '@/assets/projects/technical-project-parkour-motion-system/technical-project-parkour-motion-system_KeyArt_en.webp';
+
+## My Role
+
+A seven-day solo practice project: building a parkour movement and camera system from scratch in Unreal Engine 5. Apart from the animation assets, every gameplay system, camera behaviour and line of code is mine:
+
+* **Movement System Architecture and Implementation**: Broke parkour down into traversal, wall running and wall jumping, jumping and landing, sliding, sprinting, air control and turn blending — each implemented as its own character component, with explicit ownership of who writes velocity and state on any given frame so the modules never fight each other.
+* **3C Tuning**: Set the tone around "running feels great" rather than "running looks real" — designing speed tiers, entry/exit conditions and cooldowns, and the division of labour between animation and code, with a tunable parameter behind every perceivable quantity.
+* **Camera System and Camera Storytelling**: Built a camera dynamics system driven by speed, state and events — covering lag, FOV, arm length, dolly zoom, turn framing, distortion, shake, airborne framing and a view window — and exposed a set of camera channels that cutscenes and scripted moments can reuse.
+* **Time Scaling and Beat Design**: Implemented a slow-motion system at the jump apex, with normal and dramatic profiles plus per-character time compensation, turning "the highest point" into a beat that can be authored.
+* **Debug and Verification Tooling**: Wrote a leader/follower demo rig that automatically diffs every editable property across both characters' custom components at showtime and lists the differences on screen, so a tuning pass can be verified rather than argued about.
+
+---
+
+## Project Details
+
+*Parkour Motion System* is a seven-day Unreal Engine 5 practice project built to walk through the movement systems and 3C design of a parkour game end to end. The reference points are two games I love — *Ghostrunner* and *Mirror's Edge* — which share one quality: **whether the motion is physically plausible barely matters; what matters is whether the speed stays continuous and whether the camera makes you believe you are flying.**
+
+<figure>
+    <Image src={imgKeyArt} alt="Parkour Motion System key art" width={1672} height={941} />
+    <figcaption>A seven-day practice project: a parkour movement and camera system aimed at speed, flow, and camera-driven storytelling</figcaption>
+</figure>
+
+### The Premise: Trading Realism for Speed
+
+The first principle set for the project was simple: **when feel and physical realism conflict, realism gives way, unconditionally.** That principle left concrete marks all over the implementation:
+
+* **Wall running never switches movement mode**: the character stays in `MOVE_Falling` the entire time, with `GravityScale` zeroed and velocity fully overwritten by the component every frame. The "hold flat, then sink" arc along a wall is therefore a curve I author and tune, not the byproduct of engine gravity integration — it can bend however it needs to. The cost is that writing velocity directly bypasses CharacterMovement's network prediction, which makes the system single-player only.
+* **Sliding is velocity-driven, not root-motion-driven**: the slide loop animation moves at a constant speed, while the whole point of a slide is that speed decays. So animation only carries the performance and code owns the speed curve — animation serves feel, not the other way around.
+* **Traversal deliberately omits climbing**: traversal is classified into hurdle, vault and mantle, each a "play one montage and you're done" structure. Climbing would require a persistent "hanging on a wall" state and a whole suspended-movement state machine, which drags the pacing against the continuity this system is built for — so it was cut.
+
+What these trade-offs share is a goal: **push uncertainty out of the system.** The worst thing that can happen to parkour feel is "why did that attempt behave differently from the last one," so anything code can pin down is not left to physics simulation or animation side effects.
+
+### The Movement System: Component-Based Modules
+
+Movement abilities are split into a set of independent components attached to the character, each owning one job:
+
+* **Traversal**: traces forward for an obstacle and classifies it (thin and low → hurdle, thin but no ground behind → vault, thick → mantle), then picks a stand / walk / run montage based on entry speed. This module hands control the other way — to root motion and Motion Warping — because the traversal animations ship with their own warping windows, and code-driven displacement would only be worse.
+* **Wall run and wall jump**: detects side walls, maintains the attached state and its duration limits, and handles wall jump direction and impulse.
+* **Jump and landing**: latches horizontal speed at takeoff so the animation can blend across stand / walk / run / sprint tiers, tracks the airborne apex to compute fall height, and uses that height on touchdown to decide between a normal landing and a roll. Every blend weight comes from a latched value, so it stays stable through the whole airborne state instead of jittering with mid-air adjustments.
+* **Slide**: entry conditions, speed decay and exit type (stand up, stay crouched, crouch-walk, walk out, run out) are configured separately, with the exit type mapping directly to the animation the state machine should play next.
+* **Sprint and air control**: sprint drives speed tier changes and pushes its intensity to the camera distortion; air control separately manages mid-air steering so corrections feel neither floaty nor locked.
+* **Turn blending**: handles in-place turns and orientation interpolation while moving, paired with the 8-way locomotion blend spaces.
+
+The character itself is coordinated by a State Tree, with GASP's 8-way locomotion and lean blend spaces driving the animation layer. The custom code runs to roughly 12,700 lines of C++ across nine components and one demo rig.
+
+### 3C: Whoever Writes Velocity Owns the Frame
+
+With this many components, the fragile part is not any single ability — it is the frame on which several of them want to change the character's velocity. The approach here is to **name one authority per state**:
+
+* during a wall run, the component ticks after CharacterMovement and overwrites velocity wholesale each frame, so whatever the State Tree fed in that frame is already overwritten and movement is deterministic;
+* during traversal, the montage's root motion is the authority, and code only handles the entry classification and the exit;
+* during a slide, the slide component's speed curve is the authority and animation contributes no displacement;
+* the rest of the time, movement returns to ordinary input-driven control.
+
+The same thinking applies to state queries. Wall running deliberately stays in `MOVE_Falling` because five places in the project read `IsFalling()` — landing rolls, landing camera shake, cancelling the apex slow-motion, and so on. Switching to `MOVE_Flying` would silently break all of them, and "the character really is airborne, just holding a wall" is the more accurate semantics anyway.
+
+### Camera: Draw the Speed First
+
+The camera system is the largest single piece in the project (about 2,800 lines). It is not a follow component but a set of channels driven jointly by speed, state and events, each tunable and disableable on its own:
+
+* **Speed → FOV and arm length**: speed within a configured band maps to an FOV boost and a camera pull-in, optionally shaped by a curve.
+* **Speed-driven camera lag**: SpringArm ships with lag, but it is a static value. Here lag speed becomes a function of movement speed — tight at low speed, loose at high speed, so the camera gets "thrown" behind the character and picks up a sense of weight.
+* **Turn dynamics**: turning produces a framing offset and a slight roll, with strength decaying smoothly with speed instead of snapping at a threshold.
+* **Lens distortion**: sprinting pulls the frame edges slightly inward through a post-process material. Its strength tracks the **actual speed** interpolated across the run/sprint band rather than whether the sprint key is held — the distortion is meant to say "you really are faster now."
+* **Airborne framing**: the camera holds still through the rise and only strengthens the falling effect past the apex; the airborne turn offset is scaled separately, because horizontal speed in the air is usually high enough that an unscaled offset overshoots.
+* **Shake**: takeoff, landing and sustained falling each carry their own shake configuration.
+
+### Camera Storytelling: Turning the Camera Into an Authorable Language
+
+The part this project really set out to explore is whether **the camera can narrate actively instead of merely following**. To that end the camera system exposes several capabilities that gameplay, cutscenes or scripted moments can call:
+
+* **Dolly zoom**: on a standing start the camera pushes in while the FOV opens up, stretching the background away for a sense of thrust. The compensation strength is tunable — at full strength the character's on-screen size is locked exactly and the zoom reads purest, but it is also the most nauseating; 0.6–0.8 lands on "you feel it without getting dizzy." Flip the sign and it reverses: the background squashes toward you, which reads as "freezing up / realizing something." It can fire automatically from start-running conditions (with a required standstill duration and a cooldown, so a stop-start walk does not make the camera zoom endlessly), or be triggered explicitly once, reusing the same envelope for a cutscene or a key pickup.
+* **External camera channels**: roll, arm length, FOV and framing offset can be taken over wholesale from outside, and **each channel carries its own blend-in and blend-out time**. This is the piece I consider closest to actual camera language — having all four land simultaneously reads as mechanical, whereas roll snapping in while the framing offset slides over slowly reads like a deliberate camera move. Wall running is the first consumer of these channels: it applies a −20° roll, a shorter arm, an FOV boost and a lateral framing offset.
+* **View window**: the range of directions the player may look can be constrained for a stretch of time. The window first *wraps* the current view at the moment it opens and then contracts to the configured values, avoiding the jump a hard clamp would cause; past the soft boundary the view is continuously pulled back, and the hard boundary simply cannot be pushed through. Wall running uses it to hold the view near the wall's heading — which is fundamentally **using camera constraint to direct attention**, a storytelling device rather than a control restriction.
+* **Time scaling**: at the apex of a jump, global time dilation dips and slides back, producing a hitch. Two profiles back it: a high fall needs a longer hang, while an ordinary hop only wants a short punctuation. More importantly, the player character can be compensated separately — slow the world while the player stays at normal speed and you have bullet time; slow both and you have a pure rhythmic pause. Before triggering, the system traces downward predictively so it never hands out a meaningless slow-motion right before the character lands anyway.
+
+Put together, the effect is that **moments that were purely mechanical — the apex, the standing start, hugging a wall — simultaneously become camera accents.** The player never has to be told "this part is fast" or "this part is risky"; the camera already said it.
+
+### Verification Tooling: Making Tuning Visible
+
+The hardest part of tuning feel is articulating what actually changed. So I wrote a demo rig: a leader and a follower character in the scene, the follower running different parameters via specified overrides. At showtime the rig exports and compares every editable property across both sides' custom components and **lists the differences straight on screen**.
+
+Comparison footage recorded this way needs no narration — the frame itself states what the take is demonstrating. Same route, and the only difference between left and right is the handful of parameters listed on screen.
+
+### Asset Sources and Original Scope
+
+Animation assets come from Unreal Engine's Game Animation Sample and Hammerhead's Dynamic Wall Run (wall-run animations retargeted). The gameplay systems, camera logic and all code are original.
