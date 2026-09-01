@@ -10,6 +10,7 @@ import { useTranslations, LOCALES, getLocalePaths, type Lang } from "@/i18n";
 const t = useTranslations(Astro.currentLocale as Lang);
 import "@/styles/global.css";
 import { ClientRouter } from "astro:transitions";
+import { pageShift } from "@/transitions";
 interface Props {
     title?: string;
     description?: string;
@@ -63,6 +64,17 @@ const localeDescription = description || t(SITE_DESCRIPTION);
     <meta name="twitter:site" content={t(X_ACCOUNT)} />
     <ClientRouter />
     <script is:inline>
+        // 进出场动效的隐藏态挂在 html.motion-ready 下。这里同步打标记，
+        // 让待入场的元素在首帧就是隐藏的，不会先闪一下再被藏起来。
+        // 若 2 秒内动效脚本没有接管（打包失败、脚本被拦截等），撤掉标记，内容照常显示。
+        document.documentElement.classList.add('motion-ready');
+        setTimeout(function () {
+            if (!document.documentElement.classList.contains('motion-armed')) {
+                document.documentElement.classList.remove('motion-ready');
+            }
+        }, 2000);
+    </script>
+    <script is:inline>
         // 禁止浏览器自动滚动恢复，由我们全权接管
         history.scrollRestoration = 'manual';
 
@@ -110,13 +122,165 @@ const localeDescription = description || t(SITE_DESCRIPTION);
 
 </Header>
 
-<main class="l-main l-content">
+<main class="l-main l-content" transition:animate={pageShift}>
 
 
     <slot />
 </main>
 
 <Footer />
+
+<script>
+    // ================================================================
+    // 滚动进出场动效引擎
+    // 元素进入视口时入场，滚出视口后退场，再滚回来重新播放。
+    // 标注方式（data-reveal / data-reveal-children / ...）见 src/styles/motion.css 顶部注释。
+    // ================================================================
+    const DEFAULT_STAGGER = 70;   // 同组内每一档的错峰间隔（毫秒）
+    const MAX_STAGGER_STEPS = 8;  // 延迟封顶，避免长列表最后几个等太久
+
+    const root = document.documentElement;
+
+    // Astro 换页时会用新文档的属性覆盖 <html>，把标记补回去。
+    // after-swap 在绘制前同步触发，所以不会闪。
+    document.addEventListener('astro:after-swap', () => {
+        root.classList.add('motion-ready', 'motion-armed');
+    });
+
+    document.addEventListener('astro:page-load', () => {
+        root.classList.add('motion-ready', 'motion-armed');
+
+        if (!('IntersectionObserver' in window)) {
+            root.classList.remove('motion-ready');
+            return;
+        }
+        // 「减少动态效果」偏好下 CSS 已经把元素还原成可见，不用再观察
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        const groups = Array.from(
+            document.querySelectorAll<HTMLElement>('[data-reveal-children], [data-reveal-group]')
+        );
+
+        const membersOf = (group: HTMLElement): HTMLElement[] =>
+            group.hasAttribute('data-reveal-children')
+                ? Array.from(group.children).filter((el): el is HTMLElement => el instanceof HTMLElement)
+                : Array.from(group.querySelectorAll<HTMLElement>(':scope > [data-reveal]'));
+
+        const items = new Set<HTMLElement>(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+        groups.forEach((group) => {
+            if (group.hasAttribute('data-reveal-children')) {
+                membersOf(group).forEach((el) => items.add(el));
+            }
+        });
+        if (items.size === 0) return;
+
+        // 元素自己写死的延迟优先于组内错峰
+        items.forEach((el) => {
+            if (el.dataset.revealDelay) el.style.setProperty('--reveal-delay', `${el.dataset.revealDelay}ms`);
+        });
+
+        // 组内错峰。data-reveal-order="columns" 时按水平位置分列、同列共用序号，
+        // 网格整体从左往右浮现；列数会随窗口宽度和尺寸滑块变化，所以布局一变就要重排。
+        function assignDelays() {
+            groups.forEach((group) => {
+                const members = membersOf(group);
+                if (members.length === 0) return;
+
+                // 用 isFinite 而不是 || 兜底：长文这类不排队的容器要能写 data-reveal-stagger="0"
+                const raw = group.dataset.revealStagger;
+                const stagger = raw && Number.isFinite(Number(raw)) ? Number(raw) : DEFAULT_STAGGER;
+                const columns = group.dataset.revealOrder === 'columns'
+                    ? [...new Set(members.map((el) => el.offsetLeft))].sort((a, b) => a - b)
+                    : null;
+
+                members.forEach((el, i) => {
+                    if (el.dataset.revealDelay) return;
+                    const index = columns ? columns.indexOf(el.offsetLeft) : i;
+                    el.style.setProperty('--reveal-delay', `${Math.min(index, MAX_STAGGER_STEPS) * stagger}ms`);
+                });
+            });
+        }
+
+        let relayoutRaf = 0;
+        const scheduleRelayout = () => {
+            cancelAnimationFrame(relayoutRaf);
+            relayoutRaf = requestAnimationFrame(assignDelays);
+        };
+
+        // 入场动画是否还没播完（含 animation-delay 期间，playState 同样是 running）
+        const isRevealAnimationPending = (el: HTMLElement) => {
+            if (typeof el.getAnimations !== 'function') return false;
+            return el.getAnimations().some(
+                (a) => (a as CSSAnimation).animationName === 'reveal-in' && a.playState === 'running'
+            );
+        };
+
+        const stopWatching = (el: HTMLElement) => {
+            enterObserver.unobserve(el);
+            exitObserver.unobserve(el);
+        };
+
+        // 入场：元素露头一截才触发
+        const enterObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                const el = entry.target as HTMLElement;
+
+                el.classList.remove('is-exited');
+                el.classList.add('is-revealed');
+                // data-reveal-once 可以写在元素上，也可以写在它所在的组上
+                if (el.closest('[data-reveal-once]')) stopWatching(el);
+            });
+        }, { threshold: 0, rootMargin: '-6% 0px -6% 0px' });
+
+        // 退场：元素整个滚出视口才触发。
+        // 和入场用两个不同的边界（中间留 6% 视口高度的缓冲带）是有意的 ——
+        // 单个 observer 只有一条边界，在这条线附近轻微抖动就会反复
+        // 入场/退场，每次都从头重启动画，看起来就是闪。
+        const exitObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) return;
+                const el = entry.target as HTMLElement;
+
+                // 还没入场过的（比如首屏之下的元素）不演退场
+                if (!el.classList.contains('is-revealed')) return;
+
+                // 入场动画还没播完就要退场（快速滚动时元素还卡在错峰延迟里，
+                // 实际是全透明的），此时 reveal-out 会从「完全可见」起跳，
+                // 先亮一下再淡出 —— 一整屏卡片同时这么干就是成片闪烁。
+                // 这种情况直接回到隐藏态，不演退场；元素已经在视口外，看不出差别。
+                if (isRevealAnimationPending(el)) {
+                    el.classList.remove('is-revealed');
+                    return;
+                }
+
+                // 朝它离开视口的那一侧轻微漂移
+                el.style.setProperty('--reveal-exit-y', entry.boundingClientRect.top < 0 ? '-10px' : '10px');
+                el.classList.remove('is-revealed');
+                el.classList.add('is-exited');
+            });
+        }, { threshold: 0, rootMargin: '0px' });
+
+        assignDelays();
+        items.forEach((el) => {
+            enterObserver.observe(el);
+            exitObserver.observe(el);
+        });
+
+        const controller = new AbortController();
+        const { signal } = controller;
+        window.addEventListener('resize', scheduleRelayout, { signal });
+        // 组件改变了网格布局（例如卡片尺寸滑块）时派发，用来重排错峰序号
+        document.addEventListener('motion:relayout', scheduleRelayout, { signal });
+
+        document.addEventListener('astro:before-swap', () => {
+            enterObserver.disconnect();
+            exitObserver.disconnect();
+            cancelAnimationFrame(relayoutRaf);
+            controller.abort();
+        }, { once: true });
+    });
+</script>
 <!--{ import.meta.env.DEV && <style>:root { scroll-behavior: auto }</style> }-->
 
 

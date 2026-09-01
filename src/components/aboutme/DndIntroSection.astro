@@ -17,7 +17,12 @@ const roleList = rolesData[locale] || rolesData.en;
     <div class="w-full flex flex-col  lg:flex-row gap-8 lg:gap-16 relative z-10 items-stretch">
 
         <!-- 右侧区域：核心自我介绍内容 -->
-        <div class="flex-1 w-full flex flex-col justify-center gap-8">
+        <div
+                class="flex-1 w-full flex flex-col justify-center gap-8"
+                data-reveal-children="up"
+                data-reveal-once
+                data-reveal-stagger="90"
+        >
 
             <!-- 问候语 & 标签 -->
             <div class="flex flex-col gap-4">
@@ -34,7 +39,7 @@ const roleList = rolesData[locale] || rolesData.en;
             </div>
 
             <!-- 自我介绍段落 -->
-            <div class="text-base sm:text-lg lg:text-xl font-medium leading-relaxed opacity-95 border-l-[4px] pl-5 py-1 flex flex-col gap-5" style={`border-color: ${COLORS.black};`}>
+            <div class="text-base sm:text-lg lg:text-xl font-medium leading-relaxed opacity-95 border-l-[4px] pl-5 py-1 flex flex-col gap-5" style={`border-color: ${COLORS.black}; --reveal-opacity: 0.95;`}>
                 <p>{t(introLabels.descTop)}</p>
                 <p>{t(introLabels.descBottom)}</p>
             </div>

@@ -42,6 +42,7 @@ const defaultTheme = COLORS.blue;
         <div class="w-full flex items-center justify-center mb-12 lg:mb-16">
             <h2
                     class="flex items-center justify-center px-8 py-6 font-black text-4xl sm:text-5xl lg:text-6xl border-[3px] rounded-xl select-none  tracking-[0.1em] lg:tracking-[0.2em] uppercase text-center"
+                    data-reveal="scale"
                     style={`background-color: ${defaultTheme.light}; color: ${defaultTheme.dark}; border-color: ${defaultTheme.dark}; box-shadow: 6px 6px 0px ${defaultTheme.dark};text-indent: 0.2em;`}
             >
                 {t(technicalProjectsLabels.sectionTitle)}
@@ -52,7 +53,11 @@ const defaultTheme = COLORS.blue;
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 w-full">
 
             {/* 左侧：带图的 Technical 项目 (占 7 列) */}
-            <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8 place-content-start">
+            <div
+                    class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8 place-content-start"
+                    data-reveal-children="up"
+                    data-reveal-order="columns"
+            >
                 {withCoverProjects.map((project) => {
                     const colors = { text: defaultTheme.dark, bg: defaultTheme.light };
                     const displayTitle = project.data.title[currentLang] || project.data.title.en || project.data.title.zh || project.id;
@@ -124,7 +129,7 @@ const defaultTheme = COLORS.blue;
             </div>
 
             {/* 右侧：不带图的 Technical 项目 (占 5 列) */}
-            <div class="lg:col-span-4 flex flex-col gap-6 lg:gap-8">
+            <div class="lg:col-span-4 flex flex-col gap-6 lg:gap-8" data-reveal-children="right" data-reveal-stagger="80">
                 {withoutCoverProjects.map((project) => {
                     const colors = { text: defaultTheme.dark, bg: defaultTheme.light };
                     const displayTitle = project.data.title[currentLang] || project.data.title.en || project.data.title.zh || project.id;

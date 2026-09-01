@@ -25,7 +25,12 @@ const tags = [
 
     <div class="relative z-10 w-full min-h-[20vh] flex flex-col justify-center max-w-7xl">
         <div class="w-full flex flex-col lg:flex-row gap-10 lg:gap-20 items-center lg:items-start">
-            <div class="w-full lg:w-5/12 flex flex-col justify-center font-sans text-center lg:text-left">
+            <div
+                    class="w-full lg:w-5/12 flex flex-col justify-center font-sans text-center lg:text-left"
+                    data-reveal-children="up"
+                    data-reveal-once
+                    data-reveal-stagger="90"
+            >
                 <h1 class="text-[4.5rem] lg:text-[7rem] font-black leading-[0.85] tracking-tighter mb-6">
                     {t(portfolioIntroSectionLabels.title)}
                 </h1>
@@ -39,21 +44,26 @@ const tags = [
                 </div>
             </div>
 
-            <div class="w-full lg:w-7/12 flex flex-col justify-center pt-2 lg:pt-8 gap-6 lg:gap-8 text-center lg:text-left">
+            <div
+                    class="w-full lg:w-7/12 flex flex-col justify-center pt-2 lg:pt-8 gap-6 lg:gap-8 text-center lg:text-left"
+                    data-reveal-children="up"
+                    data-reveal-once
+                    data-reveal-stagger="90"
+            >
                 <div class="w-full  text-5xl font-black">
                     {t(portfolioIntroSectionLabels.header)}
                 </div>
 
                 <div
                         class="text-base sm:text-lg lg:text-xl font-medium leading-relaxed opacity-95 lg:border-l-[4px] pl-5 py-1 text-center lg:text-left"
-                        style={`border-color: ${COLORS.green.dark};`}
+                        style={`border-color: ${COLORS.green.dark}; --reveal-opacity: 0.95;`}
                 >
                     <p class="whitespace-pre-line">{t(portfolioIntroSectionLabels.description)}</p>
                 </div>
             </div>
         </div>
 
-        <div class="mt-16 border-current/15">
+        <div class="mt-16 border-current/15" data-reveal="up">
             <div
                     class="group flex items-start lg:items-center gap-5 p-5 sm:p-8 rounded-2xl border-[3px] transition-all duration-300 hover:-translate-y-1 cursor-pointer shadow-[6px_6px_0px_currentColor] hover:shadow-[10px_10px_0px_currentColor]"
                     style={`border-color: ${COLORS.green.dark}; background-color: ${COLORS.green.light};`}

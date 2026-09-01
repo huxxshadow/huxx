@@ -43,6 +43,7 @@ const regularProjects = artProjects.length > 1 ? artProjects.slice(1) : [];
         <div class="w-full flex items-center justify-center mb-12 lg:mb-16">
             <h2
                     class="flex items-center justify-center px-8 py-6 font-black text-4xl sm:text-5xl lg:text-6xl border-[3px] rounded-xl select-none tracking-[0.1em] lg:tracking-[0.2em] uppercase text-center"
+                    data-reveal="scale"
                     style={`background-color: ${defaultTheme.light}; color: ${defaultTheme.dark}; border-color: ${defaultTheme.dark}; box-shadow: 6px 6px 0px ${defaultTheme.dark};text-indent: 0.2em;`}
             >
                 {t(artProjectsLabels.sectionTitle)}
@@ -55,7 +56,7 @@ const regularProjects = artProjects.length > 1 ? artProjects.slice(1) : [];
 
                 {/* 1. 特色项目 (Featured Project) - 水平排版的大卡片 */}
                 {featuredProject && (
-                        <div class="w-full">
+                        <div class="w-full" data-reveal="up">
                             {(() => {
                                 const project = featuredProject;
                                 const colors = { text: defaultTheme.dark, bg: defaultTheme.light };
@@ -118,7 +119,11 @@ const regularProjects = artProjects.length > 1 ? artProjects.slice(1) : [];
 
                 {/* 2. 常规项目网格 (Regular Projects Grid) */}
                 {regularProjects.length > 0 && (
-                        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8 mt-4">
+                        <div
+                                class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8 mt-4"
+                                data-reveal-children="up"
+                                data-reveal-order="columns"
+                        >
                             {regularProjects.map((project) => {
                                 const colors = { text: defaultTheme.dark, bg: defaultTheme.light };
                                 const displayTitle = project.data.title[currentLang] || project.data.title.en || project.data.title.zh || project.id;

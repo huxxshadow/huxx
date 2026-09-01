@@ -24,13 +24,13 @@ const gamesData = gamesListData.map(game => ({
         data-theme-text={COLORS.black}
 >
     <div class="absolute top-12 lg:top-16 inset-x-0 mx-auto w-full px-4 sm:px-8 z-0 pointer-events-none flex justify-start">
-        <h2 class="brutalist-tag bg-white text-3xl lg:text-4xl">
+        <h2 class="brutalist-tag bg-white text-3xl lg:text-4xl" data-reveal="left">
             {t(gameSectionUI.sectionTitle)}
         </h2>
     </div>
 
     <div class="absolute top-12 lg:top-16 inset-x-0 mx-auto w-full px-4 sm:px-8 z-20 pointer-events-none flex justify-end">
-        <div class="flex gap-3 sm:gap-4 pointer-events-auto">
+        <div class="flex gap-3 sm:gap-4 pointer-events-auto" data-reveal-children="right" data-reveal-stagger="80">
             <button id="btn-shake" class="brutalist-tag bg-white cursor-pointer">
                 <i class="fa-solid fa-bolt"></i>
                 <span class="hidden sm:inline">{t(gameSectionUI.shake)}</span>
@@ -108,8 +108,10 @@ const gamesData = gamesListData.map(game => ({
             const container = document.getElementById('physics-container');
             if (!container) return;
 
-            // 检测是否为移动端
-            const isMobile = window.matchMedia('(max-width: 1024px)').matches;
+            // 触摸交互统一由下面的自定义手势处理，不再按屏幕宽度区分设备
+            // （按宽度判断会把横屏平板/触屏笔记本当成桌面端，导致整个区域无法滚动）
+            const gestures = new AbortController();
+            const { signal } = gestures;
 
             const { Engine, Runner, Bodies, World, Mouse, MouseConstraint, Events } = Matter;
 
@@ -152,17 +154,15 @@ const gamesData = gamesListData.map(game => ({
                 bodiesMap.push({ body, el });
                 World.add(engine.world, body);
 
-                // 桌面端添加拖拽样式和 touch-none；手机端保持可滚动
-                if (!isMobile) {
-                    el.classList.add('touch-none', 'cursor-grab');
-                    }
+                // 竖向手势留给页面滚动，横向手势才拖动贴纸
+                el.classList.add('touch-pan-y', 'cursor-grab');
 
                 // 点击跳转逻辑（桌面和手机端都保留）
                 let startX = 0, startY = 0;
                 el.addEventListener('pointerdown', (e) => {
                     startX = e.clientX;
                     startY = e.clientY;
-                    });
+                    }, { signal });
                 el.addEventListener('pointerup', (e) => {
                     const dx = Math.abs(e.clientX - startX);
                     const dy = Math.abs(e.clientY - startY);
@@ -172,7 +172,7 @@ const gamesData = gamesListData.map(game => ({
                             window.open(link, '_blank');
                             }
                         }
-                    });
+                    }, { signal });
                 });
 
             // --- 按钮逻辑 ---
@@ -217,20 +217,100 @@ const gamesData = gamesListData.map(game => ({
                     });
                 });
 
-            // 仅在桌面端创建 MouseConstraint，手机端完全跳过
-            if (!isMobile) {
-                const mouse = Mouse.create(container);
-                // 移除 Matter.js 默认的滚轮监听，避免干扰页面滚动
-                mouse.element.removeEventListener('mousewheel', (mouse as any).mousewheel);
-                mouse.element.removeEventListener('DOMMouseScroll', (mouse as any).mousewheel);
-                mouse.element.removeEventListener('wheel', (mouse as any).mousewheel);
+            // --- 鼠标拖拽 ---
+            const mouse = Mouse.create(container);
+            // Matter 的 Mouse 会在 wheel / touch 事件里无条件 preventDefault，
+            // 这会让整个区域在滚轮和触摸下都无法滚动页面，所以只保留鼠标事件。
+            ([
+                ['mousewheel', (mouse as any).mousewheel],
+                ['DOMMouseScroll', (mouse as any).mousewheel],
+                ['wheel', (mouse as any).mousewheel],
+                ['touchstart', (mouse as any).mousedown],
+                ['touchmove', (mouse as any).mousemove],
+                ['touchend', (mouse as any).mouseup],
+            ] as [string, EventListener][]).forEach(([type, handler]) => {
+                mouse.element.removeEventListener(type, handler);
+                });
 
-                const mouseConstraint = MouseConstraint.create(engine, {
-                    mouse: mouse,
-                    constraint: { stiffness: 0.1, render: { visible: false } }
-                    });
-                World.add(engine.world, mouseConstraint);
-                }
+            const mouseConstraint = MouseConstraint.create(engine, {
+                mouse: mouse,
+                constraint: { stiffness: 0.1, render: { visible: false } }
+                });
+            World.add(engine.world, mouseConstraint);
+
+            // --- 触摸拖拽：横向手势拖贴纸，纵向手势交还给页面滚动 ---
+            const toContainerPoint = (touch: Touch) => {
+                const rect = container.getBoundingClientRect();
+                const scaleX = rect.width ? container.clientWidth / rect.width : 1;
+                const scaleY = rect.height ? container.clientHeight / rect.height : 1;
+                return {
+                    x: (touch.clientX - rect.left) * scaleX,
+                    y: (touch.clientY - rect.top) * scaleY
+                    };
+                };
+
+            bodiesMap.forEach((item) => {
+                let touchId: number | null = null;
+                let startX = 0, startY = 0;
+                let mode: 'undecided' | 'drag' | 'scroll' = 'undecided';
+                let constraint: Matter.Constraint | null = null;
+
+                const endTouch = () => {
+                    if (constraint) {
+                        World.remove(engine.world, constraint);
+                        constraint = null;
+                        }
+                    touchId = null;
+                    mode = 'undecided';
+                    };
+
+                item.el.addEventListener('touchstart', (e) => {
+                    if (touchId !== null) return;
+                    const touch = e.changedTouches[0];
+                    touchId = touch.identifier;
+                    startX = touch.clientX;
+                    startY = touch.clientY;
+                    mode = 'undecided';
+                    }, { signal, passive: true });
+
+                item.el.addEventListener('touchmove', (e) => {
+                    if (touchId === null || mode === 'scroll') return;
+                    const touch = Array.from(e.changedTouches).find(t => t.identifier === touchId);
+                    if (!touch) return;
+
+                    if (mode === 'undecided') {
+                        const dx = Math.abs(touch.clientX - startX);
+                        const dy = Math.abs(touch.clientY - startY);
+                        if (dx < 8 && dy < 8) return;
+                        // 纵向为主 → 页面滚动；横向为主 → 拖动贴纸
+                        mode = dx > dy ? 'drag' : 'scroll';
+                        if (mode === 'scroll') return;
+
+                        const point = toContainerPoint(touch);
+                        const body = item.body;
+                        Matter.Sleeping.set(body, false);
+                        constraint = Matter.Constraint.create({
+                            pointA: point,
+                            bodyB: body,
+                            pointB: { x: point.x - body.position.x, y: point.y - body.position.y },
+                            angleB: body.angle,
+                            length: 0.01,
+                            stiffness: 0.1,
+                            angularStiffness: 1,
+                            render: { visible: false }
+                            });
+                        World.add(engine.world, constraint);
+                        }
+
+                    if (!constraint) return;
+                    Matter.Sleeping.set(item.body, false);
+                    constraint.pointA = toContainerPoint(touch);
+                    if (e.cancelable) e.preventDefault();
+                    }, { signal, passive: false });
+
+                item.el.addEventListener('touchend', endTouch, { signal });
+                item.el.addEventListener('touchcancel', endTouch, { signal });
+                });
 
             const runner = Runner.create();
             Runner.run(runner, engine);
@@ -288,6 +368,7 @@ const gamesData = gamesListData.map(game => ({
                 Runner.stop(runner);
                 Engine.clear(engine);
                 World.clear(engine.world, false);
+                gestures.abort();
                 window.removeEventListener('resize', handleResize);
                 }, { once: true });
             });

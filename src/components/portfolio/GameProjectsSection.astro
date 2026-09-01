@@ -84,6 +84,7 @@ function getGridClasses(count: number): string {
         <div class="w-full flex items-center justify-center mb-12 lg:mb-16">
             <h2
                     class="flex items-center justify-center px-8 py-6 font-black text-4xl sm:text-5xl lg:text-6xl border-[3px] rounded-xl select-none tracking-[0.1em] lg:tracking-[0.2em] uppercase text-center"
+                    data-reveal="scale"
                     style={`background-color: ${defaultTheme.light}; color: ${defaultTheme.dark}; border-color: ${defaultTheme.dark}; box-shadow: 6px 6px 0px ${defaultTheme.dark};text-indent: 0.2em;`}
             >
                 {t(gameProjectsLabels.sectionTitle)}
@@ -94,7 +95,7 @@ function getGridClasses(count: number): string {
         <div>
             <div class="flex flex-col p-4 sm:p-6 lg:p-12 gap-6 lg:gap-8">
                 {projectRows.map((row) => (
-                        <div class={getGridClasses(row.length)}>
+                        <div class={getGridClasses(row.length)} data-reveal-children="up" data-reveal-order="columns">
                             {row.map((project) => {
                                 const colors = { text: defaultTheme.dark, bg: defaultTheme.light };
                                 const displayTitle = project.data.title[currentLang] || project.data.title.en || project.data.title.zh || project.id;

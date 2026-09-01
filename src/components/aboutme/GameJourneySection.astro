@@ -84,6 +84,7 @@ const defaultJourney = "game";
         <div class="flex justify-center mb-16 relative z-10">
             <div class="relative border-4 px-12 py-6 sm:px-20 sm:py-8 text-center bg-white rounded-xl transition-transform hover:-translate-y-1"
                  style={`border-color: ${COLORS.black}; box-shadow: 10px 10px 0px ${COLORS.black};`}
+                 data-reveal="scale"
             >
                 {/* 铆钉 */}
                 <div class="absolute top-3 left-3 sm:top-4 sm:left-4 w-3 h-3 sm:w-4 sm:h-4 rounded-full border-[3px]" style={`background-color: ${COLORS.black}; border-color: ${COLORS.black};`}></div>
@@ -116,6 +117,7 @@ const defaultJourney = "game";
             <div
                     class="relative w-full border-y-4 py-3 sm:py-4 flex overflow-hidden whitespace-nowrap mb-16 sm:mb-24"
                     style={`border-color: ${COLORS.black}; background-color: ${COLORS.white};`}
+                    data-reveal="fade"
             >
                 <div class="animate-marquee flex gap-8 text-xl sm:text-2xl font-black tracking-widest" style={`color: ${COLORS.black};`}>
                     <span>{t(journey.marquee)}</span>
@@ -130,7 +132,7 @@ const defaultJourney = "game";
 
         {/* 3. 关于我的游戏经历介绍 (双栏布局，只有游戏旅程有) */}
         {journey.profile && journey.style && (
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 mb-16 sm:mb-24">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 mb-16 sm:mb-24" data-reveal-children="up" data-reveal-stagger="110">
 
             {/* 左侧：玩家档案 */}
             <div class="relative w-full border-4 p-6 sm:p-10 rounded-xl" style={`border-color: ${COLORS.black}; background-color: ${COLORS.white}; box-shadow: 10px 10px 0px ${COLORS.black};`}>
@@ -164,7 +166,7 @@ const defaultJourney = "game";
         {/* 4. 最爱游戏区 (自适应矩形网格，居中) */}
         {journey.favorites.length > 0 && (
                 <div class="mb-20 sm:mb-28">
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-8" data-reveal-children="up">
                         <h2 class="text-4xl sm:text-5xl font-black shrink-0" style={`color: ${COLORS.black};`}>
                             {t(journey.favoritesHeader)}
                         </h2>
@@ -189,6 +191,9 @@ const defaultJourney = "game";
                     <div
                             class="favorites-grid grid gap-4 sm:gap-5 lg:gap-6 pt-2"
                             style="grid-template-columns: repeat(auto-fill, minmax(var(--fav-card-size), 1fr));"
+                            data-reveal-children="scale"
+                            data-reveal-order="columns"
+                            data-reveal-stagger="45"
                     >
                         {journey.favorites.map((game) => {
                             const { data } = game;
@@ -200,7 +205,7 @@ const defaultJourney = "game";
 
                             return (
                                     <div
-                                            class="fav-card reveal-card group relative flex flex-col rounded-xl overflow-hidden border-4"
+                                            class="fav-card group relative flex flex-col rounded-xl overflow-hidden border-4"
                                             style={`border-color:${COLORS.black}; box-shadow:6px 6px 0px ${COLORS.black}; background-color: ${COLORS.white};`}
                                     >
                                         {/* Cover */}
@@ -235,7 +240,7 @@ const defaultJourney = "game";
 
         {/* 5. 全部游戏库 (动态网格 + 滑块) */}
         <div class="all-games-section">
-            <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-8" data-reveal-children="up">
                 <h2 class="text-4xl sm:text-5xl font-black shrink-0" style={`color: ${COLORS.black};`}>
                     {t(journey.libraryHeader)}
                     <span class="opacity-50">({journey.items.length})</span>
@@ -261,6 +266,9 @@ const defaultJourney = "game";
             <div
                     class="library-grid grid gap-4 sm:gap-5 lg:gap-6"
                     style="grid-template-columns: repeat(auto-fill, minmax(var(--card-size), 1fr));"
+                    data-reveal-children="scale"
+                    data-reveal-order="columns"
+                    data-reveal-stagger="45"
             >
                 {journey.items.map((game) => {
                     const { data } = game;
@@ -268,7 +276,7 @@ const defaultJourney = "game";
 
                     return (
                             <div
-                                    class="game-journey-card reveal-card group relative flex flex-col"
+                                    class="game-journey-card group relative flex flex-col"
                                     data-favorite={data.favorite ? "true" : "false"}
                             >
                                 {/* 非 favorite：不可见占位，在卡片边框外部 */}
@@ -360,42 +368,7 @@ const defaultJourney = "game";
         box-shadow: 0px 0px 0px var(--color-black) !important;
     }
 
-    /* ---- 卡片入场动画 ----
-       用 translate / scale 这两个独立变换属性，而不是 transform，
-       这样不会和 .fav-card:hover / .card-body:hover 上的 transform 打架 */
-    .reveal-card {
-        opacity: 0;
-        translate: 0 24px;
-        scale: 0.96;
-        transition: opacity 0.5s cubic-bezier(0.2, 1, 0.3, 1),
-        translate 0.5s cubic-bezier(0.2, 1, 0.3, 1),
-        scale 0.5s cubic-bezier(0.2, 1, 0.3, 1);
-        transition-delay: calc(var(--reveal-i, 0) * 45ms);
-    }
-
-    .reveal-card.is-revealed {
-        opacity: 1;
-        translate: none;
-        scale: 1;
-    }
-
-    /* 关闭 JS 时不做隐藏，避免整个游戏库不可见 */
-    @media (scripting: none) {
-        .reveal-card {
-            opacity: 1;
-            translate: none;
-            scale: 1;
-        }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .reveal-card {
-            opacity: 1;
-            translate: none;
-            scale: 1;
-            transition: none;
-        }
-    }
+    /* 卡片入场动画由全站的进出场动效系统接管，见 src/styles/motion.css */
 
     /* ---- 游戏库 网格卡片样式 ---- */
     .game-journey-card {
@@ -597,7 +570,7 @@ const defaultJourney = "game";
                 slider.addEventListener("input", () => {
                     panel.style.setProperty("--card-size", slider.value + "px");
                     // 列数变了，入场动画的左右次序要跟着重算
-                    scheduleRevealColumns();
+                    document.dispatchEvent(new CustomEvent('motion:relayout'));
                 });
             }
 
@@ -605,54 +578,10 @@ const defaultJourney = "game";
             if (favSlider) {
                 favSlider.addEventListener("input", () => {
                     panel.style.setProperty("--fav-card-size", favSlider.value + "px");
-                    scheduleRevealColumns();
+                    document.dispatchEvent(new CustomEvent('motion:relayout'));
                 });
             }
         });
-
-        // ---- 卡片入场动画：进入视口播放，离开后再进入会重新触发 ----
-        const revealGrids = Array.from(
-            document.querySelectorAll<HTMLElement>('.favorites-grid, .library-grid')
-        );
-
-        // 按卡片在容器内的水平位置分组，同一列共用一个序号 → 整体从左往右依次浮现。
-        // 列数会随窗口宽度和尺寸滑块变化，所以每次布局变动都要重算。
-        function assignRevealColumns() {
-            revealGrids.forEach((grid) => {
-                const cards = Array.from(grid.querySelectorAll<HTMLElement>('.reveal-card'));
-                if (!cards.length) return;
-
-                const columns = [...new Set(cards.map((c) => c.offsetLeft))].sort((a, b) => a - b);
-                cards.forEach((card) => {
-                    card.style.setProperty('--reveal-i', String(columns.indexOf(card.offsetLeft)));
-                });
-            });
-        }
-
-        let revealRaf = 0;
-        function scheduleRevealColumns() {
-            cancelAnimationFrame(revealRaf);
-            revealRaf = requestAnimationFrame(assignRevealColumns);
-        }
-
-        const revealCards = document.querySelectorAll<HTMLElement>('.reveal-card');
-        if (revealCards.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            // 底部外扩，让卡片在还没真正进屏时就开始入场
-            const revealObserver = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    entry.target.classList.toggle('is-revealed', entry.isIntersecting);
-                });
-            }, { rootMargin: '0px 0px 12% 0px', threshold: 0.05 });
-
-            revealCards.forEach((card) => revealObserver.observe(card));
-            window.addEventListener('resize', scheduleRevealColumns);
-            scheduleRevealColumns();
-
-            document.addEventListener('astro:before-swap', () => {
-                revealObserver.disconnect();
-                window.removeEventListener('resize', scheduleRevealColumns);
-            }, { once: true });
-        }
 
         // ---- 标题里的词：在游戏 / 动画两条旅程之间切换 ----
         const toggleText = toggle?.querySelector<HTMLElement>(".journey-word-text");
@@ -674,7 +603,7 @@ const defaultJourney = "game";
 
                 // 隐藏时元素没有布局，offsetLeft 读作 0，
                 // 所以切出来之后要重算入场动画的列序
-                scheduleRevealColumns();
+                document.dispatchEvent(new CustomEvent('motion:relayout'));
             }
 
             toggle.addEventListener("click", () => {

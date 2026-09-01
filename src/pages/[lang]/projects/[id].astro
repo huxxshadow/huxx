@@ -72,6 +72,7 @@ if (detailEntry) {
             <a
                     id="back-btn"
                     href={getRelativeLocaleUrl(currentLang, '/portfolio')}
+                    data-astro-transition="back"
                     class="back-btn inline-flex items-center gap-2 font-black text-base lg:text-lg uppercase tracking-widest opacity-80 hover:opacity-100 transition-opacity cursor-pointer"
             >
                 <i class="fa-solid fa-arrow-left"></i>
@@ -82,7 +83,12 @@ if (detailEntry) {
         <div class="relative z-10 max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
 
             {/* 左侧：文字信息 */}
-            <div class="flex-1 w-full flex flex-col items-start text-left gap-6">
+            <div
+                    class="flex-1 w-full flex flex-col items-start text-left gap-6"
+                    data-reveal-children="up"
+                    data-reveal-once
+                    data-reveal-stagger="80"
+            >
 
                 {/* 🌟 修改后的 Order 和 Category：增加 border-[3px] border-solid */}
                 <div class="flex flex-wrap items-center gap-3">
@@ -117,7 +123,7 @@ if (detailEntry) {
 
                 <div
                         class="mt-4 text-base sm:text-lg lg:text-xl font-medium leading-relaxed opacity-95 border-l-[4px] pl-5 py-2"
-                        style={`border-color: ${colorText};`}
+                        style={`border-color: ${colorText}; --reveal-opacity: 0.95;`}
                 >
                     <p class="whitespace-pre-line">{desc}</p>
                 </div>
@@ -128,7 +134,12 @@ if (detailEntry) {
 
             {/* 右侧：封面图 */}
             {heroImage && (
-                    <div class="w-full lg:w-5/12 flex justify-center lg:justify-end">
+                    <div
+                            class="w-full lg:w-5/12 flex justify-center lg:justify-end"
+                            data-reveal="right"
+                            data-reveal-once
+                            data-reveal-delay="180"
+                    >
                         <div
                                 class="project-hero-image group relative w-full aspect-[4/3] rounded-2xl border-[3px] overflow-hidden"
                                 style={`--theme: ${colorText}; border-color: ${colorText}; background-color: ${colorBg};`}
@@ -151,7 +162,8 @@ if (detailEntry) {
             class="w-full px-4 pt-8 pb-16 lg:pt-12 lg:pb-24"
             style={`--theme-text: ${colorText}; --theme-bg: ${colorBg}; background-color: ${colorBg}; color: ${colorText};`}
     >
-        <article class="project-prose max-w-7xl mx-auto">
+        {/* 正文按块淡入。长文不排队，否则后面的块要等一长串延迟才出现 */}
+        <article class="project-prose max-w-7xl mx-auto" data-reveal-children="up" data-reveal-stagger="0">
 
             {Content ? (
                     <Content />

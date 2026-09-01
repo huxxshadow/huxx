@@ -35,7 +35,12 @@ export const getStaticPaths = () =>
 
         <div class="relative z-10 w-full min-h-[56vh] flex flex-col">
             <div class="w-full flex flex-col lg:flex-row gap-10 lg:gap-16 flex-1">
-                <div class="w-full lg:w-2/5 flex flex-col justify-end pb-4 font-sans text-center lg:text-left">
+                <div
+                        class="w-full lg:w-2/5 flex flex-col justify-end pb-4 font-sans text-center lg:text-left"
+                        data-reveal-children="up"
+                        data-reveal-once
+                        data-reveal-stagger="90"
+                >
                     <h1 class="text-[4.5rem] lg:text-[7rem] font-black leading-[0.85] tracking-tighter mb-4">
                         Jeff Hu
                     </h1>
@@ -54,7 +59,12 @@ export const getStaticPaths = () =>
                     </div>
                 </div>
 
-                <div class="w-full lg:w-3/5 flex flex-col items-center lg:items-start justify-start pt-4 pb-24 lg:pt-12 gap-5 lg:gap-6 text-center lg:text-left">
+                <div
+                        class="w-full lg:w-3/5 flex flex-col items-center lg:items-start justify-start pt-4 pb-24 lg:pt-12 gap-5 lg:gap-6 text-center lg:text-left"
+                        data-reveal-children="up"
+                        data-reveal-once
+                        data-reveal-stagger="80"
+                >
                     <div class="w-full text-4xl lg:text-6xl font-black">
                         {t(indexTranslations.welcome)}
                     </div>
@@ -69,7 +79,7 @@ export const getStaticPaths = () =>
 
                     <div
                             class="space-y-4 lg:space-y-6 text-lg lg:text-xl font-medium leading-relaxed opacity-95 lg:border-l-[4px] lg:pl-5 py-1 text-center lg:text-left"
-                            style="border-color: currentColor;"
+                            style="border-color: currentColor; --reveal-opacity: 0.95;"
                     >
                         <p>{t(indexTranslations.experience1Sub)}</p>
                         <p>{t(indexTranslations.experience2)}</p>
@@ -80,7 +90,12 @@ export const getStaticPaths = () =>
                 </div>
             </div>
 
-            <div class="w-full mt-10 lg:mt-2 pt-4 border-current/10 flex flex-wrap gap-x-8 lg:gap-x-16 gap-y-6 lg:gap-y-8 justify-center lg:justify-start">
+            <div
+                    class="w-full mt-10 lg:mt-2 pt-4 border-current/10 flex flex-wrap gap-x-8 lg:gap-x-16 gap-y-6 lg:gap-y-8 justify-center lg:justify-start"
+                    data-reveal-children="up"
+                    data-reveal-once
+                    data-reveal-stagger="60"
+            >
                 <div class="flex items-center gap-3">
                     <i class="fa-solid fa-diagram-project text-[2rem] lg:text-[2.5rem] opacity-90"></i>
                     <div class="flex flex-col">
@@ -115,7 +130,13 @@ export const getStaticPaths = () =>
             </div>
         </div>
 
-        <div class="pointer-events-none absolute bottom-0 right-0 z-0 opacity-20">
+        <div
+                class="pointer-events-none absolute bottom-0 right-0 z-0 opacity-20"
+                data-reveal="scale"
+                data-reveal-once
+                data-reveal-delay="260"
+                style="--reveal-opacity: 0.2;"
+        >
             <Avatar class="w-[180px] lg:w-[320px] h-auto block" fill="currentColor" />
         </div>
     </section>

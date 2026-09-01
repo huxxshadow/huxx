@@ -1,0 +1,169 @@
+/* ================================================================
+   进出场动效系统 (motion)
+
+   两套动效：
+   1. 滚动进出场 —— 元素进入视口时入场，滚出视口后退场，再滚回来重新播放
+   2. 页面切换   —— 配合 <ClientRouter />，给 <main> 的新旧页面加转场
+
+   用法（标注在组件里，逻辑在 Base.astro 的脚本中统一驱动）：
+     data-reveal="up|down|left|right|scale|fade"   单个元素入场，默认 up
+     data-reveal-children="up|..."                 容器：直接子元素依次入场
+     data-reveal-once                              只播一次，不再退场（首屏用）
+     data-reveal-stagger="70"                      自定义错峰步长（毫秒）
+     data-reveal-delay="150"                       单个元素的固定延迟（毫秒）
+     data-reveal-order="columns"                   网格容器：按列而非按 DOM 顺序错峰
+     style="--reveal-opacity: 0.2"                 元素本来就半透明时，指定入场后的透明度
+
+   网格列数在运行时变了（比如卡片尺寸滑块），派发 motion:relayout 事件重排错峰序号：
+     document.dispatchEvent(new CustomEvent('motion:relayout'))
+
+   实现要点：
+   - 用 translate / scale 这两个独立变换属性，而不是 transform，
+     这样不会和元素自身 hover / active 上的 transform 打架。
+   - 用 animation 而不是 transition 播放。站内很多卡片自己带 transition
+     （粗野风格的 hover 位移、经验卡片的 flex 展开），
+     在同一个元素上写 transition 会把它们整条覆盖掉。
+   - 刻意写在 @layer 之外：未分层的规则优先级高于所有 @layer，
+     才能压过 Tailwind 的 opacity-* 之类工具类。
+   - 隐藏状态挂在 html.motion-ready 下。这个类由 Base.astro 的内联脚本
+     同步添加，脚本没跑起来 / 超时没接管时不会加，内容照常可见。
+   ================================================================ */
+
+:root {
+    --motion-ease: cubic-bezier(0.2, 1, 0.3, 1);
+    --motion-duration: 560ms;
+    --motion-exit-duration: 300ms;
+    --motion-distance: 24px;
+}
+
+/* ---- 隐藏（未入场）状态 ---- */
+html.motion-ready [data-reveal],
+html.motion-ready [data-reveal-children] > * {
+    opacity: 0;
+    translate: var(--reveal-x, 0) var(--reveal-y, var(--motion-distance));
+    scale: var(--reveal-scale, 1);
+}
+
+/* ---- 方向变体 ---- */
+html.motion-ready [data-reveal="down"],
+html.motion-ready [data-reveal-children="down"] > * {
+    --reveal-y: calc(var(--motion-distance) * -1);
+}
+
+html.motion-ready [data-reveal="left"],
+html.motion-ready [data-reveal-children="left"] > * {
+    --reveal-x: calc(var(--motion-distance) * -1);
+    --reveal-y: 0;
+}
+
+html.motion-ready [data-reveal="right"],
+html.motion-ready [data-reveal-children="right"] > * {
+    --reveal-x: var(--motion-distance);
+    --reveal-y: 0;
+}
+
+html.motion-ready [data-reveal="scale"],
+html.motion-ready [data-reveal-children="scale"] > * {
+    --reveal-y: 14px;
+    --reveal-scale: 0.96;
+}
+
+html.motion-ready [data-reveal="fade"],
+html.motion-ready [data-reveal-children="fade"] > * {
+    --reveal-y: 0;
+}
+
+/* ---- 入场（已进入视口） ---- */
+/* --reveal-opacity：元素本身就不是全不透明时（比如带 Tailwind 的 opacity-20），
+   在它身上写 style="--reveal-opacity: 0.2"，入场后才会回到原本的透明度 */
+html.motion-ready [data-reveal].is-revealed,
+html.motion-ready [data-reveal-children] > .is-revealed {
+    animation: reveal-in var(--motion-duration) var(--motion-ease) var(--reveal-delay, 0ms) both;
+}
+
+/* ---- 退场（入场过、又滚出视口）
+       克制处理：只淡出 + 朝离开方向轻微漂移，时长比入场短，且不排队 ---- */
+html.motion-ready [data-reveal].is-exited,
+html.motion-ready [data-reveal-children] > .is-exited {
+    animation: reveal-out var(--motion-exit-duration) var(--motion-ease) both;
+}
+
+@keyframes reveal-in {
+    from {
+        opacity: 0;
+        translate: var(--reveal-x, 0) var(--reveal-y, var(--motion-distance));
+        scale: var(--reveal-scale, 1);
+    }
+    to {
+        opacity: var(--reveal-opacity, 1);
+        translate: none;
+        scale: 1;
+    }
+}
+
+@keyframes reveal-out {
+    from {
+        opacity: var(--reveal-opacity, 1);
+        translate: none;
+        scale: 1;
+    }
+    to {
+        opacity: 0;
+        translate: 0 var(--reveal-exit-y, 10px);
+        scale: 1;
+    }
+}
+
+/* ---- 没有 JS 时不做隐藏，避免整页不可见 ---- */
+@media (scripting: none) {
+    html [data-reveal],
+    html [data-reveal-children] > * {
+        opacity: var(--reveal-opacity, 1);
+        translate: none;
+        scale: 1;
+        animation: none;
+    }
+}
+
+/* ---- 尊重系统的「减少动态效果」偏好 ---- */
+@media (prefers-reduced-motion: reduce) {
+    html.motion-ready [data-reveal],
+    html.motion-ready [data-reveal].is-revealed,
+    html.motion-ready [data-reveal].is-exited,
+    html.motion-ready [data-reveal-children] > *,
+    html.motion-ready [data-reveal-children] > .is-revealed,
+    html.motion-ready [data-reveal-children] > .is-exited {
+        opacity: var(--reveal-opacity, 1);
+        translate: none;
+        scale: 1;
+        animation: none;
+    }
+}
+
+
+/* ================================================================
+   页面切换转场（由 src/transitions.ts 引用，挂在 Base.astro 的 <main> 上）
+   前进：旧页面上移淡出，新页面自下而上淡入；后退方向相反。
+   这里用 transform 而不是 translate —— 作用对象是 view-transition
+   伪元素，不存在和 hover 变换打架的问题。
+   ================================================================ */
+
+@keyframes page-leave-up {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(-14px); }
+}
+
+@keyframes page-enter-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes page-leave-down {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(14px); }
+}
+
+@keyframes page-enter-down {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}

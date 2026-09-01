@@ -35,7 +35,11 @@ const experiences = experienceListData.map(item => ({
         data-theme-text={initialTheme.dark}
         style={`background-color: ${initialTheme.light}; color: ${initialTheme.dark}; --theme-bg: ${initialTheme.light}; --theme-text: ${initialTheme.dark};`}
 >
-    <div class="flex flex-col lg:flex-row w-full h-auto lg:h-[720px]">
+    <div
+            class="flex flex-col lg:flex-row w-full h-auto lg:h-[720px]"
+            data-reveal-children="up"
+            data-reveal-stagger="90"
+    >
         {experiences.map((exp, index) => (
                 <div
                         class={`exp-card group cursor-pointer relative overflow-hidden transition-[flex,background-color] rounded-t-3xl duration-700 ease-[cubic-bezier(0.2,1,0.3,1)] ${index === 0 ? 'active lg:flex-[5]' : 'lg:flex-[1]'}`}

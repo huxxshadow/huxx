@@ -198,7 +198,11 @@ const getSkillClass = (level: string) => {
         data-theme-text={COLORS.orange.dark}
 >
     {/* ====== Left: Skill List ====== */}
-    <div class="w-full lg:w-7/12 flex flex-col gap-10 z-10 font-sans text-center lg:text-left">
+    <div
+            class="w-full lg:w-7/12 flex flex-col gap-10 z-10 font-sans text-center lg:text-left"
+            data-reveal-children="up"
+            data-reveal-stagger="80"
+    >
         {SKILL_CATEGORIES.map((category) => (
                 <div class="flex flex-col gap-5">
                     <h3 class="text-3xl font-black  tracking-widest opacity-90 border-b-2 border-current/60 pb-2">
@@ -264,7 +268,8 @@ const getSkillClass = (level: string) => {
     </div>
 
     {/* ====== Right: Brick Game ====== */}
-    <div class="w-full lg:w-5/12 flex z-10 font-sans py-8 lg:p-24">
+    {/* 只做淡入淡出：打砖块靠 getBoundingClientRect 定位球和挡板，位移会算错坐标 */}
+    <div class="w-full lg:w-5/12 flex z-10 font-sans py-8 lg:p-24" data-reveal="fade">
         <div
                 id="bb-container"
                 class="relative flex-1 w-full min-h-[600px] max-h-[70vh] min-w-[320px] sm:min-w-[320px] rounded-[2rem] overflow-hidden border-4 bg-white/30 shadow-inner"

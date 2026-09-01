@@ -36,7 +36,7 @@ const NAV_LINKS = [
         class="w-full pt-10 pb-6 px-4 sm:px-6 font-sans border-t border-current/20"
 >
     {/* 上半部分：左侧信息 + 右侧导航链接 */}
-    <div class="w-full flex flex-col lg:flex-row justify-between items-start gap-10">
+    <div class="w-full flex flex-col lg:flex-row justify-between items-start gap-10" data-reveal-children="up" data-reveal-stagger="110">
 
         {/* 左側：Avatar + 文字 */}
         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 max-w-3xl">
@@ -105,7 +105,11 @@ const NAV_LINKS = [
     </div>
 
     {/* 下部：版权 */}
-    <div class="w-full mt-10 pt-6 border-t border-current/10 flex justify-center items-center text-center text-xl font-black tracking-widest opacity-80">
+    <div
+            class="w-full mt-10 pt-6 border-t border-current/10 flex justify-center items-center text-center text-xl font-black tracking-widest opacity-80"
+            data-reveal="fade"
+            style="--reveal-opacity: 0.8;"
+    >
         <span>&copy; {currentYear} huxx.me. {t(footerTranslations.copyright)}</span>
     </div>
 </footer>

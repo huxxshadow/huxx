@@ -32,7 +32,7 @@ const t = useTranslations(currentLang);
     <div class="mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ===== 标题与调节滑块 ===== */}
-        <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-8 sm:mb-12">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-8 sm:mb-12" data-reveal-children="up">
             <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black shrink-0" style={`color: ${COLORS.black};`}>
                 {t(allProjectsLabels.libraryHeader)}
                 <span class="opacity-50 ">({orderedProjects.length})</span>
@@ -61,6 +61,8 @@ const t = useTranslations(currentLang);
                 id="all-projects-grid"
                 class="grid gap-6 sm:gap-8 transition-all duration-300"
                 style="grid-template-columns: repeat(auto-fill, minmax(var(--card-size), 1fr));"
+                data-reveal-children="up"
+                data-reveal-order="columns"
         >
             {orderedProjects.map((project) => {
                 const { data } = project;
@@ -261,6 +263,8 @@ const t = useTranslations(currentLang);
             slider.addEventListener('input', (e) => {
                 const val = parseInt((e.target as HTMLInputElement).value);
                 updateCardMode(val);
+                // 列数变了，让进出场动效重排错峰序号
+                document.dispatchEvent(new CustomEvent('motion:relayout'));
             });
 
             // 初始化
