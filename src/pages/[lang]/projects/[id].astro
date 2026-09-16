@@ -25,6 +25,7 @@ const currentLang = lang as Lang;
 
 // === 1. 解析当前语言对应的多语言字段 ===
 const title = project.data.title[currentLang] || project.data.title.en || project.data.title.zh || project.id;
+const useCompactTitle = title.length > 22;
 const desc = project.data.desc[currentLang] || project.data.desc.en || project.data.desc.zh || "";
 const roles = project.data.roles[currentLang] || project.data.roles.en || project.data.roles.zh || [];
 const tags = project.data.tags[currentLang] || project.data.tags.en || project.data.tags.zh || [];
@@ -103,7 +104,7 @@ if (detailEntry) {
                     </span>
                 </div>
 
-                <h1 class="text-4xl sm:text-5xl lg:text-[5rem] font-black leading-[1.1] tracking-tight">
+                <h1 class={`font-black leading-[1.1] tracking-tight ${useCompactTitle ? 'text-3xl sm:text-4xl lg:text-[3.5rem]' : 'text-4xl sm:text-5xl lg:text-[5rem]'}`}>
                     {title}
                 </h1>
 
@@ -414,6 +415,54 @@ if (detailEntry) {
         opacity: 0.8;
         text-align: center; /* 居中显示 */
         padding: 0 0.5rem;
+    }
+
+    /* Monster Demo 4：四个独立结果面板 */
+    :global(.project-prose .monster-demo-grid) {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin: 2.5rem 0;
+    }
+
+    :global(.project-prose .monster-demo-grid figure) {
+        margin: 0;
+        padding: 0;
+        gap: 0.7rem;
+        min-width: 0;
+        border: 0;
+    }
+
+    :global(.project-prose .monster-demo-grid img) {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+        object-fit: cover;
+        border-radius: 0.5rem;
+        border: 0;
+        box-shadow: none;
+    }
+
+    :global(.project-prose .monster-demo-grid figcaption) {
+        max-width: none;
+        min-height: 2.7rem;
+        padding: 0 0.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    @media (min-width: 640px) and (max-width: 1023px) {
+        :global(.project-prose .monster-demo-grid) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (min-width: 1024px) {
+        :global(.project-prose .monster-demo-grid) {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 1rem;
+        }
     }
 
     /* 引用 */

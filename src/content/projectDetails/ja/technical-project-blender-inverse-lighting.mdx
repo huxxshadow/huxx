@@ -1,0 +1,159 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import overview from '@/assets/projects/technical-project-blender-inverse-lighting/overview.jpg';
+import pipeline from '@/assets/projects/technical-project-blender-inverse-lighting/paired-pipeline-en.png';
+import architecture from '@/assets/projects/technical-project-blender-inverse-lighting/architecture-en.png';
+import gradient from '@/assets/projects/technical-project-blender-inverse-lighting/gradient-en.png';
+import controlled from '@/assets/projects/technical-project-blender-inverse-lighting/controlled-en.png';
+import dayNight from '@/assets/projects/technical-project-blender-inverse-lighting/day-night-en.png';
+import monsterBase from '@/assets/projects/technical-project-blender-inverse-lighting/monster-demo4-base.png';
+import monsterTarget from '@/assets/projects/technical-project-blender-inverse-lighting/monster-demo4-target.png';
+import monsterSolved from '@/assets/projects/technical-project-blender-inverse-lighting/monster-demo4-solved.png';
+import monsterResidual from '@/assets/projects/technical-project-blender-inverse-lighting/monster-demo4-residual-x4.png';
+
+## 担当範囲
+
+本作は、**テクニカルアート、AI支援制作、デジタルコンテンツ制作**をつなぐ個人研究開発プロジェクトです。課題設定からアルゴリズム設計、Blenderアドオン実装、実験検証までを一貫して担当しました。
+
+- **ワークフロー設計**：数値を繰り返し調整する従来の照明作業を、「2Dで目標を決め、3D照明を逆算する」フローへ再構成しました。
+- **クロスレンダラ求解**：CyclesとMitsubaの差を打ち消すため、基準画像と目標画像に対する二つの逆問題を解き、相対的なパラメータ変化だけを転送する方式を設計しました。
+- **Blenderアドオン開発**：Dependency Graph、カメラ、Lightデータブロック、マテリアルノード、WorldをBlender Python APIで取得し、Mitsuba 3 / Dr.Jitの微分可能シーンへ変換しました。
+- **パラメータ化と書き戻し**：強度、色、サイズ、位置、向き、発光マテリアル、WorldをBlenderの意味単位で最適化し、Apply / Revertと共有データブロックを安全に処理しました。
+- **最適化設計**：マルチスケールAdam、複合損失、PRB / PRB Projectiveの自動選択を実装しました。
+
+---
+
+## プロジェクト概要
+
+### 2Dの照明意図を、編集可能な3Dシーンへ戻す
+
+複雑なシーンの見た目は、複数のライト、発光マテリアル、遮蔽、鏡面反射、間接照明によって決まります。アーティストはPhotoshop、生成AI、ペイントオーバーで望む雰囲気を素早く表現できますが、その画像を再現する3Dパラメータを直接推測することは困難です。
+
+このツールでは、まずアーティストが2Dで視覚的な判断を行い、その後にシステムがシーンレベルの照明変化を復元します。出力は加工済み画像ではなく、Blender内で編集・アニメーション・再利用・別視点検証ができるライト、発光マテリアル、Worldパラメータです。
+
+<figure>
+    <Image src={overview} alt="2D目標から編集可能な3D照明を復元するコンセプト" width={2048} height={520} />
+    <figcaption>AIまたはアーティストが2Dの目標を提示し、微分可能な物理レンダリングが編集可能な3Dパラメータへ制約する</figcaption>
+</figure>
+
+対象は、**形状・マテリアル・カメラが既知のシーンに対する相対的な照明編集**です。未知の写真からシーン全体を再構築するのではなく、既存のDCCシーンに新しい雰囲気案を戻すことに集中しています。
+
+### Cozy Kitchen — クイックプレビュー
+
+Blender 3.5 Splash「Cozy Kitchen」では、元のCyclesレンダーを基にAIまたはアーティストが新しい雰囲気の目標を提示します。アドオンはWorldと太陽光のパラメータを逆算し、編集可能な照明としてBlenderへ書き戻します。
+
+<figure>
+    <Image src={dayNight} alt="Cozy Kitchenの基準レンダー、2Dリペイント目標、照明復元結果" width={3595} height={1160} />
+    <figcaption>左から、基準Cyclesレンダー、2Dリペイント目標、実際の3D照明パラメータによる復元結果</figcaption>
+</figure>
+
+画像L1は **0.21702から0.05414** へ **75.1%**、色度誤差は **0.25642から0.04606** へ **82.0%** 改善しました。
+
+## アーティスト向けワークフロー
+
+1. Cyclesで可逆なカラー設定の基準画像を出力する。
+2. その画像をAI、手描き、カラーグレーディングで編集し、目標の雰囲気を作る。
+3. 最適化するライト、発光マテリアル、Worldとパラメータ群を選択する。
+4. Mitsuba 3とDr.Jitで、粗い解像度から高解像度へ微分最適化する。
+5. 相対変化をBlenderへ書き戻し、Cyclesで再レンダリングして確認する。
+
+`CYCLES BASE → AI / ARTIST REPAINT → DIFFERENTIABLE SOLVE → WRITE-BACK → CYCLES VALIDATION`
+
+<figure>
+    <Image src={pipeline} alt="CyclesとMitsubaを用いたペア逆ライティングフロー" width={3000} height={1500} />
+    <figcaption>基準画像と目標画像を同じ条件で別々に求解し、両者の相対差だけを元のCyclesシーンへ転送する</figcaption>
+</figure>
+
+---
+
+## 中核となる技術課題
+
+### 最適化レンダラと最終レンダラの不一致
+
+最終制作は **Blender Cycles** で行いますが、勾配最適化は **Mitsuba 3** で実行します。両者はBlenderのノード、プロシージャルWorld、発光メッシュ、カラーマネジメント、エネルギー単位を完全には同じように解釈しません。
+
+MitsubaでCycles画像を直接フィットすると、最適化器は意図した照明変更と静的なレンダラ差を区別できず、マテリアル変換誤差をライトで補償してしまいます。その結果、Mitsuba内では正しく見えても、Cyclesへ戻した時に再現できません。
+
+### ペア逆問題による相対転送
+
+システムは同じ初期シーンから二つの逆最適化を実行します。一つ目はCyclesの基準レンダー、二つ目はリペイントした目標画像をフィットします。いずれかの絶対解をそのまま使うのではなく、強度・色・サイズは制限付き比率、位置は差分として両者の相対変化を抽出し、元のBlenderシーンへ適用します。
+
+二つの求解は同じMitsubaシーン、意味的パラメータ化、最適化スケジュールを共有します。共通の変換誤差は両方へ似た形で現れ、最後にCyclesで転送結果を検証します。
+
+## システム構成
+
+<figure>
+    <Image src={architecture} alt="Blender逆ライティングアドオンのシステム構成" width={2800} height={1500} />
+    <figcaption>シーン変換、意味的バインディング、微分最適化、相対差分、書き戻し、Cycles検証を一つのループとして統合</figcaption>
+</figure>
+
+正の値には指数写像を用い、負の光量やサイズを防ぎます。回転は初期姿勢に対する回転ベクトル、位置はBlenderワールド座標のオフセットで表現します。色も上限のない指数パラメータとし、白色付近の勾配飽和を避けます。色がBlenderの`[0, 1]`範囲を超えた場合は、余剰分を強度へ移し、色と強度の積を維持します。
+
+---
+
+## 微分可能な物理最適化
+
+Mitsuba 3とDr.Jitは、選択されたシーンパラメータに対してパストレーシング画像を微分します。各反復でライト、可視性、マテリアル応答、間接照明を再計算するため、結果は2Dフィルタではなく物理的な光輸送に制約されます。
+
+強度と色には **PRB** を使用します。位置、向き、面光源サイズは影や輪郭の可視性を変えるため、境界項を扱える **PRB Projective** へ自動的に切り替えます。
+
+<figure>
+    <Image src={gradient} alt="PRBとPRB Projectiveの勾配比較" width={2400} height={1450} />
+    <figcaption>制御実験では、Projective Samplingにより位置と回転の勾配信号が約537倍、3500倍に増加した</figcaption>
+</figure>
+
+最適化は約1/4、1/2、フル解像度の順に進みます。低解像度で全体の明暗と色を安定させ、高解像度で局所的な境界を調整します。目的関数は色L1、エッジ、輝度加重色度、パラメータ正則化を組み合わせています。
+
+---
+
+## 検証と結果
+
+Mitsuba内部の損失だけでは成功と判断しません。書き戻し後に必ず元のBlenderシーンをCyclesで再レンダリングし、目標画像と比較します。また、レンダリングノイズ、低周波の到達可能性、ライトごとの非負基底フィットを用いて、未収束と表現不能な目標を区別します。
+
+### 制御差分実験
+
+既知の照明変更を持つ実験では、画像L1が **0.07037から0.00186** まで低下し、**0.00154** のノイズフロアに近づきました。キーライトの放射倍率は **1.796** と復元され、目標値1.8に対する誤差は約 **0.2%** です。
+
+<figure>
+    <Image src={controlled} alt="既知の照明変更を用いた制御差分実験" width={2795} height={1000} />
+    <figcaption>CyclesとMitsubaにマテリアル差があっても、ペア差分は転送可能な相対照明変化を復元できる</figcaption>
+</figure>
+
+### Monster Under The Bed
+
+このケースではDemo 4の新しいAIリペイントを使用し、元の暖色シーンを高彩度の赤い照明目標へ再設計しました。形状、マテリアル、カメラを固定したまま、アドオンがシーンライトとWorldパラメータを逆算し、Cyclesの再レンダリングで結果を検証します。L1は **0.13117から0.04180** へ **68.1%** 改善しました。低周波の到達可能下限は **0.00977** であり、目標には現行ライトだけでは完全に表現できない局所的・構造的変更が含まれます。
+
+<div className="monster-demo-grid">
+    <figure>
+        <Image src={monsterBase} alt="Monster Under The Bedの基準レンダー" width={1024} height={1024} />
+        <figcaption>基準レンダー</figcaption>
+    </figure>
+    <figure>
+        <Image src={monsterTarget} alt="Monster Under The BedのAIリペイント目標" width={1024} height={1024} />
+        <figcaption>AIリペイント目標</figcaption>
+    </figure>
+    <figure>
+        <Image src={monsterSolved} alt="Monster Under The Bedの照明復元結果" width={1024} height={1024} />
+        <figcaption>照明復元結果</figcaption>
+    </figure>
+    <figure>
+        <Image src={monsterResidual} alt="Monster Under The Bedの4倍残差表示" width={1024} height={1024} />
+        <figcaption>4倍残差表示</figcaption>
+    </figure>
+</div>
+
+---
+
+## テクニカルアートとしての価値
+
+AIは雰囲気、色、照明方向の探索を高速化しますが、最終アセットそのものではありません。このアドオンは選ばれた2D案を実際の3Dシーンへ戻し、名前付き・アニメーション可能・再利用可能なBlenderデータとして保持します。別カメラで再レンダリングでき、ショットやレベル、バッチ制作にも組み込めます。
+
+つまり、生成AIの探索速度と、DCC制作に必要な制御性・一貫性・納品可能性を接続するツールです。照明デザインを置き換えるのではなく、「2Dの意図」から「検証可能な3D状態」までの試行回数を減らします。
+
+## シーンのクレジット
+
+**Cozy Kitchen** — Nicole MorenaによるBlender 3.5 Splashシーン。元の公開ページに記載されたライセンスに従って掲載しています。
+
+**Monster Under The Bed** — [Metin Seven](https://metinseven.nl/)制作、[Blake Stevenson](https://jetpacksandrollerskates.com/)の2Dコンセプトアートを基にしたCC-BY作品です。[Blenderシーンをダウンロード](https://download.blender.org/demo/cycles/monster_under_the_bed_sss_demo_by_metin_seven.blend)。

@@ -1909,5 +1909,81 @@
     ],
     "colorText": "red",
     "colorBackground": "red"
+  },
+  {
+    "id": "technical-project-blender-inverse-lighting",
+    "order": 30,
+    "category": "technical",
+    "title": {
+      "en": "Image Guided Differentiable Inverse Lighting",
+      "zh": "基于Mitsuba3的可微物理渲染框架的灯光逆向重建",
+      "ja": "Mitsuba 3 微分可能物理レンダリングによる逆ライティング再構成",
+      "ko": "Mitsuba 3 미분 가능 물리 렌더링 기반 역조명 재구성"
+    },
+    "roles": {
+      "en": [
+        "Technical Artist"
+      ],
+      "zh": [
+        "Technical Artist"
+      ],
+      "ja": [
+        "Technical Artist"
+      ],
+      "ko": [
+        "Technical Artist"
+      ]
+    },
+    "desc": {
+      "en": "An image-guided inverse-lighting tool for Blender Technical Art workflows. AI repaints and artist paint-overs define the desired atmosphere; differentiable physical rendering then reconstructs lights, emissive materials, and world illumination as editable parameters in the original Cycles scene.",
+      "zh": "一个面向 Blender Technical Art 工作流的图像引导灯光逆渲染工具。AI 重绘或艺术家 paint-over 负责表达目标氛围，系统再通过可微物理渲染反向求解灯光、自发光材质与世界环境，并将结果作为可编辑参数写回原始 Cycles 场景。",
+      "ja": "Blender の Technical Art ワークフロー向けに開発した、画像誘導型の逆ライティングツールです。AI リペイントやアーティストのペイントオーバーで目標の雰囲気を定義し、微分可能な物理レンダリングによってライト、発光マテリアル、ワールド照明を逆算し、編集可能なパラメータとして元の Cycles シーンへ書き戻します。",
+      "ko": "Blender Technical Art 워크플로를 위한 이미지 가이드 기반 역조명 도구입니다. AI 리페인트 또는 아티스트 페인트오버로 목표 분위기를 정의하면, 미분 가능한 물리 렌더링으로 라이트·발광 머티리얼·월드 조명을 역산해 편집 가능한 파라미터로 원본 Cycles 장면에 다시 기록합니다."
+    },
+    "tags": {
+      "en": [
+        "AI Application Development",
+        "Machine Learning",
+        "DCC Plugin",
+        "Differentiable Rendering",
+        "Inverse Rendering"
+      ],
+      "zh": [
+        "AI应用开发",
+        "机器学习",
+        "DCC插件",
+        "可微渲染",
+        "逆向渲染"
+      ],
+      "ja": [
+        "AIアプリケーション開発",
+        "機械学習",
+        "DCCプラグイン",
+        "微分可能レンダリング",
+        "逆レンダリング"
+      ],
+      "ko": [
+        "AI 애플리케이션 개발",
+        "머신러닝",
+        "DCC 플러그인",
+        "미분 가능 렌더링",
+        "역렌더링"
+      ]
+    },
+    "coverImage": "src/assets/projects/technical-project-blender-inverse-lighting/cover-4x3.png",
+    "links": [
+      {
+        "name": "Bilibili",
+        "url": "https://www.bilibili.com/video/BV1mZes6uEEE/?share_source=copy_web&vd_source=2e0b37d0ccacd91ea3fca2b1dab708e8",
+        "icon": "fa-brands fa-bilibili"
+      },
+      {
+        "name": "YouTube",
+        "url": "https://youtu.be/Dw05Zss5KKQ",
+        "icon": "fa-brands fa-youtube"
+      }
+    ],
+    "colorText": "red",
+    "colorBackground": "red"
   }
 ]

@@ -1,0 +1,191 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import overview from '@/assets/projects/technical-project-blender-inverse-lighting/overview.jpg';
+import pipeline from '@/assets/projects/technical-project-blender-inverse-lighting/paired-pipeline-zh.png';
+import architecture from '@/assets/projects/technical-project-blender-inverse-lighting/architecture-zh.png';
+import gradient from '@/assets/projects/technical-project-blender-inverse-lighting/gradient-zh.png';
+import controlled from '@/assets/projects/technical-project-blender-inverse-lighting/controlled-zh.png';
+import dayNight from '@/assets/projects/technical-project-blender-inverse-lighting/day-night-zh.png';
+import monsterBase from '@/assets/projects/technical-project-blender-inverse-lighting/monster-demo4-base.png';
+import monsterTarget from '@/assets/projects/technical-project-blender-inverse-lighting/monster-demo4-target.png';
+import monsterSolved from '@/assets/projects/technical-project-blender-inverse-lighting/monster-demo4-solved.png';
+import monsterResidual from '@/assets/projects/technical-project-blender-inverse-lighting/monster-demo4-residual-x4.png';
+
+## 我的职责
+
+这是一个面向 **Technical Art、AI 辅助创作与数字内容生产** 的个人工具研发项目。我独立完成了从问题定义、算法设计到 Blender 插件落地与实验验证的完整流程，主要工作包括：
+
+- **工作流与交互设计**：把“反复调灯”的传统流程改写为“先在二维图像中确定视觉目标，再反求三维灯光”，并明确 AI 只负责辅助探索氛围，而不是直接生成最终场景参数。
+- **跨渲染器求解架构**：设计 Cycles—Mitsuba 成对逆向求解，通过两次优化结果的相对变化抵消材质转换误差与求解器偏差。
+- **Blender 插件与场景桥接**：使用 Blender Python API 读取依赖图、相机、灯光数据块、材质节点与世界环境，并构建可供 Mitsuba 3 和 Dr.Jit 优化的可微场景。
+- **语义参数化与场景写回**：建立功率、颜色、尺寸、位置、朝向、自发光与 World 参数的 Blender 语义潜变量，实现 Apply、Revert 与共享数据块的安全处理。
+- **优化器与损失函数**：实现多尺度 Adam、颜色 L1、边缘、亮度加权色度与参数正则，并根据参数是否改变可见性自动选择 PRB 或 PRB Projective。
+
+---
+
+## 项目概述
+
+### 把二维光照意图还原为可编辑的三维场景
+
+复杂场景的灯光外观由多盏灯、自发光材质、遮挡、镜面响应和间接照明共同决定。艺术家可以很快在 Photoshop、生成式 AI 或 paint-over 中画出“想要的感觉”，但很难直接判断这张二维目标图应当对应哪些三维灯光参数。
+
+这个插件把交互顺序反了过来：艺术家先完成视觉决策，系统再恢复与之对应的场景级光照变化。目标图可以来自 AI 重绘、概念设计、人工绘制或调色；输出则不是一张后期图片，而是 Blender 中真实存在、能够继续编辑、动画化、批量渲染和换视角验证的灯光数据块、自发光材质与世界环境参数。
+
+<figure>
+    <Image src={overview} alt="从二维目标图到可编辑三维灯光的可微渲染概念图" width={2048} height={520} />
+    <figcaption>AI 或艺术家负责提出二维视觉目标；可微物理渲染负责把目标约束回真实的三维场景参数</figcaption>
+</figure>
+
+项目聚焦于 **已知几何、材质与相机条件下的相对灯光编辑**，并不尝试从一张未知照片重建完整场景。这个约束让工具更符合现有 DCC 制作：场景已经存在，艺术家需要的是更快地把新的氛围方案转化为可交付的灯光状态。
+
+### Cozy Kitchen 场景重绘效果
+
+在 Blender 3.5 Splash “Cozy Kitchen” 场景中，AI 或艺术家基于原始 Cycles 渲染提出新的氛围目标，插件再反向求解世界环境与太阳光参数，并把结果作为可编辑灯光写回 Blender。
+
+<figure>
+    <Image src={dayNight} alt="Cozy Kitchen 的基础渲染、二维重绘目标与灯光重建结果" width={3595} height={1160} />
+    <figcaption>从左至右：基础 Cycles 渲染、二维重绘目标、由真实三维灯光参数生成的重建结果</figcaption>
+</figure>
+
+图像 L1 从 **0.21702** 降至 **0.05414**，改善 **75.1%**；色度误差从 **0.25642** 降至 **0.04606**，改善 **82.0%**。
+
+## 艺术家工作流
+
+1. **导出基础图**：插件从当前相机导出一张采用可逆色彩管理设置的 Cycles 基础渲染，并在完成后恢复用户原有设置。
+2. **创作目标图**：艺术家在基础图副本上进行 AI 重绘、手绘、调色或局部气氛设计。AI 在这里提供视觉方向，不直接决定三维参数。
+3. **选择可编辑范围**：用户选择参与求解的灯光、自发光材质和世界背景，以及强度、颜色、尺寸、位置或朝向等参数组。
+4. **执行可微求解**：系统把 Blender 场景桥接到 Mitsuba 3，使用 Dr.Jit 对物理光传输求导，并通过由粗到细的 Adam 优化逼近目标。
+5. **写回并验证**：相对参数变化写回 Blender 数据块与材质节点，再由 Cycles 重新渲染并评分。
+
+`CYCLES 基础渲染 → AI / 艺术家重绘 → 可微求解 → 参数写回 → CYCLES 验证`
+
+<figure>
+    <Image src={pipeline} alt="Blender Cycles 与 Mitsuba 之间的成对逆向求解工作流" width={3000} height={1500} />
+    <figcaption>完整管线：以同一场景的基础图和目标图执行成对求解，只把两组参数之间的相对编辑量写回 Cycles</figcaption>
+</figure>
+
+---
+
+## 核心技术挑战
+
+### 求解器和最终渲染器并不是同一个系统
+
+艺术家预览与交付的是 **Blender Cycles** 渲染，但梯度优化运行在 **Mitsuba 3** 中。两个渲染器对 Blender 材质节点、程序化世界、自发光网格、色彩管理与能量单位的解释并不完全一致。
+
+如果直接让 Mitsuba 拟合一张 Cycles 目标图，优化器无法区分“艺术家真正想要的灯光变化”和“渲染器之间原本就存在的静态差异”。它可能通过错误地修改光源来补偿材质转换或环境导出误差，导致结果在 Mitsuba 中看似正确，写回 Cycles 后却无法复现。
+
+### 成对逆向求解
+
+为解决这一问题，系统不会使用一次绝对求解，而是从同一初始场景执行两次逆向优化。第一次求解用于拟合 Cycles 基础图，第二次求解用于拟合重绘目标图。系统不直接采用两次求解得到的绝对参数，而是比较两组结果：以截断比值表示功率、颜色和尺寸的变化，以差值表示位置变化，再将这些相对编辑应用到原始 Blender 场景。
+
+两次优化共享相同的 Mitsuba 场景、语义参数化与优化调度，因此静态转换误差会以近似相同的方式影响两组结果。
+
+这把“要求 Mitsuba 完整复现 Cycles”转化为一个更可行的问题：只要求两个求解对同一跨渲染器偏差具有近似一致的响应。最终是否成功仍由 Cycles 重渲染决定。
+
+## 系统架构
+
+<figure>
+    <Image src={architecture} alt="Blender 灯光逆渲染插件系统架构" width={2800} height={1500} />
+    <figcaption>插件架构：场景桥接、语义参数绑定、可微优化、相对参数差分、写回与 Cycles 验证组成闭环</figcaption>
+</figure>
+
+### Blender 语义参数化
+
+系统不直接优化 Mitsuba 的原始参数表，而是在 Blender 的语义层建立潜变量。正值参数使用指数映射，避免出现负功率或负尺寸；旋转表示为相对初始姿态的旋转向量；位置使用 Blender 世界坐标中的偏移量。
+
+颜色同样使用无上界的指数参数化，以避免白色灯光在 sigmoid 上界附近梯度饱和、无法有效转向蓝色的问题。当求解颜色超过 Blender 合法的 `[0, 1]` 范围时，系统把溢出增益转移到强度，在保持“颜色 × 强度”辐射乘积不变的同时确保写回值合法。
+
+---
+
+## 可微物理优化
+
+### 可微路径追踪，而不是二维图像滤镜
+
+Mitsuba 3 与 Dr.Jit 对路径追踪结果相对于场景参数求导。每次迭代都会重新计算三维光源、遮挡、材质响应与间接照明，因此结果受到真实光传输约束，而不是简单地把颜色覆盖在最终图像上。
+
+强度和颜色不会改变场景可见性，使用 **Path Replay Backpropagation（PRB）** 即可得到有效梯度。位置、朝向和面积尺寸会移动阴影与几何边界，普通 PRB 会遗漏可见性不连续产生的边界项，因此系统会自动切换到 **PRB Projective**。
+
+<figure>
+    <Image src={gradient} alt="PRB 与 PRB Projective 的灯光位置和旋转梯度对比" width={2400} height={1450} />
+    <figcaption>受控梯度测试：Projective Sampling 使位置与旋转梯度信号分别提高约 537 倍和 3500 倍</figcaption>
+</figure>
+
+Projective 积分器的单步计算约为强度与颜色优化的 25 倍，因此插件默认优先求解更稳定的强度与颜色，把位姿优化保留为显式高级选项。
+
+### 多尺度目标函数
+
+优化按约四分之一、二分之一和完整分辨率由粗到细进行。低分辨率阶段先平滑阴影边界带来的非凸性并恢复整体明暗，高分辨率阶段再细化颜色、轮廓与局部光照响应。目标函数联合：
+
+- 图像颜色 L1，用于稳定匹配整体外观；
+- 边缘损失，使阴影与高光边界参与约束；
+- 亮度加权色度损失，避免大面积区域通过错误色相换取较小的数值误差；
+- 参数正则，抑制单视角中弱约束方向的无意义漂移。
+
+---
+
+## 验证策略与实验结果
+
+### 结果必须回到 Cycles 中成立
+
+项目不把 Mitsuba 内部损失当作最终成功标准。每次参数写回后，系统都使用原始 Blender 场景和 Cycles 重新渲染并与目标比较。为了区分“求解器未收敛”和“目标超出灯光表达能力”，评价同时使用三类参考：
+
+- **渲染噪声基底**：测量 Cycles 蒙特卡洛采样自身造成的图像差异。
+- **低频可达下界**：估计目标中几何、纹理或阴影结构等无法由现有灯光表达的部分。
+- **逐光源参考拟合**：分别渲染各可编辑光源并求非负组合，作为当前灯组表达能力的实践参考。
+
+### 受控差分实验
+
+在具有已知灯光真值的受控场景中，图像 L1 从 **0.07037** 降至 **0.00186**，接近 **0.00154** 的渲染噪声基底。主光辐射倍数恢复为 **1.796**，相对目标 **1.8** 的误差约为 **0.2%**。
+
+<figure>
+    <Image src={controlled} alt="具有已知灯光变化的受控成对求解实验" width={2795} height={1000} />
+    <figcaption>受控真值实验：即使 Cycles 与 Mitsuba 存在材质差异，成对参数差分仍能恢复可转移的相对光照变化</figcaption>
+</figure>
+
+### Monster Under The Bed 生产场景
+
+该案例使用 Demo 4 的新版 AI 重绘目标，将原始暖色场景重新设计为高饱和红色氛围。插件在保持几何、材质与相机不变的前提下，反向求解场景灯光与世界环境参数，再由 Cycles 重新渲染验证。
+
+图像 L1 从 **0.13117** 降至 **0.04180**，下降 **68.1%**。低频可达下界为 **0.00977**，说明目标图仍包含现有灯光无法完全表达的局部与结构变化，因此剩余误差不能简单归因于优化未收敛。
+
+<div className="monster-demo-grid">
+    <figure>
+        <Image src={monsterBase} alt="Monster Under The Bed 基础渲染" width={1024} height={1024} />
+        <figcaption>基础渲染</figcaption>
+    </figure>
+    <figure>
+        <Image src={monsterTarget} alt="Monster Under The Bed AI 重绘目标" width={1024} height={1024} />
+        <figcaption>AI 重绘目标</figcaption>
+    </figure>
+    <figure>
+        <Image src={monsterSolved} alt="Monster Under The Bed 灯光重建结果" width={1024} height={1024} />
+        <figcaption>灯光重建结果</figcaption>
+    </figure>
+    <figure>
+        <Image src={monsterResidual} alt="Monster Under The Bed 四倍残差可视化" width={1024} height={1024} />
+        <figcaption>4× 残差可视化</figcaption>
+    </figure>
+</div>
+
+---
+
+## Technical Art 价值
+
+### AI 负责提出目标，物理求解负责构建场景
+
+这个项目不把 AI 生成图直接当成最终资产。AI 帮助艺术家快速探索氛围、色彩与光照方向；插件则把被选中的二维方案约束回真实三维场景，生成可以继续编辑和交付的参数。
+
+- 灯光仍然是 Blender 中可命名、可动画、可复用的数据；
+- 结果能够从新视角重新渲染，而不是只对源图片成立；
+- 参数变化可以进入镜头、关卡和批量资产流程；
+- 艺术家保留最终控制权，并可以继续手工调整求解结果。
+
+对 Technical Artist 而言，这套工具连接了概念设计、AI 图像探索、可微渲染和 Blender 制作管线。它不是替代灯光设计，而是缩短从“二维视觉意图”到“可验证三维场景状态”的试错路径。
+
+## 场景署名
+
+**Cozy Kitchen** — Blender 3.5 Splash 场景，作者 Nicole Morena，依据原始发布页许可展示。
+
+**Monster Under The Bed** — 场景作者 [Metin Seven](https://metinseven.nl/)，基于 [Blake Stevenson](https://jetpacksandrollerskates.com/) 的二维概念设计，采用 CC-BY 许可。[下载原始 Blender 场景](https://download.blender.org/demo/cycles/monster_under_the_bed_sss_demo_by_metin_seven.blend)。

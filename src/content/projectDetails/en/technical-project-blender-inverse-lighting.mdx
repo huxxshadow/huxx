@@ -1,0 +1,191 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import overview from '@/assets/projects/technical-project-blender-inverse-lighting/overview.jpg';
+import pipeline from '@/assets/projects/technical-project-blender-inverse-lighting/paired-pipeline-en.png';
+import architecture from '@/assets/projects/technical-project-blender-inverse-lighting/architecture-en.png';
+import gradient from '@/assets/projects/technical-project-blender-inverse-lighting/gradient-en.png';
+import controlled from '@/assets/projects/technical-project-blender-inverse-lighting/controlled-en.png';
+import dayNight from '@/assets/projects/technical-project-blender-inverse-lighting/day-night-en.png';
+import monsterBase from '@/assets/projects/technical-project-blender-inverse-lighting/monster-demo4-base.png';
+import monsterTarget from '@/assets/projects/technical-project-blender-inverse-lighting/monster-demo4-target.png';
+import monsterSolved from '@/assets/projects/technical-project-blender-inverse-lighting/monster-demo4-solved.png';
+import monsterResidual from '@/assets/projects/technical-project-blender-inverse-lighting/monster-demo4-residual-x4.png';
+
+## My Role
+
+This is a solo R&D project at the intersection of **Technical Art, AI-assisted creation, and digital-content production**. I designed and implemented the complete pipeline from problem formulation to Blender integration and experimental validation. My responsibilities included:
+
+- **Workflow and interaction design**: Reframed lighting iteration from repeated parameter tweaking into “define the visual target in 2D, then recover the 3D lighting.” AI assists atmosphere exploration rather than directly generating production scene parameters.
+- **Cross-renderer solve architecture**: Designed paired Cycles–Mitsuba inverse solves that transfer relative parameter changes while cancelling shared material-conversion and solver bias.
+- **Blender add-on and scene bridge**: Used the Blender Python API to process the dependency graph, cameras, Light data blocks, material nodes, and World illumination, then construct a differentiable Mitsuba 3 scene.
+- **Semantic parameterization and write-back**: Built Blender-semantic latent variables for power, color, size, position, orientation, emission, and World settings, with safe Apply, Revert, and shared-data handling.
+- **Optimization and objectives**: Implemented multi-scale Adam with color L1, edge, luminance-weighted chromaticity, and parameter regularization, selecting PRB or PRB Projective according to the enabled parameter groups.
+
+---
+
+## Project Overview
+
+### Reconstructing editable 3D lighting from a 2D visual target
+
+The appearance of a complex scene emerges from multiple lights, emissive materials, visibility, specular response, and indirect illumination. An artist can quickly paint the desired mood in Photoshop, a generative AI tool, or a concept paint-over, yet it is difficult to infer which combination of 3D light parameters should reproduce that image.
+
+This tool reverses the interaction. The artist makes the visual decision first; the system then reconstructs the corresponding scene-level lighting changes. A target may be an AI repaint, a hand-authored lighting study, a concept paint-over, or a color grade. The output is not another post-processed image, but real Blender lights, emissive-material controls, and World parameters that remain editable, animatable, reusable, and verifiable from new viewpoints.
+
+<figure>
+    <Image src={overview} alt="Conceptual overview of reconstructing editable 3D lighting from a 2D target" width={2048} height={520} />
+    <figcaption>AI or the artist proposes the 2D visual target; differentiable physical rendering constrains it back into editable 3D scene parameters</figcaption>
+</figure>
+
+The scope is deliberately constrained to **relative lighting edits on a known scene**: geometry, materials, and camera already exist. The tool is not intended to reconstruct an unknown world from one photograph. This constraint matches a practical DCC workflow, where the scene is available and the goal is to turn a new atmosphere concept into a production-ready lighting state.
+
+### Cozy Kitchen — Quick Result
+
+In Blender's 3.5 Splash scene “Cozy Kitchen,” an artist or AI proposes a new atmosphere from the original Cycles render. The add-on then reconstructs the World and sun-light parameters and writes the result back to Blender as editable lighting.
+
+<figure>
+    <Image src={dayNight} alt="Cozy Kitchen base render, 2D repaint target, and reconstructed lighting result" width={3595} height={1160} />
+    <figcaption>Left to right: base Cycles render, 2D repaint target, and the reconstruction rendered from real 3D lighting parameters</figcaption>
+</figure>
+
+Image L1 falls from **0.21702** to **0.05414**, a **75.1%** improvement; chromaticity error falls from **0.25642** to **0.04606**, an **82.0%** improvement.
+
+## Artist Workflow
+
+1. **Export a base render**: The add-on renders the active camera in Cycles using a reversible color-management configuration, then restores the artist's original settings.
+2. **Author the target**: The artist repaints, grades, or uses AI to explore a new atmosphere on a copy of the base render. AI supplies a visual direction, not the final 3D solution.
+3. **Select editable parameters**: The user chooses which lights, emissive materials, and World settings may participate, together with intensity, color, size, position, or orientation groups.
+4. **Run the differentiable solve**: The scene is bridged to Mitsuba 3. Dr.Jit differentiates the physical light transport, and a coarse-to-fine Adam schedule approaches the target.
+5. **Write back and verify**: Relative changes are applied to Blender data blocks and material nodes, then rendered and scored again in Cycles.
+
+`CYCLES BASE RENDER → AI / ARTIST REPAINT → DIFFERENTIABLE SOLVE → PARAMETER WRITE-BACK → CYCLES VERIFICATION`
+
+<figure>
+    <Image src={pipeline} alt="Paired inverse-lighting workflow between Blender Cycles and Mitsuba" width={3000} height={1500} />
+    <figcaption>The complete pipeline performs paired solves for the base and target images, then transfers only their relative parameter difference back to Cycles</figcaption>
+</figure>
+
+---
+
+## Core Technical Challenge
+
+### The optimizer and the production renderer are different systems
+
+Artists preview and deliver through **Blender Cycles**, while gradient-based optimization runs in **Mitsuba 3**. The two renderers do not interpret Blender material nodes, procedural worlds, emissive meshes, color management, and energy units in exactly the same way.
+
+If Mitsuba directly fits a Cycles target, the optimizer cannot distinguish an intended lighting change from a static renderer mismatch. It may alter lights to compensate for a material-conversion or world-export error. The image can look correct inside Mitsuba and fail as soon as the values return to Cycles.
+
+### Paired inverse solves
+
+The system avoids relying on one absolute solution and instead performs two inverse optimizations from the same initial scene. The first solve fits the Cycles base render, while the second fits the repainted target. Rather than using either absolute solution directly, the system compares the two results: power, color, and size are expressed as clamped ratios, while position is expressed as an additive difference. These relative edits are then applied to the original Blender scene.
+
+Both solves share the Mitsuba scene, semantic parameterization, and optimization schedule, so static conversion error affects them in a similar way.
+
+This turns “make Mitsuba reproduce Cycles perfectly” into a weaker and more practical requirement: both solves only need to respond consistently to the shared cross-renderer mismatch. Final success is still measured with a fresh Cycles render.
+
+## System Architecture
+
+<figure>
+    <Image src={architecture} alt="System architecture of the Blender inverse-lighting add-on" width={2800} height={1500} />
+    <figcaption>The loop combines scene bridging, semantic parameter binding, differentiable optimization, paired differencing, write-back, and independent Cycles verification</figcaption>
+</figure>
+
+### Blender-semantic parameterization
+
+The optimizer does not manipulate Mitsuba's raw parameter table directly. It defines latent variables in Blender semantics so that every optimized value has a meaningful write-back path. Positive quantities use exponential maps to prevent invalid negative power or size. Rotation is a vector relative to the initial pose, and position is a Blender-world-space offset.
+
+Color also uses an unbounded exponential mapping. This avoids the saturation that prevents a white light near a sigmoid upper bound from becoming blue. If an optimized color exceeds Blender's legal `[0, 1]` range, the excess gain moves into intensity, preserving the radiometric product of color and power while keeping both values valid.
+
+---
+
+## Differentiable Physical Optimization
+
+### Differentiable path tracing, not a 2D image filter
+
+Mitsuba 3 and Dr.Jit differentiate a path-traced image with respect to selected scene parameters. Every iteration re-evaluates 3D lights, visibility, material response, and indirect illumination. The result is constrained by physical light transport rather than painted directly onto the output image.
+
+Intensity and color do not change scene visibility, so **Path Replay Backpropagation (PRB)** provides useful gradients. Position, orientation, and area-light size move shadow and geometry boundaries; standard PRB misses the boundary terms introduced by those discontinuities, so the system automatically switches to **PRB Projective**.
+
+<figure>
+    <Image src={gradient} alt="Lighting position and rotation gradient comparison between PRB and PRB Projective" width={2400} height={1450} />
+    <figcaption>Controlled tests: projective sampling increases position and rotation gradient signals by approximately 537× and 3500×</figcaption>
+</figure>
+
+Each projective step costs roughly 25 times more than intensity or color optimization. The add-on therefore treats the more stable intensity-and-color solve as the default and exposes pose optimization as an explicit advanced option.
+
+### Multi-scale objective
+
+Optimization progresses through approximately quarter, half, and full resolution. Lower-resolution stages smooth the non-convex structure around shadow boundaries and recover the global lighting relationship; the final stage refines local color, edges, and light response. The objective combines:
+
+- Color L1 for stable global appearance matching;
+- Edge loss so shadow and highlight boundaries contribute;
+- Luminance-weighted chromaticity loss to prevent incorrect hue from winning numerically in large flat regions;
+- Parameter regularization to limit drift along weakly constrained single-view directions.
+
+---
+
+## Validation and Results
+
+### The result must work in Cycles
+
+Internal Mitsuba loss is not treated as the final measure of success. After write-back, the original Blender scene is rendered in Cycles and compared against the target. Three references help distinguish an unconverged solve from an unreachable target:
+
+- **Render-noise floor** measures the variation introduced by Cycles' own Monte Carlo sampling.
+- **Low-frequency reachability bound** estimates structural edits—geometry, texture, or unsupported shadow changes—that the current lights cannot express.
+- **Per-light reference fit** combines separately rendered light contributions through a non-negative fit to estimate the practical capacity of the available light set.
+
+### Controlled differential experiment
+
+In a scene with known lighting changes, image L1 falls from **0.07037** to **0.00186**, close to the **0.00154** render-noise floor. The recovered key-light radiance multiplier is **1.796**, only about **0.2%** away from the target value of **1.8**.
+
+<figure>
+    <Image src={controlled} alt="Controlled paired inverse-lighting experiment with known light changes" width={2795} height={1000} />
+    <figcaption>Even with material disagreement between Cycles and Mitsuba, paired parameter differencing recovers a transferable relative lighting edit</figcaption>
+</figure>
+
+### Monster Under The Bed production scene
+
+This case uses the updated AI repaint from Demo 4, redesigning the original warm scene as a saturated red lighting target. With geometry, materials, and camera held fixed, the add-on reconstructs scene-light and World parameters and verifies the transferred result through a new Cycles render.
+
+Image L1 decreases from **0.13117** to **0.04180**, a **68.1%** reduction. The low-frequency reachability bound is **0.00977**, indicating that the target still contains local and structural edits that the available lighting cannot fully express; the remaining error should therefore not be attributed to optimizer convergence alone.
+
+<div className="monster-demo-grid">
+    <figure>
+        <Image src={monsterBase} alt="Monster Under The Bed base render" width={1024} height={1024} />
+        <figcaption>Base Render</figcaption>
+    </figure>
+    <figure>
+        <Image src={monsterTarget} alt="Monster Under The Bed AI repaint target" width={1024} height={1024} />
+        <figcaption>AI Repaint Target</figcaption>
+    </figure>
+    <figure>
+        <Image src={monsterSolved} alt="Monster Under The Bed reconstructed lighting result" width={1024} height={1024} />
+        <figcaption>Reconstructed Lighting</figcaption>
+    </figure>
+    <figure>
+        <Image src={monsterResidual} alt="Monster Under The Bed four-times residual visualization" width={1024} height={1024} />
+        <figcaption>4× Residual</figcaption>
+    </figure>
+</div>
+
+---
+
+## Technical Art Value
+
+### AI proposes the target; physical optimization builds the scene
+
+The project does not treat an AI-generated image as the final production asset. AI helps the artist explore atmosphere, color, and lighting direction quickly. The add-on constrains the selected 2D concept back into a real 3D scene and produces parameters that remain editable and deliverable.
+
+- Lights remain named, animatable, and reusable Blender data;
+- The result can be rendered from new viewpoints instead of working only for one image;
+- Parameter changes can participate in shots, levels, and batch-asset workflows;
+- Artists keep final control and can continue refining the reconstructed result manually.
+
+For a Technical Artist, the tool connects concept design, AI image exploration, differentiable rendering, and Blender production. It is not intended to replace lighting design; it shortens the iteration path between a 2D visual intention and a verifiable 3D scene state.
+
+## Scene Attribution
+
+**Cozy Kitchen** — Blender 3.5 Splash scene by Nicole Morena, presented under the license stated on the original release page.
+
+**Monster Under The Bed** — Scene by [Metin Seven](https://metinseven.nl/), based on 2D concept art by [Blake Stevenson](https://jetpacksandrollerskates.com/), licensed CC-BY. [Download the original Blender scene](https://download.blender.org/demo/cycles/monster_under_the_bed_sss_demo_by_metin_seven.blend).
