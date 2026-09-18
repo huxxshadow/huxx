@@ -6,6 +6,7 @@ import { LOCALES, type Lang } from "@/i18n";
 import { COLORS } from "@/consts";
 import { Image } from "astro:assets";
 import ProjectLinks from "@/components/mdx/ProjectLinks.astro";
+import EelOnMaskSkin from "@/components/projects/EelOnMaskSkin.astro";
 import { getRelativeLocaleUrl } from "astro:i18n";
 
 export async function getStaticPaths() {
@@ -35,6 +36,8 @@ const category = project.data.category;
 const order = project.data.order;
 const heroImage = project.data.coverImage || project.data.backupCoverImage;
 const projectLinks = project.data.links || [];
+// 专属皮肤：套皮的页面自己画底色/背景，这里就不再写内联 background-color
+const skin = project.data.skin;
 
 // === 3. 计算页面主题色 ===
 let defaultTheme = { light: COLORS.khakiMilan, dark: COLORS.black };
@@ -60,15 +63,20 @@ if (detailEntry) {
 
 <Base title={`${title} - huxx`} description={desc}>
     {/* ================= HERO SECTION ================= */}
+    {skin === 'eel' && <EelOnMaskSkin />}
     <header
-            class="relative overflow-hidden w-full px-4 sm:px-8 pt-16 pb-8 lg:pt-24 lg:pb-12 border-b-[4px]"
-            style={`background-color: ${colorBg}; color: ${colorText}; border-color: ${colorText}; --theme-text: ${colorText}; --theme-bg: ${colorBg};`}
+            class:list={["relative overflow-hidden w-full px-4 sm:px-8 pt-16 pb-8 lg:pt-24 lg:pb-12 border-b-[4px]", skin && `skin-${skin}`]}
+            style={`${skin ? "" : `background-color: ${colorBg}; `}color: ${colorText}; border-color: ${colorText}; --theme-text: ${colorText}; --theme-bg: ${colorBg};`}
             data-theme-bg={colorBg}
             data-theme-text={colorText}
     >
         <div class="absolute -top-20 -right-24 w-96 lg:w-[40rem] h-96 lg:h-[40rem] rounded-full bg-current opacity-[0.04] pointer-events-none z-0"></div>
         <div class="absolute bottom-10 left-10 w-full h-72 -translate-y-1/2 rotate-12 bg-current opacity-[0.03] pointer-events-none z-0 rounded-[80px]"></div>
 
+        {/* 外层 shell / 内层 screen：通用模板下无样式，供皮肤做机壳与屏幕两层 */}
+        <div class="project-hero-shell">
+        {skin === 'eel' && <EelOnMaskSkin stickers />}
+        <div class="project-hero-screen">
         <div class="relative z-10 max-w-7xl mx-auto mb-8">
             <a
                     id="back-btn"
@@ -156,12 +164,14 @@ if (detailEntry) {
                     </div>
             )}
         </div>
+        </div>
+        </div>
     </header>
 
     {/* ================= CONTENT SECTION ================= */}
     <main
-            class="w-full px-4 pt-8 pb-16 lg:pt-12 lg:pb-24"
-            style={`--theme-text: ${colorText}; --theme-bg: ${colorBg}; background-color: ${colorBg}; color: ${colorText};`}
+            class:list={["w-full px-4 pt-8 pb-16 lg:pt-12 lg:pb-24", skin && `skin-${skin}`]}
+            style={`--theme-text: ${colorText}; --theme-bg: ${colorBg}; ${skin ? "" : `background-color: ${colorBg}; `}color: ${colorText};`}
     >
         {/* 正文按块淡入。长文不排队，否则后面的块要等一长串延迟才出现 */}
         <article class="project-prose max-w-7xl mx-auto" data-reveal-children="up" data-reveal-stagger="0">

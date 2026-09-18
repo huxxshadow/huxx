@@ -44,6 +44,8 @@ const projects = defineCollection({
         tags: multilingualArraySchema,
         colorText: z.string().optional(),
         colorBackground: z.string().optional(),
+        // 个别项目页可以套一套专属皮肤（见 src/components/projects/），留空则用通用模板
+        skin: z.string().optional(),
         coverImage: image().optional(),
         backupCoverImage: image().optional(),
         links: z.array(

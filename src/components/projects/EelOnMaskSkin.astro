@@ -1,0 +1,845 @@
+---
+// Eel On Mask 项目页专属皮肤（projects.json 里 skin: "eel" 时由 [id].astro 挂载）
+//
+// 视觉参考游戏本体的主菜单：纸质拼贴桌面 + 青色切割垫 + 米色 CRT 显示器。
+// - 整页背景挂在 body 上，而不是页面里的 fixed 层：<main> 带 transition:animate，
+//   转场期间它是 transform 容器，里面的 position: fixed 会退化成 absolute。
+// - 所有规则都限定在 .skin-eel / html:has(.skin-eel) 下。这段 CSS 会被打进
+//   [id].astro 这条路由的公共样式表，不作用域化就会污染另外 30 个项目页。
+// - 贴纸的倾斜一律用独立的 rotate 属性。进出场动效（motion.css）只动
+//   opacity / translate / scale，用 transform 会把它们整条覆盖掉。
+import { getImage } from "astro:assets";
+import deskSrc from "@/assets/projects/game-project-eel-on-mask/back-main-menu.png";
+import eelSrc from "@/assets/projects/game-project-eel-on-mask/eel-sticker.png";
+import eelCoiled from "@/assets/projects/game-project-eel-on-mask/stickers/eel-coiled.png";
+import eelSnout from "@/assets/projects/game-project-eel-on-mask/stickers/eel-snout.png";
+import eelDark from "@/assets/projects/game-project-eel-on-mask/stickers/eel-dark.png";
+import cloudTeal from "@/assets/projects/game-project-eel-on-mask/stickers/cloud-teal.png";
+import slabTeal from "@/assets/projects/game-project-eel-on-mask/stickers/slab-teal.png";
+import wormTeal from "@/assets/projects/game-project-eel-on-mask/stickers/worm-teal.png";
+import cloudAmber from "@/assets/projects/game-project-eel-on-mask/stickers/cloud-amber.png";
+import slabAmber from "@/assets/projects/game-project-eel-on-mask/stickers/slab-amber.png";
+import tileAmber from "@/assets/projects/game-project-eel-on-mask/stickers/tile-amber.png";
+import dirtWide from "@/assets/projects/game-project-eel-on-mask/stickers/dirt-wide.png";
+import dirtBlock from "@/assets/projects/game-project-eel-on-mask/stickers/dirt-block.png";
+import rockRound from "@/assets/projects/game-project-eel-on-mask/stickers/rock-round.png";
+import rockWide from "@/assets/projects/game-project-eel-on-mask/stickers/rock-wide.png";
+import rockTall from "@/assets/projects/game-project-eel-on-mask/stickers/rock-tall.png";
+import thorn from "@/assets/projects/game-project-eel-on-mask/stickers/thorn.png";
+
+interface Props {
+    /** true 时只输出 hero 里的贴纸层（样式和变量由页面顶部那次挂载负责） */
+    stickers?: boolean;
+}
+
+const { stickers = false } = Astro.props;
+
+// 游戏里的材质贴纸，散贴在页面上当装饰
+const STICKERS = {
+    "eel-coiled": eelCoiled,
+    "eel-snout": eelSnout,
+    "eel-dark": eelDark,
+    "cloud-teal": cloudTeal,
+    "slab-teal": slabTeal,
+    "worm-teal": wormTeal,
+    "cloud-amber": cloudAmber,
+    "slab-amber": slabAmber,
+    "tile-amber": tileAmber,
+    "dirt-wide": dirtWide,
+    "dirt-block": dirtBlock,
+    "rock-round": rockRound,
+    "rock-wide": rockWide,
+    "rock-tall": rockTall,
+    thorn: thorn,
+};
+
+// 原图 3072×1728 / 6.4MB PNG，必须先压成 webp 再进 CSS
+const deskLg = await getImage({ src: deskSrc, format: "webp", width: 1920, quality: 72 });
+const deskSm = await getImage({ src: deskSrc, format: "webp", width: 1100, quality: 66 });
+const eel = await getImage({ src: eelSrc, format: "webp", width: 480, quality: 82 });
+const stickerVars = await Promise.all(
+    Object.entries(STICKERS).map(async ([name, src]) => {
+        const img = await getImage({ src, format: "webp", width: 320, quality: 82 });
+        return `--eel-st-${name}:url("${img.src}")`;
+    })
+);
+// 无序列表的小圆点换成迷你贴纸，list-style-image 用的是图片原始尺寸，所以直接出小图
+const bullet = await getImage({ src: tileAmber, format: "webp", width: 17, quality: 90 });
+
+// 图片地址随构建哈希变化，只能内联注入；其余样式全部静态打包
+const assetVars = `:root{--eel-desk-lg:url("${deskLg.src}");--eel-desk-sm:url("${deskSm.src}");--eel-sticker:url("${eel.src}");--eel-bullet:url("${bullet.src}");${stickerVars.join(";")}}`;
+---
+
+{stickers ? (
+        <div class="eel-hero-stickers" aria-hidden="true">
+            <span class="eel-st st-eel-coiled"></span>
+            <span class="eel-st st-eel-snout"></span>
+            <span class="eel-st st-dirt-wide"></span>
+            <span class="eel-st st-rock-tall"></span>
+            <span class="eel-st st-cloud-teal"></span>
+            <span class="eel-st st-thorn"></span>
+        </div>
+) : (
+        <style is:inline set:html={assetVars}></style>
+)}
+
+<style is:global>
+    /* ========================================================= */
+    /* 调色板（取自主菜单原画）                                   */
+    /* ========================================================= */
+    html:has(.skin-eel) {
+        --eel-paper: #EADCC9;
+        --eel-paper-hi: #F5EBDB;
+        --eel-teal: #406A69;
+        --eel-ink: #1E3A33;
+        --eel-bezel: #D2BA96;
+        --eel-bezel-hi: #E8D6B6;
+        --eel-bezel-lo: #A98F68;
+        --eel-screen: #233E37;
+        --eel-screen-lo: #16251F;
+        --eel-sheet: #F1E6D4;
+        --eel-note: #F3E7C4;
+        --eel-cut: #FBF6EC;
+    }
+
+    /* ---- 整页桌面背景：切割垫 + 纸面 + 一层很弱的扫描线 ---- */
+    html:has(.skin-eel) body {
+        background-color: #C9B79A;
+        background-image:
+            repeating-linear-gradient(to bottom, rgba(18, 30, 25, .05) 0 1px, transparent 1px 3px),
+            radial-gradient(130% 100% at 50% 22%, rgba(234, 220, 201, .18) 0%, rgba(18, 30, 25, .42) 100%),
+            var(--eel-desk-lg);
+        background-repeat: repeat, no-repeat, no-repeat;
+        background-size: auto, cover, cover;
+        background-position: 0 0, center, center top;
+        background-attachment: fixed, fixed, fixed;
+        /* 贴纸会挂到机壳/纸张外面，clip 不会像 hidden 那样制造滚动容器（sticky 头部照常工作） */
+        overflow-x: clip;
+    }
+
+    /* ========================================================= */
+    /* HERO = CRT 显示器                                          */
+    /* ========================================================= */
+
+    /* .skin-eel 就挂在 <header> / <main> 上 */
+    header.skin-eel {
+        background-color: transparent;
+        border-color: transparent !important;
+        overflow: visible; /* 让鳗鱼贴纸能挂出机壳外 */
+        padding-bottom: 5rem;
+    }
+
+    /* 通用模板里的两个装饰色斑，这里由桌面原画代替 */
+    header.skin-eel > .absolute {
+        display: none;
+    }
+
+    /* ---- 米色机壳 ---- */
+    .skin-eel .project-hero-shell {
+        position: relative;
+        max-width: 92rem;
+        margin: 0 auto;
+        padding: 3.4rem 1.6rem 3.9rem;
+        border-radius: 34px;
+        background: linear-gradient(176deg, var(--eel-bezel-hi) 0%, var(--eel-bezel) 45%, var(--eel-bezel-lo) 100%);
+        box-shadow:
+            inset 0 3px 0 rgba(255, 255, 255, .55),
+            inset 0 -4px 0 rgba(60, 42, 20, .22),
+            0 28px 64px rgba(18, 30, 25, .45);
+    }
+
+    /* 机壳上方的 EEL 蚀刻字 */
+    .skin-eel .project-hero-shell::before {
+        content: "EEL";
+        position: absolute;
+        top: 1.1rem;
+        left: 50%;
+        translate: -50% 0;
+        font-size: 1.4rem;
+        font-weight: 900;
+        letter-spacing: .55em;
+        text-indent: .55em;
+        color: rgba(60, 42, 20, .42);
+        text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+    }
+
+    /* 机壳下方的按钮与电源指示灯 */
+    .skin-eel .project-hero-shell::after {
+        content: "";
+        position: absolute;
+        bottom: 1.5rem;
+        left: 50%;
+        translate: -50% 0;
+        width: 196px;
+        height: 14px;
+        background-image:
+            radial-gradient(circle at 14px 7px, rgba(60, 42, 20, .30) 0 5px, transparent 6px),
+            radial-gradient(circle at 46px 7px, rgba(60, 42, 20, .30) 0 5px, transparent 6px),
+            radial-gradient(circle at 78px 7px, rgba(60, 42, 20, .30) 0 5px, transparent 6px),
+            radial-gradient(circle at 176px 7px, rgba(176, 72, 48, .65) 0 4px, transparent 5px);
+    }
+
+    /* ---- 暗绿屏幕 ---- */
+    .skin-eel .project-hero-screen {
+        position: relative;
+        overflow: hidden;
+        border-radius: 18px;
+        padding: 2.6rem 1.9rem 3rem;
+        background:
+            radial-gradient(120% 95% at 50% 38%, rgba(108, 156, 132, .28) 0%, transparent 72%),
+            linear-gradient(180deg, var(--eel-screen) 0%, var(--eel-screen-lo) 100%);
+        box-shadow:
+            inset 0 0 0 3px rgba(16, 26, 21, .85),
+            inset 0 0 70px rgba(0, 0, 0, .55),
+            0 0 0 7px rgba(255, 255, 255, .07);
+        color: var(--eel-paper);
+        /* 屏幕内部改用屏幕配色，里面的 brutalist-* 组件类会自动跟上 */
+        --theme-bg: var(--eel-screen);
+        --theme-text: var(--eel-paper);
+    }
+
+    /* 扫描线 + 玻璃斜反光 */
+    .skin-eel .project-hero-screen::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        pointer-events: none;
+        border-radius: 18px;
+        background-image:
+            linear-gradient(112deg, rgba(255, 255, 255, .09) 0 11%, transparent 32%),
+            repeating-linear-gradient(to bottom, rgba(0, 0, 0, .17) 0 1px, transparent 1px 3px);
+        animation: eel-flicker 5s steps(2, end) infinite;
+    }
+
+    .skin-eel .project-hero-screen h1 {
+        color: var(--eel-paper-hi);
+    }
+
+    .skin-eel .back-btn {
+        color: var(--eel-paper);
+        letter-spacing: .22em;
+    }
+
+    /* 简介块：实线改成青色虚线取景条 */
+    .skin-eel .project-hero-screen .border-l-\[4px\] {
+        border-color: var(--eel-teal) !important;
+        border-left-style: dashed;
+    }
+
+    /* ---- 标签：模切贴纸 ---- */
+    .skin-eel .brutalist-badge {
+        background-color: var(--eel-paper);
+        color: var(--eel-ink);
+        border-color: var(--eel-cut);
+        border-radius: 999px;
+        box-shadow: 0 4px 10px rgba(6, 14, 11, .4);
+    }
+
+    .skin-eel .brutalist-badge:nth-child(odd) {
+        rotate: -1.6deg;
+    }
+
+    .skin-eel .brutalist-badge:nth-child(even) {
+        rotate: 1.3deg;
+    }
+
+    /* ---- 外链：贴纸按钮 ---- */
+    .skin-eel .project-links-wrapper .brutalist-tag {
+        background-color: var(--eel-paper);
+        color: var(--eel-ink);
+        border-color: var(--eel-cut);
+        border-radius: 14px;
+        box-shadow: 0 7px 16px rgba(6, 14, 11, .45);
+        transition: translate .18s ease, box-shadow .18s ease;
+        rotate: -1.1deg;
+    }
+
+    .skin-eel .project-links-wrapper .brutalist-tag:nth-child(even) {
+        rotate: 1.4deg;
+    }
+
+    .skin-eel .project-links-wrapper .brutalist-tag:hover,
+    .skin-eel .project-links-wrapper .brutalist-tag:active {
+        transform: none; /* 顶掉粗野风格的位移，改成贴纸被掀起 */
+        translate: 0 -3px;
+        box-shadow: 0 12px 22px rgba(6, 14, 11, .5);
+    }
+
+    /* ---- 封面图：屏幕里的取景框 ---- */
+    .skin-eel .project-hero-shell .project-hero-image {
+        border-color: var(--eel-cut) !important;
+        border-width: 4px;
+        border-radius: 10px;
+        background-color: var(--eel-screen) !important;
+        box-shadow: 0 14px 28px rgba(0, 0, 0, .5);
+        rotate: -1.2deg;
+    }
+
+    /* ---- 贴在机壳上的材质贴纸 ---- */
+    .skin-eel .eel-hero-stickers {
+        position: absolute;
+        inset: 0;
+        z-index: 12; /* 屏幕的扫描线层是 5，要压在它上面 */
+        pointer-events: none;
+    }
+
+    .skin-eel .eel-st {
+        position: absolute;
+        display: block;
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        filter: drop-shadow(0 6px 9px rgba(18, 30, 25, .4));
+    }
+
+    /* 机壳上下两条边框够宽，贴纸贴在这里任何屏幕宽度都不会压到屏幕内容 */
+    .skin-eel .st-eel-coiled {
+        bottom: -30px;
+        left: 3%;
+        width: 152px;
+        height: 152px;
+        rotate: -12deg;
+        background-image: var(--eel-st-eel-coiled);
+    }
+
+    .skin-eel .st-eel-snout {
+        bottom: -34px;
+        left: 21%;
+        width: 88px;
+        height: 104px;
+        rotate: 13deg;
+        background-image: var(--eel-st-eel-snout);
+    }
+
+    .skin-eel .st-dirt-wide {
+        top: -30px;
+        right: 12%;
+        width: 128px;
+        height: 123px;
+        rotate: 9deg;
+        background-image: var(--eel-st-dirt-wide);
+    }
+
+    .skin-eel .st-thorn {
+        top: -26px;
+        left: 15%;
+        width: 92px;
+        height: 92px;
+        rotate: -12deg;
+        background-image: var(--eel-st-thorn);
+    }
+
+    /* 这两枚挂在机壳左右外侧，只有视口比机壳（92rem）宽出一截时才放出来 */
+    .skin-eel .st-rock-tall,
+    .skin-eel .st-cloud-teal {
+        display: none;
+    }
+
+    @media (min-width: 1620px) {
+        .skin-eel .st-rock-tall {
+            display: block;
+            top: 34%;
+            left: -46px;
+            width: 88px;
+            height: 158px;
+            rotate: -11deg;
+            background-image: var(--eel-st-rock-tall);
+        }
+
+        .skin-eel .st-cloud-teal {
+            display: block;
+            top: 26%;
+            right: -52px;
+            width: 132px;
+            height: 103px;
+            rotate: 8deg;
+            background-image: var(--eel-st-cloud-teal);
+        }
+    }
+
+    /* ---- 挂在机壳外的鳗鱼贴纸 ---- */
+    header.skin-eel::after {
+        content: "";
+        position: absolute;
+        right: 3%;
+        bottom: -2.5rem;
+        z-index: 20;
+        width: 300px;
+        height: 300px;
+        background: var(--eel-sticker) center / contain no-repeat;
+        filter: drop-shadow(0 10px 14px rgba(18, 30, 25, .45));
+        pointer-events: none;
+        animation: eel-float 7s ease-in-out infinite;
+    }
+
+    /* ========================================================= */
+    /* 正文 = 贴在桌面上的奶油纸                                   */
+    /* ========================================================= */
+    main.skin-eel {
+        position: relative;
+        background-color: transparent;
+    }
+
+    /* 纸张两侧、贴在桌面上的鳗鱼。只有视口比纸张（80rem）宽出两条边时才放得下，
+       否则它们会压到正文上 */
+    main.skin-eel::before,
+    main.skin-eel::after {
+        display: none;
+        content: "";
+        position: absolute;
+        z-index: 2;
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        filter: drop-shadow(0 8px 12px rgba(18, 30, 25, .4));
+        pointer-events: none;
+    }
+
+    @media (min-width: 1680px) {
+        main.skin-eel::before {
+            display: block;
+            top: 4rem;
+            left: calc(50% - 40rem - 11.5rem);
+            width: 168px;
+            height: 168px;
+            rotate: 11deg;
+            background-image: var(--eel-st-eel-dark);
+        }
+
+        main.skin-eel::after {
+            display: block;
+            bottom: 5rem;
+            right: calc(50% - 40rem - 13rem);
+            width: 210px;
+            height: 210px;
+            rotate: -9deg;
+            background-image: var(--eel-sticker);
+        }
+    }
+
+    .skin-eel .project-prose {
+        position: relative;
+        padding: 3.6rem 2.6rem 4rem;
+        border-radius: 4px;
+        background-color: var(--eel-sheet);
+        /* 方格切割垫纹理 */
+        background-image:
+            repeating-linear-gradient(to right, rgba(64, 106, 105, .10) 0 1px, transparent 1px 28px),
+            repeating-linear-gradient(to bottom, rgba(64, 106, 105, .10) 0 1px, transparent 1px 28px);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, .5),
+            0 20px 48px rgba(18, 30, 25, .38);
+    }
+
+    /* 纸张左上 / 右下的胶带 */
+    .skin-eel .project-prose::before,
+    .skin-eel .project-prose::after {
+        content: "";
+        position: absolute;
+        width: 132px;
+        height: 34px;
+        background-image: repeating-linear-gradient(
+            135deg,
+            rgba(255, 252, 240, .62) 0 9px,
+            rgba(226, 210, 178, .5) 9px 18px
+        );
+        box-shadow: 0 1px 4px rgba(18, 30, 25, .22);
+    }
+
+    .skin-eel .project-prose::before {
+        top: -16px;
+        left: -26px;
+        rotate: -32deg;
+    }
+
+    .skin-eel .project-prose::after {
+        bottom: -16px;
+        right: -26px;
+        rotate: -32deg;
+    }
+
+    .skin-eel .project-prose p,
+    .skin-eel .project-prose li,
+    .skin-eel .project-prose strong,
+    .skin-eel .project-prose h3,
+    .skin-eel .project-prose h4 {
+        color: var(--eel-ink);
+    }
+
+    .skin-eel .project-prose li::marker {
+        color: var(--eel-teal);
+    }
+
+    /* ---- H2：胶带标签 ---- */
+    .skin-eel .project-prose h2 {
+        position: relative;
+        padding: .7rem 1.7rem;
+        border: 0;
+        border-radius: 3px;
+        background-color: var(--eel-teal);
+        color: var(--eel-paper-hi);
+        box-shadow: 0 7px 16px rgba(18, 30, 25, .3);
+        rotate: -.8deg;
+    }
+
+    /* 比标签本体更宽的一层胶带，只有溢出的两端露出来 */
+    .skin-eel .project-prose h2::before {
+        content: "";
+        position: absolute;
+        inset: -9px -26px;
+        z-index: -1;
+        rotate: 1.5deg;
+        background-image: repeating-linear-gradient(
+            135deg,
+            rgba(64, 106, 105, .28) 0 9px,
+            rgba(64, 106, 105, .14) 9px 18px
+        );
+    }
+
+    /* 每个小节标题旁边别一枚材质贴纸，按顺序轮换 */
+    .skin-eel .project-prose h2::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: -5.2rem;
+        width: 68px;
+        height: 68px;
+        translate: 0 -50%;
+        rotate: 9deg;
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        filter: drop-shadow(0 5px 8px rgba(18, 30, 25, .3));
+    }
+
+    .skin-eel .project-prose h2:nth-of-type(4n + 1)::after {
+        background-image: var(--eel-st-dirt-block);
+    }
+
+    .skin-eel .project-prose h2:nth-of-type(4n + 2)::after {
+        background-image: var(--eel-st-rock-round);
+        rotate: -8deg;
+    }
+
+    .skin-eel .project-prose h2:nth-of-type(4n + 3)::after {
+        background-image: var(--eel-st-cloud-amber);
+    }
+
+    .skin-eel .project-prose h2:nth-of-type(4n)::after {
+        background-image: var(--eel-st-worm-teal);
+        rotate: -11deg;
+    }
+
+    /* 无序列表的圆点换成迷你贴纸 */
+    .skin-eel .project-prose ul {
+        list-style-image: var(--eel-bullet);
+    }
+
+    .skin-eel .project-prose ul li::marker {
+        font-size: 1em;
+    }
+
+    /* ---- H3：手绘感下划线 ---- */
+    .skin-eel .project-prose h3 {
+        position: relative;
+        padding-bottom: .4rem;
+    }
+
+    .skin-eel .project-prose h3::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 2.6em;
+        height: 5px;
+        border-radius: 3px;
+        background-color: var(--eel-teal);
+        opacity: .75;
+    }
+
+    /* ---- itch.io 嵌入卡片 ---- */
+    .skin-eel .project-prose .itch-embed {
+        margin: 2rem 0 2.75rem;
+        max-width: 100%;
+        /* 卡片本体固定 552px，窄屏放不下时让它自己横向滚动，不撑破纸面 */
+        overflow-x: auto;
+    }
+
+    .skin-eel .project-prose .itch-embed iframe {
+        display: block;
+        width: 552px;
+        height: 167px;
+        border: 0;
+        border-radius: 4px;
+        box-shadow: 0 9px 20px rgba(18, 30, 25, .28);
+    }
+
+    /* ---- 图片：模切贴纸 ---- */
+    .skin-eel .project-prose img {
+        border: 7px solid var(--eel-cut);
+        border-radius: 4px;
+        background-color: var(--eel-cut);
+        box-shadow: none;
+        filter: drop-shadow(0 9px 15px rgba(18, 30, 25, .35));
+    }
+
+    .skin-eel .project-prose figure:nth-of-type(odd) img {
+        rotate: -.9deg;
+    }
+
+    .skin-eel .project-prose figure:nth-of-type(even) img {
+        rotate: .9deg;
+    }
+
+    /* 整幅大图的左下角别一枚材质贴纸（并排小图那组已经有胶带了，不再叠） */
+    .skin-eel .project-prose > figure {
+        position: relative;
+    }
+
+    .skin-eel .project-prose > figure::after {
+        content: "";
+        position: absolute;
+        left: -22px;
+        bottom: 3.4rem;
+        width: 86px;
+        height: 86px;
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        filter: drop-shadow(0 5px 8px rgba(18, 30, 25, .32));
+        pointer-events: none;
+    }
+
+    .skin-eel .project-prose > figure:nth-of-type(3n + 1)::after {
+        rotate: -9deg;
+        background-image: var(--eel-st-slab-amber);
+    }
+
+    .skin-eel .project-prose > figure:nth-of-type(3n + 2)::after {
+        rotate: 8deg;
+        background-image: var(--eel-st-slab-teal);
+    }
+
+    .skin-eel .project-prose > figure:nth-of-type(3n)::after {
+        rotate: -6deg;
+        background-image: var(--eel-st-rock-wide);
+    }
+
+    /* 并排图片上方的一小截胶带 */
+    .skin-eel .project-prose .image-grid-2 figure {
+        position: relative;
+    }
+
+    .skin-eel .project-prose .image-grid-2 figure::before {
+        content: "";
+        position: absolute;
+        z-index: 2;
+        top: -13px;
+        left: 50%;
+        translate: -50% 0;
+        width: 92px;
+        height: 26px;
+        rotate: -3deg;
+        background-image: repeating-linear-gradient(
+            135deg,
+            rgba(255, 252, 240, .72) 0 9px,
+            rgba(226, 210, 178, .55) 9px 18px
+        );
+        box-shadow: 0 1px 4px rgba(18, 30, 25, .25);
+    }
+
+    .skin-eel .project-prose figcaption {
+        color: var(--eel-teal);
+        font-style: italic;
+        opacity: 1;
+    }
+
+    /* ---- 引用：便签条 ---- */
+    .skin-eel .project-prose blockquote {
+        border-left: 0;
+        border-radius: 2px;
+        padding: 1.3rem 1.6rem;
+        background-color: var(--eel-note);
+        color: var(--eel-ink);
+        box-shadow: 0 9px 20px rgba(18, 30, 25, .25);
+        rotate: .5deg;
+        opacity: 1;
+    }
+
+    /* ---- 分割线：裁切线 ---- */
+    .skin-eel .project-prose hr {
+        position: relative;
+        /* Chrome 的 UA 样式给 hr 写了 overflow: hidden，不放开裁切线中间的记号会被裁掉 */
+        overflow: visible;
+        border: 0;
+        border-top: 3px dashed rgba(64, 106, 105, .55);
+        opacity: 1;
+    }
+
+    .skin-eel .project-prose hr::before {
+        content: "";
+        position: absolute;
+        bottom: -34px;
+        width: 132px;
+        height: 132px;
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        filter: drop-shadow(0 7px 10px rgba(18, 30, 25, .32));
+        pointer-events: none;
+    }
+
+    .skin-eel .project-prose hr:nth-of-type(odd)::before {
+        right: 6%;
+        rotate: 8deg;
+        background-image: var(--eel-st-eel-dark);
+    }
+
+    .skin-eel .project-prose hr:nth-of-type(even)::before {
+        left: 6%;
+        width: 168px;
+        rotate: -7deg;
+        background-image: var(--eel-sticker);
+    }
+
+    .skin-eel .project-prose hr::after {
+        content: "";
+        position: absolute;
+        top: -7px;
+        left: 50%;
+        translate: -50% 0;
+        width: 13px;
+        height: 13px;
+        rotate: 45deg;
+        background-color: var(--eel-teal);
+        box-shadow: 0 0 0 7px var(--eel-sheet);
+    }
+
+    /* ---- 代码：小屏幕 ---- */
+    .skin-eel .project-prose code {
+        background-color: rgba(64, 106, 105, .16);
+        color: var(--eel-ink);
+    }
+
+    .skin-eel .project-prose pre {
+        border: 0;
+        border-radius: 8px;
+        background-color: var(--eel-screen);
+        background-image: repeating-linear-gradient(to bottom, rgba(0, 0, 0, .18) 0 1px, transparent 1px 3px);
+        box-shadow: inset 0 0 0 3px rgba(16, 26, 21, .8), 0 8px 18px rgba(18, 30, 25, .3);
+    }
+
+    .skin-eel .project-prose pre code {
+        background: none;
+        color: var(--eel-paper);
+    }
+
+    /* ---- 表格 ---- */
+    .skin-eel .project-prose th {
+        color: var(--eel-paper-hi);
+        background-color: var(--eel-teal);
+        border-bottom: 0;
+    }
+
+    .skin-eel .project-prose td {
+        color: var(--eel-ink);
+        border-bottom: 1px dashed rgba(64, 106, 105, .45);
+    }
+
+    .skin-eel .project-prose a {
+        color: var(--eel-teal);
+        text-decoration-color: rgba(64, 106, 105, .55);
+    }
+
+    /* ========================================================= */
+    /* 动效                                                       */
+    /* ========================================================= */
+    @keyframes eel-float {
+        0%, 100% { translate: 0 0; }
+        50% { translate: 0 -12px; }
+    }
+
+    @keyframes eel-flicker {
+        0%, 92%, 100% { opacity: 1; }
+        94% { opacity: .93; }
+        97% { opacity: .97; }
+    }
+
+    /* ========================================================= */
+    /* 响应式                                                     */
+    /* ========================================================= */
+    @media (max-width: 1023px) {
+        header.skin-eel::after {
+            display: none;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .skin-eel .eel-hero-stickers,
+        .skin-eel .project-prose h2::after,
+        .skin-eel .project-prose hr::before,
+        .skin-eel .project-prose > figure::after {
+            display: none;
+        }
+    }
+
+    @media (max-width: 768px) {
+        html:has(.skin-eel) body {
+            background-image:
+                repeating-linear-gradient(to bottom, rgba(18, 30, 25, .05) 0 1px, transparent 1px 3px),
+                radial-gradient(130% 100% at 50% 22%, rgba(234, 220, 201, .18) 0%, rgba(18, 30, 25, .42) 100%),
+                var(--eel-desk-sm);
+            /* iOS 上 fixed 背景会抖，窄屏改成跟随滚动 */
+            background-attachment: scroll, scroll, scroll;
+        }
+
+        header.skin-eel {
+            padding-bottom: 2.5rem;
+        }
+
+        .skin-eel .project-hero-shell {
+            padding: 2.6rem .9rem 2.8rem;
+            border-radius: 22px;
+        }
+
+        .skin-eel .project-hero-shell::before {
+            font-size: 1rem;
+            top: .85rem;
+        }
+
+        .skin-eel .project-hero-shell::after {
+            bottom: 1rem;
+            scale: .8;
+        }
+
+        .skin-eel .project-hero-screen,
+        .skin-eel .project-hero-screen::after {
+            border-radius: 12px;
+        }
+
+        .skin-eel .project-hero-screen {
+            padding: 1.6rem 1.1rem 2rem;
+        }
+
+        .skin-eel .project-prose {
+            padding: 2.2rem 1.2rem 2.6rem;
+        }
+
+        .skin-eel .project-prose::before,
+        .skin-eel .project-prose::after {
+            display: none;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        header.skin-eel::after,
+        .skin-eel .project-hero-screen::after {
+            animation: none;
+        }
+
+        html:has(.skin-eel) body {
+            background-attachment: scroll, scroll, scroll;
+        }
+    }
+</style>

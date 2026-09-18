@@ -1443,13 +1443,19 @@
         "icon": "fa-brands fa-steam"
       },
       {
+        "name": "itch.io",
+        "url": "https://huxxshadowhzygmailcom.itch.io/eel-on-mask",
+        "icon": "fa-brands fa-itch-io"
+      },
+      {
         "name": "Bilibili",
         "url": "https://www.bilibili.com/video/BV1UPFkzSE2v/?share_source=copy_web&vd_source=2e0b37d0ccacd91ea3fca2b1dab708e8",
         "icon": "fa-brands fa-bilibili"
       }
     ],
-    "colorText": "blue",
-    "colorBackground": "blue"
+    "colorText": "#1E3A33",
+    "colorBackground": "#EADCC9",
+    "skin": "eel"
   },
   {
     "id": "game-project-click-click-universe",
