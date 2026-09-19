@@ -7,6 +7,8 @@ import { COLORS } from "@/consts";
 import { Image } from "astro:assets";
 import ProjectLinks from "@/components/mdx/ProjectLinks.astro";
 import EelOnMaskSkin from "@/components/projects/EelOnMaskSkin.astro";
+import ClickClickUniverseSkin from "@/components/projects/ClickClickUniverseSkin.astro";
+import NightWatchSkin from "@/components/projects/NightWatchSkin.astro";
 import { getRelativeLocaleUrl } from "astro:i18n";
 
 export async function getStaticPaths() {
@@ -37,7 +39,13 @@ const order = project.data.order;
 const heroImage = project.data.coverImage || project.data.backupCoverImage;
 const projectLinks = project.data.links || [];
 // 专属皮肤：套皮的页面自己画底色/背景，这里就不再写内联 background-color
+const SKINS: Record<string, any> = {
+    eel: EelOnMaskSkin,
+    ccu: ClickClickUniverseSkin,
+    nw: NightWatchSkin,
+};
 const skin = project.data.skin;
+const Skin = skin ? SKINS[skin] : undefined;
 
 // === 3. 计算页面主题色 ===
 let defaultTheme = { light: COLORS.khakiMilan, dark: COLORS.black };
@@ -63,7 +71,7 @@ if (detailEntry) {
 
 <Base title={`${title} - huxx`} description={desc}>
     {/* ================= HERO SECTION ================= */}
-    {skin === 'eel' && <EelOnMaskSkin />}
+    {Skin && <Skin />}
     <header
             class:list={["relative overflow-hidden w-full px-4 sm:px-8 pt-16 pb-8 lg:pt-24 lg:pb-12 border-b-[4px]", skin && `skin-${skin}`]}
             style={`${skin ? "" : `background-color: ${colorBg}; `}color: ${colorText}; border-color: ${colorText}; --theme-text: ${colorText}; --theme-bg: ${colorBg};`}
@@ -75,7 +83,7 @@ if (detailEntry) {
 
         {/* 外层 shell / 内层 screen：通用模板下无样式，供皮肤做机壳与屏幕两层 */}
         <div class="project-hero-shell">
-        {skin === 'eel' && <EelOnMaskSkin stickers />}
+        {Skin && <Skin stickers />}
         <div class="project-hero-screen">
         <div class="relative z-10 max-w-7xl mx-auto mb-8">
             <a
@@ -473,6 +481,30 @@ if (detailEntry) {
             grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 1rem;
         }
+    }
+
+    /* ========================================= */
+    /* 视频嵌入（B 站 / YouTube 播放器）           */
+    /* ========================================= */
+    :global(.project-prose .video-embed) {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        margin: 2.5rem 0;
+        border: 3px solid var(--theme-text);
+        border-radius: 0.75rem;
+        box-shadow: 4px 4px 0px var(--theme-text);
+        background-color: color-mix(in srgb, var(--theme-text) 8%, var(--theme-bg));
+        overflow: hidden;
+    }
+
+    :global(.project-prose .video-embed iframe) {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: 0;
     }
 
     /* 引用 */

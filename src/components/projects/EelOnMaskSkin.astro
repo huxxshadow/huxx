@@ -655,6 +655,14 @@ const assetVars = `:root{--eel-desk-lg:url("${deskLg.src}");--eel-desk-sm:url("$
         opacity: 1;
     }
 
+    /* 视频框跟着走模切贴纸的外观 */
+    .skin-eel .project-prose .video-embed {
+        border: 7px solid var(--eel-cut);
+        border-radius: 4px;
+        box-shadow: none;
+        filter: drop-shadow(0 9px 15px rgba(18, 30, 25, .35));
+    }
+
     /* ---- 引用：便签条 ---- */
     .skin-eel .project-prose blockquote {
         border-left: 0;

@@ -1,0 +1,534 @@
+---
+// Night Watch 项目页专属皮肤（projects.json 里 skin: "nw" 时由 [id].astro 挂载）
+//
+// 视觉完全照着游戏的美术素材走：装饰艺术 / 立体未来主义的木刻海报 ——
+// 骨白底、厚重的黑色实心块面、放射状的硬边色楔，每一类卡牌各有一个高饱和重色。
+// 颜色是从 src/assets/projects/game-project-night-watch/*.webp 里直接取样的，
+// 标题字沿用游戏 --font-display 的 Oswald。
+// - 整页背景挂在 body 上，而不是页面里的 fixed 层：<main> 带 transition:animate，
+//   转场期间它是 transform 容器，里面的 position: fixed 会退化成 absolute。
+// - 所有规则都限定在 .skin-nw / html:has(.skin-nw) 下。这段 CSS 会被打进
+//   [id].astro 这条路由的公共样式表，不作用域化就会污染其他项目页。
+// - 投影一律用无模糊的硬偏移，这是木刻海报的质感，别改成柔和阴影。
+interface Props {
+    /** true 时只输出 hero 里的装饰层（字体与样式由页面顶部那次挂载负责） */
+    stickers?: boolean;
+}
+
+const { stickers = false } = Astro.props;
+---
+
+{stickers ? (
+        <div class="nw-deco" aria-hidden="true">
+            <span class="nw-shard nw-shard-a"></span>
+            <span class="nw-shard nw-shard-b"></span>
+            <span class="nw-shard nw-shard-c"></span>
+            <span class="nw-shard nw-shard-d"></span>
+        </div>
+) : (
+        <>
+            {/* 游戏本体的 --font-display 就是 Oswald */}
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+            <link
+                    rel="stylesheet"
+                    href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap"
+            />
+        </>
+)}
+
+<style is:global>
+    /* ========================================================= */
+    /* 调色板：直接从卡面素材上取样                                 */
+    /* ========================================================= */
+    html:has(.skin-nw) {
+        --nw-bone: #EFE8D8;
+        --nw-bone-deep: #E3D8C0;
+        --nw-ink: #14161A;
+        --nw-ink-soft: #2A2C30;
+        --nw-crimson: #A12C4F;   /* 敌人卡 */
+        --nw-steel: #405C70;     /* 装备卡 */
+        --nw-plum: #543A85;      /* 事件卡 */
+        --nw-rust: #773C1E;      /* 地点卡 */
+        --nw-navy: #1A314E;      /* 材料卡 */
+        --nw-gold: #C48828;      /* 元卡 */
+        --nw-display: "Oswald", var(--theme-font-active), sans-serif;
+    }
+
+    /* ---- 整页背景：骨白底 + 以正下方为轴、左右对称的硬边放射色楔 ---- */
+    html:has(.skin-nw) body {
+        background-color: var(--nw-bone);
+        background-image:
+            conic-gradient(from 92deg at 50% 0%,
+                transparent 8.1deg,
+                var(--nw-navy) 8.1deg,
+                var(--nw-navy) 15.3deg,
+                transparent 15.3deg,
+                transparent 23.3deg,
+                var(--nw-gold) 23.3deg,
+                var(--nw-gold) 30.5deg,
+                transparent 30.5deg,
+                transparent 38.6deg,
+                var(--nw-crimson) 38.6deg,
+                var(--nw-crimson) 45.8deg,
+                transparent 45.8deg,
+                transparent 53.9deg,
+                var(--nw-steel) 53.9deg,
+                var(--nw-steel) 61.1deg,
+                transparent 61.1deg,
+                transparent 69.1deg,
+                var(--nw-plum) 69.1deg,
+                var(--nw-plum) 76.3deg,
+                transparent 76.3deg,
+                transparent 84.4deg,
+                var(--nw-rust) 84.4deg,
+                var(--nw-rust) 91.6deg,
+                transparent 91.6deg,
+                transparent 99.7deg,
+                var(--nw-plum) 99.7deg,
+                var(--nw-plum) 106.9deg,
+                transparent 106.9deg,
+                transparent 114.9deg,
+                var(--nw-steel) 114.9deg,
+                var(--nw-steel) 122.1deg,
+                transparent 122.1deg,
+                transparent 130.2deg,
+                var(--nw-crimson) 130.2deg,
+                var(--nw-crimson) 137.4deg,
+                transparent 137.4deg,
+                transparent 145.5deg,
+                var(--nw-gold) 145.5deg,
+                var(--nw-gold) 152.7deg,
+                transparent 152.7deg,
+                transparent 160.7deg,
+                var(--nw-navy) 160.7deg,
+                var(--nw-navy) 167.9deg,
+                transparent 167.9deg,
+                transparent 360deg);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-position: center top;
+        background-attachment: fixed;
+        overflow-x: clip;
+    }
+
+    /* ========================================================= */
+    /* HERO：一张木刻海报                                          */
+    /* ========================================================= */
+    header.skin-nw {
+        background-color: transparent;
+        border-color: transparent !important;
+        overflow: visible;
+    }
+
+    header.skin-nw > .absolute {
+        display: none;
+    }
+
+    .skin-nw .project-hero-shell {
+        position: relative;
+        max-width: 86rem;
+        margin: 0 auto;
+        padding: 2.6rem 2.4rem 3rem;
+        background-color: var(--nw-bone);
+        border: 6px solid var(--nw-ink);
+        /* 木刻海报的硬投影，不要模糊 */
+        box-shadow: 14px 14px 0 var(--nw-crimson);
+    }
+
+    .skin-nw .project-hero-screen {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* ---- 角落的色楔 ---- */
+    .skin-nw .nw-deco {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .skin-nw .nw-shard {
+        position: absolute;
+        display: block;
+    }
+
+    .skin-nw .nw-shard-a {
+        top: 0;
+        left: 0;
+        width: 190px;
+        height: 150px;
+        background-color: var(--nw-gold);
+        clip-path: polygon(0 0, 100% 0, 0 100%);
+    }
+
+    .skin-nw .nw-shard-b {
+        top: 0;
+        right: 0;
+        width: 120px;
+        height: 230px;
+        background-color: var(--nw-steel);
+        clip-path: polygon(100% 0, 100% 100%, 0 0);
+    }
+
+    .skin-nw .nw-shard-c {
+        bottom: 0;
+        left: 0;
+        width: 150px;
+        height: 110px;
+        background-color: var(--nw-plum);
+        clip-path: polygon(0 100%, 0 0, 100% 100%);
+    }
+
+    .skin-nw .nw-shard-d {
+        bottom: 0;
+        right: 0;
+        width: 240px;
+        height: 90px;
+        background-color: var(--nw-navy);
+        clip-path: polygon(100% 100%, 100% 0, 0 100%);
+    }
+
+    /* ---- 标题：黑色实心条上的骨白大写字 ---- */
+    .skin-nw .project-hero-screen h1 {
+        display: inline-block;
+        padding: .35em .5em .3em;
+        background-color: var(--nw-ink);
+        color: var(--nw-bone);
+        font-family: var(--nw-display);
+        font-weight: 700;
+        letter-spacing: .02em;
+        text-transform: uppercase;
+        box-shadow: 10px 10px 0 var(--nw-gold);
+    }
+
+    .skin-nw .back-btn {
+        font-family: var(--nw-display);
+        font-weight: 600;
+        color: var(--nw-ink);
+        opacity: 1;
+        letter-spacing: .22em;
+        transition: color .15s ease, translate .15s ease;
+    }
+
+    .skin-nw .back-btn:hover {
+        color: var(--nw-crimson);
+        translate: -3px 0;
+    }
+
+    /* ---- 标签：实心色块 ---- */
+    .skin-nw .brutalist-badge {
+        border: 0 !important;
+        border-radius: 0;
+        padding: .34rem 1rem;
+        background-color: var(--nw-ink);
+        color: var(--nw-bone);
+        box-shadow: none;
+        font-family: var(--nw-display);
+        font-weight: 600;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+    }
+
+    /* 序号 / 分类 / 各标签轮换卡面上的六个重色 */
+    .skin-nw .project-hero-screen [data-reveal-children] > div:first-child .brutalist-badge:nth-child(1) {
+        background-color: var(--nw-crimson);
+    }
+
+    .skin-nw .project-hero-screen [data-reveal-children] > div:first-child .brutalist-badge:nth-child(2) {
+        background-color: var(--nw-ink);
+    }
+
+    .skin-nw .project-hero-screen .brutalist-badge:nth-child(3n + 1) {
+        background-color: var(--nw-navy);
+    }
+
+    .skin-nw .project-hero-screen .brutalist-badge:nth-child(3n + 2) {
+        background-color: var(--nw-rust);
+    }
+
+    .skin-nw .project-hero-screen .brutalist-badge:nth-child(3n) {
+        background-color: var(--nw-plum);
+    }
+
+    /* ---- 简介：厚黑竖条 ---- */
+    .skin-nw .project-hero-screen .border-l-\[4px\] {
+        border-left-width: 10px;
+        border-color: var(--nw-ink) !important;
+        padding-left: 1.3rem;
+        color: var(--nw-ink);
+        font-weight: 600;
+    }
+
+    /* ---- 外链：切角实心块 ---- */
+    .skin-nw .project-links-wrapper .brutalist-tag {
+        border: 0;
+        border-radius: 0;
+        padding: .75rem 1.8rem;
+        background-color: var(--nw-crimson);
+        color: var(--nw-bone);
+        box-shadow: 7px 7px 0 var(--nw-ink);
+        font-family: var(--nw-display);
+        font-weight: 600;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+        clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+        transition: translate .12s ease, box-shadow .12s ease, background-color .12s ease;
+    }
+
+    .skin-nw .project-links-wrapper .brutalist-tag:hover,
+    .skin-nw .project-links-wrapper .brutalist-tag:active {
+        transform: none;
+        translate: 4px 4px;
+        background-color: var(--nw-ink);
+        box-shadow: 3px 3px 0 var(--nw-crimson);
+    }
+
+    /* ---- 封面图：粗黑框 + 硬投影 ---- */
+    .skin-nw .project-hero-shell .project-hero-image {
+        border-width: 6px;
+        border-color: var(--nw-ink) !important;
+        border-radius: 0;
+        background-color: var(--nw-ink) !important;
+        box-shadow: 12px 12px 0 var(--nw-steel);
+    }
+
+    /* ========================================================= */
+    /* 正文：一张贴在骨白纸上的说明版                               */
+    /* ========================================================= */
+    main.skin-nw {
+        position: relative;
+        background-color: transparent;
+    }
+
+    .skin-nw .project-prose {
+        position: relative;
+        padding: 3.4rem 3rem 3.8rem;
+        background-color: var(--nw-bone);
+        border: 6px solid var(--nw-ink);
+        box-shadow: 14px 14px 0 var(--nw-navy);
+    }
+
+    .skin-nw .project-prose p,
+    .skin-nw .project-prose li,
+    .skin-nw .project-prose strong,
+    .skin-nw .project-prose h4 {
+        color: var(--nw-ink);
+    }
+
+    .skin-nw .project-prose h4 {
+        font-family: var(--nw-display);
+        text-transform: uppercase;
+        letter-spacing: .08em;
+    }
+
+    /* 列表标记换成方块 */
+    .skin-nw .project-prose ul {
+        list-style: square;
+    }
+
+    .skin-nw .project-prose li::marker {
+        color: var(--nw-crimson);
+    }
+
+    /* ---- H2：黑色切角横条 ---- */
+    .skin-nw .project-prose h2 {
+        display: block;
+        width: auto;
+        padding: .8rem 1.6rem .7rem;
+        border: 0;
+        border-radius: 0;
+        background-color: var(--nw-ink);
+        color: var(--nw-bone);
+        box-shadow: 9px 9px 0 var(--nw-gold);
+        font-family: var(--nw-display);
+        font-weight: 700;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
+    }
+
+    /* ---- H3：黑字 + 一截粗重色底线 ---- */
+    .skin-nw .project-prose h3 {
+        position: relative;
+        padding-bottom: .55rem;
+        font-family: var(--nw-display);
+        font-weight: 600;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        color: var(--nw-ink);
+    }
+
+    .skin-nw .project-prose h3::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 3.4em;
+        height: 7px;
+        background-color: var(--nw-crimson);
+    }
+
+    .skin-nw .project-prose h3:nth-of-type(3n + 2)::after {
+        background-color: var(--nw-steel);
+    }
+
+    .skin-nw .project-prose h3:nth-of-type(3n)::after {
+        background-color: var(--nw-gold);
+    }
+
+    /* ---- 图片：粗黑框 + 硬投影，按顺序换重色 ---- */
+    .skin-nw .project-prose img {
+        border: 5px solid var(--nw-ink);
+        border-radius: 0;
+        background-color: var(--nw-ink);
+        box-shadow: 11px 11px 0 var(--nw-rust);
+    }
+
+    .skin-nw .project-prose figure:nth-of-type(3n + 2) img {
+        box-shadow: 11px 11px 0 var(--nw-plum);
+    }
+
+    .skin-nw .project-prose figure:nth-of-type(3n) img {
+        box-shadow: 11px 11px 0 var(--nw-steel);
+    }
+
+    .skin-nw .project-prose figure {
+        margin: 3rem 0 3.4rem;
+    }
+
+    .skin-nw .project-prose figcaption {
+        font-family: var(--nw-display);
+        font-weight: 500;
+        font-size: .86rem;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: var(--nw-ink);
+        opacity: .75;
+    }
+
+    /* ---- 引用：深蓝实心块 ---- */
+    .skin-nw .project-prose blockquote {
+        border: 0;
+        border-left: 10px solid var(--nw-gold);
+        border-radius: 0;
+        padding: 1.3rem 1.6rem;
+        background-color: var(--nw-navy);
+        color: var(--nw-bone);
+        opacity: 1;
+    }
+
+    /* ---- 分割线：三段重色条 ---- */
+    .skin-nw .project-prose hr {
+        height: 10px;
+        border: 0;
+        opacity: 1;
+        background-image: linear-gradient(90deg,
+            var(--nw-crimson) 0 26%,
+            var(--nw-ink) 26% 34%,
+            var(--nw-gold) 34% 62%,
+            var(--nw-ink) 62% 70%,
+            var(--nw-steel) 70% 100%);
+    }
+
+    /* ---- 代码与表格 ---- */
+    .skin-nw .project-prose code {
+        background-color: var(--nw-ink);
+        color: var(--nw-bone);
+        border-radius: 0;
+    }
+
+    .skin-nw .project-prose pre {
+        border: 5px solid var(--nw-ink);
+        border-radius: 0;
+        background-color: var(--nw-ink);
+        box-shadow: 9px 9px 0 var(--nw-navy);
+    }
+
+    .skin-nw .project-prose pre code {
+        color: var(--nw-bone);
+    }
+
+    .skin-nw .project-prose th {
+        font-family: var(--nw-display);
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: var(--nw-bone);
+        background-color: var(--nw-ink);
+        border-bottom: 0;
+    }
+
+    .skin-nw .project-prose td {
+        color: var(--nw-ink);
+        border-bottom: 3px solid rgba(20, 22, 26, .18);
+    }
+
+    .skin-nw .project-prose a {
+        color: var(--nw-crimson);
+        text-decoration-thickness: 3px;
+        text-decoration-color: var(--nw-crimson);
+    }
+
+    .skin-nw .project-prose .video-embed {
+        border: 5px solid var(--nw-ink);
+        border-radius: 0;
+        box-shadow: 11px 11px 0 var(--nw-plum);
+    }
+
+    /* ========================================================= */
+    /* 响应式                                                     */
+    /* ========================================================= */
+    @media (max-width: 1023px) {
+        .skin-nw .project-hero-shell {
+            padding: 2rem 1.3rem 2.2rem;
+            box-shadow: 9px 9px 0 var(--nw-crimson);
+        }
+
+        .skin-nw .nw-shard-b,
+        .skin-nw .nw-shard-c {
+            display: none;
+        }
+    }
+
+    @media (max-width: 767px) {
+        html:has(.skin-nw) body {
+            /* iOS 上 fixed 背景会抖，窄屏改成贴在页面顶部的一段 */
+            background-size: 100% 60vh;
+            background-attachment: scroll;
+        }
+
+        .skin-nw .project-hero-shell,
+        .skin-nw .project-prose {
+            border-width: 4px;
+            box-shadow: 7px 7px 0 var(--nw-crimson);
+        }
+
+        .skin-nw .project-prose {
+            padding: 2.2rem 1.2rem 2.4rem;
+            box-shadow: 7px 7px 0 var(--nw-navy);
+        }
+
+        .skin-nw .project-hero-screen h1 {
+            box-shadow: 6px 6px 0 var(--nw-gold);
+        }
+
+        .skin-nw .project-prose h2 {
+            padding: .7rem 1.1rem .6rem;
+            box-shadow: 6px 6px 0 var(--nw-gold);
+        }
+
+        .skin-nw .nw-shard-a,
+        .skin-nw .nw-shard-d {
+            display: none;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html:has(.skin-nw) body {
+            background-size: 100% 80vh;
+            background-attachment: scroll;
+        }
+    }
+</style>

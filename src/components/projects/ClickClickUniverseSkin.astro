@@ -1,0 +1,821 @@
+---
+// Click Click Universe 项目页专属皮肤（projects.json 里 skin: "ccu" 时由 [id].astro 挂载）
+//
+// 视觉参考游戏本体的渲染风格：柠檬绿的低多边形世界 + 漂在世界上的白色圆角 UI 面板，
+// 珊瑚红的挤出式标题字来自游戏 Logo。
+// - 整页背景挂在 body 上，而不是页面里的 fixed 层：<main> 带 transition:animate，
+//   转场期间它是 transform 容器，里面的 position: fixed 会退化成 absolute。
+// - 所有规则都限定在 .skin-ccu / html:has(.skin-ccu) 下。这段 CSS 会被打进
+//   [id].astro 这条路由的公共样式表，不作用域化就会污染其他项目页。
+// - 道具的位移/缩放一律用独立的 translate / rotate 属性。进出场动效（motion.css）
+//   只动 opacity / translate / scale，在同一元素上写 transform 会把它们覆盖掉。
+import { getImage } from "astro:assets";
+import worldSrc from "@/assets/projects/game-project-click-click-universe/world-hero.png";
+import treeCommon from "@/assets/projects/game-project-click-click-universe/props/tree-common.png";
+import treeMaple from "@/assets/projects/game-project-click-click-universe/props/tree-maple.png";
+import treePoplar from "@/assets/projects/game-project-click-click-universe/props/tree-poplar.png";
+import treeLittle from "@/assets/projects/game-project-click-click-universe/props/tree-little.png";
+import stoneRound from "@/assets/projects/game-project-click-click-universe/props/stone-round.png";
+import stonePointy from "@/assets/projects/game-project-click-click-universe/props/stone-pointy.png";
+import stoneFlat from "@/assets/projects/game-project-click-click-universe/props/stone-flat.png";
+import stoneGravel from "@/assets/projects/game-project-click-click-universe/props/stone-gravel.png";
+import grassRadial from "@/assets/projects/game-project-click-click-universe/props/grass-radial.png";
+import grassSword from "@/assets/projects/game-project-click-click-universe/props/grass-sword.png";
+import shrubFlower from "@/assets/projects/game-project-click-click-universe/props/shrub-flower.png";
+import shrubRound from "@/assets/projects/game-project-click-click-universe/props/shrub-round.png";
+import iconClick from "@/assets/projects/game-project-click-click-universe/props/icon-click.png";
+import iconClickBurst from "@/assets/projects/game-project-click-click-universe/props/icon-click-burst.png";
+import iconArrow from "@/assets/projects/game-project-click-click-universe/props/icon-arrow.png";
+import iconBow from "@/assets/projects/game-project-click-click-universe/props/icon-bow.png";
+import treeApple from "@/assets/projects/game-project-click-click-universe/props/tree-apple.png";
+import treeSpruce from "@/assets/projects/game-project-click-click-universe/props/tree-spruce.png";
+import treeRound from "@/assets/projects/game-project-click-click-universe/props/tree-round.png";
+import treeBaobab from "@/assets/projects/game-project-click-click-universe/props/tree-baobab.png";
+import treeTall from "@/assets/projects/game-project-click-click-universe/props/tree-tall.png";
+import stoneBig from "@/assets/projects/game-project-click-click-universe/props/stone-big.png";
+import stoneDiamond from "@/assets/projects/game-project-click-click-universe/props/stone-diamond.png";
+import stoneSmall from "@/assets/projects/game-project-click-click-universe/props/stone-small.png";
+import grassLong from "@/assets/projects/game-project-click-click-universe/props/grass-long.png";
+import shrubCommon from "@/assets/projects/game-project-click-click-universe/props/shrub-common.png";
+
+interface Props {
+    /** true 时只输出 hero 里的道具层（样式和变量由页面顶部那次挂载负责） */
+    stickers?: boolean;
+}
+
+const { stickers = false } = Astro.props;
+
+// 游戏里的低多边形道具与 UI 图标，散在页面上当装饰
+const PROPS = {
+    "tree-common": treeCommon,
+    "tree-maple": treeMaple,
+    "tree-poplar": treePoplar,
+    "tree-little": treeLittle,
+    "stone-round": stoneRound,
+    "stone-pointy": stonePointy,
+    "stone-flat": stoneFlat,
+    "stone-gravel": stoneGravel,
+    "grass-radial": grassRadial,
+    "grass-sword": grassSword,
+    "shrub-flower": shrubFlower,
+    "shrub-round": shrubRound,
+    "icon-click": iconClick,
+    "icon-click-burst": iconClickBurst,
+    "icon-arrow": iconArrow,
+    "icon-bow": iconBow,
+    "tree-apple": treeApple,
+    "tree-spruce": treeSpruce,
+    "tree-round": treeRound,
+    "tree-baobab": treeBaobab,
+    "tree-tall": treeTall,
+    "stone-big": stoneBig,
+    "stone-diamond": stoneDiamond,
+    "stone-small": stoneSmall,
+    "grass-long": grassLong,
+    "shrub-common": shrubCommon,
+};
+
+// 背景是 Steam 的 Library Hero，已离线做过 2 倍超分 + 锐化（7680×2480），
+// 这样在高 DPR 屏上按 cover 铺开也不会糊
+const worldLg = await getImage({ src: worldSrc, format: "webp", width: 5120, quality: 84 });
+const worldSm = await getImage({ src: worldSrc, format: "webp", width: 2400, quality: 80 });
+const propVars = await Promise.all(
+    Object.entries(PROPS).map(async ([name, src]) => {
+        const img = await getImage({ src, format: "webp", width: 320, quality: 84 });
+        return `--ccu-p-${name}:url("${img.src}")`;
+    })
+);
+// 无序列表的小圆点换成迷你灌木，list-style-image 用的是图片原始尺寸，所以直接出小图
+const bullet = await getImage({ src: shrubRound, format: "webp", width: 16, quality: 90 });
+
+// 图片地址随构建哈希变化，只能内联注入；其余样式全部静态打包
+const assetVars = `:root{--ccu-world-lg:url("${worldLg.src}");--ccu-world-sm:url("${worldSm.src}");--ccu-bullet:url("${bullet.src}");${propVars.join(";")}}`;
+---
+
+{stickers ? (
+        <div class="ccu-world-props" aria-hidden="true">
+            <span class="ccu-prop cp-tree-common"></span>
+            <span class="ccu-prop cp-tree-poplar"></span>
+            <span class="ccu-prop cp-shrub-round"></span>
+            <span class="ccu-prop cp-shrub-common"></span>
+            <span class="ccu-prop cp-grass-long"></span>
+            <span class="ccu-prop cp-stone-gravel"></span>
+            <span class="ccu-prop cp-stone-small"></span>
+            <span class="ccu-prop cp-grass-radial"></span>
+            <span class="ccu-prop cp-stone-round"></span>
+            <span class="ccu-prop cp-tree-apple"></span>
+            <span class="ccu-prop cp-tree-maple"></span>
+            {/* 唯一一个浮在背景上的 UI 图标，垫一层半透明白底 */}
+            <span class="ccu-icon ci-click-burst"></span>
+        </div>
+) : (
+        <>
+            <style is:inline set:html={assetVars}></style>
+            {/* 正文两侧、站在绿地上的实体道具（窄屏收起） */}
+            <div class="ccu-page-props" aria-hidden="true">
+                <span class="ccu-side-prop sp-1"></span>
+                <span class="ccu-side-prop sp-2"></span>
+                <span class="ccu-side-prop sp-3"></span>
+                <span class="ccu-side-prop sp-4"></span>
+                <span class="ccu-side-prop sp-5"></span>
+                <span class="ccu-side-prop sp-6"></span>
+                <span class="ccu-side-prop sp-7"></span>
+                <span class="ccu-side-prop sp-8"></span>
+            </div>
+        </>
+)}
+
+<style is:global>
+    /* ========================================================= */
+    /* 调色板（取自游戏本体与 Steam 页面素材）                     */
+    /* ========================================================= */
+    html:has(.skin-ccu) {
+        --ccu-lime: #BFE35E;
+        --ccu-ground: #C7DD7E;
+        --ccu-leaf: #5A9C71;
+        --ccu-leaf-dark: #3F7C57;
+        --ccu-leaf-pale: #EAF4EC;
+        --ccu-coral: #F9735E;
+        --ccu-coral-dark: #C8503F;
+        --ccu-panel: #FFFFFF;
+        --ccu-panel-alt: #EBEFF3;
+        --ccu-line: #DCE3EA;
+        --ccu-ink: #33402B;
+        --ccu-muted: #78857A;
+        --ccu-shadow: rgba(47, 66, 45, .18);
+    }
+
+    /* ---- 整页背景：游戏世界全景（离线超分过），盖一层很薄的白纱压住对比 ---- */
+    html:has(.skin-ccu) body {
+        background-color: var(--ccu-lime);
+        background-image:
+            linear-gradient(180deg, rgba(255, 255, 255, .3) 0%, rgba(255, 255, 255, .05) 38%, rgba(84, 120, 52, .14) 100%),
+            var(--ccu-world-lg);
+        background-repeat: no-repeat, no-repeat;
+        background-size: cover, cover;
+        background-position: center, center top;
+        background-attachment: fixed, fixed;
+        /* 道具会挂到面板外面，clip 不会像 hidden 那样制造滚动容器（sticky 头部照常工作） */
+        overflow-x: clip;
+    }
+
+    /* ========================================================= */
+    /* HERO：世界当舞台，信息漂在白色 UI 面板里                    */
+    /* ========================================================= */
+    header.skin-ccu {
+        background-color: transparent;
+        border-color: transparent !important;
+        overflow: visible;
+        padding-bottom: 1rem;
+    }
+
+    /* 通用模板里的两个装饰色斑，这里由世界原画代替 */
+    header.skin-ccu > .absolute {
+        display: none;
+    }
+
+    .skin-ccu .project-hero-shell {
+        position: relative;
+        max-width: 88rem;
+        margin: 0 auto;
+        /* 底部留出一条空地给低多边形道具站 */
+        padding-bottom: 9rem;
+    }
+
+    .skin-ccu .project-hero-screen {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* ---- 标题：游戏 Logo 的珊瑚红 + 挤出投影 ---- */
+    .skin-ccu .project-hero-screen h1 {
+        color: var(--ccu-coral);
+        letter-spacing: -.01em;
+        text-shadow:
+            0 4px 0 var(--ccu-coral-dark),
+            0 10px 20px rgba(47, 66, 45, .22);
+    }
+
+    /* ---- 返回按钮：直接站在绿背景上的挤出字 ---- */
+    .skin-ccu .back-btn {
+        color: var(--ccu-ink);
+        opacity: 1;
+        letter-spacing: .16em;
+        /* 背景压淡之后白字看不清，改成深字 + 白色挤出边 */
+        text-shadow:
+            0 2px 0 rgba(255, 255, 255, .95),
+            0 6px 10px rgba(47, 66, 45, .18);
+        transition: translate .15s ease;
+    }
+
+    .skin-ccu .back-btn:hover {
+        translate: 0 -2px;
+    }
+
+    /* ---- 标签：游戏 UI 里的白色药丸 ---- */
+    .skin-ccu .brutalist-badge {
+        border: 0 !important;
+        border-radius: 999px;
+        padding: .4rem 1rem;
+        background-color: var(--ccu-panel);
+        color: var(--ccu-ink);
+        box-shadow: 0 3px 9px var(--ccu-shadow);
+    }
+
+    /* 序号与分类沿用游戏里的绿色实心标签 */
+    .skin-ccu .project-hero-screen [data-reveal-children] > div:first-child .brutalist-badge {
+        background-color: var(--ccu-leaf);
+        color: #FFFFFF;
+        text-shadow: 0 2px 0 var(--ccu-leaf-dark);
+    }
+
+    /* ---- 简介：不装盒子，文字直接落在绿背景上 ---- */
+    .skin-ccu .project-hero-screen .border-l-\[4px\] {
+        border-left-width: 6px;
+        border-color: var(--ccu-coral) !important;
+        border-radius: 3px;
+        padding: .3rem 0 .3rem 1.2rem;
+        color: var(--ccu-ink);
+        text-shadow: 0 2px 0 rgba(255, 255, 255, .5);
+        font-weight: 600;
+    }
+
+    /* ---- 外链：绿色圆角按钮 ---- */
+    .skin-ccu .project-links-wrapper .brutalist-tag {
+        border: 0;
+        border-radius: 999px;
+        padding: .7rem 1.6rem;
+        background-color: var(--ccu-leaf);
+        color: #FFFFFF;
+        box-shadow: 0 5px 14px rgba(47, 84, 56, .32);
+        transition: translate .16s ease, box-shadow .16s ease, background-color .16s ease;
+    }
+
+    .skin-ccu .project-links-wrapper .brutalist-tag:hover,
+    .skin-ccu .project-links-wrapper .brutalist-tag:active {
+        transform: none;
+        translate: 0 -2px;
+        background-color: var(--ccu-leaf-dark);
+        box-shadow: 0 9px 20px rgba(47, 84, 56, .36);
+    }
+
+    /* ---- 封面图：白边圆角卡片 ---- */
+    .skin-ccu .project-hero-shell .project-hero-image {
+        border-width: 8px;
+        border-color: var(--ccu-panel) !important;
+        border-radius: 24px;
+        background-color: var(--ccu-panel) !important;
+        box-shadow: 0 16px 34px rgba(47, 66, 45, .28);
+    }
+
+    /* ---- 站在地面上的低多边形道具 ---- */
+    .skin-ccu .ccu-world-props {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .skin-ccu .ccu-prop {
+        position: absolute;
+        display: block;
+        background-position: bottom center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        filter: drop-shadow(0 10px 10px rgba(63, 90, 40, .25));
+    }
+
+    .skin-ccu .cp-tree-common {
+        bottom: 1.2rem;
+        left: 1%;
+        width: 104px;
+        height: 225px;
+        background-image: var(--ccu-p-tree-common);
+    }
+
+    .skin-ccu .cp-tree-poplar {
+        bottom: 1.4rem;
+        left: 11%;
+        width: 62px;
+        height: 184px;
+        background-image: var(--ccu-p-tree-poplar);
+    }
+
+    .skin-ccu .cp-shrub-round {
+        bottom: 1.1rem;
+        left: 19%;
+        width: 86px;
+        height: 89px;
+        background-image: var(--ccu-p-shrub-round);
+    }
+
+    .skin-ccu .cp-shrub-common {
+        bottom: 1.2rem;
+        left: 26%;
+        width: 92px;
+        height: 84px;
+        background-image: var(--ccu-p-shrub-common);
+    }
+
+    .skin-ccu .cp-grass-long {
+        bottom: 1.1rem;
+        left: 35%;
+        width: 104px;
+        height: 38px;
+        background-image: var(--ccu-p-grass-long);
+    }
+
+    .skin-ccu .cp-stone-gravel {
+        bottom: 1.3rem;
+        left: 44%;
+        width: 118px;
+        height: 62px;
+        background-image: var(--ccu-p-stone-gravel);
+    }
+
+    .skin-ccu .cp-stone-small {
+        bottom: 1.2rem;
+        left: 55%;
+        width: 96px;
+        height: 90px;
+        background-image: var(--ccu-p-stone-small);
+    }
+
+    .skin-ccu .cp-tree-apple {
+        bottom: 1.3rem;
+        right: 33%;
+        width: 118px;
+        height: 202px;
+        background-image: var(--ccu-p-tree-apple);
+    }
+
+    /* ---- 浮在背景上的 UI 图标：垫一层半透明白底 ---- */
+    html:has(.skin-ccu) .ccu-icon {
+        position: absolute;
+        display: block;
+        border-radius: 999px;
+        background-color: rgba(255, 255, 255, .58);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 58%;
+        box-shadow:
+            inset 0 0 0 1px rgba(255, 255, 255, .55),
+            0 8px 18px rgba(47, 66, 45, .18);
+    }
+
+    .skin-ccu .ci-click-burst {
+        top: 1.6rem;
+        right: 2%;
+        width: 104px;
+        height: 104px;
+        background-image: var(--ccu-p-icon-click-burst);
+        animation: ccu-bob 4.5s ease-in-out infinite;
+    }
+
+    /* ---- 正文两侧站在绿地上的实体道具，只有视口够宽才放得下 ---- */
+    html:has(.skin-ccu) .ccu-page-props {
+        display: none;
+    }
+
+    @media (min-width: 1560px) {
+        main.l-main:has(.skin-ccu) {
+            position: relative;
+        }
+
+        html:has(.skin-ccu) .ccu-page-props {
+            display: block;
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        html:has(.skin-ccu) .ccu-side-prop {
+            position: absolute;
+            display: block;
+            background-position: bottom center;
+            background-size: contain;
+            background-repeat: no-repeat;
+            filter: drop-shadow(0 10px 10px rgba(63, 90, 40, .25));
+        }
+
+        html:has(.skin-ccu) .sp-1 {
+            top: 30%;
+            left: calc(50% - 40rem - 9rem);
+            width: 112px;
+            height: 238px;
+            background-image: var(--ccu-p-tree-spruce);
+        }
+
+        html:has(.skin-ccu) .sp-2 {
+            top: 36%;
+            right: calc(50% - 40rem - 8.5rem);
+            width: 120px;
+            height: 152px;
+            background-image: var(--ccu-p-stone-big);
+        }
+
+        html:has(.skin-ccu) .sp-3 {
+            top: 47%;
+            left: calc(50% - 40rem - 8rem);
+            width: 104px;
+            height: 118px;
+            background-image: var(--ccu-p-shrub-flower);
+        }
+
+        html:has(.skin-ccu) .sp-4 {
+            top: 54%;
+            right: calc(50% - 40rem - 9.5rem);
+            width: 126px;
+            height: 268px;
+            background-image: var(--ccu-p-tree-tall);
+        }
+
+        html:has(.skin-ccu) .sp-5 {
+            top: 65%;
+            left: calc(50% - 40rem - 9.5rem);
+            width: 130px;
+            height: 115px;
+            background-image: var(--ccu-p-tree-baobab);
+        }
+
+        html:has(.skin-ccu) .sp-6 {
+            top: 72%;
+            right: calc(50% - 40rem - 8rem);
+            width: 108px;
+            height: 95px;
+            background-image: var(--ccu-p-stone-diamond);
+        }
+
+        html:has(.skin-ccu) .sp-7 {
+            top: 82%;
+            left: calc(50% - 40rem - 8.5rem);
+            width: 116px;
+            height: 205px;
+            background-image: var(--ccu-p-tree-round);
+        }
+
+        html:has(.skin-ccu) .sp-8 {
+            top: 89%;
+            right: calc(50% - 40rem - 8rem);
+            width: 104px;
+            height: 95px;
+            background-image: var(--ccu-p-grass-sword);
+        }
+    }
+
+    /* ========================================================= */
+    /* 正文：游戏 UI 的白色圆角面板                                */
+    /* ========================================================= */
+    main.skin-ccu {
+        position: relative;
+        background-color: transparent;
+    }
+
+    /* 纸面两侧的道具，只有视口比面板（80rem）宽出两条边时才放得下 */
+    main.skin-ccu::before,
+    main.skin-ccu::after {
+        display: none;
+        content: "";
+        position: absolute;
+        z-index: 2;
+        background-position: bottom center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        filter: drop-shadow(0 10px 10px rgba(63, 90, 40, .25));
+        pointer-events: none;
+    }
+
+    @media (min-width: 1680px) {
+        main.skin-ccu::before {
+            display: block;
+            top: 5rem;
+            left: calc(50% - 40rem - 10rem);
+            width: 120px;
+            height: 260px;
+            background-image: var(--ccu-p-tree-little);
+        }
+
+        main.skin-ccu::after {
+            display: block;
+            bottom: 7rem;
+            right: calc(50% - 40rem - 9rem);
+            width: 116px;
+            height: 148px;
+            background-image: var(--ccu-p-stone-pointy);
+        }
+    }
+
+    .skin-ccu .project-prose {
+        position: relative;
+        padding: 3.2rem 3rem 3.6rem;
+        border-radius: 26px;
+        background-color: var(--ccu-panel);
+        box-shadow: 0 18px 44px rgba(47, 66, 45, .22);
+    }
+
+    .skin-ccu .project-prose p,
+    .skin-ccu .project-prose li,
+    .skin-ccu .project-prose strong,
+    .skin-ccu .project-prose h4 {
+        color: var(--ccu-ink);
+    }
+
+    /* ---- H2：游戏里的绿色标签页 ---- */
+    .skin-ccu .project-prose h2 {
+        position: relative;
+        padding: .7rem 1.8rem;
+        border: 0;
+        border-radius: 999px;
+        background-color: var(--ccu-leaf);
+        color: #FFFFFF;
+        text-shadow: 0 3px 0 var(--ccu-leaf-dark);
+        box-shadow: 0 8px 18px rgba(47, 84, 56, .26);
+    }
+
+    /* 标签页旁边别一个游戏 UI 图标，按顺序轮换 */
+    .skin-ccu .project-prose h2::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: -4.6rem;
+        width: 58px;
+        height: 58px;
+        translate: 0 -50%;
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        filter: drop-shadow(0 5px 7px rgba(47, 66, 45, .22));
+    }
+
+    .skin-ccu .project-prose h2:nth-of-type(3n + 1)::after {
+        background-image: var(--ccu-p-icon-click);
+    }
+
+    .skin-ccu .project-prose h2:nth-of-type(3n + 2)::after {
+        background-image: var(--ccu-p-icon-bow);
+    }
+
+    .skin-ccu .project-prose h2:nth-of-type(3n)::after {
+        background-image: var(--ccu-p-icon-arrow);
+        rotate: -12deg;
+    }
+
+    /* ---- H3：珊瑚红小标题 ---- */
+    .skin-ccu .project-prose h3 {
+        position: relative;
+        padding-bottom: .45rem;
+        color: var(--ccu-coral);
+        text-shadow: 0 2px 0 rgba(200, 80, 63, .35);
+    }
+
+    .skin-ccu .project-prose h3::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 2.4em;
+        height: 5px;
+        border-radius: 999px;
+        background-color: var(--ccu-coral);
+        opacity: .45;
+    }
+
+    /* ---- 列表：小灌木当圆点 ---- */
+    .skin-ccu .project-prose ul {
+        list-style-image: var(--ccu-bullet);
+    }
+
+    .skin-ccu .project-prose ol li::marker {
+        color: var(--ccu-leaf);
+    }
+
+    /* ---- 图片：圆角卡片 ---- */
+    .skin-ccu .project-prose img {
+        border: 6px solid var(--ccu-panel);
+        border-radius: 18px;
+        background-color: var(--ccu-panel-alt);
+        box-shadow: 0 12px 26px rgba(47, 66, 45, .2);
+    }
+
+    .skin-ccu .project-prose figcaption {
+        color: var(--ccu-muted);
+        opacity: 1;
+    }
+
+    /* 整幅大图旁边放一株道具 */
+    .skin-ccu .project-prose > figure {
+        position: relative;
+    }
+
+    .skin-ccu .project-prose > figure::after {
+        content: "";
+        position: absolute;
+        right: -26px;
+        bottom: 3.2rem;
+        width: 92px;
+        height: 92px;
+        background-position: bottom center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        filter: drop-shadow(0 8px 9px rgba(63, 90, 40, .22));
+        pointer-events: none;
+    }
+
+    .skin-ccu .project-prose > figure:nth-of-type(3n + 1)::after {
+        background-image: var(--ccu-p-grass-sword);
+    }
+
+    .skin-ccu .project-prose > figure:nth-of-type(3n + 2)::after {
+        background-image: var(--ccu-p-shrub-flower);
+    }
+
+    .skin-ccu .project-prose > figure:nth-of-type(3n)::after {
+        background-image: var(--ccu-p-stone-flat);
+    }
+
+    /* 视频框跟着走白边圆角卡片 */
+    .skin-ccu .project-prose .video-embed {
+        border: 6px solid var(--ccu-panel);
+        border-radius: 18px;
+        box-shadow: 0 12px 26px rgba(47, 66, 45, .2);
+    }
+
+    /* ---- 引用：淡绿信息卡 ---- */
+    .skin-ccu .project-prose blockquote {
+        border-left: 6px solid var(--ccu-leaf);
+        border-radius: 14px;
+        padding: 1.2rem 1.5rem;
+        background-color: var(--ccu-leaf-pale);
+        color: var(--ccu-ink);
+        opacity: 1;
+    }
+
+    /* ---- 分割线：淡线 + 中间一颗绿点 ---- */
+    .skin-ccu .project-prose hr {
+        position: relative;
+        overflow: visible;
+        border: 0;
+        border-top: 2px solid var(--ccu-line);
+        opacity: 1;
+    }
+
+    .skin-ccu .project-prose hr::after {
+        content: "";
+        position: absolute;
+        top: -7px;
+        left: 50%;
+        translate: -50% 0;
+        width: 14px;
+        height: 14px;
+        border-radius: 999px;
+        background-color: var(--ccu-leaf);
+        box-shadow: 0 0 0 7px var(--ccu-panel);
+    }
+
+    /* ---- 代码与表格 ---- */
+    .skin-ccu .project-prose code {
+        background-color: var(--ccu-panel-alt);
+        color: var(--ccu-ink);
+    }
+
+    .skin-ccu .project-prose pre {
+        border: 0;
+        border-radius: 16px;
+        background-color: var(--ccu-panel-alt);
+        box-shadow: inset 0 0 0 1px var(--ccu-line);
+    }
+
+    .skin-ccu .project-prose pre code {
+        color: var(--ccu-ink);
+    }
+
+    .skin-ccu .project-prose th {
+        color: #FFFFFF;
+        background-color: var(--ccu-leaf);
+        border-bottom: 0;
+    }
+
+    .skin-ccu .project-prose th:first-child {
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+    }
+
+    .skin-ccu .project-prose th:last-child {
+        border-top-right-radius: 12px;
+        border-bottom-right-radius: 12px;
+    }
+
+    .skin-ccu .project-prose td {
+        color: var(--ccu-ink);
+        border-bottom: 1px solid var(--ccu-line);
+    }
+
+    .skin-ccu .project-prose a {
+        color: var(--ccu-leaf-dark);
+        text-decoration-color: rgba(90, 156, 113, .5);
+    }
+
+    /* ---- Steam 嵌入卡片 ---- */
+    .skin-ccu .project-prose .steam-embed {
+        margin: 2rem 0 2.75rem;
+        max-width: 100%;
+        /* 卡片本体固定 646px，窄屏放不下时让它自己横向滚动，不撑破面板 */
+        overflow-x: auto;
+    }
+
+    .skin-ccu .project-prose .steam-embed iframe {
+        display: block;
+        width: 646px;
+        height: 190px;
+        border: 0;
+        border-radius: 12px;
+        box-shadow: 0 10px 22px rgba(47, 66, 45, .22);
+    }
+
+    /* ========================================================= */
+    /* 动效                                                       */
+    /* ========================================================= */
+    @keyframes ccu-bob {
+        0%, 100% { translate: 0 0; }
+        50% { translate: 0 -10px; }
+    }
+
+    /* ========================================================= */
+    /* 响应式                                                     */
+    /* ========================================================= */
+    @media (max-width: 1279px) {
+        .skin-ccu .cp-stone-gravel,
+        .skin-ccu .cp-grass-long,
+        .skin-ccu .cp-stone-small,
+        .skin-ccu .cp-grass-radial {
+            display: none;
+        }
+    }
+
+    @media (max-width: 1023px) {
+        .skin-ccu .cp-tree-poplar,
+        .skin-ccu .cp-shrub-round,
+        .skin-ccu .cp-shrub-common,
+        .skin-ccu .cp-tree-apple,
+        .skin-ccu .project-prose > figure::after {
+            display: none;
+        }
+
+        .skin-ccu .project-hero-shell {
+            padding-bottom: 7rem;
+        }
+    }
+
+    @media (max-width: 767px) {
+        html:has(.skin-ccu) body {
+            background-image:
+                linear-gradient(180deg, rgba(255, 255, 255, .3) 0%, rgba(255, 255, 255, .05) 38%, rgba(84, 120, 52, .14) 100%),
+                var(--ccu-world-sm);
+            background-attachment: scroll, scroll;
+        }
+
+        .skin-ccu .ci-click-burst {
+            width: 66px;
+            height: 66px;
+        }
+
+        .skin-ccu .project-prose {
+            padding: 2rem 1.2rem 2.4rem;
+            border-radius: 18px;
+        }
+
+        .skin-ccu .project-prose h2::after {
+            display: none;
+        }
+
+        .skin-ccu .cp-tree-common,
+        .skin-ccu .cp-tree-maple,
+        .skin-ccu .cp-stone-round {
+            width: 78px;
+        }
+
+        .skin-ccu .cp-tree-common,
+        .skin-ccu .cp-tree-maple {
+            height: 170px;
+        }
+
+        .skin-ccu .cp-stone-round {
+            height: 58px;
+        }
+
+        .skin-ccu .project-hero-shell {
+            padding-bottom: 6rem;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html:has(.skin-ccu) .ccu-icon {
+            animation: none;
+        }
+
+        html:has(.skin-ccu) body {
+            background-attachment: scroll, scroll;
+        }
+    }
+</style>

@@ -1521,8 +1521,9 @@
         "icon": "fa-brands fa-steam"
       }
     ],
-    "colorText": "green",
-    "colorBackground": "green"
+    "colorText": "#33402B",
+    "colorBackground": "#BFE35E",
+    "skin": "ccu"
   },
   {
     "id": "game-project-yuanmengstar-shanhai-xunling",
@@ -1585,7 +1586,13 @@
       ]
     },
     "coverImage": "src/assets/projects/poster/YuanMengStarPoster.webp",
-    "links": [],
+    "links": [
+    {
+      "name": "Bilibili",
+      "url": "https://www.bilibili.com/video/BV1Xk2jBDE9s/",
+      "icon": "fa-brands fa-bilibili"
+    }
+  ],
     "colorText": "blue",
     "colorBackground": "blue"
   },
@@ -1833,8 +1840,9 @@
         "icon": "fa-solid fa-gamepad"
       }
     ],
-    "colorText": "blue",
-    "colorBackground": "blue"
+    "colorText": "#14161A",
+    "colorBackground": "#EFE8D8",
+    "skin": "nw"
   },
   {
     "id": "technical-project-parkour-motion-system",
