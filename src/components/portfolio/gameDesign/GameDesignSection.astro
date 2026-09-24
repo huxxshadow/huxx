@@ -1,14 +1,11 @@
 ---
 // Part 2 · 游戏设计：按分量分三层：代表作放大图，精选中图，个人项目小图。
-// 三个候选版式，本地 dev 下用 DebugVariantSwitcher 切换；默认 / 生产显示 A
 import { COLORS } from "@/consts";
 import { useTranslations, type Lang } from "@/i18n";
 import { PORTFOLIO_ROLES } from "@/i18n/components/portfolio/PortfolioRoles_i18";
 import { gameDesignLabels as L } from "@/i18n/components/portfolio/GameDesignShowcase_i18";
 import { getGameDesignShowcase } from "./data";
-import DesignSlices from "./DesignSlices.astro";
-import DesignBands from "./DesignBands.astro";
-import DesignArcana from "./DesignArcana.astro";
+import DesignP3 from "./DesignP3.astro";
 
 const lang = (Astro.currentLocale as Lang) || "en";
 const t = useTranslations(lang);
@@ -41,11 +38,7 @@ const layout = { showcase, lang, labels: L };
         <span class="font-black text-lg whitespace-nowrap pb-1">{showcase.works.length} {t(L.projects)}</span>
     </header>
 
-    <div data-variant-group="part2" data-variant-label="Part 2 · Game Design">
-        <div data-variant="A"><DesignSlices {...layout} /></div>
-        <div data-variant="B" hidden><DesignBands {...layout} /></div>
-        <div data-variant="C" hidden><DesignArcana {...layout} /></div>
-    </div>
+    <DesignP3 {...layout} />
 </section>
 
 <style>
