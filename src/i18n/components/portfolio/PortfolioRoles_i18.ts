@@ -7,7 +7,7 @@ export interface PortfolioRole {
     id: string;
     /** 对应 Part 的锚点 id（页面内跳转用） */
     anchor: string;
-    /** Part 编号，01 是总览 */
+    /** 目录里的编号 */
     index: string;
     colorKey: ShadeKey & keyof ColorPalette;
     icon: string;
@@ -26,7 +26,7 @@ export const PORTFOLIO_ROLES: PortfolioRole[] = [
     {
         id: "game-design",
         anchor: "role-game-design",
-        index: "02",
+        index: "1",
         colorKey: "orange",
         icon: "fa-solid fa-chess-knight",
         name: { en: "Game Design", zh: "游戏设计", ja: "ゲームデザイン", ko: "게임 디자인" },
@@ -44,7 +44,7 @@ export const PORTFOLIO_ROLES: PortfolioRole[] = [
     {
         id: "game-dev",
         anchor: "role-game-dev",
-        index: "03",
+        index: "2",
         colorKey: "blue",
         icon: "fa-solid fa-gamepad",
         name: { en: "Game Development", zh: "游戏开发", ja: "ゲーム開発", ko: "게임 개발" },
@@ -65,7 +65,7 @@ export const PORTFOLIO_ROLES: PortfolioRole[] = [
     {
         id: "ai-app",
         anchor: "role-ai-app",
-        index: "04",
+        index: "3",
         colorKey: "purple",
         icon: "fa-solid fa-robot",
         name: { en: "AI Application Engineering", zh: "AI 应用开发", ja: "AI アプリケーション開発", ko: "AI 애플리케이션 개발" },
@@ -85,7 +85,7 @@ export const PORTFOLIO_ROLES: PortfolioRole[] = [
     {
         id: "tech-art",
         anchor: "role-tech-art",
-        index: "05",
+        index: "4",
         colorKey: "yellow",
         icon: "fa-solid fa-wand-magic-sparkles",
         name: { en: "Technical Art", zh: "技术美术", ja: "テクニカルアート", ko: "테크니컬 아트" },
