@@ -2108,5 +2108,70 @@
     "inDevelopment": true,
     "colorText": "#2A2A2A",
     "colorBackground": "#F4F2EE"
+  },
+  {
+    "id": "game-project-floodsong",
+    "order": 34,
+    "category": "game",
+    "title": {
+      "en": "Floodsong",
+      "zh": "Floodsong",
+      "ja": "Floodsong",
+      "ko": "Floodsong"
+    },
+    "roles": {
+      "en": [
+        "Technical Designer (3C)",
+        "Technical Artist"
+      ],
+      "zh": [
+        "技术策划（3C）",
+        "技术美术"
+      ],
+      "ja": [
+        "テクニカルデザイナー（3C）",
+        "テクニカルアーティスト"
+      ],
+      "ko": [
+        "테크니컬 디자이너(3C)",
+        "테크니컬 아티스트"
+      ]
+    },
+    "desc": {
+      "en": "Floodsong is a USC 2026 Advanced Games Project (AGP): a fast-paced, third-person action adventure where you surf through tsunamis, parkour over ruins, and battle leviathans.",
+      "zh": "《Floodsong》是南加州大学 2026 年 Advanced Games Project（AGP）项目：一款快节奏的第三人称动作冒险游戏，玩家在海啸中冲浪、在废墟间跑酷，并与利维坦巨兽战斗。",
+      "ja": "『Floodsong』は南カリフォルニア大学（USC）2026 年度 Advanced Games Project（AGP）の作品です。津波の上をサーフィンし、廃墟を駆け抜けるパルクールを決め、リヴァイアサンと戦う、スピード感あふれる三人称アクションアドベンチャーです。",
+      "ko": "《Floodsong》은 남캘리포니아 대학교(USC) 2026년 Advanced Games Project(AGP) 작품으로, 쓰나미 위를 서핑하고 폐허를 파쿠르로 누비며 리바이어던과 싸우는 빠른 템포의 3인칭 액션 어드벤처 게임입니다."
+    },
+    "tags": {
+      "en": [
+        "Action Adventure",
+        "3C Design",
+        "USC AGP"
+      ],
+      "zh": [
+        "动作冒险",
+        "3C设计",
+        "USC AGP"
+      ],
+      "ja": [
+        "アクションアドベンチャー",
+        "3Cデザイン",
+        "USC AGP"
+      ],
+      "ko": [
+        "액션 어드벤처",
+        "3C 디자인",
+        "USC AGP"
+      ]
+    },
+    "coverImage": "src/assets/projects/poster/FloodsongPoster.webp",
+    "links": [
+      {
+        "name": "YouTube",
+        "url": "https://youtu.be/IujK_vf6NLc?si=zHkNOMYIsDkc6Ju1",
+        "icon": "fa-brands fa-youtube"
+      }
+    ]
   }
 ]
