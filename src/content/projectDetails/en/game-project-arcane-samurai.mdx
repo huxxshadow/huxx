@@ -1,0 +1,34 @@
+<div class="video-embed">
+    <iframe
+            src="https://www.youtube-nocookie.com/embed/jjCbbOn-fP0"
+            title="Arcane Samurai"
+            loading="lazy"
+            allowfullscreen
+            allow="fullscreen; picture-in-picture"
+    ></iframe>
+</div>
+
+## About the Game
+
+Arcane Samurai is a boss-fight demo for a top-down pixel-art 2D action game. The player switches between a white blade and a black blade and parries the boss with iai strikes: normal attacks can only be parried with the black blade, blue attacks only with the white blade, and black attacks cannot be parried at all and must be dodged. The boss is tinted to signal each attack's type, and enters a second phase once its health drops below a threshold.
+
+---
+
+## My Role
+
+### Combat Systems
+
+* **Player state machine**: Movement, dash, drawing and sheathing the white and black blades, a three-hit combo with sword waves, and the iai charge, release, parry and stagger, split into separate states.
+* **Boss AI**: An action loop of range check, chase, weighted move selection, execution and cooldown; every move is data-driven (ScriptableObject) with its attack type locked at wind-up; a scripted phase transition (kneel, fade to black, reset positions).
+* **Hit detection**: Attack tracks open on normalized animation time, switch shapes per frame and can be overridden per direction (8 directions), with hurtboxes kept separate from movement colliders; overlap tests are pure separating-axis geometry, independent of the physics engine.
+
+### Tools
+
+* **Hitbox debugger**: Scrub the timeline and edit boss and player hitboxes and hurtboxes directly in the Scene view, both in edit mode and at runtime.
+* **Pipeline tools**: An 8-direction animation clip generator, scene collision baked by scanning the alpha of merged layer art, and one-click setup for characters and scenes.
+
+### Technical Art (URP 2D)
+
+* **Day and night mood**: A single time source broadcasts global shader variables; a full-screen ramp grade (luminance-preserving) works with per-layer material tinting across three presets: noon, dusk and night.
+* **Layered sprite lighting**: No Light2D. Normals are derived from each sprite's alpha and luminance to drive form lighting and a rim light on the lit side; world-space cloud shadows, gust sway, and colour-based fire detection with per-pixel flicker.
+* **Scene effects**: Projected sprite shadows that follow the animation frame (with contact hardening), torch glow and embers, falling leaves generated procedurally in a shader (one draw call), a pixel-snapped follow camera and an effects control panel.

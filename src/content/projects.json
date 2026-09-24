@@ -2173,5 +2173,73 @@
         "icon": "fa-brands fa-youtube"
       }
     ]
+  },
+  {
+    "id": "game-project-arcane-samurai",
+    "order": 35,
+    "category": "game",
+    "title": {
+      "en": "Arcane Samurai",
+      "zh": "Arcane Samurai",
+      "ja": "Arcane Samurai",
+      "ko": "Arcane Samurai"
+    },
+    "roles": {
+      "en": [
+        "Lead Programmer",
+        "Technical Artist"
+      ],
+      "zh": [
+        "主程序",
+        "技术美术"
+      ],
+      "ja": [
+        "リードプログラマー",
+        "テクニカルアーティスト"
+      ],
+      "ko": [
+        "리드 프로그래머",
+        "테크니컬 아티스트"
+      ]
+    },
+    "desc": {
+      "en": "Arcane Samurai is a combat game demo built by a team of 4. I served as lead programmer and technical artist, and ran the project.",
+      "zh": "《Arcane Samurai》是一个 4 人团队开发的战斗游戏 Demo，我在团队中担任主程序与技术美术（TA），并负责整个项目。",
+      "ja": "『Arcane Samurai』は 4 人チームで開発した戦闘ゲームのデモです。私はリードプログラマーとテクニカルアーティスト（TA）を務め、プロジェクト全体を統括しました。",
+      "ko": "《Arcane Samurai》는 4인 팀이 개발한 전투 게임 데모입니다. 저는 리드 프로그래머와 테크니컬 아티스트(TA)를 맡아 프로젝트 전체를 이끌었습니다."
+    },
+    "tags": {
+      "en": [
+        "Unity",
+        "2D Combat",
+        "Pixel Art",
+        "URP"
+      ],
+      "zh": [
+        "Unity",
+        "2D动作",
+        "像素风",
+        "URP"
+      ],
+      "ja": [
+        "Unity",
+        "2Dアクション",
+        "ピクセルアート",
+        "URP"
+      ],
+      "ko": [
+        "Unity",
+        "2D 액션",
+        "픽셀 아트",
+        "URP"
+      ]
+    },
+    "links": [
+      {
+        "name": "YouTube",
+        "url": "https://youtu.be/jjCbbOn-fP0?si=Y0ErQt-P5rp3lsYv",
+        "icon": "fa-brands fa-youtube"
+      }
+    ]
   }
 ]
