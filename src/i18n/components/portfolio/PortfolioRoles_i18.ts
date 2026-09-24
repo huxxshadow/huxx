@@ -122,9 +122,4 @@ export const portfolioOverviewLabels = {
     iAmSuffix: { ja: "です", ko: "입니다" } as Multilingual,
     contents: { en: "Contents", zh: "目录", ja: "目次", ko: "목차" } as Multilingual,
 
-    // 角色板块（Part 2–5）
-    featured: { en: "Featured", zh: "代表作", ja: "代表作", ko: "대표작" } as Multilingual,
-    viewProject: { en: "View project", zh: "查看项目", ja: "プロジェクトを見る", ko: "프로젝트 보기" } as Multilingual,
-    prev: { en: "Previous", zh: "上一个", ja: "前へ", ko: "이전" } as Multilingual,
-    next: { en: "Next", zh: "下一个", ja: "次へ", ko: "다음" } as Multilingual,
 };
