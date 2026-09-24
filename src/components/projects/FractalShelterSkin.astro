@@ -326,7 +326,7 @@ import iconDetailed from "@/assets/projects/game-project-fractal-shelter/fractal
         grid-template-columns: minmax(0, 1fr) auto;
         align-items: end;
         gap: 2.5rem;
-        margin-top: 3rem;
+        margin: 0 0 3.5rem;
         border-bottom: 10px solid var(--fs-red);
         border-radius: 0 0 4px 4px;
     }
@@ -346,7 +346,7 @@ import iconDetailed from "@/assets/projects/game-project-fractal-shelter/fractal
         border: 0;
     }
 
-    /* pitch 原稿：竖长页面两两并排，单出来的最后一页居中 */
+    /* pitch 原稿：竖长页面两两并排，单出来的最后一页横跨两栏（两倍宽） */
     .skin-fs .fs-pages {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -364,8 +364,6 @@ import iconDetailed from "@/assets/projects/game-project-fractal-shelter/fractal
 
     .skin-fs .fs-pages figure:last-child:nth-child(odd) {
         grid-column: 1 / -1;
-        justify-self: center;
-        width: calc(50% - 1rem);
     }
 
     /* ========================================================= */
@@ -407,8 +405,5 @@ import iconDetailed from "@/assets/projects/game-project-fractal-shelter/fractal
             justify-self: end;
         }
 
-        .skin-fs .fs-pages figure:last-child:nth-child(odd) {
-            width: 100%;
-        }
     }
 </style>
