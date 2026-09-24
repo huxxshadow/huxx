@@ -27,7 +27,7 @@ import iconDetailed from "@/assets/projects/game-project-fractal-shelter/fractal
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
             <link
                     rel="stylesheet"
-                    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,900&display=swap"
+                    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap"
             />
             <style is:inline set:html={`html:has(.skin-fs) { --fs-icon: url("${icon.src}"); }`} />
         </>
@@ -92,12 +92,11 @@ import iconDetailed from "@/assets/projects/game-project-fractal-shelter/fractal
         opacity: .07;
     }
 
-    /* ---- 标题：海报上那种红色粗斜体 ---- */
+    /* ---- 标题：红色粗黑体（不用斜体） ---- */
     .skin-fs .project-hero-screen h1 {
         color: var(--fs-red);
         font-family: var(--fs-font);
         font-weight: 900;
-        font-style: italic;
         letter-spacing: -.01em;
         line-height: .95;
     }
