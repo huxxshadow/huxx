@@ -1,5 +1,5 @@
 ---
-// 作品集总览的目录：书目录式列表，每个角色一行。标题行「编号 图标 名称 ···· N 个项目 →」，下面是该角色的介绍；悬停整行反色
+// 作品集总览的目录：书目录式列表，每个角色一行。标题行「编号 名称 ···· N 个项目 →」，下面是该角色的介绍；悬停整行反色
 import type { RoleContentsProps } from "./portfolioRolesData";
 import Segments from "./intro/Segments.astro";
 
@@ -17,13 +17,12 @@ const { items, unit, theme } = Astro.props;
                 >
                     <div class="flex items-center gap-4 lg:gap-6">
                         <span class="font-black text-2xl lg:text-4xl w-12 lg:w-16 shrink-0">{role.index}</span>
-                        <i class={`${role.icon} text-2xl lg:text-3xl w-8 lg:w-10 text-center shrink-0`}></i>
                         <span class="font-black text-xl sm:text-2xl lg:text-4xl leading-tight">{name}</span>
                         <span class="toc-a-leader flex-1 hidden sm:block border-b-[3px] border-dotted self-center min-w-6"></span>
                         <span class="font-black text-base lg:text-xl whitespace-nowrap shrink-0 ml-auto sm:ml-0">{role.count} {unit}</span>
                         <i class="toc-a-arrow fa-solid fa-arrow-right text-xl shrink-0 transition-transform duration-200"></i>
                     </div>
-                    <p class="mt-3 lg:mt-4 sm:pl-[6rem] lg:pl-[8.5rem] text-base lg:text-lg font-medium leading-[1.85]">
+                    <p class="mt-3 lg:mt-4 sm:pl-[4rem] lg:pl-[5.5rem] text-base lg:text-lg font-medium leading-[1.85]">
                         <Segments segments={segments} />
                     </p>
                 </a>
