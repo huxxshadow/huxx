@@ -1,5 +1,8 @@
 ---
-// 仅本地 dev：在页面右下角切换 [data-variant-group] 里的候选变体（A/B/C…），选择存在 localStorage
+// 仅本地 dev：在页面右下角切换 [data-variant-group] 里的候选变体（A/B/C…），选择存在 localStorage。
+// 两种分组：
+//   - 结构变体：组里的直接子元素 [data-variant="A"]…，非当前的用 hidden 隐藏
+//   - 行为变体：组上写 data-variant-options="A,B,C"，只把当前值写进组的 data-variant-current，由页面脚本自己读
 const enabled = import.meta.env.DEV;
 ---
 
@@ -33,7 +36,18 @@ const enabled = import.meta.env.DEV;
             played.forEach((el) => el.classList.add('is-revealed'));
         }
 
+        const optionsOf = (group: HTMLElement) =>
+            group.dataset.variantOptions
+                ? group.dataset.variantOptions.split(',').map((v) => v.trim())
+                : Array.from(group.querySelectorAll<HTMLElement>(':scope > [data-variant]')).map((v) => v.dataset.variant!);
+
         function show(group: HTMLElement, value: string) {
+            if (group.dataset.variantOptions) {
+                const options = optionsOf(group);
+                if (!options.includes(value)) value = options[0];
+                group.dataset.variantCurrent = value;
+                return value;
+            }
             const variants = Array.from(group.querySelectorAll<HTMLElement>(':scope > [data-variant]'));
             if (!variants.some((v) => v.dataset.variant === value)) value = variants[0]?.dataset.variant ?? '';
             variants.forEach((v) => { v.hidden = v.dataset.variant !== value; });
@@ -54,7 +68,7 @@ const enabled = import.meta.env.DEV;
 
             groups.forEach((group) => {
                 const name = group.dataset.variantGroup!;
-                const values = Array.from(group.querySelectorAll<HTMLElement>(':scope > [data-variant]')).map((v) => v.dataset.variant!);
+                const values = optionsOf(group);
 
                 const row = document.createElement('div');
                 row.className = 'flex items-center gap-2';

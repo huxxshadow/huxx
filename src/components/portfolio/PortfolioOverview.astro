@@ -33,6 +33,10 @@ const roleArt: Record<string, ImageMetadata> = {
     "ai-app": aiAppArt,
     "tech-art": techArtArt,
 };
+
+
+// 插画框定位：抵消 section 左内边距紧贴屏幕左边，右边缘止于本栏右边缘
+const artBox = "absolute left-0 lg:-left-20 xl:-left-28 inset-y-0 w-full lg:w-[calc(100%+5rem)] xl:w-[calc(100%+7rem)]";
 ---
 
 <section
@@ -57,15 +61,29 @@ const roleArt: Record<string, ImageMetadata> = {
             </div>
         </div>
 
-        <div class="mt-12 lg:mt-16 grid lg:grid-cols-[3fr_7fr] gap-8 lg:gap-12 xl:gap-16" data-role-showcase>
+        <div
+                class="mt-12 lg:mt-16 grid lg:grid-cols-[3fr_7fr] gap-8 lg:gap-12 xl:gap-16"
+                data-role-showcase
+        >
             <!-- 左：角色插画舞台（只在宽屏显示，窄屏没有悬停）。插画抵消 section 左内边距、紧贴屏幕左边，按原比例放大，
                  右边缘止于本栏右边缘，任何屏宽下都不会压到右侧菜单 -->
             <div class="relative z-0 hidden lg:block min-h-[28rem]" data-reveal="fade" data-reveal-once aria-hidden="true">
-                {items.map(({ role }, i) => (
-                        <div class="role-art absolute left-0 lg:-left-20 xl:-left-28 inset-y-0 w-full lg:w-[calc(100%+5rem)] xl:w-[calc(100%+7rem)] flex items-center justify-start" data-role-art={role.id} data-active={i === 0 ? "" : undefined}>
-                            <img src={roleArt[role.id].src} alt="" width={roleArt[role.id].width} height={roleArt[role.id].height} class="w-full h-full object-contain object-left" loading="lazy" decoding="async" />
-                        </div>
-                ))}
+                {items.map(({ role }, i) => {
+                    const art = roleArt[role.id];
+                    return (
+                            <div
+                                    class:list={["role-art flex items-center justify-start", artBox]}
+                                    data-role-art={role.id}
+                                    data-color={role.color.dark}
+                                    data-active={i === 0 ? "" : undefined}
+                            >
+                                <!-- 框按插画原比例取「放得下的最大尺寸」，残影按它定位，和画面对齐 -->
+                                <div class="art-frame relative" style={`aspect-ratio: ${art.width} / ${art.height}; width: min(100cqw, 100cqh * ${(art.width / art.height).toFixed(4)});`}>
+                                    <img src={art.src} alt="" width={art.width} height={art.height} class="art-body absolute inset-0 w-full h-full" loading="lazy" decoding="async" />
+                                </div>
+                            </div>
+                    );
+                })}
             </div>
 
             <!-- 右：角色菜单，平行四边形，逐级向右错开。负右外边距把菜单推到离屏幕右边约 1rem，
@@ -152,13 +170,22 @@ const roleArt: Record<string, ImageMetadata> = {
     .role-art[data-active] {
         opacity: 1;
     }
+    .role-art {
+        container-type: size;
+    }
+    :global(.art-ghost) {
+        position: absolute;
+        pointer-events: none;
+        -webkit-mask: var(--ghost-src) left top / 100% 100% no-repeat;
+        mask: var(--ghost-src) left top / 100% 100% no-repeat;
+    }
 </style>
 
 <script>
-    // 悬停 / 聚焦菜单里的某一行，左侧插画切到该角色：新的从画面左边缘外向右滑入并淡入，旧的继续向右滑出淡出。
-    // 离开菜单时保持最后一个，不回退。
-    const ENTER = { duration: 700, easing: 'cubic-bezier(0.2, 1, 0.3, 1)' };
-    const LEAVE = { duration: 320, easing: 'cubic-bezier(0.4, 0, 1, 1)' };
+    // 悬停 / 聚焦菜单里的某一行，左侧插画切到该角色（残影拖尾）：新角色从屏幕左边缘外滑入，
+    // 身后拖着几层角色色剪影，追上本体时淡掉；旧角色向右滑出淡出。离开菜单时保持最后一个，不回退。
+    // 最终状态由 data-active 决定，动画只负责过程；每次切换前取消上一轮所有动画。
+    const SKEW_TAN = Math.tan((10 * Math.PI) / 180);
 
     function initShowcase(root: HTMLElement) {
         const arts = new Map(
@@ -177,22 +204,9 @@ const roleArt: Record<string, ImageMetadata> = {
             incoming.setAttribute('data-active', '');
             if (reduceMotion) return;
 
-            // 最终状态由 data-active 决定，动画只负责过程，结束后不留 fill
-            if (outgoing) {
-                outgoing.getAnimations().forEach((a) => a.cancel());
-                outgoing.animate(
-                    [{ opacity: 1, translate: '0 0' }, { opacity: 0, translate: '160px 0' }],
-                    LEAVE
-                );
-            }
-            // 起点：插画右边缘刚好在视口左边缘外，一路向右滑到原位
-            // （先取消残留动画，再量静止位置）
-            incoming.getAnimations().forEach((a) => a.cancel());
-            const fromX = -Math.ceil(incoming.getBoundingClientRect().right);
-            incoming.animate(
-                [{ opacity: 0, translate: `${fromX}px 0` }, { opacity: 1, translate: '0 0' }],
-                ENTER
-            );
+            arts.forEach((el) => el.getAnimations().forEach((a) => a.cancel()));
+            root.querySelectorAll('.art-ghost').forEach((g) => g.remove());
+            trail(incoming, outgoing);
         };
 
         root.querySelectorAll<HTMLElement>('[data-role-link]').forEach((link) => {
@@ -204,9 +218,47 @@ const roleArt: Record<string, ImageMetadata> = {
         reserveSkewRoom(root);
     }
 
+    // 几层角色色剪影（用插画当遮罩）比本体稍晚出发，追上本体时淡掉
+    function trail(incoming: HTMLElement, outgoing: HTMLElement | undefined) {
+        const easing = 'cubic-bezier(0.2, 1, 0.3, 1)';
+        outgoing?.animate(
+            [{ opacity: 1, translate: '0 0' }, { opacity: 0, translate: '160px 0' }],
+            { duration: 280, easing: 'cubic-bezier(0.4, 0, 1, 1)' }
+        );
+
+        // 位置都要在本体开始位移之前量，否则起点偏移会被算进残影的静止位置
+        const fromX = -Math.ceil(incoming.getBoundingClientRect().right);
+        const stage = incoming.parentElement!;
+        const frame = incoming.querySelector<HTMLElement>('.art-frame')!;
+        const src = incoming.querySelector<HTMLImageElement>('.art-body')!.getAttribute('src')!; // currentSrc 在懒加载图未加载完时是空的
+        const box = frame.getBoundingClientRect();
+        const origin = stage.getBoundingClientRect();
+
+        incoming.animate(
+            [{ opacity: 0, translate: `${fromX}px 0` }, { opacity: 1, offset: 0.25 }, { opacity: 1, translate: '0 0' }],
+            { duration: 620, easing }
+        );
+
+        [0.6, 0.4, 0.22].forEach((opacity, i) => {
+            const ghost = document.createElement('div');
+            ghost.className = 'art-ghost';
+            Object.assign(ghost.style, {
+                left: `${box.left - origin.left}px`, top: `${box.top - origin.top}px`,
+                width: `${box.width}px`, height: `${box.height}px`,
+                backgroundColor: incoming.dataset.color!,
+            });
+            ghost.style.setProperty('--ghost-src', `url("${src}")`);
+            stage.append(ghost);
+            ghost.animate(
+                // 前半程保持浓度，快追上本体时才淡掉
+                [{ opacity, translate: `${fromX}px 0` }, { opacity: opacity * 0.8, offset: 0.85 }, { opacity: 0, translate: '0 0' }],
+                { duration: 620, delay: (i + 1) * 70, easing, fill: 'backwards' }
+            ).finished.catch(() => {}).finally(() => ghost.remove());
+        });
+    }
+
     // 行以左下角为基准倾斜 10°，顶边会向右多出 行高 × tan10°；再加悬停时右移的 12px。
     // 把这段宽度留成菜单的右内边距，任何屏宽下行都不会被屏幕右边裁掉。
-    const SKEW_TAN = Math.tan((10 * Math.PI) / 180);
     const HOVER_SHIFT = 12;
     let skewObserver: ResizeObserver | undefined;
 
