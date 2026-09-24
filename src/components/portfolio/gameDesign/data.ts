@@ -8,14 +8,14 @@ const ORDER = [
     "game-project-yuanmengstar-shanhai-xunling",
     "game-project-empty-throne",
     "game-project-eel-on-mask",
+    "game-project-night-watch",
     "game-project-floodsong",
+    "game-project-click-click-universe",
     "game-project-fractal-shelter",
-    "game-project-follyblind-age",
     "technical-project-parkour-motion-system",
     "game-project-lost-realm",
     "game-project-speed-pixel",
-    "game-project-click-click-universe",
-    "game-project-night-watch",
+    "game-project-follyblind-age",
 ];
 
 export async function getGameDesignShowcase(lang: Lang) {

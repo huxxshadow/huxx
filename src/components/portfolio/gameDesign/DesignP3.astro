@@ -24,10 +24,10 @@ const [hero, ...side] = showcase.featured as DesignWorkView[];
     <div class="p3-bar" data-reveal="left" data-reveal-once>
         <span class="p3-bar-fill">{t(labels.tierFeatured)}</span>
         <span class="p3-bar-rule"></span>
-        <span class="p3-bar-count">{showcase.featured.length}</span>
+        <span class="p3-bar-count">{showcase.featured.length + showcase.selected.length}</span>
     </div>
 
-    <div class="grid lg:grid-cols-[1.6fr_1fr] gap-5 lg:gap-6 mb-16">
+    <div class="grid lg:grid-cols-[1.6fr_1fr] gap-5 lg:gap-6 mb-6">
         {hero && (
                 <a href={href(hero.id)} class="p3-panel p3-panel-hero group" data-reveal="left" data-reveal-once>
                     <div class="p3-panel-img">
@@ -58,18 +58,12 @@ const [hero, ...side] = showcase.featured as DesignWorkView[];
         </div>
     </div>
 
-    <!-- ===== 精选 ===== -->
-    <div class="p3-bar" data-reveal="left" data-reveal-once>
-        <span class="p3-bar-fill">{t(labels.tierSelected)}</span>
-        <span class="p3-bar-rule"></span>
-        <span class="p3-bar-count">{showcase.selected.length}</span>
-    </div>
-
-    <div class="grid md:grid-cols-3 gap-6 mb-16 md:px-4" data-reveal-children="left" data-reveal-order="columns" data-reveal-once>
+    <!-- 代表作下面一行：四个次一级的作品 -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5 mb-16" data-reveal-children="left" data-reveal-order="columns" data-reveal-once>
         {showcase.selected.map((work, i) => (
                 <a href={href(work.id)} class="p3-card group">
                     <div class="p3-card-img">
-                        <WorkCover work={work} lang={lang} sizes="(min-width: 768px) 30vw, 100vw" />
+                        <WorkCover work={work} lang={lang} sizes="(min-width: 1024px) 23vw, (min-width: 768px) 45vw, 100vw" />
                     </div>
                     <div class="p3-card-body">
                         <span class="p3-kicker p3-kicker-dark">{work.context} / {work.role}</span>

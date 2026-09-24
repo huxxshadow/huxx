@@ -106,7 +106,7 @@ export const designWorks: DesignWork[] = [
     },
     {
         projectId: "game-project-click-click-universe",
-        tier: "solo",
+        tier: "selected",
         pillars: ["systems"],
         context: { en: "Steam · undergraduate thesis", zh: "Steam · 本科毕业设计", ja: "Steam · 卒業制作", ko: "Steam · 졸업 작품" },
         role: solo,
@@ -119,7 +119,7 @@ export const designWorks: DesignWork[] = [
     },
     {
         projectId: "game-project-night-watch",
-        tier: "solo",
+        tier: "selected",
         pillars: ["systems"],
         context: { en: "NetEase · experimental project", zh: "网易 · 实验课题", ja: "NetEase · 実験的プロジェクト", ko: "NetEase · 실험 과제" },
         role: solo,
@@ -181,7 +181,7 @@ export const designWorks: DesignWork[] = [
     },
     {
         projectId: "game-project-follyblind-age",
-        tier: "selected",
+        tier: "solo",
         pillars: ["narrative", "systems"],
         context: { en: "Team of 8 · in development", zh: "8 人团队 · 开发中", ja: "8 人チーム · 開発中", ko: "8인 팀 · 개발 중" },
         role: { en: "Director", zh: "制作人", ja: "ディレクター", ko: "디렉터" },
