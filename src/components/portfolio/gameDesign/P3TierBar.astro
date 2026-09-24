@@ -1,0 +1,45 @@
+---
+// P3R 风格的层标题：斜切黑底色条 + 斜向延伸细线 + 斜体数量
+interface Props {
+    label: string;
+    count: number;
+}
+const { label, count } = Astro.props;
+---
+
+<div class="p3-bar" data-reveal="left" data-reveal-once>
+    <span class="p3-bar-fill">{label}</span>
+    <span class="p3-bar-rule"></span>
+    <span class="p3-bar-count">{count}</span>
+</div>
+
+<style>
+    .p3-bar {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.75rem;
+    }
+    .p3-bar-fill {
+        padding: 0.4rem 2rem 0.4rem 1.2rem;
+        background-color: var(--gd-ink);
+        color: var(--gd-paper);
+        font-weight: 900;
+        font-size: 1.5rem;
+        letter-spacing: 0.06em;
+        clip-path: polygon(0 0, 100% 0, calc(100% - 1rem) 100%, 0 100%);
+    }
+    .p3-bar-rule {
+        flex: 1;
+        height: 3px;
+        background-color: var(--gd-ink);
+        transform: skewX(-30deg);
+    }
+    .p3-bar-count {
+        font-weight: 900;
+        font-size: 2.2rem;
+        line-height: 1;
+        font-style: italic;
+        color: var(--gd-accent);
+    }
+</style>

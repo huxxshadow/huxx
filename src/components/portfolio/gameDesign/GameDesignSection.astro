@@ -6,9 +6,9 @@ import { useTranslations, type Lang } from "@/i18n";
 import { PORTFOLIO_ROLES } from "@/i18n/components/portfolio/PortfolioRoles_i18";
 import { gameDesignLabels as L } from "@/i18n/components/portfolio/GameDesignShowcase_i18";
 import { getGameDesignShowcase } from "./data";
-import DesignP5 from "./DesignP5.astro";
-import DesignP3 from "./DesignP3.astro";
-import DesignArk from "./DesignArk.astro";
+import DesignSlices from "./DesignSlices.astro";
+import DesignBands from "./DesignBands.astro";
+import DesignArcana from "./DesignArcana.astro";
 
 const lang = (Astro.currentLocale as Lang) || "en";
 const t = useTranslations(lang);
@@ -42,9 +42,9 @@ const layout = { showcase, lang, labels: L };
     </header>
 
     <div data-variant-group="part2" data-variant-label="Part 2 · Game Design">
-        <div data-variant="A"><DesignP5 {...layout} /></div>
-        <div data-variant="B" hidden><DesignP3 {...layout} /></div>
-        <div data-variant="C" hidden><DesignArk {...layout} /></div>
+        <div data-variant="A"><DesignSlices {...layout} /></div>
+        <div data-variant="B" hidden><DesignBands {...layout} /></div>
+        <div data-variant="C" hidden><DesignArcana {...layout} /></div>
     </div>
 </section>
 
