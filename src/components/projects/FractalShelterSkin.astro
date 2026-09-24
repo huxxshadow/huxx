@@ -3,8 +3,8 @@
 //
 // 视觉照着项目的 pitch 文档走：白纸、单一的正红（#D30000，恰好是站内 COLORS.red.dark）、
 // 被强调的专有名词用蓝色（#0058C0，站内 COLORS.blue.dark），粗黑体 Roboto；
-// 红框圆角的章节标签、贴在右侧的红色竖线、右下角的大号页码、左下角的斜切红色页脚签
-// 「FS-007 Origin File」、谢尔宾斯基三角里嵌盾牌的徽标。
+// 红框圆角的章节标签、贴在右侧的红色竖线与大号页码，以及游戏徽标（谢尔宾斯基三角里嵌盾牌）。
+// 纸色不用纯白（太刺眼、和红字对比发虚），改用海报的浅粉系；徽标一律用游戏原稿的图。
 // - 所有规则都限定在 .skin-fs / html:has(.skin-fs) 下，避免污染其他项目页（样式表是整条路由共用的）。
 // - 平面设计，不用阴影。
 interface Props {
@@ -13,31 +13,13 @@ interface Props {
 }
 const { stickers = false } = Astro.props;
 
-// 谢尔宾斯基三角（3 阶，27 个小三角）+ 中间的盾牌，viewBox 0 0 120 104
-function sierpinski(x: number, y: number, size: number, depth: number): string[] {
-    const h = (size * Math.sqrt(3)) / 2;
-    if (depth === 0) return [`${x},${y + h} ${x + size / 2},${y} ${x + size},${y + h}`];
-    const half = size / 2;
-    return [
-        ...sierpinski(x + half / 2, y, half, depth - 1),
-        ...sierpinski(x, y + h / 2, half, depth - 1),
-        ...sierpinski(x + half, y + h / 2, half, depth - 1),
-    ];
-}
-const triangles = sierpinski(0, 0, 120, 3);
+import icon from "@/assets/projects/game-project-fractal-shelter/fractal-shelter_Icon.webp";
+import iconDetailed from "@/assets/projects/game-project-fractal-shelter/fractal-shelter_IconDetailed.webp";
 ---
 
 {stickers ? (
         <div class="fs-deco" aria-hidden="true">
-            <svg class="fs-logo" viewBox="0 0 120 104">
-                {triangles.map((points) => <polygon points={points} />)}
-                <path class="fs-logo-shield" d="M60 44 L74 49 L74 60 Q74 72 60 79 Q46 72 46 60 L46 49 Z" />
-                <path class="fs-logo-shield-inner" d="M60 50 L69 53.5 L69 60.5 Q69 68.5 60 73 Q51 68.5 51 60.5 L51 53.5 Z" />
-            </svg>
-            <svg class="fs-ghost" viewBox="0 0 120 104">
-                {triangles.map((points) => <polygon points={points} />)}
-            </svg>
-            <span class="fs-tab">FS-007 Origin File</span>
+            <img class="fs-ghost" src={iconDetailed.src} width={iconDetailed.width} height={iconDetailed.height} alt="" />
         </div>
 ) : (
         <>
@@ -47,6 +29,7 @@ const triangles = sierpinski(0, 0, 120, 3);
                     rel="stylesheet"
                     href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,900&display=swap"
             />
+            <style is:inline set:html={`html:has(.skin-fs) { --fs-icon: url("${icon.src}"); }`} />
         </>
 )}
 
@@ -57,7 +40,8 @@ const triangles = sierpinski(0, 0, 120, 3);
     html:has(.skin-fs) {
         --fs-red: #D30000;
         --fs-blue: #0058C0;
-        --fs-paper: #FFFFFF;
+        --fs-paper: #FFFFFF;     /* 只用作红底上的反白字 */
+        --fs-sheet: #FFF3F5;     /* 页面纸色：极浅的海报粉 */
         --fs-pink: #FDE6EC;      /* 海报底色 */
         --fs-rose: #DE4D4A;      /* 海报中间调 */
         --fs-maroon: #8F2F2F;    /* 海报暗部 */
@@ -65,7 +49,7 @@ const triangles = sierpinski(0, 0, 120, 3);
     }
 
     html:has(.skin-fs) body {
-        background-color: var(--fs-paper);
+        background-color: var(--fs-sheet);
     }
 
     /* ========================================================= */
@@ -76,7 +60,6 @@ const triangles = sierpinski(0, 0, 120, 3);
         border-color: var(--fs-red) !important;
         border-bottom-width: 10px;
         font-family: var(--fs-font);
-        padding-bottom: 5rem;
     }
 
     header.skin-fs > .absolute {
@@ -99,46 +82,14 @@ const triangles = sierpinski(0, 0, 120, 3);
         pointer-events: none;
     }
 
-    /* 右上角的徽标 */
-    .skin-fs .fs-logo {
-        position: absolute;
-        top: -1.5rem;
-        right: 0;
-        width: 5.5rem;
-        fill: var(--fs-red);
-    }
-
-    .skin-fs .fs-logo .fs-logo-shield {
-        fill: var(--fs-paper);
-    }
-
-    .skin-fs .fs-logo .fs-logo-shield-inner {
-        fill: var(--fs-red);
-    }
-
     /* 背景里很淡的大三角 */
     .skin-fs .fs-ghost {
         position: absolute;
         right: -6rem;
-        bottom: -8rem;
+        bottom: -6rem;
         width: 34rem;
-        fill: var(--fs-red);
-        opacity: .06;
-    }
-
-    /* 左下角的斜切页脚签 */
-    .skin-fs .fs-tab {
-        position: absolute;
-        left: -2rem;
-        bottom: -5rem;
-        padding: .7rem 3.6rem .7rem 2rem;
-        background-color: var(--fs-red);
-        color: var(--fs-paper);
-        font-family: var(--fs-font);
-        font-weight: 900;
-        font-size: 1.05rem;
-        letter-spacing: .04em;
-        clip-path: polygon(0 0, calc(100% - 2.2rem) 0, 100% 100%, 0 100%);
+        height: auto;
+        opacity: .07;
     }
 
     /* ---- 标题：海报上那种红色粗斜体 ---- */
@@ -149,6 +100,16 @@ const triangles = sierpinski(0, 0, 120, 3);
         font-style: italic;
         letter-spacing: -.01em;
         line-height: .95;
+    }
+
+    .skin-fs .project-hero-screen h1::after {
+        content: "";
+        display: inline-block;
+        width: 1em;
+        height: .87em;
+        margin-left: .25em;
+        vertical-align: -.05em;
+        background: var(--fs-icon) center / contain no-repeat;
     }
 
     .skin-fs .back-btn {
@@ -166,7 +127,7 @@ const triangles = sierpinski(0, 0, 120, 3);
     .skin-fs .brutalist-badge {
         border: 3px solid var(--fs-red) !important;
         border-radius: .5rem;
-        background-color: var(--fs-paper);
+        background-color: var(--fs-sheet);
         color: var(--fs-red);
         box-shadow: none;
         font-family: var(--fs-font);
@@ -199,7 +160,7 @@ const triangles = sierpinski(0, 0, 120, 3);
     /* 正文：pitch 文档的一页                                       */
     /* ========================================================= */
     main.skin-fs {
-        background-color: var(--fs-paper);
+        background-color: var(--fs-sheet);
         font-family: var(--fs-font);
         counter-reset: fs-page;
     }
@@ -208,7 +169,7 @@ const triangles = sierpinski(0, 0, 120, 3);
         --fs-gutter: 5.5rem;     /* 右侧留给竖线和页码的宽度 */
         --fs-num-right: 3rem;    /* 页码右缘到正文右边的距离 */
         position: relative;
-        padding: 3rem var(--fs-gutter) 7rem 1rem;
+        padding: 3rem var(--fs-gutter) 4rem 1rem;
         /* 让 h2 里的页码能用 100cqw 拿到正文宽度 */
         container-type: inline-size;
     }
@@ -218,7 +179,7 @@ const triangles = sierpinski(0, 0, 120, 3);
         content: "";
         position: absolute;
         top: 3rem;
-        bottom: 6rem;
+        bottom: 3rem;
         right: 1.6rem;
         width: 10px;
         border-radius: 999px;
@@ -257,7 +218,7 @@ const triangles = sierpinski(0, 0, 120, 3);
         counter-increment: fs-page;
         border: 4px solid var(--fs-red);
         border-radius: .7rem;
-        background-color: var(--fs-paper);
+        background-color: var(--fs-sheet);
         box-shadow: none;
         color: var(--fs-red);
         font-family: var(--fs-font);
@@ -278,7 +239,7 @@ const triangles = sierpinski(0, 0, 120, 3);
         translate: -100% -50%;
         z-index: 1;
         padding: 0 .35rem;
-        background-color: var(--fs-paper);
+        background-color: var(--fs-sheet);
         color: var(--fs-red);
         font-size: 2.6rem;
         font-weight: 900;
@@ -355,24 +316,35 @@ const triangles = sierpinski(0, 0, 120, 3);
         text-decoration-thickness: 3px;
     }
 
-    /* ---- 左下角的斜切页脚签（正文版） ---- */
-    .skin-fs .project-prose::before {
-        content: "FS-007 Origin File";
-        position: absolute;
-        left: -1rem;
-        bottom: 0;
-        padding: .7rem 3.6rem .7rem 1.4rem;
-        background-color: var(--fs-red);
-        color: var(--fs-paper);
-        font-weight: 900;
-        font-size: 1.05rem;
-        letter-spacing: .04em;
-        clip-path: polygon(0 0, calc(100% - 2.2rem) 0, 100% 100%, 0 100%);
-    }
-
     /* ========================================================= */
     /* MDX 里用到的专用块                                          */
     /* ========================================================= */
+
+    /* 简介：文字在左，角色站在底部红线上（招募传单的构图） */
+    .skin-fs .fs-intro {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+        gap: 2.5rem;
+        margin-top: 3rem;
+        border-bottom: 10px solid var(--fs-red);
+        border-radius: 0 0 4px 4px;
+    }
+
+    .skin-fs .fs-intro .fs-intro-text {
+        padding-bottom: 1.5rem;
+    }
+
+    .skin-fs .fs-intro h2 {
+        margin-top: 0;
+    }
+
+    .skin-fs .project-prose .fs-intro img {
+        width: 15rem;
+        height: auto;
+        margin: 0;
+        border: 0;
+    }
 
     /* pitch 原稿：竖长页面两两并排，单出来的最后一页居中 */
     .skin-fs .fs-pages {
@@ -409,7 +381,7 @@ const triangles = sierpinski(0, 0, 120, 3);
         .skin-fs .project-prose {
             --fs-gutter: 2.6rem;
             --fs-num-right: 1.2rem;
-            padding: 2rem var(--fs-gutter) 6rem 0;
+            padding: 2rem var(--fs-gutter) 3rem 0;
         }
 
         .skin-fs .project-prose::after {
@@ -421,13 +393,18 @@ const triangles = sierpinski(0, 0, 120, 3);
             font-size: 1.8rem;
         }
 
-        .skin-fs .fs-logo {
-            width: 3.6rem;
-            top: -2.5rem;
-        }
-
         .skin-fs .fs-pages {
             grid-template-columns: 1fr;
+        }
+
+        .skin-fs .fs-intro {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .skin-fs .project-prose .fs-intro img {
+            width: 11rem;
+            justify-self: end;
         }
 
         .skin-fs .fs-pages figure:last-child:nth-child(odd) {
