@@ -1,5 +1,6 @@
 import { Image } from 'astro:assets';
 import imgSpeedShaders from '@/assets/projects/game-project-floodsong/game-project-floodsong_SpeedShaders.webp';
+import imgDrift from '@/assets/projects/game-project-floodsong/game-project-floodsong_Drift.webp';
 import imgConceptEnvironment from '@/assets/projects/game-project-floodsong/game-project-floodsong_ConceptEnvironment.webp';
 import imgConceptBoss from '@/assets/projects/game-project-floodsong/game-project-floodsong_ConceptBoss.webp';
 import imgConceptPoses from '@/assets/projects/game-project-floodsong/game-project-floodsong_ConceptPoses.webp';
@@ -46,6 +47,8 @@ import imgConceptStrikeDark from '@/assets/projects/game-project-floodsong/game-
 
 * **漂移移动**：以受限角速度追赶目标朝向生成弧线轨迹；按弯道累积减速与充能，出弯时结算加速奖励。
 * **漂移镜头**：过弯时 FOV 渐开、出弯时脉冲式弹开，并将相机偏航约束在角色朝向附近的软扇区内。
+
+<img src={imgDrift.src} width="800" height="424" alt="漂移原型实机演示" loading="lazy" decoding="async" />
 
 ### 速度感 Shader
 

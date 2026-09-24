@@ -1,5 +1,6 @@
 import { Image } from 'astro:assets';
 import imgSpeedShaders from '@/assets/projects/game-project-floodsong/game-project-floodsong_SpeedShaders.webp';
+import imgDrift from '@/assets/projects/game-project-floodsong/game-project-floodsong_Drift.webp';
 import imgConceptEnvironment from '@/assets/projects/game-project-floodsong/game-project-floodsong_ConceptEnvironment.webp';
 import imgConceptBoss from '@/assets/projects/game-project-floodsong/game-project-floodsong_ConceptBoss.webp';
 import imgConceptPoses from '@/assets/projects/game-project-floodsong/game-project-floodsong_ConceptPoses.webp';
@@ -46,6 +47,8 @@ import imgConceptStrikeDark from '@/assets/projects/game-project-floodsong/game-
 
 * **드리프트 이동**: 제한된 회전 속도로 목표 방향을 추종해 호를 그리는 궤적을 만들고, 코너마다 감속과 충전을 누적해 탈출 시 가속 보너스를 정산합니다.
 * **드리프트 카메라**: 코너 중에는 FOV를 점차 열고 탈출 순간 펄스로 튕기며, 카메라 요(yaw)를 캐릭터 방향 주변의 부드러운 부채꼴 안으로 제한합니다.
+
+<img src={imgDrift.src} width="800" height="424" alt="드리프트 프로토타입 실행 화면" loading="lazy" decoding="async" />
 
 ### 속도감 셰이더
 

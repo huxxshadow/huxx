@@ -1,5 +1,6 @@
 import { Image } from 'astro:assets';
 import imgSpeedShaders from '@/assets/projects/game-project-floodsong/game-project-floodsong_SpeedShaders.webp';
+import imgDrift from '@/assets/projects/game-project-floodsong/game-project-floodsong_Drift.webp';
 import imgConceptEnvironment from '@/assets/projects/game-project-floodsong/game-project-floodsong_ConceptEnvironment.webp';
 import imgConceptBoss from '@/assets/projects/game-project-floodsong/game-project-floodsong_ConceptBoss.webp';
 import imgConceptPoses from '@/assets/projects/game-project-floodsong/game-project-floodsong_ConceptPoses.webp';
@@ -46,6 +47,8 @@ Floodsong is a fast-paced, third-person action adventure where you surf through 
 
 * **Drift movement**: Heading chases the target direction at a bounded turn rate to produce arcing paths; braking and charge accumulate per corner and pay out a speed burst on exit.
 * **Drift camera**: FOV ramps open through a corner and pulses on exit, with camera yaw held inside a soft sector around the character's facing.
+
+<img src={imgDrift.src} width="800" height="424" alt="Drift prototype in engine" loading="lazy" decoding="async" />
 
 ### Speed Shaders
 

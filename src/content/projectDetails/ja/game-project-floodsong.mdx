@@ -1,5 +1,6 @@
 import { Image } from 'astro:assets';
 import imgSpeedShaders from '@/assets/projects/game-project-floodsong/game-project-floodsong_SpeedShaders.webp';
+import imgDrift from '@/assets/projects/game-project-floodsong/game-project-floodsong_Drift.webp';
 import imgConceptEnvironment from '@/assets/projects/game-project-floodsong/game-project-floodsong_ConceptEnvironment.webp';
 import imgConceptBoss from '@/assets/projects/game-project-floodsong/game-project-floodsong_ConceptBoss.webp';
 import imgConceptPoses from '@/assets/projects/game-project-floodsong/game-project-floodsong_ConceptPoses.webp';
@@ -46,6 +47,8 @@ import imgConceptStrikeDark from '@/assets/projects/game-project-floodsong/game-
 
 * **ドリフト移動**：制限された旋回速度で目標方向を追従させて弧を描く軌道を生成し、コーナーごとに減速とチャージを蓄積、立ち上がりで加速ボーナスを精算します。
 * **ドリフトカメラ**：コーナー中は FOV を徐々に開き、立ち上がりでパルス的に弾ませ、カメラのヨーをキャラクターの向き周辺のソフトな扇形内に制限します。
+
+<img src={imgDrift.src} width="800" height="424" alt="ドリフトのプロトタイプ（実機）" loading="lazy" decoding="async" />
 
 ### スピード感シェーダー
 
