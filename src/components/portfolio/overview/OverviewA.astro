@@ -1,0 +1,117 @@
+---
+// 总览 · 版式 A：参考 P3R。倾斜的大字与色带、平行四边形面板，角色列表像菜单一样逐级错开
+import type { OverviewLayoutProps } from "../portfolioRolesData";
+import Typewriter from "../intro/Typewriter.astro";
+import Segments from "../intro/Segments.astro";
+
+type Props = OverviewLayoutProps;
+const { title, prefix, suffix, wordsOnDark, lead, items, unit, theme } = Astro.props;
+const paper = "#FFFDF7";
+---
+
+<div class="p3" style={`--ink: ${theme.dark}; --paper: ${paper};`}>
+    <!-- 背景里倾斜的描边大字 -->
+    <div class="p3-ghost absolute -top-10 -left-6 select-none pointer-events-none font-black leading-none whitespace-nowrap" aria-hidden="true">
+        PORTFOLIO
+    </div>
+
+    <div class="relative" data-reveal-children="left" data-reveal-once data-reveal-stagger="100">
+        <h1 class="p3-title font-black leading-[0.85] tracking-tighter text-[4rem] sm:text-[6rem] lg:text-[8rem]">
+            {title}
+        </h1>
+
+        <!-- 打字机放在一条斜切的深色色带上 -->
+        <div class="p3-strip mt-6 lg:mt-8 inline-block max-w-full pl-5 pr-12 lg:pl-8 lg:pr-20 py-3 lg:py-4" style={`background-color: ${theme.dark}; color: ${paper};`}>
+            <Typewriter words={wordsOnDark} prefix={prefix} suffix={suffix} class="text-2xl sm:text-4xl lg:text-5xl" />
+        </div>
+    </div>
+
+    <!-- 总述：倾斜的纸面板，文字转回正 -->
+    <div class="p3-panel relative mt-10 lg:mt-14 border-l-[10px]" style={`background-color: ${paper}; border-color: ${theme.dark};`} data-reveal="left" data-reveal-once>
+        <div class="p3-unskew grid lg:grid-cols-2 gap-5 lg:gap-10 px-6 lg:px-10 py-6 lg:py-8 text-base lg:text-lg font-medium leading-[1.85]">
+            {lead.map((segments) => <p><Segments segments={segments} /></p>)}
+        </div>
+    </div>
+
+    <!-- 角色菜单：平行四边形，逐级向右错开 -->
+    <nav class="mt-12 lg:mt-16 flex flex-col gap-5 lg:gap-6" data-reveal-children="left" data-reveal-once data-reveal-stagger="90">
+        {items.map(({ role, name, segments }, i) => (
+                <a
+                        href={`#${role.anchor}`}
+                        class="p3-row group relative block border-l-[10px]"
+                        style={`--step: ${i}; --role-dark: ${role.color.dark}; --role-light: ${role.color.light}; border-color: ${role.color.dark};`}
+                >
+                    <div class="p3-unskew flex flex-col lg:flex-row lg:items-center gap-3 lg:gap-8 px-6 lg:px-10 py-5 lg:py-6">
+                        <div class="flex items-end gap-4 shrink-0 lg:w-80">
+                            <span class="p3-num font-black leading-[0.8] text-6xl lg:text-8xl">{role.index}</span>
+                            <span class="font-black text-2xl lg:text-3xl leading-tight pb-1">{name}</span>
+                        </div>
+                        <p class="flex-1 text-base font-medium leading-[1.8]">
+                            <Segments segments={segments} />
+                        </p>
+                        <span class="shrink-0 flex items-center gap-2 font-black whitespace-nowrap self-end lg:self-center">
+                            {role.count} {unit}
+                            <i class="fa-solid fa-arrow-right transition-transform duration-200 group-hover:translate-x-1.5"></i>
+                        </span>
+                    </div>
+                </a>
+        ))}
+    </nav>
+</div>
+
+<style>
+    .p3 {
+        position: relative;
+        --skew: -10deg;
+    }
+    .p3-ghost {
+        font-size: clamp(6rem, 18vw, 16rem);
+        color: transparent;
+        -webkit-text-stroke: 2px var(--ink);
+        opacity: 0.08;
+        transform: rotate(-6deg);
+    }
+    .p3-title {
+        transform: skewX(var(--skew));
+        transform-origin: left bottom;
+    }
+    .p3-strip {
+        clip-path: polygon(0 0, 100% 0, calc(100% - 2.5rem) 100%, 0 100%);
+    }
+    .p3-panel,
+    .p3-row {
+        transform: skewX(var(--skew));
+        transform-origin: left top;
+    }
+    .p3-unskew {
+        transform: skewX(calc(var(--skew) * -1));
+    }
+    .p3-row {
+        background-color: var(--paper);
+        transition: transform 160ms ease, background-color 160ms ease, color 160ms ease;
+    }
+    .p3-num {
+        color: var(--role-dark);
+        transition: color 160ms ease;
+    }
+    .p3-row:hover,
+    .p3-row:focus-visible {
+        transform: skewX(var(--skew)) translateX(12px);
+        background-color: var(--role-dark);
+        color: var(--role-light);
+    }
+    .p3-row:hover .p3-num,
+    .p3-row:focus-visible .p3-num {
+        color: var(--paper);
+    }
+    .p3-row:hover :global([data-kw]),
+    .p3-row:focus-visible :global([data-kw]) {
+        color: inherit !important;
+    }
+    /* 宽屏上逐级错开，像 P3 的菜单 */
+    @media (min-width: 1024px) {
+        .p3-row {
+            margin-left: calc(var(--step) * 2.5rem);
+        }
+    }
+</style>

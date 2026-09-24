@@ -1,20 +1,25 @@
 ---
-// Part 1 · 总览：打字机标题 + 总述，下面是目录，每个角色一行，文案是该角色的那段自我介绍
+// Part 1 · 总览：打字机标题 + 总述 + 四个角色（每个角色一段自我介绍，点击跳到对应板块）
 import { COLORS } from "@/consts";
 import { useTranslations, type Lang } from "@/i18n";
 import { portfolioOverviewLabels as L } from "@/i18n/components/portfolio/PortfolioRoles_i18";
 import { getOverviewData, parseIntro } from "./portfolioRolesData";
-import Typewriter from "./intro/Typewriter.astro";
-import Segments from "./intro/Segments.astro";
-import RoleContents from "./RoleContents.astro";
+import OverviewA from "./overview/OverviewA.astro";
+import OverviewB from "./overview/OverviewB.astro";
+import OverviewC from "./overview/OverviewC.astro";
 
 const t = useTranslations((Astro.currentLocale as Lang) || "en");
 const { roles } = await getOverviewData();
 const theme = { light: COLORS.khakiMilan, dark: COLORS.black };
 
-const words = roles.map((r) => ({ text: t(r.person), color: r.color.dark }));
 const { lead, roleParagraphs } = parseIntro(t(L.positioning), roles);
-const toc = {
+const layout = {
+    title: t(L.title),
+    prefix: t(L.iAmPrefix),
+    suffix: t(L.iAmSuffix),
+    words: roles.map((r) => ({ text: t(r.person), color: r.color.dark })),
+    wordsOnDark: roles.map((r) => ({ text: t(r.person), color: r.color.light })),
+    lead,
     items: roleParagraphs.map(({ role, segments }) => ({ role, name: t(role.name), segments })),
     unit: t(L.projectsUnit),
     theme,
@@ -22,36 +27,15 @@ const toc = {
 ---
 
 <section
-        class="relative overflow-hidden w-full px-6 sm:px-12 lg:px-20 xl:px-28 py-20 lg:py-24 flex flex-col items-center"
+        class="relative overflow-hidden w-full px-6 sm:px-12 lg:px-20 xl:px-28 py-20 lg:py-24"
         style={`background-color: ${theme.light}; color: ${theme.dark}; --theme-bg: ${theme.light}; --theme-text: ${theme.dark};`}
         data-theme-bg={theme.light}
         data-theme-text={theme.dark}
 >
-    <div class="absolute -top-20 -right-24 w-[25rem] lg:w-[40rem] h-[25rem] lg:h-[40rem] rounded-full bg-current opacity-[0.04] pointer-events-none z-0"></div>
-
-    <div class="relative z-10 w-full flex flex-col">
-        <div data-reveal-children="up" data-reveal-once data-reveal-stagger="90">
-            <h1 class="text-[3.5rem] sm:text-[4.5rem] lg:text-[5.5rem] font-black leading-[0.85] tracking-tighter mb-10">
-                {t(L.title)}
-            </h1>
-
-            <Typewriter
-                    words={words}
-                    prefix={t(L.iAmPrefix)}
-                    suffix={t(L.iAmSuffix)}
-                    class="text-3xl sm:text-5xl lg:text-6xl min-h-[2.6em] sm:min-h-[2.4em]"
-            />
-
-            <div class="mt-6 flex flex-col gap-5 text-lg lg:text-xl font-medium leading-[1.85]">
-                {lead.map((segments) => (
-                        <p><Segments segments={segments} /></p>
-                ))}
-            </div>
-        </div>
-
-        <!-- 目录 -->
-        <nav class="mt-14 lg:mt-16" aria-label={t(L.contents)}>
-            <RoleContents {...toc} />
-        </nav>
+    <!-- 三个候选版式，本地 dev 下用 DebugVariantSwitcher 切换；默认 / 生产显示 A -->
+    <div data-variant-group="overview" data-variant-label="Overview">
+        <div data-variant="A"><OverviewA {...layout} /></div>
+        <div data-variant="B" hidden><OverviewB {...layout} /></div>
+        <div data-variant="C" hidden><OverviewC {...layout} /></div>
     </div>
 </section>

@@ -1,0 +1,82 @@
+---
+// 总览 · 版式 C：满版色块。深色斜切标题带，四个角色各一条通栏色带，超大编号压在左侧
+import type { OverviewLayoutProps } from "../portfolioRolesData";
+import Typewriter from "../intro/Typewriter.astro";
+import Segments from "../intro/Segments.astro";
+
+type Props = OverviewLayoutProps;
+const { title, prefix, suffix, wordsOnDark, lead, items, unit, theme } = Astro.props;
+
+// 通栏：抵消 section 的左右内边距，再把同样的内边距加回内容上
+const bleed = "-mx-6 sm:-mx-12 lg:-mx-20 xl:-mx-28";
+const pad = "px-6 sm:px-12 lg:px-20 xl:px-28";
+---
+
+<div class="flat relative">
+    <!-- 标题带 -->
+    <div class:list={["flat-hero relative pt-12 pb-20 lg:pt-16 lg:pb-28", bleed, pad]} style={`background-color: ${theme.dark}; color: ${theme.light};`}>
+        <div data-reveal-children="up" data-reveal-once data-reveal-stagger="90">
+            <h1 class="font-black leading-[0.85] tracking-tighter text-[4rem] sm:text-[6rem] lg:text-[8.5rem]">{title}</h1>
+            <Typewriter words={wordsOnDark} prefix={prefix} suffix={suffix} class="mt-8 text-2xl sm:text-4xl lg:text-5xl" />
+        </div>
+        <!-- 右上角四色条 -->
+        <div class="absolute top-0 right-6 sm:right-12 lg:right-20 xl:right-28 flex" aria-hidden="true">
+            {items.map(({ role }) => <span class="w-5 sm:w-8 h-16 sm:h-24" style={`background-color: ${role.color.dark};`}></span>)}
+        </div>
+    </div>
+
+    <!-- 总述 -->
+    <div class="mt-10 lg:mt-14 grid lg:grid-cols-2 gap-6 lg:gap-12 text-base lg:text-lg font-medium leading-[1.85]" data-reveal-children="up" data-reveal-once data-reveal-stagger="90">
+        {lead.map((segments) => <p><Segments segments={segments} /></p>)}
+    </div>
+
+    <!-- 角色色带 -->
+    <nav class:list={["mt-12 lg:mt-16 flex flex-col", bleed]} data-reveal-children="fade" data-reveal-once data-reveal-stagger="80">
+        {items.map(({ role, name, segments }, i) => (
+                <a
+                        href={`#${role.anchor}`}
+                        class:list={["flat-band group relative block py-12 lg:py-16", pad, i % 2 ? "flat-band-b" : "flat-band-a", i > 0 && "-mt-6 lg:-mt-10"]}
+                        style={`background-color: ${role.color.light}; --role-dark: ${role.color.dark};`}
+                >
+                    <div class="grid lg:grid-cols-[minmax(0,22rem)_1fr] gap-4 lg:gap-12 items-start">
+                        <div class="flex lg:flex-col items-end lg:items-start gap-4 lg:gap-2" style={`color: ${role.color.dark};`}>
+                            <span class="flat-num font-black leading-[0.75] text-[6rem] lg:text-[10rem] transition-transform duration-200 group-hover:-translate-x-1">{role.index}</span>
+                            <span class="font-black text-3xl lg:text-4xl leading-tight pb-2 lg:pb-0">{name}</span>
+                        </div>
+                        <div class="flex flex-col gap-5 lg:pt-4">
+                            <p class="text-base lg:text-lg font-medium leading-[1.85]">
+                                <Segments segments={segments} />
+                            </p>
+                            <span
+                                    class="self-start flex items-center gap-2 px-4 py-2 font-black"
+                                    style={`background-color: ${role.color.dark}; color: ${role.color.light};`}
+                            >
+                                {role.count} {unit}
+                                <i class="fa-solid fa-arrow-right transition-transform duration-200 group-hover:translate-x-1.5"></i>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+        ))}
+    </nav>
+</div>
+
+<style>
+    .flat-hero {
+        clip-path: polygon(0 0, 100% 0, 100% calc(100% - 3rem), 0 100%);
+    }
+    /* 色带上下边斜切，方向交替，叠在一起形成折线 */
+    .flat-band-a {
+        clip-path: polygon(0 0, 100% 2.5rem, 100% 100%, 0 calc(100% - 2.5rem));
+    }
+    .flat-band-b {
+        clip-path: polygon(0 2.5rem, 100% 0, 100% calc(100% - 2.5rem), 0 100%);
+    }
+    .flat-band {
+        transition: filter 160ms ease;
+    }
+    .flat-band:hover,
+    .flat-band:focus-visible {
+        filter: saturate(1.25) brightness(0.97);
+    }
+</style>
