@@ -139,8 +139,8 @@ export const designWorks: DesignWork[] = [
             { en: "Team lead in 48 hours, released on Steam", zh: "48 小时带队完成，上线 Steam", ja: "48 時間でチームを率いて完成、Steam で配信", ko: "48시간 동안 팀을 이끌어 완성, Steam 출시" },
         ],
         pillars: ["levels", "systems"],
-        context: { en: "GGJ 2026 · 48 hours · Steam", zh: "GGJ 2026 · 48 小时 · Steam", ja: "GGJ 2026 · 48 時間 · Steam", ko: "GGJ 2026 · 48시간 · Steam" },
-        role: { en: "Lead & Designer", zh: "队长 / 策划", ja: "リーダー / プランナー", ko: "팀장 / 기획" },
+        context: { en: "Steam · team of 9", zh: "Steam · 9 人团队", ja: "Steam · 9 人チーム", ko: "Steam · 9인 팀" },
+        role: { en: "Team Lead · GGJ 2026", zh: "队长 · GGJ 2026", ja: "リーダー · GGJ 2026", ko: "팀장 · GGJ 2026" },
         line: {
             en: "A whole game built on the Clipping Mask: change a sticker's material to change the level's rules and puzzles.",
             zh: "围绕「Clipping Mask」设计整套玩法：改贴纸材质即改场景规则与解谜逻辑。",
@@ -171,7 +171,7 @@ export const designWorks: DesignWork[] = [
         ],
         pillars: ["narrative", "levels"],
         context: { en: "Steam · team of 5", zh: "Steam · 5 人团队", ja: "Steam · 5 人チーム", ko: "Steam · 5인 팀" },
-        role: { en: "Lead Designer", zh: "主策划", ja: "リードプランナー", ko: "메인 기획" },
+        role: { en: "Team Lead", zh: "队长", ja: "リーダー", ko: "팀장" },
         line: {
             en: "A \"magic mirror reveals the truth\" mechanic that fuses story, dialogue-deduction puzzles and rhythm performances.",
             zh: "「魔镜揭示真相」把叙事、对话推理谜题与音乐节奏演出融为一体。",
