@@ -19,15 +19,13 @@ On the team, I work as a **Technical Designer** focused on **3C** (character, ca
 
 ### Camera
 
-* **Speed zoom and dolly zoom**: Rebuilt the camera's FOV layer, moved smoothing into the FOV module and exposed the 12 hard-coded feel values in the Inspector; added a **Dolly Zoom** module that pushes the camera in as the FOV widens, keeping the character the same size while the background stretches outward.
-* **Boost camera**: Holding boost drives FOV and dolly zoom from one shared fade layer, so the lens stays open for as long as the boost lasts and eases back when it is released or runs out of energy.
-* **Calibration and fixes**: Recalibrated the zoom range against measured speeds, taking the FOV change on a dash from about 5° to about 18°; fixed the airborne zoom, which had never worked because `deltaTime` was applied twice; reordered `LateUpdate` so the camera position no longer lags the FOV by a frame.
+* **Layered FOV and dolly zoom**: Restructured the camera FOV into four stacked layers (base, speed, ability, hit feedback) and added a dolly zoom module that derives arm length from frustum width, keeping the character's size fixed while the background stretches.
+* **Boost camera**: A state-driven fade layer drives FOV and dolly zoom together, so the lens opens and closes with the boost state; every parameter is data-driven and tunable in the Inspector.
 
 ### Drift
 
-* **Arcing path**: While drift is held, the travel direction chases the camera at a bounded turn rate instead of snapping to it, so the path becomes an arc rather than a polyline.
-* **Paid by the corner**: Braking and charge only build while actually turning, so holding the key on a straight costs and banks nothing; finishing a corner refunds the speed it cost and adds a charge-based burst, with a cap on chained corners.
-* **Camera support**: The FOV widens through the corner and pops again on the exit burst; while drifting, camera yaw is held inside a soft sector around the character's facing so a flick cannot swing it round to look backwards.
+* **Drift movement**: Heading chases the target direction at a bounded turn rate to produce arcing paths; braking and charge accumulate per corner and pay out a speed burst on exit.
+* **Drift camera**: FOV ramps open through a corner and pulses on exit, with camera yaw held inside a soft sector around the character's facing.
 
 ### Speed Shaders
 
