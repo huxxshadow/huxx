@@ -56,7 +56,7 @@ const artBox = "absolute left-0 lg:-left-20 xl:-left-28 inset-y-0 w-full lg:w-[c
 
         <!-- 总述：倾斜的纸面板，文字转回正 -->
         <div class="p3-panel relative mt-6 lg:mt-8 border-l-[10px]" style={`background-color: ${paper}; border-color: ${theme.dark};`} data-reveal="left" data-reveal-once>
-            <div class="p3-unskew flex flex-col gap-4 px-6 lg:px-10 py-6 lg:py-8 text-base lg:text-lg font-medium leading-[1.85]">
+            <div class="p3-unskew flex flex-col gap-4 px-6 lg:px-10 py-6 lg:py-8 text-lg lg:text-xl font-medium leading-[1.85]">
                 {lead.map((segments) => <p><Segments segments={segments} /></p>)}
             </div>
         </div>
