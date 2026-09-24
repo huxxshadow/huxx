@@ -34,7 +34,7 @@ const layout = { showcase, lang, labels: L };
                 <h2 class="gd-skew font-black leading-none tracking-tight text-4xl lg:text-5xl">{t(role.name)}</h2>
             </div>
         </div>
-        <span class="ml-auto font-black text-lg whitespace-nowrap pb-1">{showcase.works.length} {t(L.projects)}</span>
+        <span class="ml-auto font-black text-lg whitespace-nowrap pb-1">{showcase.featured.length + showcase.selected.length} {t(L.projects)}</span>
     </header>
 
     <DesignP3 {...layout} />

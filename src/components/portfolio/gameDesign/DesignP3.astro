@@ -1,6 +1,6 @@
 ---
 // Part 2 版式 · P3R 斜切面板：倾斜的层标题条、平行四边形大图（一大两叠）；
-// 下面一行 2×2 宽面板，个人项目是逐级错开的斜切菜单。悬停时色块从左侧扫入
+// 下面一行 2×2 宽面板。
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { useTranslations, type Lang } from "@/i18n";
 import type { GameDesignShowcase, DesignWorkView } from "./data";
@@ -59,7 +59,7 @@ const [hero, ...side] = showcase.featured as DesignWorkView[];
     </div>
 
     <!-- 代表作下面：四个次一级的作品，2×2 宽面板，多一句简介 -->
-    <div class="grid md:grid-cols-2 gap-5 lg:gap-6 mb-16" data-reveal-children="left" data-reveal-order="columns" data-reveal-once>
+    <div class="grid md:grid-cols-2 gap-5 lg:gap-6" data-reveal-children="left" data-reveal-order="columns" data-reveal-once>
         {showcase.selected.map((work) => (
                 <a href={href(work.id)} class="p3-panel p3-panel-wide group">
                     <div class="p3-panel-img">
@@ -75,29 +75,6 @@ const [hero, ...side] = showcase.featured as DesignWorkView[];
                 </a>
         ))}
     </div>
-
-    <!-- ===== 个人项目：错开的斜切菜单 ===== -->
-    <div class="p3-bar" data-reveal="left" data-reveal-once>
-        <span class="p3-bar-fill">{t(labels.tierSolo)}</span>
-        <span class="p3-bar-rule"></span>
-        <span class="p3-bar-count">{showcase.solo.length}</span>
-    </div>
-
-    <ul class="flex flex-col gap-2.5" data-reveal-children="left" data-reveal-once data-reveal-stagger="60">
-        {showcase.solo.map((work, i) => (
-                <li class="p3-menu-row" style={`--step: ${i};`}>
-                    <a href={href(work.id)} class="p3-menu group">
-                        <span class="p3-menu-thumb">
-                            <WorkCover work={work} lang={lang} sizes="160px" />
-                        </span>
-                        <span class="p3-menu-title">{work.title}</span>
-                        <span class="p3-menu-context">{work.context}</span>
-                        <span class="p3-menu-line">{work.line}</span>
-                        <span class="p3-menu-arrow" aria-hidden="true">▶</span>
-                    </a>
-                </li>
-        ))}
-    </ul>
 </div>
 
 <style>
@@ -192,76 +169,9 @@ const [hero, ...side] = showcase.featured as DesignWorkView[];
     }
 
 
-    /* 个人项目：每行往右错开一点，像 P3R 的菜单 */
-    .p3-menu-row {
-        margin-left: calc(var(--step) * 1.1rem);
-    }
-    .p3-menu {
-        position: relative;
-        display: grid;
-        grid-template-columns: 7rem minmax(9rem, 14rem) 9rem 1fr 1.5rem;
-        align-items: center;
-        gap: 1rem;
-        padding: 0.5rem 2rem 0.5rem 1rem;
-        background-color: var(--gd-paper);
-        clip-path: polygon(0 0, 100% 0, calc(100% - 1.4rem) 100%, 0 100%);
-        isolation: isolate;
-        overflow: hidden;
-    }
-    /* 悬停色块从左扫入 */
-    .p3-menu::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-        background-color: var(--gd-ink);
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-    .p3-menu:hover::before {
-        transform: scaleX(1);
-    }
-    .p3-menu:hover {
-        color: var(--gd-paper);
-    }
-    .p3-menu-thumb {
-        position: relative;
-        display: block;
-        aspect-ratio: 16 / 9;
-        overflow: hidden;
-        background-color: var(--gd-ink);
-        clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
-    }
-    .p3-menu-title {
-        font-weight: 900;
-        font-size: 1.1rem;
-        line-height: 1.15;
-    }
-    .p3-menu-context {
-        font-weight: 800;
-        font-size: 0.8rem;
-        opacity: 0.75;
-    }
-    .p3-menu-line {
-        font-weight: 600;
-        font-size: 0.85rem;
-        line-height: 1.5;
-    }
-    .p3-menu-arrow {
-        color: var(--gd-accent);
-        transition: translate 200ms ease;
-    }
-    .p3-menu:hover .p3-menu-arrow {
-        translate: 4px 0;
-    }
 
     @media (max-width: 1023px) {
         .p3-panel-hero { min-height: 22rem; }
-        .p3-menu-row { margin-left: 0; }
-        .p3-menu { grid-template-columns: 6rem 1fr 1.2rem; }
-        .p3-menu-context,
-        .p3-menu-line { display: none; }
     }
     @media (max-width: 767px) {
         .p3-panel { min-height: 17rem; }
