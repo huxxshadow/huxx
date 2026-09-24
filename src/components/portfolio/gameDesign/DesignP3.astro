@@ -58,20 +58,65 @@ const [hero, ...side] = showcase.featured as DesignWorkView[];
         </div>
     </div>
 
-    <!-- 代表作下面一行：四个次一级的作品 -->
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5 mb-16" data-reveal-children="left" data-reveal-order="columns" data-reveal-once>
-        {showcase.selected.map((work, i) => (
-                <a href={href(work.id)} class="p3-card group">
-                    <div class="p3-card-img">
-                        <WorkCover work={work} lang={lang} sizes="(min-width: 1024px) 23vw, (min-width: 768px) 45vw, 100vw" />
-                    </div>
-                    <div class="p3-card-body">
-                        <span class="p3-kicker p3-kicker-dark">{work.context} / {work.role}</span>
-                        <h3 class="font-black text-xl leading-tight">{work.title}</h3>
-                        <p class="text-sm font-bold leading-[1.65]">{work.line}</p>
-                    </div>
-                </a>
-        ))}
+    <!-- 代表作下面一行：四个次一级的作品，和上面同一套斜切面板。三个候选，dev 下用 Debug 面板切换 -->
+    <div class="mb-16" data-variant-group="part2row" data-variant-label="Part 2 · 第二行">
+        <!-- A：四块等宽的平行四边形面板 -->
+        <div data-variant="A">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5" data-reveal-children="left" data-reveal-order="columns" data-reveal-once>
+                {showcase.selected.map((work) => (
+                        <a href={href(work.id)} class="p3-panel p3-panel-row group">
+                            <div class="p3-panel-img">
+                                <WorkCover work={work} lang={lang} sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw" />
+                            </div>
+                            <div class="p3-panel-info">
+                                <h3 class="font-black text-xl lg:text-2xl leading-none tracking-tight">{work.title}</h3>
+                                <ul class="flex flex-wrap gap-1.5 pt-1">
+                                    {tagsOf(work).map((tag) => <li class="p3-chip p3-chip-sm">{tag}</li>)}
+                                </ul>
+                            </div>
+                        </a>
+                ))}
+            </div>
+        </div>
+
+        <!-- B：2×2，和空王座 / 鳗同尺寸，多一句简介 -->
+        <div data-variant="B" hidden>
+            <div class="grid md:grid-cols-2 gap-5 lg:gap-6" data-reveal-children="left" data-reveal-order="columns" data-reveal-once>
+                {showcase.selected.map((work) => (
+                        <a href={href(work.id)} class="p3-panel p3-panel-wide group">
+                            <div class="p3-panel-img">
+                                <WorkCover work={work} lang={lang} sizes="(min-width: 768px) 50vw, 100vw" />
+                            </div>
+                            <div class="p3-panel-info">
+                                <h3 class="font-black text-2xl lg:text-3xl leading-none tracking-tight">{work.title}</h3>
+                                <p class="text-sm font-bold leading-[1.6] max-w-[34rem]">{work.line}</p>
+                                <ul class="flex flex-wrap gap-1.5 pt-1">
+                                    {tagsOf(work).map((tag) => <li class="p3-chip p3-chip-sm">{tag}</li>)}
+                                </ul>
+                            </div>
+                        </a>
+                ))}
+            </div>
+        </div>
+
+        <!-- C：四条斜切长条拼成一整条，斜边平行，悬停的那条展开 -->
+        <div data-variant="C" hidden>
+            <div class="p3-slices" data-reveal-children="left" data-reveal-once data-reveal-stagger="90">
+                {showcase.selected.map((work) => (
+                        <a href={href(work.id)} class="p3-panel p3-slice group">
+                            <div class="p3-panel-img">
+                                <WorkCover work={work} lang={lang} sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw" />
+                            </div>
+                            <div class="p3-panel-info">
+                                <h3 class="font-black text-xl lg:text-2xl leading-none tracking-tight">{work.title}</h3>
+                                <ul class="flex flex-wrap gap-1.5 pt-1">
+                                    {tagsOf(work).map((tag) => <li class="p3-chip p3-chip-sm">{tag}</li>)}
+                                </ul>
+                            </div>
+                        </a>
+                ))}
+            </div>
+        </div>
     </div>
 
     <!-- ===== 个人项目：错开的斜切菜单 ===== -->
@@ -298,5 +343,65 @@ const [hero, ...side] = showcase.featured as DesignWorkView[];
     @media (max-width: 767px) {
         .p3-panel { min-height: 17rem; }
         .p3-card { clip-path: none; }
+    }
+
+    /* 第二行 A：四块等宽面板，竖一点 */
+    .p3-panel-row {
+        min-height: 0;
+        aspect-ratio: 4 / 3.4;
+        clip-path: polygon(6% 0, 100% 0, 94% 100%, 0 100%);
+    }
+    .p3-panel-row .p3-panel-info,
+    .p3-slice .p3-panel-info {
+        left: 9%;
+        right: 9%;
+        bottom: 1.1rem;
+    }
+    /* 第二行 B：2×2 宽面板 */
+    .p3-panel-wide {
+        min-height: 0;
+        aspect-ratio: 16 / 7.5;
+    }
+    /* 第二行 C：斜切长条，相邻斜边平行，中间留一道缝 */
+    .p3-slices {
+        --slant: 2.6rem;
+        --seam: 0.5rem;
+        display: flex;
+        height: clamp(16rem, 22vw, 20rem);
+    }
+    .p3-slice {
+        flex: 1 1 0;
+        min-width: 0;
+        min-height: 0;
+        margin-left: calc(var(--seam) - var(--slant));
+        clip-path: polygon(var(--slant) 0, 100% 0, calc(100% - var(--slant)) 100%, 0 100%);
+        transition: flex-grow 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .p3-slice:first-child {
+        margin-left: 0;
+    }
+    .p3-slice:hover {
+        flex-grow: 1.7;
+    }
+    .p3-slice .p3-panel-info {
+        left: calc(var(--slant) * 0.4 + 0.75rem);
+        right: calc(var(--slant) + 0.25rem);
+    }
+    @media (max-width: 1023px) {
+        .p3-slices {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            height: auto;
+            gap: 1rem;
+        }
+        .p3-slice {
+            margin-left: 0;
+            aspect-ratio: 4 / 3.4;
+            clip-path: polygon(6% 0, 100% 0, 94% 100%, 0 100%);
+        }
+    }
+    @media (max-width: 767px) {
+        .p3-slices { grid-template-columns: 1fr; }
+        .p3-panel-wide { aspect-ratio: 16 / 10; }
     }
 </style>
