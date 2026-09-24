@@ -40,9 +40,9 @@ const { items, unit, theme } = Astro.props;
         background-color: var(--row-bg);
         color: var(--row-text);
     }
-    /* 反色后关键词的角色色会和底色撞色，跟随行文字颜色 */
-    .toc-a-row:hover [data-kw],
-    .toc-a-row:focus-visible [data-kw] {
+    /* 反色后关键词的角色色会和底色撞色，跟随行文字颜色。关键词由 Segments 子组件渲染，要用 :global 才选得到 */
+    .toc-a-row:hover :global([data-kw]),
+    .toc-a-row:focus-visible :global([data-kw]) {
         color: inherit !important;
     }
     .toc-a-row:hover .toc-a-arrow {
