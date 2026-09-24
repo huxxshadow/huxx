@@ -1,0 +1,49 @@
+---
+// 目录 · 变体 B：2×2 粗野主义卡片。大编号 + 图标 + 名称，中间是该角色的介绍，底部「N 个项目 →」
+import type { TocProps } from "../portfolioRolesData";
+import Segments from "../intro/Segments.astro";
+
+type Props = TocProps;
+const { items, unit } = Astro.props;
+---
+
+<div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8" data-reveal-children="up" data-reveal-order="columns" data-reveal-once>
+    {items.map(({ role, name, segments }) => (
+            <a
+                    href={`#${role.anchor}`}
+                    class="toc-b-card group flex flex-col rounded-2xl border-[3px] p-5 lg:p-7"
+                    style={`--theme: ${role.color.dark}; border-color: ${role.color.dark}; background-color: #FFFDF7;`}
+            >
+                <div class="flex items-center justify-between mb-2" style={`color: ${role.color.dark};`}>
+                    <span class="font-black text-4xl lg:text-5xl leading-none">{role.index}</span>
+                    <i class={`${role.icon} text-3xl lg:text-4xl`}></i>
+                </div>
+                <h3 class="font-black text-2xl lg:text-3xl leading-tight mb-4" style={`color: ${role.color.dark};`}>{name}</h3>
+                <p class="flex-1 text-base font-medium leading-[1.85]">
+                    <Segments segments={segments} />
+                </p>
+                <div
+                        class="mt-5 pt-3 border-t-2 flex items-center justify-between font-black"
+                        style={`border-color: ${role.color.dark}; color: ${role.color.dark};`}
+                >
+                    <span>{role.count} {unit}</span>
+                    <i class="fa-solid fa-arrow-right text-lg transition-transform duration-200 group-hover:translate-x-1.5"></i>
+                </div>
+            </a>
+    ))}
+</div>
+
+<style>
+    .toc-b-card {
+        box-shadow: 6px 6px 0 var(--theme);
+        transition: transform 120ms ease, box-shadow 120ms ease;
+    }
+    .toc-b-card:hover {
+        transform: translate(3px, 3px);
+        box-shadow: 3px 3px 0 var(--theme);
+    }
+    .toc-b-card:active {
+        transform: translate(6px, 6px);
+        box-shadow: 0 0 0 var(--theme);
+    }
+</style>

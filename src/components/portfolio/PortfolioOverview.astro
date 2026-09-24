@@ -1,25 +1,25 @@
 ---
-// Part 1 · 总览：打字机式自我介绍 + 目录索引
+// Part 1 · 总览：打字机标题 + 总述，下面是目录，每个角色一行，文案是该角色的那段自我介绍
 import { COLORS } from "@/consts";
 import { useTranslations, type Lang } from "@/i18n";
 import { portfolioOverviewLabels as L } from "@/i18n/components/portfolio/PortfolioRoles_i18";
 import { getOverviewData, parseIntro } from "./portfolioRolesData";
-import IntroA from "./intro/IntroA.astro";
-import IntroB from "./intro/IntroB.astro";
-import IntroC from "./intro/IntroC.astro";
+import Typewriter from "./intro/Typewriter.astro";
+import Segments from "./intro/Segments.astro";
+import TocA from "./toc/TocA.astro";
+import TocB from "./toc/TocB.astro";
+import TocC from "./toc/TocC.astro";
 
 const t = useTranslations((Astro.currentLocale as Lang) || "en");
 const { roles, totalProjects, steamCount } = await getOverviewData();
 const theme = { light: COLORS.khakiMilan, dark: COLORS.black };
 
 const words = roles.map((r) => ({ text: t(r.person), color: r.color.dark }));
-const intro = {
-    title: t(L.title),
-    words,
-    prefix: t(L.iAmPrefix),
-    suffix: t(L.iAmSuffix),
+const { lead, roleParagraphs } = parseIntro(t(L.positioning), roles);
+const toc = {
+    items: roleParagraphs.map(({ role, segments }) => ({ role, name: t(role.name), segments })),
+    unit: t(L.projectsUnit),
     theme,
-    ...parseIntro(t(L.positioning), roles),
 };
 ---
 
@@ -32,59 +32,38 @@ const intro = {
     <div class="absolute -top-20 -right-24 w-[25rem] lg:w-[40rem] h-[25rem] lg:h-[40rem] rounded-full bg-current opacity-[0.04] pointer-events-none z-0"></div>
 
     <div class="relative z-10 w-full max-w-6xl flex flex-col">
-        <!-- 自我介绍：三个候选样式，本地 dev 下用 DebugVariantSwitcher 切换；默认 / 生产显示 A -->
-        <div data-variant-group="intro" data-variant-label="Intro">
-            <div data-variant="A"><IntroA {...intro} /></div>
-            <div data-variant="B" hidden><IntroB {...intro} /></div>
-            <div data-variant="C" hidden><IntroC {...intro} /></div>
+        <div data-reveal-children="up" data-reveal-once data-reveal-stagger="90">
+            <h1 class="text-[3.5rem] sm:text-[4.5rem] lg:text-[5.5rem] font-black leading-[0.85] tracking-tighter mb-10">
+                {t(L.title)}
+            </h1>
+
+            <Typewriter
+                    words={words}
+                    prefix={t(L.iAmPrefix)}
+                    suffix={t(L.iAmSuffix)}
+                    class="text-3xl sm:text-5xl lg:text-6xl min-h-[2.6em] sm:min-h-[2.4em]"
+            />
+
+            <div class="mt-6 max-w-4xl flex flex-col gap-5 text-lg lg:text-xl font-medium leading-[1.85]">
+                {lead.map((segments) => (
+                        <p><Segments segments={segments} /></p>
+                ))}
+            </div>
         </div>
 
-        <!-- 目录索引 -->
+        <!-- 目录 -->
         <nav class="mt-14 lg:mt-16" aria-label={t(L.contents)}>
             <div class="flex items-center justify-between font-black text-sm tracking-[0.25em] uppercase pb-3 border-b-[3px]" style={`border-color: ${theme.dark};`} data-reveal="fade" data-reveal-once>
                 <span>{t(L.contents)}</span>
                 <span>{totalProjects} {t(L.statProjects)} · {steamCount} {t(L.statSteam)}</span>
             </div>
-            <ol data-reveal-children="left" data-reveal-once data-reveal-stagger="80">
-                {roles.map((role) => (
-                        <li class="border-b-[3px]" style={`border-color: ${theme.dark};`}>
-                            <a
-                                    href={`#${role.anchor}`}
-                                    class="toc-row flex items-center gap-4 lg:gap-6 px-2 lg:px-4 py-5 lg:py-6"
-                                    style={`--row-bg: ${role.color.dark}; --row-text: ${role.color.light};`}
-                            >
-                                <span class="font-black text-2xl lg:text-4xl w-12 lg:w-16 shrink-0">{role.index}</span>
-                                <i class={`${role.icon} text-2xl lg:text-3xl w-8 lg:w-10 text-center shrink-0`}></i>
-                                <span class="flex flex-col min-w-0">
-                                    <span class="font-black text-xl sm:text-2xl lg:text-4xl leading-tight">{t(role.name)}</span>
-                                    <span class="toc-tagline hidden md:block text-sm lg:text-base font-bold opacity-80 mt-1">{t(role.tagline)}</span>
-                                </span>
-                                <span class="toc-leader flex-1 hidden sm:block border-b-[3px] border-dotted self-center min-w-6"></span>
-                                <span class="font-black text-base lg:text-xl whitespace-nowrap shrink-0 ml-auto sm:ml-0">{role.count} {t(L.projectsUnit)}</span>
-                                <i class="fa-solid fa-arrow-right text-xl shrink-0 transition-transform duration-200"></i>
-                            </a>
-                        </li>
-                ))}
-            </ol>
+
+            <!-- 三个候选样式，本地 dev 下用 DebugVariantSwitcher 切换；默认 / 生产显示 A -->
+            <div data-variant-group="toc" data-variant-label="Contents">
+                <div data-variant="A"><TocA {...toc} /></div>
+                <div data-variant="B" hidden><TocB {...toc} /></div>
+                <div data-variant="C" hidden><TocC {...toc} /></div>
+            </div>
         </nav>
     </div>
 </section>
-
-<style>
-    .toc-row {
-        transition: background-color 150ms ease, color 150ms ease;
-    }
-    .toc-row:hover,
-    .toc-row:focus-visible {
-        background-color: var(--row-bg);
-        color: var(--row-text);
-    }
-    .toc-row:hover .fa-arrow-right {
-        transform: translateX(6px);
-    }
-    .toc-leader {
-        border-color: currentColor;
-        opacity: 0.5;
-    }
-</style>
-

@@ -49,13 +49,9 @@ export function parseIntro(text: string, roles: OverviewRole[]) {
     };
 }
 
-/** 自我介绍三个候选样式共用的 props */
-export interface IntroProps {
-    title: string;
-    words: { text: string; color: string }[];
-    prefix: string;
-    suffix: string;
-    lead: Segment[][];
-    roleParagraphs: ReturnType<typeof parseIntro>["roleParagraphs"];
+/** 目录三个候选样式共用的 props：每行一个角色，文案是该角色的那段自我介绍 */
+export interface TocProps {
+    items: { role: OverviewRole; name: string; segments: Segment[] }[];
+    unit: string;
     theme: { light: string; dark: string };
 }

@@ -1,0 +1,53 @@
+---
+// 目录 · 变体 C：规格表式。每行左侧是角色色块（编号、图标、名称、项目数），右侧是该角色的介绍
+import type { TocProps } from "../portfolioRolesData";
+import Segments from "../intro/Segments.astro";
+
+type Props = TocProps;
+const { items, unit, theme } = Astro.props;
+---
+
+<div
+        class="mt-8 rounded-2xl border-[3px] overflow-hidden"
+        style={`border-color: ${theme.dark}; box-shadow: 6px 6px 0 ${theme.dark}; background-color: #FFFDF7;`}
+        data-reveal-children="up"
+        data-reveal-once
+        data-reveal-stagger="80"
+>
+    {items.map(({ role, name, segments }, i) => (
+            <a
+                    href={`#${role.anchor}`}
+                    class:list={["toc-c-row group flex flex-col md:flex-row", i > 0 && "border-t-[3px]"]}
+                    style={`border-color: ${theme.dark};`}
+            >
+                <div
+                        class="md:w-64 lg:w-72 shrink-0 flex md:flex-col justify-between gap-3 p-5 lg:p-6 border-b-[3px] md:border-b-0 md:border-r-[3px]"
+                        style={`background-color: ${role.color.light}; color: ${role.color.dark}; border-color: ${theme.dark};`}
+                >
+                    <div class="flex md:flex-col gap-3 md:gap-2 items-center md:items-start">
+                        <div class="flex items-center gap-3">
+                            <span class="font-black text-3xl lg:text-4xl leading-none">{role.index}</span>
+                            <i class={`${role.icon} text-2xl`}></i>
+                        </div>
+                        <span class="font-black text-xl lg:text-2xl leading-tight">{name}</span>
+                    </div>
+                    <span class="flex items-center gap-2 font-black text-sm lg:text-base whitespace-nowrap self-center md:self-start">
+                        {role.count} {unit}
+                        <i class="fa-solid fa-arrow-right transition-transform duration-200 group-hover:translate-x-1.5"></i>
+                    </span>
+                </div>
+                <p class="toc-c-text flex-1 p-5 lg:p-6 text-base lg:text-lg font-medium leading-[1.85]">
+                    <Segments segments={segments} />
+                </p>
+            </a>
+    ))}
+</div>
+
+<style>
+    .toc-c-row .toc-c-text {
+        transition: background-color 150ms ease;
+    }
+    .toc-c-row:hover .toc-c-text {
+        background-color: rgb(0 0 0 / 0.03);
+    }
+</style>

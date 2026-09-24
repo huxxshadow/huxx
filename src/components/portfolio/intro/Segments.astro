@@ -9,5 +9,5 @@ const { segments } = Astro.props;
 ---
 
 {segments.map((seg) => seg.color
-    ? <span class="font-bold" style={`color: ${seg.color};`}>{seg.text}</span>
+    ? <span class="font-bold" data-kw style={`color: ${seg.color};`}>{seg.text}</span>
     : seg.text)}

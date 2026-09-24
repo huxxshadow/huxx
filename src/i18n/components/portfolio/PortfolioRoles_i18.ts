@@ -15,7 +15,6 @@ export interface PortfolioRole {
     name: Multilingual;
     /** 身份名，如「游戏设计师」 */
     person: Multilingual;
-    tagline: Multilingual;
     /** 主力工具 / 关键词 */
     tools: string[];
     /** 代表作 id，封面取自它 */
@@ -32,12 +31,6 @@ export const PORTFOLIO_ROLES: PortfolioRole[] = [
         icon: "fa-solid fa-chess-knight",
         name: { en: "Game Design", zh: "游戏设计", ja: "ゲームデザイン", ko: "게임 디자인" },
         person: { en: "Game Designer", zh: "游戏设计师", ja: "ゲームデザイナー", ko: "게임 디자이너" },
-        tagline: {
-            en: "Combat & 3C, narrative rhythm and puzzle design, from a Tencent AAA open world to Steam indies.",
-            zh: "战斗与 3C、叙事节奏、谜题设计，从腾讯 3A 开放世界到 Steam 独立游戏。",
-            ja: "戦闘・3C、物語のリズム、パズル設計、テンセントの AAA オープンワールドから Steam インディーまで。",
-            ko: "전투·3C, 서사 리듬, 퍼즐 설계, 텐센트 AAA 오픈월드부터 Steam 인디 게임까지.",
-        },
         tools: ["Combat / 3C", "Narrative", "Puzzle"],
         flagshipId: "game-project-yuanmengstar-shanhai-xunling",
         projectIds: [
@@ -56,12 +49,6 @@ export const PORTFOLIO_ROLES: PortfolioRole[] = [
         icon: "fa-solid fa-gamepad",
         name: { en: "Game Development", zh: "游戏开发", ja: "ゲーム開発", ko: "게임 개발" },
         person: { en: "Game Developer", zh: "游戏开发者", ja: "ゲーム開発者", ko: "게임 개발자" },
-        tagline: {
-            en: "Shipping games end to end: gameplay systems, frameworks and networking, three titles live on Steam.",
-            zh: "从零到上架的完整开发：玩法系统、框架与联机，三款作品已登陆 Steam。",
-            ja: "ゼロからリリースまで：ゲームプレイシステム、フレームワーク、ネットワーク。Steam で 3 作品を公開中。",
-            ko: "처음부터 출시까지: 게임플레이 시스템, 프레임워크, 네트워크. Steam 출시작 3편.",
-        },
         tools: ["Unity", "UE5 C++", "React + Three.js"],
         flagshipId: "game-project-click-click-universe",
         projectIds: [
@@ -83,12 +70,6 @@ export const PORTFOLIO_ROLES: PortfolioRole[] = [
         icon: "fa-solid fa-robot",
         name: { en: "AI Application Engineering", zh: "AI 应用开发", ja: "AI アプリケーション開発", ko: "AI 애플리케이션 개발" },
         person: { en: "AI Application Engineer", zh: "AI 应用工程师", ja: "AI アプリケーションエンジニア", ko: "AI 애플리케이션 엔지니어" },
-        tagline: {
-            en: "Putting models to work inside games and tools: LLM teammates, AI-native gameplay, inverse rendering.",
-            zh: "让模型真正落地到游戏与工具里：LLM 队友、AI 原生玩法、逆向渲染。",
-            ja: "モデルをゲームやツールの中で実際に動かす：LLM チームメイト、AI ネイティブなゲーム、逆レンダリング。",
-            ko: "모델을 게임과 도구 안에서 실제로 작동시키기: LLM 팀원, AI 네이티브 게임플레이, 역렌더링.",
-        },
         tools: ["LLM Agents", "PyTorch / TF", "ComfyUI"],
         flagshipId: "technical-project-terraria-ai-teammate",
         projectIds: [
@@ -109,12 +90,6 @@ export const PORTFOLIO_ROLES: PortfolioRole[] = [
         icon: "fa-solid fa-wand-magic-sparkles",
         name: { en: "Technical Art", zh: "技术美术", ja: "テクニカルアート", ko: "테크니컬 아트" },
         person: { en: "Technical Artist", zh: "技术美术", ja: "テクニカルアーティスト", ko: "테크니컬 아티스트" },
-        tagline: {
-            en: "Shaders, PCG and procedural 3D: where rendering tech meets the art pipeline.",
-            zh: "Shader、PCG 与程序化 3D，渲染技术与美术管线的交汇处。",
-            ja: "シェーダー、PCG、プロシージャル 3D、レンダリング技術とアートパイプラインの接点。",
-            ko: "셰이더, PCG, 절차적 3D, 렌더링 기술과 아트 파이프라인이 만나는 곳.",
-        },
         tools: ["UE5 PCG", "GLSL", "Blender"],
         flagshipId: "technical-project-windy-grass",
         projectIds: [
