@@ -43,7 +43,7 @@ export const designWorks: DesignWork[] = [
             { en: "Cross-discipline delivery to integration", zh: "跨职能推进，联调落地", ja: "職種を横断して実装まで推進", ko: "직군 간 협업으로 통합까지 추진" },
         ],
         pillars: ["combat"],
-        context: { en: "Tencent AAA", zh: "腾讯 AAA", ja: "テンセント AAA", ko: "텐센트 AAA" },
+        context: { en: "Tencent AAA · Commercial", zh: "腾讯 AAA · 商业项目", ja: "テンセント AAA · 商業プロジェクト", ko: "텐센트 AAA · 상업 프로젝트" },
         role: { en: "Combat Designer", zh: "战斗策划", ja: "戦闘プランナー", ko: "전투 기획자" },
         line: {
             en: "Tuned 3C for open-world boss fights; took a new combat mechanic from 0 to 1 as its owner.",
