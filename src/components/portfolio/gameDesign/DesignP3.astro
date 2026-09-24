@@ -1,0 +1,354 @@
+---
+// 版式 B · P3R 斜切面板：倾斜的层标题条、平行四边形大图（一大两叠）、巨型描边编号；
+// 精选是平行四边形卡片，个人项目是逐级错开的斜切菜单。悬停时色块从左侧扫入
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { useTranslations, type Lang } from "@/i18n";
+import type { GameDesignShowcase, DesignWorkView } from "./data";
+import WorkCover from "./WorkCover.astro";
+
+interface Props {
+    showcase: GameDesignShowcase;
+    lang: Lang;
+    labels: Record<string, any>;
+}
+const { showcase, lang, labels } = Astro.props;
+const t = useTranslations(lang);
+const href = (id: string) => getRelativeLocaleUrl(lang, `projects/${id}`);
+const num = (n: number) => String(n).padStart(2, "0");
+const [hero, ...side] = showcase.featured as DesignWorkView[];
+let n = 0;
+const heroNo = ++n;
+const sideNo = side.map(() => ++n);
+const selectedNo = showcase.selected.map(() => ++n);
+const soloNo = showcase.solo.map(() => ++n);
+---
+
+<div class="p3">
+    <!-- ===== 代表作 ===== -->
+    <div class="p3-bar" data-reveal="left" data-reveal-once>
+        <span class="p3-bar-fill">{t(labels.tierFeatured)}</span>
+        <span class="p3-bar-rule"></span>
+        <span class="p3-bar-count">{showcase.featured.length}</span>
+    </div>
+
+    <div class="grid lg:grid-cols-[1.6fr_1fr] gap-5 lg:gap-6 mb-16">
+        {hero && (
+                <a href={href(hero.id)} class="p3-panel p3-panel-hero group" data-reveal="left" data-reveal-once>
+                    <div class="p3-panel-img">
+                        <WorkCover work={hero} lang={lang} sizes="(min-width: 1024px) 60vw, 100vw" />
+                    </div>
+                    <span class="p3-no" aria-hidden="true">{num(heroNo)}</span>
+                    <div class="p3-panel-info">
+                        <span class="p3-kicker">{hero.context} / {hero.role}</span>
+                        <h3 class="font-black text-3xl lg:text-5xl leading-none tracking-tight">{hero.title}</h3>
+                        <p class="text-sm lg:text-base font-bold leading-[1.65] max-w-[38rem]">{hero.line}</p>
+                        <ul class="flex flex-wrap gap-2 pt-1">
+                            {hero.highlights.map((h) => <li class="p3-chip">{h}</li>)}
+                        </ul>
+                    </div>
+                </a>
+        )}
+        <div class="grid gap-5 lg:gap-6">
+            {side.map((work, i) => (
+                    <a href={href(work.id)} class="p3-panel group" data-reveal="left" data-reveal-once data-reveal-delay={String(140 * (i + 1))}>
+                        <div class="p3-panel-img">
+                            <WorkCover work={work} lang={lang} sizes="(min-width: 1024px) 38vw, 100vw" />
+                        </div>
+                        <span class="p3-no p3-no-sm" aria-hidden="true">{num(sideNo[i])}</span>
+                        <div class="p3-panel-info">
+                            <span class="p3-kicker">{work.context} / {work.role}</span>
+                            <h3 class="font-black text-2xl lg:text-3xl leading-none tracking-tight">{work.title}</h3>
+                            <ul class="flex flex-wrap gap-1.5 pt-1">
+                                {work.highlights.map((h) => <li class="p3-chip p3-chip-sm">{h}</li>)}
+                            </ul>
+                        </div>
+                    </a>
+            ))}
+        </div>
+    </div>
+
+    <!-- ===== 精选 ===== -->
+    <div class="p3-bar" data-reveal="left" data-reveal-once>
+        <span class="p3-bar-fill">{t(labels.tierSelected)}</span>
+        <span class="p3-bar-rule"></span>
+        <span class="p3-bar-count">{showcase.selected.length}</span>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 mb-16 md:px-4" data-reveal-children="left" data-reveal-order="columns" data-reveal-once>
+        {showcase.selected.map((work, i) => (
+                <a href={href(work.id)} class="p3-card group">
+                    <div class="p3-card-img">
+                        <WorkCover work={work} lang={lang} sizes="(min-width: 768px) 30vw, 100vw" />
+                        <span class="p3-card-no">{num(selectedNo[i])}</span>
+                    </div>
+                    <div class="p3-card-body">
+                        <span class="p3-kicker p3-kicker-dark">{work.context} / {work.role}</span>
+                        <h3 class="font-black text-xl leading-tight">{work.title}</h3>
+                        <p class="text-sm font-bold leading-[1.65]">{work.line}</p>
+                    </div>
+                </a>
+        ))}
+    </div>
+
+    <!-- ===== 个人项目：错开的斜切菜单 ===== -->
+    <div class="p3-bar" data-reveal="left" data-reveal-once>
+        <span class="p3-bar-fill">{t(labels.tierSolo)}</span>
+        <span class="p3-bar-rule"></span>
+        <span class="p3-bar-count">{showcase.solo.length}</span>
+    </div>
+
+    <ul class="flex flex-col gap-2.5" data-reveal-children="left" data-reveal-once data-reveal-stagger="60">
+        {showcase.solo.map((work, i) => (
+                <li class="p3-menu-row" style={`--step: ${i};`}>
+                    <a href={href(work.id)} class="p3-menu group">
+                        <span class="p3-menu-no">{num(soloNo[i])}</span>
+                        <span class="p3-menu-thumb">
+                            <WorkCover work={work} lang={lang} sizes="160px" />
+                        </span>
+                        <span class="p3-menu-title">{work.title}</span>
+                        <span class="p3-menu-context">{work.context}</span>
+                        <span class="p3-menu-line">{work.line}</span>
+                        <span class="p3-menu-arrow" aria-hidden="true">▶</span>
+                    </a>
+                </li>
+        ))}
+    </ul>
+</div>
+
+<style>
+    /* 层标题：斜切色条 + 延伸细线 + 数量 */
+    .p3-bar {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.75rem;
+    }
+    .p3-bar-fill {
+        padding: 0.4rem 2rem 0.4rem 1.2rem;
+        background-color: var(--gd-ink);
+        color: var(--gd-paper);
+        font-weight: 900;
+        font-size: 1.5rem;
+        letter-spacing: 0.06em;
+        clip-path: polygon(0 0, 100% 0, calc(100% - 1rem) 100%, 0 100%);
+    }
+    .p3-bar-rule {
+        flex: 1;
+        height: 3px;
+        background-color: var(--gd-ink);
+        transform: skewX(-30deg);
+    }
+    .p3-bar-count {
+        font-weight: 900;
+        font-size: 2.2rem;
+        line-height: 1;
+        font-style: italic;
+        color: var(--gd-accent);
+    }
+
+    /* 平行四边形大图面板 */
+    .p3-panel {
+        position: relative;
+        display: block;
+        min-height: 15rem;
+        overflow: hidden;
+        clip-path: polygon(3.5% 0, 100% 0, 96.5% 100%, 0 100%);
+        background-color: var(--gd-ink);
+        color: var(--gd-paper);
+    }
+    .p3-panel-hero {
+        min-height: 30rem;
+        clip-path: polygon(2.5% 0, 100% 0, 97.5% 100%, 0 100%);
+    }
+    .p3-panel-img {
+        position: absolute;
+        inset: 0;
+        transition: scale 400ms ease;
+    }
+    .p3-panel:hover .p3-panel-img {
+        scale: 1.04;
+    }
+    /* 底部压暗，保证文字可读 */
+    .p3-panel::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 30%, color-mix(in srgb, var(--gd-ink) 92%, transparent) 100%);
+        pointer-events: none;
+    }
+    .p3-panel-info {
+        position: absolute;
+        left: 6%;
+        right: 6%;
+        bottom: 1.5rem;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+    }
+    .p3-no {
+        position: absolute;
+        top: -0.12em;
+        right: 5%;
+        z-index: 2;
+        font-weight: 900;
+        font-style: italic;
+        font-size: clamp(6rem, 12vw, 11rem);
+        line-height: 1;
+        color: transparent;
+        -webkit-text-stroke: 3px var(--gd-paper);
+        opacity: 0.9;
+    }
+    .p3-no-sm {
+        font-size: clamp(4rem, 7vw, 6rem);
+        -webkit-text-stroke-width: 2px;
+    }
+
+    .p3-kicker {
+        align-self: flex-start;
+        padding: 0.12rem 0.9rem 0.12rem 0.6rem;
+        background-color: var(--gd-accent);
+        color: var(--gd-paper);
+        font-weight: 900;
+        font-size: 0.8rem;
+        letter-spacing: 0.04em;
+        clip-path: polygon(0 0, 100% 0, calc(100% - 0.5rem) 100%, 0 100%);
+    }
+    .p3-kicker-dark {
+        background-color: var(--gd-ink);
+    }
+    .p3-chip {
+        padding: 0.15rem 0.7rem;
+        border: 2px solid var(--gd-paper);
+        font-weight: 800;
+        font-size: 0.85rem;
+        transform: skewX(-12deg);
+    }
+    .p3-chip-sm {
+        font-size: 0.72rem;
+        padding: 0.05rem 0.5rem;
+    }
+
+    /* 精选：平行四边形卡片 */
+    .p3-card {
+        display: flex;
+        flex-direction: column;
+        background-color: var(--gd-paper);
+        clip-path: polygon(6% 0, 100% 0, 94% 100%, 0 100%);
+        transition: background-color 200ms ease;
+    }
+    .p3-card-img {
+        position: relative;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        background-color: var(--gd-ink);
+    }
+    .p3-card-no {
+        position: absolute;
+        left: 8%;
+        top: 0.4rem;
+        z-index: 2;
+        font-weight: 900;
+        font-style: italic;
+        font-size: 2.6rem;
+        line-height: 1;
+        color: var(--gd-paper);
+        -webkit-text-stroke: 2px var(--gd-ink);
+        paint-order: stroke fill;
+    }
+    .p3-card-body {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1rem 10% 1.4rem;
+    }
+    .p3-card:hover {
+        background-color: var(--gd-ink);
+        color: var(--gd-paper);
+    }
+    .p3-card:hover .p3-kicker-dark {
+        background-color: var(--gd-accent);
+    }
+
+    /* 个人项目：每行往右错开一点，像 P3R 的菜单 */
+    .p3-menu-row {
+        margin-left: calc(var(--step) * 1.1rem);
+    }
+    .p3-menu {
+        position: relative;
+        display: grid;
+        grid-template-columns: 3rem 7rem minmax(9rem, 14rem) 9rem 1fr 1.5rem;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.5rem 2rem 0.5rem 1rem;
+        background-color: var(--gd-paper);
+        clip-path: polygon(0 0, 100% 0, calc(100% - 1.4rem) 100%, 0 100%);
+        isolation: isolate;
+        overflow: hidden;
+    }
+    /* 悬停色块从左扫入 */
+    .p3-menu::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background-color: var(--gd-ink);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .p3-menu:hover::before {
+        transform: scaleX(1);
+    }
+    .p3-menu:hover {
+        color: var(--gd-paper);
+    }
+    .p3-menu-no {
+        font-weight: 900;
+        font-style: italic;
+        font-size: 1.6rem;
+        color: var(--gd-accent);
+    }
+    .p3-menu-thumb {
+        position: relative;
+        display: block;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        background-color: var(--gd-ink);
+        clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+    }
+    .p3-menu-title {
+        font-weight: 900;
+        font-size: 1.1rem;
+        line-height: 1.15;
+    }
+    .p3-menu-context {
+        font-weight: 800;
+        font-size: 0.8rem;
+        opacity: 0.75;
+    }
+    .p3-menu-line {
+        font-weight: 600;
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+    .p3-menu-arrow {
+        color: var(--gd-accent);
+        transition: translate 200ms ease;
+    }
+    .p3-menu:hover .p3-menu-arrow {
+        translate: 4px 0;
+    }
+
+    @media (max-width: 1023px) {
+        .p3-panel-hero { min-height: 22rem; }
+        .p3-menu-row { margin-left: 0; }
+        .p3-menu { grid-template-columns: 2.5rem 6rem 1fr 1.2rem; }
+        .p3-menu-context,
+        .p3-menu-line { display: none; }
+    }
+    @media (max-width: 767px) {
+        .p3-panel { min-height: 17rem; }
+        .p3-card { clip-path: none; }
+    }
+</style>

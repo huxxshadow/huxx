@@ -1,0 +1,359 @@
+---
+// 版式 C · 明日方舟档案界面：切角边框、等宽编号（GD-01…）、警示斜纹、细网格底。
+// 代表作是大档案面板（图 + 信息栏：背景 / 职责 / 设计方向 / ▸ 亮点），精选是三张切角卡，个人项目是数据表
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { useTranslations, type Lang } from "@/i18n";
+import type { GameDesignShowcase, DesignWorkView } from "./data";
+import WorkCover from "./WorkCover.astro";
+
+interface Props {
+    showcase: GameDesignShowcase;
+    lang: Lang;
+    labels: Record<string, any>;
+}
+const { showcase, lang, labels } = Astro.props;
+const t = useTranslations(lang);
+const href = (id: string) => getRelativeLocaleUrl(lang, `projects/${id}`);
+const code = (n: number) => `GD-${String(n).padStart(2, "0")}`;
+let n = 0;
+const featured = (showcase.featured as DesignWorkView[]).map((w) => ({ w, code: code(++n) }));
+const selected = showcase.selected.map((w) => ({ w, code: code(++n) }));
+const solo = showcase.solo.map((w) => ({ w, code: code(++n) }));
+const pillarIds = showcase.pillars.map((p) => p.id);
+---
+
+<div class="ark relative">
+    <div class="ark-grid" aria-hidden="true"></div>
+
+    <!-- ===== 代表作 ===== -->
+    <div class="ark-head" data-reveal="fade" data-reveal-once>
+        <span class="ark-head-code">TIER · A</span>
+        <span class="ark-head-name">{t(labels.tierFeatured)}</span>
+        <span class="ark-hazard"></span>
+        <span class="ark-head-code">{String(featured.length).padStart(2, "0")}</span>
+    </div>
+
+    <div class="flex flex-col gap-6 mb-14">
+        {featured.map(({ w, code }, i) => (
+                <a href={href(w.id)} class={`ark-dossier group ${i % 2 ? "ark-dossier-flip" : ""}`} data-reveal="up" data-reveal-once>
+                    <div class="ark-dossier-img">
+                        <WorkCover work={w} lang={lang} sizes="(min-width: 1024px) 60vw, 100vw" />
+                        <span class="ark-corner ark-corner-tl"></span>
+                        <span class="ark-corner ark-corner-br"></span>
+                    </div>
+                    <div class="ark-dossier-info">
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="ark-code">{code}</span>
+                            <span class="ark-code opacity-60">{w.context}</span>
+                        </div>
+                        <h3 class="font-black text-2xl lg:text-4xl leading-tight">{w.title}</h3>
+                        <div class="ark-role"><span>ROLE</span>{w.role}</div>
+                        <p class="text-sm lg:text-base font-semibold leading-[1.7]">{w.line}</p>
+                        <ul class="flex flex-col gap-1.5">
+                            {w.highlights.map((h) => <li class="ark-hl"><span aria-hidden="true">▸</span>{h}</li>)}
+                        </ul>
+                        <div class="ark-pillars">
+                            {pillarIds.map((pid, k) => (
+                                    <span class={w.pillars.includes(pid) ? "is-on" : ""} title={showcase.pillars[k].name}>{showcase.pillars[k].name}</span>
+                            ))}
+                        </div>
+                    </div>
+                </a>
+        ))}
+    </div>
+
+    <!-- ===== 精选 ===== -->
+    <div class="ark-head" data-reveal="fade" data-reveal-once>
+        <span class="ark-head-code">TIER · B</span>
+        <span class="ark-head-name">{t(labels.tierSelected)}</span>
+        <span class="ark-hazard"></span>
+        <span class="ark-head-code">{String(selected.length).padStart(2, "0")}</span>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-5 mb-14" data-reveal-children="up" data-reveal-order="columns" data-reveal-once>
+        {selected.map(({ w, code }) => (
+                <a href={href(w.id)} class="ark-card group">
+                    <div class="ark-card-img">
+                        <WorkCover work={w} lang={lang} sizes="(min-width: 768px) 30vw, 100vw" />
+                        <span class="ark-card-code">{code}</span>
+                    </div>
+                    <div class="flex flex-col gap-2 p-4">
+                        <span class="ark-code opacity-60">{w.context}</span>
+                        <h3 class="font-black text-xl leading-tight">{w.title}</h3>
+                        <div class="ark-role ark-role-sm"><span>ROLE</span>{w.role}</div>
+                        <p class="text-sm font-semibold leading-[1.65]">{w.line}</p>
+                    </div>
+                </a>
+        ))}
+    </div>
+
+    <!-- ===== 个人项目：数据表 ===== -->
+    <div class="ark-head" data-reveal="fade" data-reveal-once>
+        <span class="ark-head-code">TIER · C</span>
+        <span class="ark-head-name">{t(labels.tierSolo)}</span>
+        <span class="ark-hazard"></span>
+        <span class="ark-head-code">{String(solo.length).padStart(2, "0")}</span>
+    </div>
+
+    <div class="ark-table" data-reveal-children="up" data-reveal-once data-reveal-stagger="50">
+        {solo.map(({ w, code }) => (
+                <a href={href(w.id)} class="ark-row group">
+                    <span class="ark-code">{code}</span>
+                    <span class="ark-row-thumb"><WorkCover work={w} lang={lang} sizes="128px" /></span>
+                    <span class="flex flex-col gap-0.5 min-w-0">
+                        <span class="font-black text-base leading-tight">{w.title}</span>
+                        <span class="ark-code opacity-60">{w.context}</span>
+                    </span>
+                    <span class="ark-row-line">{w.line}</span>
+                    <span class="ark-row-pillars">
+                        {w.pillarNames.map((p) => <span>{p}</span>)}
+                    </span>
+                    <span class="ark-row-go" aria-hidden="true">→</span>
+                </a>
+        ))}
+    </div>
+</div>
+
+<style>
+    .ark {
+        --ark-cut: 18px;
+        font-feature-settings: "tnum";
+    }
+    .ark-grid {
+        position: absolute;
+        inset: -1rem 0;
+        pointer-events: none;
+        background-image:
+            linear-gradient(color-mix(in srgb, var(--gd-ink) 9%, transparent) 1px, transparent 1px),
+            linear-gradient(90deg, color-mix(in srgb, var(--gd-ink) 9%, transparent) 1px, transparent 1px);
+        background-size: 40px 40px;
+    }
+    .ark > :not(.ark-grid) {
+        position: relative;
+    }
+
+    .ark-code {
+        font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+    }
+
+    /* 层标题：等宽编号 + 名称 + 警示斜纹 */
+    .ark-head {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+        padding-bottom: 0.6rem;
+        border-bottom: 2px solid var(--gd-ink);
+    }
+    .ark-head-code {
+        font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+        font-weight: 700;
+        font-size: 0.8rem;
+        letter-spacing: 0.2em;
+        color: var(--gd-accent);
+    }
+    .ark-head-name {
+        font-weight: 900;
+        font-size: 1.6rem;
+        letter-spacing: 0.04em;
+    }
+    .ark-hazard {
+        flex: 1;
+        height: 10px;
+        background: repeating-linear-gradient(-45deg, var(--gd-ink) 0 6px, transparent 6px 12px);
+        opacity: 0.8;
+    }
+
+    /* 大档案面板：图 + 信息栏，切掉两个对角 */
+    .ark-dossier {
+        display: grid;
+        grid-template-columns: 1.55fr 1fr;
+        background-color: var(--gd-paper);
+        clip-path: polygon(var(--ark-cut) 0, 100% 0, 100% calc(100% - var(--ark-cut)), calc(100% - var(--ark-cut)) 100%, 0 100%, 0 var(--ark-cut));
+        border-left: 6px solid var(--gd-accent);
+        transition: background-color 200ms ease;
+    }
+    .ark-dossier-flip {
+        grid-template-columns: 1fr 1.55fr;
+        border-left: 0;
+        border-right: 6px solid var(--gd-accent);
+    }
+    .ark-dossier-flip .ark-dossier-img {
+        order: 2;
+    }
+    .ark-dossier-img {
+        position: relative;
+        min-height: 20rem;
+        overflow: hidden;
+        background-color: var(--gd-ink);
+    }
+    .ark-dossier-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        padding: 1.5rem 1.75rem;
+    }
+    .ark-dossier:hover {
+        background-color: var(--gd-ink);
+        color: var(--gd-paper);
+    }
+    .ark-corner {
+        position: absolute;
+        z-index: 2;
+        width: 26px;
+        height: 26px;
+        border: 0 solid var(--gd-paper);
+    }
+    .ark-corner-tl { top: 12px; left: 12px; border-top-width: 3px; border-left-width: 3px; }
+    .ark-corner-br { bottom: 12px; right: 12px; border-bottom-width: 3px; border-right-width: 3px; }
+
+    .ark-role {
+        display: flex;
+        align-items: stretch;
+        align-self: flex-start;
+        font-weight: 800;
+        font-size: 0.9rem;
+        border: 2px solid currentColor;
+    }
+    .ark-role > span {
+        padding: 0.1rem 0.5rem;
+        margin-right: 0.6rem;
+        background-color: var(--gd-accent);
+        color: var(--gd-paper);
+        font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.15em;
+        display: flex;
+        align-items: center;
+    }
+    .ark-role { padding-right: 0.6rem; }
+    .ark-role-sm { font-size: 0.8rem; }
+
+    .ark-hl {
+        display: flex;
+        gap: 0.5rem;
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+    .ark-hl > span {
+        color: var(--gd-accent);
+    }
+
+    /* 四个设计方向：点亮的是这个项目涉及的 */
+    .ark-pillars {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 4px;
+        margin-top: auto;
+        padding-top: 0.5rem;
+    }
+    .ark-pillars > span {
+        padding: 0.25rem 0.3rem;
+        border-top: 4px solid color-mix(in srgb, currentColor 22%, transparent);
+        font-size: 0.68rem;
+        font-weight: 800;
+        line-height: 1.2;
+        opacity: 0.45;
+    }
+    .ark-pillars > span.is-on {
+        border-top-color: var(--gd-accent);
+        opacity: 1;
+    }
+
+    /* 精选：切角卡 */
+    .ark-card {
+        display: flex;
+        flex-direction: column;
+        background-color: var(--gd-paper);
+        clip-path: polygon(0 0, calc(100% - var(--ark-cut)) 0, 100% var(--ark-cut), 100% 100%, var(--ark-cut) 100%, 0 calc(100% - var(--ark-cut)));
+        border-top: 5px solid var(--gd-ink);
+        transition: background-color 200ms ease, border-color 200ms ease;
+    }
+    .ark-card-img {
+        position: relative;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        background-color: var(--gd-ink);
+    }
+    .ark-card-code {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        z-index: 2;
+        padding: 0.2rem 0.6rem;
+        background-color: var(--gd-ink);
+        color: var(--gd-paper);
+        font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+    }
+    .ark-card:hover {
+        background-color: var(--gd-ink);
+        color: var(--gd-paper);
+        border-top-color: var(--gd-accent);
+    }
+
+    /* 个人项目：数据表 */
+    .ark-table {
+        display: flex;
+        flex-direction: column;
+        border-top: 2px solid var(--gd-ink);
+    }
+    .ark-row {
+        display: grid;
+        grid-template-columns: 4rem 6.5rem minmax(10rem, 14rem) 1fr 13rem 1.5rem;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.55rem 0.75rem;
+        background-color: color-mix(in srgb, var(--gd-paper) 70%, transparent);
+        border-bottom: 1px solid color-mix(in srgb, var(--gd-ink) 35%, transparent);
+        transition: background-color 160ms ease, color 160ms ease;
+    }
+    .ark-row:hover {
+        background-color: var(--gd-ink);
+        color: var(--gd-paper);
+    }
+    .ark-row-thumb {
+        position: relative;
+        display: block;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        background-color: var(--gd-ink);
+    }
+    .ark-row-line {
+        font-size: 0.85rem;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+    .ark-row-pillars {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    .ark-row-pillars > span {
+        padding: 0 0.4rem;
+        border: 1px solid currentColor;
+        font-size: 0.68rem;
+        font-weight: 800;
+    }
+    .ark-row-go {
+        font-weight: 900;
+        color: var(--gd-accent);
+    }
+
+    @media (max-width: 1023px) {
+        .ark-dossier,
+        .ark-dossier-flip {
+            grid-template-columns: 1fr;
+        }
+        .ark-dossier-flip .ark-dossier-img { order: 0; }
+        .ark-dossier-img { min-height: 0; aspect-ratio: 16 / 9; }
+        .ark-row { grid-template-columns: 3.5rem 5.5rem 1fr 1.2rem; }
+        .ark-row-line,
+        .ark-row-pillars { display: none; }
+    }
+</style>

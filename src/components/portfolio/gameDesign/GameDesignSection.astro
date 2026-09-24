@@ -1,14 +1,14 @@
 ---
-// Part 2 · 游戏设计：所有做过设计工作的项目，一屏看全（信息密度优先）。
+// Part 2 · 游戏设计：按分量分三层：代表作放大图，精选中图，个人项目小图。
 // 三个候选版式，本地 dev 下用 DebugVariantSwitcher 切换；默认 / 生产显示 A
 import { COLORS } from "@/consts";
 import { useTranslations, type Lang } from "@/i18n";
 import { PORTFOLIO_ROLES } from "@/i18n/components/portfolio/PortfolioRoles_i18";
 import { gameDesignLabels as L } from "@/i18n/components/portfolio/GameDesignShowcase_i18";
 import { getGameDesignShowcase } from "./data";
-import DesignMatrix from "./DesignMatrix.astro";
-import DesignCardWall from "./DesignCardWall.astro";
-import DesignBoard from "./DesignBoard.astro";
+import DesignP5 from "./DesignP5.astro";
+import DesignP3 from "./DesignP3.astro";
+import DesignArk from "./DesignArk.astro";
 
 const lang = (Astro.currentLocale as Lang) || "en";
 const t = useTranslations(lang);
@@ -42,9 +42,9 @@ const layout = { showcase, lang, labels: L };
     </header>
 
     <div data-variant-group="part2" data-variant-label="Part 2 · Game Design">
-        <div data-variant="A"><DesignMatrix {...layout} /></div>
-        <div data-variant="B" hidden><DesignCardWall {...layout} /></div>
-        <div data-variant="C" hidden><DesignBoard {...layout} /></div>
+        <div data-variant="A"><DesignP5 {...layout} /></div>
+        <div data-variant="B" hidden><DesignP3 {...layout} /></div>
+        <div data-variant="C" hidden><DesignArk {...layout} /></div>
     </div>
 </section>
 

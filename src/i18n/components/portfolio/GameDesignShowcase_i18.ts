@@ -10,8 +10,14 @@ export interface DesignPillar {
     name: Multilingual;
 }
 
+/** featured = 代表作（大图），selected = 精选（中图），solo = 个人项目（小图） */
+export type DesignTier = "featured" | "selected" | "solo";
+
 export interface DesignWork {
     projectId: string;
+    tier: DesignTier;
+    /** 只有代表作需要：三条亮点 */
+    highlights?: Multilingual[];
     pillars: DesignPillarId[];
     context: Multilingual;
     role: Multilingual;
@@ -30,6 +36,12 @@ const solo: Multilingual = { en: "Solo Developer", zh: "独立开发", ja: "個�
 export const designWorks: DesignWork[] = [
     {
         projectId: "game-project-yuanmengstar-shanhai-xunling",
+        tier: "featured",
+        highlights: [
+            { en: "World boss combat 3C tuning", zh: "世界 Boss 战斗 3C 调优", ja: "ワールドボス戦の 3C 調整", ko: "월드 보스 전투 3C 조율" },
+            { en: "New combat mechanic owner, 0 to 1", zh: "新战斗机制 PO，从 0 到 1", ja: "新しい戦闘メカニクスの担当者として 0 から 1 へ", ko: "새 전투 메커니즘 PO, 0에서 1까지" },
+            { en: "Cross-discipline delivery to integration", zh: "跨职能推进，联调落地", ja: "職種を横断して実装まで推進", ko: "직군 간 협업으로 통합까지 추진" },
+        ],
         pillars: ["combat"],
         context: { en: "Tencent AAA", zh: "腾讯 AAA", ja: "テンセント AAA", ko: "텐센트 AAA" },
         role: { en: "Combat Designer", zh: "战斗策划", ja: "戦闘プランナー", ko: "전투 기획자" },
@@ -42,6 +54,12 @@ export const designWorks: DesignWork[] = [
     },
     {
         projectId: "game-project-floodsong",
+        tier: "featured",
+        highlights: [
+            { en: "Layered FOV and dolly zoom camera", zh: "分层 FOV 与 Dolly Zoom 镜头", ja: "レイヤー化した FOV とドリーズーム", ko: "레이어형 FOV와 돌리 줌 카메라" },
+            { en: "Arcing drift paid out per corner", zh: "弧线漂移，按弯道结算", ja: "コーナーごとに精算する弧のドリフト", ko: "코너마다 정산하는 호 드리프트" },
+            { en: "Speed-driven post-process shaders", zh: "速度感后处理 Shader", ja: "速度で駆動するポストエフェクト", ko: "속도 기반 후처리 셰이더" },
+        ],
         pillars: ["combat"],
         context: { en: "USC AGP · team of 50+", zh: "USC AGP · 50+ 人", ja: "USC AGP · 50 人以上", ko: "USC AGP · 50명 이상" },
         role: { en: "Technical Designer (3C)", zh: "技术策划（3C）", ja: "テクニカルデザイナー（3C）", ko: "테크니컬 디자이너(3C)" },
@@ -54,6 +72,7 @@ export const designWorks: DesignWork[] = [
     },
     {
         projectId: "technical-project-parkour-motion-system",
+        tier: "solo",
         pillars: ["combat"],
         context: { en: "UE5 · 7-day solo study", zh: "UE5 · 7 天个人练习", ja: "UE5 · 7 日間の個人練習", ko: "UE5 · 7일 개인 연습" },
         role: { en: "3C Design", zh: "3C 设计", ja: "3C デザイン", ko: "3C 디자인" },
@@ -66,6 +85,7 @@ export const designWorks: DesignWork[] = [
     },
     {
         projectId: "game-project-lost-realm",
+        tier: "solo",
         pillars: ["combat", "systems", "levels"],
         context: { en: "Unity · 3-month solo demo", zh: "Unity · 3 个月个人 Demo", ja: "Unity · 3 か月の個人デモ", ko: "Unity · 3개월 개인 데모" },
         role: solo,
@@ -78,6 +98,7 @@ export const designWorks: DesignWork[] = [
     },
     {
         projectId: "game-project-speed-pixel",
+        tier: "solo",
         pillars: ["systems", "levels"],
         context: { en: "Unity · 3-month solo project", zh: "Unity · 3 个月个人项目", ja: "Unity · 3 か月の個人プロジェクト", ko: "Unity · 3개월 개인 프로젝트" },
         role: solo,
@@ -90,6 +111,7 @@ export const designWorks: DesignWork[] = [
     },
     {
         projectId: "game-project-click-click-universe",
+        tier: "solo",
         pillars: ["systems"],
         context: { en: "Steam · undergraduate thesis", zh: "Steam · 本科毕业设计", ja: "Steam · 卒業制作", ko: "Steam · 졸업 작품" },
         role: solo,
@@ -102,6 +124,7 @@ export const designWorks: DesignWork[] = [
     },
     {
         projectId: "game-project-night-watch",
+        tier: "solo",
         pillars: ["systems"],
         context: { en: "NetEase · experimental project", zh: "网易 · 实验课题", ja: "NetEase · 実験的プロジェクト", ko: "NetEase · 실험 과제" },
         role: solo,
@@ -114,6 +137,7 @@ export const designWorks: DesignWork[] = [
     },
     {
         projectId: "game-project-eel-on-mask",
+        tier: "selected",
         pillars: ["levels", "systems"],
         context: { en: "GGJ 2026 · 48 hours · Steam", zh: "GGJ 2026 · 48 小时 · Steam", ja: "GGJ 2026 · 48 時間 · Steam", ko: "GGJ 2026 · 48시간 · Steam" },
         role: { en: "Lead & Designer", zh: "队长 / 策划", ja: "リーダー / プランナー", ko: "팀장 / 기획" },
@@ -126,6 +150,7 @@ export const designWorks: DesignWork[] = [
     },
     {
         projectId: "game-project-fractal-shelter",
+        tier: "selected",
         pillars: ["levels", "narrative"],
         context: { en: "USC AGP pitch", zh: "USC AGP 提案", ja: "USC AGP 企画", ko: "USC AGP 기획안" },
         role: { en: "Gameplay · Narrative · Art Director", zh: "玩法 / 叙事 / 美术总监", ja: "ゲームプレイ / ナラティブ / アートディレクター", ko: "게임플레이 / 내러티브 / 아트 디렉터" },
@@ -138,6 +163,12 @@ export const designWorks: DesignWork[] = [
     },
     {
         projectId: "game-project-empty-throne",
+        tier: "featured",
+        highlights: [
+            { en: "\"Magic mirror reveals the truth\" core mechanic", zh: "「魔镜揭示真相」核心机制", ja: "「魔法の鏡が真実を暴く」コアメカニクス", ko: "'마법 거울이 진실을 드러낸다' 핵심 메커니즘" },
+            { en: "Dialogue-deduction puzzles", zh: "对话推理式谜题", ja: "会話推理型の謎解き", ko: "대화 추리형 퍼즐" },
+            { en: "Rhythm performances, released on Steam", zh: "音乐节奏演出，上线 Steam", ja: "リズム演出、Steam で配信", ko: "리듬 연출, Steam 출시" },
+        ],
         pillars: ["narrative", "levels"],
         context: { en: "Steam · team of 5", zh: "Steam · 5 人团队", ja: "Steam · 5 人チーム", ko: "Steam · 5인 팀" },
         role: { en: "Lead Designer", zh: "主策划", ja: "リードプランナー", ko: "메인 기획" },
@@ -150,6 +181,7 @@ export const designWorks: DesignWork[] = [
     },
     {
         projectId: "game-project-follyblind-age",
+        tier: "selected",
         pillars: ["narrative", "systems"],
         context: { en: "Team of 8 · in development", zh: "8 人团队 · 开发中", ja: "8 人チーム · 開発中", ko: "8인 팀 · 개발 중" },
         role: { en: "Director", zh: "制作人", ja: "ディレクター", ko: "디렉터" },
@@ -169,6 +201,9 @@ export const gameDesignLabels = {
         ja: "私が設計に関わったすべてのプロジェクト。AAA オープンワールドの戦闘 3C から、コアメカニクス、成長システム、オリジナルの世界観まで。",
         ko: "제가 설계에 참여한 모든 프로젝트. AAA 오픈월드의 전투 3C부터 핵심 메커니즘, 성장 시스템, 오리지널 세계관까지.",
     } as Multilingual,
+    tierFeatured: { en: "Featured", zh: "代表作", ja: "代表作", ko: "대표작" } as Multilingual,
+    tierSelected: { en: "Selected", zh: "精选项目", ja: "注目作", ko: "주요 작품" } as Multilingual,
+    tierSolo: { en: "Solo Projects", zh: "个人项目", ja: "個人プロジェクト", ko: "개인 프로젝트" } as Multilingual,
     projects: { en: "projects", zh: "个项目", ja: "件", ko: "개 프로젝트" } as Multilingual,
     colProject: { en: "Project", zh: "项目", ja: "プロジェクト", ko: "프로젝트" } as Multilingual,
     colRole: { en: "Context · Role", zh: "出处 · 身份", ja: "出典 · 役割", ko: "출처 · 역할" } as Multilingual,
