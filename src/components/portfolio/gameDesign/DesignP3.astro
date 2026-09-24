@@ -14,6 +14,8 @@ interface Props {
 const { showcase, lang, labels } = Astro.props;
 const t = useTranslations(lang);
 const href = (id: string) => getRelativeLocaleUrl(lang, `projects/${id}`);
+// 背景和职责按「·」「/」拆成多个标签
+const tagsOf = (w: DesignWorkView) => [w.context, w.role].flatMap((x) => x.split(/\s*[·/]\s*/)).filter(Boolean);
 const [hero, ...side] = showcase.featured as DesignWorkView[];
 ---
 
@@ -34,7 +36,9 @@ const [hero, ...side] = showcase.featured as DesignWorkView[];
                     <div class="p3-panel-info">
                         <h3 class="font-black text-3xl lg:text-5xl leading-none tracking-tight">{hero.title}</h3>
                         <p class="text-sm lg:text-base font-bold leading-[1.65] max-w-[38rem]">{hero.line}</p>
-                        <span class="p3-chip self-start mt-1">{hero.context} / {hero.role}</span>
+                        <ul class="flex flex-wrap gap-2 pt-1">
+                            {tagsOf(hero).map((tag) => <li class="p3-chip">{tag}</li>)}
+                        </ul>
                     </div>
                 </a>
         )}
@@ -46,7 +50,9 @@ const [hero, ...side] = showcase.featured as DesignWorkView[];
                         </div>
                         <div class="p3-panel-info">
                             <h3 class="font-black text-2xl lg:text-3xl leading-none tracking-tight">{work.title}</h3>
-                            <span class="p3-chip p3-chip-sm self-start mt-1">{work.context} / {work.role}</span>
+                            <ul class="flex flex-wrap gap-1.5 pt-1">
+                                {tagsOf(work).map((tag) => <li class="p3-chip p3-chip-sm">{tag}</li>)}
+                            </ul>
                         </div>
                     </a>
             ))}
