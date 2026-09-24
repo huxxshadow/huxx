@@ -25,7 +25,7 @@ const layout = { showcase, lang, labels: L };
         data-theme-bg={tint}
         data-theme-text={ink}
 >
-    <!-- 紧凑标题：编号 · 名称 · 一句话 · 项目数，给下面的内容留出一整屏 -->
+    <!-- 紧凑标题：编号 · 名称 · 项目数，给下面的内容留出一整屏 -->
     <header class="flex flex-wrap items-end gap-x-8 gap-y-3 mb-6 lg:mb-8" data-reveal-children="up" data-reveal-once data-reveal-stagger="80">
         <div class="flex items-end gap-4">
             <span class="gd-skew font-black leading-[0.8] text-7xl lg:text-8xl" style={`color: ${accent};`}>{role.index}</span>
@@ -34,8 +34,7 @@ const layout = { showcase, lang, labels: L };
                 <h2 class="gd-skew font-black leading-none tracking-tight text-4xl lg:text-5xl">{t(role.name)}</h2>
             </div>
         </div>
-        <p class="flex-1 min-w-[16rem] text-base lg:text-lg font-bold leading-snug pb-1">{t(L.lead)}</p>
-        <span class="font-black text-lg whitespace-nowrap pb-1">{showcase.works.length} {t(L.projects)}</span>
+        <span class="ml-auto font-black text-lg whitespace-nowrap pb-1">{showcase.works.length} {t(L.projects)}</span>
     </header>
 
     <DesignP3 {...layout} />

@@ -195,12 +195,6 @@ export const designWorks: DesignWork[] = [
 ];
 
 export const gameDesignLabels = {
-    lead: {
-        en: "Every project where I did the design work, from combat 3C on an AAA open world to core mechanics, progression systems and original worlds.",
-        zh: "所有我参与设计的项目：从 AAA 开放世界的战斗 3C，到核心机制、成长系统与原创世界观。",
-        ja: "私が設計に関わったすべてのプロジェクト。AAA オープンワールドの戦闘 3C から、コアメカニクス、成長システム、オリジナルの世界観まで。",
-        ko: "제가 설계에 참여한 모든 프로젝트. AAA 오픈월드의 전투 3C부터 핵심 메커니즘, 성장 시스템, 오리지널 세계관까지.",
-    } as Multilingual,
     tierFeatured: { en: "Featured", zh: "代表作", ja: "代表作", ko: "대표작" } as Multilingual,
     tierSelected: { en: "Selected", zh: "精选项目", ja: "注目作", ko: "주요 작품" } as Multilingual,
     tierSolo: { en: "Solo Projects", zh: "个人项目", ja: "個人プロジェクト", ko: "개인 프로젝트" } as Multilingual,
