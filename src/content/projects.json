@@ -2056,5 +2056,65 @@
     "colorText": "#D30000",
     "colorBackground": "#FDE6EC",
     "skin": "fs"
+  },
+  {
+    "id": "game-project-follyblind-age",
+    "order": 33,
+    "category": "game",
+    "title": {
+      "en": "The Follyblind Age",
+      "zh": "痴盲年代",
+      "ja": "痴盲年代",
+      "ko": "The Follyblind Age"
+    },
+    "roles": {
+      "en": [
+        "Project Lead"
+      ],
+      "zh": [
+        "项目负责人"
+      ],
+      "ja": [
+        "プロジェクトリーダー"
+      ],
+      "ko": [
+        "프로젝트 리드"
+      ]
+    },
+    "desc": {
+      "en": "The Follyblind Age is a narrative CRPG that I lead, currently developed by a team of 8.",
+      "zh": "《痴盲年代》是我主导的一款叙事类CRPG游戏，目前团队有8人。",
+      "ja": "『痴盲年代』は私が主導している物語重視のCRPGで、現在のチームは8人です。",
+      "ko": "《The Follyblind Age》는 제가 주도하고 있는 내러티브 CRPG로, 현재 팀은 8명입니다."
+    },
+    "tags": {
+      "en": [
+        "CRPG",
+        "Narrative Game",
+        "Occult",
+        "Alternate History"
+      ],
+      "zh": [
+        "CRPG",
+        "叙事游戏",
+        "神秘学",
+        "架空历史"
+      ],
+      "ja": [
+        "CRPG",
+        "ナラティブゲーム",
+        "オカルト",
+        "架空歴史"
+      ],
+      "ko": [
+        "CRPG",
+        "내러티브 게임",
+        "오컬트",
+        "대체 역사"
+      ]
+    },
+    "coverImage": "src/assets/projects/poster/FollyblindAgePoster.webp",
+    "colorText": "#C9A45C",
+    "colorBackground": "#16140F"
   }
 ]
