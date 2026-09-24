@@ -1,0 +1,125 @@
+---
+// 版式 A · 矩阵表：每个项目一行（缩略图 · 名称 · 出处与身份 · 四个设计方向 · 设计要点），一屏看全。
+// ■ 主方向 □ 兼顾；窄屏上方向列收成标签
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { useTranslations, type Lang } from "@/i18n";
+import type { GameDesignShowcase } from "./data";
+import WorkCover from "./WorkCover.astro";
+
+interface Props {
+    showcase: GameDesignShowcase;
+    lang: Lang;
+    labels: Record<string, any>;
+}
+const { showcase, lang, labels } = Astro.props;
+const t = useTranslations(lang);
+const pillarName = new Map(showcase.pillars.map((p) => [p.id, p.name]));
+---
+
+<div class="gdm" data-reveal="fade" data-reveal-once>
+    <!-- 表头（宽屏） -->
+    <div class="gdm-row gdm-head hidden lg:grid">
+        <span></span>
+        <span>{t(labels.colProject)}</span>
+        {showcase.pillars.map((p) => <span class="text-center">{p.name}</span>)}
+        <span>{t(labels.colPoint)}</span>
+    </div>
+
+    {showcase.works.map((work) => (
+            <a href={getRelativeLocaleUrl(lang, `projects/${work.id}`)} class="gdm-row gdm-item group">
+                <div class="gdm-thumb relative aspect-video overflow-hidden">
+                    <WorkCover work={work} lang={lang} sizes="8rem" />
+                </div>
+
+                <div class="min-w-0">
+                    <div class="font-black text-base lg:text-lg leading-tight truncate">{work.title}</div>
+                    <div class="text-xs font-bold opacity-75 leading-snug mt-0.5">{work.context} · {work.role}</div>
+                    <!-- 窄屏：方向收成标签 -->
+                    <div class="flex flex-wrap gap-1 mt-1.5 lg:hidden">
+                        {work.pillars.map((id, i) => <span class:list={["gdm-chip", i === 0 && "gdm-chip-primary"]}>{pillarName.get(id)}</span>)}
+                    </div>
+                </div>
+
+                {showcase.pillars.map((p) => {
+                    const idx = work.pillars.indexOf(p.id);
+                    return (
+                            <span class="hidden lg:flex items-center justify-center" aria-label={idx < 0 ? undefined : p.name}>
+                                {idx === 0 && <span class="gdm-mark gdm-mark-primary"></span>}
+                                {idx > 0 && <span class="gdm-mark"></span>}
+                            </span>
+                    );
+                })}
+
+                <p class="text-sm font-medium leading-snug">{work.line}</p>
+            </a>
+    ))}
+
+    <div class="flex items-center gap-5 pt-3 text-xs font-bold opacity-80">
+        <span class="flex items-center gap-1.5"><span class="gdm-mark gdm-mark-primary"></span>{t(labels.legendPrimary)}</span>
+        <span class="flex items-center gap-1.5"><span class="gdm-mark"></span>{t(labels.legendSecondary)}</span>
+    </div>
+</div>
+
+<style>
+    .gdm {
+        border-top: 3px solid var(--gd-ink);
+    }
+    .gdm-row {
+        display: grid;
+        grid-template-columns: 6rem minmax(0, 1fr);
+        gap: 0.9rem;
+        align-items: center;
+        padding: 0.55rem 0.6rem;
+        border-bottom: 2px solid color-mix(in srgb, var(--gd-ink) 25%, transparent);
+    }
+    .gdm-row > p {
+        grid-column: 1 / -1;
+    }
+    @media (min-width: 1024px) {
+        .gdm-row {
+            grid-template-columns: 6.5rem minmax(13rem, 17rem) repeat(4, 5.5rem) minmax(0, 1fr);
+        }
+        .gdm-row > p {
+            grid-column: auto;
+        }
+    }
+    .gdm-head {
+        font-weight: 900;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        line-height: 1.2;
+        border-bottom: 3px solid var(--gd-ink);
+    }
+    .gdm-item {
+        transition: background-color 120ms ease;
+    }
+    .gdm-item:hover {
+        background-color: var(--gd-paper);
+    }
+    .gdm-thumb {
+        border: 2px solid var(--gd-ink);
+        background-color: var(--gd-ink);
+    }
+    .gdm-mark {
+        display: inline-block;
+        width: 0.9rem;
+        height: 0.9rem;
+        border: 2.5px solid var(--gd-accent);
+    }
+    .gdm-mark-primary {
+        width: 1.1rem;
+        height: 1.1rem;
+        background-color: var(--gd-accent);
+    }
+    .gdm-chip {
+        font-size: 0.7rem;
+        font-weight: 800;
+        padding: 0.05rem 0.45rem;
+        border: 2px solid var(--gd-accent);
+        color: var(--gd-accent);
+    }
+    .gdm-chip-primary {
+        background-color: var(--gd-accent);
+        color: var(--gd-paper);
+    }
+</style>

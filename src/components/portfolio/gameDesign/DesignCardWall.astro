@@ -1,0 +1,77 @@
+---
+// 版式 B · 紧凑卡片墙：11 个项目 + 1 个方向图例，宽屏 4 列 × 3 行一屏看全。
+// 每张卡：矮封面 · 出处与身份 · 名称 · 方向标签 · 两行设计要点
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { useTranslations, type Lang } from "@/i18n";
+import type { GameDesignShowcase } from "./data";
+import WorkCover from "./WorkCover.astro";
+
+interface Props {
+    showcase: GameDesignShowcase;
+    lang: Lang;
+    labels: Record<string, any>;
+}
+const { showcase, lang, labels } = Astro.props;
+const t = useTranslations(lang);
+const pillarName = new Map(showcase.pillars.map((p) => [p.id, p.name]));
+const countOf = (id: string) => showcase.works.filter((w) => w.pillars.includes(id as any)).length;
+---
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" data-reveal-children="up" data-reveal-order="columns" data-reveal-once data-reveal-stagger="40">
+    {showcase.works.map((work) => (
+            <a href={getRelativeLocaleUrl(lang, `projects/${work.id}`)} class="gdc-card group flex flex-col">
+                <div class="relative aspect-[16/6] overflow-hidden" style="background-color: var(--gd-ink);">
+                    <WorkCover work={work} lang={lang} sizes="(min-width: 1024px) 22vw, (min-width: 640px) 45vw, 100vw" class="transition-transform duration-500 group-hover:scale-105" />
+                </div>
+                <div class="flex-1 flex flex-col gap-1.5 p-3">
+                    <span class="text-[0.7rem] font-black tracking-wide leading-tight" style="color: var(--gd-accent);">{work.context} · {work.role}</span>
+                    <h3 class="font-black text-lg leading-tight">{work.title}</h3>
+                    <div class="flex flex-wrap gap-1">
+                        {work.pillars.map((id, i) => <span class:list={["gdc-chip", i === 0 && "gdc-chip-primary"]}>{pillarName.get(id)}</span>)}
+                    </div>
+                    <p class="text-xs font-medium leading-snug line-clamp-3 mt-0.5">{work.line}</p>
+                </div>
+            </a>
+    ))}
+
+    <!-- 图例：每个方向覆盖多少个项目 -->
+    <div class="gdc-card gdc-legend flex flex-col justify-center gap-2.5 p-4">
+        {showcase.pillars.map((p) => (
+                <div class="flex items-center justify-between gap-3">
+                    <span class="font-black text-sm">{p.name}</span>
+                    <span class="font-black text-2xl leading-none">{countOf(p.id)}</span>
+                </div>
+        ))}
+        <div class="pt-2 mt-1 border-t-2 text-xs font-bold opacity-90" style="border-color: var(--gd-paper);">
+            {showcase.works.length} {t(labels.projects)}
+        </div>
+    </div>
+</div>
+
+<style>
+    .gdc-card {
+        background-color: var(--gd-paper);
+        border: 2.5px solid var(--gd-ink);
+        box-shadow: 4px 4px 0 var(--gd-ink);
+        transition: transform 120ms ease, box-shadow 120ms ease;
+    }
+    a.gdc-card:hover {
+        transform: translate(2px, 2px);
+        box-shadow: 2px 2px 0 var(--gd-ink);
+    }
+    .gdc-legend {
+        background-color: var(--gd-accent);
+        color: var(--gd-paper);
+    }
+    .gdc-chip {
+        font-size: 0.65rem;
+        font-weight: 800;
+        padding: 0 0.4rem;
+        border: 1.5px solid var(--gd-accent);
+        color: var(--gd-accent);
+    }
+    .gdc-chip-primary {
+        background-color: var(--gd-accent);
+        color: var(--gd-paper);
+    }
+</style>

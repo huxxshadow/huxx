@@ -1,0 +1,76 @@
+---
+// 版式 C · 方向看板：四列，每列一个设计方向，项目按主方向归列（兼顾的方向用小标签标出）。
+// 一眼看出每个方向做过什么、深度有多少
+import { getRelativeLocaleUrl } from "astro:i18n";
+import type { Lang } from "@/i18n";
+import type { GameDesignShowcase } from "./data";
+import WorkCover from "./WorkCover.astro";
+
+interface Props {
+    showcase: GameDesignShowcase;
+    lang: Lang;
+    labels: Record<string, any>;
+}
+const { showcase, lang } = Astro.props;
+const pillarName = new Map(showcase.pillars.map((p) => [p.id, p.name]));
+---
+
+<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5" data-reveal-children="up" data-reveal-order="columns" data-reveal-once>
+    {showcase.pillars.map((pillar, i) => (
+            <div class="flex flex-col">
+                <div class="gdb-head flex items-center justify-between px-3 py-2">
+                    <span class="font-black text-base lg:text-lg leading-tight"><span class="opacity-70 mr-1.5">{String(i + 1).padStart(2, "0")}</span>{pillar.name}</span>
+                    <span class="font-black text-xl leading-none">{pillar.works.length}</span>
+                </div>
+                <div class="gdb-col flex-1 flex flex-col">
+                    {pillar.works.map((work) => (
+                            <a href={getRelativeLocaleUrl(lang, `projects/${work.id}`)} class="gdb-item group grid grid-cols-[5.5rem_1fr] gap-3 p-3">
+                                <div class="relative aspect-video overflow-hidden self-start" style="background-color: var(--gd-ink);">
+                                    <WorkCover work={work} lang={lang} sizes="6rem" />
+                                </div>
+                                <div class="min-w-0 flex flex-col gap-1">
+                                    <h3 class="font-black text-sm lg:text-base leading-tight">{work.title}</h3>
+                                    <span class="text-[0.7rem] font-bold leading-tight opacity-75">{work.context} · {work.role}</span>
+                                    <p class="text-xs font-medium leading-snug line-clamp-3">{work.line}</p>
+                                    {work.pillars.length > 1 && (
+                                            <div class="flex flex-wrap gap-1 pt-0.5">
+                                                {work.pillars.slice(1).map((id) => <span class="gdb-chip">+ {pillarName.get(id)}</span>)}
+                                            </div>
+                                    )}
+                                </div>
+                            </a>
+                    ))}
+                </div>
+            </div>
+    ))}
+</div>
+
+<style>
+    .gdb-head {
+        background-color: var(--gd-accent);
+        color: var(--gd-paper);
+        border: 2.5px solid var(--gd-ink);
+        border-bottom: 0;
+    }
+    .gdb-col {
+        background-color: var(--gd-paper);
+        border: 2.5px solid var(--gd-ink);
+        box-shadow: 4px 4px 0 var(--gd-ink);
+    }
+    .gdb-item + .gdb-item {
+        border-top: 2px dashed color-mix(in srgb, var(--gd-ink) 30%, transparent);
+    }
+    .gdb-item {
+        transition: background-color 120ms ease;
+    }
+    .gdb-item:hover {
+        background-color: color-mix(in srgb, var(--gd-accent) 12%, var(--gd-paper));
+    }
+    .gdb-chip {
+        font-size: 0.62rem;
+        font-weight: 800;
+        padding: 0 0.35rem;
+        border: 1.5px solid var(--gd-accent);
+        color: var(--gd-accent);
+    }
+</style>
