@@ -1,0 +1,145 @@
+---
+// 项目区 · 版式 A：代表作做成大号倾斜面板（封面切成平行四边形），其余项目是逐级错开的倾斜列表，悬停反色
+import { Image } from "astro:assets";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import type { OverviewRole, RoleProject } from "../portfolioRolesData";
+
+interface Props {
+    role: OverviewRole;
+    projects: RoleProject[];
+    lang: string;
+    labels: { featured: string; view: string; prev: string; next: string };
+}
+const { projects, lang, labels } = Astro.props;
+const [featured, ...rest] = projects;
+const href = (id: string) => getRelativeLocaleUrl(lang, `projects/${id}`);
+---
+
+<div class="flex flex-col gap-10 lg:gap-14">
+    {featured && (
+            <article class="pa-feature pa-skew relative" data-reveal="left" data-reveal-once>
+                <div class="pa-unskew grid lg:grid-cols-[1.1fr_1fr] gap-6 lg:gap-10 p-5 lg:p-8">
+                    <a href={href(featured.id)} class="pa-cover block relative aspect-video overflow-hidden" aria-label={featured.title}>
+                        {featured.cover && (
+                                <Image src={featured.cover} alt={featured.title} widths={[640, 960, 1280]} sizes="(min-width: 1024px) 50vw, 100vw" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+                        )}
+                    </a>
+                    <div class="flex flex-col gap-4">
+                        <span class="self-start px-3 py-1 font-black text-sm tracking-[0.2em] uppercase" style="background-color: var(--role-dark); color: var(--paper);">
+                            <i class="fa-solid fa-star mr-1.5"></i>{labels.featured}
+                        </span>
+                        <h3 class="font-black text-3xl lg:text-5xl leading-tight">{featured.title}</h3>
+                        <div class="flex flex-wrap gap-2">
+                            {featured.roles.map((r) => <span class="pa-role px-3 py-1 font-black text-sm">{r}</span>)}
+                            {featured.tags.map((tag) => <span class="px-3 py-1 font-bold text-sm border-2" style="border-color: var(--role-dark); color: var(--role-dark);">{tag}</span>)}
+                        </div>
+                        <p class="text-base lg:text-lg font-medium leading-[1.8]">{featured.desc}</p>
+                        <div class="mt-auto flex flex-wrap items-center gap-3 pt-2">
+                            <a href={href(featured.id)} class="pa-cta inline-flex items-center gap-2 px-5 py-3 font-black">
+                                {labels.view}<i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                            {featured.links.map((link) => (
+                                    <a href={link.url} target="_blank" rel="noopener noreferrer" class="w-11 h-11 flex items-center justify-center border-2 text-lg transition-colors hover:text-[var(--paper)] hover:bg-[var(--role-dark)]" style="border-color: var(--role-dark); color: var(--role-dark);" aria-label={link.name} title={link.name}>
+                                        <i class={link.icon}></i>
+                                    </a>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </article>
+    )}
+
+    <nav class="flex flex-col gap-5" data-reveal-children="left" data-reveal-once data-reveal-stagger="80">
+        {rest.map((project, i) => (
+                <a href={href(project.id)} class="pa-row pa-skew group relative block" style={`--step: ${i};`}>
+                    <div class="pa-unskew flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 p-4 lg:p-5">
+                        <div class="pa-thumb relative shrink-0 w-full sm:w-52 lg:w-64 aspect-video overflow-hidden">
+                            {project.cover && (
+                                    <Image src={project.cover} alt="" widths={[320, 640]} sizes="(min-width: 1024px) 16rem, (min-width: 640px) 13rem, 100vw" class="absolute inset-0 w-full h-full object-cover" />
+                            )}
+                        </div>
+                        <div class="flex-1 min-w-0 flex flex-col gap-2">
+                            <div class="flex items-center gap-3">
+                                <span class="pa-num font-black text-3xl lg:text-4xl leading-none">{String(i + 2).padStart(2, "0")}</span>
+                                <h3 class="font-black text-xl lg:text-2xl leading-tight">{project.title}</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                {project.roles.map((r) => <span class="pa-role px-2.5 py-0.5 font-black text-xs lg:text-sm">{r}</span>)}
+                            </div>
+                            <p class="text-sm lg:text-base font-medium leading-[1.7] line-clamp-2">{project.desc}</p>
+                        </div>
+                        <i class="fa-solid fa-arrow-right text-2xl shrink-0 self-end sm:self-center transition-transform duration-200 group-hover:translate-x-1.5"></i>
+                    </div>
+                </a>
+        ))}
+    </nav>
+</div>
+
+<style>
+    /* 与 Part 1 一致：以左下角为基准向右倾。只在宽屏倾斜：窄屏上内容竖排变高，倾斜会冲出屏幕 */
+    @media (min-width: 1024px) {
+        .pa-skew {
+            --skew: -10deg;
+            transform: skewX(var(--skew));
+            transform-origin: left bottom;
+        }
+        .pa-unskew {
+            transform: skewX(calc(var(--skew) * -1));
+        }
+        /* 代表作面板很高，角度收小并在右边留出倾斜多出的宽度（约 高 × tan6°） */
+        .pa-feature {
+            --skew: -6deg;
+            margin-right: 4rem;
+        }
+        .pa-row {
+            margin-left: calc(var(--step) * 1.5rem);
+            margin-right: 2.5rem;
+        }
+        .pa-row:hover,
+        .pa-row:focus-visible {
+            transform: skewX(var(--skew)) translateX(12px);
+        }
+    }
+    .pa-feature,
+    .pa-row {
+        background-color: var(--paper);
+        border-left: 10px solid var(--role-dark);
+    }
+    .pa-cover,
+    .pa-thumb {
+        clip-path: polygon(6% 0, 100% 0, 94% 100%, 0 100%);
+        background-color: var(--role-dark);
+    }
+    .pa-role {
+        background-color: var(--role-dark);
+        color: var(--paper);
+    }
+    .pa-cta {
+        background-color: var(--role-dark);
+        color: var(--paper);
+        transition: translate 150ms ease;
+    }
+    .pa-cta:hover {
+        translate: 4px 0;
+    }
+    .pa-num {
+        color: var(--role-dark);
+    }
+    .pa-row {
+        transition: transform 160ms ease, background-color 160ms ease, color 160ms ease;
+    }
+    .pa-row:hover,
+    .pa-row:focus-visible {
+        background-color: var(--role-dark);
+        color: var(--paper);
+    }
+    .pa-row:hover .pa-num,
+    .pa-row:focus-visible .pa-num {
+        color: var(--paper);
+    }
+    .pa-row:hover .pa-role,
+    .pa-row:focus-visible .pa-role {
+        background-color: var(--paper);
+        color: var(--role-dark);
+    }
+</style>

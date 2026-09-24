@@ -1,0 +1,77 @@
+---
+// 项目区 · 版式 B：海报网格。封面铺满卡片上半，底边压一条倾斜的角色色标题带（编号 + 标题），
+// 下面是身份、标签和简介；代表作横跨两列。悬停时卡片按粗野风格偏移阴影
+import { Image } from "astro:assets";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import type { OverviewRole, RoleProject } from "../portfolioRolesData";
+
+interface Props {
+    role: OverviewRole;
+    projects: RoleProject[];
+    lang: string;
+    labels: { featured: string; view: string; prev: string; next: string };
+}
+const { projects, lang, labels } = Astro.props;
+const href = (id: string) => getRelativeLocaleUrl(lang, `projects/${id}`);
+---
+
+<div class="grid md:grid-cols-2 gap-8 lg:gap-10" data-reveal-children="up" data-reveal-order="columns" data-reveal-once>
+    {projects.map((project, i) => (
+            <a href={href(project.id)} class:list={["pb-card group flex flex-col", project.featured && "md:col-span-2"]}>
+                <div class:list={["relative overflow-hidden", project.featured ? "aspect-video lg:aspect-[21/9]" : "aspect-video"]} style="background-color: var(--role-dark);">
+                    {project.cover && (
+                            <Image
+                                    src={project.cover}
+                                    alt={project.title}
+                                    widths={project.featured ? [800, 1280, 1920] : [480, 800, 1200]}
+                                    sizes={project.featured ? "100vw" : "(min-width: 768px) 50vw, 100vw"}
+                                    class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                    )}
+                    {project.featured && (
+                            <span class="absolute top-4 left-4 px-3 py-1 font-black text-sm tracking-[0.2em] uppercase" style="background-color: var(--paper); color: var(--role-dark);">
+                                <i class="fa-solid fa-star mr-1.5"></i>{labels.featured}
+                            </span>
+                    )}
+                    <!-- 倾斜的标题带，压在封面底边 -->
+                    <div class="pb-band absolute left-0 bottom-0 flex items-center gap-3 lg:gap-4 pl-4 lg:pl-6 pr-12 py-2.5 lg:py-3 max-w-[92%]">
+                        <span class="font-black text-3xl lg:text-5xl leading-none opacity-60">{String(i + 1).padStart(2, "0")}</span>
+                        <h3 class:list={["font-black leading-tight", project.featured ? "text-2xl lg:text-4xl" : "text-xl lg:text-2xl"]}>{project.title}</h3>
+                    </div>
+                </div>
+
+                <div class="flex-1 flex flex-col gap-3 p-5 lg:p-6" style="background-color: var(--paper);">
+                    <div class="flex flex-wrap gap-2">
+                        {project.roles.map((r) => <span class="px-2.5 py-0.5 font-black text-xs lg:text-sm" style="background-color: var(--role-dark); color: var(--paper);">{r}</span>)}
+                        {project.tags.map((tag) => <span class="px-2.5 py-0.5 font-bold text-xs lg:text-sm border-2" style="border-color: var(--role-dark); color: var(--role-dark);">{tag}</span>)}
+                    </div>
+                    <p class:list={["text-sm lg:text-base font-medium leading-[1.75]", project.featured ? "line-clamp-3" : "line-clamp-4"]}>{project.desc}</p>
+                    <span class="mt-auto pt-2 self-end flex items-center gap-2 font-black" style="color: var(--role-dark);">
+                        {labels.view}<i class="fa-solid fa-arrow-right transition-transform duration-200 group-hover:translate-x-1.5"></i>
+                    </span>
+                </div>
+            </a>
+    ))}
+</div>
+
+<style>
+    .pb-card {
+        border: 3px solid var(--role-dark);
+        box-shadow: 8px 8px 0 var(--role-dark);
+        transition: transform 120ms ease, box-shadow 120ms ease;
+    }
+    .pb-card:hover {
+        transform: translate(4px, 4px);
+        box-shadow: 4px 4px 0 var(--role-dark);
+    }
+    .pb-card:active {
+        transform: translate(8px, 8px);
+        box-shadow: 0 0 0 var(--role-dark);
+    }
+    .pb-band {
+        background-color: var(--role-dark);
+        color: var(--paper);
+        /* 右端按菜单同样的 10° 斜切 */
+        clip-path: polygon(0 0, 100% 0, calc(100% - 2rem) 100%, 0 100%);
+    }
+</style>

@@ -45,3 +45,35 @@ export function parseIntro(text: string, roles: OverviewRole[]) {
         roleParagraphs: paragraphs.slice(leadCount).map((segments, i) => ({ role: roles[i], segments })),
     };
 }
+
+/** 某个角色的项目，代表作排第一，其余按 projectIds 的顺序；文案已按语言取好 */
+export async function getRoleProjects(roleId: string, lang: string) {
+    const { roles } = await getOverviewData();
+    const role = roles.find((r) => r.id === roleId);
+    if (!role) throw new Error(`Unknown portfolio role: ${roleId}`);
+
+    const projects = await getCollection("projects");
+    const byId = new Map(projects.map((p) => [p.id, p]));
+    const pick = <T>(m: Partial<Record<string, T>>) => m[lang] ?? m.en ?? m.zh;
+    const ids = [role.flagshipId, ...role.projectIds.filter((id) => id !== role.flagshipId)];
+
+    return {
+        role,
+        projects: ids.flatMap((id) => {
+            const p = byId.get(id);
+            if (!p) return [];
+            return [{
+                id,
+                title: pick(p.data.title) ?? id,
+                desc: pick(p.data.desc) ?? "",
+                roles: pick(p.data.roles) ?? [],
+                tags: pick(p.data.tags) ?? [],
+                cover: p.data.coverImage,
+                links: p.data.links ?? [],
+                featured: id === role.flagshipId,
+            }];
+        }),
+    };
+}
+
+export type RoleProject = Awaited<ReturnType<typeof getRoleProjects>>["projects"][number];

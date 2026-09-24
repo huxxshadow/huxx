@@ -1,0 +1,62 @@
+---
+// 角色板块（Part 2–5 共用）：P3R 风格的标题（倾斜的大编号 + 角色名），下面是该角色的项目。
+// 项目区有三个候选版式，本地 dev 下用 DebugVariantSwitcher 切换；默认 / 生产显示 A
+import { COLORS } from "@/consts";
+import { useTranslations, type Lang } from "@/i18n";
+import { portfolioOverviewLabels as L } from "@/i18n/components/portfolio/PortfolioRoles_i18";
+import { getRoleProjects } from "../portfolioRolesData";
+import ProjectsA from "./ProjectsA.astro";
+import ProjectsB from "./ProjectsB.astro";
+import ProjectsC from "./ProjectsC.astro";
+
+interface Props {
+    roleId: string;
+}
+const { roleId } = Astro.props;
+const lang = (Astro.currentLocale as Lang) || "en";
+const t = useTranslations(lang);
+const { role, projects } = await getRoleProjects(roleId, lang);
+
+const ink = COLORS.black;
+const layout = {
+    role,
+    projects,
+    lang,
+    labels: {
+        featured: t(L.featured),
+        view: t(L.viewProject),
+        prev: t(L.prev),
+        next: t(L.next),
+    },
+};
+---
+
+<section
+        id={role.anchor}
+        class="relative overflow-hidden w-full px-6 sm:px-12 lg:px-20 xl:px-28 py-20 lg:py-24 scroll-mt-16"
+        style={`background-color: ${role.color.light}; color: ${ink}; --theme-bg: ${role.color.light}; --theme-text: ${ink}; --role-dark: ${role.color.dark}; --role-light: ${role.color.light}; --paper: #FFFDF7;`}
+        data-theme-bg={role.color.light}
+        data-theme-text={ink}
+>
+    <header class="flex flex-wrap items-end gap-x-6 gap-y-2 mb-12 lg:mb-16" data-reveal-children="left" data-reveal-once data-reveal-stagger="90">
+        <span class="role-skew font-black leading-[0.8] text-[7rem] lg:text-[10rem]" style={`color: ${role.color.dark};`}>{role.index}</span>
+        <div class="flex flex-col gap-1 pb-2">
+            <span class="font-black text-sm lg:text-base tracking-[0.3em] uppercase" style={`color: ${role.color.dark};`}>{role.person.en}</span>
+            <h2 class="role-skew font-black leading-none tracking-tight text-5xl lg:text-7xl">{t(role.name)}</h2>
+        </div>
+        <span class="ml-auto pb-3 font-black text-lg lg:text-xl whitespace-nowrap">{projects.length} {t(L.projectsUnit)}</span>
+    </header>
+
+    <div data-variant-group={`role-${role.id}`} data-variant-label={`Part · ${role.name.en}`}>
+        <div data-variant="A"><ProjectsA {...layout} /></div>
+        <div data-variant="B" hidden><ProjectsB {...layout} /></div>
+        <div data-variant="C" hidden><ProjectsC {...layout} /></div>
+    </div>
+</section>
+
+<style>
+    .role-skew {
+        transform: skewX(-10deg);
+        transform-origin: left bottom;
+    }
+</style>
