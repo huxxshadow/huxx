@@ -28,6 +28,8 @@ const paper = "#FFFDF7";
 const roleArt: Record<string, ImageMetadata> = {
     "game-design": gameDesignArt,
 };
+// 舞台比例取游戏设计插画的原始宽高
+const artAspect = `${gameDesignArt.width} / ${gameDesignArt.height}`;
 ---
 
 <section
@@ -52,16 +54,16 @@ const roleArt: Record<string, ImageMetadata> = {
             </div>
         </div>
 
-        <div class="mt-12 lg:mt-16 grid lg:grid-cols-[5fr_7fr] gap-8 lg:gap-12" data-role-showcase>
-            <!-- 左：角色插画舞台（只在宽屏显示，窄屏没有悬停） -->
-            <div class="relative hidden lg:block min-h-[32rem]" data-reveal="fade" data-reveal-once aria-hidden="true">
+        <div class="mt-12 lg:mt-16 grid lg:grid-cols-[auto_1fr] gap-8 lg:gap-12 xl:gap-16" data-role-showcase>
+            <!-- 左：角色插画舞台（只在宽屏显示，窄屏没有悬停）。按插画原比例定尺寸，不撑满整栏 -->
+            <div class="relative hidden lg:block self-center w-[20rem] xl:w-[24rem]" style={`aspect-ratio: ${artAspect};`} data-reveal="fade" data-reveal-once aria-hidden="true">
                 {items.map(({ role, name }, i) => (
                         <div class="role-art absolute inset-0 flex items-center justify-center" data-role-art={role.id} data-active={i === 0 ? "" : undefined}>
                             {roleArt[role.id] ? (
-                                    <Image src={roleArt[role.id]} alt="" widths={[480, 720, 960]} sizes="(min-width: 1024px) 40vw, 0px" class="max-h-full w-auto object-contain" loading="lazy" decoding="async" />
+                                    <Image src={roleArt[role.id]} alt="" widths={[400, 800]} sizes="(min-width: 1280px) 24rem, (min-width: 1024px) 20rem, 0px" class="w-full h-full object-contain" loading="lazy" decoding="async" />
                             ) : (
                                     <div class="flex flex-col items-center gap-2 font-black" style={`color: ${role.color.dark};`}>
-                                        <span class="text-[12rem] leading-none opacity-20">{role.index}</span>
+                                        <span class="text-[10rem] leading-none opacity-20">{role.index}</span>
                                         <span class="text-3xl">{name}</span>
                                     </div>
                             )}
@@ -153,10 +155,10 @@ const roleArt: Record<string, ImageMetadata> = {
 </style>
 
 <script>
-    // 悬停 / 聚焦菜单里的某一行，左侧插画切到该角色：新的从左边滑入淡入，旧的向右滑出淡出。
+    // 悬停 / 聚焦菜单里的某一行，左侧插画切到该角色：新的从画面左边缘外向右滑入并淡入，旧的继续向右滑出淡出。
     // 离开菜单时保持最后一个，不回退。
-    const ENTER = { duration: 420, delay: 60, easing: 'cubic-bezier(0.2, 1, 0.3, 1)' };
-    const LEAVE = { duration: 260, easing: 'cubic-bezier(0.4, 0, 1, 1)' };
+    const ENTER = { duration: 700, easing: 'cubic-bezier(0.2, 1, 0.3, 1)' };
+    const LEAVE = { duration: 320, easing: 'cubic-bezier(0.4, 0, 1, 1)' };
 
     function initShowcase(root: HTMLElement) {
         const arts = new Map(
@@ -179,14 +181,17 @@ const roleArt: Record<string, ImageMetadata> = {
             if (outgoing) {
                 outgoing.getAnimations().forEach((a) => a.cancel());
                 outgoing.animate(
-                    [{ opacity: 1, translate: '0 0' }, { opacity: 0, translate: '60px 0' }],
+                    [{ opacity: 1, translate: '0 0' }, { opacity: 0, translate: '160px 0' }],
                     LEAVE
                 );
             }
+            // 起点：插画右边缘刚好在视口左边缘外，一路向右滑到原位
+            // （先取消残留动画，再量静止位置）
             incoming.getAnimations().forEach((a) => a.cancel());
+            const fromX = -Math.ceil(incoming.getBoundingClientRect().right);
             incoming.animate(
-                [{ opacity: 0, translate: '-60px 0' }, { opacity: 1, translate: '0 0' }],
-                { ...ENTER, fill: 'backwards' }
+                [{ opacity: 0, translate: `${fromX}px 0` }, { opacity: 1, translate: '0 0' }],
+                ENTER
             );
         };
 
