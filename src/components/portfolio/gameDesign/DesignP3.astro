@@ -145,12 +145,18 @@ const [hero, ...side] = showcase.featured as DesignWorkView[];
         min-height: 30rem;
         clip-path: polygon(2.5% 0, 100% 0, 97.5% 100%, 0 100%);
     }
+    /* 图层自己也按面板的斜边裁切，只放大里面的图：放大动画走合成层时会绕过父级的 clip-path，
+       图的直角会短暂露到斜边外面 */
     .p3-panel-img {
         position: absolute;
         inset: 0;
+        overflow: hidden;
+        clip-path: inherit;
+    }
+    .p3-panel-img > :global(*) {
         transition: scale 400ms ease;
     }
-    .p3-panel:hover .p3-panel-img {
+    .p3-panel:hover .p3-panel-img > :global(*) {
         scale: 1.04;
     }
     /* 底部压暗，保证文字可读 */
