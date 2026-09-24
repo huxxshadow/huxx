@@ -9,6 +9,7 @@ import ProjectLinks from "@/components/mdx/ProjectLinks.astro";
 import EelOnMaskSkin from "@/components/projects/EelOnMaskSkin.astro";
 import ClickClickUniverseSkin from "@/components/projects/ClickClickUniverseSkin.astro";
 import NightWatchSkin from "@/components/projects/NightWatchSkin.astro";
+import FractalShelterSkin from "@/components/projects/FractalShelterSkin.astro";
 import { getRelativeLocaleUrl } from "astro:i18n";
 
 export async function getStaticPaths() {
@@ -43,6 +44,7 @@ const SKINS: Record<string, any> = {
     eel: EelOnMaskSkin,
     ccu: ClickClickUniverseSkin,
     nw: NightWatchSkin,
+    fs: FractalShelterSkin,
 };
 const skin = project.data.skin;
 const Skin = skin ? SKINS[skin] : undefined;

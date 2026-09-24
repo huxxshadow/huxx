@@ -1,0 +1,437 @@
+---
+// Fractal Shelter 项目页专属皮肤（projects.json 里 skin: "fs" 时由 [id].astro 挂载）
+//
+// 视觉照着项目的 pitch 文档走：白纸、单一的正红（#D30000，恰好是站内 COLORS.red.dark）、
+// 被强调的专有名词用蓝色（#0058C0，站内 COLORS.blue.dark），粗黑体 Roboto；
+// 红框圆角的章节标签、贴在右侧的红色竖线、右下角的大号页码、左下角的斜切红色页脚签
+// 「FS-007 Origin File」、谢尔宾斯基三角里嵌盾牌的徽标。
+// - 所有规则都限定在 .skin-fs / html:has(.skin-fs) 下，避免污染其他项目页（样式表是整条路由共用的）。
+// - 平面设计，不用阴影。
+interface Props {
+    /** true 时只输出 hero 里的装饰层（字体与样式由页面顶部那次挂载负责） */
+    stickers?: boolean;
+}
+const { stickers = false } = Astro.props;
+
+// 谢尔宾斯基三角（3 阶，27 个小三角）+ 中间的盾牌，viewBox 0 0 120 104
+function sierpinski(x: number, y: number, size: number, depth: number): string[] {
+    const h = (size * Math.sqrt(3)) / 2;
+    if (depth === 0) return [`${x},${y + h} ${x + size / 2},${y} ${x + size},${y + h}`];
+    const half = size / 2;
+    return [
+        ...sierpinski(x + half / 2, y, half, depth - 1),
+        ...sierpinski(x, y + h / 2, half, depth - 1),
+        ...sierpinski(x + half, y + h / 2, half, depth - 1),
+    ];
+}
+const triangles = sierpinski(0, 0, 120, 3);
+---
+
+{stickers ? (
+        <div class="fs-deco" aria-hidden="true">
+            <svg class="fs-logo" viewBox="0 0 120 104">
+                {triangles.map((points) => <polygon points={points} />)}
+                <path class="fs-logo-shield" d="M60 44 L74 49 L74 60 Q74 72 60 79 Q46 72 46 60 L46 49 Z" />
+                <path class="fs-logo-shield-inner" d="M60 50 L69 53.5 L69 60.5 Q69 68.5 60 73 Q51 68.5 51 60.5 L51 53.5 Z" />
+            </svg>
+            <svg class="fs-ghost" viewBox="0 0 120 104">
+                {triangles.map((points) => <polygon points={points} />)}
+            </svg>
+            <span class="fs-tab">FS-007 Origin File</span>
+        </div>
+) : (
+        <>
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+            <link
+                    rel="stylesheet"
+                    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,900&display=swap"
+            />
+        </>
+)}
+
+<style is:global>
+    /* ========================================================= */
+    /* 调色板：直接从 pitch 页面上取样                               */
+    /* ========================================================= */
+    html:has(.skin-fs) {
+        --fs-red: #D30000;
+        --fs-blue: #0058C0;
+        --fs-paper: #FFFFFF;
+        --fs-pink: #FDE6EC;      /* 海报底色 */
+        --fs-rose: #DE4D4A;      /* 海报中间调 */
+        --fs-maroon: #8F2F2F;    /* 海报暗部 */
+        --fs-font: "Roboto", var(--theme-font-active), sans-serif;
+    }
+
+    html:has(.skin-fs) body {
+        background-color: var(--fs-paper);
+    }
+
+    /* ========================================================= */
+    /* HERO：海报封面                                               */
+    /* ========================================================= */
+    header.skin-fs {
+        background-color: var(--fs-pink);
+        border-color: var(--fs-red) !important;
+        border-bottom-width: 10px;
+        font-family: var(--fs-font);
+        padding-bottom: 5rem;
+    }
+
+    header.skin-fs > .absolute {
+        display: none;
+    }
+
+    .skin-fs .project-hero-shell {
+        position: relative;
+    }
+
+    .skin-fs .project-hero-screen {
+        position: relative;
+        z-index: 2;
+    }
+
+    .skin-fs .fs-deco {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    /* 右上角的徽标 */
+    .skin-fs .fs-logo {
+        position: absolute;
+        top: -1.5rem;
+        right: 0;
+        width: 5.5rem;
+        fill: var(--fs-red);
+    }
+
+    .skin-fs .fs-logo .fs-logo-shield {
+        fill: var(--fs-paper);
+    }
+
+    .skin-fs .fs-logo .fs-logo-shield-inner {
+        fill: var(--fs-red);
+    }
+
+    /* 背景里很淡的大三角 */
+    .skin-fs .fs-ghost {
+        position: absolute;
+        right: -6rem;
+        bottom: -8rem;
+        width: 34rem;
+        fill: var(--fs-red);
+        opacity: .06;
+    }
+
+    /* 左下角的斜切页脚签 */
+    .skin-fs .fs-tab {
+        position: absolute;
+        left: -2rem;
+        bottom: -5rem;
+        padding: .7rem 3.6rem .7rem 2rem;
+        background-color: var(--fs-red);
+        color: var(--fs-paper);
+        font-family: var(--fs-font);
+        font-weight: 900;
+        font-size: 1.05rem;
+        letter-spacing: .04em;
+        clip-path: polygon(0 0, calc(100% - 2.2rem) 0, 100% 100%, 0 100%);
+    }
+
+    /* ---- 标题：海报上那种红色粗斜体 ---- */
+    .skin-fs .project-hero-screen h1 {
+        color: var(--fs-red);
+        font-family: var(--fs-font);
+        font-weight: 900;
+        font-style: italic;
+        letter-spacing: -.01em;
+        line-height: .95;
+    }
+
+    .skin-fs .back-btn {
+        color: var(--fs-red);
+        font-family: var(--fs-font);
+        opacity: 1;
+        transition: translate .15s ease;
+    }
+
+    .skin-fs .back-btn:hover {
+        translate: -3px 0;
+    }
+
+    /* ---- 标签：红框圆角（和 pitch 的章节标签同款），身份用实心红 ---- */
+    .skin-fs .brutalist-badge {
+        border: 3px solid var(--fs-red) !important;
+        border-radius: .5rem;
+        background-color: var(--fs-paper);
+        color: var(--fs-red);
+        box-shadow: none;
+        font-family: var(--fs-font);
+        font-weight: 900;
+    }
+
+    .skin-fs .project-hero-screen .brutalist-badge:has(.fa-user-gear) {
+        background-color: var(--fs-red);
+        color: var(--fs-paper);
+    }
+
+    /* ---- 简介：红字 + 红色竖线 ---- */
+    .skin-fs .project-hero-screen .border-l-\[4px\] {
+        border-left-width: 8px;
+        border-color: var(--fs-red) !important;
+        color: var(--fs-red);
+        font-family: var(--fs-font);
+        font-weight: 500;
+    }
+
+    /* ---- 封面：平面，无阴影 ---- */
+    .skin-fs .project-hero-shell .project-hero-image {
+        border: 4px solid var(--fs-red) !important;
+        border-radius: 0;
+        box-shadow: none;
+        background-color: var(--fs-pink) !important;
+    }
+
+    /* ========================================================= */
+    /* 正文：pitch 文档的一页                                       */
+    /* ========================================================= */
+    main.skin-fs {
+        background-color: var(--fs-paper);
+        font-family: var(--fs-font);
+        counter-reset: fs-page;
+    }
+
+    .skin-fs .project-prose {
+        --fs-gutter: 5.5rem;     /* 右侧留给竖线和页码的宽度 */
+        --fs-num-right: 3rem;    /* 页码右缘到正文右边的距离 */
+        position: relative;
+        padding: 3rem var(--fs-gutter) 7rem 1rem;
+        /* 让 h2 里的页码能用 100cqw 拿到正文宽度 */
+        container-type: inline-size;
+    }
+
+    /* 右侧那根红色竖线 */
+    .skin-fs .project-prose::after {
+        content: "";
+        position: absolute;
+        top: 3rem;
+        bottom: 6rem;
+        right: 1.6rem;
+        width: 10px;
+        border-radius: 999px;
+        background-color: var(--fs-red);
+    }
+
+    .skin-fs .project-prose p,
+    .skin-fs .project-prose li,
+    .skin-fs .project-prose h3,
+    .skin-fs .project-prose h4,
+    .skin-fs .project-prose td {
+        color: var(--fs-red);
+        font-family: var(--fs-font);
+    }
+
+    .skin-fs .project-prose p,
+    .skin-fs .project-prose li {
+        font-weight: 500;
+        letter-spacing: .01em;
+    }
+
+    /* 专有名词、机制关键词：pitch 里的蓝色 */
+    .skin-fs .project-prose strong {
+        color: var(--fs-blue);
+        font-weight: 900;
+    }
+
+    .skin-fs .project-prose em {
+        font-style: normal;
+        font-weight: 900;
+        color: var(--fs-red);
+    }
+
+    /* ---- H2：红框圆角标签 + 贴在右侧竖线上的大号页码 ---- */
+    .skin-fs .project-prose h2 {
+        counter-increment: fs-page;
+        border: 4px solid var(--fs-red);
+        border-radius: .7rem;
+        background-color: var(--fs-paper);
+        box-shadow: none;
+        color: var(--fs-red);
+        font-family: var(--fs-font);
+        font-weight: 900;
+        letter-spacing: .01em;
+        padding: .45rem 1.3rem .5rem;
+        margin-top: 4.5rem;
+        position: relative;
+    }
+
+    /* 页码以 h2 为定位基准（入场动画的 translate 本来就会让 h2 成为定位容器），
+       用正文宽度 100cqw 把它推到右侧竖线旁边 */
+    .skin-fs .project-prose h2::after {
+        content: counter(fs-page, decimal-leading-zero);
+        position: absolute;
+        top: 50%;
+        left: calc(100cqw + var(--fs-gutter) - var(--fs-num-right));
+        translate: -100% -50%;
+        z-index: 1;
+        padding: 0 .35rem;
+        background-color: var(--fs-paper);
+        color: var(--fs-red);
+        font-size: 2.6rem;
+        font-weight: 900;
+        line-height: 1;
+    }
+
+    .skin-fs .project-prose h3 {
+        font-weight: 900;
+        margin-top: 2.2rem;
+    }
+
+    .skin-fs .project-prose h4 {
+        color: var(--fs-blue);
+        font-weight: 900;
+    }
+
+    /* ---- 列表：左侧一根粗红竖条，粗体条目（pitch 的 Target players 那样） ---- */
+    .skin-fs .project-prose ul {
+        list-style: none;
+        padding-left: 1.4rem;
+        border-left: 8px solid var(--fs-red);
+        border-radius: 4px;
+    }
+
+    .skin-fs .project-prose ul li {
+        font-weight: 700;
+        padding-left: 0;
+    }
+
+    /* ---- 引用：一句话提炼，放在实心红条里 ---- */
+    .skin-fs .project-prose blockquote {
+        border: 0;
+        border-radius: 0 .7rem .7rem 0;
+        padding: 1.1rem 1.6rem;
+        background-color: var(--fs-red);
+        opacity: 1;
+    }
+
+    .skin-fs .project-prose blockquote p {
+        color: var(--fs-paper);
+        font-weight: 900;
+    }
+
+    .skin-fs .project-prose blockquote strong {
+        color: var(--fs-pink);
+    }
+
+    /* ---- 图片：平面，无框无影；说明文字用蓝色（pitch 里的「FS-045 Cry Angel」） ---- */
+    .skin-fs .project-prose img {
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .skin-fs .project-prose figcaption {
+        color: var(--fs-blue);
+        font-family: var(--fs-font);
+        font-weight: 900;
+        font-size: 1.05rem;
+        opacity: 1;
+    }
+
+    .skin-fs .project-prose hr {
+        height: 8px;
+        border: 0;
+        border-radius: 999px;
+        background-color: var(--fs-red);
+        opacity: 1;
+    }
+
+    .skin-fs .project-prose a {
+        color: var(--fs-red);
+        font-weight: 900;
+        text-decoration-thickness: 3px;
+    }
+
+    /* ---- 左下角的斜切页脚签（正文版） ---- */
+    .skin-fs .project-prose::before {
+        content: "FS-007 Origin File";
+        position: absolute;
+        left: -1rem;
+        bottom: 0;
+        padding: .7rem 3.6rem .7rem 1.4rem;
+        background-color: var(--fs-red);
+        color: var(--fs-paper);
+        font-weight: 900;
+        font-size: 1.05rem;
+        letter-spacing: .04em;
+        clip-path: polygon(0 0, calc(100% - 2.2rem) 0, 100% 100%, 0 100%);
+    }
+
+    /* ========================================================= */
+    /* MDX 里用到的专用块                                          */
+    /* ========================================================= */
+
+    /* pitch 原稿：竖长页面两两并排，单出来的最后一页居中 */
+    .skin-fs .fs-pages {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 2rem;
+        margin: 2.5rem 0;
+    }
+
+    .skin-fs .fs-pages figure {
+        margin: 0;
+    }
+
+    .skin-fs .fs-pages img {
+        outline: 3px solid var(--fs-red);
+    }
+
+    .skin-fs .fs-pages figure:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+        justify-self: center;
+        width: calc(50% - 1rem);
+    }
+
+    /* ========================================================= */
+    /* 响应式                                                     */
+    /* ========================================================= */
+    @media (max-width: 1023px) {
+        .skin-fs .fs-ghost {
+            display: none;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .skin-fs .project-prose {
+            --fs-gutter: 2.6rem;
+            --fs-num-right: 1.2rem;
+            padding: 2rem var(--fs-gutter) 6rem 0;
+        }
+
+        .skin-fs .project-prose::after {
+            right: .4rem;
+            width: 7px;
+        }
+
+        .skin-fs .project-prose h2::after {
+            font-size: 1.8rem;
+        }
+
+        .skin-fs .fs-logo {
+            width: 3.6rem;
+            top: -2.5rem;
+        }
+
+        .skin-fs .fs-pages {
+            grid-template-columns: 1fr;
+        }
+
+        .skin-fs .fs-pages figure:last-child:nth-child(odd) {
+            width: 100%;
+        }
+    }
+</style>
