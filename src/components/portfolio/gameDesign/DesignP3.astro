@@ -35,7 +35,6 @@ const [hero, ...side] = showcase.featured as DesignWorkView[];
                     </div>
                     <div class="p3-panel-info">
                         <h3 class="font-black text-3xl lg:text-5xl leading-none tracking-tight">{hero.title}</h3>
-                        <p class="text-sm lg:text-base font-bold leading-[1.65] max-w-[38rem]">{hero.line}</p>
                         <ul class="flex flex-wrap gap-2 pt-1">
                             {tagsOf(hero).map((tag) => <li class="p3-chip">{tag}</li>)}
                         </ul>
