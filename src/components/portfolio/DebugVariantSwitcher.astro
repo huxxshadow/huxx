@@ -1,0 +1,100 @@
+---
+// 仅本地 dev：在页面右下角切换 [data-variant-group] 里的候选变体（A/B/C…），选择存在 localStorage
+const enabled = import.meta.env.DEV;
+---
+
+{enabled && (
+    <div
+            data-variant-switcher
+            class="fixed bottom-4 right-4 z-[9999] flex flex-col gap-2 p-3 rounded-xl border-[3px] border-black bg-white text-black font-mono text-xs shadow-[4px_4px_0_#000]"
+    >
+        <span class="font-black uppercase tracking-widest">Debug · Variants</span>
+    </div>
+)}
+
+{enabled && (
+    <script>
+        const storageKey = (group: string) => `portfolioVariant:${group}`;
+
+        const readChoice = (group: string) => {
+            try { return localStorage.getItem(storageKey(group)); } catch { return null; }
+        };
+        const saveChoice = (group: string, value: string) => {
+            try { localStorage.setItem(storageKey(group), value); } catch { /* 隐私模式等 */ }
+        };
+
+        // 已经播过入场动画的元素（data-reveal-once 播完就不再被观察）：摘掉类、强制回流再加回，动画从头重播。
+        // 还没播过的交给 Base.astro 的 IntersectionObserver，元素一显示出来它就会触发。
+        function replayReveal(root: HTMLElement) {
+            const items = root.querySelectorAll<HTMLElement>('[data-reveal], [data-reveal-children] > *');
+            const played = Array.from(items).filter((el) => el.classList.contains('is-revealed') || el.classList.contains('is-exited'));
+            played.forEach((el) => el.classList.remove('is-revealed', 'is-exited'));
+            void root.offsetWidth;
+            played.forEach((el) => el.classList.add('is-revealed'));
+        }
+
+        function show(group: HTMLElement, value: string) {
+            const variants = Array.from(group.querySelectorAll<HTMLElement>(':scope > [data-variant]'));
+            if (!variants.some((v) => v.dataset.variant === value)) value = variants[0]?.dataset.variant ?? '';
+            variants.forEach((v) => { v.hidden = v.dataset.variant !== value; });
+
+            const active = variants.find((v) => !v.hidden);
+            // 隐藏时 offsetLeft 全是 0，按列错峰要等显示后重算
+            document.dispatchEvent(new CustomEvent('motion:relayout'));
+            if (active) requestAnimationFrame(() => requestAnimationFrame(() => replayReveal(active)));
+            return value;
+        }
+
+        function init() {
+            const panel = document.querySelector<HTMLElement>('[data-variant-switcher]');
+            const groups = Array.from(document.querySelectorAll<HTMLElement>('[data-variant-group]'));
+            if (!panel || panel.dataset.ready) return;
+            panel.dataset.ready = '1';
+            if (groups.length === 0) { panel.hidden = true; return; }
+
+            groups.forEach((group) => {
+                const name = group.dataset.variantGroup!;
+                const values = Array.from(group.querySelectorAll<HTMLElement>(':scope > [data-variant]')).map((v) => v.dataset.variant!);
+
+                const row = document.createElement('div');
+                row.className = 'flex items-center gap-2';
+                const label = document.createElement('span');
+                label.className = 'font-bold mr-1';
+                label.textContent = group.dataset.variantLabel || name;
+                row.append(label);
+
+                const buttons = values.map((value) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.textContent = value;
+                    btn.className = 'w-8 h-8 rounded-md border-2 border-black font-black cursor-pointer';
+                    btn.addEventListener('click', () => {
+                        const current = show(group, value);
+                        saveChoice(name, current);
+                        sync(current);
+                        group.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    });
+                    row.append(btn);
+                    return btn;
+                });
+
+                const sync = (current: string) => {
+                    buttons.forEach((btn) => {
+                        const on = btn.textContent === current;
+                        btn.style.background = on ? '#000' : '#fff';
+                        btn.style.color = on ? '#fff' : '#000';
+                    });
+                };
+
+                const initial = readChoice(name);
+                const current = initial ? show(group, initial) : values[0];
+                sync(current);
+                panel.append(row);
+            });
+        }
+
+        // 开发时模块偶尔晚于 astro:page-load 才加载（比如 Vite 重新预构建），所以加载时也直接跑一次
+        document.addEventListener('astro:page-load', init);
+        init();
+    </script>
+)}
