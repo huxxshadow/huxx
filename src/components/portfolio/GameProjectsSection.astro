@@ -1,5 +1,6 @@
 ﻿---
 // src/components/portfolio/GameProjectsSection.astro
+import DevCover from "@/components/projects/DevCover.astro";
 import { COLORS } from "@/consts.ts";
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
@@ -109,13 +110,17 @@ function getGridClasses(count: number): string {
                                                 style={`--theme: ${colors.text}; border-color: ${colors.text}; background-color: ${colors.bg};`}
                                         >
                                             {/* Cover Image */}
-                                            {project.data.coverImage && (
+                                            {(project.data.coverImage || project.data.inDevelopment) && (
                                                     <a
                                                             href={getRelativeLocaleUrl(currentLang, `projects/${project.id}`)}
                                                             class="relative block w-full aspect-video border-b-2 overflow-hidden"
                                                             style={`border-color: ${colors.text}; background-color: ${colors.bg};`}
                                                     >
-                                                        <Image src={project.data.coverImage} alt={displayTitle} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async" />
+                                                        {project.data.coverImage ? (
+                                                                <Image src={project.data.coverImage} alt={displayTitle} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async" />
+                                                        ) : (
+                                                                <DevCover title={displayTitle} lang={currentLang} colorText={project.data.colorText} colorBackground={project.data.colorBackground} />
+                                                        )}
                                                     </a>
                                             )}
 

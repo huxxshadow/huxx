@@ -2069,16 +2069,16 @@
     },
     "roles": {
       "en": [
-        "Project Lead"
+        "Director"
       ],
       "zh": [
-        "项目负责人"
+        "制作人"
       ],
       "ja": [
-        "プロジェクトリーダー"
+        "ディレクター"
       ],
       "ko": [
-        "프로젝트 리드"
+        "디렉터"
       ]
     },
     "desc": {
@@ -2090,30 +2090,22 @@
     "tags": {
       "en": [
         "CRPG",
-        "Narrative Game",
-        "Occult",
-        "Alternate History"
+        "Narrative Game"
       ],
       "zh": [
         "CRPG",
-        "叙事游戏",
-        "神秘学",
-        "架空历史"
+        "叙事游戏"
       ],
       "ja": [
         "CRPG",
-        "ナラティブゲーム",
-        "オカルト",
-        "架空歴史"
+        "ナラティブゲーム"
       ],
       "ko": [
         "CRPG",
-        "내러티브 게임",
-        "오컬트",
-        "대체 역사"
+        "내러티브 게임"
       ]
     },
-    "coverImage": "src/assets/projects/poster/FollyblindAgePoster.webp",
+    "inDevelopment": true,
     "colorText": "#2A2A2A",
     "colorBackground": "#F4F2EE"
   }

@@ -48,6 +48,8 @@ const projects = defineCollection({
         skin: z.string().optional(),
         coverImage: image().optional(),
         backupCoverImage: image().optional(),
+        // 还在开发、没有正式封面的项目：卡片和页头用按语言渲染的「开发中」占位封面（见 DevCover.astro）
+        inDevelopment: z.boolean().optional(),
         links: z.array(
             z.object({
                 name: z.string(),

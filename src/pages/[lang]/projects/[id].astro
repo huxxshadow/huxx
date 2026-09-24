@@ -6,6 +6,7 @@ import { LOCALES, type Lang } from "@/i18n";
 import { COLORS } from "@/consts";
 import { Image } from "astro:assets";
 import ProjectLinks from "@/components/mdx/ProjectLinks.astro";
+import DevCover from "@/components/projects/DevCover.astro";
 import EelOnMaskSkin from "@/components/projects/EelOnMaskSkin.astro";
 import ClickClickUniverseSkin from "@/components/projects/ClickClickUniverseSkin.astro";
 import NightWatchSkin from "@/components/projects/NightWatchSkin.astro";
@@ -38,6 +39,7 @@ const tags = project.data.tags[currentLang] || project.data.tags.en || project.d
 const category = project.data.category;
 const order = project.data.order;
 const heroImage = project.data.coverImage || project.data.backupCoverImage;
+const showDevCover = !heroImage && project.data.inDevelopment;
 const projectLinks = project.data.links || [];
 // 专属皮肤：套皮的页面自己画底色/背景，这里就不再写内联 background-color
 const SKINS: Record<string, any> = {
@@ -152,7 +154,7 @@ if (detailEntry) {
             </div>
 
             {/* 右侧：封面图 */}
-            {heroImage && (
+            {(heroImage || showDevCover) && (
                     <div
                             class="w-full lg:w-5/12 flex justify-center lg:justify-end"
                             data-reveal="right"
@@ -163,13 +165,17 @@ if (detailEntry) {
                                 class="project-hero-image group relative w-full aspect-[4/3] rounded-2xl border-[3px] overflow-hidden"
                                 style={`--theme: ${colorText}; border-color: ${colorText}; background-color: ${colorBg};`}
                         >
-                            <Image
-                                    src={heroImage}
-                                    alt={title}
-                                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                    loading="eager"
-                                    decoding="async"
-                            />
+                            {heroImage ? (
+                                    <Image
+                                            src={heroImage}
+                                            alt={title}
+                                            class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                            loading="eager"
+                                            decoding="async"
+                                    />
+                            ) : (
+                                    <DevCover title={title} lang={currentLang} colorText={project.data.colorText} colorBackground={project.data.colorBackground} />
+                            )}
                         </div>
                     </div>
             )}

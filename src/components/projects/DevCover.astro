@@ -1,0 +1,100 @@
+---
+// 「开发中」占位封面：还没有正式封面的项目（projects.json 里 inDevelopment: true）用它代替封面图。
+// 文字按当前语言渲染（所以不能做成图片）；颜色取项目自己的主题色。
+// 铺满父元素（父元素需要是定位容器并给定尺寸，例如 aspect-video 的 relative 盒子）；
+// 字号用容器查询单位随盒子缩放，同一个组件既能当卡片缩略图，也能当页头大图。
+import { COLORS } from "@/consts";
+import { useTranslations, type Lang } from "@/i18n";
+import { devCoverLabels } from "@/i18n/components/projects/DevCover_i18";
+
+interface Props {
+    title: string;
+    lang: Lang;
+    /** projects.json 里的 colorText / colorBackground：COLORS 的 key 或十六进制色值 */
+    colorText?: string;
+    colorBackground?: string;
+}
+
+const { title, lang, colorText, colorBackground } = Astro.props;
+const t = useTranslations(lang);
+const resolve = (value: string | undefined, shade: "dark" | "light", fallback: string) =>
+    (value && (COLORS as any)[value]?.[shade]) || value || fallback;
+const fg = resolve(colorText, "dark", COLORS.black);
+const bg = resolve(colorBackground, "light", COLORS.khakiMilan);
+---
+
+<div class="dev-cover" style={`--dc-fg: ${fg}; --dc-bg: ${bg};`}>
+    <div class="dev-cover-body">
+        <span class="dev-cover-title">{title}</span>
+        <span class="dev-cover-status"><span class="dev-cover-dot" aria-hidden="true"></span>{t(devCoverLabels.inDevelopment)}</span>
+    </div>
+</div>
+
+<style>
+    .dev-cover {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        container-type: size;
+        background-color: var(--dc-bg);
+        color: var(--dc-fg);
+        text-align: center;
+    }
+
+    /* 很淡的斜向细线：「施工中」的意思点到为止 */
+    .dev-cover::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: repeating-linear-gradient(135deg, currentColor 0 1px, transparent 1px 14px);
+        opacity: .07;
+    }
+
+    .dev-cover-body {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5cqh;
+        padding: 0 8cqw;
+    }
+
+    .dev-cover-title {
+        font-weight: 900;
+        line-height: 1.1;
+        letter-spacing: .02em;
+        font-size: clamp(1rem, 11cqw, 5.5rem);
+    }
+
+    .dev-cover-status {
+        display: inline-flex;
+        align-items: center;
+        gap: .6em;
+        padding: .45em 1.2em;
+        border: 2px solid currentColor;
+        border-radius: 999px;
+        font-weight: 700;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+        font-size: clamp(.6rem, 3cqw, 1.2rem);
+    }
+
+    .dev-cover-dot {
+        width: .55em;
+        height: .55em;
+        border-radius: 50%;
+        background-color: currentColor;
+        animation: dev-cover-pulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes dev-cover-pulse {
+        50% { opacity: .25; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .dev-cover-dot { animation: none; }
+    }
+</style>

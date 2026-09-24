@@ -1,5 +1,6 @@
 ﻿---
 // src/components/portfolio/AllProjectsSection.astro
+import DevCover from "@/components/projects/DevCover.astro";
 import { COLORS } from "@/consts.ts";
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
@@ -90,6 +91,8 @@ const t = useTranslations(currentLang);
                                                 decoding="async"
                                                 draggable="false"
                                         />
+                                ) : data.inDevelopment ? (
+                                        <DevCover title={displayTitle} lang={currentLang} colorText={data.colorText} colorBackground={data.colorBackground} />
                                 ) : (
                                         <div class="absolute inset-0 flex items-center justify-center p-4">
                                             <i class="fa-solid fa-image text-5xl opacity-20" style={`color: ${COLORS.black};`}></i>
