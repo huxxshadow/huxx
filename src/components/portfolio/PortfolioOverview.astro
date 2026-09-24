@@ -52,10 +52,11 @@ const roleArt: Record<string, ImageMetadata> = {
         </div>
 
         <div class="mt-12 lg:mt-16 grid lg:grid-cols-[3fr_7fr] gap-8 lg:gap-12 xl:gap-16" data-role-showcase>
-            <!-- 左：角色插画舞台（只在宽屏显示，窄屏没有悬停）。撑满左栏高度，插画按原比例尽量放大、紧贴左边，其余三边留一点边距 -->
-            <div class="relative hidden lg:block min-h-[28rem]" data-reveal="fade" data-reveal-once aria-hidden="true">
+            <!-- 左：角色插画舞台（只在宽屏显示，窄屏没有悬停）。插画紧贴左边、按原比例放大，
+                 宽度超出本栏 40%，压到右侧菜单下面一点（菜单在上层） -->
+            <div class="relative z-0 hidden lg:block min-h-[28rem]" data-reveal="fade" data-reveal-once aria-hidden="true">
                 {items.map(({ role, name }, i) => (
-                        <div class="role-art absolute left-0 inset-y-4 right-4 xl:inset-y-6 xl:right-6 flex items-center justify-start" data-role-art={role.id} data-active={i === 0 ? "" : undefined}>
+                        <div class="role-art absolute left-0 inset-y-0 w-[140%] flex items-center justify-start" data-role-art={role.id} data-active={i === 0 ? "" : undefined}>
                             {roleArt[role.id] ? (
                                     <img src={roleArt[role.id].src} alt="" width={roleArt[role.id].width} height={roleArt[role.id].height} class="w-full h-full object-contain object-left" loading="lazy" decoding="async" />
                             ) : (
@@ -69,7 +70,7 @@ const roleArt: Record<string, ImageMetadata> = {
             </div>
 
             <!-- 右：角色菜单，平行四边形，逐级向右错开 -->
-            <nav class="flex flex-col gap-5 lg:gap-6" data-reveal-children="left" data-reveal-once data-reveal-stagger="90">
+            <nav class="relative z-10 flex flex-col gap-5 lg:gap-6" data-reveal-children="left" data-reveal-once data-reveal-stagger="90">
                 {items.map(({ role, name, segments }, i) => (
                         <a
                                 href={`#${role.anchor}`}
