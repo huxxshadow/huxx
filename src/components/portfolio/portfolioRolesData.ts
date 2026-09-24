@@ -45,18 +45,3 @@ export function parseIntro(text: string, roles: OverviewRole[]) {
         roleParagraphs: paragraphs.slice(leadCount).map((segments, i) => ({ role: roles[i], segments })),
     };
 }
-
-/** 总览三个候选版式共用的 props */
-export interface OverviewLayoutProps {
-    title: string;
-    prefix: string;
-    suffix: string;
-    /** 打字机身份名：浅底用角色深色，深底用角色浅色 */
-    words: { text: string; color: string }[];
-    wordsOnDark: { text: string; color: string }[];
-    lead: Segment[][];
-    /** 每个角色一项，文案是该角色的那段自我介绍 */
-    items: { role: OverviewRole; name: string; segments: Segment[] }[];
-    unit: string;
-    theme: { light: string; dark: string };
-}
