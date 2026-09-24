@@ -1,0 +1,91 @@
+---
+// 「我是一名 ___」打字机标题。页面上可以有多个（候选变体各一个），脚本逐个驱动
+interface Props {
+    words: { text: string; color: string }[];
+    prefix: string;
+    suffix: string;
+    class?: string;
+}
+const { words, prefix, suffix, class: className } = Astro.props;
+---
+
+<p class:list={["font-black leading-tight", className]}>
+    <span>{prefix}</span>
+    <span
+            class="typewriter inline-block border-b-[6px] pb-1"
+            data-typewriter={JSON.stringify(words)}
+            aria-hidden="true"
+            style={`color: ${words[0].color}; border-color: currentColor;`}
+    ><span class="typewriter-text">{words[0].text}</span><span class="typewriter-caret">|</span></span>{suffix && <span>{suffix}</span>}
+    <span class="sr-only">{words.map((w) => w.text).join(" / ")}</span>
+</p>
+
+<style>
+    .typewriter-caret {
+        margin-left: 0.05em;
+        animation: caret-blink 0.9s steps(2, start) infinite;
+    }
+    @keyframes caret-blink {
+        to { opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .typewriter-caret { display: none; }
+    }
+</style>
+
+<script>
+    // 循环打出身份名。「减少动态效果」时停在第一个，读屏用 sr-only 的完整列表
+    type Word = { text: string; color: string };
+    let timers: number[] = [];
+
+    function start(host: HTMLElement) {
+        const textEl = host.querySelector<HTMLElement>('.typewriter-text');
+        const words: Word[] = JSON.parse(host.dataset.typewriter || '[]');
+        if (!textEl || words.length < 2) return;
+
+        const slot = timers.length;
+        let wordIndex = 0;
+        let chars = Array.from(words[0].text);
+        let length = chars.length;
+        let deleting = true;
+
+        const tick = () => {
+            if (!host.isConnected) return;
+            if (deleting) {
+                length--;
+                if (length <= 0) {
+                    deleting = false;
+                    wordIndex = (wordIndex + 1) % words.length;
+                    chars = Array.from(words[wordIndex].text);
+                    host.style.color = words[wordIndex].color;
+                }
+            } else {
+                length++;
+            }
+            textEl.textContent = chars.slice(0, length).join('') || '​';
+
+            // 按词长分摊：每个词打出约 0.6s、删除约 0.3s，英文长词不会拖得比中文慢
+            let delay = deleting
+                ? Math.min(40, 300 / chars.length)
+                : Math.min(85, 600 / chars.length);
+            if (!deleting && length >= chars.length) {
+                deleting = true;
+                delay = 1800;
+            }
+            timers[slot] = window.setTimeout(tick, delay);
+        };
+        timers[slot] = window.setTimeout(tick, 2200);
+    }
+
+    function stopAll() {
+        timers.forEach(clearTimeout);
+        timers = [];
+    }
+
+    document.addEventListener('astro:page-load', () => {
+        stopAll();
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        document.querySelectorAll<HTMLElement>('[data-typewriter]').forEach(start);
+    });
+    document.addEventListener('astro:before-swap', stopAll);
+</script>

@@ -1,0 +1,49 @@
+---
+// 自我介绍 · 变体 B：粗野主义卡片。总述放在带偏移阴影的大卡里，四段角色各一张彩色卡片（2×2）
+import type { IntroProps } from "../portfolioRolesData";
+import Typewriter from "./Typewriter.astro";
+import Segments from "./Segments.astro";
+
+type Props = IntroProps;
+const { title, words, prefix, suffix, lead, roleParagraphs, theme } = Astro.props;
+---
+
+<div class="flex flex-col">
+    <div data-reveal-children="up" data-reveal-once data-reveal-stagger="90">
+        <h1 class="text-[3.5rem] sm:text-[4.5rem] lg:text-[5.5rem] font-black leading-[0.85] tracking-tighter mb-8">
+            {title}
+        </h1>
+        <Typewriter words={words} prefix={prefix} suffix={suffix} class="text-3xl sm:text-5xl lg:text-6xl min-h-[2.6em] sm:min-h-[2.4em]" />
+
+        <div
+                class="mt-6 p-6 lg:p-8 rounded-2xl border-[3px] flex flex-col gap-4"
+                style={`border-color: ${theme.dark}; background-color: #FFFDF7; box-shadow: 6px 6px 0 ${theme.dark};`}
+        >
+            {lead.map((segments) => (
+                    <p class="text-lg lg:text-xl font-bold leading-[1.8]">
+                        <Segments segments={segments} />
+                    </p>
+            ))}
+        </div>
+    </div>
+
+    <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6" data-reveal-children="up" data-reveal-order="columns" data-reveal-once>
+        {roleParagraphs.map(({ role, segments }) => (
+                <div
+                        class="flex flex-col rounded-2xl border-[3px] overflow-hidden"
+                        style={`border-color: ${role.color.dark}; background-color: #FFFDF7; box-shadow: 6px 6px 0 ${role.color.dark};`}
+                >
+                    <div
+                            class="flex items-center justify-between px-5 py-2.5 font-black"
+                            style={`background-color: ${role.color.dark}; color: #FFFDF7;`}
+                    >
+                        <span class="tracking-[0.2em]">{role.index}</span>
+                        <i class={`${role.icon} text-xl`}></i>
+                    </div>
+                    <p class="p-5 lg:p-6 text-base font-medium leading-[1.85]">
+                        <Segments segments={segments} />
+                    </p>
+                </div>
+        ))}
+    </div>
+</div>

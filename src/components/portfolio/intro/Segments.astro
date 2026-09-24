@@ -1,0 +1,13 @@
+---
+// 渲染一段自我介绍：带颜色的片段是角色名 / 关键词
+import type { Segment } from "../portfolioRolesData";
+
+interface Props {
+    segments: Segment[];
+}
+const { segments } = Astro.props;
+---
+
+{segments.map((seg) => seg.color
+    ? <span class="font-bold" style={`color: ${seg.color};`}>{seg.text}</span>
+    : seg.text)}

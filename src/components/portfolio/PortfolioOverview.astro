@@ -3,26 +3,24 @@
 import { COLORS } from "@/consts";
 import { useTranslations, type Lang } from "@/i18n";
 import { portfolioOverviewLabels as L } from "@/i18n/components/portfolio/PortfolioRoles_i18";
-import { getOverviewData } from "./portfolioRolesData";
+import { getOverviewData, parseIntro } from "./portfolioRolesData";
+import IntroA from "./intro/IntroA.astro";
+import IntroB from "./intro/IntroB.astro";
+import IntroC from "./intro/IntroC.astro";
 
 const t = useTranslations((Astro.currentLocale as Lang) || "en");
 const { roles, totalProjects, steamCount } = await getOverviewData();
 const theme = { light: COLORS.khakiMilan, dark: COLORS.black };
 
 const words = roles.map((r) => ({ text: t(r.person), color: r.color.dark }));
-
-// 自我介绍正文里的 {role-id:文字} 染成该角色的颜色。
-// split 带捕获组，结果按 [文字, id, 染色文字, 文字, …] 排列
-const roleColor = new Map(roles.map((r) => [r.id, r.color.dark]));
-const paragraphs = t(L.positioning).split("\n\n").map((para) => {
-    const parts = para.split(/\{([\w-]+):(.+?)\}/);
-    const segments: { text: string; color?: string }[] = [];
-    for (let i = 0; i < parts.length; i += 3) {
-        if (parts[i]) segments.push({ text: parts[i] });
-        if (i + 2 < parts.length) segments.push({ text: parts[i + 2], color: roleColor.get(parts[i + 1]) });
-    }
-    return segments;
-});
+const intro = {
+    title: t(L.title),
+    words,
+    prefix: t(L.iAmPrefix),
+    suffix: t(L.iAmSuffix),
+    theme,
+    ...parseIntro(t(L.positioning), roles),
+};
 ---
 
 <section
@@ -34,32 +32,11 @@ const paragraphs = t(L.positioning).split("\n\n").map((para) => {
     <div class="absolute -top-20 -right-24 w-[25rem] lg:w-[40rem] h-[25rem] lg:h-[40rem] rounded-full bg-current opacity-[0.04] pointer-events-none z-0"></div>
 
     <div class="relative z-10 w-full max-w-6xl flex flex-col">
-        <div data-reveal-children="up" data-reveal-once data-reveal-stagger="90">
-            <h1 class="text-[3.5rem] sm:text-[4.5rem] lg:text-[5.5rem] font-black leading-[0.85] tracking-tighter mb-10">
-                {t(L.title)}
-            </h1>
-
-            <!-- I am a ___ -->
-            <p class="text-3xl sm:text-5xl lg:text-6xl font-black leading-tight min-h-[2.6em] sm:min-h-[2.4em]">
-                <span>{t(L.iAmPrefix)}</span>
-                <span
-                        class="typewriter inline-block border-b-[6px] pb-1"
-                        data-typewriter={JSON.stringify(words)}
-                        aria-hidden="true"
-                        style={`color: ${words[0].color}; border-color: currentColor;`}
-                ><span class="typewriter-text">{words[0].text}</span><span class="typewriter-caret" aria-hidden="true">|</span></span>{t(L.iAmSuffix) && <span>{t(L.iAmSuffix)}</span>}
-                <span class="sr-only">{words.map((w) => w.text).join(" / ")}</span>
-            </p>
-
-            <div class="mt-6 max-w-4xl flex flex-col gap-5 text-base lg:text-lg font-medium leading-[1.9]">
-                {paragraphs.map((segments) => (
-                        <p>
-                            {segments.map((seg) => seg.color
-                                ? <span class="font-bold" style={`color: ${seg.color};`}>{seg.text}</span>
-                                : seg.text)}
-                        </p>
-                ))}
-            </div>
+        <!-- 自我介绍：三个候选样式，本地 dev 下用 DebugVariantSwitcher 切换；默认 / 生产显示 A -->
+        <div data-variant-group="intro" data-variant-label="Intro">
+            <div data-variant="A"><IntroA {...intro} /></div>
+            <div data-variant="B" hidden><IntroB {...intro} /></div>
+            <div data-variant="C" hidden><IntroC {...intro} /></div>
         </div>
 
         <!-- 目录索引 -->
@@ -109,66 +86,5 @@ const paragraphs = t(L.positioning).split("\n\n").map((para) => {
         border-color: currentColor;
         opacity: 0.5;
     }
-    .typewriter-caret {
-        margin-left: 0.05em;
-        animation: caret-blink 0.9s steps(2, start) infinite;
-    }
-    @keyframes caret-blink {
-        to { opacity: 0; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-        .typewriter-caret { display: none; }
-    }
 </style>
 
-<script>
-    // 打字机：循环打出四个身份名。「减少动态效果」时停在第一个，读屏用 sr-only 的完整列表
-    type Word = { text: string; color: string };
-    let timer = 0;
-
-    function initTypewriter() {
-        clearTimeout(timer);
-        const host = document.querySelector<HTMLElement>('[data-typewriter]');
-        const textEl = host?.querySelector<HTMLElement>('.typewriter-text');
-        if (!host || !textEl) return;
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-        const words: Word[] = JSON.parse(host.dataset.typewriter || '[]');
-        if (words.length < 2) return;
-
-        let wordIndex = 0;
-        let chars = Array.from(words[0].text);
-        let length = chars.length;
-        let deleting = true;
-
-        const tick = () => {
-            if (!host.isConnected) return;
-            if (deleting) {
-                length--;
-                if (length <= 0) {
-                    deleting = false;
-                    wordIndex = (wordIndex + 1) % words.length;
-                    chars = Array.from(words[wordIndex].text);
-                    host.style.color = words[wordIndex].color;
-                }
-            } else {
-                length++;
-            }
-            textEl.textContent = chars.slice(0, length).join('') || '​';
-
-            // 按词长分摊：每个词打出约 0.6s、删除约 0.3s，英文长词不会拖得比中文慢
-            let delay = deleting
-                ? Math.min(40, 300 / chars.length)
-                : Math.min(85, 600 / chars.length);
-            if (!deleting && length >= chars.length) {
-                deleting = true;
-                delay = 1800;
-            }
-            timer = window.setTimeout(tick, delay);
-        };
-        timer = window.setTimeout(tick, 2200);
-    }
-
-    document.addEventListener('astro:page-load', initTypewriter);
-    document.addEventListener('astro:before-swap', () => clearTimeout(timer));
-</script>
