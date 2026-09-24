@@ -115,9 +115,6 @@ export const portfolioOverviewLabels = {
         ko: "게임을 만들어 온 6년 동안, 저는 열정을 가지고 {game-design:게임 디자인}, {game-dev:게임 개발}, {ai-app:AI 애플리케이션 개발}, {tech-art:테크니컬 아트} 등 다양한 분야를 주도적으로 탐구하고 배워 왔습니다. 이렇게 말하면 집중하지 못하고 여러 방향을 얕게 건드리기만 한다고 느껴질 수도 있다는 것을 압니다.\n\n하지만 저에게는 새로운 것을 배우고 탐구하는 일 자체가 정말 즐겁습니다. 새로운 방향에 흥미가 생기면 저는 멈추지 못하고 계속 파고듭니다. 시간을 들여 배우고, 반복해서 직접 실습하고, 실제 협업 프로젝트에 참여하며, 정말로 그것으로 무언가를 만들 수 있을 때까지 이어갑니다.\n\n{game-design:게임 디자인}에서는 {game-design:전투 디자인(3C)}과 {game-design:시스템 디자인}에 가장 강합니다. {game-design:텐센트 AAA 프로젝트}에 전투 기획자로 참여했으며, {game-design:Steam에 출시된 두 편의 무료 인디 게임} 디자인을 주도해 누적 {game-design:6만 명 이상의 플레이어}를 모았습니다.\n\n{game-dev:게임 개발}에서는 {game-dev:아키텍처 설계, 자동화 파이프라인 및 툴체인 구축}에 가장 강하며, {game-dev:컴퓨터 그래픽스와 소프트웨어 공학}의 탄탄한 기초도 갖추고 있습니다. 지금까지 {game-dev:NetEase와 MedMind의 상용 프로젝트}, {game-dev:두 개의 USC Advanced Games Project}, Steam에 출시된 두 편의 인디 게임, 그리고 여러 개인 인디 작품을 포함해 총 {game-dev:9편의 게임} 개발에 깊이 참여했습니다.\n\n{ai-app:AI 애플리케이션 개발}에서는 대학교 2학년 때 직접 {ai-app:AI 스타트업 팀}을 꾸렸고, {ai-app:홍콩 AI 애플리케이션 개발 대회에서 종합 우승}을 차지했습니다. 이후 {ai-app:옥스퍼드 대학교 머신러닝 여름 프로그램}에서 팀장을 맡아 {ai-app:Kaggle 대회에서 전체 최고 순위}로 팀을 이끌었고, {ai-app:NetEase Games AI 센터}에서 AI 애플리케이션 엔지니어로 일하며 게임 개발을 위한 AI 툴체인과 전문 개발 파이프라인 구축에 참여했습니다.\n\n{tech-art:테크니컬 아트}에서는 {tech-art:절차적 모델링, 지오메트리 처리, 뉴럴 렌더링}에 강하며, 전통적인 3D CG 영상 제작 경험도 있고 {tech-art:Blender를 500시간 이상} 사용했습니다. 실제로 Python으로 {tech-art:조명 뉴럴 렌더링용 DCC 툴}을 개발했고, {tech-art:UE5 PCG와 베지어 곡선}으로 대규모 바람 부는 초원을 만들었으며, {tech-art:Unity 셀 셰이더}를 개발하고 여러 편의 {tech-art:사실적인 CG 단편}을 완성했습니다.",
     } as Multilingual,
 
-    statProjects: { en: "Projects", zh: "个项目", ja: "プロジェクト", ko: "프로젝트" } as Multilingual,
-    statSteam: { en: "Games on Steam", zh: "款 Steam 游戏", ja: "Steam タイトル", ko: "Steam 출시작" } as Multilingual,
-
     projectsUnit: { en: "projects", zh: "个项目", ja: "件", ko: "개 프로젝트" } as Multilingual,
 
     iAmPrefix: { en: "I am a", zh: "我是一名", ja: "私は", ko: "저는" } as Multilingual,

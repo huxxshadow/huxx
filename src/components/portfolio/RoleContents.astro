@@ -1,13 +1,13 @@
 ---
-// 目录 · 变体 A：书目录式列表。标题行「编号 图标 名称 ···· N 个项目 →」，下面是该角色的介绍；悬停整行反色
-import type { TocProps } from "../portfolioRolesData";
-import Segments from "../intro/Segments.astro";
+// 作品集总览的目录：书目录式列表，每个角色一行。标题行「编号 图标 名称 ···· N 个项目 →」，下面是该角色的介绍；悬停整行反色
+import type { RoleContentsProps } from "./portfolioRolesData";
+import Segments from "./intro/Segments.astro";
 
-type Props = TocProps;
+type Props = RoleContentsProps;
 const { items, unit, theme } = Astro.props;
 ---
 
-<ol data-reveal-children="left" data-reveal-once data-reveal-stagger="80">
+<ol class="border-t-[3px]" style={`border-color: ${theme.dark};`} data-reveal-children="left" data-reveal-once data-reveal-stagger="80">
     {items.map(({ role, name, segments }) => (
             <li class="border-b-[3px]" style={`border-color: ${theme.dark};`}>
                 <a

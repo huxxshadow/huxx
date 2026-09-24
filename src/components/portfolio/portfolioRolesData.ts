@@ -16,9 +16,6 @@ export async function getOverviewData() {
 
     return {
         roles,
-        maxCount: Math.max(...roles.map((r) => r.count)),
-        totalProjects: projects.length,
-        steamCount: projects.filter((p) => (p.data.tags.en ?? []).includes("Steam")).length,
     };
 }
 
@@ -49,8 +46,8 @@ export function parseIntro(text: string, roles: OverviewRole[]) {
     };
 }
 
-/** 目录三个候选样式共用的 props：每行一个角色，文案是该角色的那段自我介绍 */
-export interface TocProps {
+/** 目录的 props：每行一个角色，文案是该角色的那段自我介绍 */
+export interface RoleContentsProps {
     items: { role: OverviewRole; name: string; segments: Segment[] }[];
     unit: string;
     theme: { light: string; dark: string };

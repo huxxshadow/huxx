@@ -6,12 +6,10 @@ import { portfolioOverviewLabels as L } from "@/i18n/components/portfolio/Portfo
 import { getOverviewData, parseIntro } from "./portfolioRolesData";
 import Typewriter from "./intro/Typewriter.astro";
 import Segments from "./intro/Segments.astro";
-import TocA from "./toc/TocA.astro";
-import TocB from "./toc/TocB.astro";
-import TocC from "./toc/TocC.astro";
+import RoleContents from "./RoleContents.astro";
 
 const t = useTranslations((Astro.currentLocale as Lang) || "en");
-const { roles, totalProjects, steamCount } = await getOverviewData();
+const { roles } = await getOverviewData();
 const theme = { light: COLORS.khakiMilan, dark: COLORS.black };
 
 const words = roles.map((r) => ({ text: t(r.person), color: r.color.dark }));
@@ -53,17 +51,7 @@ const toc = {
 
         <!-- 目录 -->
         <nav class="mt-14 lg:mt-16" aria-label={t(L.contents)}>
-            <div class="flex items-center justify-between font-black text-sm tracking-[0.25em] uppercase pb-3 border-b-[3px]" style={`border-color: ${theme.dark};`} data-reveal="fade" data-reveal-once>
-                <span>{t(L.contents)}</span>
-                <span>{totalProjects} {t(L.statProjects)} · {steamCount} {t(L.statSteam)}</span>
-            </div>
-
-            <!-- 三个候选样式，本地 dev 下用 DebugVariantSwitcher 切换；默认 / 生产显示 A -->
-            <div data-variant-group="toc" data-variant-label="Contents">
-                <div data-variant="A"><TocA {...toc} /></div>
-                <div data-variant="B" hidden><TocB {...toc} /></div>
-                <div data-variant="C" hidden><TocC {...toc} /></div>
-            </div>
+            <RoleContents {...toc} />
         </nav>
     </div>
 </section>
