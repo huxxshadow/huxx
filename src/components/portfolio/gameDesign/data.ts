@@ -6,9 +6,9 @@ import { designPillars, designWorks, type DesignTier } from "@/i18n/components/p
 // 每层里的展示顺序（同层内按分量排）
 const ORDER = [
     "game-project-yuanmengstar-shanhai-xunling",
-    "game-project-floodsong",
     "game-project-empty-throne",
     "game-project-eel-on-mask",
+    "game-project-floodsong",
     "game-project-fractal-shelter",
     "game-project-follyblind-age",
     "technical-project-parkour-motion-system",

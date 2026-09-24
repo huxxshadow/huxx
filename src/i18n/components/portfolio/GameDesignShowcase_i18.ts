@@ -54,12 +54,7 @@ export const designWorks: DesignWork[] = [
     },
     {
         projectId: "game-project-floodsong",
-        tier: "featured",
-        highlights: [
-            { en: "Layered FOV and dolly zoom camera", zh: "分层 FOV 与 Dolly Zoom 镜头", ja: "レイヤー化した FOV とドリーズーム", ko: "레이어형 FOV와 돌리 줌 카메라" },
-            { en: "Arcing drift paid out per corner", zh: "弧线漂移，按弯道结算", ja: "コーナーごとに精算する弧のドリフト", ko: "코너마다 정산하는 호 드리프트" },
-            { en: "Speed-driven post-process shaders", zh: "速度感后处理 Shader", ja: "速度で駆動するポストエフェクト", ko: "속도 기반 후처리 셰이더" },
-        ],
+        tier: "selected",
         pillars: ["combat"],
         context: { en: "USC AGP · team of 50+", zh: "USC AGP · 50+ 人", ja: "USC AGP · 50 人以上", ko: "USC AGP · 50명 이상" },
         role: { en: "Technical Designer (3C)", zh: "技术策划（3C）", ja: "テクニカルデザイナー（3C）", ko: "테크니컬 디자이너(3C)" },
@@ -137,7 +132,12 @@ export const designWorks: DesignWork[] = [
     },
     {
         projectId: "game-project-eel-on-mask",
-        tier: "selected",
+        tier: "featured",
+        highlights: [
+            { en: "Core mechanic: Clipping Mask stickers", zh: "核心机制：Clipping Mask 贴纸", ja: "コアメカニクス：Clipping Mask ステッカー", ko: "핵심 메커니즘: Clipping Mask 스티커" },
+            { en: "Material swaps rewrite level rules", zh: "换材质即改写关卡规则", ja: "素材の切り替えでステージのルールを書き換える", ko: "재질 교체로 스테이지 규칙을 바꿈" },
+            { en: "Team lead in 48 hours, released on Steam", zh: "48 小时带队完成，上线 Steam", ja: "48 時間でチームを率いて完成、Steam で配信", ko: "48시간 동안 팀을 이끌어 완성, Steam 출시" },
+        ],
         pillars: ["levels", "systems"],
         context: { en: "GGJ 2026 · 48 hours · Steam", zh: "GGJ 2026 · 48 小时 · Steam", ja: "GGJ 2026 · 48 時間 · Steam", ko: "GGJ 2026 · 48시간 · Steam" },
         role: { en: "Lead & Designer", zh: "队长 / 策划", ja: "リーダー / プランナー", ko: "팀장 / 기획" },
