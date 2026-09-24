@@ -2138,10 +2138,10 @@
       ]
     },
     "desc": {
-      "en": "Floodsong is a USC 2026 Advanced Games Project (AGP): a fast-paced, third-person action adventure where you surf through tsunamis, parkour over ruins, and battle leviathans.",
-      "zh": "《Floodsong》是南加州大学 2026 年 Advanced Games Project（AGP）项目：一款快节奏的第三人称动作冒险游戏，玩家在海啸中冲浪、在废墟间跑酷，并与利维坦巨兽战斗。",
-      "ja": "『Floodsong』は南カリフォルニア大学（USC）2026 年度 Advanced Games Project（AGP）の作品です。津波の上をサーフィンし、廃墟を駆け抜けるパルクールを決め、リヴァイアサンと戦う、スピード感あふれる三人称アクションアドベンチャーです。",
-      "ko": "《Floodsong》은 남캘리포니아 대학교(USC) 2026년 Advanced Games Project(AGP) 작품으로, 쓰나미 위를 서핑하고 폐허를 파쿠르로 누비며 리바이어던과 싸우는 빠른 템포의 3인칭 액션 어드벤처 게임입니다."
+      "en": "Floodsong is a USC 2026 Advanced Games Project (AGP) built by a team of 50+. On the team I work as a technical designer focused on 3C (character, camera, control), and also take on part of the technical art (TA) work.",
+      "zh": "《Floodsong》是南加州大学 2026 年 Advanced Games Project（AGP）项目，约 50 多人的团队项目，我在团队中担任技术策划，负责 3C（角色、镜头、操控）方向，同时承担部分技术美术（TA）职责。",
+      "ja": "『Floodsong』は南カリフォルニア大学（USC）2026 年度 Advanced Games Project（AGP）の作品で、50 人以上のチームによるプロジェクトです。私はチームで 3C（キャラクター・カメラ・コントロール）を担当するテクニカルデザイナーを務め、テクニカルアート（TA）の業務の一部も担っています。",
+      "ko": "《Floodsong》은 남캘리포니아 대학교(USC) 2026년 Advanced Games Project(AGP) 작품으로, 50명 이상이 참여한 팀 프로젝트입니다. 저는 팀에서 3C(캐릭터, 카메라, 컨트롤)를 담당하는 테크니컬 디자이너를 맡고 있으며, 테크니컬 아트(TA) 업무의 일부도 담당하고 있습니다."
     },
     "tags": {
       "en": [
