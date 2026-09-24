@@ -1,3 +1,6 @@
+import { Image } from 'astro:assets';
+import imgSpeedShaders from '@/assets/projects/game-project-floodsong/game-project-floodsong_SpeedShaders.webp';
+
 <div class="video-embed">
     <iframe
             src="https://www.youtube-nocookie.com/embed/IujK_vf6NLc"
@@ -13,3 +16,25 @@
 ## My Role
 
 On the team, I work as a **Technical Designer** focused on **3C** (character, camera, control), and also take on part of the **Technical Art** work.
+
+### Camera
+
+* **Speed zoom and dolly zoom**: Rebuilt the camera's FOV layer, moved smoothing into the FOV module and exposed the 12 hard-coded feel values in the Inspector; added a **Dolly Zoom** module that pushes the camera in as the FOV widens, keeping the character the same size while the background stretches outward.
+* **Boost camera**: Holding boost drives FOV and dolly zoom from one shared fade layer, so the lens stays open for as long as the boost lasts and eases back when it is released or runs out of energy.
+* **Calibration and fixes**: Recalibrated the zoom range against measured speeds, taking the FOV change on a dash from about 5° to about 18°; fixed the airborne zoom, which had never worked because `deltaTime` was applied twice; reordered `LateUpdate` so the camera position no longer lags the FOV by a frame.
+
+### Drift
+
+* **Arcing path**: While drift is held, the travel direction chases the camera at a bounded turn rate instead of snapping to it, so the path becomes an arc rather than a polyline.
+* **Paid by the corner**: Braking and charge only build while actually turning, so holding the key on a straight costs and banks nothing; finishing a corner refunds the speed it cost and adds a charge-based burst, with a cap on chained corners.
+* **Camera support**: The FOV widens through the corner and pops again on the exit burst; while drifting, camera yaw is held inside a soft sector around the character's facing so a flick cannot swing it round to look backwards.
+
+### Speed Shaders
+
+* **SpeedLines**: Rewrote the noise-based Shader Graph as hand-written HLSL. The screen is split into angular slots with hashed selection, producing discrete, tapered lines (short head, long tail) that fade in and out; anti-aliasing is computed analytically to avoid a bright seam at the angle wrap.
+* **RadialBlur**: A speed-driven full-screen post effect with two layers in one pass: a radial blur that keeps the center sharp and smears the edges (depth-gated so the horizon stays crisp), and a cartoon-style speed trail that stretches near objects backwards at high speed. The trail is a radial UV stretch inside discrete angular bands with depth tested at the source of the stretch, so tails spill past silhouettes and line up with the same spokes as the speed lines.
+
+<figure>
+    <Image src={imgSpeedShaders} alt="Cartoon speed effect with RadialBlur and SpeedLines combined" />
+    <figcaption>RadialBlur and SpeedLines combined</figcaption>
+</figure>

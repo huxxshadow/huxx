@@ -1,3 +1,6 @@
+import { Image } from 'astro:assets';
+import imgSpeedShaders from '@/assets/projects/game-project-floodsong/game-project-floodsong_SpeedShaders.webp';
+
 <div class="video-embed">
     <iframe
             src="https://www.youtube-nocookie.com/embed/IujK_vf6NLc"
@@ -13,3 +16,25 @@
 ## 我的职责
 
 我在团队中担任**技术策划**，负责 **3C**（角色、镜头、操控）方向，同时承担部分**技术美术**（TA）职责。
+
+### 相机
+
+* **速度变焦与滑动变焦**：重构相机 FOV 层，把平滑逻辑收进 FOV 模块，并把写死在代码里的 12 个手感参数全部暴露到 Inspector；新增 **Dolly Zoom** 模块，FOV 张开的同时相机按视锥宽度推近，角色大小不变、背景被向外拉伸。
+* **Boost 镜头**：按住冲刺进入 Boost 时，FOV 与 Dolly Zoom 由同一个渐入渐出层同步驱动，状态保持多久镜头就撑开多久，松手或能量耗尽后自动淡回。
+* **标定与修复**：按实测速度重新标定变焦区间，冲刺时的 FOV 变化从约 5° 提升到约 18°；修复腾空变焦因 `deltaTime` 重复相乘而从未生效的问题；调整 `LateUpdate` 顺序，消除相机位置比 FOV 慢一帧的抖动。
+
+### 漂移
+
+* **弧线路径**：按住漂移键时，行进方向不再瞬间对齐相机，而是以受限的角速度追赶，路径从折线变成弧线。
+* **按弯道结算**：减速和充能只在真正转弯时累积，直线上按住不花也不存；弯道结束时退还转弯损失的速度，并按充能额外爆发加速，连续过弯的叠加有上限。
+* **镜头配合**：过弯时 FOV 逐渐张开、出弯爆发时再弹开一下；漂移期间把相机偏航限制在角色朝向附近的软扇区内，避免一甩就看向身后。
+
+### 速度感 Shader
+
+* **SpeedLines**：把原来基于噪声的 Shader Graph 重写为手写 HLSL。屏幕按角度分槽、哈希抽签，生成离散、头短尾长、会淡入淡出的独立线条；抗锯齿用解析式计算，避开角度接缝处的亮环。
+* **RadialBlur**：速度驱动的全屏后处理，同一个 pass 两层效果：中心清晰、边缘径向模糊（按深度门控，远景不糊）；以及高速时近景物体沿速度反方向拉出的卡通化拖影，在离散角度带内做径向 UV 拉伸、在拉伸源点判断深度，让尾巴能溢出物体轮廓，并与速度线落在同一批辐条上。
+
+<figure>
+    <Image src={imgSpeedShaders} alt="RadialBlur 与 SpeedLines 叠加后的卡通化速度感效果" />
+    <figcaption>RadialBlur 与 SpeedLines 叠加后的效果</figcaption>
+</figure>
