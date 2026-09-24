@@ -51,15 +51,15 @@ const roleArt: Record<string, ImageMetadata> = {
             </div>
         </div>
 
-        <div class="mt-12 lg:mt-16 grid lg:grid-cols-[5fr_7fr] gap-8 lg:gap-12 xl:gap-16" data-role-showcase>
-            <!-- 左：角色插画舞台（只在宽屏显示，窄屏没有悬停）。撑满左栏高度，插画按原比例尽量放大，四周留一点边距 -->
+        <div class="mt-12 lg:mt-16 grid lg:grid-cols-[3fr_7fr] gap-8 lg:gap-12 xl:gap-16" data-role-showcase>
+            <!-- 左：角色插画舞台（只在宽屏显示，窄屏没有悬停）。撑满左栏高度，插画按原比例尽量放大、紧贴左边，其余三边留一点边距 -->
             <div class="relative hidden lg:block min-h-[28rem]" data-reveal="fade" data-reveal-once aria-hidden="true">
                 {items.map(({ role, name }, i) => (
-                        <div class="role-art absolute inset-4 xl:inset-6 flex items-center justify-center" data-role-art={role.id} data-active={i === 0 ? "" : undefined}>
+                        <div class="role-art absolute left-0 inset-y-4 right-4 xl:inset-y-6 xl:right-6 flex items-center justify-start" data-role-art={role.id} data-active={i === 0 ? "" : undefined}>
                             {roleArt[role.id] ? (
-                                    <img src={roleArt[role.id].src} alt="" width={roleArt[role.id].width} height={roleArt[role.id].height} class="w-full h-full object-contain" loading="lazy" decoding="async" />
+                                    <img src={roleArt[role.id].src} alt="" width={roleArt[role.id].width} height={roleArt[role.id].height} class="w-full h-full object-contain object-left" loading="lazy" decoding="async" />
                             ) : (
-                                    <div class="flex flex-col items-center gap-2 font-black" style={`color: ${role.color.dark};`}>
+                                    <div class="flex flex-col items-start gap-2 font-black" style={`color: ${role.color.dark};`}>
                                         <span class="text-[10rem] leading-none opacity-20">{role.index}</span>
                                         <span class="text-3xl">{name}</span>
                                     </div>
