@@ -57,7 +57,7 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
         <span class="ml-auto font-black text-lg whitespace-nowrap pb-1">{works.length} {t(L.projects)}</span>
     </header>
 
-    <div class="ai-layout">
+    <div class="ai-layout" data-ai-layout style={`--fig-ratio: ${transformer.height / transformer.width};`}>
         <!-- 左：两列项目卡片 -->
         <div class="ai-cards" data-reveal-children="up" data-reveal-order="columns" data-reveal-once>
             {works.map((w) => (
@@ -97,6 +97,39 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
     </div>
 </section>
 
+<script>
+    // 让右边结构图的高度正好等于左边卡片区：量出卡片区的真实高度，扣掉标题，按图的宽高比算出右栏宽度。
+    // 右栏变宽会让卡片变窄、卡片区变矮，所以每次尺寸变化都重算，差距小于 1px 就停
+    function fitAiFigure() {
+        document.querySelectorAll<HTMLElement>("[data-ai-layout]").forEach((layout) => {
+            if (layout.dataset.fitReady) return;
+            layout.dataset.fitReady = "1";
+            const cards = layout.querySelector<HTMLElement>(".ai-cards");
+            const title = layout.querySelector<HTMLElement>(".ai-figure-title");
+            const figure = layout.querySelector<HTMLElement>(".ai-figure");
+            if (!cards || !title || !figure) return;
+            const ratio = parseFloat(getComputedStyle(layout).getPropertyValue("--fig-ratio")) || 6;
+            const wide = window.matchMedia("(min-width: 1024px)");
+            const update = () => {
+                if (!wide.matches) {
+                    layout.style.removeProperty("--fig-w");
+                    return;
+                }
+                const gap = parseFloat(getComputedStyle(figure).rowGap) || 0;
+                const avail = cards.getBoundingClientRect().height - title.getBoundingClientRect().height - gap;
+                if (avail <= 0) return;
+                const w = avail / ratio;
+                const current = parseFloat(layout.style.getPropertyValue("--fig-w")) || 0;
+                if (Math.abs(w - current) > 1) layout.style.setProperty("--fig-w", w.toFixed(1) + "px");
+            };
+            new ResizeObserver(update).observe(cards);
+            wide.addEventListener("change", update);
+            update();
+        });
+    }
+    document.addEventListener("astro:page-load", fitAiFigure);
+</script>
+
 <style>
     .ai-skew {
         transform: skewX(-10deg);
@@ -105,8 +138,8 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
 
     .ai-layout {
         display: grid;
-        /* 右栏给足宽度，让结构图总是被高度限制：高度正好等于左边卡片区，宽度按比例收窄 */
-        grid-template-columns: minmax(0, 1fr) 20rem;
+        /* 右栏宽度由脚本按卡片区高度算出（--fig-w），让结构图正好和卡片区一样高；脚本生效前先用 20rem */
+        grid-template-columns: minmax(0, 1fr) var(--fig-w, 20rem);
         gap: 3rem;
         /* 右边的结构图拉到和左边卡片区一样高 */
         align-items: stretch;
@@ -115,6 +148,12 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 2rem;
+    }
+    /* 很宽的屏幕（比如 27 寸 4K）两列会让卡片太大，改成三列、两行 */
+    @media (min-width: 1800px) {
+        .ai-cards {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
     }
 
     /* 卡片：和下面「技术项目」同一套——2px 描边、圆角、8px 偏移实色阴影，悬停时往阴影方向按下去 */
