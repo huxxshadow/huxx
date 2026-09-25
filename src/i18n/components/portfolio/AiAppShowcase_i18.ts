@@ -44,10 +44,10 @@ export const aiWorks: AiWork[] = [
     {
         projectId: "technical-project-smart-pot-joi",
         caption: {
-            en: "An award-winning AI IoT plant pot: voice interaction, emotion detection and live plant monitoring.",
-            zh: "获奖的 AI IoT 智能花盆：语音交互、情绪识别与植物状态实时监测。",
-            ja: "受賞した AI IoT プランター。音声対話、感情認識、植物の状態のリアルタイム監視。",
-            ko: "수상한 AI IoT 화분. 음성 상호작용, 감정 인식, 식물 상태 실시간 모니터링.",
+            en: "An award-winning entry in the Hong Kong AI Application Development Competition: a physical AI product.",
+            zh: "香港 AI 应用开发大赛获奖作品，AI 实体产品。",
+            ja: "香港 AI アプリケーション開発コンテストの受賞作。AI を搭載した実物のプロダクト。",
+            ko: "홍콩 AI 애플리케이션 개발 대회 수상작. AI를 탑재한 실물 제품입니다.",
         },
         tags: { en: "Tech Lead · Spring Boot · IoT", zh: "技术组长 · Spring Boot · IoT", ja: "テックリード · Spring Boot · IoT", ko: "기술 리드 · Spring Boot · IoT" },
     },
