@@ -129,8 +129,8 @@ export const designWorks: DesignWork[] = [
         projectId: "game-project-night-watch",
         tier: "selected",
         pillars: ["systems"],
-        context: { en: "NetEase · experimental project", zh: "网易 · 实验课题", ja: "NetEase · 実験的プロジェクト", ko: "NetEase · 실험 과제" },
-        role: solo,
+        context: { en: "NetEase · AI-native game", zh: "网易 · AI原生游戏", ja: "NetEase · AI ネイティブゲーム", ko: "NetEase · AI 네이티브 게임" },
+        role: { en: "Systems Designer · Gameplay Designer", zh: "系统策划 · 玩法策划", ja: "システムプランナー · ゲームプレイプランナー", ko: "시스템 기획 · 게임플레이 기획" },
         line: {
             en: "Led the systems and gameplay design of an AI-native game, building a rule-driven generation framework for a dynamic game experience.",
             zh: "负责 AI 原生游戏的系统与玩法设计，构建规则驱动的生成框架，实现动态游戏体验。",
