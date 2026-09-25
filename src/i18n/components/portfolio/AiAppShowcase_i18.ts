@@ -75,10 +75,10 @@ export const aiWorks: AiWork[] = [
     {
         projectId: "technical-project-variational-applications",
         caption: {
-            en: "Applies variational methods to real data: a temporal VAE and a Transformer forecast dengue in Hong Kong, plus land-use reconstruction and photo restoration.",
-            zh: "把变分方法用在真实数据上：时序 VAE 与 Transformer 预测香港登革热，并尝试土地利用重建与老照片修复。",
-            ja: "変分法を実データに応用。時系列 VAE と Transformer で香港のデング熱を予測し、土地利用の再構成や古写真の修復も試した。",
-            ko: "변분 방법을 실제 데이터에 적용. 시계열 VAE와 Transformer로 홍콩 뎅기열을 예측하고, 토지 이용 복원과 옛 사진 복원도 시도했습니다.",
+            en: "Model design based on variational methods, developed into applications on real-world data.",
+            zh: "基于变分方法的模型设计，与真实数据应用开发。",
+            ja: "変分法にもとづくモデル設計と、実データへの応用開発。",
+            ko: "변분 방법 기반의 모델 설계와 실제 데이터 응용 개발.",
         },
         tags: { en: "Team Lead · VAE · Transformer", zh: "组长 · VAE · Transformer", ja: "リーダー · VAE · Transformer", ko: "팀장 · VAE · Transformer" },
     },
