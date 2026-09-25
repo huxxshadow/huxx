@@ -62,6 +62,12 @@ const after = cells.slice(4);
     // 选中某一格：吉祥物换成指向这一格的姿势；取消选中时回到指向上方。
     // 换姿势时整个角色以脚底为支点先压扁一点再弹起，图在压到最低时替换
     const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // 选中各方向格子时角色的位移（px）
+    const OFFSET: Record<string, [number, number]> = {
+        "up-left": [-34, -18], "up": [0, -22], "up-right": [34, -18],
+        "left": [-44, 0], "right": [44, 0],
+        "down-left": [-34, 16], "down": [0, 18], "down-right": [34, 16],
+    };
 
     function initNineGrid() {
         document.querySelectorAll<HTMLElement>("[data-nine-grid]").forEach((root) => {
@@ -82,17 +88,14 @@ const after = cells.slice(4);
                 mascot.animate(
                     [
                         { transform: "translateY(0) scale(1, 1)" },
-                        { transform: "translateY(3px) scale(1.09, 0.9)", offset: 0.18 },
-                        { transform: "translateY(-16px) scale(0.93, 1.09)", offset: 0.42 },
-                        { transform: "translateY(0) scale(1.05, 0.95)", offset: 0.62 },
-                        { transform: "translateY(-4px) scale(0.98, 1.025)", offset: 0.78 },
-                        { transform: "translateY(0) scale(1.01, 0.99)", offset: 0.9 },
+                        { transform: "translateY(2px) scale(1.035, 0.965)", offset: 0.2 },
+                        { transform: "translateY(-7px) scale(0.985, 1.02)", offset: 0.5 },
                         { transform: "translateY(0) scale(1, 1)" },
                     ],
-                    { duration: 560, easing: "cubic-bezier(0.3, 0, 0.3, 1)" },
+                    { duration: 480, easing: "cubic-bezier(0.33, 0, 0.25, 1)" },
                 );
                 // 在压到最扁的那一帧换图
-                swapTimer = window.setTimeout(apply, 95);
+                swapTimer = window.setTimeout(apply, 90);
             };
             // Q 弹反馈：选中时卡片像果冻一样挤压回弹，封面带过冲放大，标签依次蹦出来；离开时轻轻晃一下落回
             let selected: HTMLElement | null = null;
@@ -143,6 +146,12 @@ const after = cells.slice(4);
                 if (cell) jelly(cell);
                 const dir = cell?.dataset.dir ?? "up";
                 swapTo(dir);
+                // 角色朝选中的格子挪一点（弹簧式过渡），取消选中时回到中间
+                if (mascot) {
+                    const [mx, my] = OFFSET[cell?.dataset.dir ?? ""] ?? [0, 0];
+                    mascot.style.setProperty("--mx", mx + "px");
+                    mascot.style.setProperty("--my", my + "px");
+                }
             };
             // 橡皮筋拖拽：鼠标在卡片里时，卡片被往鼠标方向拽（离中心越远拽得越多，带一点倾斜）；
             // 离开后按弹簧回到原位，会过冲再回弹。用一个简单的阻尼弹簧逐帧计算
@@ -291,6 +300,14 @@ const after = cells.slice(4);
         inset: -7% 0;
         pointer-events: none;
         transform-origin: 50% 100%;
+        translate: var(--mx, 0px) var(--my, 0px);
+        transition: translate 520ms cubic-bezier(0.34, 1.4, 0.5, 1);
+    }
+    /* 待机时轻轻上下浮动 */
+    /* 用 transform 做浮动，和居中用的 translate 叠加而不是互相覆盖 */
+    @keyframes ng-float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-6px); }
     }
     /* 精灵图：单帧按比例居中，横向 8 帧，用背景位置切帧 */
     .ng-sprite {
@@ -300,13 +317,16 @@ const after = cells.slice(4);
         left: 50%;
         max-width: 100%;
         translate: -50% 0;
+        animation: ng-float 3.2s ease-in-out infinite;
         background-repeat: no-repeat;
         background-size: 800% 100%;
         background-position: calc(var(--frame) * 100% / 7) 0;
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .ng-cell { transition: none !important; }
+        .ng-cell,
+        .ng-mascot { transition: none !important; }
+        .ng-sprite { animation: none !important; }
     }
 
     /* 窄屏：吉祥物占一整行放在最上，项目两列 */
