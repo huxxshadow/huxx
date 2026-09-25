@@ -60,7 +60,7 @@ export const aiWorks: AiWork[] = [
             ja: "ガウス混合モデルの変分ベイズ推論を一から導出・実装。",
             ko: "가우시안 혼합 모델의 변분 베이즈 추론을 처음부터 유도하고 구현했습니다.",
         },
-        tags: { en: "Python · Variational Inference · Machine Learning", zh: "Python · 变分推断 · 机器学习", ja: "Python · 変分推論 · 機械学習", ko: "Python · 변분 추론 · 머신러닝" },
+        tags: { en: "Python · Variational Inference", zh: "Python · 变分推断", ja: "Python · 変分推論", ko: "Python · 변분 추론" },
     },
     {
         projectId: "technical-project-dog-breed-classification",
