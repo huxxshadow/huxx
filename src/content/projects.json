@@ -1587,12 +1587,12 @@
     },
     "coverImage": "src/assets/projects/poster/YuanMengStarPoster.webp",
     "links": [
-    {
-      "name": "Bilibili",
-      "url": "https://www.bilibili.com/video/BV1Xk2jBDE9s/",
-      "icon": "fa-brands fa-bilibili"
-    }
-  ],
+      {
+        "name": "Bilibili",
+        "url": "https://www.bilibili.com/video/BV1Xk2jBDE9s/",
+        "icon": "fa-brands fa-bilibili"
+      }
+    ],
     "colorText": "blue",
     "colorBackground": "blue"
   },
@@ -2175,8 +2175,66 @@
     ]
   },
   {
-    "id": "game-project-arcane-samurai",
+    "id": "game-project-rephrased",
     "order": 35,
+    "category": "game",
+    "title": {
+      "en": "Rephrased",
+      "zh": "Rephrased",
+      "ja": "Rephrased",
+      "ko": "Rephrased"
+    },
+    "roles": {
+      "en": [
+        "Engineer",
+        "Technical Artist"
+      ],
+      "zh": [
+        "游戏工程师",
+        "技术美术"
+      ],
+      "ja": [
+        "エンジニア",
+        "テクニカルアーティスト"
+      ],
+      "ko": [
+        "엔지니어",
+        "테크니컬 아티스트"
+      ]
+    },
+    "desc": {
+      "en": "Rephrased is a team project of 40+ people. On the team I work as an engineer and technical artist (TA).",
+      "zh": "《Rephrased》是一个 40 多人的团队项目，我在团队中担任工程师（Engineer）与技术美术（TA）。",
+      "ja": "『Rephrased』は 40 人以上のチームによるプロジェクトです。私はチームでエンジニアとテクニカルアーティスト（TA）を務めています。",
+      "ko": "《Rephrased》는 40명 이상이 참여한 팀 프로젝트입니다. 저는 팀에서 엔지니어와 테크니컬 아티스트(TA)를 맡고 있습니다."
+    },
+    "tags": {
+      "en": [
+        "Puzzle Adventure",
+        "Isometric",
+        "Linguistic Puzzle"
+      ],
+      "zh": [
+        "解谜冒险",
+        "等距视角",
+        "语言解谜"
+      ],
+      "ja": [
+        "パズルアドベンチャー",
+        "アイソメトリック",
+        "言語パズル"
+      ],
+      "ko": [
+        "퍼즐 어드벤처",
+        "아이소메트릭",
+        "언어 퍼즐"
+      ]
+    },
+    "coverImage": "src/assets/projects/poster/RephrasedPoster.webp"
+  },
+  {
+    "id": "game-project-arcane-samurai",
+    "order": 36,
     "category": "game",
     "title": {
       "en": "Arcane Samurai",
