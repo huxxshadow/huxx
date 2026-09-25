@@ -72,4 +72,11 @@ export const aiWorks: AiWork[] = [
 
 export const aiAppLabels = {
     projects: { en: "projects", zh: "个项目", ja: "件", ko: "개 프로젝트" } as Multilingual,
+    // 标语右下角的说明：给圈外人讲清楚 Transformer 是什么、为什么重要
+    mottoNote: {
+        en: "“Attention is all you need” is the title of the 2017 Google paper that introduced the Transformer. Its attention mechanism lets a model weigh every word in a sentence against every other at once, and it now sits under large language models such as ChatGPT and Claude, as well as many image, speech and video generators.",
+        zh: "「Attention is all you need」是 2017 年 Google 团队提出 Transformer 架构的论文标题。Transformer 用“注意力”让模型同时衡量一句话里每个词和其他所有词的关系；如今的 ChatGPT、Claude 等大语言模型，以及许多图像、语音和视频生成模型，都建立在它之上。",
+        ja: "「Attention is all you need」は、2017 年に Google のチームが Transformer を提案した論文のタイトルです。Transformer は「注意（アテンション）」によって、文中のすべての単語同士の関係を一度に捉えます。現在の ChatGPT や Claude などの大規模言語モデル、そして多くの画像・音声・動画生成モデルは、この仕組みの上に成り立っています。",
+        ko: "“Attention is all you need”는 2017년 Google 팀이 Transformer 구조를 처음 제안한 논문의 제목입니다. Transformer는 ‘어텐션’으로 문장 속 모든 단어 사이의 관계를 한꺼번에 파악합니다. 오늘날 ChatGPT, Claude 같은 대규모 언어 모델과 수많은 이미지·음성·영상 생성 모델이 모두 이 구조 위에 세워져 있습니다.",
+    } as Multilingual,
 };
