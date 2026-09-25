@@ -132,10 +132,10 @@ export const designWorks: DesignWork[] = [
         context: { en: "NetEase · experimental project", zh: "网易 · 实验课题", ja: "NetEase · 実験的プロジェクト", ko: "NetEase · 실험 과제" },
         role: solo,
         line: {
-            en: "AI-native card roguelike: everything is a card, one drag-and-drop verb, runtime LLM content bound by rules.",
-            zh: "AI 原生卡牌 Roguelike：万物皆卡、单一拖放操作，LLM 运行时生成受规则约束。",
-            ja: "AI ネイティブなカードローグライク。すべてがカード、操作はドラッグ＆ドロップひとつ、実行時の LLM 生成はルールで制約。",
-            ko: "AI 네이티브 카드 로그라이크. 모든 것이 카드, 조작은 드래그 앤 드롭 하나, 런타임 LLM 생성은 규칙으로 제약.",
+            en: "Did the systems and gameplay design, building an AI-native game on a framework of system rules.",
+            zh: "进行系统设计和玩法设计，通过系统规则框架设计 AI 原生游戏。",
+            ja: "システム設計とゲームプレイ設計を担当し、システムのルールフレームワークによって AI ネイティブなゲームを設計しました。",
+            ko: "시스템 설계와 게임플레이 설계를 맡아, 시스템 규칙 프레임워크로 AI 네이티브 게임을 설계했습니다.",
         },
     },
     {
