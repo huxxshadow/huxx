@@ -3,10 +3,15 @@
 import { Image } from "astro:assets";
 import DevCover from "@/components/projects/DevCover.astro";
 import type { Lang } from "@/i18n";
-import type { DesignWorkView } from "./data";
 
 interface Props {
-    work: DesignWorkView;
+    /** 各 Part 的作品视图都有这几个字段 */
+    work: {
+        title: string;
+        cover?: ImageMetadata;
+        colorText?: string;
+        colorBackground?: string;
+    };
     lang: Lang;
     sizes: string;
     class?: string;

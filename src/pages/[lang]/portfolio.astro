@@ -3,6 +3,7 @@ import Layout from "@/layouts/Base.astro";
 import PortfolioOverview from "@/components/portfolio/PortfolioOverview.astro";
 import DebugVariantSwitcher from "@/components/portfolio/DebugVariantSwitcher.astro";
 import GameDesignSection from "@/components/portfolio/gameDesign/GameDesignSection.astro";
+import GameDevSection from "@/components/portfolio/gameDev/GameDevSection.astro";
 import GameProjectsSection from "@/components/portfolio/GameProjectsSection.astro";
 import TechnicalProjectsSection from "@/components/portfolio/TechnicalProjectsSection.astro";
 import {LOCALES} from "@/i18n.ts";
@@ -18,9 +19,9 @@ export const getStaticPaths = () =>
 <Layout>
     <PortfolioOverview />
     <GameDesignSection />
-    {/* 临时锚点：Part 3–5 做好之前，总览里的角色卡先跳到现有的分类板块 */}
-    <div id="role-game-dev"></div>
+    <GameDevSection />
     <GameProjectsSection />
+    {/* 临时锚点：Part 4–5 做好之前，总览里的角色卡先跳到现有的分类板块 */}
     <div id="role-ai-app"></div>
     <TechnicalProjectsSection/>
     <div id="role-tech-art"></div>
