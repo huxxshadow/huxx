@@ -146,11 +146,16 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
         /* 右边的结构图拉到和左边卡片区一样高 */
         align-items: stretch;
     }
-    /* 卡片固定三列（只有很窄的屏幕才减列，免得字挤不下） */
+    /* 卡片两列；很宽的屏幕（比如 27 寸 4K）三列，免得卡片太大 */
     .ai-cards {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 2rem;
+    }
+    @media (min-width: 1800px) {
+        .ai-cards {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
     }
 
     /* 卡片：和下面「技术项目」同一套——2px 描边、圆角、8px 偏移实色阴影，悬停时往阴影方向按下去 */
@@ -293,12 +298,6 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
             max-width: 12rem;
             height: auto;
             margin: 0 auto;
-        }
-    }
-    @media (max-width: 767px) {
-        .ai-cards {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 1.25rem;
         }
     }
     @media (max-width: 519px) {
