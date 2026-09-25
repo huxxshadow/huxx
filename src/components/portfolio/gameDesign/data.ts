@@ -41,6 +41,7 @@ export async function getGameDesignShowcase(lang: Lang) {
                 role: t(work.role),
                 line: t(work.line),
                 highlights: (work.highlights ?? []).map((h) => t(h)),
+                caption: work.caption ? t(work.caption) : "",
                 cover: d.coverImage || d.backupCoverImage,
                 inDevelopment: !!d.inDevelopment,
                 colorText: d.colorText,
