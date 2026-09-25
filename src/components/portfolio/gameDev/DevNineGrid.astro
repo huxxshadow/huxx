@@ -62,11 +62,11 @@ const after = cells.slice(4);
     // 选中某一格：吉祥物换成指向这一格的姿势；取消选中时回到指向上方。
     // 换姿势时整个角色以脚底为支点先压扁一点再弹起，图在压到最低时替换
     const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    // 选中各方向格子时角色的位移（px）
+    // 选中各方向格子时角色的位移（px），只左右移动
     const OFFSET: Record<string, [number, number]> = {
-        "up-left": [-34, -18], "up": [0, -22], "up-right": [34, -18],
+        "up-left": [-34, 0], "up": [0, 0], "up-right": [34, 0],
         "left": [-44, 0], "right": [44, 0],
-        "down-left": [-34, 16], "down": [0, 18], "down-right": [34, 16],
+        "down-left": [-34, 0], "down": [0, 0], "down-right": [34, 0],
     };
 
     function initNineGrid() {
@@ -88,8 +88,8 @@ const after = cells.slice(4);
                 mascot.animate(
                     [
                         { transform: "translateY(0) scale(1, 1)" },
-                        { transform: "translateY(2px) scale(1.035, 0.965)", offset: 0.2 },
-                        { transform: "translateY(-7px) scale(0.985, 1.02)", offset: 0.5 },
+                        { transform: "translateY(0) scale(1.035, 0.965)", offset: 0.2 },
+                        { transform: "translateY(0) scale(0.985, 1.02)", offset: 0.5 },
                         { transform: "translateY(0) scale(1, 1)" },
                     ],
                     { duration: 480, easing: "cubic-bezier(0.33, 0, 0.25, 1)" },
@@ -303,12 +303,6 @@ const after = cells.slice(4);
         translate: var(--mx, 0px) var(--my, 0px);
         transition: translate 520ms cubic-bezier(0.34, 1.4, 0.5, 1);
     }
-    /* 待机时轻轻上下浮动 */
-    /* 用 transform 做浮动，和居中用的 translate 叠加而不是互相覆盖 */
-    @keyframes ng-float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-6px); }
-    }
     /* 精灵图：单帧按比例居中，横向 8 帧，用背景位置切帧 */
     .ng-sprite {
         position: absolute;
@@ -317,7 +311,6 @@ const after = cells.slice(4);
         left: 50%;
         max-width: 100%;
         translate: -50% 0;
-        animation: ng-float 3.2s ease-in-out infinite;
         background-repeat: no-repeat;
         background-size: 800% 100%;
         background-position: calc(var(--frame) * 100% / 7) 0;
@@ -326,7 +319,6 @@ const after = cells.slice(4);
     @media (prefers-reduced-motion: reduce) {
         .ng-cell,
         .ng-mascot { transition: none !important; }
-        .ng-sprite { animation: none !important; }
     }
 
     /* 窄屏：吉祥物占一整行放在最上，项目两列 */
