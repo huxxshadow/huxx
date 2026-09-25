@@ -29,7 +29,7 @@ export const aiWorks: AiWork[] = [
             ja: "Mitsuba 3 の微分可能レンダリングで AI リペイントからライティングを逆算し、Blender のシーンに書き戻す。",
             ko: "Mitsuba 3 미분 가능 렌더링으로 AI 리페인트에서 조명을 역산해 Blender 씬에 다시 기록합니다.",
         },
-        tags: { en: "Blender · Mitsuba 3 · Python · Differentiable Rendering", zh: "Blender · Mitsuba 3 · Python · 可微渲染", ja: "Blender · Mitsuba 3 · Python · 微分可能レンダリング", ko: "Blender · Mitsuba 3 · Python · 미분 가능 렌더링" },
+        tags: { en: "Neural Rendering · Machine Learning · Technical Art", zh: "神经渲染 · 机器学习 · 技术美术", ja: "ニューラルレンダリング · 機械学習 · テクニカルアート", ko: "뉴럴 렌더링 · 머신러닝 · 테크니컬 아트" },
     },
     {
         projectId: "game-project-night-watch",
