@@ -170,10 +170,10 @@ export const designWorks: DesignWork[] = [
         context: { en: "", zh: "", ja: "", ko: "" },
         role: { en: "Narrative Designer · Gameplay Designer · Graphic Design", zh: "叙事策划 · 玩法策划 · 平面设计", ja: "ナラティブプランナー · ゲームプレイプランナー · グラフィックデザイン", ko: "내러티브 기획 · 게임플레이 기획 · 그래픽 디자인" },
         line: {
-            en: "A Metroidvania where comic panels are the units of space; drag items into panels to change their state.",
-            zh: "以漫画分格为空间单位的银河恶魔城：把道具拖进分格改变场景状态。",
-            ja: "コマを空間の単位とするメトロイドヴァニア。アイテムをコマにドラッグして状態を変える。",
-            ko: "만화 칸을 공간 단위로 삼은 메트로배니아, 아이템을 칸에 끌어다 놓아 장면을 바꿉니다.",
+            en: "Built the world and designed the core gameplay, and defined the overall art style and graphic visual design.",
+            zh: "负责世界观构建与核心玩法设计，并完成整体美术风格定义及平面视觉设计。",
+            ja: "世界観の構築とコアゲームプレイの設計を担当し、全体のアートスタイルの定義とグラフィックデザインを手がけました。",
+            ko: "세계관 구축과 핵심 게임플레이 설계를 맡고, 전체 아트 스타일 정의와 그래픽 비주얼 디자인을 완성했습니다.",
         },
     },
     {
