@@ -91,10 +91,7 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
             </span>
             <span>all you need</span>
         </p>
-        <div class="ai-motto-note">
-            <p>{t(L.mottoNote)}</p>
-            <cite>— Vaswani et al., <i>Attention Is All You Need</i>, NeurIPS 2017</cite>
-        </div>
+        <cite class="ai-motto-cite">{t(L.mottoNote)} — Vaswani et al., <i>Attention Is All You Need</i>, NeurIPS 2017</cite>
     </div>
 </section>
 
@@ -186,29 +183,18 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
         -webkit-text-stroke: 0.07em var(--ai-accent);
         paint-order: stroke fill;
     }
-    /* 右下角：给圈外人的一段说明 + 出处 */
-    .ai-motto-note {
+    /* 右下角：一句话说明 + 出处，同一行 */
+    .ai-motto-cite {
         align-self: flex-end;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        max-width: 34rem;
-        margin-top: 1.6rem;
-        color: var(--ai-accent);
-    }
-    .ai-motto-note p {
-        font-size: 0.95rem;
-        font-weight: 600;
-        line-height: 1.65;
-    }
-    .ai-motto-note cite {
-        align-self: flex-end;
+        margin-top: 1.4rem;
+        text-align: right;
         font-style: normal;
-        font-size: 0.9rem;
-        font-weight: 800;
-        opacity: 0.8;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--ai-accent);
+        opacity: 0.85;
     }
-    .ai-motto-note cite i {
+    .ai-motto-cite i {
         font-style: italic;
     }
     /* 两段字之间留出小人双腿的位置；小人比字高，手搭在字的顶端，脚垂到字的底部 */
