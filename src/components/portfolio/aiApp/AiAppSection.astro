@@ -26,7 +26,7 @@ const works = aiWorks.flatMap((w) => {
     const d = p.data;
     return [{
         id: w.projectId,
-        title: d.title[lang] || d.title.en || d.title.zh || w.projectId,
+        title: w.title ? t(w.title) : d.title[lang] || d.title.en || d.title.zh || w.projectId,
         caption: t(w.caption),
         tags: t(w.tags).split(/\s*·\s*/).filter(Boolean),
         cover: d.coverImage || d.backupCoverImage,

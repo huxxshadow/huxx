@@ -3,6 +3,8 @@ import type { Multilingual } from "@/i18n";
 // Part 4 · AI 应用开发：卡片上的一句话和标签（标签用「·」分隔）。文案取自各项目详情页。
 export interface AiWork {
     projectId: string;
+    /** 这一页卡片上的标题；不写就用项目本身的标题 */
+    title?: Multilingual;
     caption: Multilingual;
     tags: Multilingual;
 }
@@ -20,6 +22,7 @@ export const aiWorks: AiWork[] = [
     },
     {
         projectId: "technical-project-blender-inverse-lighting",
+        title: { en: "AI Neural Inverse Lighting with Mitsuba 3", zh: "基于Mitsuba3的灯光逆向AI神经渲染", ja: "Mitsuba 3 による AI ニューラル逆ライティング", ko: "Mitsuba 3 기반 AI 뉴럴 조명 역렌더링" },
         caption: {
             en: "Differentiable rendering with Mitsuba 3 solves the lighting from an AI repaint and writes it back into the Blender scene.",
             zh: "基于 Mitsuba 3 可微渲染，从 AI 重绘图反向求解灯光，并写回 Blender 场景。",
