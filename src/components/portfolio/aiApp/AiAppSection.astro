@@ -82,7 +82,7 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
         </div>
     </div>
 
-    <!-- 最下方：大字标语，紫色小人坐在字上（字用 Roboto 排：纯色粗体，不倾斜、不描边，不用图片） -->
+    <!-- 最下方：大字标语，紫色小人坐在字上（字用 Roboto 排：深紫描边、浅紫填充，不倾斜，不用图片） -->
     <div class="ai-motto" data-reveal="up" data-reveal-once>
         <p class="ai-motto-text" aria-label="Attention is all you need">
             <span>Attention is</span>
@@ -174,9 +174,12 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
         font-weight: 900;
         font-size: clamp(2.2rem, 7.4vw, 8.5rem);
         line-height: 1;
-        letter-spacing: -0.03em;
+        letter-spacing: -0.02em;
         white-space: nowrap;
-        color: var(--ai-accent);
+        /* 深紫描边、浅紫填充；描边画在填充下面，露出来的是外侧一半 */
+        color: var(--ai-tint);
+        -webkit-text-stroke: 0.07em var(--ai-accent);
+        paint-order: stroke fill;
     }
     /* 两段字之间留出小人双腿的位置；小人比字高，手搭在字的顶端，脚垂到字的底部 */
     .ai-motto-seat {
