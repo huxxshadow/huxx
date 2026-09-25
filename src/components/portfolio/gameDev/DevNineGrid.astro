@@ -3,6 +3,7 @@
 // 没有选中时指向上方。八个姿势拼在一张横向精灵图里（src/assets/portfolio/mascot/sprite.webp，顺序同 DIRS），
 // 切换时只移动背景位置：同一张已解码的图，不会出现空白帧。
 // 卡片是卡通风格（参考中间的角色）：蓝色粗描边、白底圆角、底部一道实色边；内容只有 名字 + 一行说明 + 标签。
+// 鼠标在卡片里时卡片被往鼠标方向拽，离开后弹簧式弹回。
 // 选中时卡片弹起、底边加厚、果冻式挤压回弹，封面过冲放大，标签依次蹦出；离开时晃一下落回；按下时压扁。不反色。
 // 切换姿势：八张图身体完全重合，只有手臂不同，所以在一次 Q 弹的「压扁—弹起—回弹」里瞬间换图，不做淡入淡出
 import sprite from "@/assets/portfolio/mascot/sprite.webp";
@@ -143,7 +144,48 @@ const after = cells.slice(4);
                 const dir = cell?.dataset.dir ?? "up";
                 swapTo(dir);
             };
+            // 橡皮筋拖拽：鼠标在卡片里时，卡片被往鼠标方向拽（离中心越远拽得越多，带一点倾斜）；
+            // 离开后按弹簧回到原位，会过冲再回弹。用一个简单的阻尼弹簧逐帧计算
+            const springs = new Map<HTMLElement, { x: number; y: number; vx: number; vy: number; tx: number; ty: number }>();
+            let raf = 0;
+            const PULL = 0.32, MAX = 64, STIFF = 0.11, DAMP = 0.8;
+            const tick = () => {
+                let moving = false;
+                springs.forEach((st, cell) => {
+                    st.vx = (st.vx + (st.tx - st.x) * STIFF) * DAMP;
+                    st.vy = (st.vy + (st.ty - st.y) * STIFF) * DAMP;
+                    st.x += st.vx;
+                    st.y += st.vy;
+                    const still = Math.abs(st.vx) < 0.02 && Math.abs(st.vy) < 0.02 && Math.abs(st.tx - st.x) < 0.05 && Math.abs(st.ty - st.y) < 0.05;
+                    if (still) { st.x = st.tx; st.y = st.ty; } else moving = true;
+                    cell.style.transform = st.x || st.y ? `translate(${st.x.toFixed(2)}px, ${st.y.toFixed(2)}px) rotate(${(st.x * 0.1).toFixed(2)}deg)` : "";
+                });
+                raf = moving ? requestAnimationFrame(tick) : 0;
+            };
+            const kick = () => { if (!raf) raf = requestAnimationFrame(tick); };
+            const state = (cell: HTMLElement) => {
+                let st = springs.get(cell);
+                if (!st) springs.set(cell, (st = { x: 0, y: 0, vx: 0, vy: 0, tx: 0, ty: 0 }));
+                return st;
+            };
             cells.forEach((cell) => {
+                cell.addEventListener("pointermove", (e) => {
+                    if (e.pointerType !== "mouse" || reduceMotion()) return;
+                    const r = cell.getBoundingClientRect();
+                    const clamp = (v: number) => Math.max(-MAX, Math.min(MAX, v));
+                    const st = state(cell);
+                    // 用静止时的中心算偏移（扣掉当前已经被拽出去的位移）
+                    st.tx = clamp((e.clientX - (r.left + r.width / 2 - st.x)) * PULL);
+                    st.ty = clamp((e.clientY - (r.top + r.height / 2 - st.y)) * PULL);
+                    kick();
+                });
+                cell.addEventListener("pointerleave", () => {
+                    const st = springs.get(cell);
+                    if (!st) return;
+                    st.tx = 0;
+                    st.ty = 0;
+                    kick();
+                });
                 cell.addEventListener("mouseenter", () => select(cell));
                 cell.addEventListener("focus", () => select(cell));
             });
@@ -161,7 +203,8 @@ const after = cells.slice(4);
         --mono: ui-monospace, "SFMono-Regular", Consolas, monospace;
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 1.5rem;
+        /* 全宽，间距放大一点，给拖拽留出空间 */
+        gap: 2.5rem 3.5rem;
     }
 
     /* ---------- 项目卡：卡通风格，蓝色粗描边、白底圆角 ---------- */
@@ -270,6 +313,7 @@ const after = cells.slice(4);
     @media (max-width: 1023px) {
         .ng {
             grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.5rem;
         }
         .ng-center {
             grid-column: 1 / -1;
