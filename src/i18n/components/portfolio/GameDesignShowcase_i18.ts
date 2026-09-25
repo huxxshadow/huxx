@@ -40,10 +40,10 @@ export const designWorks: DesignWork[] = [
         projectId: "game-project-yuanmengstar-shanhai-xunling",
         tier: "featured",
         caption: {
-            en: "Joined Tencent TiMi Studio Group as a combat design intern working on combat design: tuning world-boss combat 3C and taking a new combat mechanic from design through implementation.",
-            zh: "以战斗策划实习生身份加入腾讯天美工作室群，进行战斗相关设计，负责世界 Boss 战斗 3C 调优，并推进新战斗机制从设计到落地。",
-            ja: "戦闘プランナーのインターンとしてテンセント TiMi スタジオグループに参加し、戦闘まわりの設計に携わりました。ワールドボス戦の 3C 調整を担当し、新しい戦闘メカニクスを設計から実装まで推進しました。",
-            ko: "전투 기획 인턴으로 텐센트 TiMi 스튜디오 그룹에 합류해 전투 관련 설계를 담당했습니다. 월드 보스 전투 3C 조율을 맡고, 새로운 전투 메커니즘을 설계부터 구현까지 이끌었습니다.",
+            en: "Worked on combat design: tuned world-boss combat 3C and took a new combat mechanic from design through implementation.",
+            zh: "进行战斗相关设计，负责世界 Boss 战斗 3C 调优，并推进新战斗机制从设计到落地。",
+            ja: "戦闘まわりの設計に携わり、ワールドボス戦の 3C 調整を担当、新しい戦闘メカニクスを設計から実装まで推進しました。",
+            ko: "전투 관련 설계를 담당하며 월드 보스 전투 3C 조율을 맡고, 새로운 전투 메커니즘을 설계부터 구현까지 이끌었습니다.",
         },
         highlights: [
             { en: "World boss combat 3C tuning", zh: "世界 Boss 战斗 3C 调优", ja: "ワールドボス戦の 3C 調整", ko: "월드 보스 전투 3C 조율" },
