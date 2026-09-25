@@ -1,14 +1,12 @@
 ---
 // Part 3 · 游戏开发：写过代码的项目，突出每个项目里亲手搭的系统与技术栈。
-// 三个候选版式，本地 dev 下用 DebugVariantSwitcher 切换；默认 / 生产显示 A
+// 版式：九宫格，中间是吉祥物，外圈 8 个项目，悬停即选中
 import { COLORS } from "@/consts";
 import { useTranslations, type Lang } from "@/i18n";
 import { PORTFOLIO_ROLES } from "@/i18n/components/portfolio/PortfolioRoles_i18";
 import { gameDevLabels as L } from "@/i18n/components/portfolio/GameDevShowcase_i18";
 import { getGameDevShowcase } from "./data";
-import DevBento from "./DevBento.astro";
-import DevEditorial from "./DevEditorial.astro";
-import DevSpotlight from "./DevSpotlight.astro";
+import DevNineGrid from "./DevNineGrid.astro";
 
 const lang = (Astro.currentLocale as Lang) || "en";
 const t = useTranslations(lang);
@@ -40,10 +38,8 @@ const layout = { showcase, lang, labels: L };
         <span class="ml-auto font-black text-lg whitespace-nowrap pb-1">{showcase.works.length} {t(L.projects)}</span>
     </header>
 
-    <div data-variant-group="part3" data-variant-label="Part 3 · Game Dev">
-        <div data-variant="A"><DevBento {...layout} /></div>
-        <div data-variant="B" hidden><DevEditorial {...layout} /></div>
-        <div data-variant="C" hidden><DevSpotlight {...layout} /></div>
+    <div data-reveal="fade" data-reveal-once>
+        <DevNineGrid {...layout} />
     </div>
 </section>
 

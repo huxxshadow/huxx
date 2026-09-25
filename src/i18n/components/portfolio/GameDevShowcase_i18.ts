@@ -1,14 +1,10 @@
 import type { Multilingual } from "@/i18n";
 
-// Part 3 · 游戏开发：写过代码的项目。每项标注出处与规模、开发身份、技术栈、一句话，以及亲手搭的三个系统。
+// Part 3 · 游戏开发：九宫格外圈的 8 个项目，按格子顺序排（左上、上、右上、左、右、左下、下、右下）。每项标注出处与规模、开发身份、技术栈、一句话，以及亲手搭的三个系统。
 // 文案都取自各项目详情页里写过的内容。
-
-/** featured = 主推（大图 + 三个系统），more = 其余 */
-export type DevTier = "featured" | "more";
 
 export interface DevWork {
     projectId: string;
-    tier: DevTier;
     context: Multilingual;
     role: Multilingual;
     /** 技术栈，不翻译 */
@@ -23,7 +19,6 @@ const solo: Multilingual = { en: "Solo Developer", zh: "独立开发", ja: "個�
 export const devWorks: DevWork[] = [
     {
         projectId: "game-project-click-click-universe",
-        tier: "featured",
         context: { en: "Graduation project · Steam", zh: "本科毕设 · Steam", ja: "卒業制作 · Steam", ko: "졸업 작품 · Steam" },
         role: solo,
         stack: ["Unity", "C#", "ScriptableObject"],
@@ -41,7 +36,6 @@ export const devWorks: DevWork[] = [
     },
     {
         projectId: "game-project-empty-throne",
-        tier: "featured",
         context: { en: "Steam · team of 5", zh: "Steam · 5 人团队", ja: "Steam · 5 人チーム", ko: "Steam · 5인 팀" },
         role: { en: "Lead Programmer", zh: "主程序", ja: "リードプログラマー", ko: "메인 프로그래머" },
         stack: ["Unity", "C#", "Editor Tools"],
@@ -59,7 +53,6 @@ export const devWorks: DevWork[] = [
     },
     {
         projectId: "game-project-arcane-samurai",
-        tier: "featured",
         context: { en: "Team of 4 · in development", zh: "4 人团队 · 开发中", ja: "4 人チーム · 開発中", ko: "4인 팀 · 개발 중" },
         role: { en: "Lead Programmer · TA", zh: "主程序 · TA", ja: "リードプログラマー · TA", ko: "메인 프로그래머 · TA" },
         stack: ["Unity", "C#", "URP 2D"],
@@ -77,7 +70,6 @@ export const devWorks: DevWork[] = [
     },
     {
         projectId: "game-project-night-watch",
-        tier: "featured",
         context: { en: "NetEase · R&D topic", zh: "网易 · 实验课题", ja: "NetEase · 実験課題", ko: "NetEase · 실험 과제" },
         role: solo,
         stack: ["React", "Three.js", "LLM"],
@@ -95,7 +87,6 @@ export const devWorks: DevWork[] = [
     },
     {
         projectId: "game-project-eel-on-mask",
-        tier: "more",
         context: { en: "GGJ 2026 · Steam", zh: "GGJ 2026 · Steam", ja: "GGJ 2026 · Steam", ko: "GGJ 2026 · Steam" },
         role: { en: "Lead Programmer", zh: "主程序", ja: "リードプログラマー", ko: "메인 프로그래머" },
         stack: ["Unity", "C#", "Shader"],
@@ -113,7 +104,6 @@ export const devWorks: DevWork[] = [
     },
     {
         projectId: "game-project-floodsong",
-        tier: "more",
         context: { en: "USC AGP · 50+ people", zh: "USC AGP · 50+ 人", ja: "USC AGP · 50 人以上", ko: "USC AGP · 50명 이상" },
         role: { en: "Technical Designer (3C)", zh: "技术策划（3C）", ja: "テクニカルデザイナー（3C）", ko: "테크니컬 디자이너(3C)" },
         stack: ["Unity", "C#", "HLSL"],
@@ -131,7 +121,6 @@ export const devWorks: DevWork[] = [
     },
     {
         projectId: "game-project-lost-realm",
-        tier: "more",
         context: { en: "3-month solo demo", zh: "3 个月个人 Demo", ja: "3 か月の個人デモ", ko: "3개월 개인 데모" },
         role: solo,
         stack: ["Unity", "C#"],
@@ -149,7 +138,6 @@ export const devWorks: DevWork[] = [
     },
     {
         projectId: "game-project-speed-pixel",
-        tier: "more",
         context: { en: "3-month solo project", zh: "3 个月个人项目", ja: "3 か月の個人プロジェクト", ko: "3개월 개인 프로젝트" },
         role: solo,
         stack: ["Unity", "C#"],
@@ -165,30 +153,12 @@ export const devWorks: DevWork[] = [
             { en: "In-run builds and permanent progression", zh: "局内构筑与局外成长", ja: "ラン内ビルドと恒久成長", ko: "런 내 빌드와 영구 성장" },
         ],
     },
-    {
-        projectId: "technical-project-parkour-motion-system",
-        tier: "more",
-        context: { en: "UE5 · 7-day practice", zh: "UE5 · 7 天练习", ja: "UE5 · 7 日間の練習", ko: "UE5 · 7일 연습" },
-        role: { en: "Gameplay Programmer", zh: "Gameplay 程序", ja: "ゲームプレイプログラマー", ko: "게임플레이 프로그래머" },
-        stack: ["UE5", "C++"],
-        line: {
-            en: "A component-based movement system and a camera you can choreograph.",
-            zh: "组件化的运动系统，以及可编排的镜头叙事。",
-            ja: "コンポーネント化した移動システムと、演出を組めるカメラ。",
-            ko: "컴포넌트화한 이동 시스템과 연출을 짤 수 있는 카메라.",
-        },
-        systems: [
-            { en: "Component-based movement modules", zh: "组件化的运动模块", ja: "コンポーネント化した移動モジュール", ko: "컴포넌트화한 이동 모듈" },
-            { en: "Speed-driven 3C and camera", zh: "速度驱动的 3C 与镜头", ja: "速度で駆動する 3C とカメラ", ko: "속도 기반 3C와 카메라" },
-            { en: "Debug tools that make tuning visible", zh: "让调参可见的验证工具", ja: "調整を可視化する検証ツール", ko: "튜닝을 보이게 하는 검증 툴" },
-        ],
-    },
 ];
 
 export const gameDevLabels = {
     projects: { en: "projects", zh: "个项目", ja: "件", ko: "개 프로젝트" } as Multilingual,
-    featured: { en: "Featured", zh: "代表作", ja: "代表作", ko: "대표작" } as Multilingual,
-    more: { en: "More Builds", zh: "更多作品", ja: "その他の作品", ko: "더 많은 작품" } as Multilingual,
+    pick: { en: "Select a project", zh: "选择一个项目", ja: "プロジェクトを選択", ko: "프로젝트를 선택하세요" } as Multilingual,
+    select: { en: "SELECT", zh: "SELECT", ja: "SELECT", ko: "SELECT" } as Multilingual,
     built: { en: "What I built", zh: "我搭的系统", ja: "作ったシステム", ko: "구축한 시스템" } as Multilingual,
     stack: { en: "Stack", zh: "技术栈", ja: "技術スタック", ko: "기술 스택" } as Multilingual,
     role: { en: "Role", zh: "身份", ja: "役割", ko: "역할" } as Multilingual,

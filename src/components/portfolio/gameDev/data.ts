@@ -1,4 +1,4 @@
-// Part 3 · 游戏开发：把 GameDevShowcase_i18 里列出的项目和 projects 集合对上，按当前语言取好文案
+// Part 3 · 游戏开发：把 GameDevShowcase_i18 里列出的 8 个项目和 projects 集合对上，按当前语言取好文案
 import { getCollection } from "astro:content";
 import { useTranslations, type Lang } from "@/i18n";
 import { devWorks } from "@/i18n/components/portfolio/GameDevShowcase_i18";
@@ -14,7 +14,6 @@ export async function getGameDevShowcase(lang: Lang) {
         const d = project.data;
         return [{
             id: work.projectId,
-            tier: work.tier,
             title: d.title[lang] || d.title.en || d.title.zh || work.projectId,
             context: t(work.context),
             role: t(work.role),
@@ -28,11 +27,7 @@ export async function getGameDevShowcase(lang: Lang) {
         }];
     });
 
-    return {
-        works,
-        featured: works.filter((w) => w.tier === "featured"),
-        more: works.filter((w) => w.tier === "more"),
-    };
+    return { works };
 }
 
 export type GameDevShowcase = Awaited<ReturnType<typeof getGameDevShowcase>>;

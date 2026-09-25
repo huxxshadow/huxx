@@ -1,0 +1,309 @@
+---
+// Part 3 · 九宫格：中间是吉祥物，外圈 8 格是项目。悬停 / 聚焦某一格就「选中」它：
+// 这一格抬起、四角出现选框，其余格变暗，吉祥物换成指向这一格的姿势。
+// 姿势图放在 src/assets/portfolio/mascot/ 下，按方向命名（up-left / up / up-right / left / right /
+// down-left / down / down-right），缺哪张就用 idle 顶上。
+import { Image } from "astro:assets";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { useTranslations, type Lang } from "@/i18n";
+import type { GameDevShowcase } from "./data";
+import WorkCover from "@/components/portfolio/gameDesign/WorkCover.astro";
+
+interface Props {
+    showcase: GameDevShowcase;
+    lang: Lang;
+    labels: Record<string, any>;
+}
+const { showcase, lang, labels } = Astro.props;
+const t = useTranslations(lang);
+const href = (id: string) => getRelativeLocaleUrl(lang, `projects/${id}`);
+
+// 外圈 8 格按 DOM 顺序对应的方向（中间一格插在第 4 个后面）
+const DIRS = ["up-left", "up", "up-right", "left", "right", "down-left", "down", "down-right"] as const;
+const poseFiles = import.meta.glob<{ default: ImageMetadata }>("/src/assets/portfolio/mascot/*.{png,webp,jpg}", { eager: true });
+const pose = (name: string) => Object.entries(poseFiles).find(([p]) => p.split("/").pop()!.replace(/\.\w+$/, "") === name)?.[1].default;
+const idle = pose("idle")!;
+const poses = DIRS.map((dir) => ({ dir, img: pose(dir) })).filter((p) => p.img) as { dir: string; img: ImageMetadata }[];
+
+const works = showcase.works.slice(0, 8);
+const cells = works.map((w, i) => ({ w, dir: DIRS[i] }));
+const before = cells.slice(0, 4);
+const after = cells.slice(4);
+---
+
+<div class="ng" data-nine-grid>
+    {[before, null, after].map((group) => group === null ? (
+            <!-- 中间：吉祥物 + 当前选中的名字 -->
+            <div class="ng-center" aria-hidden="true">
+                <div class="ng-mascot">
+                    <Image src={idle} alt="" widths={[360, 600, 900]} sizes="(min-width: 1024px) 28vw, 60vw" class="is-active" data-pose="idle" />
+                    {poses.map((p) => (
+                            <Image src={p.img} alt="" widths={[360, 600, 900]} sizes="(min-width: 1024px) 28vw, 60vw" data-pose={p.dir} />
+                    ))}
+                </div>
+                <div class="ng-plate">
+                    <span class="ng-plate-tri"></span>
+                    <span data-ng-name data-idle={t(labels.pick)}>{t(labels.pick)}</span>
+                </div>
+            </div>
+    ) : group.map(({ w, dir }) => (
+            <a href={href(w.id)} class="ng-cell" data-dir={dir} data-name={w.title}>
+                <span class="ng-corner ng-corner-tl"></span>
+                <span class="ng-corner ng-corner-tr"></span>
+                <span class="ng-corner ng-corner-bl"></span>
+                <span class="ng-corner ng-corner-br"></span>
+                <span class="ng-tag">▲ {t(labels.select)}</span>
+                <div class="ng-img">
+                    <WorkCover work={w} lang={lang} sizes="(min-width: 1024px) 28vw, 45vw" />
+                    <p class="ng-line">{w.line}</p>
+                </div>
+                <div class="ng-body">
+                    <h3 class="ng-title">{w.title}</h3>
+                    <span class="ng-meta">{w.context} · {w.role}</span>
+                    <ul class="ng-stack">
+                        {w.stack.map((s) => <li>{s}</li>)}
+                    </ul>
+                </div>
+            </a>
+    )))}
+</div>
+
+<script>
+    // 选中某一格：给容器记下方向，吉祥物换成对应姿势（没有这张图就保持 idle），名牌换成项目名
+    function initNineGrid() {
+        document.querySelectorAll<HTMLElement>("[data-nine-grid]").forEach((root) => {
+            if (root.dataset.ngReady) return;
+            root.dataset.ngReady = "1";
+            const cells = [...root.querySelectorAll<HTMLElement>(".ng-cell")];
+            const imgs = [...root.querySelectorAll<HTMLElement>("[data-pose]")];
+            const name = root.querySelector<HTMLElement>("[data-ng-name]")!;
+            const select = (cell: HTMLElement | null) => {
+                cells.forEach((c) => c.classList.toggle("is-selected", c === cell));
+                root.classList.toggle("has-selection", !!cell);
+                const dir = cell?.dataset.dir ?? "idle";
+                const target = imgs.find((i) => i.dataset.pose === dir) ?? imgs.find((i) => i.dataset.pose === "idle");
+                imgs.forEach((i) => i.classList.toggle("is-active", i === target));
+                name.textContent = cell?.dataset.name ?? name.dataset.idle ?? "";
+            };
+            cells.forEach((cell) => {
+                cell.addEventListener("mouseenter", () => select(cell));
+                cell.addEventListener("focus", () => select(cell));
+            });
+            root.addEventListener("mouseleave", () => select(null));
+            root.addEventListener("focusout", (e) => {
+                if (!root.contains(e.relatedTarget as Node)) select(null);
+            });
+        });
+    }
+    document.addEventListener("astro:page-load", initNineGrid);
+</script>
+
+<style>
+    .ng {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.5rem;
+    }
+
+    /* ---------- 项目格 ---------- */
+    .ng-cell {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--dv-paper);
+        border: 3px solid var(--dv-ink);
+        box-shadow: 6px 6px 0 var(--dv-ink);
+        transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, opacity 200ms ease, filter 200ms ease;
+    }
+    /* 有选中时，其余格退后 */
+    .ng.has-selection .ng-cell:not(.is-selected) {
+        opacity: 0.45;
+        filter: saturate(0.3);
+    }
+    .ng-cell.is-selected {
+        z-index: 2;
+        transform: translate(-4px, -4px);
+        border-color: var(--dv-accent);
+        box-shadow: 10px 10px 0 var(--dv-accent);
+    }
+
+    /* 选框四角：选中时从外侧收拢到格子四角 */
+    .ng-corner {
+        position: absolute;
+        z-index: 3;
+        width: 22px;
+        height: 22px;
+        border: 0 solid var(--dv-accent);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 160ms ease, translate 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .ng-corner-tl { top: -12px; left: -12px; border-top-width: 5px; border-left-width: 5px; translate: -8px -8px; }
+    .ng-corner-tr { top: -12px; right: -12px; border-top-width: 5px; border-right-width: 5px; translate: 8px -8px; }
+    .ng-corner-bl { bottom: -12px; left: -12px; border-bottom-width: 5px; border-left-width: 5px; translate: -8px 8px; }
+    .ng-corner-br { bottom: -12px; right: -12px; border-bottom-width: 5px; border-right-width: 5px; translate: 8px 8px; }
+    .ng-cell.is-selected .ng-corner {
+        opacity: 1;
+        translate: 0 0;
+    }
+
+    /* 选中标签 */
+    .ng-tag {
+        position: absolute;
+        z-index: 3;
+        top: -0.85rem;
+        left: 1rem;
+        padding: 0.1rem 0.6rem;
+        background-color: var(--dv-accent);
+        color: var(--dv-paper);
+        font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        opacity: 0;
+        translate: 0 6px;
+        transition: opacity 160ms ease, translate 200ms ease;
+    }
+    .ng-cell.is-selected .ng-tag {
+        opacity: 1;
+        translate: 0 0;
+    }
+
+    .ng-img {
+        position: relative;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        background-color: var(--dv-ink);
+        border-bottom: 3px solid var(--dv-ink);
+    }
+    .ng-cell.is-selected .ng-img {
+        border-bottom-color: var(--dv-accent);
+    }
+    /* 选中时一句话从图的底部升起 */
+    .ng-line {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 2;
+        padding: 0.55rem 0.8rem;
+        background-color: var(--dv-accent);
+        color: var(--dv-paper);
+        font-size: 0.8rem;
+        font-weight: 700;
+        line-height: 1.5;
+        translate: 0 101%;
+        transition: translate 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .ng-cell.is-selected .ng-line {
+        translate: 0 0;
+    }
+
+    .ng-body {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+        padding: 0.8rem 0.95rem 0.95rem;
+        flex: 1;
+    }
+    .ng-title {
+        font-weight: 900;
+        font-size: 1.2rem;
+        line-height: 1.15;
+    }
+    .ng-cell.is-selected .ng-title {
+        color: var(--dv-accent);
+    }
+    .ng-meta {
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: var(--dv-accent);
+    }
+    .ng-stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin-top: auto;
+        padding-top: 0.35rem;
+    }
+    .ng-stack li {
+        padding: 0.05rem 0.45rem;
+        border: 1.5px solid var(--dv-accent);
+        color: var(--dv-accent);
+        font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+        font-size: 0.68rem;
+        font-weight: 700;
+    }
+
+    /* ---------- 中间：吉祥物 ---------- */
+    .ng-center {
+        display: flex;
+        flex-direction: column;
+        background-color: var(--dv-paper);
+        border: 3px solid var(--dv-ink);
+        box-shadow: 6px 6px 0 var(--dv-ink);
+    }
+    .ng-mascot {
+        position: relative;
+        flex: 1;
+        min-height: 16rem;
+    }
+    /* 原图是近白底，multiply 让底色融进面板 */
+    .ng-mascot :global(img) {
+        position: absolute;
+        inset: 0.5rem 0.5rem 0;
+        width: calc(100% - 1rem);
+        height: calc(100% - 0.5rem);
+        object-fit: contain;
+        mix-blend-mode: multiply;
+        opacity: 0;
+        transition: opacity 120ms ease;
+    }
+    .ng-mascot :global(img.is-active) {
+        opacity: 1;
+    }
+    .ng-plate {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.55rem;
+        padding: 0.55rem 0.8rem;
+        background-color: var(--dv-ink);
+        color: var(--dv-paper);
+        font-weight: 900;
+        font-size: 1rem;
+        min-height: 2.6rem;
+    }
+    .ng-plate-tri {
+        width: 0;
+        height: 0;
+        border-left: 0.4rem solid transparent;
+        border-right: 0.4rem solid transparent;
+        border-bottom: 0.7rem solid var(--dv-accent);
+    }
+    .ng.has-selection .ng-plate {
+        background-color: var(--dv-accent);
+    }
+    .ng.has-selection .ng-plate-tri {
+        border-bottom-color: var(--dv-paper);
+    }
+
+    /* 窄屏：吉祥物占一整行放在最上，项目两列 */
+    @media (max-width: 1023px) {
+        .ng {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .ng-center {
+            grid-column: 1 / -1;
+            order: -1;
+        }
+        .ng-mascot {
+            min-height: 14rem;
+        }
+    }
+    @media (max-width: 639px) {
+        .ng {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
