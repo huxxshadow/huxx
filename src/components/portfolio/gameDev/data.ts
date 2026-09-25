@@ -10,9 +10,9 @@ const GRID = [
     "game-project-empty-throne",
     "technical-project-parkour-motion-system",
     "game-project-speed-pixel",
-    "game-project-floodsong",
     "game-project-lost-realm",
     "game-project-click-click-universe",
+    "game-project-night-watch",
 ];
 
 export async function getGameDevShowcase(lang: Lang) {
