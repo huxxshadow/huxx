@@ -38,7 +38,7 @@ const works = aiWorks.flatMap((w) => {
 const ink = COLORS.black;
 const accent = COLORS.purple.dark;
 const tint = COLORS.purple.light;
-const figSizes = "(min-width: 1024px) 16rem, 40vw";
+const figSizes = "(min-width: 1024px) 20rem, 40vw";
 ---
 
 <section
@@ -79,7 +79,9 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
         <!-- 右：Transformer 结构图（Encoder 在上、Decoder 在下，透明底） -->
         <div class="ai-figure" data-reveal="fade" data-reveal-once>
             <span class="ai-figure-title">Transformer</span>
-            <Image src={transformer} alt="Transformer" widths={[320, 480, 900]} sizes={figSizes} />
+            <div class="ai-figure-box">
+                <Image src={transformer} alt="Transformer" widths={[320, 480, 900]} sizes={figSizes} />
+            </div>
         </div>
     </div>
 
@@ -92,7 +94,6 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
             </span>
             <span>all you need</span>
         </p>
-        <cite class="ai-motto-cite">{t(L.mottoNote)} — Vaswani et al., <i>Attention Is All You Need</i>, NeurIPS 2017</cite>
     </div>
 </section>
 
@@ -104,9 +105,11 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
 
     .ai-layout {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) 16rem;
-        gap: 3.5rem;
-        align-items: start;
+        /* 右栏给足宽度，让结构图总是被高度限制：高度正好等于左边卡片区，宽度按比例收窄 */
+        grid-template-columns: minmax(0, 1fr) 20rem;
+        gap: 3rem;
+        /* 右边的结构图拉到和左边卡片区一样高 */
+        align-items: stretch;
     }
     .ai-cards {
         display: grid;
@@ -184,20 +187,6 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
         -webkit-text-stroke: 0.07em var(--ai-accent);
         paint-order: stroke fill;
     }
-    /* 右下角：一句话说明 + 出处，同一行 */
-    .ai-motto-cite {
-        align-self: flex-end;
-        margin-top: 1.4rem;
-        text-align: right;
-        font-style: normal;
-        font-size: 0.95rem;
-        font-weight: 700;
-        color: var(--ai-accent);
-        opacity: 0.85;
-    }
-    .ai-motto-cite i {
-        font-style: italic;
-    }
     /* 两段字之间留出小人双腿的位置；小人比字高，手搭在字的顶端，脚垂到字的底部 */
     .ai-motto-seat {
         position: relative;
@@ -233,9 +222,20 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
            右边距 2.9% 让标题整体左移 1.45%，和标签对齐 */
         margin-right: 2.9%;
     }
-    .ai-figure :global(img) {
+    /* 图框吃掉标题下面剩下的高度，图在框里等比缩放、居中 */
+    .ai-figure-box {
+        position: relative;
+        flex: 1;
         width: 100%;
-        height: auto;
+        min-height: 0;
+    }
+    .ai-figure-box :global(img) {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
     }
 
     /* 窄屏：结构图放到最上面，缩小；卡片单列 */
@@ -247,8 +247,16 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
         .ai-figure {
             order: -1;
         }
-        .ai-figure :global(img) {
+        .ai-figure-box {
+            flex: none;
+        }
+        .ai-figure-box :global(img) {
+            position: static;
+            display: block;
+            width: 100%;
             max-width: 12rem;
+            height: auto;
+            margin: 0 auto;
         }
     }
     @media (max-width: 767px) {
