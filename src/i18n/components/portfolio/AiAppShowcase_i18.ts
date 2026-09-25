@@ -11,10 +11,10 @@ export const aiWorks: AiWork[] = [
     {
         projectId: "technical-project-terraria-ai-teammate",
         caption: {
-            en: "A Terraria AI teammate: a behavior tree keeps the classic game-AI shape, and the judgment calls go to an LLM.",
-            zh: "泰拉瑞亚 AI 队友：行为树保留传统游戏 AI 的骨架，把需要判断的节点交给大模型。",
-            ja: "テラリアの AI 仲間。ビヘイビアツリーで従来のゲーム AI の骨格を保ち、判断が必要なノードを LLM に任せる。",
-            ko: "테라리아 AI 동료. 비헤이비어 트리로 전통적인 게임 AI의 뼈대를 유지하고, 판단이 필요한 노드는 LLM에 맡깁니다.",
+            en: "Combines the JEV model with a classic behavior tree to strengthen game-AI decision-making.",
+            zh: "融合 JEV 模型与传统行为树，增强游戏 AI 决策能力。",
+            ja: "JEV モデルと従来のビヘイビアツリーを組み合わせ、ゲーム AI の意思決定を強化。",
+            ko: "JEV 모델과 전통적인 비헤이비어 트리를 결합해 게임 AI의 의사결정을 강화했습니다.",
         },
         tags: { en: "Game AI · LLM · C#", zh: "游戏AI · LLM · C#", ja: "ゲーム AI · LLM · C#", ko: "게임 AI · LLM · C#" },
     },
