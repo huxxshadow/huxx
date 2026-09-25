@@ -71,8 +71,8 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
                             <WorkCover work={w} lang={lang} sizes="(min-width: 1024px) 30vw, (min-width: 768px) 45vw, 100vw" />
                         </div>
                         <div class="ai-body">
-                            <h3 class="font-black text-xl sm:text-2xl leading-tight">{w.title}</h3>
-                            <p class="text-base font-bold opacity-90 leading-relaxed flex-1">{w.caption}</p>
+                            <h3 class="ai-title">{w.title}</h3>
+                            <p class="ai-caption">{w.caption}</p>
                             <ul class="flex flex-wrap gap-2">
                                 {w.tags.map((tag) => <li class="ai-tag">{tag}</li>)}
                             </ul>
@@ -226,6 +226,18 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
         gap: 1rem;
         padding: 1.25rem 1.5rem 1.5rem;
     }
+    .ai-title {
+        font-weight: 900;
+        font-size: 1.5rem;
+        line-height: 1.25;
+    }
+    .ai-caption {
+        flex: 1;
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.625;
+        opacity: 0.9;
+    }
     .ai-tag {
         padding: 0.25rem 0.75rem;
         border: 2px solid var(--ai-accent);
@@ -360,6 +372,13 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
         .ai-cards {
             grid-template-columns: 1fr;
         }
+    }
+    /* 分辨率低一些的屏幕（1600px 以下）：三列卡片更窄，字号和内边距都收一点 */
+    @media (max-width: 1599px) {
+        .ai-title { font-size: 1.2rem; }
+        .ai-caption { font-size: 0.875rem; line-height: 1.55; }
+        .ai-tag { font-size: 0.75rem; padding: 0.15rem 0.55rem; }
+        .ai-body { gap: 0.75rem; padding: 1rem 1.1rem 1.15rem; }
     }
     @media (prefers-reduced-motion: reduce) {
         .ai-card,
