@@ -40,6 +40,9 @@ const works = aiWorks.flatMap((w) => {
 const ink = COLORS.black;
 const accent = COLORS.purple.dark;
 const tint = COLORS.purple.light;
+// 标语逐字拆开（空格也保留成一格），用来做「注意力」悬停效果
+const mottoLeft = Array.from("Attention is");
+const mottoRight = Array.from("all you need");
 const figSizes = "(min-width: 1024px) 20rem, 40vw";
 ---
 
@@ -89,12 +92,12 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
 
     <!-- 最下方：大字标语，紫色小人坐在字上（字用 Roboto 排：深紫描边、浅紫填充，不倾斜，不用图片） -->
     <div class="ai-motto" data-reveal="up" data-reveal-once>
-        <p class="ai-motto-text" aria-label="Attention is all you need">
-            <span>Attention is</span>
+        <p class="ai-motto-text" aria-label="Attention is all you need" data-attention>
+            <span aria-hidden="true">{mottoLeft.map((c) => <span class:list={["ai-ch", { "ai-sp": c === " " }]}>{c}</span>)}</span>
             <span class="ai-motto-seat" aria-hidden="true">
                 <Image src={mascot} alt="" widths={[240, 480, 616]} sizes="(min-width: 1024px) 12rem, 30vw" />
             </span>
-            <span>all you need</span>
+            <span aria-hidden="true">{mottoRight.map((c) => <span class:list={["ai-ch", { "ai-sp": c === " " }]}>{c}</span>)}</span>
         </p>
     </div>
 </section>
@@ -130,6 +133,36 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
         });
     }
     document.addEventListener("astro:page-load", fitAiFigure);
+
+    // 标语的「注意力」悬停：离鼠标越近的字母权重越高（高斯衰减），权重决定字母抬起多少、填充多深；
+    // 注意力落到小人坐的位置时，小人也轻轻抬一下。离开后全部回到 0
+    function initAttention() {
+        document.querySelectorAll<HTMLElement>("[data-attention]").forEach((line) => {
+            if (line.dataset.attnReady) return;
+            line.dataset.attnReady = "1";
+            const chars = [...line.querySelectorAll<HTMLElement>(".ai-ch")];
+            const seat = line.querySelector<HTMLElement>(".ai-motto-seat");
+            let raf = 0;
+            let mouseX: number | null = null;
+            const apply = () => {
+                raf = 0;
+                const em = parseFloat(getComputedStyle(line).fontSize) || 100;
+                const sigma = em * 0.9;
+                const weight = (el: HTMLElement) => {
+                    if (mouseX === null) return 0;
+                    const r = el.getBoundingClientRect();
+                    const d = mouseX - (r.left + r.width / 2);
+                    return Math.exp(-(d * d) / (2 * sigma * sigma));
+                };
+                chars.forEach((c) => c.style.setProperty("--w", weight(c).toFixed(3)));
+                if (seat) seat.style.setProperty("--w", weight(seat).toFixed(3));
+            };
+            const schedule = () => { if (!raf) raf = requestAnimationFrame(apply); };
+            line.addEventListener("pointermove", (e) => { mouseX = e.clientX; schedule(); });
+            line.addEventListener("pointerleave", () => { mouseX = null; schedule(); });
+        });
+    }
+    document.addEventListener("astro:page-load", initAttention);
 </script>
 
 <style>
@@ -237,8 +270,30 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
         height: 2.15em;
         width: auto;
         max-width: none;
-        translate: -50% 0;
+        /* 注意力到这儿时轻轻抬起 */
+        translate: -50% calc(var(--w, 0) * -0.07em);
         pointer-events: none;
+        transition: translate 220ms ease-out;
+    }
+
+    /* 「注意力」：权重 --w（0~1）让字母抬起、填充从浅紫过渡到深紫 */
+    .ai-ch {
+        display: inline-block;
+        translate: 0 calc(var(--w, 0) * -0.14em);
+        color: color-mix(in srgb, var(--ai-accent) calc(var(--w, 0) * 100%), var(--ai-tint));
+        transition: translate 200ms ease-out, color 200ms ease-out;
+    }
+    .ai-sp {
+        white-space: pre;
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .ai-ch,
+        .ai-motto-seat :global(img) {
+            translate: 0 0;
+        }
+        .ai-motto-seat :global(img) {
+            translate: -50% 0;
+        }
     }
 
     .ai-figure {
