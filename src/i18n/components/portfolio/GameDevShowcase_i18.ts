@@ -119,7 +119,7 @@ export const devWorks: DevWork[] = [
     },
     {
         projectId: "game-project-eel-on-mask",
-        tags: { en: "Unity · GGJ 2026 · Team Lead · Lead Programmer · Technical Artist", zh: "Unity · GGJ 2026 · 队长 · 主程序 · 技术美术", ja: "Unity · GGJ 2026 · リーダー · リードプログラマー · テクニカルアーティスト", ko: "Unity · GGJ 2026 · 팀장 · 메인 프로그래머 · 테크니컬 아티스트" },
+        tags: { en: "Unity · GGJ 2026 · Team Lead", zh: "Unity · GGJ 2026 · 队长", ja: "Unity · GGJ 2026 · リーダー", ko: "Unity · GGJ 2026 · 팀장" },
         caption: {
             en: "Built a tilemap grid system with custom physics rules and a level editor, plus a CRT post-process material.",
             zh: "实现自定义物理规则的 Tilemap 网格系统和关卡编辑器，以及 CRT 后处理材质。",
