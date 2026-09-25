@@ -8,11 +8,11 @@ const GRID = [
     "game-project-rephrased",
     "game-project-eel-on-mask",
     "game-project-empty-throne",
-    "game-project-night-watch",
-    "game-project-click-click-universe",
+    "technical-project-parkour-motion-system",
+    "game-project-speed-pixel",
     "game-project-floodsong",
     "game-project-lost-realm",
-    "game-project-speed-pixel",
+    "game-project-click-click-universe",
 ];
 
 export async function getGameDevShowcase(lang: Lang) {

@@ -166,6 +166,19 @@ export const devWorks: DevWork[] = [
             { en: "In-run builds and permanent progression", zh: "局内构筑与局外成长", ja: "ラン内ビルドと恒久成長", ko: "런 내 빌드와 영구 성장" },
         ],
     },
+    {
+        projectId: "technical-project-parkour-motion-system",
+        context: { en: "UE5 · 7-day practice", zh: "UE5 · 7 天练习", ja: "UE5 · 7 日間の練習", ko: "UE5 · 7일 연습" },
+        role: { en: "Gameplay Programmer", zh: "Gameplay 程序", ja: "ゲームプレイプログラマー", ko: "게임플레이 프로그래머" },
+        stack: ["UE5", "C++"],
+        line: {
+            en: "A component-based movement system and a camera you can choreograph.",
+            zh: "组件化的运动系统，以及可编排的镜头叙事。",
+            ja: "コンポーネント化した移動システムと、演出を組めるカメラ。",
+            ko: "컴포넌트화한 이동 시스템과 연출을 짤 수 있는 카메라.",
+        },
+        systems: [],
+    },
 ];
 
 export const gameDevLabels = {
