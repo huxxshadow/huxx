@@ -72,11 +72,11 @@ export const aiWorks: AiWork[] = [
 
 export const aiAppLabels = {
     projects: { en: "projects", zh: "个项目", ja: "件", ko: "개 프로젝트" } as Multilingual,
-    // 标语右下角出处前的一句话：告诉圈外人这篇论文的地位
+    // 标语右下角出处前的一句话：和我的联系 + 这篇论文的地位
     mottoNote: {
-        en: "The paper that introduced the Transformer, the architecture behind today's large language models like ChatGPT and Claude",
-        zh: "开创 Transformer 架构、撑起如今 ChatGPT 与 Claude 等大模型的论文",
-        ja: "今日の ChatGPT や Claude などの大規模言語モデルを支える Transformer を生んだ論文",
-        ko: "오늘날 ChatGPT, Claude 같은 대규모 언어 모델의 기반인 Transformer를 처음 제안한 논문",
+        en: "The first AI paper I ever read, and where the Transformer behind today's ChatGPT and Claude began",
+        zh: "我读的第一篇 AI 论文，也是撑起如今 ChatGPT 与 Claude 的 Transformer 的起点",
+        ja: "私が初めて読んだ AI の論文であり、今の ChatGPT や Claude を支える Transformer の出発点",
+        ko: "제가 처음 읽은 AI 논문이자, 오늘날 ChatGPT와 Claude를 떠받치는 Transformer의 출발점",
     } as Multilingual,
 };
