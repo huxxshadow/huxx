@@ -173,10 +173,10 @@ export const designWorks: DesignWork[] = [
         projectId: "game-project-empty-throne",
         tier: "featured",
         caption: {
-            en: "Led the gameplay, narrative and rhythm design, tying dialogue-deduction puzzles and musical set pieces together through the 'magic mirror reveals the truth' mechanic.",
-            zh: "主导玩法、叙事与音游设计，用「魔镜揭示真相」把对话推理谜题和音乐节奏演出串成一体。",
-            ja: "ゲームプレイ、ナラティブ、リズムゲームの設計を主導し、「魔法の鏡が真実を暴く」仕組みで会話推理の謎解きと音楽演出をひとつにまとめました。",
-            ko: "게임플레이, 내러티브, 리듬 게임 설계를 주도해 '마법 거울이 진실을 드러낸다' 메커니즘으로 대화 추리 퍼즐과 음악 연출을 하나로 엮었습니다.",
+            en: "As team lead, worked on the gameplay, narrative and rhythm design, and handled all of the project's development.",
+            zh: "作为队长，参与游戏的玩法、叙事、音游设计，并负责项目的全部开发。",
+            ja: "チームリーダーとして、ゲームプレイ、ナラティブ、リズムゲームの設計に携わり、プロジェクトの開発をすべて担当しました。",
+            ko: "팀장으로서 게임플레이, 내러티브, 리듬 게임 설계에 참여하고, 프로젝트의 개발 전체를 맡았습니다.",
         },
         highlights: [
             { en: "\"Magic mirror reveals the truth\" core mechanic", zh: "「魔镜揭示真相」核心机制", ja: "「魔法の鏡が真実を暴く」コアメカニクス", ko: "'마법 거울이 진실을 드러낸다' 핵심 메커니즘" },
