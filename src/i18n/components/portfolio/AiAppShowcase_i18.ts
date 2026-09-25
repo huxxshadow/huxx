@@ -49,7 +49,7 @@ export const aiWorks: AiWork[] = [
             ja: "香港 AI アプリケーション開発コンテストの受賞作。AI を搭載した実物のプロダクト。",
             ko: "홍콩 AI 애플리케이션 개발 대회 수상작. AI를 탑재한 실물 제품입니다.",
         },
-        tags: { en: "Tech Lead · Spring Boot · IoT", zh: "技术组长 · Spring Boot · IoT", ja: "テックリード · Spring Boot · IoT", ko: "기술 리드 · Spring Boot · IoT" },
+        tags: { en: "Tech Lead · IoT · RAG", zh: "技术组长 · IoT · RAG", ja: "テックリード · IoT · RAG", ko: "기술 리드 · IoT · RAG" },
     },
     {
         projectId: "technical-project-vbgmm",
