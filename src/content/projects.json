@@ -2001,6 +2001,86 @@
     "colorBackground": "red"
   },
   {
+    "id": "technical-project-terraria-ai-teammate",
+    "order": 31,
+    "category": "technical",
+    "title": {
+      "en": "Jev-Based Terraria AI Teammate Mod",
+      "zh": "基于 Jev 的泰拉瑞亚 AI 队友 Mod",
+      "ja": "Jev ベースの Terraria AI チームメイト Mod",
+      "ko": "Jev 기반 테라리아 AI 팀메이트 모드"
+    },
+    "roles": {
+      "en": [
+        "Gameplay AI Engineer",
+        "Mod Developer"
+      ],
+      "zh": [
+        "游戏 AI 工程师",
+        "Mod 开发"
+      ],
+      "ja": [
+        "ゲーム AI エンジニア",
+        "Mod 開発"
+      ],
+      "ko": [
+        "게임 AI 엔지니어",
+        "모드 개발"
+      ]
+    },
+    "desc": {
+      "en": "An AI teammate for Terraria whose behaviour tree keeps the shape of classical game AI but hands its judgment gates to Jev: which way to break away from a boss, which weapon, whether to drink now. Code owns the reflexes and the fallbacks, ChatGPT feeds per-boss playbooks in as state, and every model node was calibrated on drawn scenarios before it earned its place.",
+      "zh": "一个泰拉瑞亚 AI 队友：行为树保留传统游戏 AI 的形状，但把需要判断的几道门交给 Jev —— 打 boss 往哪边脱离、用哪把武器、现在要不要喝药。反射和兜底归代码，ChatGPT 的 boss 手册作为状态喂入，每个模型节点都先在手绘场景上校准过才赢得位置。",
+      "ja": "Terraria の AI チームメイト。ビヘイビアツリーは従来のゲーム AI の形を保ちつつ、判断が必要なゲートを Jev に委ねます：ボスからどちらへ離脱するか、どの武器か、今飲むか。反射とフォールバックはコードが持ち、ChatGPT のボス別プレイブックは状態として流し込み、すべてのモデルノードは手描きのシナリオで校正してから席を得ました。",
+      "ko": "테라리아 AI 팀메이트. 행동 트리는 고전적 게임 AI의 형태를 유지하되 판단이 필요한 게이트를 Jev에 맡깁니다. 보스에게서 어느 쪽으로 빠질지, 어떤 무기인지, 지금 마실지. 반사와 폴백은 코드가 맡고, ChatGPT의 보스별 플레이북은 상태로 흘러들며, 모든 모델 노드는 손으로 그린 시나리오로 보정한 뒤에야 자리를 얻었습니다."
+    },
+    "tags": {
+      "en": [
+        "AI Application Development",
+        "Game AI",
+        "Behaviour Design",
+        "Pathfinding",
+        "tModLoader"
+      ],
+      "zh": [
+        "AI应用开发",
+        "游戏AI",
+        "行为设计",
+        "寻路",
+        "tModLoader"
+      ],
+      "ja": [
+        "AIアプリケーション開発",
+        "ゲームAI",
+        "行動設計",
+        "経路探索",
+        "tModLoader"
+      ],
+      "ko": [
+        "AI 애플리케이션 개발",
+        "게임 AI",
+        "행동 설계",
+        "경로 탐색",
+        "tModLoader"
+      ]
+    },
+    "coverImage": "src/assets/projects/technical-project-terraria-ai-teammate/cover-4x3.png",
+    "colorText": "red",
+    "colorBackground": "red",
+    "links": [
+      {
+        "name": "Bilibili",
+        "url": "https://www.bilibili.com/video/BV1yCht6vEki/",
+        "icon": "fa-brands fa-bilibili"
+      },
+      {
+        "name": "YouTube",
+        "url": "https://youtu.be/-0tv80OBsRI",
+        "icon": "fa-brands fa-youtube"
+      }
+    ]
+  },
+  {
     "id": "game-project-fractal-shelter",
     "order": 32,
     "category": "game",

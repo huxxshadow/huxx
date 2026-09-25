@@ -1,0 +1,94 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import hero from '@/assets/projects/technical-project-terraria-ai-teammate/hero-en.png';
+import tree from '@/assets/projects/technical-project-terraria-ai-teammate/tree-en.png';
+
+## My Role
+
+A solo project in **game AI and AI product design**: an AI teammate for Terraria whose behaviour tree keeps the shape of classical game AI but hands its hardest gates to a model that returns typed judgments. I designed and built all of it, from the tModLoader mod and the physics-based movement to the model integration and the calibration process. My responsibilities included:
+
+- **Decision architecture**: Deciding, gate by gate, what stays in code and what becomes a judgment, and the rule that makes that split hold up in a real-time game.
+- **Jev nodes**: Designing the questions, the state snapshots they see, the symmetric option wording, the confidence thresholds, and the asynchronous plumbing that lets a 300 ms answer live inside a 16 ms tick.
+- **Classical layer**: Pathfinding whose jump and flight arcs are traced from the game's physics, lead aiming, dodging, and a boss ring that never closes.
+- **Knowledge layer**: ChatGPT playbooks per boss and mining plans, consumed by the tree as state rather than as commands.
+- **Calibration and tooling**: Every question measured on drawn scenarios before being trusted; two self-test suites; in-game diagnostics.
+
+---
+
+## The Problem With Gates
+
+A behaviour tree is the right shape for a fight: a priority list of things worth doing, each behind a gate that says whether now is the moment. Classical trees go wrong at the gates. "Is he in trouble?" written as a health threshold is wrong against a boss that takes seventy percent in one bite. "Which way should he run?" written as "the nearest open direction" runs him into a dead end. "Which weapon?" written as "the highest damage" holds a shortsword at twenty tiles. Each rule is right most of the time and wrong exactly when it matters, and every patch adds a special case.
+
+The thing those gates have in common is that a player settles them by feel, from the whole situation, and could explain the choice afterwards. That is what Jev, TypeSafe's System One model, is built to do: given a structured state and a question, it returns a typed answer, a choice with probabilities or a yes/no lean, in a few hundred milliseconds, without generating text.
+
+<figure>
+    <Image src={hero} alt="Cover art: the player and the AI teammate side by side in a Terraria landscape" width={1672} height={941} />
+    <figcaption>The teammate is a real player client; the tree runs in a Python backend and reloads on save</figcaption>
+</figure>
+
+So the tree keeps its structure, and some of its gates become Jev nodes.
+
+---
+
+## Anatomy of a Jev Node
+
+A Jev node is a gate whose condition is a judgment rather than a comparison. Each one has the same five parts.
+
+**A snapshot.** Code builds a small structured state with only what the question needs: health, whether he was hit in the last two seconds, the boss's distance and closing speed, how much ground lies each way. Numbers a person would notice, not a dump of the world.
+
+**A question with symmetric options.** Every option names both what it buys and what it costs. The first weapon question described melee only by its limit and ranged only by its advantage, and the model picked the bow six times out of six, including against a zombie two tiles away. Giving every option a reach and a cost took it to four out of five. A question that leans in its wording leans hard enough to be unusable while reading perfectly reasonably.
+
+**A typed answer and a threshold.** A choice comes back with a probability per option and a confidence; a noul comes back as a probability of yes. The threshold is set per question from measurement, not by default: three weapons spread the probability, so the weapon node acts on confidence 0.35, while the "drink now" node acts on 0.5.
+
+**Asynchrony.** The tree ticks thirty times a second; an answer takes about 300 ms. The node never waits. It reads the latest answer for its channel, asks again in the background when the snapshot's key has changed, and one request per channel is in flight at most.
+
+**A fallback.** Without an answer, or below the threshold, the gate runs a plain rule: the hardest hitter, a health floor, a scored exit. The teammate is never smarter than the model, but never dumber than a scripted one.
+
+<figure>
+    <Image src={tree} alt="The boss-fight behaviour tree with each gate labelled by who answers it" width={2400} height={1500} />
+    <figcaption>The boss-fight tree. Reflexes stay in code; the two gates that are judgments are Jev's; the playbook is read as state</figcaption>
+</figure>
+
+---
+
+## The Nodes That Earned Their Place
+
+### Which way out
+
+When the boss gets inside his ring he has to break away, and the nearest exit is often a dead end thirty tiles deep. Code does what code is good at: a bounded search over the ground he can reach, grouped by the first step taken, then a flood fill from each way's far end to tell a closed pocket from ground that continues past the edge of the window. Each way is described in the same three terms: how much ground lies that way (and how many seconds of running that buys), how far from the boss it ends, whether it is closed off, and whether he would have to pass the boss. A way through the boss is struck off before anyone weighs it.
+
+Measured on five drawn situations, Jev chose the shelf with room over a thirty-tile dead end (0.97), open ground past the boss over a thirty-five-tile pocket (0.82) and over a sixty-tile pocket (0.74), and the near open side when both were open (0.76). The scoring fallback picks the pocket in the second and third cases, because a rule cannot weigh "closed off" against "passes the boss" without a number for each, and any number is wrong somewhere.
+
+### Which weapon
+
+Candidates are the usable weapons in the hotbar, each as "name: damage, reach, cost", with the enemies' names and actual distances beside them. A sword at two tiles came back sword at 0.59 against the gun's 0.37; a zombie at twenty tiles, gun at 0.79; a boss at forty, gun at 0.92; a demon eye at eight while he is at thirty percent health, gun at 0.81, keeping his distance because he is hurt. Three zombies at three to five tiles came back 0.50 against 0.44, a genuine toss-up, and the low confidence hands it to the fallback.
+
+### Drink now
+
+At forty percent health, just hit, three zombies close: 0.72. At fifty-five percent after one boss hit: 0.33. At twenty-five percent with nothing near: 0.47, which the code floor at forty percent catches anyway. The node is asked once a second during a fight; the floors are there for the tick it has no answer.
+
+---
+
+## The Node That Didn't Work
+
+The first version of the tree went further: every third of a second it asked Jev for a stance, press or hold or evade or regroup, and for a direction, and the tree acted on both. Offline it measured beautifully. In the game it fought worse than the scripted ring it replaced.
+
+Three reasons, and they are the design rule this project ended up with. The answer arrived a third of a second after the moment it described, so the stance switched between two answers and read as hesitation. "Press" closed a distance the old rules had always kept. And none of it changed the thing that actually loses boss fights, which is standing where the attack lands: a per-tick problem, not a three-times-a-second one.
+
+The rule: a gate can be a model node only if it tolerates a stale answer, has more than one defensible option, and is a preference rather than a reflex. Which way to run, which weapon, whether to drink: yes. Whether to dodge the shot in flight: never. The stance node came out; the reflexes went back to code; the calibration data stayed in the design notes.
+
+---
+
+## The Classical Layer It Sits On
+
+Everything below the gates is deterministic and fast. The pathfinder derives its tables from vanilla constants and traces jump, run-up and flight arcs tile by tile, so the routes it plans are routes the body can follow; a controller turns them into key presses that land. Aim leads a moving target by iterating flight time. Incoming projectiles are dodged by closest approach. Against a boss he holds the far end of his range and never takes a step toward it, and a final layer predicts the boss's position ten ticks ahead and refuses any step that would close within three tiles of its hitbox, whoever asked for it.
+
+ChatGPT sits above, not inside: once per boss it writes a survival playbook (phases, what each throws, how to dodge it, what to do on a charge, how far to keep), and every twelve seconds a mining plan. The tree reads these as state. The playbook's "on charge: fly up" becomes the action behind a code gate; its "escape toward height" becomes a field in the snapshot Jev sees when choosing a way out. The model that knows about bosses never presses a key, and the model that presses keys never has to know about bosses.
+
+---
+
+## Verification
+
+Every Jev question was measured on drawn scenarios before it went live, and the measurements are kept with the code so a rewording can be checked against them. The classical layer has its own rig: an ASCII terrain format and a small physics model built from the same constants, driving the real navigator through walls, gaps, shafts, platforms, pockets and cliffs. In game, `/ai why` prints what the pathfinder sees, `/ai status` shows the weapon and Jev's confidence, and `/ai book` shows the boss playbook, so a bad decision can be traced to the snapshot, the question, the answer, or the fallback, rather than guessed at.
