@@ -40,10 +40,10 @@ export const designWorks: DesignWork[] = [
         projectId: "game-project-yuanmengstar-shanhai-xunling",
         tier: "featured",
         caption: {
-            en: "Worked on combat design: tuned world-boss combat 3C and took a new combat mechanic from design through implementation.",
-            zh: "进行战斗相关设计，负责世界 Boss 战斗 3C 调优，并推进新战斗机制从设计到落地。",
-            ja: "戦闘まわりの設計に携わり、ワールドボス戦の 3C 調整を担当、新しい戦闘メカニクスを設計から実装まで推進しました。",
-            ko: "전투 관련 설계를 담당하며 월드 보스 전투 3C 조율을 맡고, 새로운 전투 메커니즘을 설계부터 구현까지 이끌었습니다.",
+            en: "Designed the world-boss combat and 3C experience, and single-handedly took a brand-new combat mechanic from proposal to in-game implementation.",
+            zh: "负责世界 Boss 的战斗与 3C 体验设计，并独立负责全新战斗机制从方案设计到实装落地。",
+            ja: "ワールドボスの戦闘と 3C 体験の設計を担当し、まったく新しい戦闘メカニクスを企画から実装まで一人で手がけました。",
+            ko: "월드 보스의 전투와 3C 경험 설계를 맡았고, 완전히 새로운 전투 메커니즘을 기획부터 실제 구현까지 단독으로 책임졌습니다.",
         },
         highlights: [
             { en: "World boss combat 3C tuning", zh: "世界 Boss 战斗 3C 调优", ja: "ワールドボス戦の 3C 調整", ko: "월드 보스 전투 3C 조율" },
