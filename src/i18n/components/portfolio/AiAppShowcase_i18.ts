@@ -34,10 +34,10 @@ export const aiWorks: AiWork[] = [
     {
         projectId: "game-project-night-watch",
         caption: {
-            en: "An AI-native card roguelike: the LLM generates content at runtime while rules and numbers stay in code.",
-            zh: "AI 原生卡牌 Roguelike：大模型在运行时生成内容，规则与数值留在代码里约束。",
-            ja: "AI ネイティブなカードローグライク。LLM が実行時にコンテンツを生成し、ルールと数値はコードで制約する。",
-            ko: "AI 네이티브 카드 로그라이크. LLM이 런타임에 콘텐츠를 생성하고, 규칙과 수치는 코드에서 제약합니다.",
+            en: "Designed an LLM agent framework for concurrent, real-time game content generation.",
+            zh: "设计支持并发实时游戏生成的 LLM Agent 框架。",
+            ja: "並行してリアルタイムにゲームを生成できる LLM エージェントのフレームワークを設計。",
+            ko: "동시에 실시간으로 게임을 생성할 수 있는 LLM 에이전트 프레임워크를 설계했습니다.",
         },
         tags: { en: "NetEase · LLM · Harness Engineering", zh: "网易 · LLM · Harness Engineering", ja: "NetEase · LLM · Harness Engineering", ko: "NetEase · LLM · Harness Engineering" },
     },
