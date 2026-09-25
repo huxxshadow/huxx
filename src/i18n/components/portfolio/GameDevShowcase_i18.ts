@@ -1,6 +1,6 @@
 import type { Multilingual } from "@/i18n";
 
-// Part 3 · 游戏开发：九宫格外圈的 8 个项目，按格子顺序排（左上、上、右上、左、右、左下、下、右下）。每项标注出处与规模、开发身份、技术栈、一句话，以及亲手搭的三个系统。
+// Part 3 · 游戏开发：九宫格外圈的项目。格子里的顺序由 gameDev/data.ts 的 GRID 决定。每项标注出处与规模、开发身份、技术栈、一句话，以及亲手搭的三个系统。
 // 文案都取自各项目详情页里写过的内容。
 
 export interface DevWork {
@@ -17,6 +17,19 @@ export interface DevWork {
 const solo: Multilingual = { en: "Solo Developer", zh: "独立开发", ja: "個人開発", ko: "1인 개발" };
 
 export const devWorks: DevWork[] = [
+    {
+        projectId: "game-project-rephrased",
+        context: { en: "Team of 40+", zh: "40+ 人团队", ja: "40 人以上のチーム", ko: "40명 이상 팀" },
+        role: { en: "Engineer · TA", zh: "工程师 · 技术美术", ja: "エンジニア · TA", ko: "엔지니어 · TA" },
+        stack: [],
+        line: {
+            en: "An isometric linguistic puzzle adventure where rewriting ancient texts reshapes the world around you.",
+            zh: "等距视角的语言解谜冒险：改写古老的文字，就能重塑身边的环境。",
+            ja: "アイソメトリック視点の言語パズルアドベンチャー。古代の文章を書き換えると周囲の環境が変わる。",
+            ko: "아이소메트릭 시점의 언어 퍼즐 어드벤처. 고대의 글을 고쳐 쓰면 주변 환경이 바뀝니다.",
+        },
+        systems: [],
+    },
     {
         projectId: "game-project-click-click-universe",
         context: { en: "Graduation project · Steam", zh: "本科毕设 · Steam", ja: "卒業制作 · Steam", ko: "졸업 작품 · Steam" },

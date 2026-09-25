@@ -3,12 +3,24 @@ import { getCollection } from "astro:content";
 import { useTranslations, type Lang } from "@/i18n";
 import { devWorks } from "@/i18n/components/portfolio/GameDevShowcase_i18";
 
+// 九宫格外圈 8 格的顺序：左上、上、右上、左、右、左下、下、右下
+const GRID = [
+    "game-project-rephrased",
+    "game-project-eel-on-mask",
+    "game-project-empty-throne",
+    "game-project-night-watch",
+    "game-project-click-click-universe",
+    "game-project-floodsong",
+    "game-project-lost-realm",
+    "game-project-speed-pixel",
+];
+
 export async function getGameDevShowcase(lang: Lang) {
     const t = useTranslations(lang);
     const projects = await getCollection("projects");
     const byId = new Map(projects.map((p) => [p.id, p]));
 
-    const works = devWorks.flatMap((work) => {
+    const works = GRID.flatMap((id) => devWorks.filter((w) => w.projectId === id)).flatMap((work) => {
         const project = byId.get(work.projectId);
         if (!project) return [];
         const d = project.data;
