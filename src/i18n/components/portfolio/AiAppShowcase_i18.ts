@@ -19,16 +19,6 @@ export const aiWorks: AiWork[] = [
         tags: { en: "tModLoader · C# · LLM · Game AI", zh: "tModLoader · C# · LLM · 游戏 AI", ja: "tModLoader · C# · LLM · ゲーム AI", ko: "tModLoader · C# · LLM · 게임 AI" },
     },
     {
-        projectId: "game-project-night-watch",
-        caption: {
-            en: "An AI-native card roguelike: the LLM generates content at runtime while rules and numbers stay in code.",
-            zh: "AI 原生卡牌 Roguelike：大模型在运行时生成内容，规则与数值留在代码里约束。",
-            ja: "AI ネイティブなカードローグライク。LLM が実行時にコンテンツを生成し、ルールと数値はコードで制約する。",
-            ko: "AI 네이티브 카드 로그라이크. LLM이 런타임에 콘텐츠를 생성하고, 규칙과 수치는 코드에서 제약합니다.",
-        },
-        tags: { en: "NetEase · React · Three.js · LLM", zh: "网易 · React · Three.js · LLM", ja: "NetEase · React · Three.js · LLM", ko: "NetEase · React · Three.js · LLM" },
-    },
-    {
         projectId: "technical-project-blender-inverse-lighting",
         caption: {
             en: "Differentiable rendering with Mitsuba 3 solves the lighting from an AI repaint and writes it back into the Blender scene.",
@@ -39,24 +29,14 @@ export const aiWorks: AiWork[] = [
         tags: { en: "Blender · Mitsuba 3 · Python · Differentiable Rendering", zh: "Blender · Mitsuba 3 · Python · 可微渲染", ja: "Blender · Mitsuba 3 · Python · 微分可能レンダリング", ko: "Blender · Mitsuba 3 · Python · 미분 가능 렌더링" },
     },
     {
-        projectId: "technical-project-ai-pixelart-repair-tool",
+        projectId: "game-project-night-watch",
         caption: {
-            en: "Cleans up AI-generated pixel art: pixelation, color quantization and edge repair, with optional GPU acceleration.",
-            zh: "修复 AI 生成的像素画：像素化、颜色量化与边缘修复，支持 GPU 加速。",
-            ja: "AI 生成のピクセルアートを修復。ピクセル化、減色、エッジ修復に対応し、GPU で高速化も可能。",
-            ko: "AI로 생성한 픽셀 아트를 복원합니다. 픽셀화, 색상 양자화, 가장자리 복원을 지원하고 GPU 가속도 가능합니다.",
+            en: "An AI-native card roguelike: the LLM generates content at runtime while rules and numbers stay in code.",
+            zh: "AI 原生卡牌 Roguelike：大模型在运行时生成内容，规则与数值留在代码里约束。",
+            ja: "AI ネイティブなカードローグライク。LLM が実行時にコンテンツを生成し、ルールと数値はコードで制約する。",
+            ko: "AI 네이티브 카드 로그라이크. LLM이 런타임에 콘텐츠를 생성하고, 규칙과 수치는 코드에서 제약합니다.",
         },
-        tags: { en: "Gradio · Scikit-learn · cuML", zh: "Gradio · Scikit-learn · cuML", ja: "Gradio · Scikit-learn · cuML", ko: "Gradio · Scikit-learn · cuML" },
-    },
-    {
-        projectId: "technical-project-comfyui-ai-eco-film",
-        caption: {
-            en: "A ComfyUI video workflow: storyboards, first-and-last-frame video synthesis, upscaling, frame interpolation and AI voice.",
-            zh: "搭建 ComfyUI 视频工作流：分镜生成、首尾帧视频合成、超分、插帧与 AI 配音。",
-            ja: "ComfyUI の映像ワークフロー。絵コンテ生成、始点・終点フレームからの動画合成、超解像、フレーム補間、AI 音声。",
-            ko: "ComfyUI 영상 워크플로. 콘티 생성, 첫·끝 프레임 영상 합성, 업스케일, 프레임 보간, AI 음성.",
-        },
-        tags: { en: "Team Lead · ComfyUI · WAN2.2", zh: "组长 · ComfyUI · WAN2.2", ja: "リーダー · ComfyUI · WAN2.2", ko: "팀장 · ComfyUI · WAN2.2" },
+        tags: { en: "NetEase · React · Three.js · LLM", zh: "网易 · React · Three.js · LLM", ja: "NetEase · React · Three.js · LLM", ko: "NetEase · React · Three.js · LLM" },
     },
     {
         projectId: "technical-project-smart-pot-joi",
@@ -67,6 +47,26 @@ export const aiWorks: AiWork[] = [
             ko: "수상한 AI IoT 화분. 음성 상호작용, 감정 인식, 식물 상태 실시간 모니터링.",
         },
         tags: { en: "Tech Lead · Spring Boot · IoT", zh: "技术组长 · Spring Boot · IoT", ja: "テックリード · Spring Boot · IoT", ko: "기술 리드 · Spring Boot · IoT" },
+    },
+    {
+        projectId: "technical-project-vbgmm",
+        caption: {
+            en: "Hand-derived variational Bayesian inference for a Gaussian mixture model, checked against Scikit-learn's implementation.",
+            zh: "从零推导并实现高斯混合模型的变分贝叶斯推断，并与 Scikit-learn 的实现对照验证。",
+            ja: "ガウス混合モデルの変分ベイズ推論を一から導出・実装し、Scikit-learn の実装と照らし合わせて検証。",
+            ko: "가우시안 혼합 모델의 변분 베이즈 추론을 처음부터 유도·구현하고 Scikit-learn 구현과 대조해 검증했습니다.",
+        },
+        tags: { en: "Python · Variational Inference · Machine Learning", zh: "Python · 变分推断 · 机器学习", ja: "Python · 変分推論 · 機械学習", ko: "Python · 변분 추론 · 머신러닝" },
+    },
+    {
+        projectId: "technical-project-dog-breed-classification",
+        caption: {
+            en: "An Oxford AI summer programme project: dog-breed image classification with transfer learning and data augmentation.",
+            zh: "牛津 AI 暑期课程项目：用迁移学习与数据增强做犬种图像识别。",
+            ja: "オックスフォード AI サマープログラムの課題。転移学習とデータ拡張による犬種の画像認識。",
+            ko: "옥스퍼드 AI 여름 프로그램 프로젝트. 전이 학습과 데이터 증강으로 견종 이미지를 분류합니다.",
+        },
+        tags: { en: "Oxford · Team Lead · Transfer Learning", zh: "牛津 · 组长 · 迁移学习", ja: "オックスフォード · リーダー · 転移学習", ko: "옥스퍼드 · 팀장 · 전이 학습" },
     },
 ];
 
