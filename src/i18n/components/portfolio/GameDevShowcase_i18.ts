@@ -20,7 +20,7 @@ export const devWorks: DevWork[] = [
     {
         projectId: "game-project-rephrased",
         context: { en: "Team of 40+", zh: "40+ 人团队", ja: "40 人以上のチーム", ko: "40명 이상 팀" },
-        role: { en: "Engineer · TA", zh: "工程师 · 技术美术", ja: "エンジニア · TA", ko: "엔지니어 · TA" },
+        role: { en: "USC AGP · 3C Engineer · Technical Artist", zh: "USC AGP · 3C工程师 · 技术美术", ja: "USC AGP · 3C エンジニア · テクニカルアーティスト", ko: "USC AGP · 3C 엔지니어 · 테크니컬 아티스트" },
         stack: [],
         line: {
             en: "An isometric linguistic puzzle adventure where rewriting ancient texts reshapes the world around you.",
