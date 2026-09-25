@@ -53,11 +53,12 @@ export const aiWorks: AiWork[] = [
     },
     {
         projectId: "technical-project-vbgmm",
+        title: { en: "VB-GMM", zh: "VB-GMM", ja: "VB-GMM", ko: "VB-GMM" },
         caption: {
-            en: "Hand-derived variational Bayesian inference for a Gaussian mixture model, checked against Scikit-learn's implementation.",
-            zh: "从零推导并实现高斯混合模型的变分贝叶斯推断，并与 Scikit-learn 的实现对照验证。",
-            ja: "ガウス混合モデルの変分ベイズ推論を一から導出・実装し、Scikit-learn の実装と照らし合わせて検証。",
-            ko: "가우시안 혼합 모델의 변분 베이즈 추론을 처음부터 유도·구현하고 Scikit-learn 구현과 대조해 검증했습니다.",
+            en: "Derived and implemented variational Bayesian inference for Gaussian mixture models from scratch.",
+            zh: "从零推导并实现高斯混合模型的变分贝叶斯推断。",
+            ja: "ガウス混合モデルの変分ベイズ推論を一から導出・実装。",
+            ko: "가우시안 혼합 모델의 변분 베이즈 추론을 처음부터 유도하고 구현했습니다.",
         },
         tags: { en: "Python · Variational Inference · Machine Learning", zh: "Python · 变分推断 · 机器学习", ja: "Python · 変分推論 · 機械学習", ko: "Python · 변분 추론 · 머신러닝" },
     },
