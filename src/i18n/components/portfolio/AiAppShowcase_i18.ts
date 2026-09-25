@@ -84,6 +84,7 @@ export const aiWorks: AiWork[] = [
     },
     {
         projectId: "technical-project-comfyui-ai-eco-film",
+        title: { en: "ComfyUI AI Video Workflow", zh: "ComfyUI AI视频工作流", ja: "ComfyUI AI 動画ワークフロー", ko: "ComfyUI AI 영상 워크플로" },
         caption: {
             en: "A ComfyUI video workflow: storyboards, first-and-last-frame video synthesis, upscaling, frame interpolation and AI voice.",
             zh: "搭建 ComfyUI 视频工作流：分镜生成、首尾帧视频合成、超分、插帧与 AI 配音。",
