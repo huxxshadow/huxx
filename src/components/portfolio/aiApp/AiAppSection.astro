@@ -91,6 +91,7 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
             </span>
             <span>all you need</span>
         </p>
+        <cite class="ai-motto-cite">— Vaswani et al., <i>Attention Is All You Need</i>, NeurIPS 2017</cite>
     </div>
 </section>
 
@@ -163,7 +164,8 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
     /* ---------- 底部标语：小人坐在字上 ---------- */
     .ai-motto {
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
         margin-top: clamp(6rem, 12vw, 11rem);
     }
     .ai-motto-text {
@@ -181,6 +183,19 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
         -webkit-text-stroke: 0.07em var(--ai-accent);
         paint-order: stroke fill;
     }
+    /* 出处：右下角的小字 */
+    .ai-motto-cite {
+        align-self: flex-end;
+        margin-top: 1.4rem;
+        font-style: normal;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--ai-accent);
+        opacity: 0.8;
+    }
+    .ai-motto-cite i {
+        font-style: italic;
+    }
     /* 两段字之间留出小人双腿的位置；小人比字高，手搭在字的顶端，脚垂到字的底部 */
     .ai-motto-seat {
         position: relative;
@@ -197,11 +212,6 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
         max-width: none;
         translate: -50% 0;
         pointer-events: none;
-        transform-origin: 50% 90%;
-        transition: rotate 300ms cubic-bezier(0.3, 1.5, 0.5, 1);
-    }
-    .ai-motto:hover .ai-motto-seat :global(img) {
-        rotate: -4deg;
     }
 
     .ai-figure {
