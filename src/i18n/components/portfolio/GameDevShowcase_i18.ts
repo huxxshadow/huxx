@@ -152,6 +152,7 @@ export const devWorks: DevWork[] = [
     },
     {
         projectId: "game-project-lost-realm",
+        tags: { en: "Unity · Solo Developer · Technical Artist", zh: "Unity · 独立开发 · 技术美术", ja: "Unity · 個人開発 · テクニカルアーティスト", ko: "Unity · 1인 개발 · 테크니컬 아티스트" },
         context: { en: "3-month solo demo", zh: "3 个月个人 Demo", ja: "3 か月の個人デモ", ko: "3개월 개인 데모" },
         role: solo,
         stack: ["Unity", "C#"],
