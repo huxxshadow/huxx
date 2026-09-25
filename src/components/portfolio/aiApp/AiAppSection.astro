@@ -86,11 +86,11 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
     <!-- 最下方：大字标语，紫色小人坐在字上（字用 Roboto 排：深紫描边、浅紫填充，不倾斜，不用图片） -->
     <div class="ai-motto" data-reveal="up" data-reveal-once>
         <p class="ai-motto-text" aria-label="Attention is all you need">
-            <span class="ai-water">Attention is</span>
+            <span>Attention is</span>
             <span class="ai-motto-seat" aria-hidden="true">
                 <Image src={mascot} alt="" widths={[240, 480, 616]} sizes="(min-width: 1024px) 12rem, 30vw" />
             </span>
-            <span class="ai-water">all you need</span>
+            <span>all you need</span>
         </p>
         <cite class="ai-motto-cite">{t(L.mottoNote)} — Vaswani et al., <i>Attention Is All You Need</i>, NeurIPS 2017</cite>
     </div>
@@ -179,52 +179,10 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
         line-height: 1;
         letter-spacing: 0.02em;
         white-space: nowrap;
-    }
-    /* 文字：深紫描边、浅紫填充。填充用背景裁进字形里；悬停时深紫色的「水」从字底涨满整行，
-       水面是两层波浪（宽度、速度、深浅都不同），一直在流动；移开后水退回去 */
-    @property --lvl {
-        syntax: "<length>";
-        inherits: false;
-        initial-value: 0px; /* 注册初始值不能用 em，元素上再设成 1.05em */
-    }
-    @property --x1 {
-        syntax: "<length>";
-        inherits: false;
-        initial-value: 0px;
-    }
-    @property --x2 {
-        syntax: "<length>";
-        inherits: false;
-        initial-value: 0px;
-    }
-    .ai-water {
-        --lvl: 1.05em;
-        color: transparent;
-        -webkit-text-stroke: 0.035em var(--ai-accent);
-        background-color: var(--ai-tint);
-        background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'200'%20height%3D'400'%20viewBox%3D'0%200%20200%20400'%3E%3Cpath%20d%3D'M0%20100%20C%2030%2078%2070%2078%20100%20100%20S%20170%20122%20200%20100%20V400%20H0%20Z'%20fill%3D'%237B1897'%20fill-opacity%3D'1'%2F%3E%3C%2Fsvg%3E"), url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'200'%20height%3D'400'%20viewBox%3D'0%200%20200%20400'%3E%3Cpath%20d%3D'M0%20100%20C%2030%2078%2070%2078%20100%20100%20S%20170%20122%20200%20100%20V400%20H0%20Z'%20fill%3D'%237B1897'%20fill-opacity%3D'0.45'%2F%3E%3C%2Fsvg%3E");
-        background-repeat: repeat-x;
-        background-size: 1.6em 3em, 2.3em 3em;
-        background-position: var(--x1) var(--lvl), var(--x2) calc(var(--lvl) - 0.07em);
-        -webkit-background-clip: text;
-        background-clip: text;
-        transition: --lvl 1100ms cubic-bezier(0.25, 1.15, 0.4, 1);
-        animation: ai-wave-1 1.6s linear infinite, ai-wave-2 2.7s linear infinite;
-    }
-    /* 悬停：水位涨过字顶，整行填满 */
-    .ai-motto-text:hover .ai-water {
-        --lvl: -0.95em;
-    }
-    @keyframes ai-wave-1 {
-        from { --x1: 0em; }
-        to { --x1: 1.6em; }
-    }
-    @keyframes ai-wave-2 {
-        from { --x2: 0em; }
-        to { --x2: -2.3em; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-        .ai-water { animation: none; transition: none; }
+        /* 深紫描边、浅紫填充；描边画在填充下面，露出来的是外侧一半 */
+        color: var(--ai-tint);
+        -webkit-text-stroke: 0.07em var(--ai-accent);
+        paint-order: stroke fill;
     }
     /* 右下角：一句话说明 + 出处，同一行 */
     .ai-motto-cite {
