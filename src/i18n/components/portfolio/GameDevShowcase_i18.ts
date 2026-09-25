@@ -169,8 +169,9 @@ export const devWorks: DevWork[] = [
     {
         projectId: "technical-project-parkour-motion-system",
         context: { en: "UE5 · 7-day practice", zh: "UE5 · 7 天练习", ja: "UE5 · 7 日間の練習", ko: "UE5 · 7일 연습" },
-        role: { en: "Gameplay Programmer", zh: "Gameplay 程序", ja: "ゲームプレイプログラマー", ko: "게임플레이 프로그래머" },
-        stack: ["UE5", "C++"],
+        // 标签顺序：UE5 · C++ · Gameplay 程序（3C）
+        role: { en: "UE5 · C++ · Gameplay Programmer (3C)", zh: "UE5 · C++ · Gameplay 程序（3C）", ja: "UE5 · C++ · ゲームプレイプログラマー（3C）", ko: "UE5 · C++ · 게임플레이 프로그래머(3C)" },
+        stack: [],
         line: {
             en: "Single-handedly built an AAA-style parkour movement and camera system (motion warping, physics resolution, locomotion, complex dynamic camera).",
             zh: "独立实现 AAA 跑酷运动相机系统（Motion Warping、物理结算、Locomotion、复杂动态相机）。",
