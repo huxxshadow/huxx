@@ -1,5 +1,6 @@
 ---
 // 作品封面：有封面图用图，开发中的项目用 DevCover。铺满父元素（父元素需定位并给定尺寸）
+// 最大出到 2400 宽，4K 屏上大图也清楚（源图已超分到 2560 宽）
 import { Image } from "astro:assets";
 import DevCover from "@/components/projects/DevCover.astro";
 import type { Lang } from "@/i18n";
@@ -20,7 +21,7 @@ const { work, lang, sizes, class: className } = Astro.props;
 ---
 
 {work.cover ? (
-        <Image src={work.cover} alt={work.title} widths={[480, 800, 1200]} sizes={sizes} class:list={["absolute inset-0 w-full h-full object-cover", className]} />
+        <Image src={work.cover} alt={work.title} widths={[480, 800, 1200, 1600, 2400]} sizes={sizes} class:list={["absolute inset-0 w-full h-full object-cover", className]} />
 ) : (
         <DevCover title={work.title} lang={lang} colorText={work.colorText} colorBackground={work.colorBackground} />
 )}
