@@ -39,7 +39,7 @@ export const aiWorks: AiWork[] = [
             ja: "並行してリアルタイムにゲームを生成できる LLM エージェントのフレームワークを設計。",
             ko: "동시에 실시간으로 게임을 생성할 수 있는 LLM 에이전트 프레임워크를 설계했습니다.",
         },
-        tags: { en: "NetEase · LLM · Harness Engineering", zh: "网易 · LLM · Harness Engineering", ja: "NetEase · LLM · Harness Engineering", ko: "NetEase · LLM · Harness Engineering" },
+        tags: { en: "NetEase · Harness Engineering", zh: "网易 · Harness Engineering", ja: "NetEase · Harness Engineering", ko: "NetEase · Harness Engineering" },
     },
     {
         projectId: "technical-project-smart-pot-joi",
