@@ -64,8 +64,8 @@ export const designWorks: DesignWork[] = [
         projectId: "game-project-floodsong",
         tier: "selected",
         pillars: ["combat"],
-        context: { en: "USC AGP · team of 50+", zh: "USC AGP · 50+ 人", ja: "USC AGP · 50 人以上", ko: "USC AGP · 50명 이상" },
-        role: { en: "Technical Designer (3C)", zh: "技术策划（3C）", ja: "テクニカルデザイナー（3C）", ko: "테크니컬 디자이너(3C)" },
+        context: { en: "USC AGP", zh: "USC AGP", ja: "USC AGP", ko: "USC AGP" },
+        role: { en: "Technical Designer (3C) · Technical Artist", zh: "技术策划（3C） · 技术美术", ja: "テクニカルデザイナー（3C） · テクニカルアーティスト", ko: "테크니컬 디자이너(3C) · 테크니컬 아티스트" },
         line: {
             en: "Designed the camera and movement, building camera storytelling for high-speed parkour, and as a technical artist handled part of the materials.",
             zh: "负责镜头和运动设计，实现高速跑酷的镜头叙事，并作为技术美术负责部分材质。",
