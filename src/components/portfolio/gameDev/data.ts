@@ -1,5 +1,6 @@
 // Part 3 · 游戏开发：把 GameDevShowcase_i18 里列出的 8 个项目和 projects 集合对上，按当前语言取好文案。
-// 如果这个项目在 Part 2 也出现了，说明文字和标签直接沿用 Part 2 的，两边不会写成两套
+// 如果这个项目在 Part 2 也出现了，说明文字和标签直接沿用 Part 2 的，两边不会写成两套；
+// 想在这里写一句开发向的说明，就在 GameDevShowcase_i18 里给它加 caption
 import { getCollection } from "astro:content";
 import { useTranslations, type Lang } from "@/i18n";
 import { devWorks } from "@/i18n/components/portfolio/GameDevShowcase_i18";
@@ -31,7 +32,7 @@ export async function getGameDevShowcase(lang: Lang) {
         const d = project.data;
         // Part 2 里展示着的同一个项目（完整项目 + 下面那一行）
         const shown = designWorks.find((w) => w.projectId === work.projectId && w.tier !== "solo");
-        const line = shown ? t(shown.caption ?? shown.line) : t(work.line);
+        const line = work.caption ? t(work.caption) : shown ? t(shown.caption ?? shown.line) : t(work.line);
         const tags = shown ? splitTags(t(shown.context), t(shown.role)) : [...splitTags(t(work.role)), ...work.stack];
         return [{
             id: work.projectId,

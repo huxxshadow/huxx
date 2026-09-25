@@ -10,6 +10,8 @@ export interface DevWork {
     /** 技术栈，不翻译 */
     stack: string[];
     line: Multilingual;
+    /** 九宫格卡片上的一句话；不写时：Part 2 也展示的项目沿用 Part 2 的说明，否则用 line */
+    caption?: Multilingual;
     /** 亲手搭的系统 / 技术点 */
     systems: Multilingual[];
 }
@@ -100,6 +102,12 @@ export const devWorks: DevWork[] = [
     },
     {
         projectId: "game-project-eel-on-mask",
+        caption: {
+            en: "Built a tilemap grid system with custom physics rules and a level editor, plus a CRT post-process material.",
+            zh: "实现自定义物理规则的 Tilemap 网格系统和关卡编辑器，以及 CRT 后处理材质。",
+            ja: "独自の物理ルールを持つタイルマップのグリッドシステムとレベルエディター、そして CRT ポストプロセスマテリアルを実装しました。",
+            ko: "사용자 정의 물리 규칙을 가진 타일맵 그리드 시스템과 레벨 에디터, 그리고 CRT 후처리 머티리얼을 구현했습니다.",
+        },
         context: { en: "GGJ 2026 · Steam", zh: "GGJ 2026 · Steam", ja: "GGJ 2026 · Steam", ko: "GGJ 2026 · Steam" },
         role: { en: "Lead Programmer", zh: "主程序", ja: "リードプログラマー", ko: "메인 프로그래머" },
         stack: ["Unity", "C#", "Shader"],
