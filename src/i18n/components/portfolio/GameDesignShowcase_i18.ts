@@ -18,7 +18,7 @@ export interface DesignWork {
     tier: DesignTier;
     /** 只有代表作需要：三条亮点 */
     highlights?: Multilingual[];
-    /** 大图面板标题下的一句话（目前只有元梦之星用） */
+    /** 代表作面板标题下的一句话 */
     caption?: Multilingual;
     pillars: DesignPillarId[];
     context: Multilingual;
@@ -172,6 +172,12 @@ export const designWorks: DesignWork[] = [
     {
         projectId: "game-project-empty-throne",
         tier: "featured",
+        caption: {
+            en: "Led the gameplay, narrative and rhythm design, tying dialogue-deduction puzzles and musical set pieces together through the 'magic mirror reveals the truth' mechanic.",
+            zh: "主导玩法、叙事与音游设计，用「魔镜揭示真相」把对话推理谜题和音乐节奏演出串成一体。",
+            ja: "ゲームプレイ、ナラティブ、リズムゲームの設計を主導し、「魔法の鏡が真実を暴く」仕組みで会話推理の謎解きと音楽演出をひとつにまとめました。",
+            ko: "게임플레이, 내러티브, 리듬 게임 설계를 주도해 '마법 거울이 진실을 드러낸다' 메커니즘으로 대화 추리 퍼즐과 음악 연출을 하나로 엮었습니다.",
+        },
         highlights: [
             { en: "\"Magic mirror reveals the truth\" core mechanic", zh: "「魔镜揭示真相」核心机制", ja: "「魔法の鏡が真実を暴く」コアメカニクス", ko: "'마법 거울이 진실을 드러낸다' 핵심 메커니즘" },
             { en: "Dialogue-deduction puzzles", zh: "对话推理式谜题", ja: "会話推理型の謎解き", ko: "대화 추리형 퍼즐" },
