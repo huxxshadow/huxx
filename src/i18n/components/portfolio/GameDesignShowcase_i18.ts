@@ -141,6 +141,12 @@ export const designWorks: DesignWork[] = [
     {
         projectId: "game-project-eel-on-mask",
         tier: "featured",
+        caption: {
+            en: "As team lead, led the gameplay, puzzle and systems design, and built the game's framework.",
+            zh: "作为队长，主导游戏的玩法、谜题设计、系统设计，并负责框架开发。",
+            ja: "チームリーダーとして、ゲームプレイ、謎解き、システムの設計を主導し、フレームワークの開発を担当しました。",
+            ko: "팀장으로서 게임플레이, 퍼즐 설계, 시스템 설계를 주도하고 프레임워크 개발을 맡았습니다.",
+        },
         highlights: [
             { en: "Core mechanic: Clipping Mask stickers", zh: "核心机制：Clipping Mask 贴纸", ja: "コアメカニクス：Clipping Mask ステッカー", ko: "핵심 메커니즘: Clipping Mask 스티커" },
             { en: "Material swaps rewrite level rules", zh: "换材质即改写关卡规则", ja: "素材の切り替えでステージのルールを書き換える", ko: "재질 교체로 스테이지 규칙을 바꿈" },
