@@ -83,9 +83,9 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
     </div>
 
     <!-- 最下方：大字标语，紫色小人坐在字上（字用 Roboto 排：纯色粗体，不倾斜、不描边，不用图片） -->
-    <div class="ai-motto" data-reveal="up" data-reveal-once>
+    <div class="ai-motto" data-reveal="up" data-reveal-once data-variant-group="part4motto" data-variant-label="Part 4 · 标语" data-variant-options="A,B,C" data-variant-current="A">
         <p class="ai-motto-text" aria-label="Attention is all you need">
-            <span>Attention is</span>
+            <span><b class="ai-motto-key">Attention</b> is</span>
             <span class="ai-motto-seat" aria-hidden="true">
                 <Image src={mascot} alt="" widths={[240, 480, 616]} sizes="(min-width: 1024px) 12rem, 30vw" />
             </span>
@@ -197,6 +197,36 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
         transform-origin: 50% 90%;
         transition: rotate 300ms cubic-bezier(0.3, 1.5, 0.5, 1);
     }
+    /* 三个候选样式（dev 下 Debug 面板切换）：
+       A 实心：纯色粗体紫
+       B 粗细对比：Attention 粗体紫，其余细体墨色
+       C 色条：整行放在深紫圆角色条上，浅紫字，小人坐在色条上 */
+    .ai-motto-key {
+        font-weight: inherit;
+    }
+    .ai-motto[data-variant-current="B"] .ai-motto-text {
+        font-weight: 300;
+        color: var(--theme-text);
+        letter-spacing: -0.01em;
+    }
+    .ai-motto[data-variant-current="B"] .ai-motto-key {
+        font-weight: 900;
+        color: var(--ai-accent);
+        letter-spacing: -0.03em;
+    }
+    .ai-motto[data-variant-current="C"] .ai-motto-text {
+        padding: 0.1em 0.35em 0.12em;
+        border-radius: 0.2em;
+        background-color: var(--ai-accent);
+        color: var(--ai-tint);
+    }
+    /* 色条比字高出一截，小人的手要搭在色条顶上 */
+    /* 手在图高 65% 处：手 = 高 × 0.35 + bottom，要等于色条顶（字顶上再高 0.1em，即 1.1em） */
+    .ai-motto[data-variant-current="C"] .ai-motto-seat :global(img) {
+        bottom: 0.19em;
+        height: 2.6em;
+    }
+
     .ai-motto:hover .ai-motto-seat :global(img) {
         rotate: -4deg;
     }
