@@ -39,7 +39,7 @@ export const aiWorks: AiWork[] = [
             ja: "AI ネイティブなカードローグライク。LLM が実行時にコンテンツを生成し、ルールと数値はコードで制約する。",
             ko: "AI 네이티브 카드 로그라이크. LLM이 런타임에 콘텐츠를 생성하고, 규칙과 수치는 코드에서 제약합니다.",
         },
-        tags: { en: "NetEase · React · Three.js · LLM", zh: "网易 · React · Three.js · LLM", ja: "NetEase · React · Three.js · LLM", ko: "NetEase · React · Three.js · LLM" },
+        tags: { en: "NetEase · LLM · Harness Engineering", zh: "网易 · LLM · Harness Engineering", ja: "NetEase · LLM · Harness Engineering", ko: "NetEase · LLM · Harness Engineering" },
     },
     {
         projectId: "technical-project-smart-pot-joi",
