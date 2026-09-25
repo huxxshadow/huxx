@@ -166,8 +166,9 @@ export const designWorks: DesignWork[] = [
         projectId: "game-project-fractal-shelter",
         tier: "selected",
         pillars: ["levels", "narrative"],
-        context: { en: "USC AGP pitch", zh: "USC AGP 提案", ja: "USC AGP 企画", ko: "USC AGP 기획안" },
-        role: { en: "Gameplay · Narrative · Art Director", zh: "玩法 / 叙事 / 美术总监", ja: "ゲームプレイ / ナラティブ / アートディレクター", ko: "게임플레이 / 내러티브 / 아트 디렉터" },
+        // 只显示身份标签，不写出处
+        context: { en: "", zh: "", ja: "", ko: "" },
+        role: { en: "Narrative Designer · Gameplay Designer · Graphic Design", zh: "叙事策划 · 玩法策划 · 平面设计", ja: "ナラティブプランナー · ゲームプレイプランナー · グラフィックデザイン", ko: "내러티브 기획 · 게임플레이 기획 · 그래픽 디자인" },
         line: {
             en: "A Metroidvania where comic panels are the units of space; drag items into panels to change their state.",
             zh: "以漫画分格为空间单位的银河恶魔城：把道具拖进分格改变场景状态。",
