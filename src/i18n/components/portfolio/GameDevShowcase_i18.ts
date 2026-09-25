@@ -152,6 +152,12 @@ export const devWorks: DevWork[] = [
     },
     {
         projectId: "game-project-lost-realm",
+        caption: {
+            en: "Built a modular hierarchical state machine and a card system, plus a dynamic lighting system and a pixelated water shader.",
+            zh: "实现模块化分层状态机、卡牌系统，并搭建动态光照系统和像素化水体 Shader。",
+            ja: "モジュール式の階層型ステートマシンとカードシステムを実装し、動的ライティングシステムとピクセル調の水面シェーダーを構築しました。",
+            ko: "모듈형 계층 상태 머신과 카드 시스템을 구현하고, 동적 조명 시스템과 픽셀풍 물 셰이더를 구축했습니다.",
+        },
         tags: { en: "Unity · Solo Developer · Technical Artist", zh: "Unity · 独立开发 · 技术美术", ja: "Unity · 個人開発 · テクニカルアーティスト", ko: "Unity · 1인 개발 · 테크니컬 아티스트" },
         context: { en: "3-month solo demo", zh: "3 个月个人 Demo", ja: "3 か月の個人デモ", ko: "3개월 개인 데모" },
         role: solo,
