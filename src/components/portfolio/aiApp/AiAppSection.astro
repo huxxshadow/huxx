@@ -225,8 +225,9 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
     /* 结构图上方的小标题 */
     .ai-figure-title {
         font-weight: 900;
-        font-size: 1.25rem;
-        letter-spacing: 0.02em;
+        font-size: clamp(1.6rem, 2.2vw, 2.4rem);
+        line-height: 1;
+        letter-spacing: 0.01em;
         color: var(--ai-accent);
     }
     .ai-figure :global(img) {
