@@ -102,7 +102,7 @@ export const aiWorks: AiWork[] = [
             ja: "EDA、特徴量設計、分類としきい値の最適化、SHAP による解釈性分析。",
             ko: "EDA, 특성 공학, 분류와 임계값 최적화, SHAP 해석 가능성 분석.",
         },
-        tags: { en: "Team Lead · Scikit-learn · SHAP", zh: "组长 · Scikit-learn · SHAP", ja: "リーダー · Scikit-learn · SHAP", ko: "팀장 · Scikit-learn · SHAP" },
+        tags: { en: "Team Lead · Data Science · SHAP", zh: "组长 · 数据科学 · SHAP", ja: "リーダー · データサイエンス · SHAP", ko: "팀장 · 데이터 과학 · SHAP" },
     },
 ];
 
