@@ -1,6 +1,10 @@
 ---
-// Part 4 · AI 应用开发：左边是 AI 项目卡片（和 Part 3 同一套卡通卡片，换成紫色），右边是 Transformer 结构图，滚动时停在视口里。
-// 这一页的紫色只用 COLORS.purple 的深浅两档
+// Part 4 · AI 应用开发：AI 项目 + 右侧 Transformer 结构图（透明底，不吸附）。
+// 三个候选版式，本地 dev 下用 Debug 面板切换；默认 / 生产显示 A：
+//   A 论文：结构图作为 Figure 1，项目像论文里的条目（缩略图 + 粗标题 + 正文 + 关键词）
+//   B 笔记本：每个项目是一个 notebook 单元格（提示行、等宽名字、说明、输出区放封面）
+//   C 管线节点：项目是圆角节点，一条虚线把它们串起来流向结构图
+// 这一页只用 COLORS.purple 的深浅两档
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import { getRelativeLocaleUrl } from "astro:i18n";
@@ -24,6 +28,7 @@ const works = aiWorks.flatMap((w) => {
     const d = p.data;
     return [{
         id: w.projectId,
+        slug: w.projectId.replace(/^(technical|game)-project-/, ""),
         title: d.title[lang] || d.title.en || d.title.zh || w.projectId,
         caption: t(w.caption),
         tags: t(w.tags).split(/\s*·\s*/).filter(Boolean),
@@ -36,6 +41,7 @@ const works = aiWorks.flatMap((w) => {
 const ink = COLORS.black;
 const accent = COLORS.purple.dark;
 const tint = COLORS.purple.light;
+const figSizes = "(min-width: 1024px) 30vw, 70vw";
 ---
 
 <section
@@ -46,7 +52,7 @@ const tint = COLORS.purple.light;
         data-theme-text={ink}
 >
     <!-- 和 Part 2、3 同一套紧凑标题：编号 · 名称 · 项目数 -->
-    <header class="flex flex-wrap items-end gap-x-8 gap-y-3 mb-6 lg:mb-8" data-reveal-children="up" data-reveal-once data-reveal-stagger="80">
+    <header class="flex flex-wrap items-end gap-x-8 gap-y-3 mb-8 lg:mb-10" data-reveal-children="up" data-reveal-once data-reveal-stagger="80">
         <div class="flex items-end gap-4">
             <span class="ai-skew font-black leading-[0.8] text-7xl lg:text-8xl" style={`color: ${accent};`}>{role.index}</span>
             <h2 class="ai-skew font-black leading-none tracking-tight text-4xl lg:text-5xl pb-1">{t(role.name)}</h2>
@@ -54,192 +60,426 @@ const tint = COLORS.purple.light;
         <span class="ml-auto font-black text-lg whitespace-nowrap pb-1">{works.length} {t(L.projects)}</span>
     </header>
 
-    <div class="ai-layout">
-        <!-- 左：项目卡片 -->
-        <div class="ai-cards" data-ai-cards data-reveal-children="up" data-reveal-order="columns" data-reveal-once>
-            {works.map((w) => (
-                    <a href={href(w.id)} class="ai-card">
-                        <div class="ai-img">
-                            <WorkCover work={w} lang={lang} sizes="(min-width: 1024px) 26vw, (min-width: 640px) 45vw, 100vw" />
-                        </div>
-                        <div class="ai-body">
-                            <h3 class="ai-title">{w.title}</h3>
-                            <p class="ai-caption">{w.caption}</p>
-                            <ul class="ai-tags">
-                                {w.tags.map((tag) => <li>{tag}</li>)}
-                            </ul>
-                        </div>
-                    </a>
-            ))}
+    <div data-variant-group="part4" data-variant-label="Part 4 · AI">
+        <!-- ================= A · 论文 ================= -->
+        <div data-variant="A">
+            <div class="pa">
+                <ol class="pa-list" data-reveal-children="up" data-reveal-once data-reveal-stagger="60">
+                    {works.map((w) => (
+                            <li>
+                                <a href={href(w.id)} class="pa-item">
+                                    <div class="pa-thumb"><WorkCover work={w} lang={lang} sizes="(min-width: 1024px) 14vw, 30vw" /></div>
+                                    <div class="pa-text">
+                                        <h3 class="pa-title">{w.title}</h3>
+                                        <p class="pa-caption">{w.caption}</p>
+                                        <p class="pa-keywords"><span>Keywords</span>{w.tags.join(" · ")}</p>
+                                    </div>
+                                </a>
+                            </li>
+                    ))}
+                </ol>
+                <figure class="pa-figure" data-reveal="fade" data-reveal-once>
+                    <Image src={transformer} alt="Transformer" widths={[480, 800, 1200]} sizes={figSizes} />
+                    <figcaption><b>Figure 1.</b> Transformer</figcaption>
+                </figure>
+            </div>
         </div>
 
-        <!-- 右：Transformer 结构图（透明底） -->
-        <div class="ai-figure" data-reveal="fade" data-reveal-once aria-hidden="true">
-            <Image src={transformer} alt="" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 30vw, 70vw" />
+        <!-- ================= B · 笔记本单元格 ================= -->
+        <div data-variant="B" hidden>
+            <div class="pb">
+                <div class="pb-cells" data-reveal-children="up" data-reveal-once data-reveal-stagger="60">
+                    {works.map((w) => (
+                            <a href={href(w.id)} class="pb-cell">
+                                <div class="pb-prompt">
+                                    <span class="pb-run" aria-hidden="true">▶</span>
+                                    <code>{w.slug}</code>
+                                </div>
+                                <div class="pb-main">
+                                    <div class="pb-text">
+                                        <h3 class="pb-title">{w.title}</h3>
+                                        <p class="pb-caption">{w.caption}</p>
+                                        <ul class="pb-tags">{w.tags.map((tag) => <li>{tag}</li>)}</ul>
+                                    </div>
+                                    <div class="pb-output"><WorkCover work={w} lang={lang} sizes="(min-width: 1024px) 16vw, 40vw" /></div>
+                                </div>
+                            </a>
+                    ))}
+                </div>
+                <div class="pb-figure" data-reveal="fade" data-reveal-once>
+                    <Image src={transformer} alt="" widths={[480, 800, 1200]} sizes={figSizes} />
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= C · 管线节点 ================= -->
+        <div data-variant="C" hidden>
+            <div class="pc">
+                <ol class="pc-flow" data-reveal-children="left" data-reveal-once data-reveal-stagger="70">
+                    {works.map((w) => (
+                            <li class="pc-step">
+                                <a href={href(w.id)} class="pc-node">
+                                    <span class="pc-avatar"><WorkCover work={w} lang={lang} sizes="120px" /></span>
+                                    <span class="pc-text">
+                                        <span class="pc-title">{w.title}</span>
+                                        <span class="pc-caption">{w.caption}</span>
+                                        <span class="pc-tags">{w.tags.map((tag) => <span>{tag}</span>)}</span>
+                                    </span>
+                                </a>
+                                <span class="pc-link" aria-hidden="true"></span>
+                            </li>
+                    ))}
+                </ol>
+                <div class="pc-figure" data-reveal="fade" data-reveal-once>
+                    <Image src={transformer} alt="" widths={[480, 800, 1200]} sizes={figSizes} />
+                </div>
+            </div>
         </div>
     </div>
 </section>
-
-<script>
-    // 悬停时卡片像果冻一样挤压回弹，标签依次蹦出来（和 Part 3 的卡片同一个手感）
-    function initAiCards() {
-        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        document.querySelectorAll<HTMLElement>("[data-ai-cards]").forEach((root) => {
-            if (root.dataset.aiReady || reduce) return;
-            root.dataset.aiReady = "1";
-            root.querySelectorAll<HTMLElement>(".ai-card").forEach((card) => {
-                card.addEventListener("mouseenter", () => {
-                    card.animate(
-                        [
-                            { scale: "1 1" },
-                            { scale: "1.05 0.94", offset: 0.22 },
-                            { scale: "0.97 1.04", offset: 0.5 },
-                            { scale: "1.01 0.99", offset: 0.75 },
-                            { scale: "1 1" },
-                        ],
-                        { duration: 560, easing: "cubic-bezier(0.3, 0, 0.3, 1)" },
-                    );
-                    card.querySelectorAll<HTMLElement>(".ai-tags li").forEach((li, i) => {
-                        li.animate(
-                            [
-                                { scale: "1", rotate: "0deg" },
-                                { scale: "1.2", rotate: i % 2 ? "5deg" : "-5deg", offset: 0.4 },
-                                { scale: "0.95", rotate: "0deg", offset: 0.7 },
-                                { scale: "1", rotate: "0deg" },
-                            ],
-                            { duration: 420, delay: 60 + i * 50, easing: "ease-out" },
-                        );
-                    });
-                });
-            });
-        });
-    }
-    document.addEventListener("astro:page-load", initAiCards);
-</script>
 
 <style>
     .ai-skew {
         transform: skewX(-10deg);
         transform-origin: left bottom;
     }
+    section {
+        --mono: ui-monospace, "SFMono-Regular", Consolas, monospace;
+    }
 
-    .ai-layout {
+    /* =========================================================
+       A · 论文：两栏，左边条目，右边 Figure 1
+       ========================================================= */
+    .pa {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 0.62fr);
-        gap: 3rem;
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+        gap: 3.5rem;
         align-items: start;
     }
-    .ai-cards {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 2rem 2rem;
-    }
-
-    /* 卡片：和 Part 3 同一套卡通样式，描边用深紫 */
-    .ai-card {
-        --line: var(--ai-accent);
+    .pa-list {
         display: flex;
         flex-direction: column;
-        min-width: 0;
+        border-top: 3px solid var(--ai-accent);
+    }
+    .pa-item {
+        display: grid;
+        grid-template-columns: 11rem minmax(0, 1fr);
+        gap: 1.4rem;
+        align-items: start;
+        padding: 1.2rem 0;
+        border-bottom: 2px solid color-mix(in srgb, var(--ai-accent) 30%, transparent);
+    }
+    .pa-thumb {
+        position: relative;
+        aspect-ratio: 4 / 3;
         overflow: hidden;
         background-color: #FFFFFF;
-        color: var(--line);
-        border: 4px solid var(--line);
-        border-radius: 18px;
-        box-shadow: 0 6px 0 var(--line);
-        transform-origin: 50% 100%;
-        transition: translate 240ms cubic-bezier(0.3, 1.5, 0.5, 1), box-shadow 200ms ease;
+        border-radius: 6px;
     }
-    .ai-card:hover,
-    .ai-card:focus-visible {
-        translate: 0 -6px;
-        box-shadow: 0 12px 0 var(--line);
-    }
-    .ai-card:active {
-        scale: 0.96 0.94;
-        transition: scale 90ms ease-out;
-    }
-    .ai-img {
-        position: relative;
-        aspect-ratio: 16 / 9;
-        overflow: hidden;
-        background-color: var(--ai-tint);
-        border-bottom: 4px solid var(--line);
-    }
-    .ai-img :global(img) {
+    .pa-thumb :global(img) {
         transition: scale 400ms ease;
     }
-    .ai-card:hover .ai-img :global(img) {
-        scale: 1.05;
+    .pa-item:hover .pa-thumb :global(img) {
+        scale: 1.06;
     }
-    .ai-body {
+    .pa-text {
         display: flex;
         flex-direction: column;
-        flex: 1;
-        gap: 0.45rem;
-        padding: 0.8rem 1rem 1rem;
+        gap: 0.4rem;
     }
-    .ai-title {
+    .pa-title {
         font-weight: 900;
         font-size: 1.3rem;
-        line-height: 1.15;
+        line-height: 1.2;
+        transition: color 160ms ease;
     }
-    .ai-caption {
-        font-size: 0.9rem;
+    .pa-item:hover .pa-title {
+        color: var(--ai-accent);
+        text-decoration: underline;
+        text-decoration-thickness: 3px;
+        text-underline-offset: 4px;
+    }
+    .pa-caption {
+        font-size: 0.95rem;
+        line-height: 1.65;
+    }
+    .pa-keywords {
+        font-size: 0.85rem;
         font-weight: 700;
-        line-height: 1.5;
-        opacity: 0.85;
+        color: var(--ai-accent);
     }
-    .ai-tags {
+    .pa-keywords span {
+        margin-right: 0.6rem;
+        font-style: italic;
+        font-weight: 900;
+    }
+    .pa-figure {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+    }
+    .pa-figure :global(img) {
+        width: 100%;
+        max-width: 30rem;
+        height: auto;
+    }
+    .pa-figure figcaption {
+        font-size: 0.95rem;
+        color: var(--ai-accent);
+    }
+
+    /* =========================================================
+       B · 笔记本单元格：白底单元格，左侧一根紫色条，顶部提示行，右侧输出区放封面
+       ========================================================= */
+    .pb {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+        gap: 3.5rem;
+        align-items: start;
+    }
+    .pb-cells {
+        display: flex;
+        flex-direction: column;
+        gap: 1.1rem;
+    }
+    .pb-cell {
+        display: flex;
+        flex-direction: column;
+        background-color: #FFFFFF;
+        border-left: 8px solid color-mix(in srgb, var(--ai-accent) 35%, transparent);
+        border-radius: 10px;
+        transition: border-color 160ms ease, translate 200ms ease;
+    }
+    .pb-cell:hover {
+        border-left-color: var(--ai-accent);
+        translate: 6px 0;
+    }
+    .pb-prompt {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.5rem 1rem;
+        border-bottom: 2px solid var(--ai-tint);
+        font-family: var(--mono);
+        font-size: 0.85rem;
+        color: var(--ai-accent);
+    }
+    .pb-run {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 999px;
+        background-color: var(--ai-tint);
+        font-size: 0.65rem;
+        transition: background-color 160ms ease, color 160ms ease;
+    }
+    .pb-cell:hover .pb-run {
+        background-color: var(--ai-accent);
+        color: #FFFFFF;
+    }
+    .pb-main {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 12rem;
+        gap: 1.2rem;
+        padding: 0.9rem 1rem 1rem;
+    }
+    .pb-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+    .pb-title {
+        font-weight: 900;
+        font-size: 1.25rem;
+        line-height: 1.2;
+    }
+    .pb-caption {
+        font-size: 0.92rem;
+        line-height: 1.6;
+    }
+    .pb-tags {
         display: flex;
         flex-wrap: wrap;
         gap: 0.35rem;
         margin-top: auto;
         padding-top: 0.2rem;
     }
-    .ai-tags li {
-        padding: 0.05rem 0.6rem;
-        background-color: #FFFFFF;
-        color: var(--line);
-        border: 3px solid var(--line);
-        border-radius: 999px;
+    .pb-tags li {
+        padding: 0.1rem 0.55rem;
+        background-color: var(--ai-tint);
+        color: var(--ai-accent);
+        border-radius: 6px;
+        font-family: var(--mono);
         font-size: 0.8rem;
-        font-weight: 800;
+        font-weight: 700;
     }
-
-    /* 右侧结构图：跟着滚动停在视口里，按视口高度缩放 */
-    .ai-figure {
-        position: sticky;
-        top: 6rem;
+    .pb-output {
+        position: relative;
+        align-self: start;
+        aspect-ratio: 16 / 10;
+        overflow: hidden;
+        border-radius: 8px;
+        background-color: var(--ai-tint);
+    }
+    .pb-figure {
         display: flex;
         justify-content: center;
     }
-    .ai-figure :global(img) {
-        width: auto;
-        max-width: 100%;
-        max-height: calc(100vh - 8rem);
-        object-fit: contain;
+    .pb-figure :global(img) {
+        width: 100%;
+        max-width: 30rem;
+        height: auto;
     }
 
+    /* =========================================================
+       C · 管线节点：圆角节点 + 圆形缩略图，节点之间一条紫色虚线串起来，最后流向结构图
+       ========================================================= */
+    .pc {
+        display: grid;
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+        gap: 4rem;
+        align-items: center;
+    }
+    .pc-flow {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 1.4rem;
+        padding-left: 2.2rem;
+    }
+    /* 竖向的虚线主干 */
+    .pc-flow::before {
+        content: "";
+        position: absolute;
+        left: 0.9rem;
+        top: 2rem;
+        bottom: 2rem;
+        border-left: 4px dashed color-mix(in srgb, var(--ai-accent) 45%, transparent);
+    }
+    .pc-step {
+        position: relative;
+    }
+    /* 每个节点和主干之间的一小段连线 */
+    .pc-link {
+        position: absolute;
+        left: -1.3rem;
+        top: 50%;
+        width: 1.3rem;
+        height: 4px;
+        margin-top: -2px;
+        background-color: color-mix(in srgb, var(--ai-accent) 45%, transparent);
+        transition: background-color 160ms ease;
+    }
+    .pc-link::before {
+        content: "";
+        position: absolute;
+        left: -0.55rem;
+        top: 50%;
+        width: 0.9rem;
+        height: 0.9rem;
+        margin-top: -0.45rem;
+        border-radius: 999px;
+        background-color: var(--ai-tint);
+        border: 4px solid color-mix(in srgb, var(--ai-accent) 45%, transparent);
+        transition: border-color 160ms ease, background-color 160ms ease;
+    }
+    .pc-step:hover .pc-link,
+    .pc-step:hover .pc-link::before {
+        background-color: var(--ai-accent);
+        border-color: var(--ai-accent);
+    }
+    .pc-node {
+        display: flex;
+        align-items: center;
+        gap: 1.1rem;
+        padding: 0.8rem 1.4rem 0.8rem 0.8rem;
+        background-color: #FFFFFF;
+        border-radius: 999px;
+        transition: translate 220ms cubic-bezier(0.3, 1.4, 0.5, 1), background-color 160ms ease, color 160ms ease;
+    }
+    .pc-step:hover .pc-node {
+        translate: 8px 0;
+        background-color: var(--ai-accent);
+        color: #FFFFFF;
+    }
+    .pc-avatar {
+        position: relative;
+        flex: none;
+        display: block;
+        width: 5.5rem;
+        height: 5.5rem;
+        overflow: hidden;
+        border-radius: 999px;
+        background-color: var(--ai-tint);
+    }
+    .pc-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        min-width: 0;
+    }
+    .pc-title {
+        font-weight: 900;
+        font-size: 1.15rem;
+        line-height: 1.2;
+    }
+    .pc-caption {
+        font-size: 0.88rem;
+        line-height: 1.5;
+    }
+    .pc-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0 0.8rem;
+        font-size: 0.8rem;
+        font-weight: 800;
+        color: var(--ai-accent);
+        transition: color 160ms ease;
+    }
+    .pc-step:hover .pc-tags {
+        color: var(--ai-tint);
+    }
+    .pc-figure {
+        display: flex;
+        justify-content: center;
+    }
+    .pc-figure :global(img) {
+        width: 100%;
+        max-width: 30rem;
+        height: auto;
+    }
+
+    /* 窄屏：结构图放到最上面，缩小 */
     @media (max-width: 1023px) {
-        .ai-layout {
+        .pa,
+        .pb,
+        .pc {
             grid-template-columns: 1fr;
+            gap: 2rem;
         }
-        .ai-figure {
-            position: static;
+        .pa-figure,
+        .pb-figure,
+        .pc-figure {
             order: -1;
         }
-        .ai-figure :global(img) {
-            max-height: 26rem;
+        .pa-figure :global(img),
+        .pb-figure :global(img),
+        .pc-figure :global(img) {
+            max-width: 18rem;
         }
     }
     @media (max-width: 639px) {
-        .ai-cards {
-            grid-template-columns: 1fr;
-        }
+        .pa-item { grid-template-columns: 7rem minmax(0, 1fr); gap: 1rem; }
+        .pb-main { grid-template-columns: 1fr; }
+        .pc-node { border-radius: 24px; }
+        .pc-avatar { width: 4rem; height: 4rem; }
     }
     @media (prefers-reduced-motion: reduce) {
-        .ai-card,
-        .ai-img :global(img) { transition: none; }
+        .pa-thumb :global(img),
+        .pb-cell,
+        .pc-node { transition: none; }
     }
 </style>
