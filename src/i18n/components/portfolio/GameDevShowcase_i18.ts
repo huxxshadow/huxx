@@ -53,6 +53,7 @@ export const devWorks: DevWork[] = [
     },
     {
         projectId: "game-project-empty-throne",
+        tags: { en: "Unity · Team Lead · Lead Programmer", zh: "Unity · 队长 · 主程序", ja: "Unity · リーダー · リードプログラマー", ko: "Unity · 팀장 · 메인 프로그래머" },
         caption: {
             en: "Built modular rhythm-game and dialogue systems, and a pipeline that turns scripts into in-game content.",
             zh: "搭建模块化的音游系统与对话系统，并打通从剧本到游戏内容的生成管线。",
