@@ -78,6 +78,7 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
 
         <!-- 右：Transformer 结构图（Encoder 在上、Decoder 在下，透明底） -->
         <div class="ai-figure" data-reveal="fade" data-reveal-once>
+            <span class="ai-figure-title">Transformer</span>
             <Image src={transformer} alt="Transformer" widths={[320, 480, 900]} sizes={figSizes} />
         </div>
     </div>
@@ -217,7 +218,16 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
 
     .ai-figure {
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    /* 结构图上方的小标题 */
+    .ai-figure-title {
+        font-weight: 900;
+        font-size: 1.25rem;
+        letter-spacing: 0.02em;
+        color: var(--ai-accent);
     }
     .ai-figure :global(img) {
         width: 100%;
