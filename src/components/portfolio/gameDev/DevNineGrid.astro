@@ -1,6 +1,6 @@
 ---
 // Part 3 · 九宫格：中间是吉祥物，外圈 8 格是项目。悬停 / 聚焦某一格就「选中」它：
-// 这一格抬起、四角出现选框，其余格变暗，吉祥物换成指向这一格的姿势。
+// 这一格抬起、四角出现选框，吉祥物换成指向这一格的姿势。
 // 姿势图放在 src/assets/portfolio/mascot/ 下，按方向命名（up-left / up / up-right / left / right /
 // down-left / down / down-right），缺哪张就用 idle 顶上。
 import { Image } from "astro:assets";
@@ -107,12 +107,7 @@ const after = cells.slice(4);
         background-color: var(--dv-paper);
         border: 3px solid var(--dv-ink);
         box-shadow: 6px 6px 0 var(--dv-ink);
-        transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, opacity 200ms ease, filter 200ms ease;
-    }
-    /* 有选中时，其余格退后 */
-    .ng.has-selection .ng-cell:not(.is-selected) {
-        opacity: 0.45;
-        filter: saturate(0.3);
+        transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
     }
     .ng-cell.is-selected {
         z-index: 2;
