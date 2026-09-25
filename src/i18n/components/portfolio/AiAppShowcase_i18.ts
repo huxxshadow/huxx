@@ -16,7 +16,7 @@ export const aiWorks: AiWork[] = [
             ja: "テラリアの AI 仲間。ビヘイビアツリーで従来のゲーム AI の骨格を保ち、判断が必要なノードを LLM に任せる。",
             ko: "테라리아 AI 동료. 비헤이비어 트리로 전통적인 게임 AI의 뼈대를 유지하고, 판단이 필요한 노드는 LLM에 맡깁니다.",
         },
-        tags: { en: "tModLoader · C# · LLM · Game AI", zh: "tModLoader · C# · LLM · 游戏 AI", ja: "tModLoader · C# · LLM · ゲーム AI", ko: "tModLoader · C# · LLM · 게임 AI" },
+        tags: { en: "Game AI · LLM · C#", zh: "游戏AI · LLM · C#", ja: "ゲーム AI · LLM · C#", ko: "게임 AI · LLM · C#" },
     },
     {
         projectId: "technical-project-blender-inverse-lighting",
