@@ -157,7 +157,6 @@ export const devWorks: DevWork[] = [
 
 export const gameDevLabels = {
     projects: { en: "projects", zh: "个项目", ja: "件", ko: "개 프로젝트" } as Multilingual,
-    pick: { en: "Select a project", zh: "选择一个项目", ja: "プロジェクトを選択", ko: "프로젝트를 선택하세요" } as Multilingual,
     select: { en: "SELECT", zh: "SELECT", ja: "SELECT", ko: "SELECT" } as Multilingual,
     built: { en: "What I built", zh: "我搭的系统", ja: "作ったシステム", ko: "구축한 시스템" } as Multilingual,
     stack: { en: "Stack", zh: "技术栈", ja: "技術スタック", ko: "기술 스택" } as Multilingual,

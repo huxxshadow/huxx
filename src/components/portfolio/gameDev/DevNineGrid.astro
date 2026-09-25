@@ -33,21 +33,17 @@ const after = cells.slice(4);
 
 <div class="ng" data-nine-grid>
     {[before, null, after].map((group) => group === null ? (
-            <!-- 中间：吉祥物 + 当前选中的名字 -->
+            <!-- 中间：只有角色，透明底，无边框无文字 -->
             <div class="ng-center" aria-hidden="true">
                 <div class="ng-mascot">
-                    <Image src={idle} alt="" widths={[360, 600, 900]} sizes="(min-width: 1024px) 28vw, 60vw" class="is-active" data-pose="idle" />
+                    <Image src={idle} alt="" widths={[360, 600, 900]} sizes="(min-width: 1024px) 28vw, 60vw" loading="eager" class="is-active" data-pose="idle" />
                     {poses.map((p) => (
-                            <Image src={p.img} alt="" widths={[360, 600, 900]} sizes="(min-width: 1024px) 28vw, 60vw" data-pose={p.dir} />
+                            <Image src={p.img} alt="" widths={[360, 600, 900]} sizes="(min-width: 1024px) 28vw, 60vw" loading="eager" data-pose={p.dir} />
                     ))}
-                </div>
-                <div class="ng-plate">
-                    <span class="ng-plate-tri"></span>
-                    <span data-ng-name data-idle={t(labels.pick)}>{t(labels.pick)}</span>
                 </div>
             </div>
     ) : group.map(({ w, dir }) => (
-            <a href={href(w.id)} class="ng-cell" data-dir={dir} data-name={w.title}>
+            <a href={href(w.id)} class="ng-cell" data-dir={dir}>
                 <span class="ng-corner ng-corner-tl"></span>
                 <span class="ng-corner ng-corner-tr"></span>
                 <span class="ng-corner ng-corner-bl"></span>
@@ -69,21 +65,19 @@ const after = cells.slice(4);
 </div>
 
 <script>
-    // 选中某一格：给容器记下方向，吉祥物换成对应姿势（没有这张图就保持 idle），名牌换成项目名
+    // 选中某一格：吉祥物换成指向这一格的姿势（没有这张图就保持 idle）
     function initNineGrid() {
         document.querySelectorAll<HTMLElement>("[data-nine-grid]").forEach((root) => {
             if (root.dataset.ngReady) return;
             root.dataset.ngReady = "1";
             const cells = [...root.querySelectorAll<HTMLElement>(".ng-cell")];
             const imgs = [...root.querySelectorAll<HTMLElement>("[data-pose]")];
-            const name = root.querySelector<HTMLElement>("[data-ng-name]")!;
             const select = (cell: HTMLElement | null) => {
                 cells.forEach((c) => c.classList.toggle("is-selected", c === cell));
                 root.classList.toggle("has-selection", !!cell);
                 const dir = cell?.dataset.dir ?? "idle";
                 const target = imgs.find((i) => i.dataset.pose === dir) ?? imgs.find((i) => i.dataset.pose === "idle");
                 imgs.forEach((i) => i.classList.toggle("is-active", i === target));
-                name.textContent = cell?.dataset.name ?? name.dataset.idle ?? "";
             };
             cells.forEach((cell) => {
                 cell.addEventListener("mouseenter", () => select(cell));
@@ -235,57 +229,27 @@ const after = cells.slice(4);
         font-weight: 700;
     }
 
-    /* ---------- 中间：吉祥物 ---------- */
+    /* ---------- 中间：角色 ---------- */
     .ng-center {
-        display: flex;
-        flex-direction: column;
-        background-color: var(--dv-paper);
-        border: 3px solid var(--dv-ink);
-        box-shadow: 6px 6px 0 var(--dv-ink);
-    }
-    .ng-mascot {
         position: relative;
-        flex: 1;
         min-height: 16rem;
     }
-    /* 原图是近白底，multiply 让底色融进面板 */
+    .ng-mascot {
+        position: absolute;
+        inset: -7% 0;
+        pointer-events: none;
+    }
     .ng-mascot :global(img) {
         position: absolute;
-        inset: 0.5rem 0.5rem 0;
-        width: calc(100% - 1rem);
-        height: calc(100% - 0.5rem);
+        inset: 0;
+        width: 100%;
+        height: 100%;
         object-fit: contain;
-        mix-blend-mode: multiply;
         opacity: 0;
-        transition: opacity 120ms ease;
     }
+    /* 像换精灵一样直接切，不做淡入淡出（淡入时两张图会叠出重影） */
     .ng-mascot :global(img.is-active) {
         opacity: 1;
-    }
-    .ng-plate {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.55rem;
-        padding: 0.55rem 0.8rem;
-        background-color: var(--dv-ink);
-        color: var(--dv-paper);
-        font-weight: 900;
-        font-size: 1rem;
-        min-height: 2.6rem;
-    }
-    .ng-plate-tri {
-        width: 0;
-        height: 0;
-        border-left: 0.4rem solid transparent;
-        border-right: 0.4rem solid transparent;
-        border-bottom: 0.7rem solid var(--dv-accent);
-    }
-    .ng.has-selection .ng-plate {
-        background-color: var(--dv-accent);
-    }
-    .ng.has-selection .ng-plate-tri {
-        border-bottom-color: var(--dv-paper);
     }
 
     /* 窄屏：吉祥物占一整行放在最上，项目两列 */
@@ -297,8 +261,11 @@ const after = cells.slice(4);
             grid-column: 1 / -1;
             order: -1;
         }
+        .ng-center {
+            min-height: 20rem;
+        }
         .ng-mascot {
-            min-height: 14rem;
+            inset: 0;
         }
     }
     @media (max-width: 639px) {
