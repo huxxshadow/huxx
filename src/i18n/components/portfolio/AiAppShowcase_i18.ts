@@ -29,7 +29,7 @@ export const aiWorks: AiWork[] = [
             ja: "物理ベースの微分可能レンダリングで、2D 画像から 3D ライティングを逆算。",
             ko: "물리 기반 미분 가능 렌더링으로 2D 이미지에서 3D 조명을 역으로 풀어냅니다.",
         },
-        tags: { en: "Neural Rendering · Machine Learning · Technical Art", zh: "神经渲染 · 机器学习 · 技术美术", ja: "ニューラルレンダリング · 機械学習 · テクニカルアート", ko: "뉴럴 렌더링 · 머신러닝 · 테크니컬 아트" },
+        tags: { en: "Neural Rendering · Technical Art", zh: "神经渲染 · 技术美术", ja: "ニューラルレンダリング · テクニカルアート", ko: "뉴럴 렌더링 · 테크니컬 아트" },
     },
     {
         projectId: "game-project-night-watch",
