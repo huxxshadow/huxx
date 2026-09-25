@@ -1,8 +1,11 @@
 ---
-// Part 3 · 九宫格：中间是吉祥物，外圈 8 格是项目。悬停 / 聚焦某一格就「选中」它：
-// 这一格抬起、四角出现选框，吉祥物换成指向这一格的姿势。
+// Part 3 · 九宫格：中间是吉祥物，外圈 8 格是项目。悬停 / 聚焦某一格就「选中」它，吉祥物换成指向这一格的姿势。
 // 姿势图放在 src/assets/portfolio/mascot/ 下，按方向命名（up-left / up / up-right / left / right /
 // down-left / down / down-right），缺哪张就用 idle 顶上。
+// 卡片有三套样式（同一份结构，只换 CSS），dev 下用 Debug 面板切换，写在 .ng 的 data-variant-current 上：
+//   A 瑞士海报：细线分栏、事实表格，选中时整卡反成蓝底
+//   B 战术档案：深色面板、切角图、等宽标签、警示斜纹，选中时蓝色描框 + 扫描线
+//   C 收藏卡：粗描边圆角卡、内框图、标题横幅、胶囊标签，选中时卡片倾斜 + 高光扫过
 import { Image } from "astro:assets";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { useTranslations, type Lang } from "@/i18n";
@@ -31,7 +34,7 @@ const before = cells.slice(0, 4);
 const after = cells.slice(4);
 ---
 
-<div class="ng" data-nine-grid>
+<div class="ng" data-nine-grid data-variant-group="part3cards" data-variant-label="Part 3 · 卡片样式" data-variant-options="A,B,C" data-variant-current="A">
     {[before, null, after].map((group) => group === null ? (
             <!-- 中间：只有角色，透明底，无边框无文字 -->
             <div class="ng-center" aria-hidden="true">
@@ -49,13 +52,20 @@ const after = cells.slice(4);
                 <span class="ng-corner ng-corner-bl"></span>
                 <span class="ng-corner ng-corner-br"></span>
                 <span class="ng-tag">▲ {t(labels.select)}</span>
+                <span class="ng-shine" aria-hidden="true"></span>
                 <div class="ng-img">
                     <WorkCover work={w} lang={lang} sizes="(min-width: 1024px) 28vw, 45vw" />
                     <p class="ng-line">{w.line}</p>
                 </div>
                 <div class="ng-body">
-                    <h3 class="ng-title">{w.title}</h3>
-                    <span class="ng-meta">{w.context} · {w.role}</span>
+                    <div class="ng-head">
+                        <h3 class="ng-title">{w.title}</h3>
+                        <span class="ng-arrow" aria-hidden="true">→</span>
+                    </div>
+                    <dl class="ng-facts">
+                        <div><dt>{t(labels.role)}</dt><dd>{w.role}</dd></div>
+                        <div><dt>{t(labels.context)}</dt><dd>{w.context}</dd></div>
+                    </dl>
                     <ul class="ng-stack">
                         {w.stack.map((s) => <li>{s}</li>)}
                     </ul>
@@ -94,81 +104,31 @@ const after = cells.slice(4);
 
 <style>
     .ng {
+        --mono: ui-monospace, "SFMono-Regular", Consolas, monospace;
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 1.5rem;
     }
 
-    /* ---------- 项目格 ---------- */
+    /* =========================================================
+       共用骨架：各样式只改外观
+       ========================================================= */
     .ng-cell {
         position: relative;
         display: flex;
         flex-direction: column;
-        background-color: var(--dv-paper);
-        border: 3px solid var(--dv-ink);
-        box-shadow: 6px 6px 0 var(--dv-ink);
-        transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+        min-width: 0;
+        isolation: isolate;
     }
-    .ng-cell.is-selected {
-        z-index: 2;
-        transform: translate(-4px, -4px);
-        border-color: var(--dv-accent);
-        box-shadow: 10px 10px 0 var(--dv-accent);
-    }
-
-    /* 选框四角：选中时从外侧收拢到格子四角 */
-    .ng-corner {
-        position: absolute;
-        z-index: 3;
-        width: 22px;
-        height: 22px;
-        border: 0 solid var(--dv-accent);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 160ms ease, translate 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-    .ng-corner-tl { top: -12px; left: -12px; border-top-width: 5px; border-left-width: 5px; translate: -8px -8px; }
-    .ng-corner-tr { top: -12px; right: -12px; border-top-width: 5px; border-right-width: 5px; translate: 8px -8px; }
-    .ng-corner-bl { bottom: -12px; left: -12px; border-bottom-width: 5px; border-left-width: 5px; translate: -8px 8px; }
-    .ng-corner-br { bottom: -12px; right: -12px; border-bottom-width: 5px; border-right-width: 5px; translate: 8px 8px; }
-    .ng-cell.is-selected .ng-corner {
-        opacity: 1;
-        translate: 0 0;
-    }
-
-    /* 选中标签 */
-    .ng-tag {
-        position: absolute;
-        z-index: 3;
-        top: -0.85rem;
-        left: 1rem;
-        padding: 0.1rem 0.6rem;
-        background-color: var(--dv-accent);
-        color: var(--dv-paper);
-        font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
-        font-size: 0.7rem;
-        font-weight: 700;
-        letter-spacing: 0.15em;
-        opacity: 0;
-        translate: 0 6px;
-        transition: opacity 160ms ease, translate 200ms ease;
-    }
-    .ng-cell.is-selected .ng-tag {
-        opacity: 1;
-        translate: 0 0;
-    }
-
     .ng-img {
         position: relative;
         aspect-ratio: 16 / 9;
         overflow: hidden;
         background-color: var(--dv-ink);
-        border-bottom: 3px solid var(--dv-ink);
     }
-    .ng-cell.is-selected .ng-img {
-        border-bottom-color: var(--dv-accent);
+    .ng-img :global(img) {
+        transition: scale 400ms ease, filter 300ms ease;
     }
-    /* 选中时一句话从图的底部升起 */
     .ng-line {
         position: absolute;
         left: 0;
@@ -176,52 +136,375 @@ const after = cells.slice(4);
         bottom: 0;
         z-index: 2;
         padding: 0.55rem 0.8rem;
-        background-color: var(--dv-accent);
-        color: var(--dv-paper);
         font-size: 0.8rem;
         font-weight: 700;
         line-height: 1.5;
         translate: 0 101%;
-        transition: translate 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+        transition: translate 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
     }
     .ng-cell.is-selected .ng-line {
         translate: 0 0;
     }
-
     .ng-body {
         display: flex;
         flex-direction: column;
-        gap: 0.35rem;
-        padding: 0.8rem 0.95rem 0.95rem;
         flex: 1;
+    }
+    .ng-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.75rem;
     }
     .ng-title {
         font-weight: 900;
-        font-size: 1.2rem;
-        line-height: 1.15;
+        line-height: 1.1;
     }
-    .ng-cell.is-selected .ng-title {
-        color: var(--dv-accent);
+    .ng-arrow {
+        flex: none;
+        font-weight: 900;
+        transition: translate 200ms ease;
     }
-    .ng-meta {
-        font-size: 0.75rem;
-        font-weight: 800;
-        color: var(--dv-accent);
+    .ng-cell.is-selected .ng-arrow {
+        translate: 4px 0;
+    }
+    .ng-facts dt,
+    .ng-facts dd {
+        margin: 0;
     }
     .ng-stack {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.35rem;
-        margin-top: auto;
-        padding-top: 0.35rem;
     }
-    .ng-stack li {
-        padding: 0.05rem 0.45rem;
-        border: 1.5px solid var(--dv-accent);
-        color: var(--dv-accent);
-        font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
-        font-size: 0.68rem;
+    .ng-corner,
+    .ng-tag,
+    .ng-shine {
+        display: none;
+        pointer-events: none;
+    }
+
+    /* =========================================================
+       A · 瑞士海报：纸面、细线、左对齐大标题、两行事实表格；
+       选中时整卡反成蓝底白字，封面恢复全彩
+       ========================================================= */
+    .ng[data-variant-current="A"] .ng-cell {
+        background-color: var(--dv-paper);
+        border: 1.5px solid var(--dv-ink);
+        transition: background-color 200ms ease, color 200ms ease, transform 200ms ease;
+    }
+    .ng[data-variant-current="A"] .ng-img {
+        border-bottom: 1.5px solid var(--dv-ink);
+    }
+    .ng[data-variant-current="A"] .ng-img :global(img) {
+        filter: grayscale(1) contrast(1.05);
+    }
+    .ng[data-variant-current="A"] .ng-line {
+        background-color: var(--dv-ink);
+        color: var(--dv-paper);
+    }
+    .ng[data-variant-current="A"] .ng-body {
+        padding: 0.85rem 1rem 1rem;
+        gap: 0.7rem;
+    }
+    .ng[data-variant-current="A"] .ng-title {
+        font-size: 1.35rem;
+        letter-spacing: -0.02em;
+    }
+    .ng[data-variant-current="A"] .ng-facts {
+        display: grid;
+        border-top: 1px solid currentColor;
+    }
+    .ng[data-variant-current="A"] .ng-facts > div {
+        display: grid;
+        grid-template-columns: 4.5rem 1fr;
+        gap: 0.5rem;
+        padding: 0.3rem 0;
+        border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+        font-size: 0.75rem;
+    }
+    .ng[data-variant-current="A"] .ng-facts dt {
+        font-family: var(--mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        opacity: 0.6;
+        padding-top: 0.1rem;
+    }
+    .ng[data-variant-current="A"] .ng-facts dd {
+        font-weight: 800;
+    }
+    .ng[data-variant-current="A"] .ng-stack {
+        gap: 0 0.9rem;
+        margin-top: auto;
+        font-family: var(--mono);
+        font-size: 0.7rem;
         font-weight: 700;
+    }
+    .ng[data-variant-current="A"] .ng-stack li::before {
+        content: "/ ";
+        opacity: 0.5;
+    }
+    .ng[data-variant-current="A"] .ng-cell.is-selected {
+        background-color: var(--dv-accent);
+        border-color: var(--dv-accent);
+        color: var(--dv-paper);
+        transform: translateY(-4px);
+    }
+    .ng[data-variant-current="A"] .ng-cell.is-selected .ng-img {
+        border-bottom-color: var(--dv-accent);
+    }
+    .ng[data-variant-current="A"] .ng-cell.is-selected .ng-img :global(img) {
+        filter: none;
+        scale: 1.04;
+    }
+
+    /* =========================================================
+       B · 战术档案：深色面板、右上切角、等宽小标签、底部警示斜纹；
+       选中时四角选框亮起、蓝色描框、扫描线扫过封面
+       ========================================================= */
+    .ng[data-variant-current="B"] .ng-cell {
+        --cut: 18px;
+        background-color: #22262F;
+        color: #F2F4F8;
+        clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+        transition: background-color 200ms ease;
+    }
+    /* 选框要画在切角外面，所以放在一层没被 clip 的描边上 */
+    .ng[data-variant-current="B"] .ng-cell::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 4;
+        pointer-events: none;
+        border: 2px solid transparent;
+        clip-path: inherit;
+        transition: border-color 200ms ease;
+    }
+    .ng[data-variant-current="B"] .ng-img {
+        margin: 10px 10px 0;
+        clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+    }
+    .ng[data-variant-current="B"] .ng-img :global(img) {
+        filter: saturate(0.75) brightness(0.9);
+    }
+    /* 扫描线 */
+    .ng[data-variant-current="B"] .ng-img::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--dv-accent) 55%, transparent) 48%, transparent 52%);
+        background-size: 100% 220%;
+        background-position: 0 -120%;
+        opacity: 0;
+        pointer-events: none;
+    }
+    .ng[data-variant-current="B"] .ng-line {
+        background-color: var(--dv-accent);
+        color: #FFFFFF;
+    }
+    .ng[data-variant-current="B"] .ng-body {
+        padding: 0.75rem 1rem 1.3rem;
+        gap: 0.55rem;
+    }
+    .ng[data-variant-current="B"] .ng-title {
+        font-size: 1.15rem;
+        letter-spacing: 0.01em;
+    }
+    .ng[data-variant-current="B"] .ng-arrow {
+        font-family: var(--mono);
+        font-size: 0.8rem;
+        color: var(--dv-accent);
+        filter: brightness(1.6);
+    }
+    .ng[data-variant-current="B"] .ng-facts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem 1rem;
+    }
+    .ng[data-variant-current="B"] .ng-facts > div {
+        display: flex;
+        align-items: baseline;
+        gap: 0.4rem;
+        font-size: 0.72rem;
+    }
+    .ng[data-variant-current="B"] .ng-facts dt {
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #8FB4F0;
+    }
+    .ng[data-variant-current="B"] .ng-facts dd {
+        font-weight: 700;
+    }
+    .ng[data-variant-current="B"] .ng-stack {
+        gap: 0.3rem;
+        margin-top: auto;
+        padding-top: 0.2rem;
+    }
+    .ng[data-variant-current="B"] .ng-stack li {
+        padding: 0.05rem 0.45rem;
+        background-color: rgba(255, 255, 255, 0.08);
+        border-left: 2px solid var(--dv-accent);
+        font-family: var(--mono);
+        font-size: 0.66rem;
+        font-weight: 700;
+    }
+    /* 底部警示斜纹 */
+    .ng[data-variant-current="B"] .ng-body::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 6px;
+        background: repeating-linear-gradient(-45deg, var(--dv-accent) 0 6px, transparent 6px 12px);
+        opacity: 0.5;
+        transition: opacity 200ms ease;
+    }
+    .ng[data-variant-current="B"] .ng-corner {
+        display: block;
+        position: absolute;
+        z-index: 5;
+        width: 16px;
+        height: 16px;
+        border: 0 solid var(--dv-accent);
+        opacity: 0;
+        transition: opacity 160ms ease, translate 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .ng[data-variant-current="B"] .ng-corner-tl { top: 4px; left: 4px; border-top-width: 3px; border-left-width: 3px; translate: 6px 6px; }
+    .ng[data-variant-current="B"] .ng-corner-tr { top: 4px; right: 4px; border-top-width: 3px; border-right-width: 3px; translate: -6px 6px; }
+    .ng[data-variant-current="B"] .ng-corner-bl { bottom: 4px; left: 4px; border-bottom-width: 3px; border-left-width: 3px; translate: 6px -6px; }
+    .ng[data-variant-current="B"] .ng-corner-br { bottom: 4px; right: 4px; border-bottom-width: 3px; border-right-width: 3px; translate: -6px -6px; }
+    .ng[data-variant-current="B"] .ng-cell.is-selected {
+        background-color: #1A2A48;
+    }
+    .ng[data-variant-current="B"] .ng-cell.is-selected::before {
+        border-color: var(--dv-accent);
+    }
+    .ng[data-variant-current="B"] .ng-cell.is-selected .ng-corner {
+        opacity: 1;
+        translate: 0 0;
+    }
+    .ng[data-variant-current="B"] .ng-cell.is-selected .ng-img :global(img) {
+        filter: none;
+    }
+    .ng[data-variant-current="B"] .ng-cell.is-selected .ng-img::after {
+        animation: ng-scan 700ms ease-out 1;
+    }
+    .ng[data-variant-current="B"] .ng-cell.is-selected .ng-body::after {
+        opacity: 1;
+    }
+    @keyframes ng-scan {
+        0% { opacity: 1; background-position: 0 -120%; }
+        100% { opacity: 1; background-position: 0 120%; }
+    }
+
+    /* =========================================================
+       C · 收藏卡：粗描边圆角卡、内框封面、标题压在封面下沿的横幅、胶囊标签；
+       选中时卡片抬起微倾，一道高光斜扫过去
+       ========================================================= */
+    .ng[data-variant-current="C"] .ng-cell {
+        padding: 10px;
+        background-color: var(--dv-paper);
+        border: 3px solid var(--dv-ink);
+        border-radius: 16px;
+        box-shadow: 0 6px 0 var(--dv-ink);
+        overflow: hidden;
+        transition: transform 240ms cubic-bezier(0.3, 1.4, 0.5, 1), box-shadow 200ms ease;
+    }
+    .ng[data-variant-current="C"] .ng-img {
+        border: 3px solid var(--dv-ink);
+        border-radius: 10px;
+    }
+    .ng[data-variant-current="C"] .ng-line {
+        background-color: var(--dv-ink);
+        color: var(--dv-paper);
+        padding-bottom: 1.1rem;
+    }
+    .ng[data-variant-current="C"] .ng-body {
+        gap: 0.55rem;
+        padding: 0 0.25rem 0.2rem;
+    }
+    /* 标题横幅压在封面下沿 */
+    .ng[data-variant-current="C"] .ng-head {
+        position: relative;
+        z-index: 3;
+        align-self: center;
+        margin-top: -1.05rem;
+        padding: 0.3rem 1.1rem;
+        background-color: var(--dv-accent);
+        color: #FFFFFF;
+        border: 3px solid var(--dv-ink);
+        border-radius: 999px;
+        max-width: 92%;
+    }
+    .ng[data-variant-current="C"] .ng-title {
+        font-size: 1rem;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .ng[data-variant-current="C"] .ng-arrow {
+        display: none;
+    }
+    .ng[data-variant-current="C"] .ng-facts {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.4rem;
+        text-align: center;
+    }
+    .ng[data-variant-current="C"] .ng-facts > div {
+        display: flex;
+        flex-direction: column;
+        gap: 0.1rem;
+        padding: 0.3rem 0.4rem;
+        border-radius: 8px;
+        background-color: color-mix(in srgb, var(--dv-accent) 10%, var(--dv-paper));
+        font-size: 0.72rem;
+    }
+    .ng[data-variant-current="C"] .ng-facts dt {
+        font-size: 0.6rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        color: var(--dv-accent);
+    }
+    .ng[data-variant-current="C"] .ng-facts dd {
+        font-weight: 800;
+        line-height: 1.3;
+    }
+    .ng[data-variant-current="C"] .ng-stack {
+        justify-content: center;
+        gap: 0.3rem;
+        margin-top: auto;
+    }
+    .ng[data-variant-current="C"] .ng-stack li {
+        padding: 0.05rem 0.55rem;
+        border: 2px solid var(--dv-ink);
+        border-radius: 999px;
+        font-size: 0.66rem;
+        font-weight: 800;
+    }
+    .ng[data-variant-current="C"] .ng-shine {
+        display: block;
+        position: absolute;
+        inset: 0;
+        z-index: 6;
+        background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.55) 48%, transparent 60%);
+        translate: -120% 0;
+    }
+    .ng[data-variant-current="C"] .ng-cell.is-selected {
+        transform: translateY(-6px) rotate(-1.5deg);
+        box-shadow: 0 12px 0 var(--dv-accent);
+    }
+    .ng[data-variant-current="C"] .ng-cell.is-selected .ng-shine {
+        translate: 120% 0;
+        transition: translate 650ms ease;
+    }
+    .ng[data-variant-current="C"] .ng-cell.is-selected .ng-img :global(img) {
+        scale: 1.05;
     }
 
     /* ---------- 中间：角色 ---------- */
@@ -247,8 +530,12 @@ const after = cells.slice(4);
     .ng-mascot :global(img.is-active) {
         opacity: 1;
     }
+
     @media (prefers-reduced-motion: reduce) {
-        .ng-mascot :global(img) { transition: none; }
+        .ng-mascot :global(img),
+        .ng-cell,
+        .ng-shine { transition: none !important; }
+        .ng-img::after { animation: none !important; }
     }
 
     /* 窄屏：吉祥物占一整行放在最上，项目两列 */
@@ -259,8 +546,6 @@ const after = cells.slice(4);
         .ng-center {
             grid-column: 1 / -1;
             order: -1;
-        }
-        .ng-center {
             min-height: 20rem;
         }
         .ng-mascot {

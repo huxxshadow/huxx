@@ -160,5 +160,6 @@ export const gameDevLabels = {
     select: { en: "SELECT", zh: "SELECT", ja: "SELECT", ko: "SELECT" } as Multilingual,
     built: { en: "What I built", zh: "我搭的系统", ja: "作ったシステム", ko: "구축한 시스템" } as Multilingual,
     stack: { en: "Stack", zh: "技术栈", ja: "技術スタック", ko: "기술 스택" } as Multilingual,
+    context: { en: "Context", zh: "出处", ja: "背景", ko: "배경" } as Multilingual,
     role: { en: "Role", zh: "身份", ja: "役割", ko: "역할" } as Multilingual,
 };
