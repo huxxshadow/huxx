@@ -36,6 +36,7 @@ export const devWorks: DevWork[] = [
     },
     {
         projectId: "game-project-click-click-universe",
+        tags: { en: "Unity · Solo Developer", zh: "Unity · 独立开发", ja: "Unity · 個人開発", ko: "Unity · 1인 개발" },
         context: { en: "Graduation project · Steam", zh: "本科毕设 · Steam", ja: "卒業制作 · Steam", ko: "졸업 작품 · Steam" },
         role: solo,
         stack: ["Unity", "C#", "ScriptableObject"],
