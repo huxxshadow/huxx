@@ -49,16 +49,6 @@ export const aiWorks: AiWork[] = [
         tags: { en: "Gradio · Scikit-learn · cuML", zh: "Gradio · Scikit-learn · cuML", ja: "Gradio · Scikit-learn · cuML", ko: "Gradio · Scikit-learn · cuML" },
     },
     {
-        projectId: "technical-project-mario-ddqn",
-        caption: {
-            en: "Trains Mario to play on his own with DDQN: convolutional networks, experience replay and a target network.",
-            zh: "用 DDQN 训练马里奥自主游玩：卷积网络、经验回放与目标网络同步。",
-            ja: "DDQN でマリオを自律プレイさせる。畳み込みネットワーク、経験再生、ターゲットネットワーク。",
-            ko: "DDQN으로 마리오가 스스로 플레이하도록 학습합니다. 합성곱 신경망, 경험 재생, 타깃 네트워크.",
-        },
-        tags: { en: "TensorFlow · Reinforcement Learning", zh: "TensorFlow · 强化学习", ja: "TensorFlow · 強化学習", ko: "TensorFlow · 강화 학습" },
-    },
-    {
         projectId: "technical-project-comfyui-ai-eco-film",
         caption: {
             en: "A ComfyUI video workflow: storyboards, first-and-last-frame video synthesis, upscaling, frame interpolation and AI voice.",
