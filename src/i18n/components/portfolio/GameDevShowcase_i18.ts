@@ -36,6 +36,12 @@ export const devWorks: DevWork[] = [
     },
     {
         projectId: "game-project-click-click-universe",
+        caption: {
+            en: "Built a large-scale content production pipeline, handled complex UGUI logic, and implemented procedural animation.",
+            zh: "搭建大型内容生产管线，处理复杂 UGUI 逻辑，实现程序化动画。",
+            ja: "大規模なコンテンツ制作パイプラインを構築し、複雑な UGUI ロジックを処理、プロシージャルアニメーションを実装しました。",
+            ko: "대규모 콘텐츠 제작 파이프라인을 구축하고, 복잡한 UGUI 로직을 처리하며, 절차적 애니메이션을 구현했습니다.",
+        },
         tags: { en: "Unity · Solo Developer", zh: "Unity · 独立开发", ja: "Unity · 個人開発", ko: "Unity · 1인 개발" },
         context: { en: "Graduation project · Steam", zh: "本科毕设 · Steam", ja: "卒業制作 · Steam", ko: "졸업 작품 · Steam" },
         role: solo,
