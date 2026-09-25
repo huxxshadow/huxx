@@ -65,10 +65,10 @@ export const aiWorks: AiWork[] = [
     {
         projectId: "technical-project-dog-breed-classification",
         caption: {
-            en: "An Oxford AI summer programme project: dog-breed image classification with transfer learning and data augmentation.",
-            zh: "牛津 AI 暑期课程项目：用迁移学习与数据增强做犬种图像识别。",
-            ja: "オックスフォード AI サマープログラムの課題。転移学習とデータ拡張による犬種の画像認識。",
-            ko: "옥스퍼드 AI 여름 프로그램 프로젝트. 전이 학습과 데이터 증강으로 견종 이미지를 분류합니다.",
+            en: "Top score in the Oxford machine learning summer programme: dog-breed image recognition with transfer learning.",
+            zh: "牛津机器学习暑期项目最高分，基于迁移学习的犬种图像识别。",
+            ja: "オックスフォード機械学習サマープログラムで最高得点。転移学習による犬種の画像認識。",
+            ko: "옥스퍼드 머신러닝 여름 프로그램 최고점. 전이 학습 기반 견종 이미지 인식.",
         },
         tags: { en: "Leader · Oxford · Transfer Learning", zh: "组长 · 牛津 · 迁移学习", ja: "リーダー · オックスフォード · 転移学習", ko: "팀장 · 옥스퍼드 · 전이 학습" },
     },
