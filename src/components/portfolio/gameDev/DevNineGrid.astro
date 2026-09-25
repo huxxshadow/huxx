@@ -1,11 +1,13 @@
 ---
 // Part 3 · 九宫格：中间是吉祥物，外圈 8 格是项目。悬停 / 聚焦某一格就「选中」它：
-// 这一格抬起、四角出现选框，其余格变暗，吉祥物（手绘 SVG）伸出手臂指向这一格、眼睛看过去。
+// 这一格抬起、四角出现选框，其余格变暗，吉祥物换成指向这一格的姿势。
+// 姿势图放在 src/assets/portfolio/mascot/ 下，按方向命名（up-left / up / up-right / left / right /
+// down-left / down / down-right），缺哪张就用 idle 顶上。
+import { Image } from "astro:assets";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { useTranslations, type Lang } from "@/i18n";
 import type { GameDevShowcase } from "./data";
 import WorkCover from "@/components/portfolio/gameDesign/WorkCover.astro";
-import Mascot from "./Mascot.astro";
 
 interface Props {
     showcase: GameDevShowcase;
@@ -16,9 +18,15 @@ const { showcase, lang, labels } = Astro.props;
 const t = useTranslations(lang);
 const href = (id: string) => getRelativeLocaleUrl(lang, `projects/${id}`);
 
+// 外圈 8 格按 DOM 顺序对应的方向（中间一格插在第 4 个后面）
+const DIRS = ["up-left", "up", "up-right", "left", "right", "down-left", "down", "down-right"] as const;
+const poseFiles = import.meta.glob<{ default: ImageMetadata }>("/src/assets/portfolio/mascot/*.{png,webp,jpg}", { eager: true });
+const pose = (name: string) => Object.entries(poseFiles).find(([p]) => p.split("/").pop()!.replace(/\.\w+$/, "") === name)?.[1].default;
+const idle = pose("idle")!;
+const poses = DIRS.map((dir) => ({ dir, img: pose(dir) })).filter((p) => p.img) as { dir: string; img: ImageMetadata }[];
 
 const works = showcase.works.slice(0, 8);
-const cells = works.map((w) => ({ w }));
+const cells = works.map((w, i) => ({ w, dir: DIRS[i] }));
 const before = cells.slice(0, 4);
 const after = cells.slice(4);
 ---
@@ -28,11 +36,14 @@ const after = cells.slice(4);
             <!-- 中间：只有角色，透明底，无边框无文字 -->
             <div class="ng-center" aria-hidden="true">
                 <div class="ng-mascot">
-                    <Mascot />
+                    <Image src={idle} alt="" widths={[360, 600, 900]} sizes="(min-width: 1024px) 28vw, 60vw" loading="eager" class="is-active" data-pose="idle" />
+                    {poses.map((p) => (
+                            <Image src={p.img} alt="" widths={[360, 600, 900]} sizes="(min-width: 1024px) 28vw, 60vw" loading="eager" data-pose={p.dir} />
+                    ))}
                 </div>
             </div>
-    ) : group.map(({ w }) => (
-            <a href={href(w.id)} class="ng-cell">
+    ) : group.map(({ w, dir }) => (
+            <a href={href(w.id)} class="ng-cell" data-dir={dir}>
                 <span class="ng-corner ng-corner-tl"></span>
                 <span class="ng-corner ng-corner-tr"></span>
                 <span class="ng-corner ng-corner-bl"></span>
@@ -54,55 +65,19 @@ const after = cells.slice(4);
 </div>
 
 <script>
-    // 选中某一格：算出格子中心相对吉祥物肩膀的角度，用靠近那一侧的手臂指过去；眼珠朝同一方向偏一点
-    const SHOULDER = { left: [146, 314], right: [254, 314] } as const;
-
+    // 选中某一格：吉祥物换成指向这一格的姿势（没有这张图就保持 idle）
     function initNineGrid() {
         document.querySelectorAll<HTMLElement>("[data-nine-grid]").forEach((root) => {
             if (root.dataset.ngReady) return;
             root.dataset.ngReady = "1";
             const cells = [...root.querySelectorAll<HTMLElement>(".ng-cell")];
-            const svg = root.querySelector<SVGSVGElement>("[data-mascot]");
-
-            const toScreen = (x: number, y: number) => {
-                const m = svg!.getScreenCTM();
-                return m ? new DOMPoint(x, y).matrixTransform(m) : new DOMPoint(x, y);
-            };
-
-            const aim = (cell: HTMLElement | null) => {
-                if (!svg) return;
-                if (!cell) {
-                    delete svg.dataset.point;
-                    svg.style.setProperty("--eye-x", "0px");
-                    svg.style.setProperty("--eye-y", "0px");
-                    return;
-                }
-                const r = cell.getBoundingClientRect();
-                const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-                const mid = toScreen(200, 314);
-                // 目标在左半边就用左臂，右半边用右臂；正上 / 正下用左臂（和原画一致）
-                const side = cx > mid.x + 20 ? "right" : "left";
-                const [sx, sy] = SHOULDER[side];
-                const sh = toScreen(sx, sy);
-                let ang = Math.atan2(cy - sh.y, cx - sh.x) * 180 / Math.PI;
-                // 手臂不能横穿身体：左臂只指向左半平面外侧，右臂只指向右半平面外侧
-                if (side === "left") {
-                    if (ang > -100 && ang < 0) ang = -100;
-                    else if (ang >= 0 && ang < 100) ang = 100;
-                } else {
-                    ang = Math.max(-80, Math.min(80, ang));
-                }
-                svg.style.setProperty(side === "left" ? "--ang-l" : "--ang-r", ang + "deg");
-                svg.dataset.point = side;
-                const dx = cx - mid.x, dy = cy - mid.y, len = Math.hypot(dx, dy) || 1;
-                svg.style.setProperty("--eye-x", (dx / len) * 4 + "px");
-                svg.style.setProperty("--eye-y", (dy / len) * 3 + "px");
-            };
-
+            const imgs = [...root.querySelectorAll<HTMLElement>("[data-pose]")];
             const select = (cell: HTMLElement | null) => {
                 cells.forEach((c) => c.classList.toggle("is-selected", c === cell));
                 root.classList.toggle("has-selection", !!cell);
-                aim(cell);
+                const dir = cell?.dataset.dir ?? "idle";
+                const target = imgs.find((i) => i.dataset.pose === dir) ?? imgs.find((i) => i.dataset.pose === "idle");
+                imgs.forEach((i) => i.classList.toggle("is-active", i === target));
             };
             cells.forEach((cell) => {
                 cell.addEventListener("mouseenter", () => select(cell));
@@ -263,6 +238,18 @@ const after = cells.slice(4);
         position: absolute;
         inset: -7% 0;
         pointer-events: none;
+    }
+    .ng-mascot :global(img) {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        opacity: 0;
+    }
+    /* 像换精灵一样直接切，不做淡入淡出（淡入时两张图会叠出重影） */
+    .ng-mascot :global(img.is-active) {
+        opacity: 1;
     }
 
     /* 窄屏：吉祥物占一整行放在最上，项目两列 */
