@@ -2,7 +2,7 @@
 // Part 3 · 九宫格：中间是吉祥物，外圈 8 格是项目。悬停 / 聚焦某一格就「选中」它，吉祥物换成指向这一格的姿势；
 // 没有选中时指向上方。八个姿势拼在一张横向精灵图里（src/assets/portfolio/mascot/sprite.webp，顺序同 DIRS），
 // 切换时只移动背景位置：同一张已解码的图，不会出现空白帧。
-// 卡片是卡通风格（参考中间的角色）：深蓝粗描边、白底圆角、底部一道实色边；内容只有 名字 + 一行说明 + 标签。
+// 卡片是卡通风格（参考中间的角色）：蓝色粗描边、白底圆角、底部一道实色边；内容只有 名字 + 一行说明 + 标签。
 // 选中时卡片弹起、整卡变蓝、字反白。
 // 切换姿势：八张图身体完全重合，只有手臂不同，所以在一次 Q 弹的「压扁—弹起—回弹」里瞬间换图，不做淡入淡出
 import sprite from "@/assets/portfolio/mascot/sprite.webp";
@@ -120,9 +120,10 @@ const after = cells.slice(4);
         gap: 1.5rem;
     }
 
-    /* ---------- 项目卡：卡通风格，深蓝粗描边、白底圆角 ---------- */
+    /* ---------- 项目卡：卡通风格，蓝色粗描边、白底圆角 ---------- */
     .ng-cell {
-        --line: color-mix(in srgb, var(--dv-accent) 62%, #000);
+        /* 这一页的蓝只用 #0058C0（--dv-accent）和浅蓝（--dv-tint） */
+        --line: var(--dv-accent);
         --lw: 4px;
         position: relative;
         display: flex;
@@ -194,13 +195,9 @@ const after = cells.slice(4);
         font-size: 0.8rem;
         font-weight: 800;
     }
+    /* 身份标签用浅蓝底，和其他白底标签区分；都不用深色底 */
     .ng-tags .ng-tag-role {
-        background-color: var(--dv-accent);
-        color: #FFFFFF;
-    }
-    .ng-cell.is-selected .ng-tags .ng-tag-role {
-        background-color: #FFFFFF;
-        color: var(--dv-accent);
+        background-color: var(--dv-tint);
     }
 
     /* ---------- 中间：角色 ---------- */
