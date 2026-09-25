@@ -2,11 +2,10 @@
 // Part 3 · 九宫格：中间是吉祥物，外圈 8 格是项目。悬停 / 聚焦某一格就「选中」它，吉祥物换成指向这一格的姿势；
 // 没有选中时指向上方。八个姿势拼在一张横向精灵图里（src/assets/portfolio/mascot/sprite.webp，顺序同 DIRS），
 // 切换时只移动背景位置：同一张已解码的图，不会出现空白帧。
-// 卡片有三套扁平风格（同一份结构，只换 CSS），dev 下用 Debug 面板切换，写在 .ng 的 data-variant-current 上：
-//   A 色块：纸色卡 + 蓝色竖条，选中时整卡变蓝
-//   B 构成主义：图角蓝色三角 + 斜压黑条，选中时三角放大、黑条摆平变蓝
-//   C 瑞士极简：图下一根粗线、标题和两栏小表格，选中时线和标题变蓝
-// 三套共用：圆角矩形 + 深蓝描边
+// 卡片是卡通风格（参考中间的角色：粗藏青描边、平涂蓝白、圆角、没有小字细线），三套外观，dev 下用 Debug 面板切换：
+//   A 色块：白卡，选中时整卡变蓝
+//   B 构成：图角描边蓝三角 + 斜压藏青粗条，选中时三角放大、粗条摆平变蓝
+//   C 名牌：顶部蓝色名牌写标题，选中时名牌变藏青、卡片微歪
 // 切换姿势：八张图身体完全重合，只有手臂不同，所以在一次 Q 弹的「压扁—弹起—回弹」里瞬间换图，不做淡入淡出
 import sprite from "@/assets/portfolio/mascot/sprite.webp";
 import { getRelativeLocaleUrl } from "astro:i18n";
@@ -136,62 +135,101 @@ const after = cells.slice(4);
     }
 
     /* =========================================================
-       共用骨架：各样式只改外观。三套都是纯平面：只用墨色、蓝、纸色，不用渐变、阴影、发光
+       共用骨架：卡通风格，参考中间的角色——粗藏青描边、平涂蓝白、圆角、没有小字和细线。
+       各样式只改外观
        ========================================================= */
     .ng-cell {
-        --dv-deep: color-mix(in srgb, var(--dv-accent) 55%, #000);
+        --line: #13204A;
+        --lw: 4px;
         position: relative;
         display: flex;
         flex-direction: column;
         min-width: 0;
         isolation: isolate;
         overflow: hidden;
-        background-color: var(--dv-paper);
-        border: 3px solid var(--dv-deep);
-        border-radius: 14px;
+        background-color: #FFFFFF;
+        color: var(--line);
+        border: var(--lw) solid var(--line);
+        border-radius: 18px;
+        box-shadow: 0 6px 0 var(--line);
+        transition: translate 240ms cubic-bezier(0.3, 1.5, 0.5, 1), box-shadow 200ms ease, background-color 180ms ease, color 180ms ease;
+    }
+    .ng-cell.is-selected {
+        translate: 0 -6px;
+        box-shadow: 0 12px 0 var(--line);
     }
     .ng-img {
         position: relative;
         aspect-ratio: 16 / 9;
         overflow: hidden;
-        background-color: var(--dv-ink);
-        border-bottom: 3px solid var(--dv-deep);
+        background-color: var(--line);
+        border-bottom: var(--lw) solid var(--line);
     }
     .ng-img :global(img) {
         transition: scale 400ms ease;
+    }
+    .ng-cell.is-selected .ng-img :global(img) {
+        scale: 1.05;
     }
     .ng-body {
         position: relative;
         display: flex;
         flex-direction: column;
         flex: 1;
+        gap: 0.55rem;
+        padding: 0.8rem 1rem 1rem;
     }
     .ng-head {
         display: flex;
-        align-items: baseline;
+        align-items: center;
         justify-content: space-between;
         gap: 0.75rem;
     }
     .ng-title {
         font-weight: 900;
+        font-size: 1.4rem;
         line-height: 1.1;
         letter-spacing: -0.01em;
     }
-    .ng-facts dt,
+    .ng-facts {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.4rem;
+    }
+    .ng-facts > div {
+        display: flex;
+    }
+    .ng-facts dt {
+        display: none;
+    }
     .ng-facts dd {
         margin: 0;
+        font-size: 0.88rem;
+        font-weight: 800;
+    }
+    /* 身份：蓝色胖胶囊 */
+    .ng-facts > div:first-child dd {
+        padding: 0.12rem 0.7rem;
+        background-color: var(--dv-accent);
+        color: #FFFFFF;
+        border: 3px solid var(--line);
+        border-radius: 999px;
     }
     .ng-stack {
         display: flex;
         flex-wrap: wrap;
-        gap: 0 0.7rem;
-        font-family: var(--mono);
-        font-size: 0.64rem;
-        font-weight: 700;
+        gap: 0.35rem;
+        margin-top: auto;
     }
-    .ng-stack li::before {
-        content: "/ ";
-        opacity: 0.6;
+    .ng-stack li {
+        padding: 0.05rem 0.6rem;
+        background-color: #FFFFFF;
+        color: var(--line);
+        border: 3px solid var(--line);
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 800;
     }
     .ng-line,
     .ng-corner,
@@ -202,204 +240,122 @@ const after = cells.slice(4);
     }
 
     /* =========================================================
-       A · 色块：纸色卡片，左侧一根蓝色竖条；选中时整张卡变成纯蓝，字反白
+       A · 色块：白卡；选中时整张卡变蓝、字反白
        ========================================================= */
-    .ng[data-variant-current="A"] .ng-cell {
-        background-color: var(--dv-paper);
-        transition: background-color 180ms ease, color 180ms ease;
-    }
-    .ng[data-variant-current="A"] .ng-body {
-        gap: 0.4rem;
-        padding: 0.85rem 1rem 0.95rem 1.35rem;
-    }
-    .ng[data-variant-current="A"] .ng-body::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 0.95rem;
-        bottom: 0.95rem;
-        width: 6px;
-        background-color: var(--dv-accent);
-        transition: background-color 180ms ease;
-    }
-    .ng[data-variant-current="A"] .ng-title {
-        font-size: 1.25rem;
-    }
-    .ng[data-variant-current="A"] .ng-facts {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0 0.5rem;
-        font-size: 0.74rem;
-        font-weight: 800;
-    }
-    .ng[data-variant-current="A"] .ng-facts dt {
-        display: none;
-    }
-    .ng[data-variant-current="A"] .ng-facts > div:first-child dd {
-        color: var(--dv-accent);
-    }
-    .ng[data-variant-current="A"] .ng-facts > div + div::before {
-        content: "·";
-        margin-right: 0.5rem;
-        opacity: 0.5;
-    }
-    .ng[data-variant-current="A"] .ng-facts > div {
-        display: flex;
-    }
-    .ng[data-variant-current="A"] .ng-stack {
-        margin-top: auto;
-        opacity: 0.6;
-    }
     .ng[data-variant-current="A"] .ng-cell.is-selected {
         background-color: var(--dv-accent);
-        color: var(--dv-paper);
-    }
-    .ng[data-variant-current="A"] .ng-cell.is-selected .ng-body::before {
-        background-color: var(--dv-paper);
+        color: #FFFFFF;
     }
     .ng[data-variant-current="A"] .ng-cell.is-selected .ng-facts > div:first-child dd {
-        color: inherit;
-    }
-    .ng[data-variant-current="A"] .ng-cell.is-selected .ng-stack {
-        opacity: 0.85;
+        background-color: #FFFFFF;
+        color: var(--dv-accent);
     }
 
     /* =========================================================
-       B · 构成主义：图的左上角切进一块蓝色三角，一根略斜的黑条横压在图的下沿写身份与出处；
-       选中时三角放大、黑条摆平并变蓝
+       B · 构成：图的左上角切进一块带描边的蓝色三角，一根略斜的藏青粗条压在图的下沿写身份与出处；
+       选中时三角放大、粗条摆平变蓝
        ========================================================= */
-    .ng[data-variant-current="B"] .ng-cell {
-        background-color: var(--dv-paper);
-    }
     .ng[data-variant-current="B"] .ng-img::before {
         content: "";
         position: absolute;
         inset: 0;
         z-index: 1;
-        background-color: var(--dv-accent);
-        clip-path: polygon(0 0, 26% 0, 0 46%);
-        transition: clip-path 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+        background-color: var(--line);
+        clip-path: polygon(0 0, 30% 0, 0 54%);
+        transition: clip-path 320ms cubic-bezier(0.3, 1.4, 0.5, 1);
     }
-    .ng[data-variant-current="B"] .ng-body {
-        gap: 0.5rem;
-        padding: 0 1rem 1rem;
+    .ng[data-variant-current="B"] .ng-img::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        background-color: var(--dv-accent);
+        clip-path: polygon(0 0, 26% 0, 0 47%);
+        transition: clip-path 320ms cubic-bezier(0.3, 1.4, 0.5, 1);
     }
     .ng[data-variant-current="B"] .ng-facts {
         order: -1;
         align-self: flex-start;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0 0.9rem;
-        margin: -0.85rem 0 0.2rem 0;
-        padding: 0.3rem 0.8rem;
-        background-color: var(--dv-ink);
-        color: var(--dv-paper);
-        font-size: 0.72rem;
-        font-weight: 800;
-        rotate: -4deg;
+        margin: -1.45rem 0 0.1rem -0.2rem;
+        padding: 0.25rem 0.9rem;
+        background-color: var(--line);
+        color: #FFFFFF;
+        border: 3px solid var(--line);
+        border-radius: 10px;
+        rotate: -3deg;
         transform-origin: left center;
-        transition: rotate 260ms cubic-bezier(0.2, 0.8, 0.2, 1), background-color 200ms ease;
         position: relative;
-        z-index: 2;
+        z-index: 3;
+        transition: rotate 280ms cubic-bezier(0.3, 1.5, 0.5, 1), background-color 200ms ease;
     }
-    .ng[data-variant-current="B"] .ng-facts > div {
-        display: flex;
-        gap: 0.35rem;
+    .ng[data-variant-current="B"] .ng-facts > div:first-child dd {
+        padding: 0;
+        background: none;
+        border: 0;
+        color: #9CC3F5;
     }
-    .ng[data-variant-current="B"] .ng-facts dt {
-        font-family: var(--mono);
-        font-size: 0.58rem;
-        letter-spacing: 0.1em;
-        opacity: 0.6;
-        align-self: center;
-    }
-    .ng[data-variant-current="B"] .ng-title {
-        font-size: 1.45rem;
-        letter-spacing: -0.03em;
-    }
-    .ng[data-variant-current="B"] .ng-stack {
-        margin-top: auto;
-        opacity: 0.65;
+    .ng[data-variant-current="B"] .ng-facts > div + div::before {
+        content: "·";
+        margin-right: 0.4rem;
     }
     .ng[data-variant-current="B"] .ng-cell.is-selected .ng-img::before {
-        clip-path: polygon(0 0, 48% 0, 0 86%);
+        clip-path: polygon(0 0, 52% 0, 0 94%);
+    }
+    .ng[data-variant-current="B"] .ng-cell.is-selected .ng-img::after {
+        clip-path: polygon(0 0, 48% 0, 0 87%);
     }
     .ng[data-variant-current="B"] .ng-cell.is-selected .ng-facts {
         rotate: 0deg;
         background-color: var(--dv-accent);
+    }
+    .ng[data-variant-current="B"] .ng-cell.is-selected .ng-facts > div:first-child dd {
+        color: #FFFFFF;
     }
     .ng[data-variant-current="B"] .ng-cell.is-selected .ng-title {
         color: var(--dv-accent);
     }
 
     /* =========================================================
-       C · 瑞士极简：没有卡片底，只有图、一根粗黑线、标题和两栏小表格；
-       选中时粗线变蓝、标题变蓝、右侧出现箭头
+       C · 名牌：卡片顶上一条蓝色名牌写标题（像游戏里的角色卡），图在中间，信息在下；
+       选中时名牌变藏青、卡片微微一歪
        ========================================================= */
-    .ng[data-variant-current="C"] .ng-img {
-        border-bottom-width: 6px;
-        transition: border-color 180ms ease;
-    }
-    .ng[data-variant-current="C"] .ng-cell.is-selected .ng-img {
-        border-bottom-color: var(--dv-accent);
-    }
     .ng[data-variant-current="C"] .ng-body {
-        gap: 0.5rem;
-        padding: 0.7rem 1rem 0.9rem;
-        border-top: 0 solid transparent;
-        transition: border-color 180ms ease;
+        display: contents;
+    }
+    .ng[data-variant-current="C"] .ng-head {
+        order: -1;
+        padding: 0.55rem 1rem;
+        background-color: var(--dv-accent);
+        color: #FFFFFF;
+        border-bottom: var(--lw) solid var(--line);
+        transition: background-color 180ms ease;
     }
     .ng[data-variant-current="C"] .ng-title {
         font-size: 1.3rem;
-        transition: color 180ms ease;
     }
     .ng[data-variant-current="C"] .ng-arrow {
         display: block;
+        font-size: 1.3rem;
         font-weight: 900;
-        font-size: 1.2rem;
-        color: var(--dv-accent);
-        opacity: 0;
-        translate: -8px 0;
-        transition: opacity 160ms ease, translate 200ms ease;
+        transition: translate 240ms cubic-bezier(0.3, 1.5, 0.5, 1);
     }
     .ng[data-variant-current="C"] .ng-facts {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.75rem;
-    }
-    .ng[data-variant-current="C"] .ng-facts > div {
-        display: flex;
-        flex-direction: column;
-        gap: 0.1rem;
-        padding-top: 0.3rem;
-        border-top: 1px solid color-mix(in srgb, var(--dv-ink) 40%, transparent);
-    }
-    .ng[data-variant-current="C"] .ng-facts dt {
-        font-family: var(--mono);
-        font-size: 0.58rem;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        opacity: 0.55;
-    }
-    .ng[data-variant-current="C"] .ng-facts dd {
-        font-size: 0.75rem;
-        font-weight: 800;
+        padding: 0.8rem 1rem 0;
     }
     .ng[data-variant-current="C"] .ng-stack {
-        opacity: 0.6;
+        padding: 0.5rem 1rem 1rem;
     }
-    .ng[data-variant-current="C"] .ng-cell.is-selected .ng-body {
-        border-top-color: var(--dv-accent);
+    .ng[data-variant-current="C"] .ng-cell {
+        transition: translate 240ms cubic-bezier(0.3, 1.5, 0.5, 1), rotate 280ms cubic-bezier(0.3, 1.5, 0.5, 1), box-shadow 200ms ease;
     }
-    .ng[data-variant-current="C"] .ng-cell.is-selected .ng-title {
-        color: var(--dv-accent);
+    .ng[data-variant-current="C"] .ng-cell.is-selected {
+        rotate: -1.5deg;
+    }
+    .ng[data-variant-current="C"] .ng-cell.is-selected .ng-head {
+        background-color: var(--line);
     }
     .ng[data-variant-current="C"] .ng-cell.is-selected .ng-arrow {
-        opacity: 1;
-        translate: 0 0;
-    }
-    .ng[data-variant-current="C"] .ng-cell.is-selected .ng-img :global(img) {
-        scale: 1.04;
+        translate: 5px 0;
     }
 
 
@@ -430,6 +386,7 @@ const after = cells.slice(4);
     @media (prefers-reduced-motion: reduce) {
         .ng-cell,
         .ng-img::before,
+        .ng-img::after,
         .ng-facts { transition: none !important; }
     }
 
