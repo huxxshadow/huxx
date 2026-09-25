@@ -101,7 +101,7 @@ export const devWorks: DevWork[] = [
     },
     {
         projectId: "game-project-night-watch",
-        tags: { en: "NetEase · AI-native game · Full-stack Development · Agent Design", zh: "网易 · AI原生游戏 · 全栈开发 · Agent设计", ja: "NetEase · AI ネイティブゲーム · フルスタック開発 · エージェント設計", ko: "NetEase · AI 네이티브 게임 · 풀스택 개발 · 에이전트 설계" },
+        tags: { en: "NetEase · Full-stack Development", zh: "网易 · 全栈开发", ja: "NetEase · フルスタック開発", ko: "NetEase · 풀스택 개발" },
         context: { en: "NetEase · R&D topic", zh: "网易 · 实验课题", ja: "NetEase · 実験課題", ko: "NetEase · 실험 과제" },
         role: solo,
         stack: ["React", "Three.js", "LLM"],
