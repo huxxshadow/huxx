@@ -67,10 +67,10 @@ export const designWorks: DesignWork[] = [
         context: { en: "USC AGP · team of 50+", zh: "USC AGP · 50+ 人", ja: "USC AGP · 50 人以上", ko: "USC AGP · 50명 이상" },
         role: { en: "Technical Designer (3C)", zh: "技术策划（3C）", ja: "テクニカルデザイナー（3C）", ko: "테크니컬 디자이너(3C)" },
         line: {
-            en: "Camera language for high-speed surfing and parkour; an arcing drift that settles braking and boost per corner.",
-            zh: "高速冲浪与跑酷的镜头语言；弧线漂移按弯道结算减速与加速。",
-            ja: "高速サーフィンとパルクールのカメラ言語。コーナーごとに減速と加速を精算する弧を描くドリフト。",
-            ko: "고속 서핑과 파쿠르를 위한 카메라 언어, 코너마다 감속과 가속을 정산하는 호 드리프트.",
+            en: "Designed the camera and movement, building camera storytelling for high-speed parkour, and as a technical artist handled part of the materials.",
+            zh: "负责镜头和运动设计，实现高速跑酷的镜头叙事，并作为技术美术负责部分材质。",
+            ja: "カメラと移動の設計を担当し、高速パルクールのカメラ演出を実現したほか、テクニカルアーティストとして一部のマテリアルを担当しました。",
+            ko: "카메라와 이동 설계를 맡아 고속 파쿠르의 카메라 연출을 구현하고, 테크니컬 아티스트로서 일부 머티리얼을 담당했습니다.",
         },
     },
     {
