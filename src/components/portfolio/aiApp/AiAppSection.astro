@@ -1,9 +1,6 @@
 ---
 // Part 4 · AI 应用开发：左边两列 AI 项目，最右边一条竖列放 Transformer 结构图（Encoder 在上、Decoder 在下，透明底，不吸附）。
-// 三个候选版式，本地 dev 下用 Debug 面板切换；默认 / 生产显示 A：
-//   A 论文：结构图作为 Figure 1，项目像论文里的条目（缩略图 + 粗标题 + 正文 + 关键词）
-//   B 笔记本：每个项目是一个 notebook 单元格（提示行、等宽名字、说明、输出区放封面）
-//   C 管线节点：项目是圆角节点，一条虚线把它们串起来流向结构图
+// 卡片沿用页面下方「技术项目」板块的样式（描边、偏移实色阴影、圆角标签），去掉「探索更多」按钮，说明文字在标签上方。
 // 这一页只用 COLORS.purple 的深浅两档
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
@@ -28,7 +25,6 @@ const works = aiWorks.flatMap((w) => {
     const d = p.data;
     return [{
         id: w.projectId,
-        slug: w.projectId.replace(/^(technical|game)-project-/, ""),
         title: d.title[lang] || d.title.en || d.title.zh || w.projectId,
         caption: t(w.caption),
         tags: t(w.tags).split(/\s*·\s*/).filter(Boolean),
@@ -60,80 +56,28 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
         <span class="ml-auto font-black text-lg whitespace-nowrap pb-1">{works.length} {t(L.projects)}</span>
     </header>
 
-    <div data-variant-group="part4" data-variant-label="Part 4 · AI">
-        <!-- ================= A · 论文 ================= -->
-        <div data-variant="A">
-            <div class="pa">
-                <ol class="pa-list" data-reveal-children="up" data-reveal-once data-reveal-stagger="60">
-                    {works.map((w) => (
-                            <li>
-                                <a href={href(w.id)} class="pa-item">
-                                    <div class="pa-thumb"><WorkCover work={w} lang={lang} sizes="(min-width: 1024px) 30vw, 45vw" /></div>
-                                    <div class="pa-text">
-                                        <h3 class="pa-title">{w.title}</h3>
-                                        <p class="pa-caption">{w.caption}</p>
-                                        <p class="pa-keywords"><span>Keywords</span>{w.tags.join(" · ")}</p>
-                                    </div>
-                                </a>
-                            </li>
-                    ))}
-                </ol>
-                <figure class="pa-figure" data-reveal="fade" data-reveal-once>
-                    <Image src={transformer} alt="Transformer" widths={[320, 480, 900]} sizes={figSizes} />
-                    <figcaption><b>Figure 1.</b> Transformer</figcaption>
-                </figure>
-            </div>
+    <div class="ai-layout">
+        <!-- 左：两列项目卡片 -->
+        <div class="ai-cards" data-reveal-children="up" data-reveal-order="columns" data-reveal-once>
+            {works.map((w) => (
+                    <a href={href(w.id)} class="ai-card group">
+                        <div class="ai-img">
+                            <WorkCover work={w} lang={lang} sizes="(min-width: 1024px) 30vw, (min-width: 768px) 45vw, 100vw" />
+                        </div>
+                        <div class="ai-body">
+                            <h3 class="font-black text-xl sm:text-2xl leading-tight">{w.title}</h3>
+                            <p class="text-base font-bold opacity-90 leading-relaxed flex-1">{w.caption}</p>
+                            <ul class="flex flex-wrap gap-2">
+                                {w.tags.map((tag) => <li class="ai-tag">{tag}</li>)}
+                            </ul>
+                        </div>
+                    </a>
+            ))}
         </div>
 
-        <!-- ================= B · 笔记本单元格 ================= -->
-        <div data-variant="B" hidden>
-            <div class="pb">
-                <div class="pb-cells" data-reveal-children="up" data-reveal-once data-reveal-stagger="60">
-                    {works.map((w) => (
-                            <a href={href(w.id)} class="pb-cell">
-                                <div class="pb-prompt">
-                                    <span class="pb-run" aria-hidden="true">▶</span>
-                                    <code>{w.slug}</code>
-                                </div>
-                                <div class="pb-main">
-                                    <div class="pb-text">
-                                        <h3 class="pb-title">{w.title}</h3>
-                                        <p class="pb-caption">{w.caption}</p>
-                                        <ul class="pb-tags">{w.tags.map((tag) => <li>{tag}</li>)}</ul>
-                                    </div>
-                                    <div class="pb-output"><WorkCover work={w} lang={lang} sizes="(min-width: 1024px) 30vw, 45vw" /></div>
-                                </div>
-                            </a>
-                    ))}
-                </div>
-                <div class="pb-figure" data-reveal="fade" data-reveal-once>
-                    <Image src={transformer} alt="" widths={[320, 480, 900]} sizes={figSizes} />
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= C · 管线节点 ================= -->
-        <div data-variant="C" hidden>
-            <div class="pc">
-                <ol class="pc-flow" data-reveal-children="left" data-reveal-once data-reveal-stagger="70">
-                    {works.map((w) => (
-                            <li class="pc-step">
-                                <a href={href(w.id)} class="pc-node">
-                                    <span class="pc-avatar"><WorkCover work={w} lang={lang} sizes="120px" /></span>
-                                    <span class="pc-text">
-                                        <span class="pc-title">{w.title}</span>
-                                        <span class="pc-caption">{w.caption}</span>
-                                        <span class="pc-tags">{w.tags.map((tag) => <span>{tag}</span>)}</span>
-                                    </span>
-                                </a>
-                                <span class="pc-link" aria-hidden="true"></span>
-                            </li>
-                    ))}
-                </ol>
-                <div class="pc-figure" data-reveal="fade" data-reveal-once>
-                    <Image src={transformer} alt="" widths={[320, 480, 900]} sizes={figSizes} />
-                </div>
-            </div>
+        <!-- 右：Transformer 结构图（Encoder 在上、Decoder 在下，透明底） -->
+        <div class="ai-figure" data-reveal="fade" data-reveal-once>
+            <Image src={transformer} alt="Transformer" widths={[320, 480, 900]} sizes={figSizes} />
         </div>
     </div>
 </section>
@@ -143,333 +87,96 @@ const figSizes = "(min-width: 1024px) 16rem, 40vw";
         transform: skewX(-10deg);
         transform-origin: left bottom;
     }
-    section {
-        --mono: ui-monospace, "SFMono-Regular", Consolas, monospace;
-    }
 
-    /* =========================================================
-       A · 论文：两栏，左边条目，右边 Figure 1
-       ========================================================= */
-    .pa,
-    .pb,
-    .pc {
+    .ai-layout {
         display: grid;
         grid-template-columns: minmax(0, 1fr) 16rem;
         gap: 3.5rem;
         align-items: start;
     }
-    .pa-list {
+    .ai-cards {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 2rem 2.5rem;
+        gap: 2rem;
     }
-    .pa-item {
+
+    /* 卡片：和下面「技术项目」同一套——2px 描边、圆角、8px 偏移实色阴影，悬停时往阴影方向按下去 */
+    .ai-card {
         display: flex;
         flex-direction: column;
-        gap: 0.9rem;
-        padding-top: 1rem;
-        border-top: 3px solid var(--ai-accent);
+        overflow: hidden;
+        border: 2px solid var(--ai-accent);
+        border-radius: 1rem;
+        background-color: var(--ai-tint);
+        color: var(--ai-accent);
+        box-shadow: 8px 8px 0 var(--ai-accent);
+        transition: transform 100ms ease, box-shadow 100ms ease;
     }
-    .pa-thumb {
+    .ai-card:hover {
+        transform: translate(4px, 4px);
+        box-shadow: 4px 4px 0 var(--ai-accent);
+    }
+    .ai-card:active {
+        transform: translate(8px, 8px);
+        box-shadow: 0 0 0 var(--ai-accent);
+    }
+    .ai-img {
         position: relative;
         aspect-ratio: 16 / 9;
         overflow: hidden;
-        background-color: #FFFFFF;
-        border-radius: 6px;
+        border-bottom: 2px solid var(--ai-accent);
+        background-color: var(--ai-tint);
     }
-    .pa-thumb :global(img) {
-        transition: scale 400ms ease;
+    .ai-img :global(img) {
+        transition: scale 500ms ease;
     }
-    .pa-item:hover .pa-thumb :global(img) {
-        scale: 1.06;
+    .ai-card:hover .ai-img :global(img) {
+        scale: 1.05;
     }
-    .pa-text {
+    .ai-body {
         display: flex;
         flex-direction: column;
-        gap: 0.4rem;
+        flex: 1;
+        gap: 1rem;
+        padding: 1.25rem 1.5rem 1.5rem;
     }
-    .pa-title {
-        font-weight: 900;
-        font-size: 1.3rem;
-        line-height: 1.2;
-        transition: color 160ms ease;
-    }
-    .pa-item:hover .pa-title {
-        color: var(--ai-accent);
-        text-decoration: underline;
-        text-decoration-thickness: 3px;
-        text-underline-offset: 4px;
-    }
-    .pa-caption {
-        font-size: 0.95rem;
-        line-height: 1.65;
-    }
-    .pa-keywords {
-        font-size: 0.85rem;
+    .ai-tag {
+        padding: 0.25rem 0.75rem;
+        border: 2px solid var(--ai-accent);
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
         font-weight: 700;
-        color: var(--ai-accent);
     }
-    .pa-keywords span {
-        margin-right: 0.6rem;
-        font-style: italic;
-        font-weight: 900;
-    }
-    .pa-figure {
+
+    .ai-figure {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.8rem;
+        justify-content: center;
     }
-    .pa-figure :global(img),
-    .pb-figure :global(img),
-    .pc-figure :global(img) {
+    .ai-figure :global(img) {
         width: 100%;
         height: auto;
     }
-    .pa-figure figcaption {
-        font-size: 0.95rem;
-        color: var(--ai-accent);
-    }
 
-    /* =========================================================
-       B · 笔记本单元格：白底单元格，左侧一根紫色条，顶部提示行，右侧输出区放封面
-       ========================================================= */
-    .pb-cells {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1.3rem;
-    }
-    .pb-cell {
-        display: flex;
-        flex-direction: column;
-        background-color: #FFFFFF;
-        border-left: 8px solid color-mix(in srgb, var(--ai-accent) 35%, transparent);
-        border-radius: 10px;
-        transition: border-color 160ms ease, translate 200ms ease;
-    }
-    .pb-cell:hover {
-        border-left-color: var(--ai-accent);
-        translate: 6px 0;
-    }
-    .pb-prompt {
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-        padding: 0.5rem 1rem;
-        border-bottom: 2px solid var(--ai-tint);
-        font-family: var(--mono);
-        font-size: 0.85rem;
-        color: var(--ai-accent);
-    }
-    .pb-run {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 1.5rem;
-        height: 1.5rem;
-        border-radius: 999px;
-        background-color: var(--ai-tint);
-        font-size: 0.65rem;
-        transition: background-color 160ms ease, color 160ms ease;
-    }
-    .pb-cell:hover .pb-run {
-        background-color: var(--ai-accent);
-        color: #FFFFFF;
-    }
-    .pb-main {
-        display: flex;
-        flex-direction: column;
-        gap: 0.9rem;
-        flex: 1;
-        padding: 0.9rem 1rem 1rem;
-    }
-    .pb-cell {
-        height: 100%;
-    }
-    .pb-text {
-        display: flex;
-        flex-direction: column;
-        gap: 0.4rem;
-    }
-    .pb-title {
-        font-weight: 900;
-        font-size: 1.25rem;
-        line-height: 1.2;
-    }
-    .pb-caption {
-        font-size: 0.92rem;
-        line-height: 1.6;
-    }
-    .pb-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.35rem;
-        margin-top: auto;
-        padding-top: 0.2rem;
-    }
-    .pb-tags li {
-        padding: 0.1rem 0.55rem;
-        background-color: var(--ai-tint);
-        color: var(--ai-accent);
-        border-radius: 6px;
-        font-family: var(--mono);
-        font-size: 0.8rem;
-        font-weight: 700;
-    }
-    .pb-output {
-        position: relative;
-        order: -1;
-        aspect-ratio: 16 / 9;
-        overflow: hidden;
-        border-radius: 8px;
-        background-color: var(--ai-tint);
-    }
-    .pb-text {
-        flex: 1;
-    }
-    .pb-figure {
-        display: flex;
-        justify-content: center;
-    }
-
-    /* =========================================================
-       C · 管线节点：圆角节点 + 圆形缩略图，节点之间一条紫色虚线串起来，最后流向结构图
-       ========================================================= */
-    .pc-flow {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1.4rem 2.5rem;
-    }
-    .pc-step {
-        position: relative;
-        padding-left: 2.2rem;
-    }
-    /* 每个节点左边一段竖向虚线，行间距内接上，同一列连成一条主干 */
-    .pc-step::before {
-        content: "";
-        position: absolute;
-        left: 0.9rem;
-        top: -0.7rem;
-        bottom: -0.7rem;
-        border-left: 4px dashed color-mix(in srgb, var(--ai-accent) 45%, transparent);
-    }
-    /* 每个节点和主干之间的一小段连线 */
-    .pc-link {
-        position: absolute;
-        left: 0.9rem;
-        top: 50%;
-        width: 1.3rem;
-        height: 4px;
-        margin-top: -2px;
-        background-color: color-mix(in srgb, var(--ai-accent) 45%, transparent);
-        transition: background-color 160ms ease;
-    }
-    .pc-link::before {
-        content: "";
-        position: absolute;
-        left: -0.55rem;
-        top: 50%;
-        width: 0.9rem;
-        height: 0.9rem;
-        margin-top: -0.45rem;
-        border-radius: 999px;
-        background-color: var(--ai-tint);
-        border: 4px solid color-mix(in srgb, var(--ai-accent) 45%, transparent);
-        transition: border-color 160ms ease, background-color 160ms ease;
-    }
-    .pc-step:hover .pc-link,
-    .pc-step:hover .pc-link::before {
-        background-color: var(--ai-accent);
-        border-color: var(--ai-accent);
-    }
-    .pc-node {
-        display: flex;
-        align-items: center;
-        height: 100%;
-        gap: 1.1rem;
-        padding: 0.8rem 1.4rem 0.8rem 0.8rem;
-        background-color: #FFFFFF;
-        border-radius: 999px;
-        transition: translate 220ms cubic-bezier(0.3, 1.4, 0.5, 1), background-color 160ms ease, color 160ms ease;
-    }
-    .pc-step:hover .pc-node {
-        translate: 8px 0;
-        background-color: var(--ai-accent);
-        color: #FFFFFF;
-    }
-    .pc-avatar {
-        position: relative;
-        flex: none;
-        display: block;
-        width: 5.5rem;
-        height: 5.5rem;
-        overflow: hidden;
-        border-radius: 999px;
-        background-color: var(--ai-tint);
-    }
-    .pc-text {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-        min-width: 0;
-    }
-    .pc-title {
-        font-weight: 900;
-        font-size: 1.15rem;
-        line-height: 1.2;
-    }
-    .pc-caption {
-        font-size: 0.88rem;
-        line-height: 1.5;
-    }
-    .pc-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0 0.8rem;
-        font-size: 0.8rem;
-        font-weight: 800;
-        color: var(--ai-accent);
-        transition: color 160ms ease;
-    }
-    .pc-step:hover .pc-tags {
-        color: var(--ai-tint);
-    }
-    .pc-figure {
-        display: flex;
-        justify-content: center;
-    }
-
-    /* 窄屏：结构图放到最上面，缩小 */
+    /* 窄屏：结构图放到最上面，缩小；卡片单列 */
     @media (max-width: 1023px) {
-        .pa,
-        .pb,
-        .pc {
+        .ai-layout {
             grid-template-columns: 1fr;
             gap: 2rem;
         }
-        .pa-figure,
-        .pb-figure,
-        .pc-figure {
+        .ai-figure {
             order: -1;
         }
-        .pa-figure :global(img),
-        .pb-figure :global(img),
-        .pc-figure :global(img) {
+        .ai-figure :global(img) {
             max-width: 12rem;
         }
     }
     @media (max-width: 767px) {
-        .pa-list,
-        .pb-cells,
-        .pc-flow { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 639px) {
-        .pc-node { border-radius: 24px; }
-        .pc-avatar { width: 4rem; height: 4rem; }
+        .ai-cards {
+            grid-template-columns: 1fr;
+        }
     }
     @media (prefers-reduced-motion: reduce) {
-        .pa-thumb :global(img),
-        .pb-cell,
-        .pc-node { transition: none; }
+        .ai-card,
+        .ai-img :global(img) { transition: none; }
     }
 </style>
