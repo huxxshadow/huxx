@@ -12,6 +12,8 @@ interface Props {
         cover?: ImageMetadata;
         colorText?: string;
         colorBackground?: string;
+        /** 没有封面时：开发中的项目显示「开发中」，否则只显示标题 */
+        inDevelopment?: boolean;
     };
     lang: Lang;
     sizes: string;
@@ -23,5 +25,5 @@ const { work, lang, sizes, class: className } = Astro.props;
 {work.cover ? (
         <Image src={work.cover} alt={work.title} widths={[480, 800, 1200, 1600, 2400, 3200]} sizes={sizes} class:list={["absolute inset-0 w-full h-full object-cover", className]} />
 ) : (
-        <DevCover title={work.title} lang={lang} colorText={work.colorText} colorBackground={work.colorBackground} />
+        <DevCover title={work.title} lang={lang} colorText={work.colorText} colorBackground={work.colorBackground} showStatus={work.inDevelopment ?? true} />
 )}

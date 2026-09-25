@@ -68,6 +68,36 @@ export const aiWorks: AiWork[] = [
         },
         tags: { en: "Oxford · Team Lead · Transfer Learning", zh: "牛津 · 组长 · 迁移学习", ja: "オックスフォード · リーダー · 転移学習", ko: "옥스퍼드 · 팀장 · 전이 학습" },
     },
+    {
+        projectId: "technical-project-variational-applications",
+        caption: {
+            en: "Applies variational methods to real data: a temporal VAE and a Transformer forecast dengue in Hong Kong, plus land-use reconstruction and photo restoration.",
+            zh: "把变分方法用在真实数据上：时序 VAE 与 Transformer 预测香港登革热，并尝试土地利用重建与老照片修复。",
+            ja: "変分法を実データに応用。時系列 VAE と Transformer で香港のデング熱を予測し、土地利用の再構成や古写真の修復も試した。",
+            ko: "변분 방법을 실제 데이터에 적용. 시계열 VAE와 Transformer로 홍콩 뎅기열을 예측하고, 토지 이용 복원과 옛 사진 복원도 시도했습니다.",
+        },
+        tags: { en: "Team Lead · VAE · Transformer", zh: "组长 · VAE · Transformer", ja: "リーダー · VAE · Transformer", ko: "팀장 · VAE · Transformer" },
+    },
+    {
+        projectId: "technical-project-comfyui-ai-eco-film",
+        caption: {
+            en: "A ComfyUI video workflow: storyboards, first-and-last-frame video synthesis, upscaling, frame interpolation and AI voice.",
+            zh: "搭建 ComfyUI 视频工作流：分镜生成、首尾帧视频合成、超分、插帧与 AI 配音。",
+            ja: "ComfyUI の映像ワークフロー。絵コンテ生成、始点・終点フレームからの動画合成、超解像、フレーム補間、AI 音声。",
+            ko: "ComfyUI 영상 워크플로. 콘티 생성, 첫·끝 프레임 영상 합성, 업스케일, 프레임 보간, AI 음성.",
+        },
+        tags: { en: "Team Lead · ComfyUI · WAN2.2", zh: "组长 · ComfyUI · WAN2.2", ja: "リーダー · ComfyUI · WAN2.2", ko: "팀장 · ComfyUI · WAN2.2" },
+    },
+    {
+        projectId: "technical-project-online-shoppers-intention",
+        caption: {
+            en: "End-to-end purchase-intent modelling: EDA, feature engineering, classification with threshold tuning, SHAP explanations and K-Means segments.",
+            zh: "端到端的购买意图建模：EDA、特征工程、分类与阈值优化，SHAP 可解释性分析与 K-Means 客户分群。",
+            ja: "購買意図のエンドツーエンドな分析。EDA、特徴量設計、分類としきい値の最適化、SHAP による解釈、K-Means による顧客セグメント。",
+            ko: "구매 의도를 끝까지 모델링. EDA, 특성 공학, 분류와 임계값 최적화, SHAP 해석, K-Means 고객 세분화.",
+        },
+        tags: { en: "Team Lead · Scikit-learn · SHAP", zh: "组长 · Scikit-learn · SHAP", ja: "リーダー · Scikit-learn · SHAP", ko: "팀장 · Scikit-learn · SHAP" },
+    },
 ];
 
 export const aiAppLabels = {
