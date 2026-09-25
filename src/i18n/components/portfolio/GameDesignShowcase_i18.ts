@@ -132,10 +132,10 @@ export const designWorks: DesignWork[] = [
         context: { en: "NetEase · experimental project", zh: "网易 · 实验课题", ja: "NetEase · 実験的プロジェクト", ko: "NetEase · 실험 과제" },
         role: solo,
         line: {
-            en: "Did the systems and gameplay design, building an AI-native game on a framework of system rules.",
-            zh: "进行系统设计和玩法设计，通过系统规则框架设计 AI 原生游戏。",
-            ja: "システム設計とゲームプレイ設計を担当し、システムのルールフレームワークによって AI ネイティブなゲームを設計しました。",
-            ko: "시스템 설계와 게임플레이 설계를 맡아, 시스템 규칙 프레임워크로 AI 네이티브 게임을 설계했습니다.",
+            en: "Led the systems and gameplay design of an AI-native game, building a rule-driven system for AI-native play that delivers a dynamic game experience.",
+            zh: "负责 AI 原生游戏的系统与玩法设计，构建面向 AI 原生玩法的规则驱动系统，实现动态游戏体验。",
+            ja: "AI ネイティブゲームのシステムとゲームプレイの設計を担当し、AI ネイティブな遊びに向けたルール駆動のシステムを構築して、動的なゲーム体験を実現しました。",
+            ko: "AI 네이티브 게임의 시스템과 게임플레이 설계를 맡아, AI 네이티브 플레이를 위한 규칙 기반 시스템을 구축하고 역동적인 게임 경험을 구현했습니다.",
         },
     },
     {
