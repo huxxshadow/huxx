@@ -50,8 +50,7 @@ const after = cells.slice(4);
                     <h3 class="ng-title">{w.title}</h3>
                     <p class="ng-caption" title={w.line}>{w.line}</p>
                     <ul class="ng-tags">
-                        {w.role.split(/\s*·\s*/).filter(Boolean).map((r) => <li>{r}</li>)}
-                        {w.stack.map((s) => <li>{s}</li>)}
+                        {w.tags.map((tag) => <li>{tag}</li>)}
                     </ul>
                 </div>
             </a>
