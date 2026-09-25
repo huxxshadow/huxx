@@ -215,7 +215,7 @@ export const designWorks: DesignWork[] = [
 ];
 
 export const gameDesignLabels = {
-    tierFeatured: { en: "Complete Game Projects", zh: "完整的游戏项目", ja: "完成したゲームプロジェクト", ko: "완성된 게임 프로젝트" } as Multilingual,
+    tierFeatured: { en: "Combat / Systems / Gameplay / Narrative Design", zh: "战斗/系统/玩法/叙事策划", ja: "戦闘／システム／ゲームプレイ／ナラティブ設計", ko: "전투/시스템/게임플레이/내러티브 기획" } as Multilingual,
     tierSelected: { en: "Selected", zh: "精选项目", ja: "注目作", ko: "주요 작품" } as Multilingual,
     tierSolo: { en: "Solo Projects", zh: "个人项目", ja: "個人プロジェクト", ko: "개인 프로젝트" } as Multilingual,
     projects: { en: "projects", zh: "个项目", ja: "件", ko: "개 프로젝트" } as Multilingual,
