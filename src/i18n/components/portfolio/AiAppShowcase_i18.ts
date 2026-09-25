@@ -95,6 +95,7 @@ export const aiWorks: AiWork[] = [
     },
     {
         projectId: "technical-project-online-shoppers-intention",
+        title: { en: "Shopper Data Analysis", zh: "购物者数据分析", ja: "購買者データ分析", ko: "구매자 데이터 분석" },
         caption: {
             en: "End-to-end purchase-intent modelling: EDA, feature engineering, classification with threshold tuning, SHAP explanations and K-Means segments.",
             zh: "端到端的购买意图建模：EDA、特征工程、分类与阈值优化，SHAP 可解释性分析与 K-Means 客户分群。",
