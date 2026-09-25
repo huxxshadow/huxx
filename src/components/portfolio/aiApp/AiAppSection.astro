@@ -84,8 +84,11 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
         <!-- 右：Transformer 结构图（Encoder 在上、Decoder 在下，透明底） -->
         <div class="ai-figure" data-reveal="fade" data-reveal-once>
             <span class="ai-figure-title">Transformer</span>
-            <div class="ai-figure-box">
+            <div class="ai-figure-box" data-fig-fx>
                 <Image src={transformer} alt="Transformer" widths={[320, 480, 900]} sizes={figSizes} />
+                <!-- 悬停：放大镜 + 一次「前向传播」光点 -->
+                <span class="ai-lens" aria-hidden="true"></span>
+                <span class="ai-pulse" aria-hidden="true"></span>
             </div>
         </div>
     </div>
@@ -163,6 +166,80 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
         });
     }
     document.addEventListener("astro:page-load", initAttention);
+
+    // 结构图交互（只在有鼠标的设备上）：
+    //  - 放大镜：鼠标下方的区域放大 2.5 倍，方便看清小字
+    //  - 前向传播：鼠标移进来时，一个光点沿 Encoder 中轴从下往上走，再沿 Decoder 中轴从下往上走（和图里箭头方向一致）
+    // 位置都按图在框里实际画出来的区域算（object-fit: contain 之后的那块）
+    const ZOOM = 2.5;
+    // 两段中轴在图里的位置（占图宽 / 图高的比例），由去背景后的图测得
+    const PATH = [
+        { x: 0.4856, y: 0.395 },
+        { x: 0.4856, y: 0.012 },
+        { x: 0.4775, y: 0.995 },
+        { x: 0.4775, y: 0.43 },
+    ];
+
+    function initFigureFx() {
+        const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        document.querySelectorAll<HTMLElement>("[data-fig-fx]").forEach((box) => {
+            if (box.dataset.fxReady || !canHover) return;
+            box.dataset.fxReady = "1";
+            const img = box.querySelector<HTMLImageElement>("img");
+            const lens = box.querySelector<HTMLElement>(".ai-lens");
+            const pulse = box.querySelector<HTMLElement>(".ai-pulse");
+            if (!img || !lens || !pulse) return;
+            // 放大镜用 srcset 里最大的那张，不然放大 2.5 倍会糊
+            const hiRes = (img.srcset.split(",").pop() || "").trim().split(" ")[0] || img.currentSrc || img.src;
+
+            // 图在框里实际占的矩形（相对框的左上角）
+            const drawn = () => {
+                const b = box.getBoundingClientRect();
+                const ratio = (img.naturalHeight || 5590) / (img.naturalWidth || 900);
+                const w = Math.min(b.width, b.height / ratio);
+                const h = w * ratio;
+                return { b, x: (b.width - w) / 2, y: (b.height - h) / 2, w, h };
+            };
+
+            box.addEventListener("pointermove", (e) => {
+                const d = drawn();
+                const px = e.clientX - d.b.left, py = e.clientY - d.b.top;
+                const inside = px >= d.x && px <= d.x + d.w && py >= d.y && py <= d.y + d.h;
+                box.classList.toggle("is-lens", inside);
+                if (!inside) return;
+                lens.style.backgroundImage = `url("${hiRes}")`;
+                lens.style.backgroundSize = `${d.w * ZOOM}px ${d.h * ZOOM}px`;
+                const r = lens.offsetWidth / 2;
+                lens.style.left = px - r + "px";
+                lens.style.top = py - r + "px";
+                lens.style.backgroundPosition = `${-(px - d.x) * ZOOM + r}px ${-(py - d.y) * ZOOM + r}px`;
+            });
+            box.addEventListener("pointerleave", () => box.classList.remove("is-lens"));
+
+            let running: Animation | null = null;
+            box.addEventListener("pointerenter", () => {
+                if (reduce || running) return;
+                const d = drawn();
+                const at = (p: { x: number; y: number }) => `translate(${d.x + p.x * d.w}px, ${d.y + p.y * d.h}px)`;
+                running = pulse.animate(
+                    [
+                        { transform: at(PATH[0]), opacity: 0, offset: 0 },
+                        { transform: at(PATH[0]), opacity: 1, offset: 0.04 },
+                        { transform: at(PATH[1]), opacity: 1, offset: 0.46 },
+                        { transform: at(PATH[1]), opacity: 0, offset: 0.5 },
+                        { transform: at(PATH[2]), opacity: 0, offset: 0.52 },
+                        { transform: at(PATH[2]), opacity: 1, offset: 0.56 },
+                        { transform: at(PATH[3]), opacity: 1, offset: 0.96 },
+                        { transform: at(PATH[3]), opacity: 0, offset: 1 },
+                    ],
+                    { duration: 2600, easing: "linear" },
+                );
+                running.onfinish = running.oncancel = () => { running = null; };
+            });
+        });
+    }
+    document.addEventListener("astro:page-load", initFigureFx);
 </script>
 
 <style>
@@ -316,9 +393,44 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
     /* 图框吃掉标题下面剩下的高度，图在框里等比缩放、居中 */
     .ai-figure-box {
         position: relative;
+        cursor: zoom-in;
         flex: 1;
         width: 100%;
         min-height: 0;
+    }
+    /* 放大镜：圆形镜片，背景是同一张图放大 2.5 倍 */
+    .ai-lens {
+        position: absolute;
+        z-index: 3;
+        width: 9rem;
+        height: 9rem;
+        border-radius: 999px;
+        border: 3px solid var(--ai-accent);
+        background-color: var(--ai-tint);
+        background-repeat: no-repeat;
+        box-shadow: 0 6px 0 var(--ai-accent);
+        pointer-events: none;
+        opacity: 0;
+        scale: 0.6;
+        transition: opacity 150ms ease, scale 200ms cubic-bezier(0.3, 1.4, 0.5, 1);
+    }
+    .ai-figure-box.is-lens .ai-lens {
+        opacity: 1;
+        scale: 1;
+    }
+    /* 前向传播的光点 */
+    .ai-pulse {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 2;
+        width: 1.1rem;
+        height: 1.1rem;
+        margin: -0.55rem 0 0 -0.55rem;
+        border-radius: 999px;
+        background: radial-gradient(circle, #FFFFFF 0 25%, var(--ai-accent) 45%, transparent 72%);
+        pointer-events: none;
+        opacity: 0;
     }
     .ai-figure-box :global(img) {
         position: absolute;
