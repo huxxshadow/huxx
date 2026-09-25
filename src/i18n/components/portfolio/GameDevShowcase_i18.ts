@@ -12,6 +12,8 @@ export interface DevWork {
     line: Multilingual;
     /** 九宫格卡片上的一句话；不写时：Part 2 也展示的项目沿用 Part 2 的说明，否则用 line */
     caption?: Multilingual;
+    /** 九宫格卡片上的标签，用「·」分隔；不写时同上（沿用 Part 2 或 role + stack） */
+    tags?: Multilingual;
     /** 亲手搭的系统 / 技术点 */
     systems: Multilingual[];
 }
@@ -102,6 +104,7 @@ export const devWorks: DevWork[] = [
     },
     {
         projectId: "game-project-eel-on-mask",
+        tags: { en: "Unity · GGJ 2026 · Team Lead · Lead Programmer · Technical Artist", zh: "Unity · GGJ 2026 · 队长 · 主程序 · 技术美术", ja: "Unity · GGJ 2026 · リーダー · リードプログラマー · テクニカルアーティスト", ko: "Unity · GGJ 2026 · 팀장 · 메인 프로그래머 · 테크니컬 아티스트" },
         caption: {
             en: "Built a tilemap grid system with custom physics rules and a level editor, plus a CRT post-process material.",
             zh: "实现自定义物理规则的 Tilemap 网格系统和关卡编辑器，以及 CRT 后处理材质。",
