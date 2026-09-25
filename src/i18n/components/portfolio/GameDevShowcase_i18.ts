@@ -169,6 +169,12 @@ export const devWorks: DevWork[] = [
     },
     {
         projectId: "game-project-speed-pixel",
+        caption: {
+            en: "Built the roguelike framework and movement system, handled complex UGUI logic, and wrote a global pixelation shader.",
+            zh: "搭建 Roguelike 框架和运动系统，处理复杂 UGUI 逻辑，实现全局像素化 Shader。",
+            ja: "ローグライクのフレームワークと移動システムを構築し、複雑な UGUI ロジックを処理、全画面のピクセル化シェーダーを実装しました。",
+            ko: "로그라이크 프레임워크와 이동 시스템을 구축하고, 복잡한 UGUI 로직을 처리하며, 전역 픽셀화 셰이더를 구현했습니다.",
+        },
         tags: { en: "Unity · Solo Developer · Technical Artist", zh: "Unity · 独立开发 · 技术美术", ja: "Unity · 個人開発 · テクニカルアーティスト", ko: "Unity · 1인 개발 · 테크니컬 아티스트" },
         context: { en: "3-month solo project", zh: "3 个月个人项目", ja: "3 か月の個人プロジェクト", ko: "3개월 개인 프로젝트" },
         role: solo,
