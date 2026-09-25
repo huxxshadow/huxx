@@ -1,5 +1,5 @@
 ---
-// Part 4 · AI 应用开发：AI 项目 + 右侧 Transformer 结构图（透明底，不吸附）。
+// Part 4 · AI 应用开发：左边两列 AI 项目，最右边一条竖列放 Transformer 结构图（Encoder 在上、Decoder 在下，透明底，不吸附）。
 // 三个候选版式，本地 dev 下用 Debug 面板切换；默认 / 生产显示 A：
 //   A 论文：结构图作为 Figure 1，项目像论文里的条目（缩略图 + 粗标题 + 正文 + 关键词）
 //   B 笔记本：每个项目是一个 notebook 单元格（提示行、等宽名字、说明、输出区放封面）
@@ -13,7 +13,7 @@ import { useTranslations, type Lang } from "@/i18n";
 import { PORTFOLIO_ROLES } from "@/i18n/components/portfolio/PortfolioRoles_i18";
 import { aiWorks, aiAppLabels as L } from "@/i18n/components/portfolio/AiAppShowcase_i18";
 import WorkCover from "@/components/portfolio/gameDesign/WorkCover.astro";
-import transformer from "@/assets/portfolio/ai/transformer.webp";
+import transformer from "@/assets/portfolio/ai/transformer-stack.webp";
 
 const lang = (Astro.currentLocale as Lang) || "en";
 const t = useTranslations(lang);
@@ -41,7 +41,7 @@ const works = aiWorks.flatMap((w) => {
 const ink = COLORS.black;
 const accent = COLORS.purple.dark;
 const tint = COLORS.purple.light;
-const figSizes = "(min-width: 1024px) 30vw, 70vw";
+const figSizes = "(min-width: 1024px) 16rem, 40vw";
 ---
 
 <section
@@ -68,7 +68,7 @@ const figSizes = "(min-width: 1024px) 30vw, 70vw";
                     {works.map((w) => (
                             <li>
                                 <a href={href(w.id)} class="pa-item">
-                                    <div class="pa-thumb"><WorkCover work={w} lang={lang} sizes="(min-width: 1024px) 14vw, 30vw" /></div>
+                                    <div class="pa-thumb"><WorkCover work={w} lang={lang} sizes="(min-width: 1024px) 30vw, 45vw" /></div>
                                     <div class="pa-text">
                                         <h3 class="pa-title">{w.title}</h3>
                                         <p class="pa-caption">{w.caption}</p>
@@ -79,7 +79,7 @@ const figSizes = "(min-width: 1024px) 30vw, 70vw";
                     ))}
                 </ol>
                 <figure class="pa-figure" data-reveal="fade" data-reveal-once>
-                    <Image src={transformer} alt="Transformer" widths={[480, 800, 1200]} sizes={figSizes} />
+                    <Image src={transformer} alt="Transformer" widths={[320, 480, 900]} sizes={figSizes} />
                     <figcaption><b>Figure 1.</b> Transformer</figcaption>
                 </figure>
             </div>
@@ -101,13 +101,13 @@ const figSizes = "(min-width: 1024px) 30vw, 70vw";
                                         <p class="pb-caption">{w.caption}</p>
                                         <ul class="pb-tags">{w.tags.map((tag) => <li>{tag}</li>)}</ul>
                                     </div>
-                                    <div class="pb-output"><WorkCover work={w} lang={lang} sizes="(min-width: 1024px) 16vw, 40vw" /></div>
+                                    <div class="pb-output"><WorkCover work={w} lang={lang} sizes="(min-width: 1024px) 30vw, 45vw" /></div>
                                 </div>
                             </a>
                     ))}
                 </div>
                 <div class="pb-figure" data-reveal="fade" data-reveal-once>
-                    <Image src={transformer} alt="" widths={[480, 800, 1200]} sizes={figSizes} />
+                    <Image src={transformer} alt="" widths={[320, 480, 900]} sizes={figSizes} />
                 </div>
             </div>
         </div>
@@ -131,7 +131,7 @@ const figSizes = "(min-width: 1024px) 30vw, 70vw";
                     ))}
                 </ol>
                 <div class="pc-figure" data-reveal="fade" data-reveal-once>
-                    <Image src={transformer} alt="" widths={[480, 800, 1200]} sizes={figSizes} />
+                    <Image src={transformer} alt="" widths={[320, 480, 900]} sizes={figSizes} />
                 </div>
             </div>
         </div>
@@ -150,28 +150,29 @@ const figSizes = "(min-width: 1024px) 30vw, 70vw";
     /* =========================================================
        A · 论文：两栏，左边条目，右边 Figure 1
        ========================================================= */
-    .pa {
+    .pa,
+    .pb,
+    .pc {
         display: grid;
-        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 1fr) 16rem;
         gap: 3.5rem;
         align-items: start;
     }
     .pa-list {
-        display: flex;
-        flex-direction: column;
-        border-top: 3px solid var(--ai-accent);
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 2rem 2.5rem;
     }
     .pa-item {
-        display: grid;
-        grid-template-columns: 11rem minmax(0, 1fr);
-        gap: 1.4rem;
-        align-items: start;
-        padding: 1.2rem 0;
-        border-bottom: 2px solid color-mix(in srgb, var(--ai-accent) 30%, transparent);
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+        padding-top: 1rem;
+        border-top: 3px solid var(--ai-accent);
     }
     .pa-thumb {
         position: relative;
-        aspect-ratio: 4 / 3;
+        aspect-ratio: 16 / 9;
         overflow: hidden;
         background-color: #FFFFFF;
         border-radius: 6px;
@@ -219,9 +220,10 @@ const figSizes = "(min-width: 1024px) 30vw, 70vw";
         align-items: center;
         gap: 0.8rem;
     }
-    .pa-figure :global(img) {
+    .pa-figure :global(img),
+    .pb-figure :global(img),
+    .pc-figure :global(img) {
         width: 100%;
-        max-width: 30rem;
         height: auto;
     }
     .pa-figure figcaption {
@@ -232,16 +234,10 @@ const figSizes = "(min-width: 1024px) 30vw, 70vw";
     /* =========================================================
        B · 笔记本单元格：白底单元格，左侧一根紫色条，顶部提示行，右侧输出区放封面
        ========================================================= */
-    .pb {
-        display: grid;
-        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-        gap: 3.5rem;
-        align-items: start;
-    }
     .pb-cells {
-        display: flex;
-        flex-direction: column;
-        gap: 1.1rem;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.3rem;
     }
     .pb-cell {
         display: flex;
@@ -281,10 +277,14 @@ const figSizes = "(min-width: 1024px) 30vw, 70vw";
         color: #FFFFFF;
     }
     .pb-main {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) 12rem;
-        gap: 1.2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+        flex: 1;
         padding: 0.9rem 1rem 1rem;
+    }
+    .pb-cell {
+        height: 100%;
     }
     .pb-text {
         display: flex;
@@ -318,54 +318,45 @@ const figSizes = "(min-width: 1024px) 30vw, 70vw";
     }
     .pb-output {
         position: relative;
-        align-self: start;
-        aspect-ratio: 16 / 10;
+        order: -1;
+        aspect-ratio: 16 / 9;
         overflow: hidden;
         border-radius: 8px;
         background-color: var(--ai-tint);
+    }
+    .pb-text {
+        flex: 1;
     }
     .pb-figure {
         display: flex;
         justify-content: center;
     }
-    .pb-figure :global(img) {
-        width: 100%;
-        max-width: 30rem;
-        height: auto;
-    }
 
     /* =========================================================
        C · 管线节点：圆角节点 + 圆形缩略图，节点之间一条紫色虚线串起来，最后流向结构图
        ========================================================= */
-    .pc {
-        display: grid;
-        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-        gap: 4rem;
-        align-items: center;
-    }
     .pc-flow {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        gap: 1.4rem;
-        padding-left: 2.2rem;
-    }
-    /* 竖向的虚线主干 */
-    .pc-flow::before {
-        content: "";
-        position: absolute;
-        left: 0.9rem;
-        top: 2rem;
-        bottom: 2rem;
-        border-left: 4px dashed color-mix(in srgb, var(--ai-accent) 45%, transparent);
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.4rem 2.5rem;
     }
     .pc-step {
         position: relative;
+        padding-left: 2.2rem;
+    }
+    /* 每个节点左边一段竖向虚线，行间距内接上，同一列连成一条主干 */
+    .pc-step::before {
+        content: "";
+        position: absolute;
+        left: 0.9rem;
+        top: -0.7rem;
+        bottom: -0.7rem;
+        border-left: 4px dashed color-mix(in srgb, var(--ai-accent) 45%, transparent);
     }
     /* 每个节点和主干之间的一小段连线 */
     .pc-link {
         position: absolute;
-        left: -1.3rem;
+        left: 0.9rem;
         top: 50%;
         width: 1.3rem;
         height: 4px;
@@ -394,6 +385,7 @@ const figSizes = "(min-width: 1024px) 30vw, 70vw";
     .pc-node {
         display: flex;
         align-items: center;
+        height: 100%;
         gap: 1.1rem;
         padding: 0.8rem 1.4rem 0.8rem 0.8rem;
         background-color: #FFFFFF;
@@ -446,11 +438,6 @@ const figSizes = "(min-width: 1024px) 30vw, 70vw";
         display: flex;
         justify-content: center;
     }
-    .pc-figure :global(img) {
-        width: 100%;
-        max-width: 30rem;
-        height: auto;
-    }
 
     /* 窄屏：结构图放到最上面，缩小 */
     @media (max-width: 1023px) {
@@ -468,12 +455,15 @@ const figSizes = "(min-width: 1024px) 30vw, 70vw";
         .pa-figure :global(img),
         .pb-figure :global(img),
         .pc-figure :global(img) {
-            max-width: 18rem;
+            max-width: 12rem;
         }
     }
+    @media (max-width: 767px) {
+        .pa-list,
+        .pb-cells,
+        .pc-flow { grid-template-columns: 1fr; }
+    }
     @media (max-width: 639px) {
-        .pa-item { grid-template-columns: 7rem minmax(0, 1fr); gap: 1rem; }
-        .pb-main { grid-template-columns: 1fr; }
         .pc-node { border-radius: 24px; }
         .pc-avatar { width: 4rem; height: 4rem; }
     }
