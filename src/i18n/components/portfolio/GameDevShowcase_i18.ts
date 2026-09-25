@@ -53,6 +53,12 @@ export const devWorks: DevWork[] = [
     },
     {
         projectId: "game-project-empty-throne",
+        caption: {
+            en: "Built modular rhythm-game and dialogue systems, and a pipeline that turns scripts into in-game content.",
+            zh: "搭建模块化的音游系统与对话系统，并打通从剧本到游戏内容的生成管线。",
+            ja: "モジュール式のリズムゲームシステムと会話システムを構築し、脚本からゲーム内コンテンツを生成するパイプラインを整えました。",
+            ko: "모듈형 리듬 게임 시스템과 대화 시스템을 구축하고, 대본에서 게임 콘텐츠를 생성하는 파이프라인을 만들었습니다.",
+        },
         context: { en: "Steam · team of 5", zh: "Steam · 5 人团队", ja: "Steam · 5 人チーム", ko: "Steam · 5인 팀" },
         role: { en: "Lead Programmer", zh: "主程序", ja: "リードプログラマー", ko: "메인 프로그래머" },
         stack: ["Unity", "C#", "Editor Tools"],
