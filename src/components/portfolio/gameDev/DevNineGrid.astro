@@ -1,13 +1,14 @@
 ---
 // Part 3 · 九宫格：中间是吉祥物，外圈 8 格是项目。悬停 / 聚焦某一格就「选中」它，吉祥物换成指向这一格的姿势；
-// 没有选中时指向上方。姿势图在 src/assets/portfolio/mascot/，按方向命名（up-left / up / up-right / left / right /
-// down-left / down / down-right）。
+// 没有选中时指向上方。八个姿势拼在一张横向精灵图里（src/assets/portfolio/mascot/sprite.webp，顺序同 DIRS），
+// 切换时只移动背景位置：同一张已解码的图，不会出现空白帧。
 // 卡片有三套扁平风格（同一份结构，只换 CSS），dev 下用 Debug 面板切换，写在 .ng 的 data-variant-current 上：
 //   A 色块：纸色卡 + 蓝色竖条，选中时整卡变蓝
 //   B 构成主义：图角蓝色三角 + 斜压黑条，选中时三角放大、黑条摆平变蓝
-//   C 瑞士极简：无底，只有图、粗黑线、标题和两栏小表格，选中时线和标题变蓝
-// 切换姿势：八张图身体完全重合，只有手臂不同，所以在一次轻微的「压缩—弹起」里瞬间换图（配 80ms 淡入淡出），看不出跳变
-import { Image } from "astro:assets";
+//   C 瑞士极简：图下一根粗线、标题和两栏小表格，选中时线和标题变蓝
+// 三套共用：圆角矩形 + 深蓝描边
+// 切换姿势：八张图身体完全重合，只有手臂不同，所以在一次 Q 弹的「压扁—弹起—回弹」里瞬间换图，不做淡入淡出
+import sprite from "@/assets/portfolio/mascot/sprite.webp";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { useTranslations, type Lang } from "@/i18n";
 import type { GameDevShowcase } from "./data";
@@ -24,10 +25,9 @@ const href = (id: string) => getRelativeLocaleUrl(lang, `projects/${id}`);
 
 // 外圈 8 格按 DOM 顺序对应的方向（中间一格插在第 4 个后面）
 const DIRS = ["up-left", "up", "up-right", "left", "right", "down-left", "down", "down-right"] as const;
-const poseFiles = import.meta.glob<{ default: ImageMetadata }>("/src/assets/portfolio/mascot/*.{png,webp,jpg}", { eager: true });
-const pose = (name: string) => Object.entries(poseFiles).find(([p]) => p.split("/").pop()!.replace(/\.\w+$/, "") === name)?.[1].default;
 const DEFAULT_POSE = "up";
-const poses = DIRS.map((dir) => ({ dir, img: pose(dir) })).filter((p) => p.img) as { dir: string; img: ImageMetadata }[];
+// 精灵图单帧尺寸（729 × 900）
+const FRAME_RATIO = `${sprite.width / DIRS.length} / ${sprite.height}`;
 
 const works = showcase.works.slice(0, 8);
 const cells = works.map((w, i) => ({ w, dir: DIRS[i] }));
@@ -40,9 +40,7 @@ const after = cells.slice(4);
             <!-- 中间：只有角色，透明底，无边框无文字 -->
             <div class="ng-center" aria-hidden="true">
                 <div class="ng-mascot">
-                    {poses.map((p) => (
-                            <Image src={p.img} alt="" widths={[360, 600, 900]} sizes="(min-width: 1024px) 28vw, 60vw" loading="eager" data-pose={p.dir} class={p.dir === DEFAULT_POSE ? "is-active" : undefined} />
-                    ))}
+                    <div class="ng-sprite" data-sprite style={`background-image: url(${sprite.src}); aspect-ratio: ${FRAME_RATIO}; --frame: ${DIRS.indexOf(DEFAULT_POSE)};`}></div>
                 </div>
             </div>
     ) : group.map(({ w, dir }) => (
@@ -84,32 +82,37 @@ const after = cells.slice(4);
             if (root.dataset.ngReady) return;
             root.dataset.ngReady = "1";
             const cells = [...root.querySelectorAll<HTMLElement>(".ng-cell")];
-            const imgs = [...root.querySelectorAll<HTMLElement>("[data-pose]")];
+            const DIRS = ["up-left", "up", "up-right", "left", "right", "down-left", "down", "down-right"];
+            const spriteEl = root.querySelector<HTMLElement>("[data-sprite]");
             const mascot = root.querySelector<HTMLElement>(".ng-mascot");
-            let current = imgs.find((i) => i.classList.contains("is-active"));
+            let current = "up";
             let swapTimer = 0;
-            const swapTo = (target: HTMLElement | undefined) => {
-                if (!target || target === current) return;
-                current = target;
+            const swapTo = (dir: string) => {
+                if (!spriteEl || dir === current) return;
+                current = dir;
                 window.clearTimeout(swapTimer);
-                const apply = () => imgs.forEach((i) => i.classList.toggle("is-active", i === target));
+                const apply = () => spriteEl.style.setProperty("--frame", String(Math.max(0, DIRS.indexOf(dir))));
                 if (!mascot || reduceMotion()) return apply();
                 mascot.animate(
                     [
                         { transform: "translateY(0) scale(1, 1)" },
-                        { transform: "translateY(2px) scale(1.03, 0.97)", offset: 0.28 },
-                        { transform: "translateY(-6px) scale(0.985, 1.02)", offset: 0.62 },
+                        { transform: "translateY(3px) scale(1.09, 0.9)", offset: 0.18 },
+                        { transform: "translateY(-16px) scale(0.93, 1.09)", offset: 0.42 },
+                        { transform: "translateY(0) scale(1.05, 0.95)", offset: 0.62 },
+                        { transform: "translateY(-4px) scale(0.98, 1.025)", offset: 0.78 },
+                        { transform: "translateY(0) scale(1.01, 0.99)", offset: 0.9 },
                         { transform: "translateY(0) scale(1, 1)" },
                     ],
-                    { duration: 320, easing: "ease-out" },
+                    { duration: 560, easing: "cubic-bezier(0.3, 0, 0.3, 1)" },
                 );
-                swapTimer = window.setTimeout(apply, 80);
+                // 在压到最扁的那一帧换图
+                swapTimer = window.setTimeout(apply, 95);
             };
             const select = (cell: HTMLElement | null) => {
                 cells.forEach((c) => c.classList.toggle("is-selected", c === cell));
                 root.classList.toggle("has-selection", !!cell);
                 const dir = cell?.dataset.dir ?? "up";
-                swapTo(imgs.find((i) => i.dataset.pose === dir) ?? imgs.find((i) => i.dataset.pose === "up"));
+                swapTo(dir);
             };
             cells.forEach((cell) => {
                 cell.addEventListener("mouseenter", () => select(cell));
@@ -136,17 +139,23 @@ const after = cells.slice(4);
        共用骨架：各样式只改外观。三套都是纯平面：只用墨色、蓝、纸色，不用渐变、阴影、发光
        ========================================================= */
     .ng-cell {
+        --dv-deep: color-mix(in srgb, var(--dv-accent) 55%, #000);
         position: relative;
         display: flex;
         flex-direction: column;
         min-width: 0;
         isolation: isolate;
+        overflow: hidden;
+        background-color: var(--dv-paper);
+        border: 3px solid var(--dv-deep);
+        border-radius: 14px;
     }
     .ng-img {
         position: relative;
         aspect-ratio: 16 / 9;
         overflow: hidden;
         background-color: var(--dv-ink);
+        border-bottom: 3px solid var(--dv-deep);
     }
     .ng-img :global(img) {
         transition: scale 400ms ease;
@@ -281,7 +290,7 @@ const after = cells.slice(4);
         display: flex;
         flex-wrap: wrap;
         gap: 0 0.9rem;
-        margin: -0.85rem 0 0.2rem -0.3rem;
+        margin: -0.85rem 0 0.2rem 0;
         padding: 0.3rem 0.8rem;
         background-color: var(--dv-ink);
         color: var(--dv-paper);
@@ -327,11 +336,17 @@ const after = cells.slice(4);
        C · 瑞士极简：没有卡片底，只有图、一根粗黑线、标题和两栏小表格；
        选中时粗线变蓝、标题变蓝、右侧出现箭头
        ========================================================= */
+    .ng[data-variant-current="C"] .ng-img {
+        border-bottom-width: 6px;
+        transition: border-color 180ms ease;
+    }
+    .ng[data-variant-current="C"] .ng-cell.is-selected .ng-img {
+        border-bottom-color: var(--dv-accent);
+    }
     .ng[data-variant-current="C"] .ng-body {
         gap: 0.5rem;
-        margin-top: 0.7rem;
-        padding-top: 0.6rem;
-        border-top: 6px solid var(--dv-ink);
+        padding: 0.7rem 1rem 0.9rem;
+        border-top: 0 solid transparent;
         transition: border-color 180ms ease;
     }
     .ng[data-variant-current="C"] .ng-title {
@@ -399,22 +414,20 @@ const after = cells.slice(4);
         pointer-events: none;
         transform-origin: 50% 100%;
     }
-    .ng-mascot :global(img) {
+    /* 精灵图：单帧按比例居中，横向 8 帧，用背景位置切帧 */
+    .ng-sprite {
         position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        opacity: 0;
-        transition: opacity 80ms linear;
-    }
-    /* 姿势之间：短暂的淡入淡出，配合上面的弹跳 */
-    .ng-mascot :global(img.is-active) {
-        opacity: 1;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        max-width: 100%;
+        translate: -50% 0;
+        background-repeat: no-repeat;
+        background-size: 800% 100%;
+        background-position: calc(var(--frame) * 100% / 7) 0;
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .ng-mascot :global(img),
         .ng-cell,
         .ng-img::before,
         .ng-facts { transition: none !important; }
