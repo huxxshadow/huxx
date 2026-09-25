@@ -70,7 +70,7 @@ export const aiWorks: AiWork[] = [
             ja: "オックスフォード機械学習サマープログラムで最高得点。転移学習による犬種の画像認識。",
             ko: "옥스퍼드 머신러닝 여름 프로그램 최고점. 전이 학습 기반 견종 이미지 인식.",
         },
-        tags: { en: "Leader · Oxford · Transfer Learning", zh: "组长 · 牛津 · 迁移学习", ja: "リーダー · オックスフォード · 転移学習", ko: "팀장 · 옥스퍼드 · 전이 학습" },
+        tags: { en: "Oxford · Transfer Learning", zh: "牛津 · 迁移学习", ja: "オックスフォード · 転移学習", ko: "옥스퍼드 · 전이 학습" },
     },
     {
         projectId: "technical-project-variational-applications",
