@@ -246,10 +246,14 @@ const after = cells.slice(4);
         height: 100%;
         object-fit: contain;
         opacity: 0;
+        transition: opacity 260ms ease;
     }
-    /* 像换精灵一样直接切，不做淡入淡出（淡入时两张图会叠出重影） */
+    /* 姿势之间淡入淡出 */
     .ng-mascot :global(img.is-active) {
         opacity: 1;
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .ng-mascot :global(img) { transition: none; }
     }
 
     /* 窄屏：吉祥物占一整行放在最上，项目两列 */
