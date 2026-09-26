@@ -230,6 +230,48 @@ const vars = [
         opacity: 1;
     }
 
+    /* 宣传片下面的角色头像一排：像素头像放在物品框里，名字用名字条 */
+    .skin-et .project-prose .et-cast {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: clamp(0.75rem, 2vw, 1.75rem);
+        margin: 2rem 0 0.5rem;
+    }
+    .skin-et .project-prose .et-cast figure {
+        margin: 0;
+        gap: 0.6rem;
+    }
+    .skin-et .project-prose .et-cast img {
+        width: 100%;
+        aspect-ratio: 1;
+        height: auto;
+        margin: 0 !important;
+        image-rendering: pixelated;
+        object-fit: contain;
+        background: radial-gradient(circle at 50% 60%, color-mix(in srgb, var(--et-wine) 70%, transparent) 0%, var(--et-deep) 75%);
+        transition: transform 160ms ease;
+    }
+    .skin-et .project-prose .et-cast figure:hover img { transform: translateY(-4px); }
+    .skin-et .project-prose .et-cast figcaption {
+        border-width: 10px;
+        border-style: solid;
+        border-color: transparent;
+        border-image: var(--et-namebar) 12 fill / 10px / 0 stretch;
+        image-rendering: pixelated;
+        padding: 0 0.5rem;
+        color: var(--et-cream);
+        font-weight: 800;
+        font-size: 0.9rem;
+        opacity: 1;
+        white-space: nowrap;
+    }
+    @media (max-width: 767px) {
+        .skin-et .project-prose .et-cast { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (max-width: 419px) {
+        .skin-et .project-prose .et-cast { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
     /* 分隔线：一排魔镜 */
     .skin-et .project-prose hr {
         height: 32px;
