@@ -30,6 +30,13 @@ import framePurple from "@/assets/projects/game-project-speed-pixel/skin/frame-p
 import frameSheet from "@/assets/projects/game-project-speed-pixel/skin/frame-sheet.png";
 import frameCard from "@/assets/projects/game-project-speed-pixel/skin/frame-card.png";
 import framePill from "@/assets/projects/game-project-speed-pixel/skin/frame-pill.png";
+import bgTile from "@/assets/projects/game-project-speed-pixel/skin/bg-tile.png";
+import bgSideL from "@/assets/projects/game-project-speed-pixel/skin/bg-side-l.png";
+import bgSideR from "@/assets/projects/game-project-speed-pixel/skin/bg-side-r.png";
+// 中日韩像素字体：Fusion Pixel 12px（OFL），只在这一页按语言加载
+import pixelSC from "@fontsource/fusion-pixel-12px-proportional-sc/files/fusion-pixel-12px-proportional-sc-latin-400-normal.woff2?url";
+import pixelJP from "@fontsource/fusion-pixel-12px-proportional-jp/files/fusion-pixel-12px-proportional-jp-latin-400-normal.woff2?url";
+import pixelKR from "@fontsource/fusion-pixel-12px-proportional-kr/files/fusion-pixel-12px-proportional-kr-latin-400-normal.woff2?url";
 
 const vars = [
     `--sp-logo: url("${logo.src}")`,
@@ -47,8 +54,16 @@ const vars = [
     `--sp-frame-sheet: url("${frameSheet.src}")`,
     `--sp-frame-card: url("${frameCard.src}")`,
     `--sp-frame-pill: url("${framePill.src}")`,
+    `--sp-bg-tile: url("${bgTile.src}")`,
+    `--sp-bg-side-l: url("${bgSideL.src}")`,
+    `--sp-bg-side-r: url("${bgSideR.src}")`,
 ].join("; ");
-const fontFace = `@font-face { font-family: "Awesome 9"; src: url("${font}") format("truetype"); font-display: swap; }`;
+const fontFace = [
+    `@font-face { font-family: "Awesome 9"; src: url("${font}") format("truetype"); font-display: swap; }`,
+    `@font-face { font-family: "SP Pixel SC"; src: url("${pixelSC}") format("woff2"); font-display: swap; }`,
+    `@font-face { font-family: "SP Pixel JP"; src: url("${pixelJP}") format("woff2"); font-display: swap; }`,
+    `@font-face { font-family: "SP Pixel KR"; src: url("${pixelKR}") format("woff2"); font-display: swap; }`,
+].join(" ");
 ---
 
 {stickers ? (
@@ -162,14 +177,32 @@ const fontFace = `@font-face { font-family: "Awesome 9"; src: url("${font}") for
         --sp-ink: #22407E;
         --sp-coin: #F2A93B;
         --sp-lav: #EEE3F5;
-        --sp-pixel: "Awesome 9", var(--theme-font-active), monospace;
+        --sp-pixel-cjk: "SP Pixel SC";
+        --sp-pixel: "Awesome 9", var(--sp-pixel-cjk), var(--theme-font-active), monospace;
     }
+    html[lang="ja"]:has(.skin-sp) { --sp-pixel-cjk: "SP Pixel JP"; }
+    html[lang="ko"]:has(.skin-sp) { --sp-pixel-cjk: "SP Pixel KR"; }
+    /* 中文等正文也用像素字（英文正文保持原字体，Awesome 9 只有大写适合做标题） */
+    html:is([lang="zh"], [lang="ja"], [lang="ko"]) .skin-sp .project-prose :is(p, li, figcaption) {
+        font-family: var(--sp-pixel-cjk), var(--theme-font-active), sans-serif;
+    }
+    /* 背景：两侧大号游戏图标 + 满铺小图标 + 像素格。图都是 nearest 放大的整像素 */
     html:has(.skin-sp) body {
         background-color: var(--sp-lav);
         background-image:
+                var(--sp-bg-side-l),
+                var(--sp-bg-side-r),
+                var(--sp-bg-tile),
                 linear-gradient(rgb(104 152 240 / 0.08) 2px, transparent 2px),
                 linear-gradient(90deg, rgb(104 152 240 / 0.08) 2px, transparent 2px);
-        background-size: 24px 24px;
+        background-size: 160px 800px, 160px 800px, 600px 600px, 24px 24px, 24px 24px;
+        background-position: left 0 top 0, right 0 top 400px, 0 0, 0 0, 0 0;
+        background-repeat: repeat-y, repeat-y, repeat, repeat, repeat;
+    }
+    @media (max-width: 1279px) {
+        html:has(.skin-sp) body {
+            background-position: left -60px top 0, right -60px top 400px, 0 0, 0 0, 0 0;
+        }
     }
 
     /* 通用：像素框。9-slice 图 48×48，切 16（4 个逻辑像素），显示成 12px，一个逻辑像素 = 3px */
@@ -191,9 +224,11 @@ const fontFace = `@font-face { font-family: "Awesome 9"; src: url("${font}") for
         position: relative;
         background-color: var(--sp-teal) !important;
         background-image:
+                var(--sp-bg-tile),
                 linear-gradient(rgb(255 255 255 / 0.18) 3px, transparent 3px),
                 linear-gradient(90deg, rgb(255 255 255 / 0.18) 3px, transparent 3px);
-        background-size: 30px 30px;
+        background-size: 600px 600px, 30px 30px, 30px 30px;
+        background-position: 300px 120px, 0 0, 0 0;
         color: var(--sp-ink) !important;
         border-bottom: 0 !important;
         --theme-text: var(--sp-ink);
