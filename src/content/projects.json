@@ -1150,8 +1150,9 @@
         "icon": "fa-brands fa-google-drive"
       }
     ],
-    "colorText": "red",
-    "colorBackground": "red"
+    "colorText": "#22407E",
+    "colorBackground": "#B0D8E0",
+    "skin": "sp"
   },
   {
     "id": "game-project-empty-throne",

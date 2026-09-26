@@ -1,0 +1,472 @@
+---
+// Speed Pixel 项目页专属皮肤（projects.json 里 skin: "sp" 时由 [id].astro 挂载）
+//
+// 视觉照着游戏本身走：浅青的主画面、蓝 / 绿 / 紫的圆角像素页签、白色图标、Awesome 9 像素字体。
+// 圆角面板是自己按游戏 UI 画的 9-slice 像素框（frame-*.png，阶梯切角 + 2 格描边），用 border-image 套在各处。
+// 游戏里的全屏像素化 Shader（Pixelation.shader：把屏幕 UV 按 _PixelSize 取整、floor(uv * scale) / scale）
+// 在网页上的对应：页面里的截图先按「像素尺寸」降采样画到 canvas 上，用 image-rendering: pixelated 放大盖在原图上；
+// 鼠标移上去 canvas 淡出，露出清晰原图（对应 Shader 里用 Stencil 排除、不被像素化的物体）。
+// hero 里的 Pixel Size 滑块和 Shader 的 _PixelSize 一样，实时改整页截图的像素大小。
+// - 所有规则都限定在 .skin-sp / html:has(.skin-sp) 下（样式表是整条路由共用的）。
+interface Props {
+    /** true 时只输出 hero 里的装饰层（样式由页面顶部那次挂载负责） */
+    stickers?: boolean;
+}
+const { stickers = false } = Astro.props;
+
+import font from "@/assets/projects/game-project-speed-pixel/skin/awesome9.ttf?url";
+import logo from "@/assets/projects/game-project-speed-pixel/skin/logo.png";
+import iconCharacter from "@/assets/projects/game-project-speed-pixel/skin/character.png";
+import iconTree from "@/assets/projects/game-project-speed-pixel/skin/tree.png";
+import iconPlay from "@/assets/projects/game-project-speed-pixel/skin/play.png";
+import iconThunder from "@/assets/projects/game-project-speed-pixel/skin/thunder.png";
+import iconStar from "@/assets/projects/game-project-speed-pixel/skin/star.png";
+import iconPlane from "@/assets/projects/game-project-speed-pixel/skin/plane.png";
+import iconTower from "@/assets/projects/game-project-speed-pixel/skin/tower.png";
+import iconExit from "@/assets/projects/game-project-speed-pixel/skin/exit.png";
+import frameBlue from "@/assets/projects/game-project-speed-pixel/skin/frame-blue.png";
+import frameGreen from "@/assets/projects/game-project-speed-pixel/skin/frame-green.png";
+import framePurple from "@/assets/projects/game-project-speed-pixel/skin/frame-purple.png";
+import frameSheet from "@/assets/projects/game-project-speed-pixel/skin/frame-sheet.png";
+import frameCard from "@/assets/projects/game-project-speed-pixel/skin/frame-card.png";
+import framePill from "@/assets/projects/game-project-speed-pixel/skin/frame-pill.png";
+
+const vars = [
+    `--sp-logo: url("${logo.src}")`,
+    `--sp-ico-character: url("${iconCharacter.src}")`,
+    `--sp-ico-tree: url("${iconTree.src}")`,
+    `--sp-ico-play: url("${iconPlay.src}")`,
+    `--sp-ico-thunder: url("${iconThunder.src}")`,
+    `--sp-ico-star: url("${iconStar.src}")`,
+    `--sp-ico-plane: url("${iconPlane.src}")`,
+    `--sp-ico-tower: url("${iconTower.src}")`,
+    `--sp-ico-exit: url("${iconExit.src}")`,
+    `--sp-frame-blue: url("${frameBlue.src}")`,
+    `--sp-frame-green: url("${frameGreen.src}")`,
+    `--sp-frame-purple: url("${framePurple.src}")`,
+    `--sp-frame-sheet: url("${frameSheet.src}")`,
+    `--sp-frame-card: url("${frameCard.src}")`,
+    `--sp-frame-pill: url("${framePill.src}")`,
+].join("; ");
+const fontFace = `@font-face { font-family: "Awesome 9"; src: url("${font}") format("truetype"); font-display: swap; }`;
+---
+
+{stickers ? (
+        <div class="sp-deco">
+            <div class="sp-logo" aria-hidden="true"></div>
+            <label class="sp-slider">
+                <span class="sp-slider-label">Pixel Size</span>
+                <input type="range" min="1" max="16" step="1" value="6" data-sp-pixel />
+                <span class="sp-slider-value" data-sp-pixel-value>6</span>
+            </label>
+        </div>
+) : (
+        <>
+            <style is:inline set:html={`${fontFace} html:has(.skin-sp) { ${vars}; }`} />
+        </>
+)}
+
+<script>
+    // 截图像素化：降采样到 (宽 / 像素尺寸) × (高 / 像素尺寸) 画进 canvas，再用 pixelated 放大盖住原图
+    const PIX_KEY = "spPixelSize";
+    let pixelSize = 6;
+    try { pixelSize = Math.min(16, Math.max(1, Number(localStorage.getItem(PIX_KEY)) || 6)); } catch { /* 隐私模式 */ }
+
+    function draw(img: HTMLImageElement, canvas: HTMLCanvasElement) {
+        const w = img.clientWidth;
+        const h = img.clientHeight;
+        if (!w || !h || !img.naturalWidth) return;
+        const cw = Math.max(1, Math.round(w / pixelSize));
+        const ch = Math.max(1, Math.round(h / pixelSize));
+        canvas.width = cw;
+        canvas.height = ch;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+        // 按 object-fit: cover 的方式取原图的对应区域（hero 封面是 cover，正文图片宽高比一致，结果相同）
+        const ir = img.naturalWidth / img.naturalHeight;
+        const br = w / h;
+        let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
+        if (ir > br) { sw = sh * br; sx = (img.naturalWidth - sw) / 2; } else { sh = sw / br; sy = (img.naturalHeight - sh) / 2; }
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "medium";
+        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch);
+    }
+
+    function initSpeedPixel() {
+        const root = document.querySelector(".skin-sp");
+        if (!root) return;
+        const imgs = Array.from(document.querySelectorAll<HTMLImageElement>(".skin-sp .project-prose img, header.skin-sp .project-hero-image img"));
+        const pairs: [HTMLImageElement, HTMLCanvasElement][] = [];
+        for (const img of imgs) {
+            if (img.dataset.spPix) continue;
+            img.dataset.spPix = "1";
+            const host = img.parentElement!;
+            // 正文里的图直接在 figure 里：包一层给 canvas 定位
+            let wrap = host;
+            if (!host.classList.contains("project-hero-image")) {
+                wrap = document.createElement("span");
+                wrap.className = "sp-pix";
+                img.replaceWith(wrap);
+                wrap.append(img);
+            } else {
+                wrap.classList.add("sp-pix-host");
+            }
+            const canvas = document.createElement("canvas");
+            canvas.className = "sp-pix-canvas";
+            canvas.setAttribute("aria-hidden", "true");
+            wrap.append(canvas);
+            pairs.push([img, canvas]);
+            const redraw = () => draw(img, canvas);
+            if (img.complete) redraw(); else img.addEventListener("load", redraw, { once: true });
+            new ResizeObserver(redraw).observe(img);
+        }
+        const slider = document.querySelector<HTMLInputElement>("[data-sp-pixel]");
+        const value = document.querySelector<HTMLElement>("[data-sp-pixel-value]");
+        const all = () => document.querySelectorAll<HTMLCanvasElement>(".sp-pix-canvas").forEach((c) => {
+            const img = c.parentElement?.querySelector("img");
+            if (img) draw(img, c);
+        });
+        const apply = () => {
+            document.documentElement.classList.toggle("sp-pix-off", pixelSize <= 1);
+            if (slider) slider.value = String(pixelSize);
+            if (value) value.textContent = String(pixelSize);
+        };
+        apply();
+        if (slider && !slider.dataset.bound) {
+            slider.dataset.bound = "1";
+            slider.addEventListener("input", () => {
+                pixelSize = Number(slider.value);
+                try { localStorage.setItem(PIX_KEY, String(pixelSize)); } catch { /* 隐私模式 */ }
+                apply();
+                all();
+            });
+        }
+    }
+    document.addEventListener("astro:page-load", initSpeedPixel);
+    document.addEventListener("astro:before-swap", () => document.documentElement.classList.remove("sp-pix-off"));
+</script>
+
+<style is:global>
+    /* ========================================================= */
+    /* 调色板：从游戏截图（技能树界面）取样                            */
+    /* ========================================================= */
+    html:has(.skin-sp) {
+        --sp-teal: #B0D8E0;
+        --sp-teal-hi: #DCEFF2;
+        --sp-blue: #6898F0;
+        --sp-blue-lo: #4F78D0;
+        --sp-green: #80B868;
+        --sp-purple: #D8A8E8;
+        --sp-lime: #D8E8A8;
+        --sp-white: #F8F8F8;
+        --sp-ink: #22407E;
+        --sp-coin: #F2A93B;
+        --sp-lav: #EEE3F5;
+        --sp-pixel: "Awesome 9", var(--theme-font-active), monospace;
+    }
+    html:has(.skin-sp) body {
+        background-color: var(--sp-lav);
+        background-image:
+                linear-gradient(rgb(104 152 240 / 0.08) 2px, transparent 2px),
+                linear-gradient(90deg, rgb(104 152 240 / 0.08) 2px, transparent 2px);
+        background-size: 24px 24px;
+    }
+
+    /* 通用：像素框。9-slice 图 48×48，切 16（4 个逻辑像素），显示成 12px，一个逻辑像素 = 3px */
+    .skin-sp .sp-frame,
+    .skin-sp .brutalist-badge,
+    .skin-sp .project-links-wrapper .brutalist-tag,
+    .skin-sp .project-prose h2,
+    .skin-sp .project-prose h3::before,
+    .skin-sp .project-hero-image,
+    .skin-sp .project-prose figure img,
+    .skin-sp .project-prose iframe {
+        image-rendering: pixelated;
+    }
+
+    /* ========================================================= */
+    /* HERO：浅青画面 + 像素格 + 速度表 logo                          */
+    /* ========================================================= */
+    header.skin-sp {
+        position: relative;
+        background-color: var(--sp-teal) !important;
+        background-image:
+                linear-gradient(rgb(255 255 255 / 0.18) 3px, transparent 3px),
+                linear-gradient(90deg, rgb(255 255 255 / 0.18) 3px, transparent 3px);
+        background-size: 30px 30px;
+        color: var(--sp-ink) !important;
+        border-bottom: 0 !important;
+        --theme-text: var(--sp-ink);
+    }
+    header.skin-sp > .absolute { display: none; }
+    .skin-sp .project-hero-shell { position: relative; }
+
+    .skin-sp .project-hero-screen h1 {
+        font-family: var(--sp-pixel);
+        font-weight: 400 !important;
+        color: var(--sp-white);
+        letter-spacing: 0.02em;
+        text-shadow: 4px 4px 0 var(--sp-blue), 8px 8px 0 var(--sp-blue-lo);
+    }
+    .skin-sp .back-btn {
+        font-family: var(--sp-pixel);
+        font-weight: 400;
+        color: var(--sp-ink);
+    }
+    .skin-sp .back-btn:hover { color: var(--sp-blue); }
+
+    /* 徽章：蓝色像素药丸，白字像素体；编号那个做成金币色 */
+    .skin-sp .brutalist-badge {
+        border-width: 12px !important;
+        border-style: solid !important;
+        border-color: transparent !important;
+        border-image: var(--sp-frame-blue) 16 fill / 12px / 0 stretch;
+        background: transparent !important;
+        color: var(--sp-white) !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        padding: 0 0.35rem !important;
+        font-family: var(--sp-pixel);
+        font-weight: 400 !important;
+    }
+    .skin-sp .project-hero-screen [data-reveal-children] > div:first-child .brutalist-badge:first-child {
+        border-image-source: var(--sp-frame-pill);
+        color: var(--sp-coin) !important;
+    }
+    .skin-sp .project-hero-screen [data-reveal-children] > div:first-child .brutalist-badge:nth-child(2) {
+        border-image-source: var(--sp-frame-green);
+    }
+    .skin-sp .project-hero-screen .border-l-\[4px\] {
+        border-color: var(--sp-blue) !important;
+        background: rgb(255 255 255 / 0.35);
+    }
+
+    .skin-sp .project-links-wrapper .brutalist-tag {
+        border-width: 12px !important;
+        border-style: solid !important;
+        border-color: transparent !important;
+        border-image: var(--sp-frame-purple) 16 fill / 12px / 0 stretch;
+        background: transparent !important;
+        color: var(--sp-white) !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        font-family: var(--sp-pixel);
+        font-weight: 400 !important;
+        transform: none !important;
+        transition: translate 100ms steps(2), filter 100ms;
+    }
+    .skin-sp .project-links-wrapper .brutalist-tag:hover { translate: 0 -3px; filter: brightness(1.06); }
+    .skin-sp .project-links-wrapper .brutalist-tag:active { translate: 0 3px; }
+
+    /* 封面：白色像素卡片框 */
+    .skin-sp .project-hero-shell .project-hero-image {
+        border-width: 12px !important;
+        border-style: solid !important;
+        border-color: transparent !important;
+        border-image: var(--sp-frame-card) 16 / 12px / 0 stretch;
+        border-radius: 0 !important;
+        background-color: var(--sp-white) !important;
+        box-shadow: 8px 8px 0 rgb(79 120 208 / 0.35);
+    }
+
+    /* hero 右上：速度表 logo；右下：Pixel Size 滑块（对应 Shader 的 _PixelSize） */
+    .skin-sp .sp-deco {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 20;
+    }
+    .skin-sp .sp-logo {
+        position: absolute;
+        top: -1.5rem;
+        right: 1rem;
+        width: clamp(4.5rem, 8vw, 7rem);
+        aspect-ratio: 1;
+        background: var(--sp-logo) center / contain no-repeat;
+        rotate: 8deg;
+    }
+    .skin-sp .sp-slider {
+        position: absolute;
+        right: 1rem;
+        bottom: -2.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.1rem 0.4rem;
+        border-width: 12px;
+        border-style: solid;
+        border-color: transparent;
+        border-image: var(--sp-frame-blue) 16 fill / 12px / 0 stretch;
+        image-rendering: pixelated;
+        color: var(--sp-white);
+        font-family: var(--sp-pixel);
+        font-size: 0.9rem;
+        pointer-events: auto;
+    }
+    .skin-sp .sp-slider-label { color: var(--sp-coin); }
+    .skin-sp .sp-slider-value { min-width: 1.6em; text-align: right; }
+    .skin-sp .sp-slider input {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 8rem;
+        height: 6px;
+        background: var(--sp-white);
+        cursor: pointer;
+    }
+    .skin-sp .sp-slider input::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 15px;
+        height: 15px;
+        background: var(--sp-coin);
+        border: 3px solid var(--sp-white);
+    }
+    .skin-sp .sp-slider input::-moz-range-thumb {
+        width: 12px;
+        height: 12px;
+        border-radius: 0;
+        background: var(--sp-coin);
+        border: 3px solid var(--sp-white);
+    }
+    @media (max-width: 1023px) {
+        .skin-sp .sp-slider { bottom: -3rem; right: 0.5rem; }
+        .skin-sp .sp-logo { display: none; }
+    }
+
+    /* 截图的像素化层 */
+    .skin-sp .sp-pix {
+        position: relative;
+        display: block;
+    }
+    .skin-sp .sp-pix-canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        image-rendering: pixelated;
+        pointer-events: none;
+        transition: opacity 220ms steps(4);
+    }
+    .skin-sp .project-prose .sp-pix-canvas {
+        /* 正文图片自带 12px 像素边框，canvas 盖在边框里面 */
+        inset: 12px;
+        width: calc(100% - 24px);
+        height: calc(100% - 24px);
+    }
+    .skin-sp .sp-pix:hover .sp-pix-canvas,
+    .skin-sp .sp-pix-host:hover .sp-pix-canvas,
+    html.sp-pix-off .skin-sp .sp-pix-canvas { opacity: 0; }
+
+    /* ========================================================= */
+    /* 正文：一整块浅青「游戏窗口」                                    */
+    /* ========================================================= */
+    main.skin-sp {
+        background: transparent !important;
+        color: var(--sp-ink) !important;
+        --theme-text: var(--sp-ink);
+    }
+    .skin-sp .project-prose {
+        position: relative;
+        padding: clamp(1.25rem, 3vw, 2.75rem);
+        border-width: 12px;
+        border-style: solid;
+        border-color: transparent;
+        border-image: var(--sp-frame-sheet) 16 fill / 12px / 0 stretch;
+        image-rendering: pixelated;
+        color: var(--sp-ink);
+    }
+    .skin-sp .project-prose p,
+    .skin-sp .project-prose li { color: var(--sp-ink); }
+    .skin-sp .project-prose strong { color: var(--sp-blue-lo); }
+    .skin-sp .project-prose li::marker { color: var(--sp-blue); }
+
+    /* 二级标题：游戏里的页签（绿 → 蓝 → 紫轮换），左边白色图标 */
+    .skin-sp .project-prose h2 {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.15rem 1rem 0.15rem 0.5rem;
+        border-width: 12px;
+        border-style: solid;
+        border-color: transparent;
+        border-image: var(--sp-frame-green) 16 fill / 12px / 0 stretch;
+        background: none;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        transform: none !important;
+        color: var(--sp-white);
+        font-family: var(--sp-pixel);
+        font-weight: 400;
+        letter-spacing: 0.02em;
+    }
+    .skin-sp .project-prose h2::before {
+        content: "";
+        flex: none;
+        width: 1.6rem;
+        height: 1.6rem;
+        background: var(--sp-ico-character) center / contain no-repeat;
+    }
+    .skin-sp .project-prose h2:nth-of-type(3n + 2) { border-image-source: var(--sp-frame-blue); }
+    .skin-sp .project-prose h2:nth-of-type(3n + 2)::before { background-image: var(--sp-ico-tree); }
+    .skin-sp .project-prose h2:nth-of-type(3n) { border-image-source: var(--sp-frame-purple); }
+    .skin-sp .project-prose h2:nth-of-type(3n)::before { background-image: var(--sp-ico-play); }
+
+    /* 三级标题：蓝字像素体，前面一个蓝色小方框里的白图标 */
+    .skin-sp .project-prose h3 {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        color: var(--sp-blue-lo);
+        font-family: var(--sp-pixel);
+        font-weight: 400;
+    }
+    .skin-sp .project-prose h3::after { display: none; }
+    .skin-sp .project-prose h3::before {
+        content: "";
+        flex: none;
+        width: 2.4rem;
+        height: 2.4rem;
+        border-width: 9px;
+        border-style: solid;
+        border-color: transparent;
+        /* 框不填充（fill 会盖住背景），蓝底用背景色、只铺在内边距区域，图标叠在上面 */
+        border-image: var(--sp-frame-blue) 16 / 9px / 0 stretch;
+        background: var(--sp-ico-thunder) center / 62% no-repeat, var(--sp-blue);
+        background-clip: padding-box;
+    }
+    .skin-sp .project-prose h3:nth-of-type(5n + 2)::before { background-image: var(--sp-ico-star); }
+    .skin-sp .project-prose h3:nth-of-type(5n + 3)::before { background-image: var(--sp-ico-plane); }
+    .skin-sp .project-prose h3:nth-of-type(5n + 4)::before { background-image: var(--sp-ico-tower); }
+    .skin-sp .project-prose h3:nth-of-type(5n)::before { background-image: var(--sp-ico-exit); }
+    .skin-sp .project-prose h4 { color: var(--sp-green); }
+
+    /* 图片、嵌入：白色像素卡片框 */
+    .skin-sp .project-prose img,
+    .skin-sp .project-prose iframe {
+        border-width: 12px !important;
+        border-style: solid !important;
+        border-color: transparent !important;
+        border-image: var(--sp-frame-card) 16 fill / 12px / 0 stretch !important;
+        border-radius: 0 !important;
+        box-shadow: 6px 6px 0 rgb(79 120 208 / 0.3) !important;
+    }
+    .skin-sp .project-prose figure img { margin: 0 !important; }
+    .skin-sp .project-prose figcaption {
+        color: var(--sp-blue-lo);
+        opacity: 1;
+    }
+    .skin-sp .project-prose a { color: var(--sp-blue-lo); text-decoration-color: var(--sp-blue); }
+    .skin-sp .project-prose a:hover { color: var(--sp-purple); }
+
+    /* 分隔线：一排像素点 */
+    .skin-sp .project-prose hr {
+        height: 6px;
+        border: 0;
+        background: repeating-linear-gradient(90deg, var(--sp-blue) 0 6px, transparent 6px 15px);
+        opacity: 0.6;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .skin-sp .sp-pix-canvas,
+        .skin-sp .project-links-wrapper .brutalist-tag { transition: none; }
+    }
+</style>
