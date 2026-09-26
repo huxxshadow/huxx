@@ -79,6 +79,12 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         <div class="pa-tri pa-tri-back"></div>
         <div class="pa-tri"></div>
     </div>
+    <!-- 中间一条反色条：横跨整个 Part，高度是技术栏第 3 张卡 + 上下各半个行距（位置由脚本量） -->
+    <div class="ta-mid-bar" aria-hidden="true"></div>
+    <div class="pa-tri-page pa-tri-inv pa-tri-inv-mid" aria-hidden="true">
+        <div class="pa-tri pa-tri-back"></div>
+        <div class="pa-tri"></div>
+    </div>
 
     <!-- 和 Part 2、3、4 同一套紧凑标题：编号 · 名称（这一部分不显示项目数） -->
     <header class="relative z-10 flex flex-wrap items-end gap-x-8 gap-y-3 mb-6 lg:mb-4" data-reveal-children="up" data-reveal-once data-reveal-stagger="80">
@@ -120,6 +126,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
             <div class="pa-tri pa-tri-local"></div>
             <img src={mascot.src} width={mascot.width} height={mascot.height} alt="" loading="lazy" decoding="async" />
             <img class="ta-mascot-inv" src={mascotInverse.src} width={mascot.width} height={mascot.height} alt="" loading="lazy" decoding="async" />
+            <img class="ta-mascot-inv ta-mascot-inv-mid" src={mascotInverse.src} width={mascot.width} height={mascot.height} alt="" loading="lazy" decoding="async" />
         </div>
     </div>
 </section>
@@ -241,6 +248,18 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                     const b = pos(bar);
                     section.style.setProperty("--bar-rt", `${(line(b.top) - b.left).toFixed(1)}px`);
                     section.style.setProperty("--bar-rb", `${(line(b.top + bar.offsetHeight) - b.left).toFixed(1)}px`);
+                    // 中间反色条：第 3 张卡连同上下各半个行距；吉祥物那份反色图按它在 section 里的位置换算裁切
+                    const li2 = list.children[2] as HTMLElement | undefined;
+                    if (li2) {
+                        const gap = parseFloat(getComputedStyle(list).rowGap) || 0;
+                        const top = pos(li2).top - gap / 2;
+                        const h = li2.offsetHeight + gap;
+                        section.style.setProperty("--mid-top", `${top.toFixed(1)}px`);
+                        section.style.setProperty("--mid-h", `${h.toFixed(1)}px`);
+                        const mt = pos(mascot).top;
+                        section.style.setProperty("--mid-m-top", `${(top - mt).toFixed(1)}px`);
+                        section.style.setProperty("--mid-m-bot", `${(mt + mascot.offsetHeight - top - h).toFixed(1)}px`);
+                    }
                 }
                 if (!section.dataset.triReady) {
                     // 第一次摆好时不要动画（否则三角会从没变换的样子飞过来，后台标签页里还会卡在半路），
@@ -367,6 +386,21 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         position: absolute;
         inset: 0;
         clip-path: inset(calc(100% - var(--bar-h)) 0 0 0);
+    }
+    .ta-mid-bar {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: var(--mid-top, -100px);
+        height: var(--mid-h, 0px);
+        background-color: var(--ta-accent);
+        pointer-events: none;
+    }
+    .pa-tri-page.pa-tri-inv-mid {
+        clip-path: inset(var(--mid-top, 0px) 0 calc(100% - var(--mid-top, 0px) - var(--mid-h, 0px)) 0);
+    }
+    .ta-mascot .ta-mascot-inv-mid {
+        clip-path: inset(var(--mid-m-top, 100%) 0 var(--mid-m-bot, 0px) 0);
     }
 
     /* ======================= A · P3R ======================= */
@@ -581,7 +615,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     /* ---------- 窄屏：吉祥物缩小放最上面，两栏依次往下，全部左对齐 ---------- */
     @media (max-width: 1023px) {
         .ta-stage { grid-template-columns: 1fr; }
-        .pa-tri-page, .ta-mascot-inv { display: none; }
+        .pa-tri-page, .ta-mascot-inv, .ta-mid-bar { display: none; }
         .pa-tri-local { display: block; z-index: -1; top: 2%; bottom: -3%; width: 115%; }
         .pa-tri-local.pa-tri-back { top: 0; bottom: -6%; width: 130%; }
         .ta-mascot { order: -1; width: 9rem; margin: 0 auto; }
