@@ -1,11 +1,11 @@
 ---
-// Part 5 · 技术美术：吉祥物（握着画笔的猫耳画师）站在正中，左边「技术」、右边「美术」，两边都是列表。
-// 两边左右镜像：左栏文字靠外、图靠中间，右栏反过来。
-// 候选版式（右下角 Debug 面板切换）：
-//   A 镜像清单：每行 编号 + 缩略图 + 标题/说明/标签，虚线分隔
-//   B 手风琴：每行平时只露编号、标题、标签，悬停（或聚焦）的那行展开出封面和说明；每栏默认展开第一行
-//   C 大字索引：标题做大，行首一块方形缩略图，悬停时底色从中间那一侧扫过来
-// 这一页只用 COLORS.yellow 的深浅两档（吉祥物本身就是 yellow.dark）
+// Part 5 · 技术美术：吉祥物（握着画笔的猫耳画师）站在正中、几乎撑满整个 Part 的高度，
+// 左边「技术」、右边「美术」，两边都是列表，左右镜像（左栏文字靠外、图靠中间，右栏反过来）。
+// 候选版式（右下角 Debug 面板切换），都走游戏 UI 的平面设计路子，不用卡片：
+//   A P3R：黑色斜带托着吉祥物，列表是一条条平行四边形，逐行向中间错开，悬停整条反白
+//   B P5：半调网点底 + 黑色爆炸星托着吉祥物，标题是勒索信拼字，列表是歪斜的黑色多边形
+//   C 明日方舟：工业风，细线、等宽小字、警示斜纹、切角面板，吉祥物背后是刻度圆环和角标
+// 这一页只用 COLORS.yellow 的深浅两档 + 黑白（吉祥物本身就是 yellow.dark）
 import { getCollection } from "astro:content";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { COLORS } from "@/consts";
@@ -42,8 +42,13 @@ const works = techArtWorks.flatMap((w) => {
 // 左栏技术、右栏美术；reveal 方向都是从外侧滑向中间
 const sides = (["tech", "art"] as const).map((side) => ({
     side,
-    items: works.filter((w) => w.side === side).map((w, i) => ({ ...w, code: `${side === "tech" ? "T" : "A"}-${String(i + 1).padStart(2, "0")}` })),
+    items: works.filter((w) => w.side === side).map((w, i) => ({
+        ...w,
+        num: String(i + 1).padStart(2, "0"),
+        code: `${side === "tech" ? "T" : "A"}-${String(i + 1).padStart(2, "0")}`,
+    })),
     name: t(side === "tech" ? L.tech : L.art),
+    en: side === "tech" ? "TECHNICAL" : "ART",
     sub: t(side === "tech" ? L.techSub : L.artSub),
     reveal: side === "tech" ? "right" : "left",
 }));
@@ -52,8 +57,7 @@ const ink = COLORS.black;
 const accent = COLORS.yellow.dark;
 const tint = COLORS.yellow.light;
 const paper = "#FFFDF7";
-const sizesWide = "(min-width: 1024px) 30vw, 100vw";
-const sizesThumb = "(min-width: 1024px) 12vw, 30vw";
+const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
 ---
 
 <section
@@ -64,7 +68,7 @@ const sizesThumb = "(min-width: 1024px) 12vw, 30vw";
         data-theme-text={ink}
 >
     <!-- 和 Part 2、3、4 同一套紧凑标题：编号 · 名称 · 项目数 -->
-    <header class="flex flex-wrap items-end gap-x-8 gap-y-3 mb-8 lg:mb-10" data-reveal-children="up" data-reveal-once data-reveal-stagger="80">
+    <header class="relative z-10 flex flex-wrap items-end gap-x-8 gap-y-3 mb-6 lg:mb-4" data-reveal-children="up" data-reveal-once data-reveal-stagger="80">
         <div class="flex items-end gap-4">
             <span class="ta-skew font-black leading-[0.8] text-7xl lg:text-8xl" style={`color: ${accent};`}>{role.index}</span>
             <h2 class="ta-skew font-black leading-none tracking-tight text-4xl lg:text-5xl pb-1">{t(role.name)}</h2>
@@ -74,63 +78,27 @@ const sizesThumb = "(min-width: 1024px) 12vw, 30vw";
 
     <div data-variant-group="part5" data-variant-label="Part 5 · TA">
 
-        <!-- ================= A · 镜像清单 ================= -->
+        <!-- ================= A · P3R ================= -->
         <div data-variant="A">
-            <div class="ta-stage">
+            <div class="ta-stage pa">
+                <div class="pa-band" aria-hidden="true"></div>
                 {sides.map((s) => (
                         <div class:list={["ta-side", `ta-side-${s.side}`]}>
-                            <div class="ta-head" data-reveal={s.reveal} data-reveal-once>
-                                <span class="ta-head-name">{s.name}</span>
-                                <span class="ta-head-sub">{s.sub}</span>
+                            <div class="pa-head" data-reveal={s.reveal} data-reveal-once>
+                                <span class="pa-head-en">{s.en}</span>
+                                <span class="pa-head-name">{s.name}<small>{s.sub}</small></span>
                             </div>
-                            <ol class="la-list" data-reveal-children={s.reveal} data-reveal-once>
-                                {s.items.map((w) => (
-                                        <li>
-                                            <a href={href(w.id)} class="la-row">
-                                                <div class="la-thumb"><WorkCover work={w} lang={lang} sizes={sizesThumb} /></div>
-                                                <div class="la-body">
-                                                    <span class="ta-code">{w.code}</span>
-                                                    <h3 class="la-title">{w.title}</h3>
-                                                    <p class="la-caption">{w.caption}</p>
-                                                    <ul class="ta-tags">{w.tags.map((tag) => <li class="ta-tag">{tag}</li>)}</ul>
-                                                </div>
-                                            </a>
-                                        </li>
-                                ))}
-                            </ol>
-                        </div>
-                ))}
-                <div class="ta-mascot" data-reveal="fade" data-reveal-once aria-hidden="true">
-                    <img src={mascot.src} width={mascot.width} height={mascot.height} alt="" loading="lazy" decoding="async" />
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= B · 手风琴 ================= -->
-        <div data-variant="B" hidden>
-            <div class="ta-stage">
-                {sides.map((s) => (
-                        <div class:list={["ta-side", `ta-side-${s.side}`]}>
-                            <div class="ta-head" data-reveal={s.reveal} data-reveal-once>
-                                <span class="ta-head-name">{s.name}</span>
-                                <span class="ta-head-sub">{s.sub}</span>
-                            </div>
-                            <ol class="lb-list" data-reveal-children={s.reveal} data-reveal-once>
+                            <ol class="pa-list" data-reveal-children={s.reveal} data-reveal-once>
                                 {s.items.map((w, i) => (
-                                        <li class:list={["lb-row", { "is-default": i === 0 }]}>
-                                            <a href={href(w.id)} class="lb-link">
-                                                <div class="lb-bar">
-                                                    <span class="lb-num">{String(i + 1).padStart(2, "0")}</span>
-                                                    <h3 class="lb-title">{w.title}</h3>
-                                                    <span class="lb-arrow" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span>
+                                        <li style={`--i: ${i};`}>
+                                            <a href={href(w.id)} class="pa-row">
+                                                <span class="pa-num">{w.num}</span>
+                                                <div class="pa-body">
+                                                    <h3 class="pa-title">{w.title}</h3>
+                                                    <p class="pa-caption">{w.caption}</p>
+                                                    <p class="pa-tags">{w.tags.join(" / ")}</p>
                                                 </div>
-                                                <div class="lb-fold">
-                                                    <div class="lb-fold-inner">
-                                                        <div class="lb-img"><WorkCover work={w} lang={lang} sizes={sizesWide} /></div>
-                                                        <p class="lb-caption">{w.caption}</p>
-                                                    </div>
-                                                </div>
-                                                <ul class="ta-tags lb-tags">{w.tags.map((tag) => <li class="ta-tag">{tag}</li>)}</ul>
+                                                <div class="pa-thumb"><WorkCover work={w} lang={lang} sizes={sizesThumb} /></div>
                                             </a>
                                         </li>
                                 ))}
@@ -143,25 +111,28 @@ const sizesThumb = "(min-width: 1024px) 12vw, 30vw";
             </div>
         </div>
 
-        <!-- ================= C · 大字索引 ================= -->
-        <div data-variant="C" hidden>
-            <div class="ta-stage">
+        <!-- ================= B · P5 ================= -->
+        <div data-variant="B" hidden>
+            <div class="ta-stage pb">
+                <div class="pb-dots" aria-hidden="true"></div>
                 {sides.map((s) => (
                         <div class:list={["ta-side", `ta-side-${s.side}`]}>
-                            <div class="ta-head lc-head" data-reveal={s.reveal} data-reveal-once>
-                                <span class="ta-head-name">{s.name}</span>
-                                <span class="ta-head-sub">{s.sub}</span>
+                            <div class="pb-head" data-reveal="scale" data-reveal-once>
+                                <p class="pb-ransom" aria-label={s.name}>
+                                    {Array.from(s.name).map((c) => <span aria-hidden="true">{c}</span>)}
+                                </p>
+                                <span class="pb-sub">{s.sub}</span>
                             </div>
-                            <ol class="lc-list" data-reveal-children={s.reveal} data-reveal-once>
+                            <ol class="pb-list" data-reveal-children={s.reveal} data-reveal-once>
                                 {s.items.map((w) => (
                                         <li>
-                                            <a href={href(w.id)} class="lc-row">
-                                                <div class="lc-thumb"><WorkCover work={w} lang={lang} sizes={sizesThumb} /></div>
-                                                <div class="lc-body">
-                                                    <span class="lc-code">{w.code}</span>
-                                                    <h3 class="lc-title">{w.title}</h3>
-                                                    <p class="lc-caption">{w.caption}</p>
-                                                    <p class="lc-tags">{w.tags.join("  /  ")}</p>
+                                            <a href={href(w.id)} class="pb-row">
+                                                <div class="pb-thumb"><WorkCover work={w} lang={lang} sizes={sizesThumb} /></div>
+                                                <div class="pb-body">
+                                                    <span class="pb-code">{w.code}</span>
+                                                    <h3 class="pb-title"><span>{w.title}</span></h3>
+                                                    <p class="pb-caption">{w.caption}</p>
+                                                    <ul class="pb-tags">{w.tags.map((tag) => <li>{tag}</li>)}</ul>
                                                 </div>
                                             </a>
                                         </li>
@@ -169,8 +140,54 @@ const sizesThumb = "(min-width: 1024px) 12vw, 30vw";
                             </ol>
                         </div>
                 ))}
-                <div class="ta-mascot" data-reveal="fade" data-reveal-once aria-hidden="true">
+                <div class="ta-mascot pb-mascot" data-reveal="fade" data-reveal-once aria-hidden="true">
+                    <div class="pb-burst pb-burst-back"></div>
+                    <div class="pb-burst"></div>
                     <img src={mascot.src} width={mascot.width} height={mascot.height} alt="" loading="lazy" decoding="async" />
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= C · 明日方舟 ================= -->
+        <div data-variant="C" hidden>
+            <div class="ta-stage pc">
+                {sides.map((s) => (
+                        <div class:list={["ta-side", `ta-side-${s.side}`]}>
+                            <span class="pc-vertical" aria-hidden="true">{s.en} // {s.side === "tech" ? "SHADER · PCG · TOOLS" : "CG · SCENE · LIGHTING"}</span>
+                            <div class="pc-head" data-reveal={s.reveal} data-reveal-once>
+                                <div class="pc-head-meta">
+                                    <span class="pc-hazard"></span>
+                                    <span class="pc-mono">SECTOR {s.side === "tech" ? "05-T" : "05-A"} / {s.items.length} ENTRIES</span>
+                                </div>
+                                <span class="pc-head-name">{s.name}</span>
+                                <span class="pc-head-en">{s.en}</span>
+                            </div>
+                            <ol class="pc-list" data-reveal-children={s.reveal} data-reveal-once>
+                                {s.items.map((w) => (
+                                        <li>
+                                            <a href={href(w.id)} class="pc-row">
+                                                <div class="pc-thumb">
+                                                    <WorkCover work={w} lang={lang} sizes={sizesThumb} />
+                                                    <span class="pc-thumb-code">{w.code}</span>
+                                                </div>
+                                                <div class="pc-body">
+                                                    <span class="pc-mono pc-row-meta">PROJECT <b>{w.num}</b></span>
+                                                    <h3 class="pc-title">{w.title}</h3>
+                                                    <p class="pc-caption">{w.caption}</p>
+                                                    <ul class="pc-tags">{w.tags.map((tag) => <li>{tag}</li>)}</ul>
+                                                </div>
+                                            </a>
+                                        </li>
+                                ))}
+                            </ol>
+                        </div>
+                ))}
+                <div class="ta-mascot pc-mascot" data-reveal="fade" data-reveal-once aria-hidden="true">
+                    <div class="pc-ring"></div>
+                    <span class="pc-corner pc-corner-tl"></span>
+                    <span class="pc-corner pc-corner-br"></span>
+                    <img src={mascot.src} width={mascot.width} height={mascot.height} alt="" loading="lazy" decoding="async" />
+                    <span class="pc-mono pc-mascot-label">OPERATOR · TECH ARTIST</span>
                 </div>
             </div>
         </div>
@@ -184,16 +201,20 @@ const sizesThumb = "(min-width: 1024px) 12vw, 30vw";
     }
 
     /* ---------- 三个版式共用的舞台：左栏 · 吉祥物 · 右栏 ---------- */
+    /* 中间一栏放宽，吉祥物按 1:3 的原比例几乎撑满整个 Part 的高度；两边列表在它的高度里垂直居中 */
     .ta-stage {
+        position: relative;
         display: grid;
-        grid-template-columns: minmax(0, 1fr) clamp(9rem, 15vw, 17rem) minmax(0, 1fr);
-        gap: clamp(1.5rem, 3vw, 3.5rem);
-        align-items: start;
+        grid-template-columns: minmax(0, 1fr) clamp(13rem, 22vw, 25rem) minmax(0, 1fr);
+        gap: clamp(1.5rem, 2.6vw, 3rem);
+        align-items: center;
+        isolation: isolate;
     }
     .ta-side-tech { order: 0; }
-    .ta-mascot { order: 1; align-self: center; }
+    .ta-mascot { order: 1; position: relative; }
     .ta-side-art { order: 2; }
     .ta-mascot img {
+        position: relative;
         display: block;
         width: 100%;
         height: auto;
@@ -201,247 +222,412 @@ const sizesThumb = "(min-width: 1024px) 12vw, 30vw";
         user-select: none;
     }
     .ta-side {
+        position: relative;
         display: flex;
         flex-direction: column;
-        gap: 1.1rem;
+        gap: 1.4rem;
         min-width: 0;
     }
-    /* 左栏整体靠右（朝向中间），右栏靠左 */
     .ta-side-tech { text-align: right; }
-    .ta-side-tech .ta-tags { justify-content: flex-end; }
-    .ta-head {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 4px solid var(--ta-ink);
-    }
-    .ta-side-tech .ta-head { align-items: flex-end; }
-    .ta-head-name {
-        font-weight: 900;
-        font-size: clamp(2rem, 3.4vw, 3.4rem);
-        line-height: 1;
-    }
-    .ta-head-sub {
-        font-weight: 800;
-        font-size: 0.8rem;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: color-mix(in srgb, var(--ta-accent) 70%, var(--ta-ink));
-    }
-    .ta-code {
-        font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
-        font-size: 0.75rem;
-        font-weight: 800;
-        padding: 0.05rem 0.4rem;
+
+    /* ======================= A · P3R ======================= */
+    /* 贯穿上下的黑色斜带，托着吉祥物；左边一道黄、右边一道白 */
+    .pa-band {
+        position: absolute;
+        z-index: -1;
+        top: -12rem;
+        bottom: -6rem;
+        left: 50%;
+        width: clamp(11rem, 17vw, 19rem);
+        translate: -50% 0;
+        transform: skewX(-14deg);
         background-color: var(--ta-ink);
-        color: var(--ta-paper);
-        align-self: flex-start;
+        box-shadow: -1.4rem 0 0 var(--ta-accent), 1.4rem 0 0 var(--ta-paper);
     }
-    .ta-side-tech .ta-code { align-self: flex-end; }
-    .ta-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem;
-    }
-    .ta-tag {
-        padding: 0.1rem 0.55rem;
-        border: 2px solid var(--ta-ink);
-        border-radius: 0.5rem;
-        font-size: 0.72rem;
-        font-weight: 700;
-        background-color: var(--ta-paper);
-    }
-
-    /* ======================= A · 镜像清单 ======================= */
-    .la-row {
-        display: grid;
-        grid-template-columns: 36% minmax(0, 1fr);
-        gap: 1.1rem;
-        align-items: start;
-        padding: 1rem 0.5rem;
-        border-bottom: 2px dashed var(--ta-ink);
-        transition: background-color 150ms ease;
-    }
-    /* 左栏：图放到靠中间的一侧 */
-    .ta-side-tech .la-row { grid-template-columns: minmax(0, 1fr) 36%; }
-    .ta-side-tech .la-thumb { order: 2; }
-    .la-row:hover { background-color: color-mix(in srgb, var(--ta-accent) 18%, transparent); }
-    .la-thumb {
-        position: relative;
-        aspect-ratio: 16 / 10;
-        overflow: hidden;
-        border: 2px solid var(--ta-ink);
-        border-radius: 0.5rem;
-        box-shadow: 4px 4px 0 var(--ta-accent);
-    }
-    .la-thumb :global(img) { transition: scale 500ms ease; }
-    .la-row:hover .la-thumb :global(img) { scale: 1.06; }
-    .la-body { display: flex; flex-direction: column; gap: 0.4rem; min-width: 0; }
-    .la-title { font-weight: 900; font-size: 1.15rem; line-height: 1.25; }
-    .la-caption { font-weight: 600; font-size: 0.85rem; line-height: 1.5; opacity: 0.85; }
-
-    /* ======================= B · 手风琴 ======================= */
-    .lb-list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-    .lb-link {
-        display: flex;
-        flex-direction: column;
-        gap: 0.6rem;
-        padding: 0.8rem 1rem 0.9rem;
-        background-color: var(--ta-paper);
-        border: 2px solid var(--ta-ink);
-        border-radius: 0.9rem;
-        box-shadow: 5px 5px 0 var(--ta-accent);
-        transition: box-shadow 150ms ease, background-color 150ms ease;
-    }
-    .lb-bar {
-        display: flex;
-        align-items: baseline;
-        gap: 0.8rem;
-    }
-    .ta-side-tech .lb-bar { flex-direction: row-reverse; }
-    .lb-num {
-        flex: none;
+    .pa-head { display: flex; flex-direction: column; line-height: 1; }
+    .ta-side-tech .pa-head { align-items: flex-end; }
+    .pa-head-en {
         font-family: 'Roboto', sans-serif;
         font-weight: 900;
-        font-size: 1.9rem;
+        font-style: italic;
+        font-size: clamp(2.6rem, 4.6vw, 5rem);
+        letter-spacing: -0.03em;
+        color: var(--ta-accent);
+        -webkit-text-stroke: 0.08em var(--ta-ink);
+        paint-order: stroke fill;
+    }
+    .pa-head-name {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.8rem;
+        margin-top: 0.3rem;
+        padding: 0.3rem 1rem;
+        font-weight: 900;
+        font-size: clamp(1.3rem, 1.8vw, 1.8rem);
+        background-color: var(--ta-ink);
+        color: var(--ta-paper);
+        transform: skewX(-14deg);
+    }
+    .pa-head-name small {
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        color: var(--ta-accent);
+    }
+    .ta-side-tech .pa-head-name { flex-direction: row-reverse; }
+    .pa-list { display: flex; flex-direction: column; gap: 0.7rem; }
+    /* 逐行向中间错开（P3R 菜单那种阶梯） */
+    .ta-side-art .pa-list > li { padding-left: calc(var(--i) * 0.9rem); }
+    .ta-side-tech .pa-list > li { padding-right: calc(var(--i) * 0.9rem); }
+    .pa-row {
+        position: relative;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) 30%;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.8rem 1.6rem 0.8rem 1.2rem;
+        background-color: var(--ta-paper);
+        clip-path: polygon(1.2rem 0, 100% 0, calc(100% - 1.2rem) 100%, 0 100%);
+        transition: background-color 180ms ease, color 180ms ease;
+    }
+    /* 左栏：图靠中间，号码靠外 */
+    .ta-side-tech .pa-row { grid-template-columns: 30% minmax(0, 1fr) auto; padding: 0.8rem 1.2rem 0.8rem 1.6rem; }
+    .ta-side-tech .pa-num { order: 3; }
+    .ta-side-tech .pa-body { order: 2; }
+    .ta-side-tech .pa-thumb { order: 1; }
+    /* 外侧一道黄色斜切的标记条 */
+    .pa-row::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0.5rem;
+        width: 0.5rem;
+        background-color: var(--ta-accent);
+        transform: skewX(-14deg);
+    }
+    .ta-side-tech .pa-row::before { left: auto; right: 0.5rem; }
+    .pa-num {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 900;
+        font-style: italic;
+        font-size: clamp(2rem, 2.8vw, 3rem);
         line-height: 1;
         color: transparent;
         -webkit-text-stroke: 1.5px var(--ta-ink);
-        transition: color 200ms ease;
+        padding-inline: 0.6rem;
     }
-    .lb-title { flex: 1; min-width: 0; font-weight: 900; font-size: 1.1rem; line-height: 1.25; }
-    .lb-arrow {
-        flex: none;
-        font-size: 0.9rem;
-        transition: rotate 250ms ease;
-    }
-    .ta-side-tech .lb-arrow { scale: -1 1; }
-    /* 折叠区：grid-template-rows 0fr ↔ 1fr 做高度动画 */
-    .lb-fold {
-        display: grid;
-        grid-template-rows: 0fr;
-        transition: grid-template-rows 320ms ease;
-    }
-    .lb-fold-inner {
-        min-height: 0;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        gap: 0.6rem;
-    }
-    .lb-img {
+    .pa-body { display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
+    .pa-title { font-weight: 900; font-size: 1.05rem; line-height: 1.25; }
+    .pa-caption { font-weight: 600; font-size: 0.8rem; line-height: 1.45; opacity: 0.8; }
+    .pa-tags { font-size: 0.7rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in srgb, var(--ta-accent) 70%, var(--ta-ink)); }
+    .pa-thumb {
         position: relative;
-        aspect-ratio: 16 / 9;
-        overflow: hidden;
-        border: 2px solid var(--ta-ink);
-        border-radius: 0.5rem;
+        align-self: stretch;
+        min-height: 5.5rem;
+        clip-path: polygon(0.9rem 0, 100% 0, calc(100% - 0.9rem) 100%, 0 100%);
+        background-color: var(--ta-ink);
     }
-    .lb-caption { font-weight: 600; font-size: 0.85rem; line-height: 1.5; opacity: 0.85; }
-    /* 展开：悬停 / 聚焦的那行；没悬停任何行时，每栏的第一行展开 */
-    .lb-row:hover .lb-fold,
-    .lb-row:focus-within .lb-fold,
-    .lb-list:not(:hover, :focus-within) .lb-row.is-default .lb-fold {
-        grid-template-rows: 1fr;
+    /* 悬停：整条反白（黑底、白字、黄号码） */
+    .pa-row:hover { background-color: var(--ta-ink); color: var(--ta-paper); }
+    .pa-row:hover .pa-num { color: var(--ta-accent); -webkit-text-stroke-color: var(--ta-accent); }
+    .pa-row:hover .pa-tags { color: var(--ta-accent); }
+
+    /* ======================= B · P5 ======================= */
+    /* 半调网点，中间浓、四周淡出 */
+    .pb-dots {
+        position: absolute;
+        z-index: -2;
+        inset: -8rem -12rem -6rem;
+        background-image: radial-gradient(circle, color-mix(in srgb, var(--ta-ink) 22%, transparent) 1.6px, transparent 2px);
+        background-size: 14px 14px;
+        mask-image: radial-gradient(ellipse 60% 70% at 50% 50%, #000 30%, transparent 75%);
+        -webkit-mask-image: radial-gradient(ellipse 60% 70% at 50% 50%, #000 30%, transparent 75%);
     }
-    .lb-row:hover .lb-num,
-    .lb-row:focus-within .lb-num,
-    .lb-list:not(:hover, :focus-within) .lb-row.is-default .lb-num {
+    /* 吉祥物背后两层爆炸星：黑色在前、白色转一点垫在后 */
+    .pb-burst {
+        position: absolute;
+        z-index: 0;
+        inset: 8% -30%;
+        background-color: var(--ta-ink);
+        clip-path: polygon(50% 0%, 58% 14%, 76% 4%, 74% 22%, 96% 18%, 84% 34%, 100% 46%, 84% 56%, 98% 72%, 78% 72%, 82% 92%, 64% 82%, 54% 100%, 44% 84%, 26% 96%, 26% 76%, 4% 80%, 16% 62%, 0% 50%, 16% 38%, 2% 22%, 24% 24%, 20% 4%, 40% 14%);
+    }
+    .pb-burst-back {
+        background-color: var(--ta-paper);
+        transform: rotate(8deg) scale(1.06);
+    }
+    .pb-mascot img { z-index: 1; }
+    .pb-head { display: flex; flex-direction: column; gap: 0.5rem; }
+    .ta-side-tech .pb-head { align-items: flex-end; }
+    /* 勒索信拼字：一字一块，黑 / 白 / 黄轮换、各自歪一点 */
+    .pb-ransom { display: flex; flex-wrap: wrap; gap: 0.15rem; }
+    .pb-ransom span {
+        display: inline-block;
+        padding: 0.05em 0.18em;
+        font-weight: 900;
+        font-size: clamp(2.4rem, 4vw, 4.2rem);
+        line-height: 1;
+        background-color: var(--ta-ink);
+        color: var(--ta-paper);
+        transform: rotate(-5deg);
+    }
+    .pb-ransom span:nth-child(3n + 2) {
+        background-color: var(--ta-paper);
+        color: var(--ta-ink);
+        border: 3px solid var(--ta-ink);
+        transform: rotate(4deg) translateY(0.1em);
+    }
+    .pb-ransom span:nth-child(3n) {
+        background-color: var(--ta-accent);
+        color: var(--ta-ink);
+        transform: rotate(-2deg) translateY(-0.05em);
+    }
+    .pb-sub {
+        padding: 0.15rem 0.7rem;
+        font-weight: 900;
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        background-color: var(--ta-ink);
         color: var(--ta-accent);
+        transform: skewX(-12deg);
     }
-    .lb-row:hover .lb-arrow,
-    .lb-row:focus-within .lb-arrow,
-    .lb-list:not(:hover, :focus-within) .lb-row.is-default .lb-arrow {
-        rotate: 90deg;
+    .pb-list { display: flex; flex-direction: column; gap: 1.1rem; }
+    .pb-row {
+        position: relative;
+        display: grid;
+        grid-template-columns: 36% minmax(0, 1fr);
+        gap: 1rem;
+        align-items: center;
+        padding: 0.9rem 1.2rem 1rem 1rem;
+        background-color: var(--ta-ink);
+        color: var(--ta-paper);
+        /* 不规则四边形 */
+        clip-path: polygon(0 4%, 97% 0, 100% 92%, 3% 100%);
+        transition: transform 160ms ease;
     }
-    /* 左栏的箭头是水平翻过来的，要反着转才朝下 */
-    .ta-side-tech .lb-row:hover .lb-arrow,
-    .ta-side-tech .lb-row:focus-within .lb-arrow,
-    .ta-side-tech .lb-list:not(:hover, :focus-within) .lb-row.is-default .lb-arrow {
-        rotate: -90deg;
+    .pb-list > li { filter: drop-shadow(6px 6px 0 var(--ta-accent)); }
+    .pb-list > li:nth-child(odd) .pb-row { transform: rotate(-1.6deg); }
+    .pb-list > li:nth-child(even) .pb-row { transform: rotate(1.2deg); clip-path: polygon(2% 0, 100% 6%, 98% 100%, 0 94%); }
+    .pb-list > li .pb-row:hover { transform: rotate(0deg) scale(1.03); }
+    .ta-side-tech .pb-row { grid-template-columns: minmax(0, 1fr) 36%; }
+    .ta-side-tech .pb-thumb { order: 2; }
+    .pb-thumb {
+        position: relative;
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+        border: 3px solid var(--ta-paper);
+        transform: rotate(-3deg);
     }
-    .lb-row:hover .lb-link { box-shadow: 8px 8px 0 var(--ta-accent); }
-    /* 触屏没有悬停：全部展开 */
-    @media (hover: none) {
-        .lb-fold { grid-template-rows: 1fr; }
+    .ta-side-tech .pb-thumb { transform: rotate(3deg); }
+    .pb-body { display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
+    .ta-side-tech .pb-body { align-items: flex-end; }
+    .pb-code {
+        align-self: flex-start;
+        padding: 0 0.4rem;
+        font-weight: 900;
+        font-size: 0.8rem;
+        background-color: var(--ta-accent);
+        color: var(--ta-ink);
+        transform: skewX(-12deg) rotate(-4deg);
+    }
+    .ta-side-tech .pb-code { align-self: flex-end; transform: skewX(-12deg) rotate(4deg); }
+    /* 标题垫一块白底 */
+    .pb-title { font-weight: 900; font-size: 1.1rem; line-height: 1.35; }
+    .pb-title span {
+        padding: 0 0.3rem;
+        background-color: var(--ta-paper);
+        color: var(--ta-ink);
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+    }
+    .pb-caption { font-weight: 600; font-size: 0.8rem; line-height: 1.45; opacity: 0.85; }
+    .pb-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+    .ta-side-tech .pb-tags { justify-content: flex-end; }
+    .pb-tags li {
+        padding: 0 0.45rem;
+        font-size: 0.68rem;
+        font-weight: 900;
+        letter-spacing: 0.04em;
+        border: 1.5px solid var(--ta-accent);
+        color: var(--ta-accent);
+        transform: skewX(-12deg);
     }
 
-    /* ======================= C · 大字索引 ======================= */
-    .lc-head { border-bottom-width: 6px; }
-    .lc-list { display: flex; flex-direction: column; }
-    .lc-row {
-        display: grid;
-        grid-template-columns: clamp(4.5rem, 6vw, 6.5rem) minmax(0, 1fr);
-        gap: 1rem;
-        align-items: start;
-        padding: 1.1rem 0.6rem;
-        border-bottom: 3px solid var(--ta-ink);
-        /* 悬停时底色从中间那一侧扫过来：右栏从左往右，左栏从右往左 */
-        background-image: linear-gradient(var(--ta-accent), var(--ta-accent));
-        background-repeat: no-repeat;
-        background-position: left center;
-        background-size: 0% 100%;
-        transition: background-size 350ms ease;
-    }
-    .ta-side-tech .lc-row {
-        grid-template-columns: minmax(0, 1fr) clamp(4.5rem, 6vw, 6.5rem);
-        background-position: right center;
-    }
-    .ta-side-tech .lc-thumb { order: 2; }
-    .lc-row:hover { background-size: 100% 100%; }
-    .lc-thumb {
-        position: relative;
-        aspect-ratio: 1;
-        overflow: hidden;
-        border: 3px solid var(--ta-ink);
-        border-radius: 50%;
-        background-color: var(--ta-paper);
-    }
-    .lc-body { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
-    .lc-code {
+    /* ======================= C · 明日方舟 ======================= */
+    .pc-mono {
         font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+    }
+    /* 栏外侧一条竖排小字 */
+    .pc-vertical {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.35em;
+        writing-mode: vertical-rl;
+        opacity: 0.45;
+        border-inline: 1px solid color-mix(in srgb, var(--ta-ink) 40%, transparent);
+        padding-inline: 0.3rem;
+        text-align: center;
+    }
+    .ta-side-tech .pc-vertical { left: -2.2rem; }
+    .ta-side-art .pc-vertical { right: -2.2rem; }
+    .pc-head { position: relative; display: flex; flex-direction: column; gap: 0.25rem; padding-bottom: 0.7rem; border-bottom: 1px solid var(--ta-ink); }
+    .pc-head::after {
+        content: "";
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        width: 4rem;
+        height: 5px;
+        background-color: var(--ta-accent);
+    }
+    .ta-side-tech .pc-head::after { left: auto; right: 0; }
+    .ta-side-tech .pc-head { align-items: flex-end; }
+    .pc-head-meta { display: flex; align-items: center; gap: 0.6rem; }
+    .ta-side-tech .pc-head-meta { flex-direction: row-reverse; }
+    /* 警示斜纹 */
+    .pc-hazard {
+        width: 3.5rem;
+        height: 0.7rem;
+        background-image: repeating-linear-gradient(-45deg, var(--ta-ink) 0 6px, var(--ta-accent) 6px 12px);
+    }
+    .pc-head-name { font-weight: 900; font-size: clamp(2rem, 3.2vw, 3.2rem); line-height: 1.05; }
+    .pc-head-en { font-family: 'Roboto', sans-serif; font-weight: 300; font-size: 0.95rem; letter-spacing: 0.5em; opacity: 0.6; }
+    .pc-list { display: flex; flex-direction: column; gap: 0.9rem; }
+    /* 切角面板 */
+    .pc-row {
+        position: relative;
+        display: grid;
+        grid-template-columns: 38% minmax(0, 1fr);
+        gap: 1rem;
+        padding: 0.7rem 1.2rem 0.8rem 0.7rem;
+        background-color: var(--ta-paper);
+        clip-path: polygon(0 0, calc(100% - 1.1rem) 0, 100% 1.1rem, 100% 100%, 1.1rem 100%, 0 calc(100% - 1.1rem));
+        transition: background-color 180ms ease, color 180ms ease;
+    }
+    .ta-side-tech .pc-row { grid-template-columns: minmax(0, 1fr) 38%; padding: 0.7rem 0.7rem 0.8rem 1.2rem; }
+    .ta-side-tech .pc-thumb { order: 2; }
+    /* 外侧一道黄色竖条，悬停时变宽 */
+    .pc-row::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: 5px;
+        background-color: var(--ta-accent);
+        transition: width 200ms ease;
+    }
+    .ta-side-tech .pc-row::after { right: auto; left: 0; }
+    .pc-row:hover { background-color: var(--ta-ink); color: var(--ta-paper); }
+    .pc-row:hover::after { width: 10px; }
+    .pc-thumb {
+        position: relative;
+        aspect-ratio: 16 / 10;
+        overflow: hidden;
+        background-color: var(--ta-ink);
+    }
+    /* 平时黑白，悬停上色 */
+    .pc-thumb :global(img) { filter: grayscale(1) contrast(1.1); transition: filter 300ms ease; }
+    .pc-row:hover .pc-thumb :global(img) { filter: none; }
+    .pc-thumb-code {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        padding: 0.1rem 0.45rem;
+        font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+        font-size: 0.68rem;
         font-weight: 800;
-        opacity: 0.6;
+        background-color: var(--ta-accent);
+        color: var(--ta-ink);
     }
-    .lc-title {
-        font-weight: 900;
-        font-size: clamp(1.25rem, 1.8vw, 1.9rem);
-        line-height: 1.15;
-        letter-spacing: -0.01em;
+    .ta-side-tech .pc-thumb-code { left: auto; right: 0; }
+    .pc-body { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
+    .pc-row-meta { opacity: 0.55; }
+    .pc-row-meta b { color: var(--ta-accent); font-weight: 900; }
+    .pc-title { font-weight: 900; font-size: 1.05rem; line-height: 1.25; }
+    .pc-caption { font-weight: 500; font-size: 0.8rem; line-height: 1.45; opacity: 0.8; }
+    .pc-tags { display: flex; flex-wrap: wrap; gap: 0.25rem 0.8rem; font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 0.68rem; font-weight: 700; }
+    .ta-side-tech .pc-tags { justify-content: flex-end; }
+    .pc-tags li::before { content: "▪ "; color: var(--ta-accent); }
+    /* 吉祥物背后：刻度圆环 + 两个角标 */
+    .pc-ring {
+        position: absolute;
+        top: 18%;
+        left: 50%;
+        width: 150%;
+        aspect-ratio: 1;
+        translate: -50% 0;
+        border-radius: 50%;
+        background: repeating-conic-gradient(color-mix(in srgb, var(--ta-ink) 55%, transparent) 0 0.6deg, transparent 0.6deg 6deg);
+        mask-image: radial-gradient(circle, transparent 62%, #000 62.5%, #000 69%, transparent 69.5%);
+        -webkit-mask-image: radial-gradient(circle, transparent 62%, #000 62.5%, #000 69%, transparent 69.5%);
     }
-    .lc-caption { font-weight: 600; font-size: 0.85rem; line-height: 1.5; opacity: 0.85; }
-    .lc-tags { font-size: 0.75rem; font-weight: 800; letter-spacing: 0.04em; white-space: pre-wrap; color: color-mix(in srgb, var(--ta-accent) 60%, var(--ta-ink)); }
-    .lc-row:hover .lc-tags { color: var(--ta-ink); }
+    .pc-ring::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        border: 1px solid color-mix(in srgb, var(--ta-ink) 45%, transparent);
+    }
+    .pc-corner {
+        position: absolute;
+        width: 2.2rem;
+        height: 2.2rem;
+        border-color: var(--ta-ink);
+        border-style: solid;
+    }
+    .pc-corner-tl { top: -0.5rem; left: -1rem; border-width: 3px 0 0 3px; }
+    .pc-corner-br { bottom: -0.5rem; right: -1rem; border-width: 0 3px 3px 0; }
+    .pc-mascot-label {
+        position: absolute;
+        bottom: 4%;
+        left: -0.5rem;
+        padding: 0.5rem 0.15rem;
+        background-color: var(--ta-ink);
+        color: var(--ta-accent);
+        writing-mode: vertical-rl;
+        rotate: 180deg;
+    }
 
     /* ---------- 窄屏：吉祥物缩小放最上面，两栏依次往下，全部左对齐 ---------- */
     @media (max-width: 1023px) {
         .ta-stage { grid-template-columns: 1fr; }
-        .ta-mascot { order: -1; width: 7rem; margin: 0 auto; }
+        .ta-mascot { order: -1; width: 9rem; margin: 0 auto; }
         .ta-side-tech { text-align: left; }
-        .ta-side-tech .ta-tags { justify-content: flex-start; }
-        .ta-side-tech .ta-head { align-items: flex-start; }
-        .ta-side-tech .ta-code { align-self: flex-start; }
-        .ta-side-tech .la-row { grid-template-columns: 36% minmax(0, 1fr); }
-        .ta-side-tech .la-thumb,
-        .ta-side-tech .lc-thumb { order: 0; }
-        .ta-side-tech .lb-bar { flex-direction: row; }
-        .ta-side-tech .lb-arrow { scale: 1 1; }
-        .ta-side-tech .lc-row {
-            grid-template-columns: clamp(4.5rem, 6vw, 6.5rem) minmax(0, 1fr);
-            background-position: left center;
-        }
+        .pa-band, .pc-vertical, .pc-ring, .pc-mascot-label { display: none; }
+        .ta-side-tech .pa-head,
+        .ta-side-tech .pb-head,
+        .ta-side-tech .pc-head,
+        .ta-side-tech .pb-body { align-items: flex-start; }
+        .ta-side-tech .pa-head-name,
+        .ta-side-tech .pc-head-meta { flex-direction: row; }
+        .ta-side-tech .pa-list > li { padding-right: 0; padding-left: calc(var(--i) * 0.9rem); }
+        .ta-side-tech .pa-row { grid-template-columns: auto minmax(0, 1fr) 30%; padding: 0.8rem 1.6rem 0.8rem 1.2rem; }
+        .ta-side-tech .pa-num, .ta-side-tech .pa-body, .ta-side-tech .pa-thumb,
+        .ta-side-tech .pb-thumb, .ta-side-tech .pc-thumb { order: 0; }
+        .ta-side-tech .pa-row::before { right: auto; left: 0.5rem; }
+        .ta-side-tech .pb-row,
+        .ta-side-tech .pc-row { grid-template-columns: 36% minmax(0, 1fr); }
+        .ta-side-tech .pb-code { align-self: flex-start; }
+        .ta-side-tech .pb-tags,
+        .ta-side-tech .pc-tags { justify-content: flex-start; }
+        .ta-side-tech .pc-head::after { right: auto; left: 0; }
     }
     @media (max-width: 519px) {
-        .la-row,
-        .ta-side-tech .la-row { grid-template-columns: 1fr; }
+        .pa-row, .ta-side-tech .pa-row { grid-template-columns: auto minmax(0, 1fr); }
+        .pa-thumb { display: none; }
+        .pb-row, .ta-side-tech .pb-row,
+        .pc-row, .ta-side-tech .pc-row { grid-template-columns: 1fr; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .la-row, .lb-link, .lb-fold, .lb-num, .lb-arrow, .lc-row, .la-thumb :global(img) { transition: none; }
+        .pa-row, .pb-row, .pc-row, .pc-row::after, .pc-thumb :global(img) { transition: none; }
     }
 </style>
