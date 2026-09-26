@@ -96,7 +96,9 @@ export const techArtWorks: TechArtWork[] = [
 ];
 
 export const techArtLabels = {
-    // 左栏 TECHNICAL 下面那条黄条上的字
+    // 左栏大标题：本地语言的「技术」+ 英文 Technical（英文界面只显示 Technical）
+    techHeading: { en: "Technical", zh: "技术 Technical", ja: "技術 Technical", ko: "기술 Technical" } as Multilingual,
+    // 左栏大标题下面那条黄条上的字
     tech: { en: "PCG · Geometry Processing · Neural Rendering", zh: "PCG · 几何处理 · 神经渲染", ja: "PCG · ジオメトリ処理 · ニューラルレンダリング", ko: "PCG · 지오메트리 처리 · 뉴럴 렌더링" } as Multilingual,
     art: { en: "Art", zh: "美术", ja: "アート", ko: "아트" } as Multilingual,
 };

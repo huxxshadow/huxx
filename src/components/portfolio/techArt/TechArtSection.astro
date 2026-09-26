@@ -46,7 +46,7 @@ const sides = (["tech", "art"] as const).map((side) => ({
         code: `${side === "tech" ? "T" : "A"}-${String(i + 1).padStart(2, "0")}`,
     })),
     name: t(side === "tech" ? L.tech : L.art),
-    en: side === "tech" ? "TECHNICAL" : "ART",
+    heading: side === "tech" ? t(L.techHeading) : "ART",
     reveal: side === "tech" ? "right" : "left",
 }));
 
@@ -84,7 +84,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         {sides.map((s) => (
                 <div class:list={["ta-side", `ta-side-${s.side}`]}>
                     <div class="pa-head" data-reveal={s.reveal} data-reveal-once>
-                        <span class="pa-head-en">{s.en}</span>
+                        <span class="pa-head-en">{s.heading}</span>
                         <span class="pa-head-name">{s.name}</span>
                     </div>
                     <ol class="pa-list" style={`--n: ${s.items.length};`} data-reveal-children={s.reveal} data-reveal-once>
