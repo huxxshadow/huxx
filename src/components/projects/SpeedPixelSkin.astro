@@ -182,8 +182,9 @@ const fontFace = [
     }
     html[lang="ja"]:has(.skin-sp) { --sp-pixel-cjk: "SP Pixel JP"; }
     html[lang="ko"]:has(.skin-sp) { --sp-pixel-cjk: "SP Pixel KR"; }
-    /* 中文等正文也用像素字（英文正文保持原字体，Awesome 9 只有大写适合做标题） */
-    html:is([lang="zh"], [lang="ja"], [lang="ko"]) .skin-sp .project-prose :is(p, li, figcaption) {
+    /* 正文和 hero 简介都用像素字。Fusion Pixel 自带拉丁字母，英文正文也用它（Awesome 9 只适合做大写标题） */
+    .skin-sp .project-prose :is(p, li, figcaption, td, th),
+    .skin-sp .project-hero-screen p.whitespace-pre-line {
         font-family: var(--sp-pixel-cjk), var(--theme-font-active), sans-serif;
     }
     /* 背景：两侧大号游戏图标 + 满铺小图标 + 像素格。图都是 nearest 放大的整像素 */
