@@ -45,7 +45,7 @@ export const techArtWorks: TechArtWork[] = [
             ja: "AI が生成したピクセルアートを整える：ピクセル化、減色、エッジ修復、ピクセルブロック検出。GPU 加速にも対応。",
             ko: "AI가 생성한 픽셀아트를 다듬습니다: 픽셀화, 색상 양자화, 가장자리 보정, 픽셀 블록 검출, 선택적 GPU 가속.",
         },
-        tags: { en: "Python · Pixel Art · Colour Quantisation", zh: "Python · 像素画 · 颜色量化", ja: "Python · ピクセルアート · 減色", ko: "Python · 픽셀아트 · 색상 양자화" },
+        tags: { en: "Python · Image Processing", zh: "Python · 图像处理", ja: "Python · 画像処理", ko: "Python · 이미지 처리" },
     },
     {
         projectId: "technical-project-raymarching-fractal-morphing",
