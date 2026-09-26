@@ -147,6 +147,19 @@ const localeDescription = description || t(SITE_DESCRIPTION);
         root.classList.add('motion-ready', 'motion-armed');
     });
 
+    // Astro 客户端换页（比如切换语言）换进来的 <video> 播不了：新页面的内容是先在一个没有浏览上下文的文档里
+    // 解析好再搬过来的，视频在那里选源就失败了（没有可用的源），搬进页面后也不会重试。
+    // 换页完成后对这些视频重新 load() 一次，自动播放的再手动 play()（都是静音的，浏览器允许）
+    document.addEventListener('astro:page-load', () => {
+        document.querySelectorAll<HTMLVideoElement>('video').forEach((v) => {
+            if (v.readyState === 0 || v.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) v.load();
+            if (v.autoplay && v.paused) {
+                v.muted = true;
+                v.play().catch(() => {});
+            }
+        });
+    });
+
     document.addEventListener('astro:page-load', () => {
         root.classList.add('motion-ready', 'motion-armed');
 
