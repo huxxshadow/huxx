@@ -93,7 +93,7 @@ export const techArtWorks: TechArtWork[] = [
     {
         projectId: "game-project-eel-on-mask",
         side: "art",
-        tags: { en: "Unity · Puzzle Design", zh: "Unity · 解谜设计", ja: "Unity · パズルデザイン", ko: "Unity · 퍼즐 디자인" },
+        tags: { en: "2D Shader · NPR", zh: "2D Shader · NPR", ja: "2D シェーダー · NPR", ko: "2D 셰이더 · NPR" },
     },
     {
         projectId: "game-project-arcane-samurai",
