@@ -88,24 +88,13 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         </div>
     </header>
 
-    <!-- 最左 / 最右的触发条：鼠标放上去才展开这一侧（只在宽屏、有鼠标时显示） -->
-    <div class="ta-trigger ta-trigger-tech" data-trigger="tech" aria-hidden="true">
-        <span class="ta-trigger-arrow">›</span>
-        <span class="ta-trigger-label">{t(L.expandTech)}</span>
-        <span class="ta-trigger-arrow">›</span>
-    </div>
-    <div class="ta-trigger ta-trigger-art" data-trigger="art" aria-hidden="true">
-        <span class="ta-trigger-arrow">‹</span>
-        <span class="ta-trigger-label">{t(L.expandArt)}</span>
-        <span class="ta-trigger-arrow">‹</span>
-    </div>
-
     <div class="ta-stage pa">
         {sides.map((s) => (
                 <div class:list={["ta-side", `ta-side-${s.side}`]}>
-                    <div class="pa-head" data-reveal={s.reveal} data-reveal-once>
+                    <!-- 标题 + 黄条就是展开这一栏的触发区：鼠标放上去展开；黄条靠三角的一端有个小箭头提示 -->
+                    <div class="pa-head" data-trigger={s.side} data-reveal={s.reveal} data-reveal-once>
                         <span class="pa-head-en">{s.heading}</span>
-                        <span class="pa-head-name">{s.name}</span>
+                        <span class="pa-head-name">{s.name}<span class="pa-head-arrow" aria-hidden="true">{s.side === "tech" ? "»" : "«"}</span></span>
                     </div>
                     <ol class="pa-list" style={`--n: ${s.items.length};`} data-reveal-children={s.reveal} data-reveal-once>
                         {s.items.map((w, i) => (
@@ -134,7 +123,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
 </section>
 
 <script>
-    // 鼠标碰到最左的触发条 → data-focus="tech"，最右的 → "art"；展开后越过三角或离开这个 Part → 清空。
+    // 鼠标碰到左栏标题区 → data-focus="tech"，右栏标题区 → "art"；展开后越过三角或离开这个 Part → 清空。
     // 退出的边界按「没有位移时」的栏位和展开后的三角边算（offsetLeft 不受 transform 影响）。
     // 同时量出吉祥物中线（--c）、它移到另一栏正中要走的距离（--to-art / --to-tech）、倾斜角（--tilt），
     // 三种状态下背景三角的 transform（--tri-none-* / --tri-tech-* / --tri-art-*），
@@ -444,8 +433,8 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                 else apply();
             };
 
-            // 只有鼠标进到最左 / 最右的触发条才展开那一侧；展开后一直到斜过去的三角边上都算这一侧，
-            // 越过就回到中间（要再展开，得重新碰一下触发条）
+            // 只有鼠标进到这一栏的标题区（大标题 + 黄条）才展开那一侧；展开后一直到斜过去的三角边上都算这一侧，
+            // 越过就回到中间（要再展开，得重新碰一下标题区）
             section.querySelectorAll<HTMLElement>("[data-trigger]").forEach((el) => {
                 el.addEventListener("pointerenter", (e) => {
                     if (!wide.matches || e.pointerType !== "mouse") return;
@@ -540,47 +529,6 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         pointer-events: none;
     }
     [data-focus="art"] .ta-mascot { transform: translateX(var(--to-tech, 0px)) rotate(calc(-1 * var(--tilt, 0deg))); }
-
-    /* ---------- 最左 / 最右的触发条 ---------- */
-    .ta-trigger {
-        position: absolute;
-        top: 0;
-        bottom: var(--bar-h);
-        z-index: 20;
-        width: clamp(2.75rem, 3.2vw, 3.5rem);
-        display: none;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 0.9rem;
-        background-color: color-mix(in srgb, var(--ta-accent) 82%, transparent);
-        color: var(--ta-paper);
-        cursor: pointer;
-        transition: opacity 300ms ease, background-color 160ms ease, width 160ms ease;
-    }
-    .ta-trigger-tech { left: 0; }
-    .ta-trigger-art { right: 0; }
-    .ta-trigger:hover { background-color: var(--ta-accent); width: clamp(3.25rem, 3.8vw, 4.1rem); }
-    .ta-trigger-label {
-        writing-mode: vertical-rl;
-        font-weight: 900;
-        font-size: 1.05rem;
-        letter-spacing: 0.25em;
-    }
-    .ta-trigger-arrow {
-        font-weight: 900;
-        font-size: 1.8rem;
-        line-height: 1;
-        animation: ta-nudge 1.4s ease-in-out infinite;
-    }
-    .ta-trigger-art .ta-trigger-arrow { animation-name: ta-nudge-left; }
-    @keyframes ta-nudge { 50% { translate: 4px 0; } }
-    @keyframes ta-nudge-left { 50% { translate: -4px 0; } }
-    /* 展开时触发条淡出 */
-    [data-focus] .ta-trigger { opacity: 0; pointer-events: none; }
-    @media (min-width: 1024px) and (hover: hover) {
-        .ta-trigger { display: flex; }
-    }
 
     .ta-bottom-bar {
         position: absolute;
@@ -677,6 +625,8 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         color: var(--ta-paper);
         transform: skewX(-14deg);
     }
+    /* 黄条末端的箭头只在宽屏（能展开时）显示 */
+    .pa-head-arrow { display: none; }
     /* 宽屏的黄条：梯形——外侧伸到画面边缘（section 的 overflow: hidden 在屏幕边裁掉），
        靠三角的一侧是斜边，落在下面卡片斜边连成的那条线上（--bar-t / --bar-b 由脚本算，相对黄条自身左边）。
        不再整体 skew，改用 clip-path 切，字保持斜体，仍然从栏的外边开始排 */
@@ -686,18 +636,42 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
             transform: none;
             transition: clip-path var(--ta-move);
         }
+        /* 标题区是展开的触发区：悬停时黄条往三角伸出 --grow，末端的箭头往前挪 */
+        .pa-head { cursor: pointer; }
+        .pa-head-name { --grow: 0px; position: relative; }
+        .pa-head:hover .pa-head-name { --grow: 1.1rem; }
         .ta-side-tech .pa-head-name {
             margin-left: -100vw;
             margin-right: -50vw;
             padding-left: calc(100vw + 1rem);
-            clip-path: polygon(0 0, var(--bar-t, 100%) 0, var(--bar-b, 100%) 100%, 0 100%);
+            clip-path: polygon(0 0, calc(var(--bar-t, 100%) + var(--grow)) 0, calc(var(--bar-b, 100%) + var(--grow)) 100%, 0 100%);
         }
         .ta-side-art .pa-head-name {
             margin-right: -100vw;
             margin-left: -50vw;
             padding-right: calc(100vw + 1rem);
-            clip-path: polygon(var(--bar-t, 0%) 0, 100% 0, 100% 100%, var(--bar-b, 0%) 100%);
+            clip-path: polygon(calc(var(--bar-t, 0%) - var(--grow)) 0, 100% 0, 100% 100%, calc(var(--bar-b, 0%) - var(--grow)) 100%);
         }
+        /* 箭头贴着黄条靠三角那条斜边的内侧 */
+        .pa-head-arrow {
+            display: inline;
+            position: absolute;
+            top: 50%;
+            translate: 0 -50%;
+            font-style: normal;
+            font-size: 1.15em;
+            line-height: 1;
+            animation: ta-nudge 1.4s ease-in-out infinite;
+            transition: left var(--ta-move), opacity 250ms ease;
+        }
+        .ta-side-tech .pa-head-arrow { left: calc(min(var(--bar-t, 100%), var(--bar-b, 100%)) + var(--grow) - 1.9rem); }
+        .ta-side-art .pa-head-arrow {
+            left: calc(max(var(--bar-t, 0%), var(--bar-b, 0%)) - var(--grow) + 0.9rem);
+            animation-name: ta-nudge-left;
+        }
+        [data-focus] .pa-head-arrow { opacity: 0; }
+        @keyframes ta-nudge { 50% { translate: 5px -50%; } }
+        @keyframes ta-nudge-left { 50% { translate: -5px -50%; } }
         [data-focus="tech"] .ta-side-tech .pa-head-name {
             clip-path: polygon(0 0, var(--bar-t-f, 100%) 0, var(--bar-b-f, 100%) 100%, 0 100%);
         }
@@ -895,7 +869,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
 
     @media (prefers-reduced-motion: reduce) {
         [data-ta-section] { --ta-move: 0ms linear; }
-        .ta-trigger-arrow { animation: none; }
+        .pa-head-arrow { animation: none; }
         .pa-text, .pa-thumb :global(img) { transition: none; }
     }
 </style>
