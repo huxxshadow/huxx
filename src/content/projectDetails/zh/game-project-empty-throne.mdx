@@ -14,11 +14,13 @@ import mirrorClip from '@/assets/projects/game-project-empty-throne/clips/mirror
 import mirrorClipPoster from '@/assets/projects/game-project-empty-throne/clips/mirror-zh-poster.webp?url';
 import novelClip from '@/assets/projects/game-project-empty-throne/clips/novel-zh.mp4?url';
 import novelClipPoster from '@/assets/projects/game-project-empty-throne/clips/novel-zh-poster.webp?url';
-import castSnow from '@/assets/projects/game-project-empty-throne/cast/snow.png?url';
-import castWitch from '@/assets/projects/game-project-empty-throne/cast/witch.png?url';
+import castHero from '@/assets/projects/game-project-empty-throne/cast/hero.png?url';
+import castQueen from '@/assets/projects/game-project-empty-throne/cast/queen.png?url';
 import castHunter from '@/assets/projects/game-project-empty-throne/cast/hunter.png?url';
 import castDwarf from '@/assets/projects/game-project-empty-throne/cast/dwarf.png?url';
 import castGuard from '@/assets/projects/game-project-empty-throne/cast/guard.png?url';
+import castNobles from '@/assets/projects/game-project-empty-throne/cast/nobles.png?url';
+import castMirror from '@/assets/projects/game-project-empty-throne/cast/mirror.png?url';
 
 ## 官方宣传片
 
@@ -34,24 +36,32 @@ import castGuard from '@/assets/projects/game-project-empty-throne/cast/guard.pn
 
 <div class="et-cast">
     <figure>
-        <img src={castSnow} alt="白雪公主" width="256" height="256" loading="lazy" />
-        <figcaption>白雪公主</figcaption>
+        <img src={castHero} alt="主角" width="240" height="288" loading="lazy" />
+        <figcaption>主角</figcaption>
     </figure>
     <figure>
-        <img src={castWitch} alt="女巫" width="256" height="256" loading="lazy" />
-        <figcaption>女巫</figcaption>
+        <img src={castQueen} alt="白雪王后" width="240" height="288" loading="lazy" />
+        <figcaption>白雪王后</figcaption>
     </figure>
     <figure>
-        <img src={castHunter} alt="猎人" width="256" height="256" loading="lazy" />
+        <img src={castHunter} alt="猎人" width="240" height="288" loading="lazy" />
         <figcaption>猎人</figcaption>
     </figure>
     <figure>
-        <img src={castDwarf} alt="小矮人" width="256" height="256" loading="lazy" />
+        <img src={castDwarf} alt="小矮人" width="240" height="288" loading="lazy" />
         <figcaption>小矮人</figcaption>
     </figure>
     <figure>
-        <img src={castGuard} alt="守卫" width="256" height="256" loading="lazy" />
-        <figcaption>守卫</figcaption>
+        <img src={castGuard} alt="侍卫" width="240" height="288" loading="lazy" />
+        <figcaption>侍卫</figcaption>
+    </figure>
+    <figure>
+        <img src={castNobles} alt="贵族" width="240" height="288" loading="lazy" />
+        <figcaption>贵族</figcaption>
+    </figure>
+    <figure>
+        <img src={castMirror} alt="魔镜" width="240" height="288" loading="lazy" />
+        <figcaption>魔镜</figcaption>
     </figure>
 </div>
 
@@ -89,11 +99,6 @@ import castGuard from '@/assets/projects/game-project-empty-throne/cast/guard.pn
 
 《空王座》的核心体验建立在两条并行又互相支撑的设计线上：一条是 **以探索、对话和线索推理为主的点击解谜线**，另一条则是 **通过节奏与旋律推进情绪表达和剧情揭示的音乐交互线**。我们通过类似迪士尼音乐剧的形式，用音游来展示剧情中的高潮演出。
 
-<figure>
-    <video class="clip" src={puzzleClip} poster={puzzleClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="场景交互式解谜演示"></video>
-    <figcaption>场景交互式解谜：点击探索场景、收集线索并推进剧情</figcaption>
-</figure>
-
 因此，我在设计阶段重点思考的是：如何让叙事不只是被动呈现，而是能够通过机制转化为玩家行为。最终，项目逐步形成了几个核心交互支点。
 
 首先是 **魔镜真相系统**。这一机制是整个项目中最具代表性的设计之一。玩家并不会直接获得完整答案，而是需要通过特定的观察、对话和条件触发，让“被隐藏的真相”逐步显现出来。相比传统的笔记本式线索堆叠，这套系统拥有更强的主题一致性：镜子本身既是童话语境中的重要意象，也天然适合作为“揭示真实/扭曲现实”的交互媒介。它让谜题机制不再是纯工具性的，而成为叙事表达的一部分。
@@ -105,10 +110,16 @@ import castGuard from '@/assets/projects/game-project-empty-throne/cast/guard.pn
 
 其次是 **对话推理式谜题**。对话在本作中并非只是剧情播放工具，而是承载了信息筛选、角色判断和线索拼接的核心环节。我在系统设计中尽可能让对话分支具备更强的逻辑意义，使玩家能够从语言表层之下发现角色的矛盾、谎言与情绪变化，再通过推理将这些碎片信息整合起来。这种设计方式使文字内容与玩法本身结合得更紧密，也提高了叙事互动的参与感。
 
-<figure>
-    <video class="clip" src={novelClip} poster={novelClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="交互式小说演示"></video>
-    <figcaption>交互式小说：对话推进与分支选择</figcaption>
-</figure>
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={novelClip} poster={novelClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="交互式小说演示"></video>
+        <figcaption>交互式小说：对话推进与分支选择</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={puzzleClip} poster={puzzleClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="场景交互式解谜演示"></video>
+        <figcaption>场景交互式解谜：点击探索场景、收集线索并推进剧情</figcaption>
+    </figure>
+</div>
 
 第三部分则是 **音乐演出与节奏玩法**。项目中的节奏系统并非独立小游戏式插入，而是服务于氛围、剧情与角色表达的关键结构。我们希望音乐不只是背景，而是能成为一种”触发故事”与”完成解谜”的方式。因此，在设计上我将节奏玩法与特定情节段落绑定，使玩家在跟随节拍输入、完成旋律演奏或触发关键节点时，既能获得明确的操作反馈，也能同步感受到剧情推进和情绪释放。
 

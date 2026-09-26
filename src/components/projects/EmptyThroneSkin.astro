@@ -230,11 +230,11 @@ const vars = [
         opacity: 1;
     }
 
-    /* 宣传片下面的角色头像一排：像素头像放在物品框里，名字用名字条 */
+    /* 宣传片下面的角色胸像一排：直接用游戏里的胸像卡（自带底色和黑框，所以不再套物品框），名字用名字条 */
     .skin-et .project-prose .et-cast {
         display: grid;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-        gap: clamp(0.75rem, 2vw, 1.75rem);
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap: clamp(0.5rem, 1.5vw, 1.25rem);
         margin: 2rem 0 0.5rem;
     }
     .skin-et .project-prose .et-cast figure {
@@ -243,12 +243,14 @@ const vars = [
     }
     .skin-et .project-prose .et-cast img {
         width: 100%;
-        aspect-ratio: 1;
+        aspect-ratio: 240 / 288;
         height: auto;
         margin: 0 !important;
+        border: 0 !important;
+        border-image: none !important;
+        background: none;
         image-rendering: pixelated;
-        object-fit: contain;
-        background: radial-gradient(circle at 50% 60%, color-mix(in srgb, var(--et-wine) 70%, transparent) 0%, var(--et-deep) 75%);
+        filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.35));
         transition: transform 160ms ease;
     }
     .skin-et .project-prose .et-cast figure:hover img { transform: translateY(-4px); }
@@ -258,18 +260,19 @@ const vars = [
         border-color: transparent;
         border-image: var(--et-namebar) 12 fill / 10px / 0 stretch;
         image-rendering: pixelated;
-        padding: 0 0.5rem;
+        padding: 0 0.4rem;
         color: var(--et-cream);
         font-weight: 800;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         opacity: 1;
         white-space: nowrap;
     }
-    @media (max-width: 767px) {
-        .skin-et .project-prose .et-cast { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    @media (max-width: 1023px) {
+        .skin-et .project-prose .et-cast { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     }
-    @media (max-width: 419px) {
-        .skin-et .project-prose .et-cast { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (max-width: 519px) {
+        .skin-et .project-prose .et-cast { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .skin-et .project-prose .et-cast figcaption { font-size: 0.75rem; }
     }
 
     /* 分隔线：一排魔镜 */

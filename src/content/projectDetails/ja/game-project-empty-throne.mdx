@@ -14,11 +14,13 @@ import mirrorClip from '@/assets/projects/game-project-empty-throne/clips/mirror
 import mirrorClipPoster from '@/assets/projects/game-project-empty-throne/clips/mirror-en-poster.webp?url';
 import novelClip from '@/assets/projects/game-project-empty-throne/clips/novel-en.mp4?url';
 import novelClipPoster from '@/assets/projects/game-project-empty-throne/clips/novel-en-poster.webp?url';
-import castSnow from '@/assets/projects/game-project-empty-throne/cast/snow.png?url';
-import castWitch from '@/assets/projects/game-project-empty-throne/cast/witch.png?url';
+import castHero from '@/assets/projects/game-project-empty-throne/cast/hero.png?url';
+import castQueen from '@/assets/projects/game-project-empty-throne/cast/queen.png?url';
 import castHunter from '@/assets/projects/game-project-empty-throne/cast/hunter.png?url';
 import castDwarf from '@/assets/projects/game-project-empty-throne/cast/dwarf.png?url';
 import castGuard from '@/assets/projects/game-project-empty-throne/cast/guard.png?url';
+import castNobles from '@/assets/projects/game-project-empty-throne/cast/nobles.png?url';
+import castMirror from '@/assets/projects/game-project-empty-throne/cast/mirror.png?url';
 
 ## 公式トレーラー
 
@@ -35,24 +37,32 @@ import castGuard from '@/assets/projects/game-project-empty-throne/cast/guard.pn
 
 <div class="et-cast">
     <figure>
-        <img src={castSnow} alt="白雪姫" width="256" height="256" loading="lazy" />
-        <figcaption>白雪姫</figcaption>
+        <img src={castHero} alt="主人公" width="240" height="288" loading="lazy" />
+        <figcaption>主人公</figcaption>
     </figure>
     <figure>
-        <img src={castWitch} alt="魔女" width="256" height="256" loading="lazy" />
-        <figcaption>魔女</figcaption>
+        <img src={castQueen} alt="白雪王妃" width="240" height="288" loading="lazy" />
+        <figcaption>白雪王妃</figcaption>
     </figure>
     <figure>
-        <img src={castHunter} alt="狩人" width="256" height="256" loading="lazy" />
+        <img src={castHunter} alt="狩人" width="240" height="288" loading="lazy" />
         <figcaption>狩人</figcaption>
     </figure>
     <figure>
-        <img src={castDwarf} alt="小人" width="256" height="256" loading="lazy" />
+        <img src={castDwarf} alt="小人" width="240" height="288" loading="lazy" />
         <figcaption>小人</figcaption>
     </figure>
     <figure>
-        <img src={castGuard} alt="衛兵" width="256" height="256" loading="lazy" />
+        <img src={castGuard} alt="衛兵" width="240" height="288" loading="lazy" />
         <figcaption>衛兵</figcaption>
+    </figure>
+    <figure>
+        <img src={castNobles} alt="貴族" width="240" height="288" loading="lazy" />
+        <figcaption>貴族</figcaption>
+    </figure>
+    <figure>
+        <img src={castMirror} alt="魔鏡" width="240" height="288" loading="lazy" />
+        <figcaption>魔鏡</figcaption>
     </figure>
 </div>
 
@@ -90,11 +100,6 @@ import castGuard from '@/assets/projects/game-project-empty-throne/cast/guard.pn
 
 *空王座*のコア体験は2つの並行して互いを支え合うデザイントラックの上に構築されています。一つは**探索・対話・手がかりの推理を主とするポイント&クリック謎解き**であり、もう一つは**リズムとメロディーを通じて感情表現とナラティブの解明を推進する音楽インタラクション**です。ディズニーのミュージカルのような形で、物語のクライマックスとなる演出をリズムゲームで見せています。
 
-<figure>
-    <video class="clip" src={puzzleClip} poster={puzzleClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="シーン探索型謎解きのデモ"></video>
-    <figcaption>シーン探索型の謎解き：クリックで探索し、手がかりを集めて物語を進める</figcaption>
-</figure>
-
 私のデザインの核心的な問いは：ナラティブがただ受動的に提示されるだけでなく、どうすれば機制を通じてプレイヤーの行動に変換できるのか、ということでした。プロジェクトは徐々にいくつかのコアインタラクションの軸を形成しました。
 
 まず**魔鏡の真実システム**です。このメカニズムはプロジェクト全体で最も代表的なデザインの一つです。プレイヤーは完全な答えを直接受け取るのではなく、特定の観察・対話・条件のトリガーを通じて「隠された真実」を徐々に現れさせる必要があります。従来のノート式の手がかり積み重ねと比べると、このシステムはより強いテーマの一貫性を持っています。鏡自体がおとぎ話の文脈での重要なイメージであり、「現実を明かす/現実を歪める」というインタラクティブな媒体として自然に適しています。謎解きメカニズムが単なる機能的なものではなく、ナラティブ表現の一部となっています。
@@ -106,10 +111,16 @@ import castGuard from '@/assets/projects/game-project-empty-throne/cast/guard.pn
 
 次に**対話推理式謎解き**です。この作品における対話は単なるストーリーの再生ツールではなく、情報フィルタリング・キャラクター判断・手がかりのアセンブリというコアな役割を担っています。システム設計において、対話の分岐がより強い論理的な意味を持つようにすることを目指し、プレイヤーが言語の表面の下からキャラクターの矛盾・嘘・感情の変化を発見し、それらの断片を推理によって統合できるようにしました。このアプローチはテキストコンテンツをゲームプレイ自体により緊密に結びつけ、ナラティブインタラクションへの参加感を高めています。
 
-<figure>
-    <video class="clip" src={novelClip} poster={novelClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="インタラクティブノベルのデモ"></video>
-    <figcaption>インタラクティブノベル：対話の進行と分岐選択</figcaption>
-</figure>
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={novelClip} poster={novelClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="インタラクティブノベルのデモ"></video>
+        <figcaption>インタラクティブノベル：対話の進行と分岐選択</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={puzzleClip} poster={puzzleClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="シーン探索型謎解きのデモ"></video>
+        <figcaption>シーン探索型の謎解き：クリックで探索し、手がかりを集めて物語を進める</figcaption>
+    </figure>
+</div>
 
 第3の要素は**音楽演出とリズムゲームプレイ**です。このプロジェクトのリズムシステムは孤立したミニゲーム的な挿入ではなく、雰囲気・プロット・キャラクター表現に奉仕する重要な構造的要素です。音楽が単なる背景にとどまらず、「物語を引き起こす」と「謎を解く」手段になることを目指しました。デザインにおいて、リズムゲームプレイを特定のナラティブセグメントに結びつけることで、プレイヤーがビートに合わせ・メロディーを完成させ・重要なノードに到達する際に、明確な操作フィードバックを受け取りながら同時にプロットの進行と感情の解放を体験できるようにしました。
 

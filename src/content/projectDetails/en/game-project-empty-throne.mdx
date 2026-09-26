@@ -14,11 +14,13 @@ import mirrorClip from '@/assets/projects/game-project-empty-throne/clips/mirror
 import mirrorClipPoster from '@/assets/projects/game-project-empty-throne/clips/mirror-en-poster.webp?url';
 import novelClip from '@/assets/projects/game-project-empty-throne/clips/novel-en.mp4?url';
 import novelClipPoster from '@/assets/projects/game-project-empty-throne/clips/novel-en-poster.webp?url';
-import castSnow from '@/assets/projects/game-project-empty-throne/cast/snow.png?url';
-import castWitch from '@/assets/projects/game-project-empty-throne/cast/witch.png?url';
+import castHero from '@/assets/projects/game-project-empty-throne/cast/hero.png?url';
+import castQueen from '@/assets/projects/game-project-empty-throne/cast/queen.png?url';
 import castHunter from '@/assets/projects/game-project-empty-throne/cast/hunter.png?url';
 import castDwarf from '@/assets/projects/game-project-empty-throne/cast/dwarf.png?url';
 import castGuard from '@/assets/projects/game-project-empty-throne/cast/guard.png?url';
+import castNobles from '@/assets/projects/game-project-empty-throne/cast/nobles.png?url';
+import castMirror from '@/assets/projects/game-project-empty-throne/cast/mirror.png?url';
 
 ## Official Trailer
 
@@ -35,24 +37,32 @@ import castGuard from '@/assets/projects/game-project-empty-throne/cast/guard.pn
 
 <div class="et-cast">
     <figure>
-        <img src={castSnow} alt="Snow White" width="256" height="256" loading="lazy" />
-        <figcaption>Snow White</figcaption>
+        <img src={castHero} alt="Protagonist" width="240" height="288" loading="lazy" />
+        <figcaption>Protagonist</figcaption>
     </figure>
     <figure>
-        <img src={castWitch} alt="Witch" width="256" height="256" loading="lazy" />
-        <figcaption>Witch</figcaption>
+        <img src={castQueen} alt="Queen Snow White" width="240" height="288" loading="lazy" />
+        <figcaption>Queen Snow White</figcaption>
     </figure>
     <figure>
-        <img src={castHunter} alt="Hunter" width="256" height="256" loading="lazy" />
+        <img src={castHunter} alt="Hunter" width="240" height="288" loading="lazy" />
         <figcaption>Hunter</figcaption>
     </figure>
     <figure>
-        <img src={castDwarf} alt="Dwarf" width="256" height="256" loading="lazy" />
+        <img src={castDwarf} alt="Dwarf" width="240" height="288" loading="lazy" />
         <figcaption>Dwarf</figcaption>
     </figure>
     <figure>
-        <img src={castGuard} alt="Guard" width="256" height="256" loading="lazy" />
+        <img src={castGuard} alt="Guard" width="240" height="288" loading="lazy" />
         <figcaption>Guard</figcaption>
+    </figure>
+    <figure>
+        <img src={castNobles} alt="Nobles" width="240" height="288" loading="lazy" />
+        <figcaption>Nobles</figcaption>
+    </figure>
+    <figure>
+        <img src={castMirror} alt="Magic Mirror" width="240" height="288" loading="lazy" />
+        <figcaption>Magic Mirror</figcaption>
     </figure>
 </div>
 
@@ -90,11 +100,6 @@ My main responsibilities included:
 
 The core experience of *Empty Throne* is built on two parallel and mutually supportive design tracks: one centered on **exploration, dialogue, and clue-based deduction as point-and-click puzzle gameplay**, and the other on **music interaction that advances emotional expression and narrative revelation through rhythm and melody**. In the spirit of a Disney musical, the story's climactic moments are staged as rhythm-game performances.
 
-<figure>
-    <video class="clip" src={puzzleClip} poster={puzzleClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="Interactive scene puzzle demo"></video>
-    <figcaption>Interactive scene puzzles: explore by clicking, collect clues and move the story forward</figcaption>
-</figure>
-
 My key design question was: how can narrative be not just passively presented, but converted into player behavior through mechanics? The project gradually formed several core interaction pillars.
 
 First is the **Magic Mirror Truth System**. This mechanism is one of the most representative designs in the entire project. Players do not receive complete answers directly — they must observe, engage in dialogue, and trigger specific conditions to let "hidden truths" gradually emerge. Compared to traditional notebook-style clue accumulation, this system has stronger thematic consistency: the mirror itself is an important image in fairy-tale contexts, and naturally suits the role of "revealing reality / distorting truth" as an interactive medium. It makes puzzle mechanics not purely functional, but part of narrative expression.
@@ -106,10 +111,16 @@ First is the **Magic Mirror Truth System**. This mechanism is one of the most re
 
 Second is **dialogue-based deduction puzzles**. Dialogue in this game is not merely a story playback tool — it carries the core role of information filtering, character judgment, and clue assembly. In the system design, I aimed to make dialogue branches carry stronger logical meaning, enabling players to discover character contradictions, lies, and emotional shifts beneath the surface of language, then integrate these fragments through reasoning. This approach ties text content more tightly to the gameplay itself and increases the sense of participation in narrative interaction.
 
-<figure>
-    <video class="clip" src={novelClip} poster={novelClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="Interactive novel demo"></video>
-    <figcaption>Interactive novel: dialogue progression and branching choices</figcaption>
-</figure>
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={novelClip} poster={novelClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="Interactive novel demo"></video>
+        <figcaption>Interactive novel: dialogue progression and branching choices</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={puzzleClip} poster={puzzleClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="Interactive scene puzzle demo"></video>
+        <figcaption>Interactive scene puzzles: explore by clicking, collect clues and move the story forward</figcaption>
+    </figure>
+</div>
 
 The third component is **musical performance and rhythm gameplay**. The rhythm system in this project is not an isolated mini-game insertion, but a key structural element serving atmosphere, plot, and character expression. We wanted music to be not merely background, but a means of "triggering story" and "completing puzzles." In the design, I bound rhythm gameplay to specific narrative segments, so that when players follow the beat, complete a melody, or hit key nodes, they receive clear operational feedback while simultaneously experiencing plot progression and emotional release.
 

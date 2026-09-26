@@ -14,11 +14,13 @@ import mirrorClip from '@/assets/projects/game-project-empty-throne/clips/mirror
 import mirrorClipPoster from '@/assets/projects/game-project-empty-throne/clips/mirror-en-poster.webp?url';
 import novelClip from '@/assets/projects/game-project-empty-throne/clips/novel-en.mp4?url';
 import novelClipPoster from '@/assets/projects/game-project-empty-throne/clips/novel-en-poster.webp?url';
-import castSnow from '@/assets/projects/game-project-empty-throne/cast/snow.png?url';
-import castWitch from '@/assets/projects/game-project-empty-throne/cast/witch.png?url';
+import castHero from '@/assets/projects/game-project-empty-throne/cast/hero.png?url';
+import castQueen from '@/assets/projects/game-project-empty-throne/cast/queen.png?url';
 import castHunter from '@/assets/projects/game-project-empty-throne/cast/hunter.png?url';
 import castDwarf from '@/assets/projects/game-project-empty-throne/cast/dwarf.png?url';
 import castGuard from '@/assets/projects/game-project-empty-throne/cast/guard.png?url';
+import castNobles from '@/assets/projects/game-project-empty-throne/cast/nobles.png?url';
+import castMirror from '@/assets/projects/game-project-empty-throne/cast/mirror.png?url';
 
 ## 공식 트레일러
 
@@ -35,24 +37,32 @@ import castGuard from '@/assets/projects/game-project-empty-throne/cast/guard.pn
 
 <div class="et-cast">
     <figure>
-        <img src={castSnow} alt="백설공주" width="256" height="256" loading="lazy" />
-        <figcaption>백설공주</figcaption>
+        <img src={castHero} alt="주인공" width="240" height="288" loading="lazy" />
+        <figcaption>주인공</figcaption>
     </figure>
     <figure>
-        <img src={castWitch} alt="마녀" width="256" height="256" loading="lazy" />
-        <figcaption>마녀</figcaption>
+        <img src={castQueen} alt="백설 왕비" width="240" height="288" loading="lazy" />
+        <figcaption>백설 왕비</figcaption>
     </figure>
     <figure>
-        <img src={castHunter} alt="사냥꾼" width="256" height="256" loading="lazy" />
+        <img src={castHunter} alt="사냥꾼" width="240" height="288" loading="lazy" />
         <figcaption>사냥꾼</figcaption>
     </figure>
     <figure>
-        <img src={castDwarf} alt="난쟁이" width="256" height="256" loading="lazy" />
+        <img src={castDwarf} alt="난쟁이" width="240" height="288" loading="lazy" />
         <figcaption>난쟁이</figcaption>
     </figure>
     <figure>
-        <img src={castGuard} alt="경비병" width="256" height="256" loading="lazy" />
+        <img src={castGuard} alt="경비병" width="240" height="288" loading="lazy" />
         <figcaption>경비병</figcaption>
+    </figure>
+    <figure>
+        <img src={castNobles} alt="귀족" width="240" height="288" loading="lazy" />
+        <figcaption>귀족</figcaption>
+    </figure>
+    <figure>
+        <img src={castMirror} alt="마법 거울" width="240" height="288" loading="lazy" />
+        <figcaption>마법 거울</figcaption>
     </figure>
 </div>
 
@@ -90,11 +100,6 @@ import castGuard from '@/assets/projects/game-project-empty-throne/cast/guard.pn
 
 *공왕좌*의 핵심 경험은 두 가지 병행하면서 서로를 지지하는 설계 트랙 위에 구축되어 있습니다. 하나는 **탐험·대화·단서 추리를 주로 하는 포인트 앤 클릭 퍼즐**이고, 다른 하나는 **리듬과 멜로디를 통해 감정 표현과 내러티브 해명을 추진하는 음악 인터랙션**입니다. 디즈니 뮤지컬 같은 형식으로, 이야기의 클라이맥스 연출을 리듬 게임으로 보여 줍니다.
 
-<figure>
-    <video class="clip" src={puzzleClip} poster={puzzleClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="씬 인터랙티브 퍼즐 시연"></video>
-    <figcaption>씬 인터랙티브 퍼즐: 클릭으로 탐색하고 단서를 모아 이야기를 진행</figcaption>
-</figure>
-
 설계 단계에서 저의 핵심적인 설계 질문은: 내러티브가 단순히 수동적으로 제시되는 것이 아니라 메커니즘을 통해 어떻게 플레이어의 행동으로 전환될 수 있는가 하는 것이었습니다. 프로젝트는 점차 몇 가지 핵심 인터랙션 축을 형성했습니다.
 
 먼저 **마법 거울 진실 시스템**입니다. 이 메커니즘은 프로젝트 전체에서 가장 대표적인 설계 중 하나입니다. 플레이어는 완전한 답을 직접 받지 못하고, 특정 관찰·대화·조건 트리거를 통해 "숨겨진 진실"이 점차 드러나도록 해야 합니다. 전통적인 노트식 단서 쌓기와 비교하여 이 시스템은 더 강한 테마적 일관성을 가집니다. 거울 자체가 동화 맥락에서 중요한 이미지이며, "현실을 밝히는/현실을 왜곡하는" 인터랙티브 매개체로서 자연스럽게 적합합니다. 퍼즐 메커니즘이 순수하게 기능적인 것에 그치지 않고 내러티브 표현의 일부가 됩니다.
@@ -106,10 +111,16 @@ import castGuard from '@/assets/projects/game-project-empty-throne/cast/guard.pn
 
 다음으로 **대화 추리식 퍼즐**입니다. 이 작품에서 대화는 단순한 스토리 재생 툴이 아니라 정보 필터링·캐릭터 판단·단서 조립이라는 핵심 역할을 담당합니다. 시스템 설계에서 대화 브랜치가 더 강한 논리적 의미를 가지도록 하여, 플레이어가 언어의 표면 아래에서 캐릭터의 모순·거짓말·감정 변화를 발견하고 추리를 통해 이 단편적인 정보를 통합할 수 있도록 했습니다. 이 방식은 텍스트 콘텐츠를 게임플레이 자체와 더 긴밀하게 연결하고 내러티브 인터랙션의 참여감을 높입니다.
 
-<figure>
-    <video class="clip" src={novelClip} poster={novelClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="인터랙티브 노벨 시연"></video>
-    <figcaption>인터랙티브 노벨: 대화 진행과 분기 선택</figcaption>
-</figure>
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={novelClip} poster={novelClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="인터랙티브 노벨 시연"></video>
+        <figcaption>인터랙티브 노벨: 대화 진행과 분기 선택</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={puzzleClip} poster={puzzleClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="씬 인터랙티브 퍼즐 시연"></video>
+        <figcaption>씬 인터랙티브 퍼즐: 클릭으로 탐색하고 단서를 모아 이야기를 진행</figcaption>
+    </figure>
+</div>
 
 세 번째 요소는 **음악 연출과 리듬 게임플레이**입니다. 이 프로젝트의 리듬 시스템은 고립된 미니게임식 삽입이 아니라 분위기·플롯·캐릭터 표현에 봉사하는 중요한 구조적 요소입니다. 음악이 단순한 배경에 그치지 않고 "이야기를 촉발하고" "퍼즐을 완성하는" 수단이 될 수 있기를 바랐습니다. 설계에서 리듬 게임플레이를 특정 내러티브 세그먼트에 결부시켜, 플레이어가 비트에 맞추고·멜로디를 완성하거나·핵심 노드에 도달할 때 명확한 조작 피드백을 받는 동시에 플롯의 진행과 감정의 해방을 함께 경험할 수 있도록 했습니다.
 
