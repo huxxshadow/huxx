@@ -29,7 +29,8 @@ const layout = { showcase, lang, labels: L };
     <!-- 和 Part 2 同一套紧凑标题：编号 · 名称 -->
     <header class="flex flex-wrap items-end gap-x-8 gap-y-3 mb-6 lg:mb-8" data-reveal-children="up" data-reveal-once data-reveal-stagger="80">
         <div class="flex items-stretch gap-4">
-            <span class="dv-skew font-black leading-[0.8] text-7xl lg:text-8xl" style={`color: ${accent};`}>{role.index}</span>
+            <!-- 编号和名称一样大（以名称的字号为准） -->
+            <span class="font-black leading-none tracking-tight text-4xl lg:text-5xl pb-1" style={`color: ${accent};`}>{role.index}</span>
             <!-- 编号和名称之间一道深色竖线；名称用正体（不倾斜） -->
             <span class="w-[5px] self-stretch" style={`background-color: ${accent};`} aria-hidden="true"></span>
             <div class="flex flex-col justify-end pb-1">
