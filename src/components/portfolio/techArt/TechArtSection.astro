@@ -1,5 +1,5 @@
 ---
-// Part 5 · 技术美术：吉祥物（握着画笔的猫耳画师）站在正中、几乎撑满整个 Part 的高度，背后一个尖锐的倒三角，
+// Part 5 · 技术美术：吉祥物（握着画笔的猫耳画师）站在正中、几乎撑满整个 Part 的高度，背后一个又窄又尖的倒三角从 Part 顶边一直扎到底边，
 // 左边「技术」、右边「美术」，两边都是列表，左右镜像（左栏文字靠外、图靠中间，右栏反过来）。
 // 版式走 P3R 的平面设计路子：描边大斜体栏名、平行四边形的行逐行向中间错开，悬停整条填深黄。
 // 这一页只用白色 + COLORS.yellow 的深浅两档，不用大块黑色；黑色只留给正文文字（吉祥物本身就是 yellow.dark）
@@ -64,6 +64,12 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
         data-theme-bg={tint}
         data-theme-text={ink}
 >
+    <!-- 宽屏：倒三角贴着整个 Part 的上下边，底边正中是尖 -->
+    <div class="pa-tri-page" aria-hidden="true">
+        <div class="pa-tri pa-tri-back"></div>
+        <div class="pa-tri"></div>
+    </div>
+
     <!-- 和 Part 2、3、4 同一套紧凑标题：编号 · 名称 · 项目数 -->
     <header class="relative z-10 flex flex-wrap items-end gap-x-8 gap-y-3 mb-6 lg:mb-4" data-reveal-children="up" data-reveal-once data-reveal-stagger="80">
         <div class="flex items-end gap-4">
@@ -98,8 +104,9 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
                 </div>
         ))}
         <div class="ta-mascot" data-reveal="fade" data-reveal-once aria-hidden="true">
-            <div class="pa-tri pa-tri-back"></div>
-            <div class="pa-tri"></div>
+            <!-- 窄屏用：吉祥物单独在最上面时，背后一个小倒三角 -->
+            <div class="pa-tri pa-tri-local pa-tri-back"></div>
+            <div class="pa-tri pa-tri-local"></div>
             <img src={mascot.src} width={mascot.width} height={mascot.height} alt="" loading="lazy" decoding="async" />
         </div>
     </div>
@@ -144,24 +151,27 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
     .ta-side-tech { text-align: right; }
 
     /* ======================= A · P3R ======================= */
-    /* 吉祥物背后的倒三角：白色在前，深黄的大一圈垫在后面，露出一道深黄的边；尖端落在画笔下方 */
+    /* 倒三角：白色在前，深黄的宽一点垫在后面，两条斜边露出深黄的边 */
     .pa-tri {
         position: absolute;
-        z-index: -1;
-        top: 3%;
-        bottom: -1%;
         left: 50%;
-        width: 150%;
         translate: -50% 0;
         background-color: var(--ta-paper);
         clip-path: polygon(0 0, 100% 0, 50% 100%);
     }
-    .pa-tri-back {
-        top: 0;
-        bottom: -4%;
-        width: 168%;
-        background-color: var(--ta-accent);
+    .pa-tri-back { background-color: var(--ta-accent); }
+    /* 宽屏：铺满整个 Part 的高度，水平居中（舞台左右对称，中线就是吉祥物的中线）；
+       宽度按吉祥物那一栏算（和 .ta-stage 的中栏同一个 clamp），只比它宽一点，所以又窄又尖 */
+    .pa-tri-page {
+        --tri-w: clamp(13rem, 22vw, 25rem);
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
     }
+    .pa-tri-page .pa-tri { top: 0; bottom: 0; width: calc(var(--tri-w) * 1.05); }
+    .pa-tri-page .pa-tri-back { width: calc(var(--tri-w) * 1.2); }
+    .pa-tri-local { display: none; }
     .pa-head { display: flex; flex-direction: column; line-height: 1; }
     .ta-side-tech .pa-head { align-items: flex-end; }
     .pa-head-en {
@@ -255,6 +265,9 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
     /* ---------- 窄屏：吉祥物缩小放最上面，两栏依次往下，全部左对齐 ---------- */
     @media (max-width: 1023px) {
         .ta-stage { grid-template-columns: 1fr; }
+        .pa-tri-page { display: none; }
+        .pa-tri-local { display: block; z-index: -1; top: 2%; bottom: -3%; width: 115%; }
+        .pa-tri-local.pa-tri-back { top: 0; bottom: -6%; width: 130%; }
         .ta-mascot { order: -1; width: 9rem; margin: 0 auto; }
         .ta-side-tech { text-align: left; }
         .ta-side-tech .pa-head { align-items: flex-start; }
