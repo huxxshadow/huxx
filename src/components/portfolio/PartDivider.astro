@@ -1,68 +1,21 @@
 ---
-// 作品集相邻两个 Part 之间的过渡带：都是上一个 Part 的底色渐变到下一个 Part 的底色。三种候选
-// （右下角 Debug 面板「Part 过渡」切换，外层 .part-flow 上的 data-variant-current）：
-//   A 纯渐变：两种底色直接平滑过渡
-//   B 渐变 + 强调色光晕：中段混进一点下一个 Part 的强调色，像一道柔光
-//   C 渐变 + 半调网点：底下平滑过渡，上面一层强调色网点从中间往两头淡出
-// 没有 Debug 面板（正式环境）时显示 A
+// 作品集相邻两个 Part 之间的分隔。两种候选（右下角 Debug 面板「Part 过渡」切换，外层 .part-flow 上的 data-variant-current）：
+//   A 不加（默认）：两个 Part 直接相接
+//   B 深色线：一条贯穿全宽的深色细线（下一个 Part 的强调色）
 interface Props {
-    /** 上一个 Part 的底色 */
-    from: string;
-    /** 下一个 Part 的底色 */
-    to: string;
-    /** 下一个 Part 的强调色 */
+    /** 线的颜色：下一个 Part 的强调色 */
     accent: string;
 }
-const { from, to, accent } = Astro.props;
+const { accent } = Astro.props;
 ---
 
-<div class="pd" style={`--pd-from: ${from}; --pd-to: ${to}; --pd-accent: ${accent};`} aria-hidden="true">
-    <div class="pd-a"></div>
-    <div class="pd-b"></div>
-    <div class="pd-c"></div>
-</div>
+<div class="pd" style={`--pd-accent: ${accent};`} aria-hidden="true"></div>
 
 <style>
-    .pd {
-        position: relative;
-        width: 100%;
-    }
-    .pd-a,
-    .pd-b,
-    .pd-c {
-        display: none;
-        height: clamp(6rem, 12vw, 12rem);
-    }
-
-    /* 默认（正式环境没有 data-variant-current）用 A */
-    :global(.part-flow:not([data-variant-current="B"]):not([data-variant-current="C"])) .pd-a,
-    :global(.part-flow[data-variant-current="B"]) .pd-b,
-    :global(.part-flow[data-variant-current="C"]) .pd-c { display: block; }
-
-    /* A 纯渐变 */
-    .pd-a { background: linear-gradient(var(--pd-from), var(--pd-to)); }
-
-    /* B 中段混进一点强调色 */
-    .pd-b {
-        background: linear-gradient(
-            var(--pd-from) 0%,
-            color-mix(in oklab, color-mix(in oklab, var(--pd-from), var(--pd-to)) 78%, var(--pd-accent)) 50%,
-            var(--pd-to) 100%
-        );
-    }
-
-    /* C 渐变 + 强调色半调网点，网点在中间最密、往两头淡出 */
-    .pd-c {
-        position: relative;
-        background: linear-gradient(var(--pd-from), var(--pd-to));
-    }
-    .pd-c::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image: radial-gradient(circle, color-mix(in srgb, var(--pd-accent) 45%, transparent) 1.6px, transparent 2.2px);
-        background-size: 14px 14px;
-        mask-image: linear-gradient(transparent, #000 50%, transparent);
-        -webkit-mask-image: linear-gradient(transparent, #000 50%, transparent);
+    .pd { display: none; }
+    :global(.part-flow[data-variant-current="B"]) .pd {
+        display: block;
+        height: 4px;
+        background-color: var(--pd-accent);
     }
 </style>

@@ -14,8 +14,6 @@ import AllProjectsSection from "@/components/portfolio/AllProjectsSection.astro"
 import PartDivider from "@/components/portfolio/PartDivider.astro";
 import { COLORS } from "@/consts";
 
-// 各 Part 的底色 / 强调色（和各自组件里的一致），给中间的过渡带用
-const beige = COLORS.khakiMilan;
 
 export const getStaticPaths = () =>
     Object.keys(LOCALES).map((lang) => ({
@@ -24,23 +22,23 @@ export const getStaticPaths = () =>
 ---
 
 <Layout>
-    <!-- Part 之间的过渡带有三种候选，右下角 Debug 面板「Part 过渡」切换（正式环境默认 A） -->
-    <div class="part-flow" data-variant-group="part-transitions" data-variant-options="A,B,C" data-variant-label="Part 过渡">
+    <!-- Part 之间的分隔：A 不加（默认）/ B 深色线，右下角 Debug 面板「Part 过渡」切换 -->
+    <div class="part-flow" data-variant-group="part-transitions" data-variant-options="A,B" data-variant-label="Part 过渡">
     <PortfolioOverview />
-    <PartDivider from={beige} to={beige} accent={COLORS.orange.dark} />
+    <PartDivider accent={COLORS.orange.dark} />
     <GameDesignSection />
-    <PartDivider from={beige} to={COLORS.blue.light} accent={COLORS.blue.dark} />
+    <PartDivider accent={COLORS.blue.dark} />
     <GameDevSection />
-    <PartDivider from={COLORS.blue.light} to={COLORS.purple.light} accent={COLORS.purple.dark} />
+    <PartDivider accent={COLORS.purple.dark} />
     <AiAppSection />
-    <PartDivider from={COLORS.purple.light} to={beige} accent={COLORS.yellow.dark} />
+    <PartDivider accent={COLORS.yellow.dark} />
     <TechArtSection />
     {/* 旧的分类板块（游戏 / 技术 / 美术项目）先隐藏，Part 1~5 已经覆盖这些项目；恢复时去掉这段注释即可
     <GameProjectsSection />
     <TechnicalProjectsSection/>
     <ArtProjectsSection/>
     */}
-    <PartDivider from={beige} to={beige} accent={COLORS.black} />
+    <PartDivider accent={COLORS.black} />
     <AllProjectsSection/>
     </div>
     <DebugVariantSwitcher />
