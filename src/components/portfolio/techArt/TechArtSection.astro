@@ -88,6 +88,18 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         </div>
     </header>
 
+    <!-- 最左 / 最右的触发条：鼠标放上去才展开这一侧（只在宽屏、有鼠标时显示） -->
+    <div class="ta-trigger ta-trigger-tech" data-trigger="tech" aria-hidden="true">
+        <span class="ta-trigger-arrow">›</span>
+        <span class="ta-trigger-label">{t(L.expandTech)}</span>
+        <span class="ta-trigger-arrow">›</span>
+    </div>
+    <div class="ta-trigger ta-trigger-art" data-trigger="art" aria-hidden="true">
+        <span class="ta-trigger-arrow">‹</span>
+        <span class="ta-trigger-label">{t(L.expandArt)}</span>
+        <span class="ta-trigger-arrow">‹</span>
+    </div>
+
     <div class="ta-stage pa">
         {sides.map((s) => (
                 <div class:list={["ta-side", `ta-side-${s.side}`]}>
@@ -122,8 +134,8 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
 </section>
 
 <script>
-    // 左中右三个区域：鼠标在左栏范围 → data-focus="tech"，右栏范围 → "art"，中间或离开 → 清空。
-    // 区域按「没有位移时」的栏位划分（offsetLeft 不受 transform 影响），所以栏飞走以后区域也不会跟着跑。
+    // 鼠标碰到最左的触发条 → data-focus="tech"，最右的 → "art"；展开后越过三角或离开这个 Part → 清空。
+    // 退出的边界按「没有位移时」的栏位和展开后的三角边算（offsetLeft 不受 transform 影响）。
     // 同时量出吉祥物中线（--c）、它移到另一栏正中要走的距离（--to-art / --to-tech）、倾斜角（--tilt），
     // 三种状态下背景三角的 transform（--tri-none-* / --tri-tech-* / --tri-art-*），
     // 以及两栏卡片的阶梯、黄条斜边、展开成 3 × 2 后每张卡的位置。右栏的量法和左栏完全一样，只是在「左右镜像」的坐标里算
@@ -418,13 +430,6 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                     });
                 }
             };
-            let sideLocked = false;
-            let lockedAt = 0;
-            const leaveSide = () => {
-                sideLocked = true;
-                lockedAt = performance.now();
-                setFocus("");
-            };
             const setFocus = (focus: string) => {
                 const prev = section.dataset.focus ?? "";
                 if (prev === focus) return;
@@ -439,30 +444,23 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                 else apply();
             };
 
+            // 只有鼠标进到最左 / 最右的触发条才展开那一侧；展开后一直到斜过去的三角边上都算这一侧，
+            // 越过就回到中间（要再展开，得重新碰一下触发条）
+            section.querySelectorAll<HTMLElement>("[data-trigger]").forEach((el) => {
+                el.addEventListener("pointerenter", (e) => {
+                    if (!wide.matches || e.pointerType !== "mouse") return;
+                    setFocus(el.dataset.trigger!);
+                });
+            });
             section.addEventListener("pointermove", (e) => {
                 if (!wide.matches || e.pointerType !== "mouse") return;
                 const r = section.getBoundingClientRect();
                 const x = (e.clientX - r.left) / r.width;
-                // 滞回：已经在某一边时，要往中间多走 2% 才退出，免得鼠标停在边界上来回抖、动画反复重启；
-                // 展开时一直到斜过去的三角边上都算这一侧，越过就回到中间（不直接跳到另一侧）
                 const cur = section.dataset.focus ?? "";
-                if (cur === "tech") {
-                    if (x > Math.max(techEdge + 0.02, sides.tech.focusEdge)) leaveSide();
-                    return;
-                }
-                if (cur === "art") {
-                    if (x < Math.min(artEdge - 0.02, sides.art.focusEdge)) leaveSide();
-                    return;
-                }
-                // 刚从一边退回中间：先锁住两边，鼠标经过中间那一栏（吉祥物原来的位置）或过了一会儿再动，才重新判断
-                if (sideLocked) {
-                    if (x >= techEdge && x <= artEdge) sideLocked = false;
-                    else if (performance.now() - lockedAt > 900) sideLocked = false;
-                    else return;
-                }
-                setFocus(x < techEdge ? "tech" : x > artEdge ? "art" : "");
+                if (cur === "tech" && x > Math.max(techEdge + 0.02, sides.tech.focusEdge)) setFocus("");
+                if (cur === "art" && x < Math.min(artEdge - 0.02, sides.art.focusEdge)) setFocus("");
             });
-            section.addEventListener("pointerleave", () => { sideLocked = false; setFocus(""); });
+            section.addEventListener("pointerleave", () => setFocus(""));
             wide.addEventListener("change", () => { setFocus(""); measure(); });
             new ResizeObserver(measure).observe(section);
             measure();
@@ -542,6 +540,47 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         pointer-events: none;
     }
     [data-focus="art"] .ta-mascot { transform: translateX(var(--to-tech, 0px)) rotate(calc(-1 * var(--tilt, 0deg))); }
+
+    /* ---------- 最左 / 最右的触发条 ---------- */
+    .ta-trigger {
+        position: absolute;
+        top: 0;
+        bottom: var(--bar-h);
+        z-index: 20;
+        width: clamp(2.75rem, 3.2vw, 3.5rem);
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.9rem;
+        background-color: color-mix(in srgb, var(--ta-accent) 82%, transparent);
+        color: var(--ta-paper);
+        cursor: pointer;
+        transition: opacity 300ms ease, background-color 160ms ease, width 160ms ease;
+    }
+    .ta-trigger-tech { left: 0; }
+    .ta-trigger-art { right: 0; }
+    .ta-trigger:hover { background-color: var(--ta-accent); width: clamp(3.25rem, 3.8vw, 4.1rem); }
+    .ta-trigger-label {
+        writing-mode: vertical-rl;
+        font-weight: 900;
+        font-size: 1.05rem;
+        letter-spacing: 0.25em;
+    }
+    .ta-trigger-arrow {
+        font-weight: 900;
+        font-size: 1.8rem;
+        line-height: 1;
+        animation: ta-nudge 1.4s ease-in-out infinite;
+    }
+    .ta-trigger-art .ta-trigger-arrow { animation-name: ta-nudge-left; }
+    @keyframes ta-nudge { 50% { translate: 4px 0; } }
+    @keyframes ta-nudge-left { 50% { translate: -4px 0; } }
+    /* 展开时触发条淡出 */
+    [data-focus] .ta-trigger { opacity: 0; pointer-events: none; }
+    @media (min-width: 1024px) and (hover: hover) {
+        .ta-trigger { display: flex; }
+    }
 
     .ta-bottom-bar {
         position: absolute;
@@ -856,6 +895,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
 
     @media (prefers-reduced-motion: reduce) {
         [data-ta-section] { --ta-move: 0ms linear; }
+        .ta-trigger-arrow { animation: none; }
         .pa-text, .pa-thumb :global(img) { transition: none; }
     }
 </style>

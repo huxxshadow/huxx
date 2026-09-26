@@ -134,6 +134,9 @@ export const techArtLabels = {
     techHeading: { en: "Technical", zh: "技术 Technical", ja: "技術 Technical", ko: "기술 Technical" } as Multilingual,
     // 左栏大标题下面那条黄条上的字
     tech: { en: "PCG · Geometry Processing · Neural Rendering", zh: "PCG · 几何处理 · 神经渲染", ja: "PCG · ジオメトリ処理 · ニューラルレンダリング", ko: "PCG · 지오메트리 처리 · 뉴럴 렌더링" } as Multilingual,
+    // 最左 / 最右触发条上的竖排字
+    expandTech: { en: "Technical", zh: "展开技术", ja: "技術を開く", ko: "기술 펼치기" } as Multilingual,
+    expandArt: { en: "Art", zh: "展开美术", ja: "美術を開く", ko: "미술 펼치기" } as Multilingual,
     // 右栏大标题（和左栏对称）
     artHeading: { en: "Art", zh: "美术 Art", ja: "美術 Art", ko: "미술 Art" } as Multilingual,
     // 右栏大标题下面那条黄条上的字
