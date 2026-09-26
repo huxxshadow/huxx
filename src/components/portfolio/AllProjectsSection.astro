@@ -33,12 +33,15 @@ const t = useTranslations(currentLang);
     <div class="mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ===== 标题与调节滑块 ===== */}
-        <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-8 sm:mb-12" data-reveal-children="up">
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black shrink-0" style={`color: ${COLORS.black};`}>
-                {t(allProjectsLabels.libraryHeader)}
-                <span class="opacity-50 ">({orderedProjects.length})</span>
-            </h2>
-            <div class="hidden sm:block h-2 flex-grow" style={`background-color: ${COLORS.black};`}></div>
+        <div class="flex flex-col sm:flex-row sm:items-end gap-4 mb-8 sm:mb-12" data-reveal-children="up">
+            <!-- 和 Part 1~5 同一套紧凑标题：大号斜体数字（这里是项目总数）· 斜体名称 -->
+            <div class="flex items-end gap-4 shrink-0">
+                <span class="lib-skew font-black leading-[0.8] text-7xl lg:text-8xl" style={`color: ${COLORS.black};`}>{orderedProjects.length}</span>
+                <h2 class="lib-skew font-black leading-none tracking-tight text-4xl lg:text-5xl pb-1" style={`color: ${COLORS.black};`}>
+                    {t(allProjectsLabels.libraryHeader)}
+                </h2>
+            </div>
+            <div class="hidden sm:block flex-grow"></div>
 
             {/* 卡片大小调节滑块 */}
             <div class="flex items-center gap-3 shrink-0 bg-white px-4 py-2 rounded-xl border-4" style={`border-color: ${COLORS.black}; box-shadow: 3px 3px 0px ${COLORS.black};`}>
@@ -162,6 +165,10 @@ const t = useTranslations(currentLang);
 </section>
 
 <style>
+    .lib-skew {
+        transform: skewX(-10deg);
+        transform-origin: left bottom;
+    }
     /* 滑块自定义样式 */
     input[type="range"]::-webkit-slider-thumb {
         -webkit-appearance: none;
