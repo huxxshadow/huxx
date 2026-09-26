@@ -217,7 +217,7 @@ const vars = [
         z-index: 1;
         color: var(--et-cream);
     }
-    /* 宽屏：底下是几张铺满宽度、四边淡出的游戏场景，上面左右交替放角色立绘（原色、低透明度、烤好的阴影） */
+    /* 宽屏：从上往下「角色 → 场景 → 角色 → …」交替排，互不重叠：场景铺满宽度、四边淡出；角色左右轮换（原色、低透明度、烤好的阴影） */
     @media (min-width: 1280px) {
         main.skin-et::before {
             content: "";
@@ -226,15 +226,15 @@ const vars = [
             pointer-events: none;
             image-rendering: pixelated;
             background:
-                    var(--et-bg-witch) left -3rem top 3% / auto clamp(24rem, 34vw, 32rem) no-repeat,
+                    var(--et-bg-witch) left -3rem top 1% / auto clamp(24rem, 34vw, 32rem) no-repeat,
+                    var(--et-scene-study) center top 12% / 100% auto no-repeat,
                     var(--et-bg-snow) right -8rem top 24% / auto clamp(24rem, 34vw, 30rem) no-repeat,
-                    var(--et-bg-hunter) left -1rem top 45% / auto clamp(22rem, 30vw, 28rem) no-repeat,
-                    var(--et-bg-dwarf) right 0 top 66% / auto clamp(20rem, 28vw, 24rem) no-repeat,
-                    var(--et-bg-guard) left 0 top 86% / auto clamp(22rem, 30vw, 28rem) no-repeat,
-                    var(--et-scene-study) center top 1% / 100% auto no-repeat,
-                    var(--et-scene-witchroom) center top 30% / 100% auto no-repeat,
+                    var(--et-scene-witchroom) center top 35% / 100% auto no-repeat,
+                    var(--et-bg-hunter) left -1rem top 47% / auto clamp(22rem, 30vw, 28rem) no-repeat,
                     var(--et-scene-grave) center top 58% / 100% auto no-repeat,
-                    var(--et-scene-maid) center top 88% / 100% auto no-repeat;
+                    var(--et-bg-dwarf) right 0 top 70% / auto clamp(20rem, 28vw, 24rem) no-repeat,
+                    var(--et-scene-maid) center top 81% / 100% auto no-repeat,
+                    var(--et-bg-guard) left 0 top 96% / auto clamp(22rem, 30vw, 28rem) no-repeat;
         }
     }
     main.skin-et::after {
