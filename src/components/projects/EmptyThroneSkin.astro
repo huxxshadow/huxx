@@ -425,32 +425,14 @@ const vars = [
         .skin-et .project-prose .et-split { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 2.5rem; }
     }
 
-    /* 特别栏：Steam 入库人数 + 女巫立绘 */
+    /* 项目总结下面，居中：大数字 → 一句说明 → 女巫立绘，不加框 */
     .skin-et .project-prose .et-milestone {
-        position: relative;
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        align-items: end;
-        gap: 1.5rem;
-        margin: 3rem 0;
-        padding: 2rem 2.25rem 0;
-        border-width: 14px;
-        border-style: solid;
-        border-color: transparent;
-        border-image: var(--et-frame) 16 / 14px / 0 round;
-        image-rendering: pixelated;
-        background:
-                radial-gradient(ellipse 60% 90% at 85% 100%, color-mix(in srgb, var(--et-wine) 85%, transparent) 0%, transparent 70%),
-                var(--et-deep);
-        overflow: hidden;
-    }
-    .skin-et .project-prose .et-milestone-text { padding-bottom: 2rem; }
-    .skin-et .project-prose .et-milestone-kicker {
-        margin: 0 0 0.5rem;
-        font-size: 0.9rem;
-        font-weight: 800;
-        letter-spacing: 0.12em;
-        color: var(--et-ghost);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 1.25rem;
+        margin: 3rem 0 0;
     }
     .skin-et .project-prose .et-milestone-num {
         margin: 0;
@@ -483,10 +465,7 @@ const vars = [
         image-rendering: pixelated;
         filter: drop-shadow(6px 8px 0 rgb(0 0 0 / 0.35));
     }
-    @media (max-width: 639px) {
-        .skin-et .project-prose .et-milestone { grid-template-columns: 1fr; padding: 1.5rem 1.25rem 0; }
-        .skin-et .project-prose .et-milestone img { justify-self: end; width: 8rem; margin-top: -3rem !important; }
-    }
+
 
     /* 游戏内截图三张一排 */
     @media (min-width: 900px) {
