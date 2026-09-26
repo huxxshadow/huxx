@@ -1,6 +1,8 @@
 ---
 // Part 5 · 技术美术：吉祥物（握着画笔的猫耳画师）站在正中、几乎撑满整个 Part 的高度，背后一个又窄又尖的倒三角从 Part 顶边一直扎到底边，
 // 左边「技术」、右边「美术」，两边都是列表，左右镜像（左栏文字靠外、图靠中间，右栏反过来）。
+// 宽屏上分左中右三个区域：鼠标进左区，右栏往右飞出、吉祥物移到右栏的位置、倒三角收成一条从右上斜下来的带子，
+// 尖端仍在笔尖下面；右区反过来；回到中间或离开这个 Part 就复原。
 // 版式走 P3R 的平面设计路子：描边大斜体栏名、平行四边形的行逐行向中间错开，悬停整条填深黄。
 // 这一页只用白色 + COLORS.yellow 的深浅两档，不用大块黑色；黑色只留给正文文字（吉祥物本身就是 yellow.dark）
 import { getCollection } from "astro:content";
@@ -63,6 +65,7 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
         style={`background-color: ${tint}; color: ${ink}; --theme-bg: ${tint}; --theme-text: ${ink}; --ta-accent: ${accent}; --ta-tint: ${tint}; --ta-ink: ${ink}; --ta-paper: ${paper};`}
         data-theme-bg={tint}
         data-theme-text={ink}
+        data-ta-section
 >
     <!-- 宽屏：倒三角贴着整个 Part 的上下边，底边正中是尖 -->
     <div class="pa-tri-page" aria-hidden="true">
@@ -112,6 +115,57 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
     </div>
 </section>
 
+<script>
+    // 左中右三个区域：鼠标在左栏范围 → data-focus="tech"，右栏范围 → "art"，中间或离开 → 清空。
+    // 区域按「没有位移时」的栏位划分（offsetLeft 不受 transform 影响），所以栏飞走以后区域也不会跟着跑。
+    // 同时量出吉祥物中线（--c）、它移到两栏正中要走的距离（--to-art / --to-tech）、斜带的水平跨度（--slant），
+    // 都是相对 section 的 CSS 像素，给 CSS 里的位移和 clip-path 用
+    function initTechArtFocus() {
+        document.querySelectorAll<HTMLElement>("[data-ta-section]").forEach((section) => {
+            if (section.dataset.focusReady) return;
+            section.dataset.focusReady = "1";
+            const stage = section.querySelector<HTMLElement>(".ta-stage");
+            const tech = section.querySelector<HTMLElement>(".ta-side-tech");
+            const art = section.querySelector<HTMLElement>(".ta-side-art");
+            const mascot = section.querySelector<HTMLElement>(".ta-mascot");
+            if (!stage || !tech || !art || !mascot) return;
+            const wide = window.matchMedia("(min-width: 1024px) and (hover: hover)");
+            let techEdge = 0.38;
+            let artEdge = 0.62;
+
+            const measure = () => {
+                const W = section.offsetWidth;
+                const center = (el: HTMLElement) => el.offsetLeft + el.offsetWidth / 2;
+                const m = center(mascot);
+                section.style.setProperty("--c", `${stage.offsetLeft + m}px`);
+                section.style.setProperty("--to-art", `${center(art) - m}px`);
+                section.style.setProperty("--to-tech", `${center(tech) - m}px`);
+                section.style.setProperty("--slant", `${Math.round(section.offsetHeight * 0.2)}px`);
+                techEdge = (stage.offsetLeft + tech.offsetLeft + tech.offsetWidth) / W;
+                artEdge = (stage.offsetLeft + art.offsetLeft) / W;
+            };
+
+            const setFocus = (focus: string) => {
+                if ((section.dataset.focus ?? "") === focus) return;
+                if (focus) section.dataset.focus = focus;
+                else delete section.dataset.focus;
+            };
+
+            section.addEventListener("pointermove", (e) => {
+                if (!wide.matches || e.pointerType !== "mouse") return;
+                const r = section.getBoundingClientRect();
+                const x = (e.clientX - r.left) / r.width;
+                setFocus(x < techEdge ? "tech" : x > artEdge ? "art" : "");
+            });
+            section.addEventListener("pointerleave", () => setFocus(""));
+            wide.addEventListener("change", () => { setFocus(""); measure(); });
+            new ResizeObserver(measure).observe(section);
+            measure();
+        });
+    }
+    document.addEventListener("astro:page-load", initTechArtFocus);
+</script>
+
 <style>
     .ta-skew {
         transform: skewX(-10deg);
@@ -159,6 +213,26 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
     }
     .ta-side-tech { text-align: right; }
 
+    /* ---------- 左中右三个区域的聚焦（脚本写 data-focus）---------- */
+    /* 入场动画占用了 translate / scale，这里的位移只用 transform */
+    [data-ta-section] { --ta-move: 650ms cubic-bezier(0.7, 0, 0.2, 1); }
+    .ta-side,
+    .ta-mascot {
+        transition: transform var(--ta-move), opacity 450ms ease;
+    }
+    [data-focus="tech"] .ta-side-art {
+        transform: translateX(calc(100% + 40vw));
+        opacity: 0;
+        pointer-events: none;
+    }
+    [data-focus="tech"] .ta-mascot { transform: translateX(var(--to-art, 0px)); }
+    [data-focus="art"] .ta-side-tech {
+        transform: translateX(calc(-100% - 40vw));
+        opacity: 0;
+        pointer-events: none;
+    }
+    [data-focus="art"] .ta-mascot { transform: translateX(var(--to-tech, 0px)); }
+
     /* ======================= A · P3R ======================= */
     /* 倒三角：白色在前，深黄的宽一点垫在后面，两条斜边露出深黄的边 */
     .pa-tri {
@@ -178,8 +252,29 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
         z-index: 0;
         pointer-events: none;
     }
-    .pa-tri-page .pa-tri { top: 0; bottom: 0; width: calc(var(--tri-w) * 1.05); }
-    .pa-tri-page .pa-tri-back { width: calc(var(--tri-w) * 1.2); }
+    /* 整块铺满，用四个顶点的 clip-path 画：三角时后两个顶点重合在尖上，斜带时分开成底边。
+       --c 是吉祥物中线的 x（脚本量出来，之前先按 50%），--hw 是三角半宽，--bw 是斜带半宽 */
+    .pa-tri-page .pa-tri {
+        --tip: var(--c, 50%);
+        inset: 0;
+        left: 0;
+        translate: none;
+        --hw: calc(var(--tri-w) * 0.525);
+        --bw: 2.2rem;
+        clip-path: polygon(calc(var(--tip) - var(--hw)) 0, calc(var(--tip) + var(--hw)) 0, var(--tip) 100%, var(--tip) 100%);
+        transition: clip-path var(--ta-move);
+    }
+    .pa-tri-page .pa-tri-back { --hw: calc(var(--tri-w) * 0.6); --bw: 3rem; }
+    /* 聚焦左栏：吉祥物去了右边，带子从右上斜下来，底边落在笔尖下 */
+    [data-focus="tech"] .pa-tri-page .pa-tri {
+        --tip: calc(var(--c, 50%) + var(--to-art, 0px));
+        clip-path: polygon(calc(var(--tip) + var(--slant, 0px) - var(--bw)) 0, calc(var(--tip) + var(--slant, 0px) + var(--bw)) 0, calc(var(--tip) + var(--bw)) 100%, calc(var(--tip) - var(--bw)) 100%);
+    }
+    /* 聚焦右栏：镜像，带子从左上斜下来 */
+    [data-focus="art"] .pa-tri-page .pa-tri {
+        --tip: calc(var(--c, 50%) + var(--to-tech, 0px));
+        clip-path: polygon(calc(var(--tip) - var(--slant, 0px) - var(--bw)) 0, calc(var(--tip) - var(--slant, 0px) + var(--bw)) 0, calc(var(--tip) + var(--bw)) 100%, calc(var(--tip) - var(--bw)) 100%);
+    }
     .pa-tri-local { display: none; }
     .pa-head { display: flex; flex-direction: column; line-height: 1; }
     .ta-side-tech .pa-head { align-items: flex-end; }
@@ -298,6 +393,7 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
     }
 
     @media (prefers-reduced-motion: reduce) {
+        [data-ta-section] { --ta-move: 0ms linear; }
         .pa-row { transition: none; }
     }
 </style>
