@@ -79,7 +79,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         <div class="pa-tri pa-tri-back"></div>
         <div class="pa-tri"></div>
     </div>
-    <!-- 中间一条反色条：横跨整个 Part，高度是技术栏第 3 张卡 + 上下各半个行距（位置由脚本量） -->
+    <!-- 中间一条反色条：横跨整个 Part，从技术栏第 3 张卡上方半个行距开始，往下盖到吉祥物握笔的手指（位置由脚本量） -->
     <div class="ta-mid-bar" aria-hidden="true"></div>
     <div class="pa-tri-page pa-tri-inv pa-tri-inv-mid" aria-hidden="true">
         <div class="pa-tri pa-tri-back"></div>
@@ -253,10 +253,12 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                     if (li2) {
                         const gap = parseFloat(getComputedStyle(list).rowGap) || 0;
                         const top = pos(li2).top - gap / 2;
-                        const h = li2.offsetHeight + gap;
+                        const mt = pos(mascot).top;
+                        // 下沿至少盖到吉祥物握笔那只手的指尖（人物高度约 61% 处）
+                        const bottom = Math.max(top + li2.offsetHeight + gap, mt + mascot.offsetHeight * 0.61);
+                        const h = bottom - top;
                         section.style.setProperty("--mid-top", `${top.toFixed(1)}px`);
                         section.style.setProperty("--mid-h", `${h.toFixed(1)}px`);
-                        const mt = pos(mascot).top;
                         section.style.setProperty("--mid-m-top", `${(top - mt).toFixed(1)}px`);
                         section.style.setProperty("--mid-m-bot", `${(mt + mascot.offsetHeight - top - h).toFixed(1)}px`);
                     }
