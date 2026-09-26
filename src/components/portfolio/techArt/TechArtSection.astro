@@ -40,11 +40,7 @@ const works = techArtWorks.flatMap((w) => {
 // 左栏技术、右栏美术；reveal 方向都是从外侧滑向中间
 const sides = (["tech", "art"] as const).map((side) => ({
     side,
-    items: works.filter((w) => w.side === side).map((w, i) => ({
-        ...w,
-        num: String(i + 1).padStart(2, "0"),
-        code: `${side === "tech" ? "T" : "A"}-${String(i + 1).padStart(2, "0")}`,
-    })),
+    items: works.filter((w) => w.side === side),
     name: t(side === "tech" ? L.tech : L.art),
     heading: side === "tech" ? t(L.techHeading) : "ART",
     reveal: side === "tech" ? "right" : "left",
@@ -87,7 +83,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         {sides.map((s) => (
                 <div
                         class:list={["ta-side", `ta-side-${s.side}`]}
-                        {...(s.side === "tech" ? { "data-variant-group": "part5-tech", "data-variant-options": "A,B,C", "data-variant-label": "Part 5 · 技术卡片" } : {})}
+                        {...(s.side === "tech" ? { "data-variant-group": "part5-tech", "data-variant-options": "A,C", "data-variant-label": "Part 5 · 技术卡片" } : {})}
                 >
                     <div class="pa-head" data-reveal={s.reveal} data-reveal-once>
                         <span class="pa-head-en">{s.heading}</span>
@@ -96,12 +92,9 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                     <ol class="pa-list" style={`--n: ${s.items.length};`} data-reveal-children={s.reveal} data-reveal-once>
                         {s.items.map((w, i) => (
                                 <li style={`--i: ${i};`}>
-                                    <a href={href(w.id)} class="pa-row" data-num={w.num}>
+                                    <a href={href(w.id)} class="pa-row">
                                         <div class="pa-text">
-                                            <div class="pa-line">
-                                                <span class="pa-num">{w.num}</span>
-                                                <h3 class="pa-title">{w.title}</h3>
-                                            </div>
+                                            <h3 class="pa-title">{w.title}</h3>
                                             <p class="pa-tags">{w.tags.join(" / ")}</p>
                                         </div>
                                         <div class="pa-thumb"><WorkCover work={w} lang={lang} sizes={sizesThumb} /></div>
@@ -434,7 +427,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     /* ---------- 列表行：直角梯形，靠中间的那条边是斜的，和居中时三角最近的那条边平行 ----------
        行高固定（--row-h），斜边的横向收进量 = 行高 × 三角斜率（--tri-slope，脚本按三角算好，之前先用 0.18）。
        每行再往中间错开一个「(行高 + 行距) × 斜率」，几行的斜边连成一条和三角边平行的直线。
-       内容只留编号、标题（最多两行）、一行标签，图片固定尺寸，两栏都放在左边 */
+       内容只留标题（最多两行）和一行标签，不显示编号 */
     .pa-list {
         /* 一屏高度扣掉 section 内边距、Part 标题、栏标题和黄条（约 21.5rem），按行数（--rows，两栏取多的）平分 */
         --row-h: clamp(3.5rem, calc((100vh - 21.5rem) / var(--rows, 5) - var(--row-gap)), 9rem);
@@ -496,46 +489,18 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         clip-path: polygon(var(--cut) 0, calc(var(--cut) + var(--edge)) 0, var(--edge) 100%, 0 100%);
     }
     .ta-side-tech .pa-row::after {
+        /* 左栏的斜边描边是白色 */
+        background-color: var(--ta-paper);
         clip-path: polygon(calc(100% - var(--cut) - var(--edge)) 0, calc(100% - var(--cut)) 0, 100% 100%, calc(100% - var(--edge)) 100%);
     }
+    /* 左栏文字面板（最左边那块）的左边一道深黄竖边 */
+    .ta-side-tech .pa-text { border-left: 12px solid var(--ta-accent); }
 
-    /* ---------- 技术栏卡片的三个候选（右下角 Debug 面板「Part 5 · 技术卡片」切换，只在宽屏生效）----------
-       A（默认）：图片矩形 + 斜边文字面板（编号、标题、标签）
-       B：编号单独成一块深黄方块（白字），然后图片、再然后斜边文字面板（只放标题和标签），三块分开
-       C：编号方块 + 一整块斜边大图，标题贴在图片左下角的白色小标签里 */
+    /* ---------- 技术栏卡片的两个候选（右下角 Debug 面板「Part 5 · 技术卡片」切换，只在宽屏生效）----------
+       A（默认）：文字面板（标题、标签）+ 斜边图片
+       C：一整块斜边大图，标题贴在图片左下角的白色小标签里 */
     @media (min-width: 1024px) {
-        .ta-side-tech[data-variant-current="B"] .pa-row,
-        .ta-side-tech[data-variant-current="C"] .pa-row {
-            --tile: calc(var(--row-h) * 0.8);
-            padding-left: calc(var(--tile) + 0.6rem);
-        }
-        /* 编号方块：用整行的 ::before（取 data-num）画在最左边——文字面板带 clip-path，里面的编号挪出去会被切掉 */
-        .ta-side-tech[data-variant-current="B"] .pa-num,
-        .ta-side-tech[data-variant-current="C"] .pa-num { display: none; }
-        .ta-side-tech[data-variant-current="B"] .pa-row::before,
-        .ta-side-tech[data-variant-current="C"] .pa-row::before {
-            content: attr(data-num);
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: var(--tile);
-            display: grid;
-            place-items: center;
-            font-weight: 900;
-            font-size: calc(var(--row-h) * 0.42);
-            line-height: 1;
-            background-color: var(--ta-accent);
-            color: var(--ta-paper);
-            transition: background-color 180ms ease, color 180ms ease;
-        }
-        .ta-side-tech[data-variant-current="B"] .pa-row:hover::before,
-        .ta-side-tech[data-variant-current="C"] .pa-row:hover::before {
-            background-color: var(--ta-paper);
-            color: var(--ta-accent);
-        }
-
-        /* C：图片占满编号方块右边的整块，右边斜；文字面板压在图片左下角 */
+        /* C：图片占满整行，右边斜；文字面板压在图片左下角 */
         .ta-side-tech[data-variant-current="C"] .pa-row { grid-template-columns: minmax(0, 1fr); }
         .ta-side-tech[data-variant-current="C"] .pa-thumb {
             grid-area: 1 / 1;
@@ -554,8 +519,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         .ta-side-tech[data-variant-current="C"] .pa-title { -webkit-line-clamp: 1; }
         .ta-side-tech[data-variant-current="C"] .pa-tags { display: none; }
     }
-    /* 文字排法照这页最上面的总览菜单：大号实心编号（深黄、font-black、行高 0.8）+ 粗体标题（这里栏窄，编号叠在标题上面），
-       下面一行粗体标签（不大写、不加字距，和总览里「N 个项目」那行一样） */
+    /* 文字排法照这页最上面的总览菜单：粗体标题，下面一行粗体标签（不大写、不加字距，和总览里「N 个项目」那行一样）；不显示编号 */
     .pa-text {
         display: flex;
         flex-direction: column;
@@ -563,21 +527,6 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         gap: 0.3rem;
         min-width: 0;
         padding: 0.45rem 1.1rem;
-    }
-    .pa-line {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.25rem;
-        min-width: 0;
-    }
-    .pa-num {
-        flex: none;
-        font-weight: 900;
-        font-size: clamp(1.6rem, min(2.4vw, 4vh), 2.6rem);
-        line-height: 0.8;
-        color: var(--ta-accent);
-        transition: color 160ms ease;
     }
     .pa-title {
         min-width: 0;
@@ -592,13 +541,10 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     @container pa-row (max-height: 100px) {
         .pa-tags { display: none; }
     }
-    /* 再矮的行：标题只留一行，编号缩小 */
+    /* 再矮的行：标题只留一行 */
     @container pa-row (max-height: 78px) {
         .pa-title { -webkit-line-clamp: 1; }
-        .pa-num { font-size: 1.35rem; }
-        .pa-text { gap: 0.15rem; padding-block: 0.3rem; }
-    }
-    .pa-tags {
+        .pa-tags {
         max-width: 100%;
         font-size: clamp(0.8rem, 0.95vw, 0.95rem);
         font-weight: 900;
@@ -606,9 +552,8 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    /* 悬停：和总览一样文字面板填成主题深色（深黄），编号变白 */
+    /* 悬停：和总览一样文字面板填成主题深色（深黄） */
     .pa-row:hover .pa-text { background-color: var(--ta-accent); }
-    .pa-row:hover .pa-num { color: var(--ta-paper); }
 
     /* ---------- 窄屏：吉祥物缩小放最上面，两栏依次往下，全部左对齐 ---------- */
     @media (max-width: 1023px) {
@@ -624,6 +569,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         .ta-side-tech { --text-w: calc(clamp(10rem, 13vw, 15rem) + var(--cut, 0px)); }
         .ta-side-tech .pa-thumb { clip-path: none; }
         .ta-side-tech .pa-row::after { display: none; }
+        .ta-side-tech .pa-text { border-left: none; }
         .ta-side-tech .pa-text {
             clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%);
             padding-left: calc(1.1rem + var(--cut));
