@@ -56,7 +56,7 @@ export const techArtWorks: TechArtWork[] = [
             ja: "SDF レイマーチングで、3D モデルと Mandelbulb フラクタルをブラウザ上でリアルタイムに融合。",
             ko: "SDF 레이 마칭으로 3D 모델과 Mandelbulb 프랙탈을 브라우저에서 실시간으로 융합합니다.",
         },
-        tags: { en: "WebGL · SDF · Ray Marching", zh: "WebGL · SDF · 光线步进", ja: "WebGL · SDF · レイマーチング", ko: "WebGL · SDF · 레이 마칭" },
+        tags: { en: "Three.js · Computer Graphics", zh: "Three.js · 计算机图形学", ja: "Three.js · コンピュータグラフィックス", ko: "Three.js · 컴퓨터 그래픽스" },
     },
     {
         projectId: "technical-project-comfyui-ai-eco-film",
