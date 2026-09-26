@@ -132,6 +132,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
             const tech = section.querySelector<HTMLElement>(".ta-side-tech");
             const art = section.querySelector<HTMLElement>(".ta-side-art");
             const mascot = section.querySelector<HTMLElement>(".ta-mascot");
+            const bar = section.querySelector<HTMLElement>(".ta-side-tech .pa-head-name");
             if (!stage || !tech || !art || !mascot) return;
             const wide = window.matchMedia("(min-width: 1024px) and (hover: hover)");
             let techEdge = 0.38;
@@ -198,6 +199,19 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                     const f = frame(sign);
                     section.style.setProperty(`--tri-${name}-f`, place(tip + f.front[0], tip + f.front[1], tip + f.ax, H + depth));
                     section.style.setProperty(`--tri-${name}-b`, place(tip + f.back[0], tip + f.back[1], tip + f.ax, H + depth));
+                }
+                // 左栏黄条：左边伸到画面最左，右边斜着正好贴在居中三角（深黄外层）的左边上。
+                // 三角左边：顶上在 cx - 0.6w，尖在 (cx, H)；量出黄条在 section 里的位置，算出它上下两条边碰到三角边的 x
+                if (bar) {
+                    let left = 0;
+                    let top = 0;
+                    for (let el: HTMLElement | null = bar; el && el !== section; el = el.offsetParent as HTMLElement | null) {
+                        left += el.offsetLeft;
+                        top += el.offsetTop;
+                    }
+                    const edge = (y: number) => cx - w * 0.6 * (1 - y / H);
+                    section.style.setProperty("--bar-rt", `${(edge(top) - left).toFixed(1)}px`);
+                    section.style.setProperty("--bar-rb", `${(edge(top + bar.offsetHeight) - left).toFixed(1)}px`);
                 }
                 if (!section.dataset.triReady) {
                     // 第一次摆好时不要动画（否则三角会从没变换的样子飞过来，后台标签页里还会卡在半路），
@@ -375,15 +389,18 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         color: var(--ta-paper);
         transform: skewX(-14deg);
     }
-    /* 左栏的黄条：梯形——左边和原来一样斜（14°），右边一直伸到画面最右侧（section 的 overflow: hidden 在屏幕边裁掉），
-       从吉祥物身后穿过去。不再整体 skew，改用 clip-path 切出左边的斜边，字保持斜体 */
-    .ta-side-tech .pa-head-name {
-        --bar-cut: 0.6rem;
-        margin-right: -100vw;
-        padding-left: calc(1rem + var(--bar-cut));
-        font-style: italic;
-        transform: none;
-        clip-path: polygon(var(--bar-cut) 0, 100% 0, 100% 100%, 0 100%);
+    /* 宽屏左栏的黄条：梯形——左边伸到画面最左（section 的 overflow: hidden 在屏幕边裁掉），
+       右边是斜边，和居中三角的边平行、正好贴在三角深黄外层的左边上（--bar-rt / --bar-rb 由脚本算，相对黄条自身左边）。
+       不再整体 skew，改用 clip-path 切，字保持斜体，仍然从栏的左边开始排 */
+    @media (min-width: 1024px) {
+        .ta-side-tech .pa-head-name {
+            margin-left: -100vw;
+            margin-right: -50vw;
+            padding-left: calc(100vw + 1rem);
+            font-style: italic;
+            transform: none;
+            clip-path: polygon(0 0, var(--bar-rt, 100%) 0, var(--bar-rb, 100%) 100%, 0 100%);
+        }
     }
     /* ---------- 列表行：直角梯形，靠中间的那条边是斜的，和居中时三角最近的那条边平行 ----------
        行高固定（--row-h），斜边的横向收进量 = 行高 × 三角斜率（--tri-slope，脚本按三角算好，之前先用 0.18）。
