@@ -363,6 +363,13 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                     el.animate(kf, { duration: 800, delay, fill: "backwards" });
                 });
             };
+            let sideLocked = false;
+            let lockedAt = 0;
+            const leaveSide = () => {
+                sideLocked = true;
+                lockedAt = performance.now();
+                setFocus("");
+            };
             const setFocus = (focus: string) => {
                 const prev = section.dataset.focus ?? "";
                 if (prev === focus) return;
@@ -380,11 +387,24 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                 const x = (e.clientX - r.left) / r.width;
                 // 滞回：已经在某一边时，要往中间多走 2% 才退出，免得鼠标停在边界上来回抖、动画反复重启
                 const cur = section.dataset.focus ?? "";
-                const tEdge = cur === "tech" ? Math.max(techEdge + 0.02, techFocusEdge) : techEdge;
-                const aEdge = cur === "art" ? artEdge - 0.02 : artEdge;
-                setFocus(x < tEdge ? "tech" : x > aEdge ? "art" : "");
+                if (cur === "tech") {
+                    // 左栏展开时一直到斜过去的三角边上都算左区，越过就回到中间（不直接跳到右区）
+                    if (x > Math.max(techEdge + 0.02, techFocusEdge)) leaveSide();
+                    return;
+                }
+                if (cur === "art") {
+                    if (x < artEdge - 0.02) leaveSide();
+                    return;
+                }
+                // 刚从一边退回中间：先锁住两边，鼠标经过中间那一栏（吉祥物原来的位置）或过了一会儿再动，才重新判断
+                if (sideLocked) {
+                    if (x >= techEdge && x <= artEdge) sideLocked = false;
+                    else if (performance.now() - lockedAt > 900) sideLocked = false;
+                    else return;
+                }
+                setFocus(x < techEdge ? "tech" : x > artEdge ? "art" : "");
             });
-            section.addEventListener("pointerleave", () => setFocus(""));
+            section.addEventListener("pointerleave", () => { sideLocked = false; setFocus(""); });
             wide.addEventListener("change", () => { setFocus(""); measure(); });
             new ResizeObserver(measure).observe(section);
             measure();
