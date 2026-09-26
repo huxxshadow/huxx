@@ -34,11 +34,11 @@ const t = useTranslations(currentLang);
 
         {/* ===== 标题与调节滑块 ===== */}
         <div class="flex flex-col sm:flex-row sm:items-end gap-4 mb-8 sm:mb-12" data-reveal-children="up">
-            <!-- 和 Part 1~5 同一套紧凑标题：大号斜体数字（这里是项目总数）· 斜体名称 -->
+            <!-- 和 Part 1~4 同一套紧凑标题：大号斜体编号 5 · 斜体名称，名称后面括号里是项目总数 -->
             <div class="flex items-end gap-4 shrink-0">
-                <span class="lib-skew font-black leading-[0.8] text-7xl lg:text-8xl" style={`color: ${COLORS.black};`}>{orderedProjects.length}</span>
+                <span class="lib-skew font-black leading-[0.8] text-7xl lg:text-8xl" style={`color: ${COLORS.black};`}>5</span>
                 <h2 class="lib-skew font-black leading-none tracking-tight text-4xl lg:text-5xl pb-1" style={`color: ${COLORS.black};`}>
-                    {t(allProjectsLabels.libraryHeader)}
+                    {t(allProjectsLabels.libraryHeader)}<span class="opacity-50">（{orderedProjects.length}）</span>
                 </h2>
             </div>
             <div class="hidden sm:block flex-grow"></div>
