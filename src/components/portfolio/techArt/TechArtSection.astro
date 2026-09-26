@@ -197,9 +197,12 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                 };
                 // 居中时白色三角边的斜率（每往下 1px 横向收多少），列表行的斜边和阶梯都跟它平行
                 section.style.setProperty("--tri-slope", ((w * 0.525) / H).toFixed(4));
-                // 居中：尖在笔尖（Part 底边），半宽 0.525 / 0.6 倍吉祥物宽
+                // 居中：三角整体往下挪，尖落在 Part 底边以下 drop 处，Part 里看到的是底边被切平的梯形；
+                // 边的斜率不变（顶边半宽跟着按 (H + drop) / H 放大），所以卡片、黄条还是和它平行
+                const drop = H * 0.12;
+                const grow = (H + drop) / H;
                 for (const [layer, hw] of [["f", 0.525], ["b", 0.6]] as const) {
-                    section.style.setProperty(`--tri-none-${layer}`, place(cx - w * hw, cx + w * hw, cx, H));
+                    section.style.setProperty(`--tri-none-${layer}`, place(cx - w * hw * grow, cx + w * hw * grow, cx, H + drop));
                 }
                 for (const [name, sign, tip] of [["tech", 1, cx + toArt], ["art", -1, cx + toTech]] as const) {
                     const f = frame(sign);
@@ -227,7 +230,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                     const y0 = pos(li0).top;
                     // 第一张卡不拉近时的右上角（斜边顶端）
                     const x0 = pos(list).left + list.offsetWidth - (n - 1) * step - rowH * slope;
-                    const edgeBack = (y: number) => cx - w * 0.6 * (1 - y / H);
+                    const edgeBack = (y: number) => cx - w * 0.6 * ((H + drop - y) / H);
                     const pull = Math.max(0, (edgeBack(y0) - x0) * 0.45);
                     section.style.setProperty("--pull-tech", `${pull.toFixed(1)}px`);
                     const line = (y: number) => x0 + pull + slope * (y - y0);
