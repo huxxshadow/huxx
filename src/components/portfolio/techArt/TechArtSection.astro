@@ -842,6 +842,14 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
             height: var(--f-h);
         }
         [data-focus="tech"] .ta-side-tech .pa-row { grid-template-columns: minmax(0, 1fr) var(--img-w-f, 50%); }
+        /* 展开后卡片高了，标签可以换行（最多三行），不再截成一行省略号 */
+        [data-focus="tech"] .ta-side-tech .pa-tags,
+        [data-focus="art"] .ta-side-art .pa-tags {
+            white-space: normal;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
         [data-focus="art"] .ta-side-art .pa-row { grid-template-columns: var(--img-w-f, 50%) minmax(0, 1fr); }
     }
 
