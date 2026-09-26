@@ -1,8 +1,8 @@
 ---
 // Part 5 · 技术美术：吉祥物（握着画笔的猫耳画师）站在正中、几乎撑满整个 Part 的高度，背后一个又窄又尖的倒三角从 Part 顶边一直扎到底边，
 // 左边「技术」、右边「美术」，两边都是列表，左右镜像（左栏文字靠外、图靠中间，右栏反过来）。
-// 宽屏上分左中右三个区域：鼠标进左区，右栏往右飞出、吉祥物移到右栏的位置、倒三角收成一条从右上斜下来的带子，
-// 尖端仍在笔尖下面；右区反过来；回到中间或离开这个 Part 就复原。
+// 宽屏上分左中右三个区域：鼠标进左区，右栏往右飞出、吉祥物移到右栏的位置、倒三角变成一条从右上斜下来、
+// 把吉祥物整个包住的宽带子；右区反过来；回到中间或离开这个 Part 就复原。
 // 版式走 P3R 的平面设计路子：描边大斜体栏名、平行四边形的行逐行向中间错开，悬停整条填深黄。
 // 这一页只用白色 + COLORS.yellow 的深浅两档，不用大块黑色；黑色只留给正文文字（吉祥物本身就是 yellow.dark）
 import { getCollection } from "astro:content";
@@ -140,7 +140,7 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
                 section.style.setProperty("--c", `${stage.offsetLeft + m}px`);
                 section.style.setProperty("--to-art", `${center(art) - m}px`);
                 section.style.setProperty("--to-tech", `${center(tech) - m}px`);
-                section.style.setProperty("--slant", `${Math.round(section.offsetHeight * 0.2)}px`);
+                section.style.setProperty("--slant", `${Math.round(section.offsetHeight * 0.1)}px`);
                 techEdge = (stage.offsetLeft + tech.offsetLeft + tech.offsetWidth) / W;
                 artEdge = (stage.offsetLeft + art.offsetLeft) / W;
             };
@@ -260,11 +260,12 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
         left: 0;
         translate: none;
         --hw: calc(var(--tri-w) * 0.525);
-        --bw: 2.2rem;
+        /* 斜带要把整个吉祥物包在里面：半宽比吉祥物半宽（--tri-w / 2）宽出一截，抵消倾斜带来的偏移 */
+        --bw: calc(var(--tri-w) * 0.62);
         clip-path: polygon(calc(var(--tip) - var(--hw)) 0, calc(var(--tip) + var(--hw)) 0, var(--tip) 100%, var(--tip) 100%);
         transition: clip-path var(--ta-move);
     }
-    .pa-tri-page .pa-tri-back { --hw: calc(var(--tri-w) * 0.6); --bw: 3rem; }
+    .pa-tri-page .pa-tri-back { --hw: calc(var(--tri-w) * 0.6); --bw: calc(var(--tri-w) * 0.7); }
     /* 聚焦左栏：吉祥物去了右边，带子从右上斜下来，底边落在笔尖下 */
     [data-focus="tech"] .pa-tri-page .pa-tri {
         --tip: calc(var(--c, 50%) + var(--to-art, 0px));
