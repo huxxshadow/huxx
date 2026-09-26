@@ -88,7 +88,7 @@ export const techArtWorks: TechArtWork[] = [
     {
         projectId: "game-project-lost-realm",
         side: "art",
-        tags: { en: "Unity · Metroidvania", zh: "Unity · 银河恶魔城", ja: "Unity · メトロイドヴァニア", ko: "Unity · 메트로배니아" },
+        tags: { en: "2D Shader · NPR", zh: "2D Shader · NPR", ja: "2D シェーダー · NPR", ko: "2D 셰이더 · NPR" },
     },
     {
         projectId: "game-project-eel-on-mask",
