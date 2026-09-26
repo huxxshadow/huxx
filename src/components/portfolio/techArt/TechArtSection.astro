@@ -1,9 +1,10 @@
 ---
-// Part 5 · 技术美术：吉祥物（握着画笔的猫耳画师）站在正中，左边「技术」、右边「美术」两个板块。
+// Part 5 · 技术美术：吉祥物（握着画笔的猫耳画师）站在正中，左边「技术」、右边「美术」，两边都是列表。
+// 两边左右镜像：左栏文字靠外、图靠中间，右栏反过来。
 // 候选版式（右下角 Debug 面板切换）：
-//   A 三联画：左右两栏卡片朝向中间，中间是整身吉祥物
-//   B 蓝图 / 画布：一块板子左半是蓝图方格纸、右半是画布，吉祥物跨在接缝上；技术是规格表，美术是画框
-//   C 拼贴：卡片像贴在墙上的照片，歪着错开，背后是巨大的空心字 TECH / ART
+//   A 镜像清单：每行 编号 + 缩略图 + 标题/说明/标签，虚线分隔
+//   B 手风琴：每行平时只露编号、标题、标签，悬停（或聚焦）的那行展开出封面和说明；每栏默认展开第一行
+//   C 大字索引：标题做大，行首一块方形缩略图，悬停时底色从中间那一侧扫过来
 // 这一页只用 COLORS.yellow 的深浅两档（吉祥物本身就是 yellow.dark）
 import { getCollection } from "astro:content";
 import { getRelativeLocaleUrl } from "astro:i18n";
@@ -37,22 +38,28 @@ const works = techArtWorks.flatMap((w) => {
         inDevelopment: !!d.inDevelopment,
     }];
 });
-const tech = works.filter((w) => w.side === "tech");
-const art = works.filter((w) => w.side === "art");
-const code = (i: number, side: "tech" | "art") => `${side === "tech" ? "T" : "A"}-${String(i + 1).padStart(2, "0")}`;
+
+// 左栏技术、右栏美术；reveal 方向都是从外侧滑向中间
+const sides = (["tech", "art"] as const).map((side) => ({
+    side,
+    items: works.filter((w) => w.side === side).map((w, i) => ({ ...w, code: `${side === "tech" ? "T" : "A"}-${String(i + 1).padStart(2, "0")}` })),
+    name: t(side === "tech" ? L.tech : L.art),
+    sub: t(side === "tech" ? L.techSub : L.artSub),
+    reveal: side === "tech" ? "right" : "left",
+}));
 
 const ink = COLORS.black;
 const accent = COLORS.yellow.dark;
 const tint = COLORS.yellow.light;
 const paper = "#FFFDF7";
-const sizesSide = "(min-width: 1024px) 28vw, (min-width: 640px) 50vw, 100vw";
-const sizesThumb = "(min-width: 1024px) 12vw, 40vw";
+const sizesWide = "(min-width: 1024px) 30vw, 100vw";
+const sizesThumb = "(min-width: 1024px) 12vw, 30vw";
 ---
 
 <section
         id={role.anchor}
         class="relative overflow-hidden w-full px-6 sm:px-12 lg:px-20 xl:px-28 py-14 lg:py-16 scroll-mt-16"
-        style={`background-color: ${tint}; color: ${ink}; --theme-bg: ${tint}; --theme-text: ${ink}; --ta-accent: ${accent}; --ta-tint: ${tint}; --ta-ink: ${ink}; --ta-paper: ${paper}; --ta-ratio: ${(mascot.width / mascot.height).toFixed(4)};`}
+        style={`background-color: ${tint}; color: ${ink}; --theme-bg: ${tint}; --theme-text: ${ink}; --ta-accent: ${accent}; --ta-tint: ${tint}; --ta-ink: ${ink}; --ta-paper: ${paper};`}
         data-theme-bg={tint}
         data-theme-text={ink}
 >
@@ -67,148 +74,103 @@ const sizesThumb = "(min-width: 1024px) 12vw, 40vw";
 
     <div data-variant-group="part5" data-variant-label="Part 5 · TA">
 
-        <!-- ================= A · 三联画 ================= -->
+        <!-- ================= A · 镜像清单 ================= -->
         <div data-variant="A">
-            <div class="ta-a">
-                <div class="ta-a-col ta-a-left">
-                    <div class="ta-a-head" data-reveal="right" data-reveal-once>
-                        <span class="ta-a-head-name">{t(L.tech)}</span>
-                        <span class="ta-a-head-sub">{t(L.techSub)}</span>
-                    </div>
-                    <div class="ta-a-list" data-reveal-children="right" data-reveal-once>
-                        {tech.map((w) => (
-                                <a href={href(w.id)} class="ta-a-card">
-                                    <div class="ta-a-thumb"><WorkCover work={w} lang={lang} sizes={sizesThumb} /></div>
-                                    <div class="ta-a-body">
-                                        <h3 class="ta-a-title">{w.title}</h3>
-                                        <p class="ta-a-caption">{w.caption}</p>
-                                        <ul class="ta-tags">{w.tags.map((tag) => <li class="ta-tag">{tag}</li>)}</ul>
-                                    </div>
-                                </a>
-                        ))}
-                    </div>
-                </div>
-
-                <div class="ta-a-mascot" data-reveal="fade" data-reveal-once aria-hidden="true">
+            <div class="ta-stage">
+                {sides.map((s) => (
+                        <div class:list={["ta-side", `ta-side-${s.side}`]}>
+                            <div class="ta-head" data-reveal={s.reveal} data-reveal-once>
+                                <span class="ta-head-name">{s.name}</span>
+                                <span class="ta-head-sub">{s.sub}</span>
+                            </div>
+                            <ol class="la-list" data-reveal-children={s.reveal} data-reveal-once>
+                                {s.items.map((w) => (
+                                        <li>
+                                            <a href={href(w.id)} class="la-row">
+                                                <div class="la-thumb"><WorkCover work={w} lang={lang} sizes={sizesThumb} /></div>
+                                                <div class="la-body">
+                                                    <span class="ta-code">{w.code}</span>
+                                                    <h3 class="la-title">{w.title}</h3>
+                                                    <p class="la-caption">{w.caption}</p>
+                                                    <ul class="ta-tags">{w.tags.map((tag) => <li class="ta-tag">{tag}</li>)}</ul>
+                                                </div>
+                                            </a>
+                                        </li>
+                                ))}
+                            </ol>
+                        </div>
+                ))}
+                <div class="ta-mascot" data-reveal="fade" data-reveal-once aria-hidden="true">
                     <img src={mascot.src} width={mascot.width} height={mascot.height} alt="" loading="lazy" decoding="async" />
-                </div>
-
-                <div class="ta-a-col ta-a-right">
-                    <div class="ta-a-head" data-reveal="left" data-reveal-once>
-                        <span class="ta-a-head-name">{t(L.art)}</span>
-                        <span class="ta-a-head-sub">{t(L.artSub)}</span>
-                    </div>
-                    <div class="ta-a-list ta-a-list-art" data-reveal-children="left" data-reveal-once>
-                        {art.map((w) => (
-                                <a href={href(w.id)} class="ta-a-card ta-a-card-art">
-                                    <div class="ta-a-img"><WorkCover work={w} lang={lang} sizes={sizesSide} /></div>
-                                    <div class="ta-a-body">
-                                        <h3 class="ta-a-title">{w.title}</h3>
-                                        <p class="ta-a-caption">{w.caption}</p>
-                                        <ul class="ta-tags">{w.tags.map((tag) => <li class="ta-tag">{tag}</li>)}</ul>
-                                    </div>
-                                </a>
-                        ))}
-                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= B · 蓝图 / 画布 ================= -->
+        <!-- ================= B · 手风琴 ================= -->
         <div data-variant="B" hidden>
-            <div class="ta-b">
-                <div class="ta-b-bg-left" aria-hidden="true"></div>
-                <div class="ta-b-bg-right" aria-hidden="true"></div>
-
-                <div class="ta-b-col">
-                    <div class="ta-b-head ta-b-head-tech" data-reveal="up" data-reveal-once>
-                        <span class="ta-b-mono">// {t(L.techSub)}</span>
-                        <span class="ta-b-head-name">{t(L.tech)}</span>
-                    </div>
-                    <ol class="ta-b-specs" data-reveal-children="up" data-reveal-once>
-                        {tech.map((w, i) => (
-                                <li>
-                                    <a href={href(w.id)} class="ta-b-spec">
-                                        <span class="ta-b-code">{code(i, "tech")}</span>
-                                        <div class="ta-b-spec-thumb"><WorkCover work={w} lang={lang} sizes={sizesThumb} /></div>
-                                        <div class="ta-b-spec-body">
-                                            <h3 class="ta-b-spec-title">{w.title}</h3>
-                                            <p class="ta-b-spec-caption">{w.caption}</p>
-                                            <ul class="ta-b-spec-tags">{w.tags.map((tag) => <li>#{tag}</li>)}</ul>
-                                        </div>
-                                    </a>
-                                </li>
-                        ))}
-                    </ol>
-                </div>
-
-                <div class="ta-b-mascot" data-reveal="fade" data-reveal-once aria-hidden="true">
+            <div class="ta-stage">
+                {sides.map((s) => (
+                        <div class:list={["ta-side", `ta-side-${s.side}`]}>
+                            <div class="ta-head" data-reveal={s.reveal} data-reveal-once>
+                                <span class="ta-head-name">{s.name}</span>
+                                <span class="ta-head-sub">{s.sub}</span>
+                            </div>
+                            <ol class="lb-list" data-reveal-children={s.reveal} data-reveal-once>
+                                {s.items.map((w, i) => (
+                                        <li class:list={["lb-row", { "is-default": i === 0 }]}>
+                                            <a href={href(w.id)} class="lb-link">
+                                                <div class="lb-bar">
+                                                    <span class="lb-num">{String(i + 1).padStart(2, "0")}</span>
+                                                    <h3 class="lb-title">{w.title}</h3>
+                                                    <span class="lb-arrow" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span>
+                                                </div>
+                                                <div class="lb-fold">
+                                                    <div class="lb-fold-inner">
+                                                        <div class="lb-img"><WorkCover work={w} lang={lang} sizes={sizesWide} /></div>
+                                                        <p class="lb-caption">{w.caption}</p>
+                                                    </div>
+                                                </div>
+                                                <ul class="ta-tags lb-tags">{w.tags.map((tag) => <li class="ta-tag">{tag}</li>)}</ul>
+                                            </a>
+                                        </li>
+                                ))}
+                            </ol>
+                        </div>
+                ))}
+                <div class="ta-mascot" data-reveal="fade" data-reveal-once aria-hidden="true">
                     <img src={mascot.src} width={mascot.width} height={mascot.height} alt="" loading="lazy" decoding="async" />
-                </div>
-
-                <div class="ta-b-col">
-                    <div class="ta-b-head ta-b-head-art" data-reveal="up" data-reveal-once>
-                        <span class="ta-b-script">{t(L.artSub)}</span>
-                        <span class="ta-b-head-name">{t(L.art)}</span>
-                    </div>
-                    <ol class="ta-b-gallery" data-reveal-children="up" data-reveal-once>
-                        {art.map((w) => (
-                                <li>
-                                    <a href={href(w.id)} class="ta-b-frame">
-                                        <div class="ta-b-mat">
-                                            <div class="ta-b-img"><WorkCover work={w} lang={lang} sizes={sizesSide} /></div>
-                                        </div>
-                                        <div class="ta-b-label">
-                                            <h3 class="ta-b-label-title">{w.title}</h3>
-                                            <p class="ta-b-label-caption">{w.caption}</p>
-                                            <p class="ta-b-label-tags">{w.tags.join(" / ")}</p>
-                                        </div>
-                                    </a>
-                                </li>
-                        ))}
-                    </ol>
                 </div>
             </div>
         </div>
 
-        <!-- ================= C · 拼贴 ================= -->
+        <!-- ================= C · 大字索引 ================= -->
         <div data-variant="C" hidden>
-            <div class="ta-c">
-                <span class="ta-c-word ta-c-word-left" aria-hidden="true">TECH</span>
-                <span class="ta-c-word ta-c-word-right" aria-hidden="true">ART</span>
-
-                <div class="ta-c-col">
-                    <p class="ta-c-sticker ta-c-sticker-tech" data-reveal="scale" data-reveal-once>{t(L.tech)}</p>
-                    <div class="ta-c-pile" data-reveal-children="up" data-reveal-once>
-                        {tech.map((w) => (
-                                <a href={href(w.id)} class="ta-c-photo">
-                                    <span class="ta-c-tape" aria-hidden="true"></span>
-                                    <div class="ta-c-img"><WorkCover work={w} lang={lang} sizes={sizesSide} /></div>
-                                    <h3 class="ta-c-title">{w.title}</h3>
-                                    <p class="ta-c-caption">{w.caption}</p>
-                                    <ul class="ta-tags">{w.tags.map((tag) => <li class="ta-tag">{tag}</li>)}</ul>
-                                </a>
-                        ))}
-                    </div>
-                </div>
-
-                <div class="ta-c-mascot" data-reveal="fade" data-reveal-once aria-hidden="true">
+            <div class="ta-stage">
+                {sides.map((s) => (
+                        <div class:list={["ta-side", `ta-side-${s.side}`]}>
+                            <div class="ta-head lc-head" data-reveal={s.reveal} data-reveal-once>
+                                <span class="ta-head-name">{s.name}</span>
+                                <span class="ta-head-sub">{s.sub}</span>
+                            </div>
+                            <ol class="lc-list" data-reveal-children={s.reveal} data-reveal-once>
+                                {s.items.map((w) => (
+                                        <li>
+                                            <a href={href(w.id)} class="lc-row">
+                                                <div class="lc-thumb"><WorkCover work={w} lang={lang} sizes={sizesThumb} /></div>
+                                                <div class="lc-body">
+                                                    <span class="lc-code">{w.code}</span>
+                                                    <h3 class="lc-title">{w.title}</h3>
+                                                    <p class="lc-caption">{w.caption}</p>
+                                                    <p class="lc-tags">{w.tags.join("  /  ")}</p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                ))}
+                            </ol>
+                        </div>
+                ))}
+                <div class="ta-mascot" data-reveal="fade" data-reveal-once aria-hidden="true">
                     <img src={mascot.src} width={mascot.width} height={mascot.height} alt="" loading="lazy" decoding="async" />
-                </div>
-
-                <div class="ta-c-col ta-c-col-art">
-                    <p class="ta-c-sticker ta-c-sticker-art" data-reveal="scale" data-reveal-once>{t(L.art)}</p>
-                    <div class="ta-c-pile" data-reveal-children="up" data-reveal-once>
-                        {art.map((w) => (
-                                <a href={href(w.id)} class="ta-c-photo">
-                                    <span class="ta-c-tape" aria-hidden="true"></span>
-                                    <div class="ta-c-img"><WorkCover work={w} lang={lang} sizes={sizesSide} /></div>
-                                    <h3 class="ta-c-title">{w.title}</h3>
-                                    <p class="ta-c-caption">{w.caption}</p>
-                                    <ul class="ta-tags">{w.tags.map((tag) => <li class="ta-tag">{tag}</li>)}</ul>
-                                </a>
-                        ))}
-                    </div>
                 </div>
             </div>
         </div>
@@ -221,406 +183,265 @@ const sizesThumb = "(min-width: 1024px) 12vw, 40vw";
         transform-origin: left bottom;
     }
 
-    /* 通用标签：圆角描边小块 */
-    .ta-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem;
+    /* ---------- 三个版式共用的舞台：左栏 · 吉祥物 · 右栏 ---------- */
+    .ta-stage {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) clamp(9rem, 15vw, 17rem) minmax(0, 1fr);
+        gap: clamp(1.5rem, 3vw, 3.5rem);
+        align-items: start;
     }
-    .ta-tag {
-        padding: 0.15rem 0.6rem;
-        border: 2px solid var(--ta-ink);
-        border-radius: 0.5rem;
-        font-size: 0.75rem;
-        font-weight: 700;
-        background-color: var(--ta-paper);
-    }
-
-    /* 吉祥物：宽度给定，高度按原比例（约 1:3） */
-    .ta-a-mascot img,
-    .ta-b-mascot img,
-    .ta-c-mascot img {
+    .ta-side-tech { order: 0; }
+    .ta-mascot { order: 1; align-self: center; }
+    .ta-side-art { order: 2; }
+    .ta-mascot img {
         display: block;
         width: 100%;
         height: auto;
         pointer-events: none;
         user-select: none;
     }
-
-    /* ======================= A · 三联画 ======================= */
-    .ta-a {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) clamp(9rem, 15vw, 17rem) minmax(0, 1fr);
-        gap: clamp(1.5rem, 3vw, 3.5rem);
-        align-items: start;
-    }
-    .ta-a-mascot { align-self: center; }
-    .ta-a-col {
+    .ta-side {
         display: flex;
         flex-direction: column;
-        gap: 1.25rem;
+        gap: 1.1rem;
+        min-width: 0;
     }
-    .ta-a-head {
+    /* 左栏整体靠右（朝向中间），右栏靠左 */
+    .ta-side-tech { text-align: right; }
+    .ta-side-tech .ta-tags { justify-content: flex-end; }
+    .ta-head {
         display: flex;
         flex-direction: column;
         gap: 0.25rem;
         padding-bottom: 0.75rem;
-        border-bottom: 4px solid var(--ta-accent);
+        border-bottom: 4px solid var(--ta-ink);
     }
-    .ta-a-left .ta-a-head { align-items: flex-end; text-align: right; }
-    .ta-a-head-name {
+    .ta-side-tech .ta-head { align-items: flex-end; }
+    .ta-head-name {
         font-weight: 900;
         font-size: clamp(2rem, 3.4vw, 3.4rem);
         line-height: 1;
-        letter-spacing: -0.01em;
     }
-    .ta-a-head-sub {
+    .ta-head-sub {
         font-weight: 800;
         font-size: 0.8rem;
         letter-spacing: 0.12em;
         text-transform: uppercase;
-        color: var(--ta-accent);
-        filter: brightness(0.8);
+        color: color-mix(in srgb, var(--ta-accent) 70%, var(--ta-ink));
     }
-    .ta-a-list {
-        display: flex;
-        flex-direction: column;
-        gap: 1.1rem;
-    }
-    /* 美术 3 张：第一张横跨两列当主图，另外两张并排，整栏高度和左边 4 行差不多 */
-    .ta-a-list-art {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .ta-a-list-art > :first-child { grid-column: span 2; }
-    /* 卡片：描边 + 偏移实色阴影，悬停往阴影方向按下去（和 Part 4 同一套手感） */
-    .ta-a-card {
-        display: flex;
-        overflow: hidden;
-        border: 2px solid var(--ta-ink);
-        border-radius: 1rem;
-        background-color: var(--ta-paper);
-        box-shadow: 6px 6px 0 var(--ta-accent);
-        transition: transform 100ms ease, box-shadow 100ms ease;
-    }
-    .ta-a-card:hover { transform: translate(3px, 3px); box-shadow: 3px 3px 0 var(--ta-accent); }
-    .ta-a-card:active { transform: translate(6px, 6px); box-shadow: 0 0 0 var(--ta-accent); }
-    /* 左栏：文字在外侧，缩略图贴着中间的吉祥物 */
-    .ta-a-left .ta-a-card { flex-direction: row-reverse; text-align: right; }
-    .ta-a-left .ta-a-card .ta-tags { justify-content: flex-end; }
-    .ta-a-thumb {
-        position: relative;
-        flex: none;
-        width: 38%;
-        min-height: 7.5rem;
-        border-left: 2px solid var(--ta-ink);
-    }
-    /* 右栏美术：图是主角，上图下文 */
-    .ta-a-card-art { flex-direction: column; }
-    .ta-a-img {
-        position: relative;
-        aspect-ratio: 16 / 9;
-        border-bottom: 2px solid var(--ta-ink);
-    }
-    .ta-a-body {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        flex: 1;
-        min-width: 0;
-        padding: 0.85rem 1rem 1rem;
-    }
-    .ta-a-title { font-weight: 900; font-size: 1.1rem; line-height: 1.25; }
-    .ta-a-caption { font-weight: 600; font-size: 0.85rem; line-height: 1.5; opacity: 0.85; }
-    .ta-a-thumb :global(img),
-    .ta-a-img :global(img) { transition: scale 500ms ease; }
-    .ta-a-card:hover :global(img) { scale: 1.05; }
-
-    @media (max-width: 1023px) {
-        .ta-a { grid-template-columns: 1fr; }
-        .ta-a-mascot { order: -1; width: 8rem; margin: 0 auto; }
-        .ta-a-left .ta-a-head { align-items: flex-start; text-align: left; }
-        .ta-a-left .ta-a-card { flex-direction: row; text-align: left; }
-        .ta-a-left .ta-a-card .ta-tags { justify-content: flex-start; }
-        .ta-a-thumb { border-left: none; border-right: 2px solid var(--ta-ink); }
-    }
-    @media (max-width: 519px) {
-        .ta-a-left .ta-a-card { flex-direction: column; }
-        .ta-a-thumb { width: 100%; aspect-ratio: 16 / 9; min-height: 0; border-right: none; border-bottom: 2px solid var(--ta-ink); }
-    }
-
-    /* ======================= B · 蓝图 / 画布 ======================= */
-    .ta-b {
-        position: relative;
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) clamp(8rem, 13vw, 15rem) minmax(0, 1fr);
-        gap: clamp(1rem, 2vw, 2rem);
-        align-items: start;
-        padding: clamp(1.5rem, 3vw, 3rem);
-        border: 3px solid var(--ta-ink);
-        border-radius: 1.25rem;
-        box-shadow: 10px 10px 0 var(--ta-accent);
-        overflow: hidden;
-        isolation: isolate;
-    }
-    /* 左半：方格纸蓝图；右半：画布，几块淡淡的颜料 */
-    .ta-b-bg-left,
-    .ta-b-bg-right {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        z-index: -1;
-    }
-    .ta-b-bg-left {
-        left: 0;
-        right: 50%;
-        background-color: var(--ta-paper);
-        background-image:
-                linear-gradient(color-mix(in srgb, var(--ta-accent) 35%, transparent) 1px, transparent 1px),
-                linear-gradient(90deg, color-mix(in srgb, var(--ta-accent) 35%, transparent) 1px, transparent 1px),
-                linear-gradient(color-mix(in srgb, var(--ta-accent) 14%, transparent) 1px, transparent 1px),
-                linear-gradient(90deg, color-mix(in srgb, var(--ta-accent) 14%, transparent) 1px, transparent 1px);
-        background-size: 96px 96px, 96px 96px, 24px 24px, 24px 24px;
-        border-right: 3px dashed var(--ta-ink);
-    }
-    .ta-b-bg-right {
-        left: 50%;
-        right: 0;
-        background-color: var(--ta-tint);
-        background-image:
-                radial-gradient(ellipse 42% 22% at 78% 14%, color-mix(in srgb, var(--ta-accent) 38%, transparent) 60%, transparent 62%),
-                radial-gradient(ellipse 30% 16% at 18% 62%, color-mix(in srgb, var(--ta-accent) 22%, transparent) 60%, transparent 62%),
-                radial-gradient(ellipse 36% 12% at 70% 92%, color-mix(in srgb, var(--ta-accent) 30%, transparent) 60%, transparent 62%);
-    }
-    .ta-b-col {
-        display: flex;
-        flex-direction: column;
-        gap: 1.25rem;
-    }
-    .ta-b-head { display: flex; flex-direction: column; gap: 0.2rem; }
-    .ta-b-head-name {
-        font-weight: 900;
-        font-size: clamp(2rem, 3.4vw, 3.4rem);
-        line-height: 1;
-    }
-    .ta-b-head-art { align-items: flex-end; text-align: right; }
-    .ta-b-mono,
-    .ta-b-code,
-    .ta-b-spec-tags {
+    .ta-code {
         font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+        font-size: 0.75rem;
+        font-weight: 800;
+        padding: 0.05rem 0.4rem;
+        background-color: var(--ta-ink);
+        color: var(--ta-paper);
+        align-self: flex-start;
     }
-    .ta-b-mono { font-size: 0.8rem; font-weight: 700; opacity: 0.7; }
-    .ta-b-script { font-size: 0.85rem; font-weight: 700; font-style: italic; opacity: 0.7; }
-
-    /* 技术：规格表，每行编号 + 缩略图 + 说明，虚线分隔 */
-    .ta-b-specs {
+    .ta-side-tech .ta-code { align-self: flex-end; }
+    .ta-tags {
         display: flex;
-        flex-direction: column;
-        border-top: 2px solid var(--ta-ink);
+        flex-wrap: wrap;
+        gap: 0.4rem;
     }
-    .ta-b-spec {
+    .ta-tag {
+        padding: 0.1rem 0.55rem;
+        border: 2px solid var(--ta-ink);
+        border-radius: 0.5rem;
+        font-size: 0.72rem;
+        font-weight: 700;
+        background-color: var(--ta-paper);
+    }
+
+    /* ======================= A · 镜像清单 ======================= */
+    .la-row {
         display: grid;
-        grid-template-columns: auto 34% minmax(0, 1fr);
-        gap: 0.9rem;
+        grid-template-columns: 36% minmax(0, 1fr);
+        gap: 1.1rem;
         align-items: start;
-        padding: 0.9rem 0.25rem;
+        padding: 1rem 0.5rem;
         border-bottom: 2px dashed var(--ta-ink);
         transition: background-color 150ms ease;
     }
-    .ta-b-spec:hover { background-color: color-mix(in srgb, var(--ta-accent) 16%, transparent); }
-    .ta-b-code {
-        font-size: 0.8rem;
-        font-weight: 800;
-        padding: 0.1rem 0.35rem;
-        background-color: var(--ta-ink);
-        color: var(--ta-paper);
-    }
-    .ta-b-spec-thumb {
+    /* 左栏：图放到靠中间的一侧 */
+    .ta-side-tech .la-row { grid-template-columns: minmax(0, 1fr) 36%; }
+    .ta-side-tech .la-thumb { order: 2; }
+    .la-row:hover { background-color: color-mix(in srgb, var(--ta-accent) 18%, transparent); }
+    .la-thumb {
         position: relative;
-        aspect-ratio: 4 / 3;
+        aspect-ratio: 16 / 10;
         overflow: hidden;
         border: 2px solid var(--ta-ink);
+        border-radius: 0.5rem;
+        box-shadow: 4px 4px 0 var(--ta-accent);
     }
-    .ta-b-spec-body { display: flex; flex-direction: column; gap: 0.35rem; }
-    .ta-b-spec-title { font-weight: 900; font-size: 1.05rem; line-height: 1.25; }
-    .ta-b-spec-caption { font-weight: 600; font-size: 0.82rem; line-height: 1.5; opacity: 0.85; }
-    .ta-b-spec-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.2rem 0.7rem;
-        font-size: 0.72rem;
-        font-weight: 700;
-        color: color-mix(in srgb, var(--ta-accent) 65%, var(--ta-ink));
-    }
+    .la-thumb :global(img) { transition: scale 500ms ease; }
+    .la-row:hover .la-thumb :global(img) { scale: 1.06; }
+    .la-body { display: flex; flex-direction: column; gap: 0.4rem; min-width: 0; }
+    .la-title { font-weight: 900; font-size: 1.15rem; line-height: 1.25; }
+    .la-caption { font-weight: 600; font-size: 0.85rem; line-height: 1.5; opacity: 0.85; }
 
-    /* 美术：画框 + 展签 */
-    /* 3 幅画：第一幅横跨两列，另两幅并排挂在下面 */
-    .ta-b-gallery {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1.75rem 1.4rem;
+    /* ======================= B · 手风琴 ======================= */
+    .lb-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
     }
-    .ta-b-gallery > :first-child { grid-column: span 2; }
-    .ta-b-frame { display: block; }
-    .ta-b-mat {
-        padding: 0.7rem;
+    .lb-link {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        padding: 0.8rem 1rem 0.9rem;
         background-color: var(--ta-paper);
-        border: 3px solid var(--ta-ink);
-        box-shadow: 6px 6px 0 var(--ta-ink);
-        transition: transform 150ms ease, box-shadow 150ms ease;
+        border: 2px solid var(--ta-ink);
+        border-radius: 0.9rem;
+        box-shadow: 5px 5px 0 var(--ta-accent);
+        transition: box-shadow 150ms ease, background-color 150ms ease;
     }
-    .ta-b-frame:hover .ta-b-mat { transform: translate(-3px, -3px); box-shadow: 9px 9px 0 var(--ta-ink); }
-    .ta-b-img {
+    .lb-bar {
+        display: flex;
+        align-items: baseline;
+        gap: 0.8rem;
+    }
+    .ta-side-tech .lb-bar { flex-direction: row-reverse; }
+    .lb-num {
+        flex: none;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 900;
+        font-size: 1.9rem;
+        line-height: 1;
+        color: transparent;
+        -webkit-text-stroke: 1.5px var(--ta-ink);
+        transition: color 200ms ease;
+    }
+    .lb-title { flex: 1; min-width: 0; font-weight: 900; font-size: 1.1rem; line-height: 1.25; }
+    .lb-arrow {
+        flex: none;
+        font-size: 0.9rem;
+        transition: rotate 250ms ease;
+    }
+    .ta-side-tech .lb-arrow { scale: -1 1; }
+    /* 折叠区：grid-template-rows 0fr ↔ 1fr 做高度动画 */
+    .lb-fold {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 320ms ease;
+    }
+    .lb-fold-inner {
+        min-height: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+    }
+    .lb-img {
         position: relative;
         aspect-ratio: 16 / 9;
         overflow: hidden;
-        outline: 1px solid color-mix(in srgb, var(--ta-ink) 30%, transparent);
-    }
-    .ta-b-label {
-        margin-top: 0.8rem;
-        padding-left: 0.75rem;
-        border-left: 4px solid var(--ta-accent);
-    }
-    .ta-b-label-title { font-weight: 900; font-size: 1.05rem; line-height: 1.25; }
-    .ta-b-label-caption { margin-top: 0.2rem; font-weight: 600; font-size: 0.82rem; line-height: 1.5; opacity: 0.85; }
-    .ta-b-label-tags { margin-top: 0.25rem; font-size: 0.75rem; font-style: italic; font-weight: 700; opacity: 0.65; }
-
-    /* 吉祥物站在接缝上，垂直居中 */
-    .ta-b-mascot {
-        align-self: center;
-        filter: drop-shadow(0 0 0.5rem var(--ta-paper));
-    }
-
-    @media (max-width: 1023px) {
-        .ta-b { grid-template-columns: 1fr; }
-        .ta-b-bg-left, .ta-b-bg-right { display: none; }
-        .ta-b { background-color: var(--ta-paper); }
-        .ta-b-mascot { order: -1; width: 7rem; margin: 0 auto; }
-        .ta-b-head-art { align-items: flex-start; text-align: left; }
-    }
-    @media (max-width: 519px) {
-        .ta-b-gallery { grid-template-columns: 1fr; }
-        .ta-b-gallery > :first-child { grid-column: auto; }
-        .ta-b-spec { grid-template-columns: auto minmax(0, 1fr); }
-        .ta-b-spec-thumb { display: none; }
-    }
-
-    /* ======================= C · 拼贴 ======================= */
-    .ta-c {
-        position: relative;
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) clamp(10rem, 17vw, 19rem) minmax(0, 1fr);
-        gap: clamp(1.5rem, 3vw, 3rem);
-        align-items: center;
-        padding-block: 1rem clamp(3rem, 6vw, 6rem);
-    }
-    /* 背后巨大的空心字 */
-    .ta-c-word {
-        position: absolute;
-        bottom: -0.12em;
-        z-index: 0;
-        font-family: 'Roboto', sans-serif;
-        font-weight: 900;
-        font-size: clamp(6rem, 14vw, 15rem);
-        line-height: 1;
-        color: transparent;
-        -webkit-text-stroke: 3px color-mix(in srgb, var(--ta-accent) 45%, transparent);
-        pointer-events: none;
-        white-space: nowrap;
-    }
-    .ta-c-word-left { left: -0.04em; }
-    .ta-c-word-right { right: -0.04em; }
-    .ta-c-col {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-    .ta-c-col-art { align-items: flex-end; }
-    /* 分区名：一张斜贴的黑底贴纸 */
-    .ta-c-sticker {
-        padding: 0.3rem 1.1rem;
-        font-weight: 900;
-        font-size: clamp(1.6rem, 2.6vw, 2.6rem);
-        line-height: 1.1;
-        background-color: var(--ta-ink);
-        color: var(--ta-tint);
-        box-shadow: 5px 5px 0 var(--ta-accent);
-    }
-    .ta-c-sticker-tech { rotate: -3deg; }
-    .ta-c-sticker-art { rotate: 3deg; }
-    .ta-c-pile {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1.6rem 1.4rem;
-        width: 100%;
-    }
-    /* 美术只有 3 张：第一张横跨两列当主图 */
-    .ta-c-col-art .ta-c-photo:first-child { grid-column: span 2; }
-    .ta-c-photo {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        gap: 0.45rem;
-        padding: 0.6rem 0.6rem 0.9rem;
-        background-color: var(--ta-paper);
         border: 2px solid var(--ta-ink);
-        box-shadow: 5px 6px 0 color-mix(in srgb, var(--ta-ink) 80%, transparent);
-        transition: transform 180ms ease, box-shadow 180ms ease;
+        border-radius: 0.5rem;
     }
-    /* 每张歪一点、上下错开一点 */
-    .ta-c-pile > :nth-child(4n + 1) { transform: rotate(-2.5deg); }
-    .ta-c-pile > :nth-child(4n + 2) { transform: rotate(2deg) translateY(1.5rem); }
-    .ta-c-pile > :nth-child(4n + 3) { transform: rotate(1.5deg); }
-    .ta-c-pile > :nth-child(4n + 4) { transform: rotate(-2deg) translateY(1.5rem); }
-    .ta-c-col-art .ta-c-pile > :first-child { transform: rotate(1.2deg); }
-    .ta-c-col-art .ta-c-pile > :nth-child(2) { transform: rotate(-2deg); }
-    .ta-c-col-art .ta-c-pile > :nth-child(3) { transform: rotate(2.4deg) translateY(1rem); }
-    .ta-c-pile > .ta-c-photo:hover {
-        transform: rotate(0deg) scale(1.03);
-        box-shadow: 9px 10px 0 var(--ta-accent);
-        z-index: 2;
+    .lb-caption { font-weight: 600; font-size: 0.85rem; line-height: 1.5; opacity: 0.85; }
+    /* 展开：悬停 / 聚焦的那行；没悬停任何行时，每栏的第一行展开 */
+    .lb-row:hover .lb-fold,
+    .lb-row:focus-within .lb-fold,
+    .lb-list:not(:hover, :focus-within) .lb-row.is-default .lb-fold {
+        grid-template-rows: 1fr;
     }
-    /* 顶上一截半透明胶带 */
-    .ta-c-tape {
-        position: absolute;
-        top: -0.7rem;
-        left: 50%;
-        width: 4.5rem;
-        height: 1.3rem;
-        translate: -50% 0;
-        rotate: -4deg;
-        background-color: color-mix(in srgb, var(--ta-accent) 55%, transparent);
-        z-index: 1;
+    .lb-row:hover .lb-num,
+    .lb-row:focus-within .lb-num,
+    .lb-list:not(:hover, :focus-within) .lb-row.is-default .lb-num {
+        color: var(--ta-accent);
     }
-    .ta-c-img {
-        position: relative;
-        aspect-ratio: 4 / 3;
-        overflow: hidden;
-        border: 1px solid var(--ta-ink);
+    .lb-row:hover .lb-arrow,
+    .lb-row:focus-within .lb-arrow,
+    .lb-list:not(:hover, :focus-within) .lb-row.is-default .lb-arrow {
+        rotate: 90deg;
     }
-    .ta-c-col-art .ta-c-photo:first-child .ta-c-img { aspect-ratio: 16 / 9; }
-    .ta-c-title { font-weight: 900; font-size: 1rem; line-height: 1.25; }
-    .ta-c-caption { font-weight: 600; font-size: 0.8rem; line-height: 1.45; opacity: 0.85; }
-    .ta-c-photo .ta-tags { gap: 0.3rem; }
-    .ta-c-photo .ta-tag { font-size: 0.68rem; padding: 0.05rem 0.45rem; }
-    .ta-c-mascot { position: relative; z-index: 1; }
+    /* 左栏的箭头是水平翻过来的，要反着转才朝下 */
+    .ta-side-tech .lb-row:hover .lb-arrow,
+    .ta-side-tech .lb-row:focus-within .lb-arrow,
+    .ta-side-tech .lb-list:not(:hover, :focus-within) .lb-row.is-default .lb-arrow {
+        rotate: -90deg;
+    }
+    .lb-row:hover .lb-link { box-shadow: 8px 8px 0 var(--ta-accent); }
+    /* 触屏没有悬停：全部展开 */
+    @media (hover: none) {
+        .lb-fold { grid-template-rows: 1fr; }
+    }
 
+    /* ======================= C · 大字索引 ======================= */
+    .lc-head { border-bottom-width: 6px; }
+    .lc-list { display: flex; flex-direction: column; }
+    .lc-row {
+        display: grid;
+        grid-template-columns: clamp(4.5rem, 6vw, 6.5rem) minmax(0, 1fr);
+        gap: 1rem;
+        align-items: start;
+        padding: 1.1rem 0.6rem;
+        border-bottom: 3px solid var(--ta-ink);
+        /* 悬停时底色从中间那一侧扫过来：右栏从左往右，左栏从右往左 */
+        background-image: linear-gradient(var(--ta-accent), var(--ta-accent));
+        background-repeat: no-repeat;
+        background-position: left center;
+        background-size: 0% 100%;
+        transition: background-size 350ms ease;
+    }
+    .ta-side-tech .lc-row {
+        grid-template-columns: minmax(0, 1fr) clamp(4.5rem, 6vw, 6.5rem);
+        background-position: right center;
+    }
+    .ta-side-tech .lc-thumb { order: 2; }
+    .lc-row:hover { background-size: 100% 100%; }
+    .lc-thumb {
+        position: relative;
+        aspect-ratio: 1;
+        overflow: hidden;
+        border: 3px solid var(--ta-ink);
+        border-radius: 50%;
+        background-color: var(--ta-paper);
+    }
+    .lc-body { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
+    .lc-code {
+        font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+        font-size: 0.75rem;
+        font-weight: 800;
+        opacity: 0.6;
+    }
+    .lc-title {
+        font-weight: 900;
+        font-size: clamp(1.25rem, 1.8vw, 1.9rem);
+        line-height: 1.15;
+        letter-spacing: -0.01em;
+    }
+    .lc-caption { font-weight: 600; font-size: 0.85rem; line-height: 1.5; opacity: 0.85; }
+    .lc-tags { font-size: 0.75rem; font-weight: 800; letter-spacing: 0.04em; white-space: pre-wrap; color: color-mix(in srgb, var(--ta-accent) 60%, var(--ta-ink)); }
+    .lc-row:hover .lc-tags { color: var(--ta-ink); }
+
+    /* ---------- 窄屏：吉祥物缩小放最上面，两栏依次往下，全部左对齐 ---------- */
     @media (max-width: 1023px) {
-        .ta-c { grid-template-columns: 1fr; }
-        .ta-c-word { display: none; }
-        .ta-c-mascot { order: -1; width: 8rem; margin: 0 auto; }
-        .ta-c-col-art { align-items: flex-start; }
+        .ta-stage { grid-template-columns: 1fr; }
+        .ta-mascot { order: -1; width: 7rem; margin: 0 auto; }
+        .ta-side-tech { text-align: left; }
+        .ta-side-tech .ta-tags { justify-content: flex-start; }
+        .ta-side-tech .ta-head { align-items: flex-start; }
+        .ta-side-tech .ta-code { align-self: flex-start; }
+        .ta-side-tech .la-row { grid-template-columns: 36% minmax(0, 1fr); }
+        .ta-side-tech .la-thumb,
+        .ta-side-tech .lc-thumb { order: 0; }
+        .ta-side-tech .lb-bar { flex-direction: row; }
+        .ta-side-tech .lb-arrow { scale: 1 1; }
+        .ta-side-tech .lc-row {
+            grid-template-columns: clamp(4.5rem, 6vw, 6.5rem) minmax(0, 1fr);
+            background-position: left center;
+        }
     }
     @media (max-width: 519px) {
-        .ta-c-pile { grid-template-columns: 1fr; }
-        .ta-c-col-art .ta-c-photo:first-child { grid-column: auto; }
-        .ta-c-pile > .ta-c-photo { transform: none !important; }
+        .la-row,
+        .ta-side-tech .la-row { grid-template-columns: 1fr; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .ta-a-card, .ta-b-mat, .ta-c-photo, .ta-a-card :global(img) { transition: none; }
+        .la-row, .lb-link, .lb-fold, .lb-num, .lb-arrow, .lc-row, .la-thumb :global(img) { transition: none; }
     }
 </style>
