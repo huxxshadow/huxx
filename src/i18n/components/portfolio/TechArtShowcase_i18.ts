@@ -125,7 +125,7 @@ export const techArtWorks: TechArtWork[] = [
             ja: "UE5 のシネマティックな島：リアルな海面、動的な空、Sequencer による映画的なカメラワーク。",
             ko: "UE5 시네마틱 섬: 사실적인 바다, 동적인 하늘, Sequencer로 만든 영화 같은 카메라 연출.",
         },
-        tags: { en: "UE5 · Cinematic · Environment", zh: "UE5 · 影视化 · 环境美术", ja: "UE5 · シネマティック · 環境アート", ko: "UE5 · 시네마틱 · 환경 아트" },
+        tags: { en: "UE5 · PBR", zh: "UE5 · PBR", ja: "UE5 · PBR", ko: "UE5 · PBR" },
     },
 ];
 
