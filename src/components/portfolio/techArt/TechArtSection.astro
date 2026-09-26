@@ -246,7 +246,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                     // 三角跟着吉祥物斜过去以后，它深黄外层的左边：顶上在 tip + back[0]，尖在 (tip + ax, H + depth)
                     const eX0 = tipTech + fTech.back[0];
                     const eS = (fTech.ax - fTech.back[0]) / (H + depth);
-                    const gapTri = 18;
+                    const gapTri = 44;
                     const L = (y: number) => eX0 + eS * y - gapTri;
                     const gap = parseFloat(getComputedStyle(list).rowGap) || 0;
                     const total = n * rowH + (n - 1) * gap;
@@ -273,6 +273,13 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                         li.style.setProperty("--f-h", `${rowF.toFixed(1)}px`);
                     });
                     list.style.setProperty("--f-cut", `${cutF.toFixed(1)}px`);
+                    // 左栏封面统一宽度，文字面板吸收阶梯带来的宽度差别
+                    const fws = lis.map((li) => parseFloat(li.style.getPropertyValue("--f-w")));
+                    // 封面尽量是完整的 16:9：平行四边形每一横条的宽度都等于栏宽，所以栏宽取行高 × 16/9；
+                    // 只有文字面板会窄过 8rem 时才收窄
+                    const minText = 128;
+                    list.style.setProperty("--img-w", `${Math.max(40, Math.min(rowH * 16 / 9, li0.offsetWidth - minText)).toFixed(1)}px`);
+                    list.style.setProperty("--img-w-f", `${Math.max(40, Math.min(rowF * 16 / 9, Math.min(...fws) - minText)).toFixed(1)}px`);
                     // 黄条的右斜边也换到新斜度，落在第二列斜边那条线往上的延长线上
                     section.style.setProperty("--bar-rt-f", `${(L(b.top) - b.left).toFixed(1)}px`);
                     section.style.setProperty("--bar-rb-f", `${(L(b.top + bar.offsetHeight) - b.left).toFixed(1)}px`);
@@ -554,6 +561,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     /* 左栏每张卡：文字面板和图片都是平行四边形，四条斜边全和三角平行。
        --tl / --bl：左边斜边在顶上 / 底下往里收多少；图片往左伸进文字面板 |cut|，两块沿同一条斜缝咬合 */
     .ta-side-tech .pa-row {
+        grid-template-columns: minmax(0, 1fr) var(--img-w, 50%);
         --tl: max(-1 * var(--cut), 0px);
         --bl: max(var(--cut), 0px);
         --abs-cut: max(var(--cut), -1 * var(--cut));
@@ -650,11 +658,12 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         .ta-side-tech .pa-list > li { height: var(--row-h); }
         .ta-side-tech .pa-row {
             width: 100%;
-            transition: transform var(--ta-move), width var(--ta-move), height var(--ta-move);
+            transition: transform var(--ta-move), width var(--ta-move), height var(--ta-move), grid-template-columns var(--ta-move);
         }
         .ta-side-tech .pa-thumb { transition: clip-path var(--ta-move), margin-left var(--ta-move); }
         [data-focus="tech"] .ta-side-tech .pa-list { --cut: var(--f-cut); }
         [data-focus="tech"] .ta-side-tech .pa-row {
+            grid-template-columns: minmax(0, 1fr) var(--img-w-f, 50%);
             transform: translate(var(--f-x), var(--f-y));
             width: var(--f-w);
             height: var(--f-h);
