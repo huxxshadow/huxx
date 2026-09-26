@@ -50,6 +50,9 @@ const sides = (["tech", "art"] as const).map((side) => ({
     reveal: side === "tech" ? "right" : "left",
 }));
 
+// 两栏卡片用同一个行高：按项目多的那一栏平分屏幕高度
+const rows = Math.max(...sides.map((s) => s.items.length));
+
 const ink = COLORS.black;
 const accent = COLORS.yellow.dark;
 // 背景用米色（和 Part 1、2 同一个），深黄只留作强调色
@@ -61,7 +64,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
 <section
         id={role.anchor}
         class="relative overflow-hidden w-full px-6 sm:px-12 lg:px-20 xl:px-28 py-14 lg:py-16 scroll-mt-16"
-        style={`background-color: ${tint}; color: ${ink}; --theme-bg: ${tint}; --theme-text: ${ink}; --ta-accent: ${accent}; --ta-tint: ${tint}; --ta-ink: ${ink}; --ta-paper: ${paper};`}
+        style={`background-color: ${tint}; color: ${ink}; --theme-bg: ${tint}; --theme-text: ${ink}; --ta-accent: ${accent}; --ta-tint: ${tint}; --ta-ink: ${ink}; --ta-paper: ${paper}; --rows: ${rows};`}
         data-theme-bg={tint}
         data-theme-text={ink}
         data-ta-section
@@ -275,7 +278,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     .ta-stage {
         position: relative;
         display: grid;
-        grid-template-columns: minmax(0, 1fr) clamp(14rem, 24vw, 28rem) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 1fr) var(--mascot-w) minmax(0, 1fr);
         gap: clamp(1.5rem, 2.6vw, 3rem);
         align-items: center;
         isolation: isolate;
@@ -311,7 +314,11 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
 
     /* ---------- 左中右三个区域的聚焦（脚本写 data-focus）---------- */
     /* 入场动画占用了 translate / scale，这里的位移只用 transform */
-    [data-ta-section] { --ta-move: 650ms cubic-bezier(0.7, 0, 0.2, 1); }
+    [data-ta-section] {
+        --ta-move: 650ms cubic-bezier(0.7, 0, 0.2, 1);
+        /* 吉祥物那一栏的宽度：随屏宽，但人物（宽高比 0.3425）高度不超过一屏减去上内边距，整个 Part 在一屏里放得下 */
+        --mascot-w: min(clamp(14rem, 24vw, 28rem), calc((100vh - 4.5rem) * 0.3425));
+    }
     .ta-side,
     .ta-mascot {
         transition: transform var(--ta-move), opacity 450ms ease;
@@ -345,7 +352,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     /* 宽屏：铺满整个 Part 的高度，水平居中（舞台左右对称，中线就是吉祥物的中线）；
        宽度按吉祥物那一栏算（和 .ta-stage 的中栏同一个 clamp），只比它宽一点，所以又窄又尖 */
     .pa-tri-page {
-        --tri-w: clamp(14rem, 24vw, 28rem);
+        --tri-w: var(--mascot-w);
         position: absolute;
         inset: 0;
         z-index: 0;
@@ -390,7 +397,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         font-family: 'Roboto', sans-serif;
         font-weight: 900;
         font-style: italic;
-        font-size: clamp(2.6rem, 4.6vw, 5rem);
+        font-size: clamp(2.2rem, min(3.6vw, 6vh), 4rem);
         letter-spacing: -0.03em;
         /* 实心深黄，不描边 */
         color: var(--ta-accent);
@@ -421,9 +428,10 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     /* ---------- 列表行：直角梯形，靠中间的那条边是斜的，和居中时三角最近的那条边平行 ----------
        行高固定（--row-h），斜边的横向收进量 = 行高 × 三角斜率（--tri-slope，脚本按三角算好，之前先用 0.18）。
        每行再往中间错开一个「(行高 + 行距) × 斜率」，几行的斜边连成一条和三角边平行的直线。
-       内容只留编号、标题（最多三行）、一行标签，图片占 46%，两栏都放在左边 */
+       内容只留编号、标题（最多两行）、一行标签，图片占 46%，两栏都放在左边 */
     .pa-list {
-        --row-h: clamp(7.5rem, 10vw, 11rem);
+        /* 一屏高度扣掉 section 内边距、Part 标题、栏标题和黄条（约 21.5rem），按行数（--rows，两栏取多的）平分 */
+        --row-h: clamp(3.5rem, calc((100vh - 21.5rem) / var(--rows, 5) - var(--row-gap)), 9rem);
         --row-gap: 0.8rem;
         --cut: calc(var(--row-h) * var(--tri-slope, 0.18));
         --step: calc((var(--row-h) + var(--row-gap)) * var(--tri-slope, 0.18));
@@ -435,6 +443,9 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     .ta-side-tech .pa-list > li { margin-right: calc((var(--n) - 1 - var(--i)) * var(--step) - var(--pull-tech, 0px)); }
     .ta-side-art .pa-list > li { margin-left: calc((var(--n) - 1 - var(--i)) * var(--step)); }
     .pa-row {
+        position: relative;
+        /* 行高随屏幕变，矮到放不下标签那一行时就不显示标签（见下面的 @container） */
+        container: pa-row / size;
         display: grid;
         grid-template-columns: 46% minmax(0, 1fr);
         height: var(--row-h);
@@ -448,6 +459,22 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% 100%, 0 100%);
     }
     .ta-side-tech .pa-text { padding-right: calc(1.1rem + var(--cut)); }
+    /* 斜边上的深黄描边：行被 clip-path 切过，普通 border 会被切掉，所以用一层伪元素沿斜边画一条等宽的斜带 */
+    .pa-row::after {
+        --edge: 5px;
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        background-color: var(--ta-accent);
+        /* 右栏：斜边在左，上端在 --cut、下端在 0 */
+        clip-path: polygon(var(--cut) 0, calc(var(--cut) + var(--edge)) 0, var(--edge) 100%, 0 100%);
+    }
+    .ta-side-tech .pa-row::after {
+        /* 左栏：斜边在右，上端在 100% - --cut、下端在 100% */
+        clip-path: polygon(calc(100% - var(--cut) - var(--edge)) 0, calc(100% - var(--cut)) 0, 100% 100%, calc(100% - var(--edge)) 100%);
+    }
     /* 图在 DOM 里排在文字后面，挪到最前（左边） */
     .pa-thumb {
         order: -1;
@@ -477,7 +504,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     .pa-num {
         flex: none;
         font-weight: 900;
-        font-size: clamp(2rem, 2.8vw, 3rem);
+        font-size: clamp(1.6rem, min(2.4vw, 4vh), 2.6rem);
         line-height: 0.8;
         color: var(--ta-accent);
         transition: color 160ms ease;
@@ -485,12 +512,21 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     .pa-title {
         min-width: 0;
         font-weight: 900;
-        font-size: clamp(1.05rem, 1.4vw, 1.45rem);
+        font-size: clamp(0.95rem, min(1.25vw, 2.2vh), 1.3rem);
         line-height: 1.25;
         display: -webkit-box;
-        -webkit-line-clamp: 3;
+        -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+    }
+    @container pa-row (max-height: 100px) {
+        .pa-tags { display: none; }
+    }
+    /* 再矮的行：标题只留一行，编号缩小 */
+    @container pa-row (max-height: 78px) {
+        .pa-title { -webkit-line-clamp: 1; }
+        .pa-num { font-size: 1.35rem; }
+        .pa-text { gap: 0.15rem; padding-block: 0.3rem; }
     }
     .pa-tags {
         max-width: 100%;
