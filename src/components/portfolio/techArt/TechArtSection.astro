@@ -597,7 +597,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         clip-path: polygon(var(--tl) 0, calc(100% - var(--bl)) 0, calc(100% - var(--tl)) 100%, var(--bl) 100%);
         padding-left: calc(12px + 1.1rem + var(--abs-cut));
         padding-right: calc(1.1rem + var(--abs-cut));
-        transition: background-color 180ms ease, clip-path var(--ta-move);
+        transition: background-color 180ms ease, clip-path var(--ta-move) var(--d, 0ms);
     }
     .ta-side-tech .pa-text::before {
         content: "";
@@ -607,7 +607,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         pointer-events: none;
         background-color: var(--ta-accent);
         clip-path: polygon(var(--tl) 0, calc(var(--tl) + 12px) 0, calc(var(--bl) + 12px) 100%, var(--bl) 100%);
-        transition: clip-path var(--ta-move);
+        transition: clip-path var(--ta-move) var(--d, 0ms);
     }
 
     /* 文字排法照这页最上面的总览菜单：粗体标题，下面一行粗体标签（不大写、不加字距，和总览里「N 个项目」那行一样）；不显示编号 */
@@ -662,12 +662,13 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
        后三张先往下滑淡出，再从右边淡入，排成贴着三角的第二列，最后是 3 × 2。
        位置、尺寸都是脚本按三角算好的（每张卡的 --f-x / --f-y / --f-w / --f-h）；li 保持原高，卡片本身位移变形 */
     @media (min-width: 1024px) {
-        .ta-side-tech .pa-list > li { height: var(--row-h); }
+        /* 错落：每张卡比上一张晚 70ms 开始变形 */
+        .ta-side-tech .pa-list > li { height: var(--row-h); --d: calc(var(--i) * 70ms); }
         .ta-side-tech .pa-row {
             width: 100%;
-            transition: transform var(--ta-move), width var(--ta-move), height var(--ta-move), grid-template-columns var(--ta-move);
+            transition: transform var(--ta-move) var(--d), width var(--ta-move) var(--d), height var(--ta-move) var(--d), grid-template-columns var(--ta-move) var(--d);
         }
-        .ta-side-tech .pa-thumb { transition: clip-path var(--ta-move), margin-left var(--ta-move); }
+        .ta-side-tech .pa-thumb { transition: clip-path var(--ta-move) var(--d), margin-left var(--ta-move) var(--d); }
         [data-focus="tech"] .ta-side-tech .pa-list { --cut: var(--f-cut); }
         [data-focus="tech"] .ta-side-tech .pa-row {
             grid-template-columns: minmax(0, 1fr) var(--img-w-f, 50%);
@@ -676,10 +677,10 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
             height: var(--f-h);
         }
         [data-focus="tech"] .ta-side-tech .pa-list > li:nth-child(n + 4) .pa-row {
-            animation: ta-swap-in 800ms cubic-bezier(0.5, 0, 0.2, 1) both;
+            animation: ta-swap-in 800ms cubic-bezier(0.5, 0, 0.2, 1) var(--d) both;
         }
         [data-unfocus="tech"] .ta-side-tech .pa-list > li:nth-child(n + 4) .pa-row {
-            animation: ta-swap-out 800ms cubic-bezier(0.5, 0, 0.2, 1) both;
+            animation: ta-swap-out 800ms cubic-bezier(0.5, 0, 0.2, 1) var(--d) both;
         }
         .ta-side-tech .pa-head-name { transition: clip-path var(--ta-move); }
         [data-focus="tech"] .ta-side-tech .pa-head-name {
