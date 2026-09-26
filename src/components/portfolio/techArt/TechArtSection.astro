@@ -264,14 +264,12 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                         const top = y0 + r * (rowF + gap);
                         return Math.max(L(top), L(top + rowF));
                     };
-                    // 第一列也按行错开，和第二列一样左边斜边连成一条线；以最靠左的那一行贴住栏的左边
-                    const shift = (r: number) => rightOf(r) - Math.min(...Array.from({ length: rows }, (_, k) => rightOf(k)));
-                    const wA = Math.min(...Array.from({ length: rows }, (_, k) => rightOf(k) - wB - colGap - listLeft - shift(k)));
                     lis.forEach((li, i) => {
                         const r = i % rows;
                         const top = y0 + r * (rowF + gap);
                         const leftB = rightOf(r) - wB;
-                        const [x, wid] = i < rows ? [listLeft + shift(r), wA] : [leftB, wB];
+                        // 第一列都贴着栏的左边，宽度伸到第二列前面
+                        const [x, wid] = i < rows ? [listLeft, leftB - colGap - listLeft] : [leftB, wB];
                         const p0 = pos(li);
                         li.style.setProperty("--f-x", `${(x - p0.left).toFixed(1)}px`);
                         li.style.setProperty("--f-y", `${(top - p0.top).toFixed(1)}px`);
