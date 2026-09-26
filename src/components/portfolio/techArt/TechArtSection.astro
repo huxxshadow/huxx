@@ -1,6 +1,6 @@
 ---
 // Part 5 · 技术美术：吉祥物（握着画笔的猫耳画师）站在正中、几乎撑满整个 Part 的高度，背后一个又窄又尖的倒三角从 Part 顶边一直扎到底边，
-// 左边「技术」、右边「美术」，两边都是列表，左右镜像（左栏文字靠外、图靠中间，右栏反过来）。
+// 左边「技术」、右边「美术」，两边都是列表，完全左右对称（文字面板靠外、封面靠三角；右栏的一切都是左栏的镜像）。
 // 宽屏上分左中右三个区域：鼠标进左区，右栏往右飞出、吉祥物移到右栏的位置并绕笔尖往右斜，
 // 倒三角跟过去一起斜，尖伸到 Part 底边以下，Part 里只露出一截梯形，两条边正好把整个人物包住；右区反过来；回到中间或离开这个 Part 就复原。
 // 版式走 P3R 的平面设计路子：描边大斜体栏名、平行四边形的行逐行向中间错开，悬停整条填深黄。
@@ -44,7 +44,7 @@ const sides = (["tech", "art"] as const).map((side) => ({
     side,
     items: works.filter((w) => w.side === side),
     name: t(side === "tech" ? L.tech : L.art),
-    heading: side === "tech" ? t(L.techHeading) : "ART",
+    heading: t(side === "tech" ? L.techHeading : L.artHeading),
     reveal: side === "tech" ? "right" : "left",
 }));
 
@@ -124,12 +124,25 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
 <script>
     // 左中右三个区域：鼠标在左栏范围 → data-focus="tech"，右栏范围 → "art"，中间或离开 → 清空。
     // 区域按「没有位移时」的栏位划分（offsetLeft 不受 transform 影响），所以栏飞走以后区域也不会跟着跑。
-    // 同时量出吉祥物中线（--c）、它移到两栏正中要走的距离（--to-art / --to-tech）、倾斜角（--tilt），
-    // 以及三种状态下背景三角的 transform（--tri-none-* / --tri-tech-* / --tri-art-*），
-    // 都是相对 section 的 CSS 像素
+    // 同时量出吉祥物中线（--c）、它移到另一栏正中要走的距离（--to-art / --to-tech）、倾斜角（--tilt），
+    // 三种状态下背景三角的 transform（--tri-none-* / --tri-tech-* / --tri-art-*），
+    // 以及两栏卡片的阶梯、黄条斜边、展开成 3 × 2 后每张卡的位置。右栏的量法和左栏完全一样，只是在「左右镜像」的坐标里算
     // 吉祥物轮廓（含甩出的颜料点）的凸包，SVG 坐标；笔尖在 TIP
     const HULL = [[89, 245], [175, 43], [181, 35], [369, 88], [537, 140], [545, 143], [544, 621], [542, 631], [297, 1758], [295, 1748], [183, 1229], [129, 951], [107, 783], [89, 276]];
     const TIP = [297.41, 1758.17];
+
+    type SideName = "tech" | "art";
+    interface SideCfg {
+        name: SideName;
+        el: HTMLElement;
+        /** 右栏在镜像坐标里算：x' = W - x */
+        mirror: boolean;
+        cards: HTMLElement[];
+        /** 展开后的行数（第一列的卡数） */
+        rows: number;
+        /** 展开后贴着三角的那条边：鼠标越过它才算离开这一侧（section 宽度的比例） */
+        focusEdge: number;
+    }
 
     function initTechArtFocus() {
         document.querySelectorAll<HTMLElement>("[data-ta-section]").forEach((section) => {
@@ -139,12 +152,28 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
             const tech = section.querySelector<HTMLElement>(".ta-side-tech");
             const art = section.querySelector<HTMLElement>(".ta-side-art");
             const mascot = section.querySelector<HTMLElement>(".ta-mascot");
-            const bar = section.querySelector<HTMLElement>(".ta-side-tech .pa-head-name");
             if (!stage || !tech || !art || !mascot) return;
             const wide = window.matchMedia("(min-width: 1024px) and (hover: hover)");
             let techEdge = 0.38;
-            let techFocusEdge = 0.6;
             let artEdge = 0.62;
+            const sides: Record<SideName, SideCfg> = {
+                tech: { name: "tech", el: tech, mirror: false, cards: [], rows: 3, focusEdge: 0.6 },
+                art: { name: "art", el: art, mirror: true, cards: [], rows: 3, focusEdge: 0.4 },
+            };
+            for (const cfg of Object.values(sides)) {
+                cfg.cards = Array.from(cfg.el.querySelectorAll<HTMLElement>(".pa-list > li > .pa-row"));
+            }
+
+            // 相对 section 的位置（不受 transform 影响）
+            const pos = (el: HTMLElement) => {
+                let left = 0;
+                let top = 0;
+                for (let e: HTMLElement | null = el; e && e !== section; e = e.offsetParent as HTMLElement | null) {
+                    left += e.offsetLeft;
+                    top += e.offsetTop;
+                }
+                return { left, top, width: el.offsetWidth, height: el.offsetHeight };
+            };
 
             const measure = () => {
                 const W = section.offsetWidth;
@@ -206,93 +235,21 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                 // 居中梯形白色层边的斜率（每往下 1px 横向收多少），列表行的斜边、阶梯和黄条都跟它平行
                 const triSlope = (w * 0.525) / (H + drop);
                 section.style.setProperty("--tri-slope", triSlope.toFixed(4));
-                const fTech = frame(1);
-                const tipTech = cx + toArt;
-                for (const [name, sign, tip] of [["tech", 1, cx + toArt], ["art", -1, cx + toTech]] as const) {
-                    const f = frame(sign);
+                // 聚焦左栏：吉祥物去右栏（tip = cx + toArt），往右斜；聚焦右栏反过来
+                const focusTri = {
+                    tech: { f: frame(1), tip: cx + toArt },
+                    art: { f: frame(-1), tip: cx + toTech },
+                };
+                for (const name of ["tech", "art"] as const) {
+                    const { f, tip } = focusTri[name];
                     section.style.setProperty(`--tri-${name}-f`, place(tip + f.front[0], tip + f.front[1], tip + f.ax, H + depth));
                     section.style.setProperty(`--tri-${name}-b`, place(tip + f.back[0], tip + f.back[1], tip + f.ax, H + depth));
                 }
-                // 左栏：卡片的斜边连成一条和三角平行的线。先按「不往里拉」算出第一张卡右上角到三角深黄外边的横向间距，
-                // 整栏往三角拉近其中的 45%（--pull-tech）；黄条的右斜边就落在这条线往上的延长线上，和下面的卡片对齐
-                const list = tech.querySelector<HTMLElement>(".pa-list");
-                const li0 = list?.querySelector<HTMLElement>(":scope > li");
-                if (bar && list && li0) {
-                    const pos = (el: HTMLElement) => {
-                        let left = 0;
-                        let top = 0;
-                        for (let e: HTMLElement | null = el; e && e !== section; e = e.offsetParent as HTMLElement | null) {
-                            left += e.offsetLeft;
-                            top += e.offsetTop;
-                        }
-                        return { left, top };
-                    };
-                    const slope = triSlope;
-                    const rowH = li0.offsetHeight;
-                    const step = (rowH + (parseFloat(getComputedStyle(list).rowGap) || 0)) * slope;
-                    const n = list.children.length;
-                    const y0 = pos(li0).top;
-                    // 第一张卡不拉近时的右上角（斜边顶端）
-                    const x0 = pos(list).left + list.offsetWidth - (n - 1) * step - rowH * slope;
-                    const edgeBack = (y: number) => cx - w * 0.6 * ((H + drop - y) / (H + drop));
-                    const pull = Math.max(0, (edgeBack(y0) - x0) * 0.45);
-                    section.style.setProperty("--pull-tech", `${pull.toFixed(1)}px`);
-                    const line = (y: number) => x0 + pull + slope * (y - y0);
-                    const b = pos(bar);
-                    section.style.setProperty("--bar-rt", `${(line(b.top) - b.left).toFixed(1)}px`);
-                    section.style.setProperty("--bar-rb", `${(line(b.top + bar.offsetHeight) - b.left).toFixed(1)}px`);
 
-                    // ---------- 左栏展开（data-focus="tech"）后的卡片位置 ----------
-                    // 三角跟着吉祥物斜过去以后，它深黄外层的左边：顶上在 tip + back[0]，尖在 (tip + ax, H + depth)
-                    const eX0 = tipTech + fTech.back[0];
-                    const eS = (fTech.ax - fTech.back[0]) / (H + depth);
-                    const gapTri = 44;
-                    const L = (y: number) => eX0 + eS * y - gapTri;
-                    const gap = parseFloat(getComputedStyle(list).rowGap) || 0;
-                    const total = n * rowH + (n - 1) * gap;
-                    const rows = Math.ceil(n / 2);
-                    const rowF = (total - (rows - 1) * gap) / rows;
-                    const colGap = 12;
-                    const listLeft = pos(list).left;
-                    // 第二列宽度固定：按第一行把可用宽度对半分
-                    const wB = (Math.min(L(y0), L(y0 + rowF)) - listLeft - colGap) / 2;
-                    // 所有斜边的新斜度：每往下 1px 往右 eS
-                    const cutF = rowF * eS;
-                    const lis = Array.from(list.children) as HTMLElement[];
-                    // 每一行第二列的右边（斜边整个落在 L 上：取斜边更靠右的那一端）
-                    const rightOf = (r: number) => {
-                        const top = y0 + r * (rowF + gap);
-                        return Math.max(L(top), L(top + rowF));
-                    };
-                    lis.forEach((li, i) => {
-                        const r = i % rows;
-                        const top = y0 + r * (rowF + gap);
-                        const leftB = rightOf(r) - wB;
-                        // 第一列都贴着栏的左边，宽度伸到第二列前面
-                        const [x, wid] = i < rows ? [listLeft, leftB - colGap - listLeft] : [leftB, wB];
-                        const p0 = pos(li);
-                        li.style.setProperty("--f-x", `${(x - p0.left).toFixed(1)}px`);
-                        li.style.setProperty("--f-y", `${(top - p0.top).toFixed(1)}px`);
-                        li.style.setProperty("--f-w", `${wid.toFixed(1)}px`);
-                        li.style.setProperty("--f-h", `${rowF.toFixed(1)}px`);
-                    });
-                    list.style.setProperty("--f-cut", `${cutF.toFixed(1)}px`);
-                    // 左栏封面统一宽度，文字面板吸收阶梯带来的宽度差别
-                    const fws = lis.map((li) => parseFloat(li.style.getPropertyValue("--f-w")));
-                    // 封面宽度 = 最窄那张卡减去文字面板宽度（--text-w 是 clamp()，放个探针量出实际值）
-                    const probe = document.createElement("div");
-                    probe.style.cssText = "position:absolute;visibility:hidden;width:var(--text-w)";
-                    tech.append(probe);
-                    const textW = probe.offsetWidth || 200;
-                    probe.remove();
-                    list.style.setProperty("--img-w", `${Math.max(40, li0.offsetWidth - textW).toFixed(1)}px`);
-                    list.style.setProperty("--img-w-f", `${Math.max(40, Math.min(...fws) - textW).toFixed(1)}px`);
-                    // 黄条的右斜边也换到新斜度，落在第二列斜边那条线往上的延长线上
-                    section.style.setProperty("--bar-rt-f", `${(L(b.top) - b.left).toFixed(1)}px`);
-                    section.style.setProperty("--bar-rb-f", `${(L(b.top + bar.offsetHeight) - b.left).toFixed(1)}px`);
-                    // 展开后鼠标可以一直移到三角边上都算左区
-                    techFocusEdge = (L(y0) + gapTri) / W;
-                }
+                // 两栏里行数多的那栏定下展开后的行高，两边卡片一样大
+                const maxN = Math.max(...Object.values(sides).map((c) => c.cards.length));
+                for (const cfg of Object.values(sides)) layoutSide(cfg, { W, H, cx, w, drop, depth, triSlope, maxN, focus: focusTri[cfg.name] });
+
                 if (!section.dataset.triReady) {
                     // 第一次摆好时不要动画（否则三角会从没变换的样子飞过来，后台标签页里还会卡在半路），
                     // 下一帧之后再打开过渡
@@ -303,10 +260,103 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                 artEdge = (stage.offsetLeft + art.offsetLeft) / W;
             };
 
-            // 左栏卡片的展开 / 收起用 Web Animations 驱动：每次切换先读出每张卡「此刻屏幕上的样子」（包括正在播的动画），
+            // 一栏的卡片：阶梯往三角拉近、黄条斜边对齐卡片、展开后 3 × 2 的位置。都在「这一栏靠三角的一侧是右边」的坐标里算，
+            // 右栏先镜像（x' = W - x），算完再换回来
+            const layoutSide = (
+                cfg: SideCfg,
+                g: { W: number; H: number; cx: number; w: number; drop: number; depth: number; triSlope: number; maxN: number; focus: { f: { ax: number; back: number[] }; tip: number } },
+            ) => {
+                const { W, H, w, drop, depth, triSlope: slope, maxN } = g;
+                const el = cfg.el;
+                const list = el.querySelector<HTMLElement>(".pa-list");
+                const bar = el.querySelector<HTMLElement>(".pa-head-name");
+                const li0 = list?.querySelector<HTMLElement>(":scope > li");
+                if (!list || !bar || !li0) return;
+                const X = (x: number) => (cfg.mirror ? W - x : x);
+                // 镜像坐标里的盒子：左边 = 镜像后的左边
+                const boxM = (e: HTMLElement) => {
+                    const p = pos(e);
+                    return { left: cfg.mirror ? W - (p.left + p.width) : p.left, top: p.top, width: p.width, height: p.height };
+                };
+                const cxM = X(g.cx);
+                const rowH = li0.offsetHeight;
+                const gap = parseFloat(getComputedStyle(list).rowGap) || 0;
+                const step = (rowH + gap) * slope;
+                const n = list.children.length;
+                const y0 = pos(li0).top;
+                const listM = boxM(list);
+                // 第一张卡不拉近时，靠三角那条斜边的顶端
+                const x0 = listM.left + listM.width - (n - 1) * step - rowH * slope;
+                const edgeBack = (y: number) => cxM - w * 0.6 * ((H + drop - y) / (H + drop));
+                // 整栏往三角拉近间距的 45%
+                const pull = Math.max(0, (edgeBack(y0) - x0) * 0.45);
+                el.style.setProperty("--pull", `${pull.toFixed(1)}px`);
+                const line = (y: number) => x0 + pull + slope * (y - y0);
+                // 黄条靠三角那条斜边的两端，换成相对黄条自身左边的真实坐标
+                const b = pos(bar);
+                const barX = (xm: number) => `${(X(xm) - b.left).toFixed(1)}px`;
+                el.style.setProperty("--bar-t", barX(line(b.top)));
+                el.style.setProperty("--bar-b", barX(line(b.top + b.height)));
+
+                // ---------- 展开后的卡片位置 ----------
+                // 三角跟着吉祥物斜过去以后，靠这一栏的那条边（深黄外层）：左栏是它的左边，右栏是它的右边（镜像后也是「左边」）
+                const { f, tip } = g.focus;
+                const eX0 = cfg.mirror ? W - (tip + f.back[1]) : tip + f.back[0];
+                const apexX = cfg.mirror ? W - (tip + f.ax) : tip + f.ax;
+                const eS = (apexX - eX0) / (H + depth);
+                const gapTri = 44;
+                const L = (y: number) => eX0 + eS * y - gapTri;
+                const rows = Math.ceil(n / 2);
+                cfg.rows = rows;
+                const total = maxN * rowH + (maxN - 1) * gap;
+                const rowsMax = Math.ceil(maxN / 2);
+                const rowF = (total - (rowsMax - 1) * gap) / rowsMax;
+                const colGap = 12;
+                const listLeft = listM.left;
+                // 第二列宽度固定：按第一行把可用宽度对半分
+                const wB = (Math.min(L(y0), L(y0 + rowF)) - listLeft - colGap) / 2;
+                // 所有斜边的新斜度：每往下 1px 往外 eS（镜像坐标）
+                const cutF = rowF * eS;
+                const lis = Array.from(list.children) as HTMLElement[];
+                // 每一行第二列靠三角的一边（斜边整个落在 L 上：取斜边更靠外的那一端）
+                const innerOf = (r: number) => {
+                    const top = y0 + r * (rowF + gap);
+                    return Math.max(L(top), L(top + rowF));
+                };
+                const fws: number[] = [];
+                lis.forEach((li, i) => {
+                    const r = i % rows;
+                    const top = y0 + r * (rowF + gap);
+                    const leftB = innerOf(r) - wB;
+                    // 第一列都贴着栏的外边，宽度伸到第二列前面
+                    const [xm, wid] = i < rows ? [listLeft, leftB - colGap - listLeft] : [leftB, wB];
+                    const realLeft = cfg.mirror ? W - (xm + wid) : xm;
+                    const p0 = pos(li);
+                    li.style.setProperty("--f-x", `${(realLeft - p0.left).toFixed(1)}px`);
+                    li.style.setProperty("--f-y", `${(top - p0.top).toFixed(1)}px`);
+                    li.style.setProperty("--f-w", `${wid.toFixed(1)}px`);
+                    li.style.setProperty("--f-h", `${rowF.toFixed(1)}px`);
+                    fws.push(wid);
+                });
+                list.style.setProperty("--f-cut", `${cutF.toFixed(1)}px`);
+                // 封面统一宽度 = 最窄那张卡减去文字面板宽度（--text-w 是 clamp()，放个探针量出实际值）
+                const probe = document.createElement("div");
+                probe.style.cssText = "position:absolute;visibility:hidden;width:var(--text-w)";
+                el.append(probe);
+                const textW = probe.offsetWidth || 200;
+                probe.remove();
+                list.style.setProperty("--img-w", `${Math.max(40, li0.offsetWidth - textW).toFixed(1)}px`);
+                list.style.setProperty("--img-w-f", `${Math.max(40, Math.min(...fws) - textW).toFixed(1)}px`);
+                // 黄条的斜边也换到新斜度，落在第二列斜边那条线往上的延长线上
+                el.style.setProperty("--bar-t-f", barX(L(b.top)));
+                el.style.setProperty("--bar-b-f", barX(L(b.top + b.height)));
+                // 展开后鼠标可以一直移到三角边上都算这一侧
+                cfg.focusEdge = X(L(y0) + gapTri) / W;
+            };
+
+            // 卡片的展开 / 收起用 Web Animations 驱动：每次切换先读出每张卡「此刻屏幕上的样子」（包括正在播的动画），
             // 取消旧动画，切换状态后再从这个样子动画到新状态（CSS 里的终态）。所以随时进出都从当前位置接着走，不会跳。
-            // 后三张（04~06）要换列：先往外滑淡出，再从另一侧淡入落位；中途打断时按当前透明度缩短淡出那一段
-            const cards = Array.from(tech.querySelectorAll<HTMLElement>(".pa-list > li > .pa-row"));
+            // 第二列的卡要换列：先往外滑淡出，再从三角那一侧淡入落位；中途打断时按当前透明度缩短淡出那一段
             const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
             const snap = (el: HTMLElement) => {
                 const cs = getComputedStyle(el);
@@ -320,48 +370,53 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
             };
             const EASE_MOVE = "cubic-bezier(0.7, 0, 0.2, 1)";
             const EASE_SWAP = "cubic-bezier(0.5, 0, 0.2, 1)";
-            const animateCards = (apply: () => void, expanding: boolean) => {
+            const animateCards = (involved: { cfg: SideCfg; expanding: boolean }[], apply: () => void) => {
+                const all = involved.flatMap(({ cfg }) => cfg.cards);
                 if (!wide.matches || reduceMotion.matches) {
-                    cards.forEach((el) => el.getAnimations().forEach((a) => a.cancel()));
+                    all.forEach((el) => el.getAnimations().forEach((a) => a.cancel()));
                     apply();
                     return;
                 }
-                const from = cards.map(snap);
+                const from = new Map(all.map((el) => [el, snap(el)]));
                 // 被打断时还在动（或还在等错落延迟）的卡，接着动、不再重新等延迟，否则会停在半路一下
-                const moving = cards.map((el) => el.getAnimations().some((a) => a.playState === "running"));
-                cards.forEach((el) => el.getAnimations().forEach((a) => a.cancel()));
+                const moving = new Map(all.map((el) => [el, el.getAnimations().some((a) => a.playState === "running")]));
+                all.forEach((el) => el.getAnimations().forEach((a) => a.cancel()));
                 apply();
-                const to = cards.map(snap);
-                cards.forEach((el, i) => {
-                    const f = from[i];
-                    const t = to[i];
-                    const delay = moving[i] ? 0 : i * 70;
-                    const frame = (v: typeof f, extra = "", opacity = v.opacity) => ({
-                        transform: `${v.transform} ${extra}`.trim(),
-                        width: v.width,
-                        height: v.height,
-                        gridTemplateColumns: v.gridTemplateColumns,
-                        opacity: String(opacity),
+                for (const { cfg, expanding } of involved) {
+                    // 靠三角的一侧：左栏在右（+），右栏在左（-）
+                    const side = cfg.mirror ? -1 : 1;
+                    cfg.cards.forEach((el, i) => {
+                        const f = from.get(el)!;
+                        const t = snap(el);
+                        const delay = moving.get(el) ? 0 : i * 70;
+                        const frame = (v: typeof f, extra = "", opacity = v.opacity) => ({
+                            transform: `${v.transform} ${extra}`.trim(),
+                            width: v.width,
+                            height: v.height,
+                            gridTemplateColumns: v.gridTemplateColumns,
+                            opacity: String(opacity),
+                        });
+                        if (i < cfg.rows) {
+                            el.animate([frame(f), frame(t, "", 1)], { duration: 650, delay, easing: EASE_MOVE, fill: "backwards" });
+                            return;
+                        }
+                        // 换列：展开时往下滑出、从三角那一侧进来；收起时往三角那一侧滑出、从下面上来
+                        const sideShift = `translateX(${48 * side}px)`;
+                        const out = expanding ? "translateY(40px)" : sideShift;
+                        const into = expanding ? sideShift : "translateY(40px)";
+                        const cut = 0.35 * f.opacity;
+                        const kf: Keyframe[] = [];
+                        if (cut > 0.01) {
+                            kf.push({ ...frame(f), offset: 0, easing: EASE_SWAP });
+                            kf.push({ ...frame(f, out, 0), offset: cut });
+                            kf.push({ ...frame(t, into, 0), offset: Math.min(cut + 0.001, 0.999), easing: EASE_SWAP });
+                        } else {
+                            kf.push({ ...frame(t, into, 0), offset: 0, easing: EASE_SWAP });
+                        }
+                        kf.push({ ...frame(t, "", 1), offset: 1 });
+                        el.animate(kf, { duration: 800, delay, fill: "backwards" });
                     });
-                    if (i < 3) {
-                        el.animate([frame(f), frame(t, "", 1)], { duration: 650, delay, easing: EASE_MOVE, fill: "backwards" });
-                        return;
-                    }
-                    // 换列：展开时往下滑出、从右边进来；收起时往右滑出、从下面上来
-                    const out = expanding ? "translateY(40px)" : "translateX(48px)";
-                    const into = expanding ? "translateX(48px)" : "translateY(40px)";
-                    const cut = 0.35 * f.opacity;
-                    const kf: Keyframe[] = [];
-                    if (cut > 0.01) {
-                        kf.push({ ...frame(f), offset: 0, easing: EASE_SWAP });
-                        kf.push({ ...frame(f, out, 0), offset: cut });
-                        kf.push({ ...frame(t, into, 0), offset: Math.min(cut + 0.001, 0.999), easing: EASE_SWAP });
-                    } else {
-                        kf.push({ ...frame(t, into, 0), offset: 0, easing: EASE_SWAP });
-                    }
-                    kf.push({ ...frame(t, "", 1), offset: 1 });
-                    el.animate(kf, { duration: 800, delay, fill: "backwards" });
-                });
+                }
             };
             let sideLocked = false;
             let lockedAt = 0;
@@ -377,7 +432,10 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                     if (focus) section.dataset.focus = focus;
                     else delete section.dataset.focus;
                 };
-                if (prev === "tech" || focus === "tech") animateCards(apply, focus === "tech");
+                const involved = (["tech", "art"] as const)
+                    .filter((name) => prev === name || focus === name)
+                    .map((name) => ({ cfg: sides[name], expanding: focus === name }));
+                if (involved.length) animateCards(involved, apply);
                 else apply();
             };
 
@@ -385,15 +443,15 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                 if (!wide.matches || e.pointerType !== "mouse") return;
                 const r = section.getBoundingClientRect();
                 const x = (e.clientX - r.left) / r.width;
-                // 滞回：已经在某一边时，要往中间多走 2% 才退出，免得鼠标停在边界上来回抖、动画反复重启
+                // 滞回：已经在某一边时，要往中间多走 2% 才退出，免得鼠标停在边界上来回抖、动画反复重启；
+                // 展开时一直到斜过去的三角边上都算这一侧，越过就回到中间（不直接跳到另一侧）
                 const cur = section.dataset.focus ?? "";
                 if (cur === "tech") {
-                    // 左栏展开时一直到斜过去的三角边上都算左区，越过就回到中间（不直接跳到右区）
-                    if (x > Math.max(techEdge + 0.02, techFocusEdge)) leaveSide();
+                    if (x > Math.max(techEdge + 0.02, sides.tech.focusEdge)) leaveSide();
                     return;
                 }
                 if (cur === "art") {
-                    if (x < artEdge - 0.02) leaveSide();
+                    if (x < Math.min(artEdge - 0.02, sides.art.focusEdge)) leaveSide();
                     return;
                 }
                 // 刚从一边退回中间：先锁住两边，鼠标经过中间那一栏（吉祥物原来的位置）或过了一会儿再动，才重新判断
@@ -556,9 +614,11 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     [data-tri-ready][data-focus="art"] .pa-tri-page .pa-tri-back { transform: var(--tri-art-b); }
     .pa-tri-local { display: none; }
     .pa-head { display: flex; flex-direction: column; line-height: 1; }
-    /* 左栏整体贴顶：TECHNICAL 紧接在「4 技术美术」下面，左对齐；下面的名字条拉满整栏，成一条长黄条（和右栏一样） */
-    .ta-side-tech { align-self: start; }
-    .ta-side-tech .pa-head { align-items: stretch; text-align: left; }
+    /* 两栏都贴顶；左栏标题左对齐，右栏标题右对齐（镜像），下面的名字条拉满整栏 */
+    .ta-side { align-self: start; }
+    .pa-head { align-items: stretch; }
+    .ta-side-tech .pa-head { text-align: left; }
+    .ta-side-art .pa-head { text-align: right; }
     .pa-head-en {
         font-family: 'Roboto', sans-serif;
         font-weight: 900;
@@ -578,17 +638,32 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         color: var(--ta-paper);
         transform: skewX(-14deg);
     }
-    /* 宽屏左栏的黄条：梯形——左边伸到画面最左（section 的 overflow: hidden 在屏幕边裁掉），
-       右边是斜边，落在下面卡片斜边连成的那条线上、和卡片对齐（--bar-rt / --bar-rb 由脚本算，相对黄条自身左边）。
-       不再整体 skew，改用 clip-path 切，字保持斜体，仍然从栏的左边开始排 */
+    /* 宽屏的黄条：梯形——外侧伸到画面边缘（section 的 overflow: hidden 在屏幕边裁掉），
+       靠三角的一侧是斜边，落在下面卡片斜边连成的那条线上（--bar-t / --bar-b 由脚本算，相对黄条自身左边）。
+       不再整体 skew，改用 clip-path 切，字保持斜体，仍然从栏的外边开始排 */
     @media (min-width: 1024px) {
+        .pa-head-name {
+            font-style: italic;
+            transform: none;
+            transition: clip-path var(--ta-move);
+        }
         .ta-side-tech .pa-head-name {
             margin-left: -100vw;
             margin-right: -50vw;
             padding-left: calc(100vw + 1rem);
-            font-style: italic;
-            transform: none;
-            clip-path: polygon(0 0, var(--bar-rt, 100%) 0, var(--bar-rb, 100%) 100%, 0 100%);
+            clip-path: polygon(0 0, var(--bar-t, 100%) 0, var(--bar-b, 100%) 100%, 0 100%);
+        }
+        .ta-side-art .pa-head-name {
+            margin-right: -100vw;
+            margin-left: -50vw;
+            padding-right: calc(100vw + 1rem);
+            clip-path: polygon(var(--bar-t, 0%) 0, 100% 0, 100% 100%, var(--bar-b, 0%) 100%);
+        }
+        [data-focus="tech"] .ta-side-tech .pa-head-name {
+            clip-path: polygon(0 0, var(--bar-t-f, 100%) 0, var(--bar-b-f, 100%) 100%, 0 100%);
+        }
+        [data-focus="art"] .ta-side-art .pa-head-name {
+            clip-path: polygon(var(--bar-t-f, 0%) 0, 100% 0, 100% 100%, var(--bar-b-f, 0%) 100%);
         }
     }
     /* ---------- 列表行：直角梯形，靠中间的那条边是斜的，和居中时三角最近的那条边平行 ----------
@@ -605,23 +680,26 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         flex-direction: column;
         gap: var(--row-gap);
     }
-    /* 左栏整体再往三角拉近 --pull-tech（脚本算），卡片可以伸进栏和吉祥物之间的空隙 */
-    .ta-side-tech .pa-list > li { margin-right: calc((var(--n) - 1 - var(--i)) * var(--step) - var(--pull-tech, 0px)); }
-    .ta-side-art .pa-list > li { margin-left: calc((var(--n) - 1 - var(--i)) * var(--step)); }
-    /* 每张卡两块，紧贴在一起：图片 + 文字面板。靠中间（靠三角）的那一块带斜边和深黄描边，另一块是直角矩形——
-       文字面板固定宽度在左、图片在右拉伸填满剩下的宽度；左栏靠中间的是图片（右边斜），右栏靠中间的是文字面板（左边斜） */
+    /* 整栏再往三角拉近 --pull（脚本算），卡片可以伸进栏和吉祥物之间的空隙 */
+    .ta-side-tech .pa-list > li { margin-right: calc((var(--n) - 1 - var(--i)) * var(--step) - var(--pull, 0px)); }
+    .ta-side-art .pa-list > li { margin-left: calc((var(--n) - 1 - var(--i)) * var(--step) - var(--pull, 0px)); }
+    /* 每张卡两块，紧贴在一起：文字面板在外侧（固定宽度）、封面靠三角（所有卡一样宽，--img-w 由脚本算）。
+       两块都是平行四边形，四条斜边全和三角平行；封面往文字面板里伸 |cut|，两块沿同一条斜缝咬合。
+       --cut 为正：靠三角那条边上窄下宽（居中时）；为负：上宽下窄（展开后三角斜向另一边）。两种都能画。
+       --tl / --bl：外侧斜边在顶上 / 底下往里收多少。右栏的所有 polygon 都是左栏的左右镜像 */
     .pa-row {
         position: relative;
         /* 行高随屏幕变，矮到放不下标签那一行时就不显示标签（见下面的 @container） */
         container: pa-row / size;
         display: grid;
-        /* 文字面板固定宽度，所有卡片一样；行宽的差别（阶梯错开）都由右边的图片拉伸吸收 */
-        grid-template-columns: var(--text-w) minmax(0, 1fr);
         height: var(--row-h);
+        --tl: max(-1 * var(--cut), 0px);
+        --bl: max(var(--cut), 0px);
+        --abs-cut: max(var(--cut), -1 * var(--cut));
     }
     .ta-side { --text-w: clamp(10rem, 13vw, 15rem); }
-    /* 右栏的文字面板多出斜边切掉的那一块 */
-    .ta-side-art { --text-w: calc(clamp(10rem, 13vw, 15rem) + var(--cut, 0px)); }
+    .ta-side-tech .pa-row { grid-template-columns: minmax(0, 1fr) var(--img-w, 50%); }
+    .ta-side-art .pa-row { grid-template-columns: var(--img-w, 50%) minmax(0, 1fr); }
     .pa-thumb {
         position: relative;
         overflow: hidden;
@@ -632,57 +710,45 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     .pa-text {
         position: relative;
         background-color: var(--ta-paper);
-        transition: background-color 180ms ease;
-    }
-    /* 斜边：上端往里收 --cut，和居中三角最近的边平行 */
-    .ta-side-art .pa-text {
-        clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%);
-        padding-left: calc(1.1rem + var(--cut));
-    }
-    /* --cut 为正：上窄下宽（居中时）；为负：上宽下窄（展开后三角斜向另一边）。两种都能画 */
-    /* 左栏每张卡：文字面板和图片都是平行四边形，四条斜边全和三角平行。
-       --tl / --bl：左边斜边在顶上 / 底下往里收多少；图片往左伸进文字面板 |cut|，两块沿同一条斜缝咬合 */
-    .ta-side-tech .pa-row {
-        grid-template-columns: minmax(0, 1fr) var(--img-w, 50%);
-        --tl: max(-1 * var(--cut), 0px);
-        --bl: max(var(--cut), 0px);
-        --abs-cut: max(var(--cut), -1 * var(--cut));
+        transition: background-color 180ms ease, clip-path var(--ta-move) var(--d, 0ms);
     }
     .ta-side-tech .pa-thumb {
         margin-left: calc(-1 * var(--abs-cut));
-        clip-path: polygon(var(--tl) 0, calc(100% - max(var(--cut), 0px)) 0, calc(100% + min(var(--cut), 0px)) 100%, var(--bl) 100%);
+        clip-path: polygon(var(--tl) 0, calc(100% - var(--bl)) 0, calc(100% - var(--tl)) 100%, var(--bl) 100%);
     }
-    /* 斜边上的深黄描边（横向 12px）：那一块被 clip-path 切过，普通 border 会被切掉，所以用伪元素沿斜边画一条等宽的斜带 */
-    .ta-side-art .pa-text::after {
-        --edge: 12px;
-        content: "";
-        position: absolute;
-        inset: 0;
-        z-index: 1;
-        pointer-events: none;
-        background-color: var(--ta-accent);
+    .ta-side-art .pa-thumb {
+        /* 封面在 DOM 里排在文字后面，右栏挪到左边（靠三角） */
+        order: -1;
+        margin-right: calc(-1 * var(--abs-cut));
+        clip-path: polygon(var(--bl) 0, calc(100% - var(--tl)) 0, calc(100% - var(--bl)) 100%, var(--tl) 100%);
     }
-    .ta-side-art .pa-text::after {
-        clip-path: polygon(var(--cut) 0, calc(var(--cut) + var(--edge)) 0, var(--edge) 100%, 0 100%);
-    }
-    /* 左栏文字面板（最左边那块）的左边一道深黄竖边 */
-    /* 左栏文字面板的左边也是斜边，和右边（图片的斜边）平行，整张卡是平行四边形；
-       左边一道 12px 深黄斜带。--cut 正负两种斜向都能画 */
     .ta-side-tech .pa-text {
         clip-path: polygon(var(--tl) 0, calc(100% - var(--bl)) 0, calc(100% - var(--tl)) 100%, var(--bl) 100%);
         padding-left: calc(12px + 1.1rem + var(--abs-cut));
         padding-right: calc(1.1rem + var(--abs-cut));
-        transition: background-color 180ms ease, clip-path var(--ta-move) var(--d, 0ms);
     }
-    .ta-side-tech .pa-text::before {
+    .ta-side-art .pa-text {
+        clip-path: polygon(var(--bl) 0, calc(100% - var(--tl)) 0, calc(100% - var(--bl)) 100%, var(--tl) 100%);
+        padding-right: calc(12px + 1.1rem + var(--abs-cut));
+        padding-left: calc(1.1rem + var(--abs-cut));
+        align-items: flex-end;
+        text-align: right;
+    }
+    /* 外侧一道 12px 深黄斜边（面板被 clip-path 切过，普通 border 会被切掉，所以用伪元素沿斜边画一条等宽的斜带） */
+    .pa-text::before {
         content: "";
         position: absolute;
         inset: 0;
         z-index: 1;
         pointer-events: none;
         background-color: var(--ta-accent);
-        clip-path: polygon(var(--tl) 0, calc(var(--tl) + 12px) 0, calc(var(--bl) + 12px) 100%, var(--bl) 100%);
         transition: clip-path var(--ta-move) var(--d, 0ms);
+    }
+    .ta-side-tech .pa-text::before {
+        clip-path: polygon(var(--tl) 0, calc(var(--tl) + 12px) 0, calc(var(--bl) + 12px) 100%, var(--bl) 100%);
+    }
+    .ta-side-art .pa-text::before {
+        clip-path: polygon(calc(100% - var(--tl) - 12px) 0, calc(100% - var(--tl)) 0, calc(100% - var(--bl)) 100%, calc(100% - var(--bl) - 12px) 100%);
     }
 
     /* 文字排法照这页最上面的总览菜单：粗体标题，下面一行粗体标签（不大写、不加字距，和总览里「N 个项目」那行一样）；不显示编号 */
@@ -732,56 +798,53 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     /* 悬停：和总览一样文字面板填成主题深色（深黄） */
     .pa-row:hover .pa-text { background-color: var(--ta-accent); }
 
-    /* ---------- 左栏展开（data-focus="tech"，只在宽屏）----------
-       所有斜边换成斜过去的三角那条边的斜度（--f-cut）；前三张卡原地展开成第一列（更宽更高），
-       后三张先往下滑淡出，再从右边淡入，排成贴着三角的第二列，最后是 3 × 2（动画在脚本里）。
-       位置、尺寸都是脚本按三角算好的（每张卡的 --f-x / --f-y / --f-w / --f-h）；li 保持原高，卡片本身位移变形 */
+    /* ---------- 展开（data-focus="tech" / "art"，只在宽屏）----------
+       这一栏所有斜边换成斜过去的三角那条边的斜度（--f-cut）；前三张卡原地展开成外侧一列（更宽更高），
+       其余的先往下滑淡出，再从三角那一侧淡入，排成贴着三角的第二列（左栏 3 × 2，右栏 3 + 2）。
+       位置、尺寸都是脚本按三角算好的（每张卡的 --f-x / --f-y / --f-w / --f-h），动画也在脚本里（Web Animations），这里只写终态 */
     @media (min-width: 1024px) {
         /* 错落：每张卡比上一张晚 70ms 开始变形 */
-        .ta-side-tech .pa-list > li { height: var(--row-h); --d: calc(var(--i) * 70ms); }
-        /* 卡片的位置、尺寸、换列动画由脚本（Web Animations）播，这里只写终态 */
-        .ta-side-tech .pa-row { width: 100%; }
+        .pa-list > li { height: var(--row-h); --d: calc(var(--i) * 70ms); }
+        .pa-row { width: 100%; }
         .ta-side-tech .pa-thumb { transition: clip-path var(--ta-move) var(--d), margin-left var(--ta-move) var(--d); }
-        [data-focus="tech"] .ta-side-tech .pa-list { --cut: var(--f-cut); }
-        [data-focus="tech"] .ta-side-tech .pa-row {
-            grid-template-columns: minmax(0, 1fr) var(--img-w-f, 50%);
+        .ta-side-art .pa-thumb { transition: clip-path var(--ta-move) var(--d), margin-right var(--ta-move) var(--d); }
+        [data-focus="tech"] .ta-side-tech .pa-list,
+        [data-focus="art"] .ta-side-art .pa-list { --cut: var(--f-cut); }
+        [data-focus="tech"] .ta-side-tech .pa-row,
+        [data-focus="art"] .ta-side-art .pa-row {
             transform: translate(var(--f-x), var(--f-y));
             width: var(--f-w);
             height: var(--f-h);
         }
-        .ta-side-tech .pa-head-name { transition: clip-path var(--ta-move); }
-        [data-focus="tech"] .ta-side-tech .pa-head-name {
-            clip-path: polygon(0 0, var(--bar-rt-f, 100%) 0, var(--bar-rb-f, 100%) 100%, 0 100%);
-        }
+        [data-focus="tech"] .ta-side-tech .pa-row { grid-template-columns: minmax(0, 1fr) var(--img-w-f, 50%); }
+        [data-focus="art"] .ta-side-art .pa-row { grid-template-columns: var(--img-w-f, 50%) minmax(0, 1fr); }
     }
 
-    /* ---------- 窄屏：吉祥物缩小放最上面，两栏依次往下，全部左对齐 ---------- */
+    /* ---------- 窄屏：吉祥物缩小放最上面，两栏依次往下，全部左对齐；卡片不错开、不切斜边：文字在左、封面在右 ---------- */
     @media (max-width: 1023px) {
         .ta-stage { grid-template-columns: 1fr; }
         .pa-tri-page, .ta-mascot-inv { display: none; }
         .pa-tri-local { display: block; z-index: -1; top: 2%; bottom: -3%; width: 115%; }
         .pa-tri-local.pa-tri-back { top: 0; bottom: -6%; width: 130%; }
         .ta-mascot { order: -1; width: 9rem; margin: 0 auto; }
-        .ta-side-tech .pa-head { align-items: flex-start; }
-        /* 窄屏不错开，两栏都用右栏的样子：文字面板在左、左边是斜边，图片在右 */
+        .pa-head,
+        .ta-side-art .pa-head { text-align: left; }
+        .pa-list > li,
         .ta-side-tech .pa-list > li,
         .ta-side-art .pa-list > li { margin: 0; }
-        .ta-side-tech { --text-w: calc(clamp(10rem, 13vw, 15rem) + var(--cut, 0px)); }
-        .ta-side-tech .pa-thumb { clip-path: none; margin-left: 0; }
-        .ta-side-tech .pa-text::before { display: none; }
-        .ta-side-tech .pa-text {
-            clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%);
-            padding-left: calc(1.1rem + var(--cut));
+        .ta-side-tech .pa-row,
+        .ta-side-art .pa-row { grid-template-columns: minmax(0, 1fr) 45%; }
+        .ta-side-tech .pa-thumb,
+        .ta-side-art .pa-thumb { order: 1; margin: 0; clip-path: none; }
+        .ta-side-tech .pa-text,
+        .ta-side-art .pa-text {
+            clip-path: none;
+            padding: 0.45rem 1.1rem 0.45rem calc(12px + 1.1rem);
+            align-items: flex-start;
+            text-align: left;
         }
-        .ta-side-tech .pa-text::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
-            background-color: var(--ta-accent);
-            clip-path: polygon(var(--cut) 0, calc(var(--cut) + 12px) 0, 12px 100%, 0 100%);
-        }
+        .ta-side-tech .pa-text::before,
+        .ta-side-art .pa-text::before { clip-path: none; right: auto; width: 12px; }
     }
     /* 中等宽度（1024~1399px）两边栏窄：图和文字对半，标签不显示 */
     @media (min-width: 1024px) and (max-width: 1399px) {

@@ -7,7 +7,8 @@ export interface TechArtWork {
     side: "tech" | "art";
     /** 这一页卡片上的标题；不写就用项目本身的标题 */
     title?: Multilingual;
-    caption: Multilingual;
+    /** 目前卡片上不显示说明，只留作备用 */
+    caption?: Multilingual;
     tags: Multilingual;
 }
 
@@ -83,28 +84,21 @@ export const techArtWorks: TechArtWork[] = [
         tags: { en: "GLSL · Voxelization", zh: "GLSL · 体素化", ja: "GLSL · ボクセル化", ko: "GLSL · 복셀화" },
     },
 
-    // ---------- 美术 ----------
+    // ---------- 美术（01 失落领域、02 鳗、03 Arcane Samurai、04 分形骷髅、05 点点宇宙、06 岛屿影视化）----------
     {
-        projectId: "art-project-fractured-space",
+        projectId: "game-project-lost-realm",
         side: "art",
-        caption: {
-            en: "A CG short of collapsing walls and infinite mirrored space, built with Geometry Nodes and custom PBR materials.",
-            zh: "用 Geometry Nodes 与自定义 PBR 材质，做出墙体坍塌、镜面无限空间的 CG 短片。",
-            ja: "Geometry Nodes と自作 PBR マテリアルで、崩れ落ちる壁と無限に続く鏡面空間を描いた CG 短編。",
-            ko: "Geometry Nodes와 커스텀 PBR 머티리얼로 무너지는 벽과 끝없는 거울 공간을 그린 CG 단편.",
-        },
-        tags: { en: "Blender · Geometry Nodes · CG Short", zh: "Blender · Geometry Nodes · CG 短片", ja: "Blender · Geometry Nodes · CG 短編", ko: "Blender · Geometry Nodes · CG 단편" },
+        tags: { en: "Unity · Metroidvania", zh: "Unity · 银河恶魔城", ja: "Unity · メトロイドヴァニア", ko: "Unity · 메트로배니아" },
     },
     {
-        projectId: "art-project-island-cinematic",
+        projectId: "game-project-eel-on-mask",
         side: "art",
-        caption: {
-            en: "A cinematic island in UE5: rendered ocean, dynamic sky and film-style camera work in Sequencer.",
-            zh: "UE5 影视化岛屿场景：真实海面、动态天空，以及 Sequencer 里的电影感镜头。",
-            ja: "UE5 のシネマティックな島：リアルな海面、動的な空、Sequencer による映画的なカメラワーク。",
-            ko: "UE5 시네마틱 섬: 사실적인 바다, 동적인 하늘, Sequencer로 만든 영화 같은 카메라 연출.",
-        },
-        tags: { en: "UE5 · Cinematic · Environment", zh: "UE5 · 影视化 · 环境美术", ja: "UE5 · シネマティック · 環境アート", ko: "UE5 · 시네마틱 · 환경 아트" },
+        tags: { en: "Unity · Puzzle Design", zh: "Unity · 解谜设计", ja: "Unity · パズルデザイン", ko: "Unity · 퍼즐 디자인" },
+    },
+    {
+        projectId: "game-project-arcane-samurai",
+        side: "art",
+        tags: { en: "Unity · Pixel Art", zh: "Unity · 像素风", ja: "Unity · ピクセルアート", ko: "Unity · 픽셀 아트" },
     },
     {
         projectId: "art-project-fractal-skull",
@@ -117,6 +111,22 @@ export const techArtWorks: TechArtWork[] = [
         },
         tags: { en: "Blender · Fractal Art · Lighting", zh: "Blender · 分形艺术 · 布光", ja: "Blender · フラクタルアート · ライティング", ko: "Blender · 프랙탈 아트 · 라이팅" },
     },
+    {
+        projectId: "game-project-click-click-universe",
+        side: "art",
+        tags: { en: "Unity · Steam", zh: "Unity · Steam", ja: "Unity · Steam", ko: "Unity · Steam" },
+    },
+    {
+        projectId: "art-project-island-cinematic",
+        side: "art",
+        caption: {
+            en: "A cinematic island in UE5: rendered ocean, dynamic sky and film-style camera work in Sequencer.",
+            zh: "UE5 影视化岛屿场景：真实海面、动态天空，以及 Sequencer 里的电影感镜头。",
+            ja: "UE5 のシネマティックな島：リアルな海面、動的な空、Sequencer による映画的なカメラワーク。",
+            ko: "UE5 시네마틱 섬: 사실적인 바다, 동적인 하늘, Sequencer로 만든 영화 같은 카메라 연출.",
+        },
+        tags: { en: "UE5 · Cinematic · Environment", zh: "UE5 · 影视化 · 环境美术", ja: "UE5 · シネマティック · 環境アート", ko: "UE5 · 시네마틱 · 환경 아트" },
+    },
 ];
 
 export const techArtLabels = {
@@ -124,5 +134,8 @@ export const techArtLabels = {
     techHeading: { en: "Technical", zh: "技术 Technical", ja: "技術 Technical", ko: "기술 Technical" } as Multilingual,
     // 左栏大标题下面那条黄条上的字
     tech: { en: "PCG · Geometry Processing · Neural Rendering", zh: "PCG · 几何处理 · 神经渲染", ja: "PCG · ジオメトリ処理 · ニューラルレンダリング", ko: "PCG · 지오메트리 처리 · 뉴럴 렌더링" } as Multilingual,
-    art: { en: "Art", zh: "美术", ja: "アート", ko: "아트" } as Multilingual,
+    // 右栏大标题（和左栏对称）
+    artHeading: { en: "Art", zh: "美术 Art", ja: "美術 Art", ko: "미술 Art" } as Multilingual,
+    // 右栏大标题下面那条黄条上的字
+    art: { en: "Game Art · 3D Scenes · Cinematics", zh: "游戏美术 · 3D 场景 · 影视化", ja: "ゲームアート · 3D シーン · シネマティック", ko: "게임 아트 · 3D 씬 · 시네마틱" } as Multilingual,
 };
