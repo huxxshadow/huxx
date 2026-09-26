@@ -31,6 +31,22 @@ import codebook from "@/assets/projects/game-project-empty-throne/deco/codebook.
 import will from "@/assets/projects/game-project-empty-throne/deco/will.png";
 import token from "@/assets/projects/game-project-empty-throne/deco/token.png";
 import mirrorBig from "@/assets/projects/game-project-empty-throne/deco/mirror-big.png";
+// 正文左右两侧的大号角色立绘（游戏像素立绘原色，透明度降到 22%）
+import bgWitch from "@/assets/projects/game-project-empty-throne/deco/bg-witch.png";
+import bgSnow from "@/assets/projects/game-project-empty-throne/deco/bg-snow.png";
+import bgHunter from "@/assets/projects/game-project-empty-throne/deco/bg-hunter.png";
+import bgDwarf from "@/assets/projects/game-project-empty-throne/deco/bg-dwarf.png";
+import bgGuard from "@/assets/projects/game-project-empty-throne/deco/bg-guard.png";
+import bgPriest from "@/assets/projects/game-project-empty-throne/deco/bg-priest.png";
+import bgVase from "@/assets/projects/game-project-empty-throne/deco/bg-vase.png";
+import bgCandle from "@/assets/projects/game-project-empty-throne/deco/bg-candle.png";
+import bgPortrait from "@/assets/projects/game-project-empty-throne/deco/bg-portrait.png";
+import bgBanners from "@/assets/projects/game-project-empty-throne/deco/bg-banners.png";
+import bgCabinet from "@/assets/projects/game-project-empty-throne/deco/bg-cabinet.png";
+import bgChair from "@/assets/projects/game-project-empty-throne/deco/bg-chair.png";
+import bgStool from "@/assets/projects/game-project-empty-throne/deco/bg-stool.png";
+import bgKey from "@/assets/projects/game-project-empty-throne/deco/bg-key.png";
+import bgApple from "@/assets/projects/game-project-empty-throne/deco/bg-apple.png";
 
 const vars = [
     `--et-title: url("${title.src}")`,
@@ -41,24 +57,30 @@ const vars = [
     `--et-mirrors: url("${mirrors.src}")`,
     `--et-cursor: url("${cursor.src}")`,
     `--et-mirror-big: url("${mirrorBig.src}")`,
+    `--et-bg-witch: url("${bgWitch.src}")`,
+    `--et-bg-snow: url("${bgSnow.src}")`,
+    `--et-bg-hunter: url("${bgHunter.src}")`,
+    `--et-bg-dwarf: url("${bgDwarf.src}")`,
+    `--et-bg-guard: url("${bgGuard.src}")`,
+    `--et-bg-priest: url("${bgPriest.src}")`,
+    `--et-bg-vase: url("${bgVase.src}")`,
+    `--et-bg-candle: url("${bgCandle.src}")`,
+    `--et-bg-portrait: url("${bgPortrait.src}")`,
+    `--et-bg-banners: url("${bgBanners.src}")`,
+    `--et-bg-cabinet: url("${bgCabinet.src}")`,
+    `--et-bg-chair: url("${bgChair.src}")`,
+    `--et-bg-stool: url("${bgStool.src}")`,
+    `--et-bg-key: url("${bgKey.src}")`,
+    `--et-bg-apple: url("${bgApple.src}")`,
     `--et-token: url("${token.src}")`,
     // 三级标题前面的图标，按顺序轮流用
     ...[key, apple, mirrorItem, script, letter, notes, codebook, will].map((img, i) => `--et-ico-${i}: url("${img.src}")`),
 ].join("; ");
-// hero 里散落的几件物品：[图, 位置, 角度]
-const HERO_ITEMS: [ImageMetadata, string, string][] = [
-    [apple, "top: 14%; right: 3.5%;", "-12deg"],
-    [key, "bottom: 16%; right: 46%;", "18deg"],
-    [mirrorItem, "top: 9%; right: 38%;", "8deg"],
-    [letter, "bottom: 30%; right: 2%;", "-8deg"],
-];
+
 ---
 
 {stickers ? (
         <div class="et-deco" aria-hidden="true">
-            {HERO_ITEMS.map(([img, pos, rot], i) => (
-                    <img class="et-item" src={img.src} width="64" height="64" alt="" style={`${pos} rotate: ${rot}; animation-delay: ${-i * 1.3}s;`} />
-            ))}
             <div class="et-mirror-row"></div>
         </div>
 ) : (
@@ -176,25 +198,6 @@ const HERO_ITEMS: [ImageMetadata, string, string][] = [
         pointer-events: none;
         z-index: 1;
     }
-    /* 散落的物品：放大成 56px 的像素图，轻轻上下浮 */
-    .skin-et .et-item {
-        position: absolute;
-        width: clamp(40px, 4vw, 60px);
-        height: auto;
-        image-rendering: pixelated;
-        filter: drop-shadow(0 6px 8px rgb(0 0 0 / 0.45));
-        animation: et-float 5.2s ease-in-out infinite;
-    }
-    @keyframes et-float {
-        50% { translate: 0 -8px; }
-    }
-    @media (max-width: 1023px) {
-        .skin-et .et-item:nth-child(2),
-        .skin-et .et-item:nth-child(3) { display: none; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-        .skin-et .et-item { animation: none; }
-    }
     .skin-et .et-mirror-row {
         position: absolute;
         left: 0;
@@ -222,6 +225,35 @@ const HERO_ITEMS: [ImageMetadata, string, string][] = [
         position: relative;
         z-index: 1;
         color: var(--et-cream);
+    }
+    /* 宽屏两侧有留白时：左右交替放游戏里的角色立绘和场景道具（原色、低透明度），跟着正文往下排 */
+    @media (min-width: 1280px) {
+        main.skin-et::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            image-rendering: pixelated;
+            background:
+                    var(--et-bg-witch) left -3rem top 2% / auto clamp(24rem, 34vw, 32rem) no-repeat,
+                    var(--et-bg-candle) right 1rem top 7% / auto clamp(16rem, 22vw, 20rem) no-repeat,
+                    var(--et-bg-vase) left 3rem top 15% / auto clamp(12rem, 16vw, 15rem) no-repeat,
+                    var(--et-bg-snow) right -8rem top 20% / auto clamp(24rem, 34vw, 30rem) no-repeat,
+                    var(--et-bg-portrait) right 4rem top 29% / auto clamp(8rem, 10vw, 10rem) no-repeat,
+                    var(--et-bg-priest) left -2rem top 30% / auto clamp(20rem, 28vw, 26rem) no-repeat,
+                    var(--et-bg-cabinet) right 1rem top 38% / auto clamp(14rem, 18vw, 18rem) no-repeat,
+                    var(--et-bg-hunter) left -1rem top 44% / auto clamp(22rem, 30vw, 28rem) no-repeat,
+                    var(--et-bg-key) right 6rem top 50% / auto clamp(5rem, 7vw, 7rem) no-repeat,
+                    var(--et-bg-banners) left 2rem top 55% / auto clamp(10rem, 14vw, 13rem) no-repeat,
+                    var(--et-bg-dwarf) right 0 top 60% / auto clamp(20rem, 28vw, 24rem) no-repeat,
+                    var(--et-bg-chair) left 3rem top 67% / auto clamp(10rem, 13vw, 12rem) no-repeat,
+                    var(--et-bg-candle) right 2rem top 72% / auto clamp(16rem, 22vw, 20rem) no-repeat,
+                    var(--et-bg-guard) left 0 top 79% / auto clamp(22rem, 30vw, 28rem) no-repeat,
+                    var(--et-bg-apple) right 7rem top 84% / auto clamp(5rem, 7vw, 7rem) no-repeat,
+                    var(--et-bg-stool) left 2rem top 93% / auto clamp(10rem, 13vw, 12rem) no-repeat;
+            /* 像底部那面大魔镜一样，给背景元素一圈柔和的光晕（按轮廓发光，两层：近处亮、远处散） */
+            filter: drop-shadow(0 0 6px rgb(232 224 204 / 0.9)) drop-shadow(0 0 22px rgb(217 86 79 / 0.55));
+        }
     }
     main.skin-et::after {
         content: "";
@@ -405,13 +437,15 @@ const HERO_ITEMS: [ImageMetadata, string, string][] = [
         .skin-et .project-prose .image-grid-2.et-shots { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
 
-    /* 分隔线：一排魔镜 */
+    /* 分隔线：一道奶油色像素虚线，中间一个菱形 */
     .skin-et .project-prose hr {
-        height: 32px;
+        position: relative;
+        height: 4px;
         border: 0;
-        background: var(--et-mirrors) center / auto 32px repeat-x;
-        image-rendering: pixelated;
-        opacity: 0.6;
+        margin: 3rem 0;
+        background: repeating-linear-gradient(90deg, var(--et-cream) 0 8px, transparent 8px 16px);
+        opacity: 0.45;
+        overflow: visible;
     }
 
     .skin-et .project-prose a {
