@@ -114,7 +114,7 @@ export const techArtWorks: TechArtWork[] = [
     {
         projectId: "game-project-click-click-universe",
         side: "art",
-        tags: { en: "Unity · Steam", zh: "Unity · Steam", ja: "Unity · Steam", ko: "Unity · Steam" },
+        tags: { en: "3D Cel Shader · NPR", zh: "3D Cel Shader · NPR", ja: "3D セルシェーダー · NPR", ko: "3D 셀 셰이더 · NPR" },
     },
     {
         projectId: "art-project-island-cinematic",
