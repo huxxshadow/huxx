@@ -123,13 +123,22 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
     .ta-stage {
         position: relative;
         display: grid;
-        grid-template-columns: minmax(0, 1fr) clamp(13rem, 22vw, 25rem) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 1fr) clamp(14rem, 24vw, 28rem) minmax(0, 1fr);
         gap: clamp(1.5rem, 2.6vw, 3rem);
         align-items: center;
         isolation: isolate;
     }
     .ta-side-tech { order: 0; }
-    .ta-mascot { order: 1; position: relative; }
+    /* 吉祥物往上伸进标题那一行（中间是空的），往下吃掉 section 的下内边距（lg:py-16 = 4rem），
+       这样笔尖正好落在 Part 的底边，和倒三角的尖重合（SVG 的 viewBox 已经裁到笔尖为止，笔尖在水平正中） */
+    .ta-mascot {
+        order: 1;
+        position: relative;
+        /* 贴着这一行的底边：列表比吉祥物高的时候笔尖也还在 Part 的底边上 */
+        align-self: end;
+        margin-top: -5.5rem;
+        margin-bottom: -4rem;
+    }
     .ta-side-art { order: 2; }
     .ta-mascot img {
         position: relative;
@@ -163,7 +172,7 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
     /* 宽屏：铺满整个 Part 的高度，水平居中（舞台左右对称，中线就是吉祥物的中线）；
        宽度按吉祥物那一栏算（和 .ta-stage 的中栏同一个 clamp），只比它宽一点，所以又窄又尖 */
     .pa-tri-page {
-        --tri-w: clamp(13rem, 22vw, 25rem);
+        --tri-w: clamp(14rem, 24vw, 28rem);
         position: absolute;
         inset: 0;
         z-index: 0;
@@ -276,6 +285,12 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
         .ta-side-tech .pa-row { grid-template-columns: auto minmax(0, 1fr) 30%; padding: 0.8rem 1.6rem 0.8rem 1.2rem; }
         .ta-side-tech .pa-num, .ta-side-tech .pa-body, .ta-side-tech .pa-thumb { order: 0; }
         .ta-side-tech .pa-row::before { right: auto; left: 0.5rem; }
+    }
+    /* 中等宽度（1024~1399px）两边栏太窄：去掉缩略图，行变矮，吉祥物仍然是这一段最高的 */
+    @media (min-width: 1024px) and (max-width: 1399px) {
+        .pa-thumb { display: none; }
+        .pa-row { grid-template-columns: auto minmax(0, 1fr); }
+        .ta-side-tech .pa-row { grid-template-columns: minmax(0, 1fr) auto; }
     }
     @media (max-width: 519px) {
         .pa-row, .ta-side-tech .pa-row { grid-template-columns: auto minmax(0, 1fr); }
