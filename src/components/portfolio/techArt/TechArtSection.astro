@@ -29,7 +29,6 @@ const works = techArtWorks.flatMap((w) => {
         id: w.projectId,
         side: w.side,
         title: w.title ? t(w.title) : d.title[lang] || d.title.en || d.title.zh || w.projectId,
-        caption: t(w.caption),
         tags: t(w.tags).split(/\s*·\s*/).filter(Boolean),
         cover: d.coverImage || d.backupCoverImage,
         colorText: "yellow",
@@ -57,7 +56,7 @@ const accent = COLORS.yellow.dark;
 // 背景用米色（和 Part 1、2 同一个），深黄只留作强调色
 const tint = COLORS.khakiMilan;
 const paper = "#FFFDF7";
-const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
+const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
 ---
 
 <section
@@ -89,14 +88,15 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
                         <span class="pa-head-en">{s.en}</span>
                         <span class="pa-head-name">{s.name}<small>{s.sub}</small></span>
                     </div>
-                    <ol class="pa-list" data-reveal-children={s.reveal} data-reveal-once>
+                    <ol class="pa-list" style={`--n: ${s.items.length};`} data-reveal-children={s.reveal} data-reveal-once>
                         {s.items.map((w, i) => (
                                 <li style={`--i: ${i};`}>
                                     <a href={href(w.id)} class="pa-row">
-                                        <span class="pa-num">{w.num}</span>
-                                        <div class="pa-body">
-                                            <h3 class="pa-title">{w.title}</h3>
-                                            <p class="pa-caption">{w.caption}</p>
+                                        <div class="pa-text">
+                                            <div class="pa-line">
+                                                <span class="pa-num">{w.num}</span>
+                                                <h3 class="pa-title">{w.title}</h3>
+                                            </div>
                                             <p class="pa-tags">{w.tags.join(" / ")}</p>
                                         </div>
                                         <div class="pa-thumb"><WorkCover work={w} lang={lang} sizes={sizesThumb} /></div>
@@ -189,6 +189,8 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
                     const d = apexY / BH;
                     return `translate(${x0.toFixed(1)}px, 0px) skewX(${Math.atan2(c, d).toFixed(4)}rad) scale(${a.toFixed(4)}, ${d.toFixed(4)})`;
                 };
+                // 居中时白色三角边的斜率（每往下 1px 横向收多少），列表行的斜边和阶梯都跟它平行
+                section.style.setProperty("--tri-slope", ((w * 0.525) / H).toFixed(4));
                 // 居中：尖在笔尖（Part 底边），半宽 0.525 / 0.6 倍吉祥物宽
                 for (const [layer, hw] of [["f", 0.525], ["b", 0.6]] as const) {
                     section.style.setProperty(`--tri-none-${layer}`, place(cx - w * hw, cx + w * hw, cx, H));
@@ -379,64 +381,93 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
         color: var(--ta-paper);
     }
     .ta-side-tech .pa-head-name { flex-direction: row-reverse; }
-    .pa-list { display: flex; flex-direction: column; gap: 0.7rem; }
-    /* 逐行向中间错开（P3R 菜单那种阶梯） */
-    .ta-side-art .pa-list > li { padding-left: calc(var(--i) * 0.9rem); }
-    .ta-side-tech .pa-list > li { padding-right: calc(var(--i) * 0.9rem); }
+    /* ---------- 列表行：直角梯形，靠中间的那条边是斜的，和居中时三角最近的那条边平行 ----------
+       行高固定（--row-h），斜边的横向收进量 = 行高 × 三角斜率（--tri-slope，脚本按三角算好，之前先用 0.18）。
+       每行再往中间错开一个「(行高 + 行距) × 斜率」，几行的斜边连成一条和三角边平行的直线。
+       内容只留编号、标题、一行标签，图片占半行，放在靠中间那一侧 */
+    .pa-list {
+        --row-h: clamp(6.5rem, 7.5vw, 8.5rem);
+        --row-gap: 0.8rem;
+        --cut: calc(var(--row-h) * var(--tri-slope, 0.18));
+        --step: calc((var(--row-h) + var(--row-gap)) * var(--tri-slope, 0.18));
+        display: flex;
+        flex-direction: column;
+        gap: var(--row-gap);
+    }
+    .ta-side-tech .pa-list > li { margin-right: calc((var(--n) - 1 - var(--i)) * var(--step)); }
+    .ta-side-art .pa-list > li { margin-left: calc((var(--n) - 1 - var(--i)) * var(--step)); }
     .pa-row {
-        position: relative;
         display: grid;
-        grid-template-columns: auto minmax(0, 1fr) 30%;
-        align-items: center;
-        gap: 1rem;
-        padding: 0.8rem 1.6rem 0.8rem 1.2rem;
+        grid-template-columns: 50% minmax(0, 1fr);
+        height: var(--row-h);
         background-color: var(--ta-paper);
-        clip-path: polygon(1.2rem 0, 100% 0, calc(100% - 1.2rem) 100%, 0 100%);
-        transition: background-color 180ms ease, color 180ms ease;
+        /* 右栏：左边（靠中间）是斜边，上宽下窄，和三角右边平行 */
+        clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%);
+        transition: background-color 180ms ease;
     }
-    /* 左栏：图靠中间，号码靠外 */
-    .ta-side-tech .pa-row { grid-template-columns: 30% minmax(0, 1fr) auto; padding: 0.8rem 1.2rem 0.8rem 1.6rem; }
-    .ta-side-tech .pa-num { order: 3; }
-    .ta-side-tech .pa-body { order: 2; }
-    .ta-side-tech .pa-thumb { order: 1; }
-    /* 外侧一道黄色斜切的标记条 */
-    .pa-row::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0.5rem;
-        width: 0.5rem;
-        background-color: var(--ta-accent);
-        transform: skewX(-14deg);
+    /* 左栏：图在右（靠中间），右边是斜边 */
+    .ta-side-tech .pa-row {
+        grid-template-columns: minmax(0, 1fr) 50%;
+        clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% 100%, 0 100%);
     }
-    .ta-side-tech .pa-row::before { left: auto; right: 0.5rem; }
-    .pa-num {
-        font-family: 'Roboto', sans-serif;
-        font-weight: 900;
-        font-style: italic;
-        font-size: clamp(2rem, 2.8vw, 3rem);
-        line-height: 1;
-        color: transparent;
-        -webkit-text-stroke: 1.5px var(--ta-accent);
-        padding-inline: 0.6rem;
-    }
-    .pa-body { display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
-    .pa-title { font-weight: 900; font-size: 1.05rem; line-height: 1.25; }
-    .pa-caption { font-weight: 600; font-size: 0.8rem; line-height: 1.45; opacity: 0.8; }
-    .pa-tags { font-size: 0.7rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; color: color-mix(in srgb, var(--ta-accent) 70%, var(--ta-ink)); }
+    .ta-side-tech .pa-thumb { order: 2; }
+    /* 图在 DOM 里排在文字后面；右栏把它挪到最前（靠中间），左栏挪到最后 */
     .pa-thumb {
+        order: -1;
         position: relative;
-        align-self: stretch;
-        min-height: 5.5rem;
-        clip-path: polygon(0.9rem 0, 100% 0, calc(100% - 0.9rem) 100%, 0 100%);
+        overflow: hidden;
         background-color: var(--ta-accent);
     }
-    /* 悬停：整条填成深黄，号码和标记条变白 */
+    .pa-thumb :global(img) { transition: scale 500ms ease; }
+    .pa-row:hover .pa-thumb :global(img) { scale: 1.06; }
+    /* 文字排法照这页最上面的总览菜单：大号实心编号（深黄、font-black、行高 0.8）+ 粗体标题（这里栏窄，编号叠在标题上面），
+       下面一行粗体标签（不大写、不加字距，和总览里「N 个项目」那行一样） */
+    .pa-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.5rem;
+        min-width: 0;
+        padding: 0.6rem 1.1rem;
+    }
+    .ta-side-tech .pa-text { align-items: flex-end; text-align: right; }
+    .pa-line {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.4rem;
+        min-width: 0;
+    }
+    .ta-side-tech .pa-line { align-items: flex-end; }
+    .pa-num {
+        flex: none;
+        font-weight: 900;
+        font-size: clamp(1.9rem, 2.4vw, 2.6rem);
+        line-height: 0.8;
+        color: var(--ta-accent);
+        transition: color 160ms ease;
+    }
+    .pa-title {
+        min-width: 0;
+        font-weight: 900;
+        font-size: clamp(1rem, 1.25vw, 1.3rem);
+        line-height: 1.25;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .pa-tags {
+        max-width: 100%;
+        font-size: 0.85rem;
+        font-weight: 900;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    /* 悬停：和总览一样整行填成主题深色（深黄），编号变白 */
     .pa-row:hover { background-color: var(--ta-accent); }
-    .pa-row:hover::before { background-color: var(--ta-paper); }
-    .pa-row:hover .pa-num { color: var(--ta-paper); -webkit-text-stroke-color: var(--ta-paper); }
-    .pa-row:hover .pa-tags { color: var(--ta-paper); }
+    .pa-row:hover .pa-num { color: var(--ta-paper); }
 
     /* ---------- 窄屏：吉祥物缩小放最上面，两栏依次往下，全部左对齐 ---------- */
     @media (max-width: 1023px) {
@@ -448,24 +479,30 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
         .ta-side-tech { text-align: left; }
         .ta-side-tech .pa-head { align-items: flex-start; }
         .ta-side-tech .pa-head-name { flex-direction: row; }
-        .ta-side-tech .pa-list > li { padding-right: 0; padding-left: calc(var(--i) * 0.9rem); }
-        .ta-side-tech .pa-row { grid-template-columns: auto minmax(0, 1fr) 30%; padding: 0.8rem 1.6rem 0.8rem 1.2rem; }
-        .ta-side-tech .pa-num, .ta-side-tech .pa-body, .ta-side-tech .pa-thumb { order: 0; }
-        .ta-side-tech .pa-row::before { right: auto; left: 0.5rem; }
+        /* 窄屏不错开，两栏都用右栏的样子：图在左、左边是斜边 */
+        .ta-side-tech .pa-list > li,
+        .ta-side-art .pa-list > li { margin: 0; }
+        .ta-side-tech .pa-row {
+            grid-template-columns: 50% minmax(0, 1fr);
+            clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%);
+        }
+        .ta-side-tech .pa-thumb { order: -1; }
+        .ta-side-tech .pa-text { align-items: flex-start; text-align: left; }
+        .ta-side-tech .pa-line { align-items: flex-start; }
     }
-    /* 中等宽度（1024~1399px）两边栏太窄：去掉缩略图，行变矮，吉祥物仍然是这一段最高的 */
+    /* 中等宽度（1024~1399px）两边栏窄：图和文字对半，标签不显示 */
     @media (min-width: 1024px) and (max-width: 1399px) {
-        .pa-thumb { display: none; }
-        .pa-row { grid-template-columns: auto minmax(0, 1fr); }
-        .ta-side-tech .pa-row { grid-template-columns: minmax(0, 1fr) auto; }
+        .pa-row { grid-template-columns: 50% minmax(0, 1fr); }
+        .ta-side-tech .pa-row { grid-template-columns: minmax(0, 1fr) 50%; }
+        .pa-tags { display: none; }
     }
     @media (max-width: 519px) {
-        .pa-row, .ta-side-tech .pa-row { grid-template-columns: auto minmax(0, 1fr); }
-        .pa-thumb { display: none; }
+        .pa-row, .ta-side-tech .pa-row { grid-template-columns: 50% minmax(0, 1fr); }
+        .pa-tags { display: none; }
     }
 
     @media (prefers-reduced-motion: reduce) {
         [data-ta-section] { --ta-move: 0ms linear; }
-        .pa-row { transition: none; }
+        .pa-row, .pa-thumb :global(img) { transition: none; }
     }
 </style>
