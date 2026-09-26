@@ -303,20 +303,75 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                 artEdge = (stage.offsetLeft + art.offsetLeft) / W;
             };
 
-            let unfocusTimer = 0;
+            // 左栏卡片的展开 / 收起用 Web Animations 驱动：每次切换先读出每张卡「此刻屏幕上的样子」（包括正在播的动画），
+            // 取消旧动画，切换状态后再从这个样子动画到新状态（CSS 里的终态）。所以随时进出都从当前位置接着走，不会跳。
+            // 后三张（04~06）要换列：先往外滑淡出，再从另一侧淡入落位；中途打断时按当前透明度缩短淡出那一段
+            const cards = Array.from(tech.querySelectorAll<HTMLElement>(".pa-list > li > .pa-row"));
+            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+            const snap = (el: HTMLElement) => {
+                const cs = getComputedStyle(el);
+                return {
+                    transform: cs.transform === "none" ? "translate(0px, 0px)" : cs.transform,
+                    width: cs.width,
+                    height: cs.height,
+                    gridTemplateColumns: cs.gridTemplateColumns,
+                    opacity: Number(cs.opacity),
+                };
+            };
+            const EASE_MOVE = "cubic-bezier(0.7, 0, 0.2, 1)";
+            const EASE_SWAP = "cubic-bezier(0.5, 0, 0.2, 1)";
+            const animateCards = (apply: () => void, expanding: boolean) => {
+                if (!wide.matches || reduceMotion.matches) {
+                    cards.forEach((el) => el.getAnimations().forEach((a) => a.cancel()));
+                    apply();
+                    return;
+                }
+                const from = cards.map(snap);
+                // 被打断时还在动（或还在等错落延迟）的卡，接着动、不再重新等延迟，否则会停在半路一下
+                const moving = cards.map((el) => el.getAnimations().some((a) => a.playState === "running"));
+                cards.forEach((el) => el.getAnimations().forEach((a) => a.cancel()));
+                apply();
+                const to = cards.map(snap);
+                cards.forEach((el, i) => {
+                    const f = from[i];
+                    const t = to[i];
+                    const delay = moving[i] ? 0 : i * 70;
+                    const frame = (v: typeof f, extra = "", opacity = v.opacity) => ({
+                        transform: `${v.transform} ${extra}`.trim(),
+                        width: v.width,
+                        height: v.height,
+                        gridTemplateColumns: v.gridTemplateColumns,
+                        opacity: String(opacity),
+                    });
+                    if (i < 3) {
+                        el.animate([frame(f), frame(t, "", 1)], { duration: 650, delay, easing: EASE_MOVE, fill: "backwards" });
+                        return;
+                    }
+                    // 换列：展开时往下滑出、从右边进来；收起时往右滑出、从下面上来
+                    const out = expanding ? "translateY(40px)" : "translateX(48px)";
+                    const into = expanding ? "translateX(48px)" : "translateY(40px)";
+                    const cut = 0.35 * f.opacity;
+                    const kf: Keyframe[] = [];
+                    if (cut > 0.01) {
+                        kf.push({ ...frame(f), offset: 0, easing: EASE_SWAP });
+                        kf.push({ ...frame(f, out, 0), offset: cut });
+                        kf.push({ ...frame(t, into, 0), offset: Math.min(cut + 0.001, 0.999), easing: EASE_SWAP });
+                    } else {
+                        kf.push({ ...frame(t, into, 0), offset: 0, easing: EASE_SWAP });
+                    }
+                    kf.push({ ...frame(t, "", 1), offset: 1 });
+                    el.animate(kf, { duration: 800, delay, fill: "backwards" });
+                });
+            };
             const setFocus = (focus: string) => {
                 const prev = section.dataset.focus ?? "";
                 if (prev === focus) return;
-                if (focus) section.dataset.focus = focus;
-                else delete section.dataset.focus;
-                // 离开左栏展开时，后三张卡要先淡出再回原位：挂一个标记让 CSS 播反向动画
-                window.clearTimeout(unfocusTimer);
-                if (prev === "tech") {
-                    section.dataset.unfocus = "tech";
-                    unfocusTimer = window.setTimeout(() => { delete section.dataset.unfocus; }, 900);
-                } else {
-                    delete section.dataset.unfocus;
-                }
+                const apply = () => {
+                    if (focus) section.dataset.focus = focus;
+                    else delete section.dataset.focus;
+                };
+                if (prev === "tech" || focus === "tech") animateCards(apply, focus === "tech");
+                else apply();
             };
 
             section.addEventListener("pointermove", (e) => {
@@ -659,15 +714,13 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
 
     /* ---------- 左栏展开（data-focus="tech"，只在宽屏）----------
        所有斜边换成斜过去的三角那条边的斜度（--f-cut）；前三张卡原地展开成第一列（更宽更高），
-       后三张先往下滑淡出，再从右边淡入，排成贴着三角的第二列，最后是 3 × 2。
+       后三张先往下滑淡出，再从右边淡入，排成贴着三角的第二列，最后是 3 × 2（动画在脚本里）。
        位置、尺寸都是脚本按三角算好的（每张卡的 --f-x / --f-y / --f-w / --f-h）；li 保持原高，卡片本身位移变形 */
     @media (min-width: 1024px) {
         /* 错落：每张卡比上一张晚 70ms 开始变形 */
         .ta-side-tech .pa-list > li { height: var(--row-h); --d: calc(var(--i) * 70ms); }
-        .ta-side-tech .pa-row {
-            width: 100%;
-            transition: transform var(--ta-move) var(--d), width var(--ta-move) var(--d), height var(--ta-move) var(--d), grid-template-columns var(--ta-move) var(--d);
-        }
+        /* 卡片的位置、尺寸、换列动画由脚本（Web Animations）播，这里只写终态 */
+        .ta-side-tech .pa-row { width: 100%; }
         .ta-side-tech .pa-thumb { transition: clip-path var(--ta-move) var(--d), margin-left var(--ta-move) var(--d); }
         [data-focus="tech"] .ta-side-tech .pa-list { --cut: var(--f-cut); }
         [data-focus="tech"] .ta-side-tech .pa-row {
@@ -676,28 +729,10 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
             width: var(--f-w);
             height: var(--f-h);
         }
-        [data-focus="tech"] .ta-side-tech .pa-list > li:nth-child(n + 4) .pa-row {
-            animation: ta-swap-in 800ms cubic-bezier(0.5, 0, 0.2, 1) var(--d) both;
-        }
-        [data-unfocus="tech"] .ta-side-tech .pa-list > li:nth-child(n + 4) .pa-row {
-            animation: ta-swap-out 800ms cubic-bezier(0.5, 0, 0.2, 1) var(--d) both;
-        }
         .ta-side-tech .pa-head-name { transition: clip-path var(--ta-move); }
         [data-focus="tech"] .ta-side-tech .pa-head-name {
             clip-path: polygon(0 0, var(--bar-rt-f, 100%) 0, var(--bar-rb-f, 100%) 100%, 0 100%);
         }
-    }
-    @keyframes ta-swap-in {
-        0% { transform: translate(0, 0); width: 100%; height: var(--row-h); opacity: 1; }
-        30% { transform: translate(0, 2.5rem); width: 100%; height: var(--row-h); opacity: 0; }
-        31% { transform: translate(calc(var(--f-x) + 3rem), var(--f-y)); width: var(--f-w); height: var(--f-h); opacity: 0; }
-        100% { transform: translate(var(--f-x), var(--f-y)); width: var(--f-w); height: var(--f-h); opacity: 1; }
-    }
-    @keyframes ta-swap-out {
-        0% { transform: translate(var(--f-x), var(--f-y)); width: var(--f-w); height: var(--f-h); opacity: 1; }
-        30% { transform: translate(calc(var(--f-x) + 3rem), var(--f-y)); width: var(--f-w); height: var(--f-h); opacity: 0; }
-        31% { transform: translate(0, 2.5rem); width: 100%; height: var(--row-h); opacity: 0; }
-        100% { transform: translate(0, 0); width: 100%; height: var(--row-h); opacity: 1; }
     }
 
     /* ---------- 窄屏：吉祥物缩小放最上面，两栏依次往下，全部左对齐 ---------- */
@@ -738,7 +773,6 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
 
     @media (prefers-reduced-motion: reduce) {
         [data-ta-section] { --ta-move: 0ms linear; }
-        .ta-side-tech .pa-row { animation: none !important; }
         .pa-text, .pa-thumb :global(img) { transition: none; }
     }
 </style>
