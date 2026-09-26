@@ -119,8 +119,8 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
     // 左中右三个区域：鼠标在左栏范围 → data-focus="tech"，右栏范围 → "art"，中间或离开 → 清空。
     // 区域按「没有位移时」的栏位划分（offsetLeft 不受 transform 影响），所以栏飞走以后区域也不会跟着跑。
     // 同时量出吉祥物中线（--c）、它移到两栏正中要走的距离（--to-art / --to-tech）、倾斜角（--tilt），
-    // 以及斜过去以后三角的尖和顶边两端相对笔尖的横向位置（--ax-* / --tl-* / --tr-*）和尖伸到底边以下的深度（--depth），
-    // 都是相对 section 的 CSS 像素，给 CSS 里的位移和 clip-path 用
+    // 以及三种状态下背景三角的 transform（--tri-none-* / --tri-tech-* / --tri-art-*），
+    // 都是相对 section 的 CSS 像素
     // 吉祥物轮廓（含甩出的颜料点）的凸包，SVG 坐标；笔尖在 TIP
     const HULL = [[89, 245], [175, 43], [181, 35], [369, 88], [537, 140], [545, 143], [544, 621], [542, 631], [297, 1758], [295, 1748], [183, 1229], [129, 951], [107, 783], [89, 276]];
     const TIP = [297.41, 1758.17];
@@ -146,8 +146,10 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
                 const H = section.offsetHeight;
                 const slant = H * 0.2;
                 // 人物倾斜后上半身往外偏（顶上偏出 slant），少走半个 slant，让斜着的人物整体落在那一栏正中、不顶出页面
-                section.style.setProperty("--to-art", `${center(art) - m - slant / 2}px`);
-                section.style.setProperty("--to-tech", `${center(tech) - m + slant / 2}px`);
+                const toArt = center(art) - m - slant / 2;
+                const toTech = center(tech) - m + slant / 2;
+                section.style.setProperty("--to-art", `${toArt}px`);
+                section.style.setProperty("--to-tech", `${toTech}px`);
                 const tilt = Math.atan2(slant, H);
                 section.style.setProperty("--tilt", `${(tilt * 180 / Math.PI).toFixed(2)}deg`);
                 // 聚焦时的三角：尖沿着倾斜后的人物中轴，一直伸到 Part 底边以下 depth 处，所以在 Part 里只露出上面一截梯形；
@@ -170,16 +172,33 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
                     };
                     return { ax, front: edges(8), back: edges(22) };
                 };
-                const px = (v: number) => `${v.toFixed(1)}px`;
-                section.style.setProperty("--depth", px(depth));
-                for (const [name, sign] of [["tech", 1], ["art", -1]] as const) {
-                    const f = frame(sign);
-                    section.style.setProperty(`--ax-${name}`, px(f.ax));
-                    section.style.setProperty(`--tl-${name}-f`, px(f.front[0]));
-                    section.style.setProperty(`--tr-${name}-f`, px(f.front[1]));
-                    section.style.setProperty(`--tl-${name}-b`, px(f.back[0]));
-                    section.style.setProperty(`--tr-${name}-b`, px(f.back[1]));
+                // 三角不再用 clip-path 做动画（每帧都要重绘整块 section，会掉帧发抖），
+                // 而是一个固定的底三角（BW × BH 的盒子里：左上、右上、底边正中），用 transform 摆到目标三角上：
+                // 任意三角都能由仿射变换得到，拆成 translate · skewX · scale 这几个函数，过渡时逐项线性插值，
+                // 中间每一帧仍然是三角，而且全程在合成层上跑。底三角取得比目标大，只缩不放，边缘不会糊
+                const cx = stage.offsetLeft + m;
+                const w = mascot.offsetWidth;
+                const BW = 2400;
+                const BH = Math.ceil(H + depth + 10);
+                section.style.setProperty("--tri-bw", `${BW}px`);
+                section.style.setProperty("--tri-bh", `${BH}px`);
+                const place = (x0: number, x1: number, apexX: number, apexY: number) => {
+                    // 底三角 (0,0) (BW,0) (BW/2,BH) → 目标 (x0,0) (x1,0) (apexX,apexY)
+                    const a = (x1 - x0) / BW;
+                    const c = (apexX - x0 - (x1 - x0) / 2) / BH;
+                    const d = apexY / BH;
+                    return `translate(${x0.toFixed(1)}px, 0px) skewX(${Math.atan2(c, d).toFixed(4)}rad) scale(${a.toFixed(4)}, ${d.toFixed(4)})`;
+                };
+                // 居中：尖在笔尖（Part 底边），半宽 0.525 / 0.6 倍吉祥物宽
+                for (const [layer, hw] of [["f", 0.525], ["b", 0.6]] as const) {
+                    section.style.setProperty(`--tri-none-${layer}`, place(cx - w * hw, cx + w * hw, cx, H));
                 }
+                for (const [name, sign, tip] of [["tech", 1, cx + toArt], ["art", -1, cx + toTech]] as const) {
+                    const f = frame(sign);
+                    section.style.setProperty(`--tri-${name}-f`, place(tip + f.front[0], tip + f.front[1], tip + f.ax, H + depth));
+                    section.style.setProperty(`--tri-${name}-b`, place(tip + f.back[0], tip + f.back[1], tip + f.ax, H + depth));
+                }
+                section.dataset.triReady = "1";
                 techEdge = (stage.offsetLeft + tech.offsetLeft + tech.offsetWidth) / W;
                 artEdge = (stage.offsetLeft + art.offsetLeft) / W;
             };
@@ -194,7 +213,11 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
                 if (!wide.matches || e.pointerType !== "mouse") return;
                 const r = section.getBoundingClientRect();
                 const x = (e.clientX - r.left) / r.width;
-                setFocus(x < techEdge ? "tech" : x > artEdge ? "art" : "");
+                // 滞回：已经在某一边时，要往中间多走 2% 才退出，免得鼠标停在边界上来回抖、动画反复重启
+                const cur = section.dataset.focus ?? "";
+                const tEdge = cur === "tech" ? techEdge + 0.02 : techEdge;
+                const aEdge = cur === "art" ? artEdge - 0.02 : artEdge;
+                setFocus(x < tEdge ? "tech" : x > aEdge ? "art" : "");
             });
             section.addEventListener("pointerleave", () => setFocus(""));
             wide.addEventListener("change", () => { setFocus(""); measure(); });
@@ -258,6 +281,7 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
     .ta-side,
     .ta-mascot {
         transition: transform var(--ta-move), opacity 450ms ease;
+        will-change: transform;
     }
     [data-focus="tech"] .ta-side-art {
         transform: translateX(calc(100% + 40vw));
@@ -293,8 +317,7 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
         z-index: 0;
         pointer-events: none;
     }
-    /* 整块铺满，用 clip-path 画三角（上边两个角 + 底边的尖），这样三角可以平滑地移动、变形。
-       --c 是吉祥物中线的 x（脚本量出来，之前先按 50%），--hw 是居中时的三角半宽 */
+    /* 脚本生效前的兜底：整块铺满，用 clip-path 画居中的三角（上边两个角 + 底边的尖），--hw 是三角半宽 */
     .pa-tri-page .pa-tri {
         --tip: var(--c, 50%);
         --hw: calc(var(--tri-w) * 0.525);
@@ -302,21 +325,28 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
         left: 0;
         translate: none;
         clip-path: polygon(calc(var(--tip) - var(--hw)) 0, calc(var(--tip) + var(--hw)) 0, var(--tip) 100%);
-        transition: clip-path var(--ta-move);
     }
     .pa-tri-page .pa-tri-back { --hw: calc(var(--tri-w) * 0.6); }
-    /* 聚焦时：三角跟着吉祥物过去、跟着它一起斜，尖沿中轴伸到 Part 底边以下（--depth），Part 里只看到一截梯形，
-       两条边刚好包住整个人物。顶边两端和尖的横向位置都是脚本算好的、相对笔尖的偏移（-f 白色层，-b 深黄层） */
-    .pa-tri-page .pa-tri { --tl-tech: var(--tl-tech-f); --tr-tech: var(--tr-tech-f); --tl-art: var(--tl-art-f); --tr-art: var(--tr-art-f); }
-    .pa-tri-page .pa-tri-back { --tl-tech: var(--tl-tech-b); --tr-tech: var(--tr-tech-b); --tl-art: var(--tl-art-b); --tr-art: var(--tr-art-b); }
-    [data-focus="tech"] .pa-tri-page .pa-tri {
-        --tip: calc(var(--c, 50%) + var(--to-art, 0px));
-        clip-path: polygon(calc(var(--tip) + var(--tl-tech, 0px)) 0, calc(var(--tip) + var(--tr-tech, 0px)) 0, calc(var(--tip) + var(--ax-tech, 0px)) calc(100% + var(--depth, 0px)));
+    /* 脚本量好以后（data-tri-ready）改用 transform 摆三角：一个 BW × BH 的底三角，
+       居中 / 聚焦左栏 / 聚焦右栏三种状态各有一组 translate · skewX · scale（-f 白色层，-b 深黄层）。
+       聚焦时三角跟着吉祥物过去、跟着它一起斜，尖伸到 Part 底边以下，Part 里只看到一截梯形，两条边刚好包住人物 */
+    [data-tri-ready] .pa-tri-page .pa-tri {
+        inset: auto;
+        top: 0;
+        left: 0;
+        width: var(--tri-bw);
+        height: var(--tri-bh);
+        transform-origin: 0 0;
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+        transform: var(--tri-none-f);
+        transition: transform var(--ta-move);
+        will-change: transform;
     }
-    [data-focus="art"] .pa-tri-page .pa-tri {
-        --tip: calc(var(--c, 50%) + var(--to-tech, 0px));
-        clip-path: polygon(calc(var(--tip) + var(--tl-art, 0px)) 0, calc(var(--tip) + var(--tr-art, 0px)) 0, calc(var(--tip) + var(--ax-art, 0px)) calc(100% + var(--depth, 0px)));
-    }
+    [data-tri-ready] .pa-tri-page .pa-tri-back { transform: var(--tri-none-b); }
+    [data-tri-ready][data-focus="tech"] .pa-tri-page .pa-tri { transform: var(--tri-tech-f); }
+    [data-tri-ready][data-focus="tech"] .pa-tri-page .pa-tri-back { transform: var(--tri-tech-b); }
+    [data-tri-ready][data-focus="art"] .pa-tri-page .pa-tri { transform: var(--tri-art-f); }
+    [data-tri-ready][data-focus="art"] .pa-tri-page .pa-tri-back { transform: var(--tri-art-b); }
     .pa-tri-local { display: none; }
     .pa-head { display: flex; flex-direction: column; line-height: 1; }
     .ta-side-tech .pa-head { align-items: flex-end; }
