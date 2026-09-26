@@ -98,7 +98,7 @@ export const techArtWorks: TechArtWork[] = [
     {
         projectId: "game-project-arcane-samurai",
         side: "art",
-        tags: { en: "Unity · Pixel Art", zh: "Unity · 像素风", ja: "Unity · ピクセルアート", ko: "Unity · 픽셀 아트" },
+        tags: { en: "2D Shader · NPR", zh: "2D Shader · NPR", ja: "2D シェーダー · NPR", ko: "2D 셰이더 · NPR" },
     },
     {
         projectId: "art-project-fractal-skull",
