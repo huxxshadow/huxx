@@ -556,7 +556,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    /* 编号：放在带斜边那一块的右下角（左栏是图片，右栏是文字面板），白色粗体，不加阴影；
+    /* 编号：放在带斜边那一块的右下角（左栏是图片，右栏是文字面板），白色粗体；
        右栏的白色面板上垫一小块深黄底 */
     .pa-num {
         position: absolute;
@@ -569,6 +569,8 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         color: var(--ta-paper);
         pointer-events: none;
     }
+    /* 图片上的编号加一层很淡的阴影，浅色封面上也能看出来 */
+    .pa-thumb .pa-num { text-shadow: 0 1px 4px rgb(0 0 0 / 0.25); }
     .pa-text .pa-num {
         padding: 0.15rem 0.35rem;
         background-color: var(--ta-accent);
