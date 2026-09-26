@@ -475,8 +475,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     }
     .ta-side-tech .pa-thumb { clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% 100%, 0 100%); }
     /* 斜边上的深黄描边（横向 12px）：那一块被 clip-path 切过，普通 border 会被切掉，所以用伪元素沿斜边画一条等宽的斜带 */
-    .ta-side-art .pa-text::after,
-    .ta-side-tech .pa-row::after {
+    .ta-side-art .pa-text::after {
         --edge: 12px;
         content: "";
         position: absolute;
@@ -487,11 +486,6 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     }
     .ta-side-art .pa-text::after {
         clip-path: polygon(var(--cut) 0, calc(var(--cut) + var(--edge)) 0, var(--edge) 100%, 0 100%);
-    }
-    .ta-side-tech .pa-row::after {
-        /* 左栏的斜边描边是白色 */
-        background-color: var(--ta-paper);
-        clip-path: polygon(calc(100% - var(--cut) - var(--edge)) 0, calc(100% - var(--cut)) 0, 100% 100%, calc(100% - var(--edge)) 100%);
     }
     /* 左栏文字面板（最左边那块）的左边一道深黄竖边 */
     .ta-side-tech .pa-text { border-left: 12px solid var(--ta-accent); }
@@ -568,7 +562,6 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         .ta-side-art .pa-list > li { margin: 0; }
         .ta-side-tech { --text-w: calc(clamp(10rem, 13vw, 15rem) + var(--cut, 0px)); }
         .ta-side-tech .pa-thumb { clip-path: none; }
-        .ta-side-tech .pa-row::after { display: none; }
         .ta-side-tech .pa-text { border-left: none; }
         .ta-side-tech .pa-text {
             clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%);
