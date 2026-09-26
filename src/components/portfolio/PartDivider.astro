@@ -1,12 +1,10 @@
 ---
-// 作品集相邻两个 Part 之间的过渡带。三种候选（右下角 Debug 面板「Part 过渡」切换，外层 .part-flow 上的 data-variant-current）：
-//   A 斜切：上一个 Part 的底色斜着切进下一个 Part，切口上压一道下一个 Part 的强调色斜条
-//   B 锯齿：P5 那种撕开的锯齿边，两层错开（强调色在后、上一个 Part 的底色在前）
-//   C 字幕条：一条斜着横穿两个 Part 的强调色带，上面滚动下一个 Part 的编号和名字
+// 作品集相邻两个 Part 之间的过渡带：都是上一个 Part 的底色渐变到下一个 Part 的底色。三种候选
+// （右下角 Debug 面板「Part 过渡」切换，外层 .part-flow 上的 data-variant-current）：
+//   A 纯渐变：两种底色直接平滑过渡
+//   B 渐变 + 强调色光晕：中段混进一点下一个 Part 的强调色，像一道柔光
+//   C 渐变 + 半调网点：底下平滑过渡，上面一层强调色网点从中间往两头淡出
 // 没有 Debug 面板（正式环境）时显示 A
-import { useTranslations, type Lang } from "@/i18n";
-import type { Multilingual } from "@/i18n";
-
 interface Props {
     /** 上一个 Part 的底色 */
     from: string;
@@ -14,135 +12,57 @@ interface Props {
     to: string;
     /** 下一个 Part 的强调色 */
     accent: string;
-    /** 下一个 Part 的编号和名字（字幕条用） */
-    index: string;
-    name: Multilingual;
 }
-const { from, to, accent, index, name } = Astro.props;
-const t = useTranslations((Astro.currentLocale as Lang) || "en");
-const label = `${index} · ${t(name)}`;
-// 锯齿：宽 1000 的坐标里 40 个齿，齿高在 35%~65% 之间交替
-const teeth = 40;
-const saw = (base: number, amp: number) => {
-    const pts: string[] = ["0,0", "1000,0"];
-    for (let i = teeth; i >= 0; i--) {
-        const x = (1000 / teeth) * i;
-        const y = base + (i % 2 === 0 ? amp : -amp) + ((i * 37) % 11) - 5;
-        pts.push(`${x.toFixed(1)},${y}`);
-    }
-    return pts.join(" ");
-};
+const { from, to, accent } = Astro.props;
 ---
 
 <div class="pd" style={`--pd-from: ${from}; --pd-to: ${to}; --pd-accent: ${accent};`} aria-hidden="true">
-    <!-- A 斜切 -->
-    <div class="pd-a">
-        <div class="pd-a-stripe"></div>
-        <div class="pd-a-wedge"></div>
-    </div>
-
-    <!-- B 锯齿 -->
-    <svg class="pd-b" viewBox="0 0 1000 100" preserveAspectRatio="none">
-        <polygon points={saw(62, 18)} fill={accent} />
-        <polygon points={saw(48, 16)} fill={from} />
-    </svg>
-
-    <!-- C 字幕条 -->
-    <div class="pd-c">
-        <div class="pd-c-band">
-            <div class="pd-c-track">
-                {Array.from({ length: 2 }, () => (
-                        <span class="pd-c-run">{Array.from({ length: 8 }, () => <span class="pd-c-item">{label}<i>▸</i></span>)}</span>
-                ))}
-            </div>
-        </div>
-    </div>
+    <div class="pd-a"></div>
+    <div class="pd-b"></div>
+    <div class="pd-c"></div>
 </div>
 
 <style>
     .pd {
         position: relative;
         width: 100%;
-        background-color: var(--pd-to);
-        overflow: hidden;
     }
     .pd-a,
     .pd-b,
-    .pd-c { display: none; }
+    .pd-c {
+        display: none;
+        height: clamp(6rem, 12vw, 12rem);
+    }
 
     /* 默认（正式环境没有 data-variant-current）用 A */
     :global(.part-flow:not([data-variant-current="B"]):not([data-variant-current="C"])) .pd-a,
     :global(.part-flow[data-variant-current="B"]) .pd-b,
     :global(.part-flow[data-variant-current="C"]) .pd-c { display: block; }
 
-    /* ---------- A 斜切 ---------- */
-    .pd-a {
-        position: relative;
-        height: clamp(3.5rem, 7vw, 7rem);
-    }
-    .pd-a-wedge,
-    .pd-a-stripe {
-        position: absolute;
-        inset: 0;
-    }
-    /* 上一个 Part 的底色：左边深、右边浅，斜着切下去 */
-    .pd-a-wedge {
-        background-color: var(--pd-from);
-        clip-path: polygon(0 0, 100% 0, 100% 8%, 0 88%);
-    }
-    /* 切口下面露出一道强调色斜条 */
-    .pd-a-stripe {
-        background-color: var(--pd-accent);
-        clip-path: polygon(0 88%, 100% 8%, 100% 26%, 0 100%);
-    }
+    /* A 纯渐变 */
+    .pd-a { background: linear-gradient(var(--pd-from), var(--pd-to)); }
 
-    /* ---------- B 锯齿 ---------- */
+    /* B 中段混进一点强调色 */
     .pd-b {
-        width: 100%;
-        height: clamp(2.5rem, 5vw, 5rem);
+        background: linear-gradient(
+            var(--pd-from) 0%,
+            color-mix(in oklab, color-mix(in oklab, var(--pd-from), var(--pd-to)) 78%, var(--pd-accent)) 50%,
+            var(--pd-to) 100%
+        );
     }
 
-    /* ---------- C 字幕条 ---------- */
+    /* C 渐变 + 强调色半调网点，网点在中间最密、往两头淡出 */
     .pd-c {
         position: relative;
-        height: clamp(4.5rem, 7vw, 6.5rem);
-        /* 上半截是上一个 Part 的底色 */
-        background: linear-gradient(var(--pd-from) 50%, var(--pd-to) 50%);
+        background: linear-gradient(var(--pd-from), var(--pd-to));
     }
-    .pd-c-band {
+    .pd-c::after {
+        content: "";
         position: absolute;
-        left: -5%;
-        right: -5%;
-        top: 50%;
-        translate: 0 -50%;
-        rotate: -2deg;
-        padding-block: 0.55rem;
-        background-color: var(--pd-accent);
-        color: #FFFDF7;
-        overflow: hidden;
-    }
-    .pd-c-track {
-        display: flex;
-        width: max-content;
-        animation: pd-marquee 28s linear infinite;
-    }
-    .pd-c-run { display: flex; }
-    .pd-c-item {
-        display: inline-flex;
-        align-items: center;
-        gap: 1.4rem;
-        padding-right: 1.4rem;
-        font-weight: 900;
-        font-style: italic;
-        font-size: clamp(1.1rem, 1.6vw, 1.6rem);
-        letter-spacing: 0.04em;
-        white-space: nowrap;
-    }
-    .pd-c-item i { font-style: normal; opacity: 0.8; }
-    @keyframes pd-marquee {
-        to { translate: -50% 0; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-        .pd-c-track { animation: none; }
+        inset: 0;
+        background-image: radial-gradient(circle, color-mix(in srgb, var(--pd-accent) 45%, transparent) 1.6px, transparent 2.2px);
+        background-size: 14px 14px;
+        mask-image: linear-gradient(transparent, #000 50%, transparent);
+        -webkit-mask-image: linear-gradient(transparent, #000 50%, transparent);
     }
 </style>
