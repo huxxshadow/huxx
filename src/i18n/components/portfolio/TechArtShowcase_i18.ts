@@ -37,15 +37,15 @@ export const techArtWorks: TechArtWork[] = [
         tags: { en: "Blender · Mitsuba 3 · DCC Tool", zh: "Blender · Mitsuba 3 · DCC 工具", ja: "Blender · Mitsuba 3 · DCC ツール", ko: "Blender · Mitsuba 3 · DCC 툴" },
     },
     {
-        projectId: "technical-project-lego-voxelizer",
+        projectId: "technical-project-ai-pixelart-repair-tool",
         side: "tech",
         caption: {
-            en: "Adaptive surface sampling and flood fill turn any model into LEGO bricks, with cartoon, wireframe and retro shaders.",
-            zh: "自适应表面采样与洪水填充，把任意模型变成乐高积木，支持卡通、线框、复古等 Shader 风格。",
-            ja: "適応的な表面サンプリングと塗りつぶしで任意のモデルをレゴブロック化。トゥーン・ワイヤーフレーム・レトロのシェーダーに対応。",
-            ko: "적응형 표면 샘플링과 플러드 필로 어떤 모델이든 레고 블록으로 바꾸고, 카툰·와이어프레임·레트로 셰이더를 지원합니다.",
+            en: "Cleans up AI-generated pixel art: pixelation, colour quantisation, edge repair and pixel-block detection, with optional GPU acceleration.",
+            zh: "优化 AI 生成的像素风素材：像素化、颜色量化、边缘修复与像素块检测，可选 GPU 加速。",
+            ja: "AI が生成したピクセルアートを整える：ピクセル化、減色、エッジ修復、ピクセルブロック検出。GPU 加速にも対応。",
+            ko: "AI가 생성한 픽셀아트를 다듬습니다: 픽셀화, 색상 양자화, 가장자리 보정, 픽셀 블록 검출, 선택적 GPU 가속.",
         },
-        tags: { en: "Three.js · GLSL · Voxelization", zh: "Three.js · GLSL · 体素化", ja: "Three.js · GLSL · ボクセル化", ko: "Three.js · GLSL · 복셀화" },
+        tags: { en: "Python · Pixel Art · Colour Quantisation", zh: "Python · 像素画 · 颜色量化", ja: "Python · ピクセルアート · 減色", ko: "Python · 픽셀아트 · 색상 양자화" },
     },
     {
         projectId: "technical-project-raymarching-fractal-morphing",
@@ -57,6 +57,30 @@ export const techArtWorks: TechArtWork[] = [
             ko: "SDF 레이 마칭으로 3D 모델과 Mandelbulb 프랙탈을 브라우저에서 실시간으로 융합합니다.",
         },
         tags: { en: "WebGL · SDF · Ray Marching", zh: "WebGL · SDF · 光线步进", ja: "WebGL · SDF · レイマーチング", ko: "WebGL · SDF · 레이 마칭" },
+    },
+    {
+        projectId: "technical-project-comfyui-ai-eco-film",
+        side: "tech",
+        // 标题、说明、标签和 Part 4 一致
+        title: { en: "ComfyUI AI Video Workflow", zh: "ComfyUI AI视频工作流", ja: "ComfyUI AI 動画ワークフロー", ko: "ComfyUI AI 영상 워크플로" },
+        caption: {
+            en: "Storyboard generation, first-and-last-frame video synthesis, upscaling, frame interpolation and AI voice.",
+            zh: "分镜生成、首尾帧视频合成、超分、插帧与 AI 配音。",
+            ja: "絵コンテ生成、始点・終点フレームからの動画合成、超解像、フレーム補間、AI 音声。",
+            ko: "콘티 생성, 첫·끝 프레임 영상 합성, 업스케일, 프레임 보간, AI 음성.",
+        },
+        tags: { en: "Team Lead · ComfyUI · WAN2.2", zh: "组长 · ComfyUI · WAN2.2", ja: "リーダー · ComfyUI · WAN2.2", ko: "팀장 · ComfyUI · WAN2.2" },
+    },
+    {
+        projectId: "technical-project-lego-voxelizer",
+        side: "tech",
+        caption: {
+            en: "Adaptive surface sampling and flood fill turn any model into LEGO bricks, with cartoon, wireframe and retro shaders.",
+            zh: "自适应表面采样与洪水填充，把任意模型变成乐高积木，支持卡通、线框、复古等 Shader 风格。",
+            ja: "適応的な表面サンプリングと塗りつぶしで任意のモデルをレゴブロック化。トゥーン・ワイヤーフレーム・レトロのシェーダーに対応。",
+            ko: "적응형 표면 샘플링과 플러드 필로 어떤 모델이든 레고 블록으로 바꾸고, 카툰·와이어프레임·레트로 셰이더를 지원합니다.",
+        },
+        tags: { en: "Three.js · GLSL · Voxelization", zh: "Three.js · GLSL · 体素化", ja: "Three.js · GLSL · ボクセル化", ko: "Three.js · GLSL · 복셀화" },
     },
 
     // ---------- 美术 ----------
