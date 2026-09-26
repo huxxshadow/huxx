@@ -605,6 +605,8 @@ const NAV_LINKS = [
 
         // ——— 每秒挂机循环 ———
         const gameLoop = setInterval(() => {
+            // 页面在后台（切到别的标签页 / 最小化）时不更新，省电；回来后下一秒接着走
+            if (document.hidden) return;
             playerExp += expPerSec;
             while (playerExp >= requiredExp) {
                 playerExp -= requiredExp;

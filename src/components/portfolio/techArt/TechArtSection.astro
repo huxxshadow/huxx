@@ -220,7 +220,14 @@ const sizesThumb = "(min-width: 1024px) 36vw, 50vw";
                 // 中间每一帧仍然是三角，而且全程在合成层上跑。底三角取得比目标大，只缩不放，边缘不会糊
                 const cx = stage.offsetLeft + m;
                 const w = mascot.offsetWidth;
-                const BW = 2400;
+                // 底三角宽度取「所有状态里最宽的那个目标三角」再多一点：只缩不放（边缘不糊），
+                // 又不会像原来固定 2400px 那样白白占掉几十 MB 显存（这里有 4 层这样的图层）
+                const widths = [2 * w * 0.6];
+                for (const sign of [1, -1]) {
+                    const f = frame(sign);
+                    widths.push(f.front[1] - f.front[0], f.back[1] - f.back[0]);
+                }
+                const BW = Math.ceil(Math.max(...widths)) + 8;
                 const BH = Math.ceil(H + depth + 10);
                 section.style.setProperty("--tri-bw", `${BW}px`);
                 section.style.setProperty("--tri-bh", `${BH}px`);
@@ -363,6 +370,33 @@ const sizesThumb = "(min-width: 1024px) 36vw, 50vw";
             // 取消旧动画，切换状态后再从这个样子动画到新状态（CSS 里的终态）。所以随时进出都从当前位置接着走，不会跳。
             // 第二列的卡要换列：先往外滑淡出，再从三角那一侧淡入落位；中途打断时按当前透明度缩短淡出那一段
             const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+            // 性能较弱的设备走轻量动画（data-lite）：卡片只做透明度 + 位移的交叉淡入淡出（GPU 合成、不用每帧重绘），
+            // 斜边不做过渡。判断：CPU 核数 ≤ 4、内存 ≤ 4GB、开了省流量，或者加载后空闲时实测帧间隔偏长
+            const nav = navigator as Navigator & { deviceMemory?: number; connection?: { saveData?: boolean } };
+            if ((nav.hardwareConcurrency || 8) <= 4 || (nav.deviceMemory || 8) <= 4 || nav.connection?.saveData) {
+                section.dataset.lite = "1";
+            } else {
+                // 空闲时连续测 45 帧，中位数超过 22ms（不到 45fps）就当作弱设备
+                const gaps: number[] = [];
+                let last = 0;
+                const probe = (now: number) => {
+                    if (last) gaps.push(now - last);
+                    last = now;
+                    if (gaps.length < 45) requestAnimationFrame(probe);
+                    else if (gaps.sort((a, b) => a - b)[22] > 22) section.dataset.lite = "1";
+                };
+                window.setTimeout(() => requestAnimationFrame(probe), 1500);
+            }
+            const liteSwap = (all: HTMLElement[], apply: () => void) => {
+                all.forEach((el) => el.getAnimations().forEach((a) => a.cancel()));
+                apply();
+                all.forEach((el, i) => {
+                    el.animate(
+                        [{ opacity: 0, translate: "0 14px" }, { opacity: 1, translate: "0 0" }],
+                        { duration: 320, delay: (i % 6) * 45, easing: "cubic-bezier(0.2, 0, 0.2, 1)", fill: "backwards" },
+                    );
+                });
+            };
             const snap = (el: HTMLElement) => {
                 const cs = getComputedStyle(el);
                 return {
@@ -380,6 +414,10 @@ const sizesThumb = "(min-width: 1024px) 36vw, 50vw";
                 if (!wide.matches || reduceMotion.matches) {
                     all.forEach((el) => el.getAnimations().forEach((a) => a.cancel()));
                     apply();
+                    return;
+                }
+                if (section.dataset.lite) {
+                    liteSwap(all, apply);
                     return;
                 }
                 const from = new Map(all.map((el) => [el, snap(el)]));
@@ -714,6 +752,8 @@ const sizesThumb = "(min-width: 1024px) 36vw, 50vw";
        --tl / --bl：外侧斜边在顶上 / 底下往里收多少。右栏的所有 polygon 都是左栏的左右镜像 */
     .pa-row {
         position: relative;
+        /* 每张卡的布局和绘制自成一块：一张卡变化不牵连别的卡 */
+        contain: layout style paint;
         /* 行高随屏幕变，矮到放不下标签那一行时就不显示标签（见下面的 @container） */
         container: pa-row / size;
         display: grid;
@@ -852,6 +892,12 @@ const sizesThumb = "(min-width: 1024px) 36vw, 50vw";
         }
         [data-focus="art"] .ta-side-art .pa-row { grid-template-columns: var(--img-w-f, 50%) minmax(0, 1fr); }
     }
+
+    /* 弱设备（data-lite）：斜边和标题黄条不做过渡，直接到位 */
+    [data-lite] .pa-thumb,
+    [data-lite] .pa-text::before,
+    [data-lite] .pa-head-name { transition: none !important; }
+    [data-lite] .pa-text { transition: background-color 180ms ease !important; }
 
     /* ---------- 窄屏：吉祥物缩小放最上面，两栏依次往下，全部左对齐；卡片不错开、不切斜边：文字在左、封面在右 ---------- */
     @media (max-width: 1023px) {

@@ -145,22 +145,38 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
             const seat = line.querySelector<HTMLElement>(".ai-motto-seat");
             let raf = 0;
             let mouseX: number | null = null;
+            // 字母只会上下动，横向位置不变：鼠标进来时量一次每个字母中心的横坐标（相对页面）和字号，
+            // 之后每帧只做数学运算、写样式，不再每帧读布局（原来每帧 28 次 getBoundingClientRect，写完又读会强制重排）
+            const targets = seat ? [...chars, seat] : chars;
+            let centers: number[] = [];
+            let sigma = 90;
+            const measure = () => {
+                sigma = (parseFloat(getComputedStyle(line).fontSize) || 100) * 0.9;
+                centers = targets.map((el) => {
+                    const r = el.getBoundingClientRect();
+                    return r.left + scrollX + r.width / 2;
+                });
+            };
             const apply = () => {
                 raf = 0;
-                const em = parseFloat(getComputedStyle(line).fontSize) || 100;
-                const sigma = em * 0.9;
-                const weight = (el: HTMLElement) => {
-                    if (mouseX === null) return 0;
-                    const r = el.getBoundingClientRect();
-                    const d = mouseX - (r.left + r.width / 2);
-                    return Math.exp(-(d * d) / (2 * sigma * sigma));
-                };
-                chars.forEach((c) => c.style.setProperty("--w", weight(c).toFixed(3)));
-                if (seat) seat.style.setProperty("--w", weight(seat).toFixed(3));
+                targets.forEach((el, i) => {
+                    let w = 0;
+                    if (mouseX !== null) {
+                        const d = mouseX - centers[i];
+                        w = Math.exp(-(d * d) / (2 * sigma * sigma));
+                    }
+                    el.style.setProperty("--w", w.toFixed(3));
+                });
             };
             const schedule = () => { if (!raf) raf = requestAnimationFrame(apply); };
-            line.addEventListener("pointermove", (e) => { mouseX = e.clientX; schedule(); });
+            line.addEventListener("pointerenter", measure);
+            line.addEventListener("pointermove", (e) => {
+                if (!centers.length) measure();
+                mouseX = e.clientX + scrollX;
+                schedule();
+            });
             line.addEventListener("pointerleave", () => { mouseX = null; schedule(); });
+            window.addEventListener("resize", () => { centers = []; }, { passive: true });
         });
     }
     document.addEventListener("astro:page-load", initAttention);
