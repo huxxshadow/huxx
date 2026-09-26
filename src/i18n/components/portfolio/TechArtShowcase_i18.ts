@@ -137,5 +137,5 @@ export const techArtLabels = {
     // 右栏大标题（和左栏对称）
     artHeading: { en: "Art", zh: "美术 Art", ja: "美術 Art", ko: "미술 Art" } as Multilingual,
     // 右栏大标题下面那条黄条上的字
-    art: { en: "Game Art · 3D Scenes · Cinematics", zh: "游戏美术 · 3D 场景 · 影视化", ja: "ゲームアート · 3D シーン · シネマティック", ko: "게임 아트 · 3D 씬 · 시네마틱" } as Multilingual,
+    art: { en: "3D Scenes · 2D Scenes · NPR · PBR", zh: "3D 场景 · 2D 场景 · NPR · PBR", ja: "3D シーン · 2D シーン · NPR · PBR", ko: "3D 씬 · 2D 씬 · NPR · PBR" } as Multilingual,
 };
