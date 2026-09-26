@@ -80,7 +80,7 @@ export const techArtWorks: TechArtWork[] = [
             ja: "適応的な表面サンプリングと塗りつぶしで任意のモデルをレゴブロック化。トゥーン・ワイヤーフレーム・レトロのシェーダーに対応。",
             ko: "적응형 표면 샘플링과 플러드 필로 어떤 모델이든 레고 블록으로 바꾸고, 카툰·와이어프레임·레트로 셰이더를 지원합니다.",
         },
-        tags: { en: "Three.js · GLSL · Voxelization", zh: "Three.js · GLSL · 体素化", ja: "Three.js · GLSL · ボクセル化", ko: "Three.js · GLSL · 복셀화" },
+        tags: { en: "GLSL · Voxelization", zh: "GLSL · 体素化", ja: "GLSL · ボクセル化", ko: "GLSL · 복셀화" },
     },
 
     // ---------- 美术 ----------
