@@ -71,6 +71,9 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         <div class="pa-tri"></div>
     </div>
 
+    <!-- 最底部一条深黄长条，贯穿整个 Part 宽度，压在三角上、吉祥物下面 -->
+    <div class="ta-bottom-bar" aria-hidden="true"></div>
+
     <!-- 和 Part 2、3、4 同一套紧凑标题：编号 · 名称（这一部分不显示项目数） -->
     <header class="relative z-10 flex flex-wrap items-end gap-x-8 gap-y-3 mb-6 lg:mb-4" data-reveal-children="up" data-reveal-once data-reveal-stagger="80">
         <div class="flex items-end gap-4">
@@ -81,10 +84,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
 
     <div class="ta-stage pa">
         {sides.map((s) => (
-                <div
-                        class:list={["ta-side", `ta-side-${s.side}`]}
-                        {...(s.side === "tech" ? { "data-variant-group": "part5-tech", "data-variant-options": "A,C", "data-variant-label": "Part 5 · 技术卡片" } : {})}
-                >
+                <div class:list={["ta-side", `ta-side-${s.side}`]}>
                     <div class="pa-head" data-reveal={s.reveal} data-reveal-once>
                         <span class="pa-head-en">{s.heading}</span>
                         <span class="pa-head-name">{s.name}</span>
@@ -338,6 +338,16 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     }
     [data-focus="art"] .ta-mascot { transform: translateX(var(--to-tech, 0px)) rotate(calc(-1 * var(--tilt, 0deg))); }
 
+    .ta-bottom-bar {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 2.25rem;
+        background-color: var(--ta-accent);
+        pointer-events: none;
+    }
+
     /* ======================= A · P3R ======================= */
     /* 倒三角：白色在前，深黄的宽一点垫在后面，两条斜边露出深黄的边 */
     .pa-tri {
@@ -441,7 +451,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     /* 左栏整体再往三角拉近 --pull-tech（脚本算），卡片可以伸进栏和吉祥物之间的空隙 */
     .ta-side-tech .pa-list > li { margin-right: calc((var(--n) - 1 - var(--i)) * var(--step) - var(--pull-tech, 0px)); }
     .ta-side-art .pa-list > li { margin-left: calc((var(--n) - 1 - var(--i)) * var(--step)); }
-    /* 每张卡拆成两块，中间留一道缝：图片 + 文字面板。靠中间（靠三角）的那一块带斜边和深黄描边，另一块是直角矩形——
+    /* 每张卡两块，紧贴在一起：图片 + 文字面板。靠中间（靠三角）的那一块带斜边和深黄描边，另一块是直角矩形——
        文字面板固定宽度在左、图片在右拉伸填满剩下的宽度；左栏靠中间的是图片（右边斜），右栏靠中间的是文字面板（左边斜） */
     .pa-row {
         position: relative;
@@ -450,7 +460,6 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         display: grid;
         /* 文字面板固定宽度，所有卡片一样；行宽的差别（阶梯错开）都由右边的图片拉伸吸收 */
         grid-template-columns: var(--text-w) minmax(0, 1fr);
-        column-gap: 0.6rem;
         height: var(--row-h);
     }
     .ta-side { --text-w: clamp(10rem, 13vw, 15rem); }
@@ -490,29 +499,6 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     /* 左栏文字面板（最左边那块）的左边一道深黄竖边 */
     .ta-side-tech .pa-text { border-left: 12px solid var(--ta-accent); }
 
-    /* ---------- 技术栏卡片的两个候选（右下角 Debug 面板「Part 5 · 技术卡片」切换，只在宽屏生效）----------
-       A（默认）：文字面板（标题、标签）+ 斜边图片
-       C：一整块斜边大图，标题贴在图片左下角的白色小标签里 */
-    @media (min-width: 1024px) {
-        /* C：图片占满整行，右边斜；文字面板压在图片左下角 */
-        .ta-side-tech[data-variant-current="C"] .pa-row { grid-template-columns: minmax(0, 1fr); }
-        .ta-side-tech[data-variant-current="C"] .pa-thumb {
-            grid-area: 1 / 1;
-            clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% 100%, 0 100%);
-        }
-        .ta-side-tech[data-variant-current="C"] .pa-text {
-            grid-area: 1 / 1;
-            z-index: 2;
-            align-self: end;
-            justify-self: start;
-            max-width: 70%;
-            margin: 0 0 0.5rem 0.5rem;
-            padding: 0.3rem 0.75rem;
-            clip-path: none;
-        }
-        .ta-side-tech[data-variant-current="C"] .pa-title { -webkit-line-clamp: 1; }
-        .ta-side-tech[data-variant-current="C"] .pa-tags { display: none; }
-    }
     /* 文字排法照这页最上面的总览菜单：粗体标题，下面一行粗体标签（不大写、不加字距，和总览里「N 个项目」那行一样）；不显示编号 */
     .pa-text {
         display: flex;
@@ -538,7 +524,9 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     /* 再矮的行：标题只留一行 */
     @container pa-row (max-height: 78px) {
         .pa-title { -webkit-line-clamp: 1; }
-        .pa-tags {
+        .pa-text { gap: 0.15rem; padding-block: 0.3rem; }
+    }
+    .pa-tags {
         max-width: 100%;
         font-size: clamp(0.8rem, 0.95vw, 0.95rem);
         font-weight: 900;
