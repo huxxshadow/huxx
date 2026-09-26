@@ -109,7 +109,7 @@ export const techArtWorks: TechArtWork[] = [
             ja: "Mandelbulb フラクタルで変形させた髑髏。蝋と金の質感で「死と隠された宝」を描く。",
             ko: "Mandelbulb 프랙탈로 변형한 해골. 밀랍과 금빛 질감으로 '죽음과 숨겨진 보물'을 그립니다.",
         },
-        tags: { en: "Blender · Fractal Art · Lighting", zh: "Blender · 分形艺术 · 布光", ja: "Blender · フラクタルアート · ライティング", ko: "Blender · 프랙탈 아트 · 라이팅" },
+        tags: { en: "Blender · Geometry Processing", zh: "Blender · 几何处理", ja: "Blender · ジオメトリ処理", ko: "Blender · 지오메트리 처리" },
     },
     {
         projectId: "game-project-click-click-universe",
