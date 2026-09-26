@@ -1,4 +1,9 @@
-﻿## 官方实机演示
+import worldBoss from '@/assets/projects/game-project-yuanmengstar-shanhai-xunling/world-boss.mp4?url';
+import worldBossPoster from '@/assets/projects/game-project-yuanmengstar-shanhai-xunling/world-boss-poster.webp?url';
+import newMechanic from '@/assets/projects/game-project-yuanmengstar-shanhai-xunling/new-combat-mechanic.mp4?url';
+import newMechanicPoster from '@/assets/projects/game-project-yuanmengstar-shanhai-xunling/new-combat-mechanic-poster.webp?url';
+
+## 官方实机演示
 
 <div class="video-embed">
     <iframe
@@ -16,7 +21,21 @@
 
 在腾讯《元梦之星：山海寻灵》项目中，我曾以**战斗策划实习生**身份参与开放世界玩法相关开发，主要负责世界 Boss 战斗体验优化与新战斗机制设计推进，具体职责包括：
 
-* **世界 Boss 战斗 3C 优化**：围绕世界 Boss 战斗场景中的操作手感与交互体验，对角色控制、镜头表现、技能响应、目标感知与战斗反馈等 3C 相关内容进行分析、调优与跟进落地，帮助提升战斗过程中的流畅性、可读性与整体操作体验。
-* **新战斗机制从 0 到 1 设计与推进**：作为某项新战斗机制的 **PO（玩法负责人）**，负责该机制从方案设计、规则梳理、流程搭建到后续沟通推进、联调验证与落地实现的完整流程，推动其从想法阶段转化为可实际接入项目内容的系统方案。
+* **世界 Boss「云海麒麟」的设计与实现**：负责世界 Boss 的战斗设计，包括技能与出招节奏、阶段转换和玩家应对方式；用**行为树**实现 Boss 的 AI 决策与技能释放逻辑；并围绕这场战斗对角色控制、镜头表现、技能响应、目标感知与战斗反馈等 **3C** 内容进行调优与跟进落地，提升战斗的流畅性、可读性与整体操作体验。
+* **新战斗机制「援护」从 0 到 1 设计与推进**：作为新战斗机制「援护」的 **PO（玩法负责人）**，负责该机制从方案设计、规则梳理、流程搭建到后续沟通推进、联调验证与落地实现的完整流程，推动其从想法阶段转化为可实际接入项目内容的系统方案。
 * **跨职能沟通与协作推进**：在需求推进过程中，与策划、美术、程序等多岗位同事协同工作，参与机制细节讨论、实现方式对齐、问题跟进与版本迭代，确保设计目标能够在项目环境中稳定落地。
 * **战斗体验问题分析与方案迭代**：结合实际开发反馈与战斗场景需求，对现有体验问题进行拆解，输出针对性的优化建议，并在多轮迭代中持续修正设计细节，使方案更贴近项目整体节奏与玩家体验目标。
+
+---
+
+## 玩法演示
+
+<figure>
+    <video class="clip" src={worldBoss} poster={worldBossPoster} width="1280" height="582" autoplay muted loop playsinline preload="metadata" aria-label="世界 Boss 战斗演示"></video>
+    <figcaption>世界 Boss「云海麒麟」：战斗设计与行为树实现</figcaption>
+</figure>
+
+<figure>
+    <video class="clip" src={newMechanic} poster={newMechanicPoster} width="1280" height="522" autoplay muted loop playsinline preload="metadata" aria-label="新战斗机制「援护」演示"></video>
+    <figcaption>新战斗机制「援护」：我作为 PO 从 0 到 1 推进的玩法</figcaption>
+</figure>

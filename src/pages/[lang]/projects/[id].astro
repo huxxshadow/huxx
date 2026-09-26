@@ -539,6 +539,16 @@ if (detailEntry) {
     }
 
     /* 图片 */
+    /* 由 GIF 转成的演示短片：和图片同一套描边、偏移阴影、圆角 */
+    :global(.project-prose video.clip) {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: 3px solid var(--theme-text);
+        box-shadow: 4px 4px 0px var(--theme-text);
+        border-radius: 0.75rem;
+        background-color: var(--theme-text);
+    }
     :global(.project-prose img) {
         width: 100%;
         height: auto;
