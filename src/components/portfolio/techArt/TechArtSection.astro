@@ -1,8 +1,8 @@
 ---
 // Part 5 · 技术美术：吉祥物（握着画笔的猫耳画师）站在正中、几乎撑满整个 Part 的高度，背后一个又窄又尖的倒三角从 Part 顶边一直扎到底边，
 // 左边「技术」、右边「美术」，两边都是列表，左右镜像（左栏文字靠外、图靠中间，右栏反过来）。
-// 宽屏上分左中右三个区域：鼠标进左区，右栏往右飞出、吉祥物移到右栏的位置、倒三角变成一条从右上斜下来、
-// 把吉祥物整个包住的宽带子；右区反过来；回到中间或离开这个 Part 就复原。
+// 宽屏上分左中右三个区域：鼠标进左区，右栏往右飞出、吉祥物移到右栏的位置并绕笔尖顺着带子倾斜，
+// 倒三角变成一条从右上斜下来、左右两边紧贴吉祥物轮廓的带子；右区反过来；回到中间或离开这个 Part 就复原。
 // 版式走 P3R 的平面设计路子：描边大斜体栏名、平行四边形的行逐行向中间错开，悬停整条填深黄。
 // 这一页只用白色 + COLORS.yellow 的深浅两档，不用大块黑色；黑色只留给正文文字（吉祥物本身就是 yellow.dark）
 import { getCollection } from "astro:content";
@@ -118,7 +118,8 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
 <script>
     // 左中右三个区域：鼠标在左栏范围 → data-focus="tech"，右栏范围 → "art"，中间或离开 → 清空。
     // 区域按「没有位移时」的栏位划分（offsetLeft 不受 transform 影响），所以栏飞走以后区域也不会跟着跑。
-    // 同时量出吉祥物中线（--c）、它移到两栏正中要走的距离（--to-art / --to-tech）、斜带的水平跨度（--slant），
+    // 同时量出吉祥物中线（--c）、它移到两栏正中要走的距离（--to-art / --to-tech）、斜带的水平跨度（--slant）、
+    // 吉祥物跟着带子倾斜的角度（--tilt），以及带子从笔尖中轴往左 / 往右要伸出多远才正好贴住人物轮廓（--band-l / --band-r），
     // 都是相对 section 的 CSS 像素，给 CSS 里的位移和 clip-path 用
     function initTechArtFocus() {
         document.querySelectorAll<HTMLElement>("[data-ta-section]").forEach((section) => {
@@ -138,9 +139,19 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
                 const center = (el: HTMLElement) => el.offsetLeft + el.offsetWidth / 2;
                 const m = center(mascot);
                 section.style.setProperty("--c", `${stage.offsetLeft + m}px`);
-                section.style.setProperty("--to-art", `${center(art) - m}px`);
-                section.style.setProperty("--to-tech", `${center(tech) - m}px`);
-                section.style.setProperty("--slant", `${Math.round(section.offsetHeight * 0.1)}px`);
+                const H = section.offsetHeight;
+                const slant = H * 0.2;
+                // 人物倾斜后上半身往外偏，少走半个 slant，让斜着的人物整体落在那一栏正中、不顶出页面
+                section.style.setProperty("--to-art", `${center(art) - m - slant / 2}px`);
+                section.style.setProperty("--to-tech", `${center(tech) - m + slant / 2}px`);
+                const tilt = Math.atan2(slant, H);
+                section.style.setProperty("--slant", `${slant.toFixed(1)}px`);
+                section.style.setProperty("--tilt", `${(tilt * 180 / Math.PI).toFixed(2)}deg`);
+                // 人物轮廓在 SVG 里横向占 88.7 ~ 545.2（宽 592），笔尖在 297.4：往左 0.3525 倍宽、往右 0.4186 倍宽。
+                // 人物转过 tilt 以后，垂直于中轴的距离换成水平距离要除以 cos
+                const w = mascot.offsetWidth / Math.cos(tilt);
+                section.style.setProperty("--band-l", `${(w * 0.3525).toFixed(1)}px`);
+                section.style.setProperty("--band-r", `${(w * 0.4186).toFixed(1)}px`);
                 techEdge = (stage.offsetLeft + tech.offsetLeft + tech.offsetWidth) / W;
                 artEdge = (stage.offsetLeft + art.offsetLeft) / W;
             };
@@ -225,13 +236,15 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
         opacity: 0;
         pointer-events: none;
     }
-    [data-focus="tech"] .ta-mascot { transform: translateX(var(--to-art, 0px)); }
+    /* 吉祥物绕笔尖（底边正中）转到和带子同一个角度 */
+    .ta-mascot { transform-origin: 50% 100%; }
+    [data-focus="tech"] .ta-mascot { transform: translateX(var(--to-art, 0px)) rotate(var(--tilt, 0deg)); }
     [data-focus="art"] .ta-side-tech {
         transform: translateX(calc(-100% - 40vw));
         opacity: 0;
         pointer-events: none;
     }
-    [data-focus="art"] .ta-mascot { transform: translateX(var(--to-tech, 0px)); }
+    [data-focus="art"] .ta-mascot { transform: translateX(var(--to-tech, 0px)) rotate(calc(-1 * var(--tilt, 0deg))); }
 
     /* ======================= A · P3R ======================= */
     /* 倒三角：白色在前，深黄的宽一点垫在后面，两条斜边露出深黄的边 */
@@ -253,7 +266,8 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
         pointer-events: none;
     }
     /* 整块铺满，用四个顶点的 clip-path 画：三角时后两个顶点重合在尖上，斜带时分开成底边。
-       --c 是吉祥物中线的 x（脚本量出来，之前先按 50%），--hw 是三角半宽，--bw 是斜带半宽 */
+       --c 是吉祥物中线的 x（脚本量出来，之前先按 50%），--hw 是三角半宽；
+       斜带从中轴往左伸 --bl、往右伸 --br（人物轮廓 + 一点余量，后面的深黄层再多一道边） */
     .pa-tri-page .pa-tri {
         --tip: var(--c, 50%);
         inset: 0;
@@ -261,20 +275,25 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
         translate: none;
         --hw: calc(var(--tri-w) * 0.525);
         /* 斜带要把整个吉祥物包在里面：半宽比吉祥物半宽（--tri-w / 2）宽出一截，抵消倾斜带来的偏移 */
-        --bw: calc(var(--tri-w) * 0.62);
+        --bl: calc(var(--band-l, 0px) + 0.4rem);
+        --br: calc(var(--band-r, 0px) + 0.4rem);
         clip-path: polygon(calc(var(--tip) - var(--hw)) 0, calc(var(--tip) + var(--hw)) 0, var(--tip) 100%, var(--tip) 100%);
         transition: clip-path var(--ta-move);
     }
-    .pa-tri-page .pa-tri-back { --hw: calc(var(--tri-w) * 0.6); --bw: calc(var(--tri-w) * 0.7); }
+    .pa-tri-page .pa-tri-back {
+        --hw: calc(var(--tri-w) * 0.6);
+        --bl: calc(var(--band-l, 0px) + 1.1rem);
+        --br: calc(var(--band-r, 0px) + 1.1rem);
+    }
     /* 聚焦左栏：吉祥物去了右边，带子从右上斜下来，底边落在笔尖下 */
     [data-focus="tech"] .pa-tri-page .pa-tri {
         --tip: calc(var(--c, 50%) + var(--to-art, 0px));
-        clip-path: polygon(calc(var(--tip) + var(--slant, 0px) - var(--bw)) 0, calc(var(--tip) + var(--slant, 0px) + var(--bw)) 0, calc(var(--tip) + var(--bw)) 100%, calc(var(--tip) - var(--bw)) 100%);
+        clip-path: polygon(calc(var(--tip) + var(--slant, 0px) - var(--bl)) 0, calc(var(--tip) + var(--slant, 0px) + var(--br)) 0, calc(var(--tip) + var(--br)) 100%, calc(var(--tip) - var(--bl)) 100%);
     }
     /* 聚焦右栏：镜像，带子从左上斜下来 */
     [data-focus="art"] .pa-tri-page .pa-tri {
         --tip: calc(var(--c, 50%) + var(--to-tech, 0px));
-        clip-path: polygon(calc(var(--tip) - var(--slant, 0px) - var(--bw)) 0, calc(var(--tip) - var(--slant, 0px) + var(--bw)) 0, calc(var(--tip) + var(--bw)) 100%, calc(var(--tip) - var(--bw)) 100%);
+        clip-path: polygon(calc(var(--tip) - var(--slant, 0px) - var(--bl)) 0, calc(var(--tip) - var(--slant, 0px) + var(--br)) 0, calc(var(--tip) + var(--br)) 100%, calc(var(--tip) - var(--bl)) 100%);
     }
     .pa-tri-local { display: none; }
     .pa-head { display: flex; flex-direction: column; line-height: 1; }
