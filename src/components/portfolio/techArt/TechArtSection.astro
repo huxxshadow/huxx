@@ -13,6 +13,8 @@ import { PORTFOLIO_ROLES } from "@/i18n/components/portfolio/PortfolioRoles_i18"
 import { techArtWorks, techArtLabels as L } from "@/i18n/components/portfolio/TechArtShowcase_i18";
 import WorkCover from "@/components/portfolio/gameDesign/WorkCover.astro";
 import mascot from "@/assets/portfolio/techArt/mascot-brush.svg";
+// 深黄 / 白两色互换的版本，只在底部反色条那一截露出来
+import mascotInverse from "@/assets/portfolio/techArt/mascot-brush-inverse.svg";
 
 const lang = (Astro.currentLocale as Lang) || "en";
 const t = useTranslations(lang);
@@ -71,8 +73,12 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         <div class="pa-tri"></div>
     </div>
 
-    <!-- 最底部一条深黄长条，贯穿整个 Part 宽度，压在三角上、吉祥物下面 -->
+    <!-- 最底部一条深黄反色条，贯穿整个 Part 宽度：条内三角换色（深黄边变白、白底变深黄），吉祥物也换色（见 .ta-mascot-inv） -->
     <div class="ta-bottom-bar" aria-hidden="true"></div>
+    <div class="pa-tri-page pa-tri-inv" aria-hidden="true">
+        <div class="pa-tri pa-tri-back"></div>
+        <div class="pa-tri"></div>
+    </div>
 
     <!-- 和 Part 2、3、4 同一套紧凑标题：编号 · 名称（这一部分不显示项目数） -->
     <header class="relative z-10 flex flex-wrap items-end gap-x-8 gap-y-3 mb-6 lg:mb-4" data-reveal-children="up" data-reveal-once data-reveal-stagger="80">
@@ -96,8 +102,12 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                                         <div class="pa-text">
                                             <h3 class="pa-title">{w.title}</h3>
                                             <p class="pa-tags">{w.tags.join(" / ")}</p>
+                                            {s.side === "art" && <span class="pa-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>}
                                         </div>
-                                        <div class="pa-thumb"><WorkCover work={w} lang={lang} sizes={sizesThumb} /></div>
+                                        <div class="pa-thumb">
+                                            <WorkCover work={w} lang={lang} sizes={sizesThumb} />
+                                            {s.side === "tech" && <span class="pa-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>}
+                                        </div>
                                     </a>
                                 </li>
                         ))}
@@ -109,6 +119,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
             <div class="pa-tri pa-tri-local pa-tri-back"></div>
             <div class="pa-tri pa-tri-local"></div>
             <img src={mascot.src} width={mascot.width} height={mascot.height} alt="" loading="lazy" decoding="async" />
+            <img class="ta-mascot-inv" src={mascotInverse.src} width={mascot.width} height={mascot.height} alt="" loading="lazy" decoding="async" />
         </div>
     </div>
 </section>
@@ -343,9 +354,19 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         left: 0;
         right: 0;
         bottom: 0;
-        height: 2.25rem;
+        height: var(--bar-h);
         background-color: var(--ta-accent);
         pointer-events: none;
+    }
+    /* 反色条：三角和吉祥物各有一份换了色的副本，只露出底部条那一截 */
+    [data-ta-section] { --bar-h: 2.25rem; }
+    .pa-tri-page.pa-tri-inv { clip-path: inset(calc(100% - var(--bar-h)) 0 0 0); }
+    .pa-tri-inv .pa-tri { background-color: var(--ta-accent); }
+    .pa-tri-inv .pa-tri-back { background-color: var(--ta-paper); }
+    .ta-mascot .ta-mascot-inv {
+        position: absolute;
+        inset: 0;
+        clip-path: inset(calc(100% - var(--bar-h)) 0 0 0);
     }
 
     /* ======================= A · P3R ======================= */
@@ -481,6 +502,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     .ta-side-art .pa-text {
         clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%);
         padding-left: calc(1.1rem + var(--cut));
+        padding-right: 3.6rem;
     }
     .ta-side-tech .pa-thumb { clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% 100%, 0 100%); }
     /* 斜边上的深黄描边（横向 12px）：那一块被 clip-path 切过，普通 border 会被切掉，所以用伪元素沿斜边画一条等宽的斜带 */
@@ -534,13 +556,30 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    /* 编号：放在带斜边那一块的右下角（左栏是图片，右栏是文字面板），白色粗体，不加阴影；
+       右栏的白色面板上垫一小块深黄底 */
+    .pa-num {
+        position: absolute;
+        right: 0.55rem;
+        bottom: 0.4rem;
+        z-index: 2;
+        font-weight: 900;
+        font-size: 1.6rem;
+        line-height: 1;
+        color: var(--ta-paper);
+        pointer-events: none;
+    }
+    .pa-text .pa-num {
+        padding: 0.15rem 0.35rem;
+        background-color: var(--ta-accent);
+    }
     /* 悬停：和总览一样文字面板填成主题深色（深黄） */
     .pa-row:hover .pa-text { background-color: var(--ta-accent); }
 
     /* ---------- 窄屏：吉祥物缩小放最上面，两栏依次往下，全部左对齐 ---------- */
     @media (max-width: 1023px) {
         .ta-stage { grid-template-columns: 1fr; }
-        .pa-tri-page { display: none; }
+        .pa-tri-page, .ta-mascot-inv { display: none; }
         .pa-tri-local { display: block; z-index: -1; top: 2%; bottom: -3%; width: 115%; }
         .pa-tri-local.pa-tri-back { top: 0; bottom: -6%; width: 130%; }
         .ta-mascot { order: -1; width: 9rem; margin: 0 auto; }
