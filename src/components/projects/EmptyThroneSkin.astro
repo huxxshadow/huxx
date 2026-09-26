@@ -414,6 +414,20 @@ const vars = [
         font-size: 1rem;
     }
 
+    /* 左文右图：正文在左，图在右（窄屏上下叠） */
+    .skin-et .project-prose .et-split {
+        display: grid;
+        gap: 2rem;
+        align-items: center;
+        margin: 1.5rem 0 2rem;
+    }
+    .skin-et .project-prose .et-split > figure { margin: 0; }
+    .skin-et .project-prose .et-split > div > :first-child { margin-top: 0; }
+    .skin-et .project-prose .et-split > div > :last-child { margin-bottom: 0; }
+    @media (min-width: 1024px) {
+        .skin-et .project-prose .et-split { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 2.5rem; }
+    }
+
     /* 游戏内截图三张一排 */
     @media (min-width: 900px) {
         .skin-et .project-prose .image-grid-2.et-shots { grid-template-columns: repeat(3, minmax(0, 1fr)); }

@@ -154,12 +154,23 @@ Early in the project, we held multiple rounds of brainstorming around the core c
 
 ### Prototype Phase: Rapidly Validating the Dialogue and Rhythm Systems
 
+<div class="et-split">
+<div>
+
 After establishing the mixed gameplay direction of "narrative puzzles + music rhythm," I took on the primary prototype development work and quickly built the initial version. The focus of this stage was not art completion, but validating two critical questions:
 
 1. Can the dialogue system support complex narrative expression and branching choices?
 2. Can the rhythm system integrate naturally with the story presentation, rather than feeling awkwardly disconnected?
 
 To this end, I prioritized building a basic dialogue framework, branching logic, and simple UI structure, while simultaneously implementing rhythm input judgment, timing detection, and feedback flow. The dialogue system was designed with an emphasis on character voice, information layering, and the progressive revelation of "hidden truth"; the rhythm system focused more on visual clarity, input feel, and integration with narrative nodes. Although this stage was still quite rough, it very effectively validated the most critical gameplay viability, giving the team clear grounding and direction for subsequent development.
+
+</div>
+
+<figure>
+    <Image src={img3} alt="Magic Mirror mechanic early sketch" width={1920} height={1080} />
+    <figcaption>Magic Mirror mechanic early sketch: documents the design restructuring process from "notebook clues" to "Mirror truth revelation" and the original conception of the core interaction logic</figcaption>
+</figure>
+</div>
 
 ### Full Development: From Gameplay Prototype to Complete Production Framework
 
@@ -202,11 +213,6 @@ The significance of this stage was that it moved the team from "an imagined game
 After the first demo was complete, we entered a prolonged phase of fixing and optimization. This stage was not just about clearing bugs — more importantly, it involved reviewing the overall design and rethinking which mechanics truly worked and which expressions were still insufficiently precise.
 
 The most critical adjustment was restructuring the original "notebook-style" clue revelation approach into the current **Magic Mirror revelation mechanic**. This change greatly improved the consistency between gameplay expression and art narrative, making "discovering the truth" not just logically valid but more persuasive at the emotional and world-building level. At the same time, we supplemented and optimized the save/load system, background music system, and some rhythm chapter logic structures.
-
-<figure>
-    <Image src={img3} alt="Magic Mirror mechanic early sketch" width={1920} height={1080} />
-    <figcaption>Magic Mirror mechanic early sketch: documents the design restructuring process from "notebook clues" to "Mirror truth revelation" and the original conception of the core interaction logic</figcaption>
-</figure>
 
 Particularly in the rhythm design of Acts 1 and 4, we made numerous adjustments targeting player input burden, perceived feedback latency, operational complexity, and visual information clarity. The goal was not simply to lower difficulty, but to make the rhythm gameplay serve the narrative experience more naturally rather than overshadowing it. Through these changes, the project achieved noticeable improvements in rhythmic feel, fluidity, and immersion.
 
