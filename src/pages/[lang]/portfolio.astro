@@ -11,6 +11,14 @@ import TechnicalProjectsSection from "@/components/portfolio/TechnicalProjectsSe
 import {LOCALES} from "@/i18n.ts";
 import ArtProjectsSection from "@/components/portfolio/ArtProjectsSection.astro";
 import AllProjectsSection from "@/components/portfolio/AllProjectsSection.astro";
+import PartDivider from "@/components/portfolio/PartDivider.astro";
+import { COLORS } from "@/consts";
+import { PORTFOLIO_ROLES } from "@/i18n/components/portfolio/PortfolioRoles_i18";
+import { allProjectsLabels } from "@/i18n/components/portfolio/AllProjectsSection_i18";
+
+// 各 Part 的底色 / 强调色（和各自组件里的一致），给中间的过渡带用
+const role = (id: string) => PORTFOLIO_ROLES.find((r) => r.id === id)!;
+const beige = COLORS.khakiMilan;
 
 export const getStaticPaths = () =>
     Object.keys(LOCALES).map((lang) => ({
@@ -19,16 +27,24 @@ export const getStaticPaths = () =>
 ---
 
 <Layout>
+    <!-- Part 之间的过渡带有三种候选，右下角 Debug 面板「Part 过渡」切换（正式环境默认 A） -->
+    <div class="part-flow" data-variant-group="part-transitions" data-variant-options="A,B,C" data-variant-label="Part 过渡">
     <PortfolioOverview />
+    <PartDivider from={beige} to={beige} accent={COLORS.orange.dark} index={role("game-design").index} name={role("game-design").name} />
     <GameDesignSection />
+    <PartDivider from={beige} to={COLORS.blue.light} accent={COLORS.blue.dark} index={role("game-dev").index} name={role("game-dev").name} />
     <GameDevSection />
+    <PartDivider from={COLORS.blue.light} to={COLORS.purple.light} accent={COLORS.purple.dark} index={role("ai-app").index} name={role("ai-app").name} />
     <AiAppSection />
+    <PartDivider from={COLORS.purple.light} to={beige} accent={COLORS.yellow.dark} index={role("tech-art").index} name={role("tech-art").name} />
     <TechArtSection />
     {/* 旧的分类板块（游戏 / 技术 / 美术项目）先隐藏，Part 1~5 已经覆盖这些项目；恢复时去掉这段注释即可
     <GameProjectsSection />
     <TechnicalProjectsSection/>
     <ArtProjectsSection/>
     */}
+    <PartDivider from={beige} to={beige} accent={COLORS.black} index="5" name={allProjectsLabels.libraryHeader} />
     <AllProjectsSection/>
+    </div>
     <DebugVariantSwitcher />
 </Layout>
