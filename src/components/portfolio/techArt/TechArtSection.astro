@@ -2,7 +2,7 @@
 // Part 5 · 技术美术：吉祥物（握着画笔的猫耳画师）站在正中、几乎撑满整个 Part 的高度，背后一个又窄又尖的倒三角从 Part 顶边一直扎到底边，
 // 左边「技术」、右边「美术」，两边都是列表，左右镜像（左栏文字靠外、图靠中间，右栏反过来）。
 // 宽屏上分左中右三个区域：鼠标进左区，右栏往右飞出、吉祥物移到右栏的位置并绕笔尖往右斜，
-// 倒三角跟过去一起斜，尖仍在笔尖上，两条边正好把整个人物包住；右区反过来；回到中间或离开这个 Part 就复原。
+// 倒三角跟过去一起斜，尖伸到 Part 底边以下，Part 里只露出一截梯形，两条边正好把整个人物包住；右区反过来；回到中间或离开这个 Part 就复原。
 // 版式走 P3R 的平面设计路子：描边大斜体栏名、平行四边形的行逐行向中间错开，悬停整条填深黄。
 // 这一页只用白色 + COLORS.yellow 的深浅两档，不用大块黑色；黑色只留给正文文字（吉祥物本身就是 yellow.dark）
 import { getCollection } from "astro:content";
@@ -119,8 +119,12 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
     // 左中右三个区域：鼠标在左栏范围 → data-focus="tech"，右栏范围 → "art"，中间或离开 → 清空。
     // 区域按「没有位移时」的栏位划分（offsetLeft 不受 transform 影响），所以栏飞走以后区域也不会跟着跑。
     // 同时量出吉祥物中线（--c）、它移到两栏正中要走的距离（--to-art / --to-tech）、倾斜角（--tilt），
-    // 以及斜过去以后三角顶边从尖往左 / 往右要伸多远才正好包住人物（--wl-tech / --wr-tech / --wl-art / --wr-art），
+    // 以及斜过去以后三角的尖和顶边两端相对笔尖的横向位置（--ax-* / --tl-* / --tr-*）和尖伸到底边以下的深度（--depth），
     // 都是相对 section 的 CSS 像素，给 CSS 里的位移和 clip-path 用
+    // 吉祥物轮廓（含甩出的颜料点）的凸包，SVG 坐标；笔尖在 TIP
+    const HULL = [[89, 245], [175, 43], [181, 35], [369, 88], [537, 140], [545, 143], [544, 621], [542, 631], [297, 1758], [295, 1748], [183, 1229], [129, 951], [107, 783], [89, 276]];
+    const TIP = [297.41, 1758.17];
+
     function initTechArtFocus() {
         document.querySelectorAll<HTMLElement>("[data-ta-section]").forEach((section) => {
             if (section.dataset.focusReady) return;
@@ -146,15 +150,36 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
                 section.style.setProperty("--to-tech", `${center(tech) - m + slant / 2}px`);
                 const tilt = Math.atan2(slant, H);
                 section.style.setProperty("--tilt", `${(tilt * 180 / Math.PI).toFixed(2)}deg`);
-                // 从笔尖看出去，人物轮廓（连同颜料点）往左最多张开到斜率 0.2155、往右 0.2172（按 SVG 路径的点算的）。
-                // 人物绕笔尖转 tilt 以后，两条包络线的角度一边减 tilt、一边加 tilt；顶边离尖的高度就是 section 高度 H
-                const aL = Math.atan(0.2155);
-                const aR = Math.atan(0.2172);
-                const reach = (a: number) => `${(H * Math.tan(a)).toFixed(1)}px`;
-                section.style.setProperty("--wl-tech", reach(aL - tilt));
-                section.style.setProperty("--wr-tech", reach(aR + tilt));
-                section.style.setProperty("--wl-art", reach(aL + tilt));
-                section.style.setProperty("--wr-art", reach(aR - tilt));
+                // 聚焦时的三角：尖沿着倾斜后的人物中轴，一直伸到 Part 底边以下 depth 处，所以在 Part 里只露出上面一截梯形；
+                // 两条边按人物轮廓的凸包（SVG 坐标）算，刚好把人物包住，再留 pad 的边（白色层窄、深黄层宽）
+                const depth = H * 0.8;
+                const k = mascot.offsetWidth / 592;
+                const frame = (sign: number) => {
+                    const t = tilt * sign;
+                    const ax = -depth * Math.tan(t);
+                    const pts = HULL.map(([x, y]) => {
+                        const dx = (x - TIP[0]) * k;
+                        const up = (TIP[1] - y) * k;
+                        // CSS rotate 正角是顺时针：笔尖上方的点往右偏
+                        return [dx * Math.cos(t) + up * Math.sin(t) - ax, up * Math.cos(t) - dx * Math.sin(t) + depth];
+                    });
+                    const edges = (pad: number) => {
+                        const kl = Math.max(...pts.map(([rx, ry]) => (pad - rx) / ry));
+                        const kr = Math.max(...pts.map(([rx, ry]) => (rx + pad) / ry));
+                        return [ax - kl * (H + depth), ax + kr * (H + depth)];
+                    };
+                    return { ax, front: edges(8), back: edges(22) };
+                };
+                const px = (v: number) => `${v.toFixed(1)}px`;
+                section.style.setProperty("--depth", px(depth));
+                for (const [name, sign] of [["tech", 1], ["art", -1]] as const) {
+                    const f = frame(sign);
+                    section.style.setProperty(`--ax-${name}`, px(f.ax));
+                    section.style.setProperty(`--tl-${name}-f`, px(f.front[0]));
+                    section.style.setProperty(`--tr-${name}-f`, px(f.front[1]));
+                    section.style.setProperty(`--tl-${name}-b`, px(f.back[0]));
+                    section.style.setProperty(`--tr-${name}-b`, px(f.back[1]));
+                }
                 techEdge = (stage.offsetLeft + tech.offsetLeft + tech.offsetWidth) / W;
                 artEdge = (stage.offsetLeft + art.offsetLeft) / W;
             };
@@ -273,23 +298,24 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
     .pa-tri-page .pa-tri {
         --tip: var(--c, 50%);
         --hw: calc(var(--tri-w) * 0.525);
-        --pad: 0.5rem;
         inset: 0;
         left: 0;
         translate: none;
         clip-path: polygon(calc(var(--tip) - var(--hw)) 0, calc(var(--tip) + var(--hw)) 0, var(--tip) 100%);
         transition: clip-path var(--ta-move);
     }
-    .pa-tri-page .pa-tri-back { --hw: calc(var(--tri-w) * 0.6); --pad: 1.4rem; }
-    /* 聚焦时：三角跟着吉祥物过去、跟着它一起斜，尖还在笔尖上，两条边正好把整个人物（连同甩出的颜料点）包住。
-       --wl-* / --wr-* 是脚本按人物轮廓算出的「顶边上从尖往左 / 往右要伸多远」，--pad 再留一点边 */
+    .pa-tri-page .pa-tri-back { --hw: calc(var(--tri-w) * 0.6); }
+    /* 聚焦时：三角跟着吉祥物过去、跟着它一起斜，尖沿中轴伸到 Part 底边以下（--depth），Part 里只看到一截梯形，
+       两条边刚好包住整个人物。顶边两端和尖的横向位置都是脚本算好的、相对笔尖的偏移（-f 白色层，-b 深黄层） */
+    .pa-tri-page .pa-tri { --tl-tech: var(--tl-tech-f); --tr-tech: var(--tr-tech-f); --tl-art: var(--tl-art-f); --tr-art: var(--tr-art-f); }
+    .pa-tri-page .pa-tri-back { --tl-tech: var(--tl-tech-b); --tr-tech: var(--tr-tech-b); --tl-art: var(--tl-art-b); --tr-art: var(--tr-art-b); }
     [data-focus="tech"] .pa-tri-page .pa-tri {
         --tip: calc(var(--c, 50%) + var(--to-art, 0px));
-        clip-path: polygon(calc(var(--tip) - var(--wl-tech, 0px) - var(--pad)) 0, calc(var(--tip) + var(--wr-tech, 0px) + var(--pad)) 0, var(--tip) 100%);
+        clip-path: polygon(calc(var(--tip) + var(--tl-tech, 0px)) 0, calc(var(--tip) + var(--tr-tech, 0px)) 0, calc(var(--tip) + var(--ax-tech, 0px)) calc(100% + var(--depth, 0px)));
     }
     [data-focus="art"] .pa-tri-page .pa-tri {
         --tip: calc(var(--c, 50%) + var(--to-tech, 0px));
-        clip-path: polygon(calc(var(--tip) - var(--wl-art, 0px) - var(--pad)) 0, calc(var(--tip) + var(--wr-art, 0px) + var(--pad)) 0, var(--tip) 100%);
+        clip-path: polygon(calc(var(--tip) + var(--tl-art, 0px)) 0, calc(var(--tip) + var(--tr-art, 0px)) 0, calc(var(--tip) + var(--ax-art, 0px)) calc(100% + var(--depth, 0px)));
     }
     .pa-tri-local { display: none; }
     .pa-head { display: flex; flex-direction: column; line-height: 1; }
