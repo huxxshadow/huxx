@@ -96,7 +96,6 @@ export const techArtWorks: TechArtWork[] = [
 ];
 
 export const techArtLabels = {
-    projects: { en: "projects", zh: "个项目", ja: "件", ko: "개 프로젝트" } as Multilingual,
     tech: { en: "Technical", zh: "技术", ja: "テクニカル", ko: "테크니컬" } as Multilingual,
     art: { en: "Art", zh: "美术", ja: "アート", ko: "아트" } as Multilingual,
     techSub: { en: "Shaders · Procedural · Tools", zh: "Shader · 程序化 · 工具", ja: "シェーダー · プロシージャル · ツール", ko: "셰이더 · 절차적 생성 · 툴" } as Multilingual,

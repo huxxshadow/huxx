@@ -73,13 +73,12 @@ const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
         <div class="pa-tri"></div>
     </div>
 
-    <!-- 和 Part 2、3、4 同一套紧凑标题：编号 · 名称 · 项目数 -->
+    <!-- 和 Part 2、3、4 同一套紧凑标题：编号 · 名称（这一部分不显示项目数） -->
     <header class="relative z-10 flex flex-wrap items-end gap-x-8 gap-y-3 mb-6 lg:mb-4" data-reveal-children="up" data-reveal-once data-reveal-stagger="80">
         <div class="flex items-end gap-4">
             <span class="ta-skew font-black leading-[0.8] text-7xl lg:text-8xl" style={`color: ${accent};`}>{role.index}</span>
             <h2 class="ta-skew font-black leading-none tracking-tight text-4xl lg:text-5xl pb-1">{t(role.name)}</h2>
         </div>
-        <span class="ml-auto font-black text-lg whitespace-nowrap pb-1">{works.length} {t(L.projects)}</span>
     </header>
 
     <div class="ta-stage pa">
