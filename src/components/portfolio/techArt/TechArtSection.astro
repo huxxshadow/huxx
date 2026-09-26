@@ -4,7 +4,7 @@
 // 宽屏上分左中右三个区域：鼠标进左区，右栏往右飞出、吉祥物移到右栏的位置并绕笔尖往右斜，
 // 倒三角跟过去一起斜，尖伸到 Part 底边以下，Part 里只露出一截梯形，两条边正好把整个人物包住；右区反过来；回到中间或离开这个 Part 就复原。
 // 版式走 P3R 的平面设计路子：描边大斜体栏名、平行四边形的行逐行向中间错开，悬停整条填深黄。
-// 这一页只用白色 + COLORS.yellow 的深浅两档，不用大块黑色；黑色只留给正文文字（吉祥物本身就是 yellow.dark）
+// 这一页只用米色底（COLORS.khakiMilan）+ 白色 + 深黄（COLORS.yellow.dark），不用大块黑色；黑色只留给正文文字（吉祥物本身就是 yellow.dark）
 import { getCollection } from "astro:content";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { COLORS } from "@/consts";
@@ -54,7 +54,8 @@ const sides = (["tech", "art"] as const).map((side) => ({
 
 const ink = COLORS.black;
 const accent = COLORS.yellow.dark;
-const tint = COLORS.yellow.light;
+// 背景用米色（和 Part 1、2 同一个），深黄只留作强调色
+const tint = COLORS.khakiMilan;
 const paper = "#FFFDF7";
 const sizesThumb = "(min-width: 1024px) 14vw, 40vw";
 ---
