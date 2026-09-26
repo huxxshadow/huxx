@@ -449,20 +449,21 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     .ta-side-tech .pa-list > li { margin-right: calc((var(--n) - 1 - var(--i)) * var(--step) - var(--pull-tech, 0px)); }
     .ta-side-art .pa-list > li { margin-left: calc((var(--n) - 1 - var(--i)) * var(--step)); }
     /* 每张卡拆成两块，中间留一道缝：图片 + 文字面板。靠中间（靠三角）的那一块带斜边和深黄描边，另一块是直角矩形——
-       左栏靠中间的是文字面板（右边斜），右栏靠中间的是图片（左边斜） */
+       文字面板固定宽度在左、图片在右拉伸填满剩下的宽度；左栏靠中间的是图片（右边斜），右栏靠中间的是文字面板（左边斜） */
     .pa-row {
         position: relative;
         /* 行高随屏幕变，矮到放不下标签那一行时就不显示标签（见下面的 @container） */
         container: pa-row / size;
         display: grid;
-        /* 图片固定宽高比（1.9 : 1，宽度 = 行高 × 1.9），所有卡片的图一样大；行宽的差别（阶梯错开）都由文字面板吸收 */
-        grid-template-columns: calc(var(--row-h) * 1.9) minmax(0, 1fr);
+        /* 文字面板固定宽度，所有卡片一样；行宽的差别（阶梯错开）都由右边的图片拉伸吸收 */
+        grid-template-columns: var(--text-w) minmax(0, 1fr);
         column-gap: 0.6rem;
         height: var(--row-h);
     }
-    /* 图在 DOM 里排在文字后面，挪到最前（左边） */
+    .ta-side { --text-w: clamp(10rem, 13vw, 15rem); }
+    /* 右栏的文字面板多出斜边切掉的那一块 */
+    .ta-side-art { --text-w: calc(clamp(10rem, 13vw, 15rem) + var(--cut, 0px)); }
     .pa-thumb {
-        order: -1;
         position: relative;
         overflow: hidden;
         background-color: var(--ta-accent);
@@ -475,13 +476,13 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         transition: background-color 180ms ease;
     }
     /* 斜边：上端往里收 --cut，和居中三角最近的边平行 */
-    .ta-side-art .pa-thumb { clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%); }
-    .ta-side-tech .pa-text {
-        clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% 100%, 0 100%);
-        padding-right: calc(1.1rem + var(--cut));
+    .ta-side-art .pa-text {
+        clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%);
+        padding-left: calc(1.1rem + var(--cut));
     }
+    .ta-side-tech .pa-thumb { clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% 100%, 0 100%); }
     /* 斜边上的深黄描边（横向 12px）：那一块被 clip-path 切过，普通 border 会被切掉，所以用伪元素沿斜边画一条等宽的斜带 */
-    .ta-side-art .pa-thumb::after,
+    .ta-side-art .pa-text::after,
     .ta-side-tech .pa-row::after {
         --edge: 12px;
         content: "";
@@ -491,7 +492,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         pointer-events: none;
         background-color: var(--ta-accent);
     }
-    .ta-side-art .pa-thumb::after {
+    .ta-side-art .pa-text::after {
         clip-path: polygon(var(--cut) 0, calc(var(--cut) + var(--edge)) 0, var(--edge) 100%, 0 100%);
     }
     .ta-side-tech .pa-row::after {
@@ -617,13 +618,17 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         .pa-tri-local.pa-tri-back { top: 0; bottom: -6%; width: 130%; }
         .ta-mascot { order: -1; width: 9rem; margin: 0 auto; }
         .ta-side-tech .pa-head { align-items: flex-start; }
-        /* 窄屏不错开，两栏都用右栏的样子：图在左、左边是斜边 */
+        /* 窄屏不错开，两栏都用右栏的样子：文字面板在左、左边是斜边，图片在右 */
         .ta-side-tech .pa-list > li,
         .ta-side-art .pa-list > li { margin: 0; }
-        .ta-side-tech .pa-text { clip-path: none; padding-right: 1.1rem; }
+        .ta-side-tech { --text-w: calc(clamp(10rem, 13vw, 15rem) + var(--cut, 0px)); }
+        .ta-side-tech .pa-thumb { clip-path: none; }
         .ta-side-tech .pa-row::after { display: none; }
-        .ta-side-tech .pa-thumb { clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%); }
-        .ta-side-tech .pa-thumb::after {
+        .ta-side-tech .pa-text {
+            clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%);
+            padding-left: calc(1.1rem + var(--cut));
+        }
+        .ta-side-tech .pa-text::after {
             content: "";
             position: absolute;
             inset: 0;
