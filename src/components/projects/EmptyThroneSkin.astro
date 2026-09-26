@@ -20,6 +20,17 @@ import namebar from "@/assets/projects/game-project-empty-throne/skin/namebar.pn
 import frame from "@/assets/projects/game-project-empty-throne/skin/frame.png";
 import mirrors from "@/assets/projects/game-project-empty-throne/skin/mirrors.png";
 import cursor from "@/assets/projects/game-project-empty-throne/skin/cursor.png";
+// 游戏里的物品像素图标（64×64），当标题图标、列表符号和 hero 里的小装饰
+import key from "@/assets/projects/game-project-empty-throne/deco/key.png";
+import apple from "@/assets/projects/game-project-empty-throne/deco/apple.png";
+import mirrorItem from "@/assets/projects/game-project-empty-throne/deco/mirror-item.png";
+import script from "@/assets/projects/game-project-empty-throne/deco/script.png";
+import letter from "@/assets/projects/game-project-empty-throne/deco/letter.png";
+import notes from "@/assets/projects/game-project-empty-throne/deco/notes.png";
+import codebook from "@/assets/projects/game-project-empty-throne/deco/codebook.png";
+import will from "@/assets/projects/game-project-empty-throne/deco/will.png";
+import token from "@/assets/projects/game-project-empty-throne/deco/token.png";
+import mirrorBig from "@/assets/projects/game-project-empty-throne/deco/mirror-big.png";
 
 const vars = [
     `--et-title: url("${title.src}")`,
@@ -29,11 +40,25 @@ const vars = [
     `--et-frame: url("${frame.src}")`,
     `--et-mirrors: url("${mirrors.src}")`,
     `--et-cursor: url("${cursor.src}")`,
+    `--et-mirror-big: url("${mirrorBig.src}")`,
+    `--et-token: url("${token.src}")`,
+    // 三级标题前面的图标，按顺序轮流用
+    ...[key, apple, mirrorItem, script, letter, notes, codebook, will].map((img, i) => `--et-ico-${i}: url("${img.src}")`),
 ].join("; ");
+// hero 里散落的几件物品：[图, 位置, 角度]
+const HERO_ITEMS: [ImageMetadata, string, string][] = [
+    [apple, "top: 14%; right: 3.5%;", "-12deg"],
+    [key, "bottom: 16%; right: 46%;", "18deg"],
+    [mirrorItem, "top: 9%; right: 38%;", "8deg"],
+    [letter, "bottom: 30%; right: 2%;", "-8deg"],
+];
 ---
 
 {stickers ? (
         <div class="et-deco" aria-hidden="true">
+            {HERO_ITEMS.map(([img, pos, rot], i) => (
+                    <img class="et-item" src={img.src} width="64" height="64" alt="" style={`${pos} rotate: ${rot}; animation-delay: ${-i * 1.3}s;`} />
+            ))}
             <div class="et-mirror-row"></div>
         </div>
 ) : (
@@ -147,12 +172,34 @@ const vars = [
     /* hero 底部一排魔镜 */
     .skin-et .et-deco {
         position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+    }
+    /* 散落的物品：放大成 56px 的像素图，轻轻上下浮 */
+    .skin-et .et-item {
+        position: absolute;
+        width: clamp(40px, 4vw, 60px);
+        height: auto;
+        image-rendering: pixelated;
+        filter: drop-shadow(0 6px 8px rgb(0 0 0 / 0.45));
+        animation: et-float 5.2s ease-in-out infinite;
+    }
+    @keyframes et-float {
+        50% { translate: 0 -8px; }
+    }
+    @media (max-width: 1023px) {
+        .skin-et .et-item:nth-child(2),
+        .skin-et .et-item:nth-child(3) { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .skin-et .et-item { animation: none; }
+    }
+    .skin-et .et-mirror-row {
+        position: absolute;
         left: 0;
         right: 0;
         bottom: 1rem;
-        pointer-events: none;
-    }
-    .skin-et .et-mirror-row {
         height: 32px;
         background: var(--et-mirrors) left center / auto 32px repeat-x;
         image-rendering: pixelated;
@@ -163,6 +210,7 @@ const vars = [
     /* 正文                                                       */
     /* ========================================================= */
     main.skin-et {
+        position: relative;
         background:
                 radial-gradient(ellipse 80% 45% at 50% 0%, var(--et-wine) 0%, transparent 75%),
                 radial-gradient(ellipse 60% 40% at 100% 100%, rgb(127 194 187 / 0.10) 0%, transparent 70%),
@@ -171,12 +219,43 @@ const vars = [
         --theme-text: var(--et-cream);
     }
     .skin-et .project-prose {
+        position: relative;
+        z-index: 1;
         color: var(--et-cream);
+    }
+    main.skin-et::after {
+        content: "";
+        position: absolute;
+        right: -3rem;
+        bottom: 2rem;
+        width: clamp(12rem, 22vw, 20rem);
+        aspect-ratio: 448 / 544;
+        background: var(--et-mirror-big) center / contain no-repeat;
+        image-rendering: pixelated;
+        opacity: 0.12;
+        rotate: -8deg;
+        pointer-events: none;
     }
     .skin-et .project-prose p,
     .skin-et .project-prose li { color: var(--et-cream); }
     .skin-et .project-prose strong { color: var(--et-cream-hi); }
-    .skin-et .project-prose li::marker { color: var(--et-coral); }
+    /* 列表符号换成游戏里的信物像素图标 */
+    .skin-et .project-prose ul { list-style: none; padding-left: 0; }
+    .skin-et .project-prose ul > li {
+        position: relative;
+        padding-left: 2.1rem;
+    }
+    .skin-et .project-prose ul > li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.1em;
+        width: 1.5rem;
+        height: 1.5rem;
+        background: var(--et-token) center / contain no-repeat;
+        image-rendering: pixelated;
+    }
+    .skin-et .project-prose ol > li::marker { color: var(--et-coral); font-weight: 900; }
 
     /* 二级标题：名字条 + 一面魔镜 */
     .skin-et .project-prose h2 {
@@ -206,11 +285,30 @@ const vars = [
 
     /* 三级标题：珊瑚红，下面一道像素虚线 */
     .skin-et .project-prose h3 {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
         color: var(--et-coral);
         padding-bottom: 0.4rem;
         background: repeating-linear-gradient(90deg, var(--et-cream) 0 8px, transparent 8px 14px) left bottom / 100% 3px no-repeat;
     }
     .skin-et .project-prose h3::after { display: none; }
+    /* 三级标题前一件物品图标，按出现顺序轮流 */
+    .skin-et .project-prose h3::before {
+        content: "";
+        flex: none;
+        width: 2.2rem;
+        height: 2.2rem;
+        background: var(--et-ico-0) center / contain no-repeat;
+        image-rendering: pixelated;
+    }
+    .skin-et .project-prose h3:nth-of-type(8n + 2)::before { background-image: var(--et-ico-1); }
+    .skin-et .project-prose h3:nth-of-type(8n + 3)::before { background-image: var(--et-ico-2); }
+    .skin-et .project-prose h3:nth-of-type(8n + 4)::before { background-image: var(--et-ico-3); }
+    .skin-et .project-prose h3:nth-of-type(8n + 5)::before { background-image: var(--et-ico-4); }
+    .skin-et .project-prose h3:nth-of-type(8n + 6)::before { background-image: var(--et-ico-5); }
+    .skin-et .project-prose h3:nth-of-type(8n + 7)::before { background-image: var(--et-ico-6); }
+    .skin-et .project-prose h3:nth-of-type(8n + 8)::before { background-image: var(--et-ico-7); }
     .skin-et .project-prose h4 { color: var(--et-ghost); }
 
     /* 图片、视频、嵌入：物品框像素边框，不要圆角和偏移阴影 */
@@ -273,6 +371,11 @@ const vars = [
     @media (max-width: 519px) {
         .skin-et .project-prose .et-cast { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         .skin-et .project-prose .et-cast figcaption { font-size: 0.75rem; }
+    }
+
+    /* 游戏内截图三张一排 */
+    @media (min-width: 900px) {
+        .skin-et .project-prose .image-grid-2.et-shots { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
 
     /* 分隔线：一排魔镜 */
