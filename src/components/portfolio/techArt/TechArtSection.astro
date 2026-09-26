@@ -259,13 +259,19 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                     // 所有斜边的新斜度：每往下 1px 往右 eS
                     const cutF = rowF * eS;
                     const lis = Array.from(list.children) as HTMLElement[];
+                    // 每一行第二列的右边（斜边整个落在 L 上：取斜边更靠右的那一端）
+                    const rightOf = (r: number) => {
+                        const top = y0 + r * (rowF + gap);
+                        return Math.max(L(top), L(top + rowF));
+                    };
+                    // 第一列也按行错开，和第二列一样左边斜边连成一条线；以最靠左的那一行贴住栏的左边
+                    const shift = (r: number) => rightOf(r) - Math.min(...Array.from({ length: rows }, (_, k) => rightOf(k)));
+                    const wA = Math.min(...Array.from({ length: rows }, (_, k) => rightOf(k) - wB - colGap - listLeft - shift(k)));
                     lis.forEach((li, i) => {
                         const r = i % rows;
                         const top = y0 + r * (rowF + gap);
-                        // 斜边整个落在 L 上：盒子右边取斜边更靠右的那一端
-                        const rightB = Math.max(L(top), L(top + rowF));
-                        const leftB = rightB - wB;
-                        const [x, wid] = i < rows ? [listLeft, leftB - colGap - listLeft] : [leftB, wB];
+                        const leftB = rightOf(r) - wB;
+                        const [x, wid] = i < rows ? [listLeft + shift(r), wA] : [leftB, wB];
                         const p0 = pos(li);
                         li.style.setProperty("--f-x", `${(x - p0.left).toFixed(1)}px`);
                         li.style.setProperty("--f-y", `${(top - p0.top).toFixed(1)}px`);
@@ -275,11 +281,14 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                     list.style.setProperty("--f-cut", `${cutF.toFixed(1)}px`);
                     // 左栏封面统一宽度，文字面板吸收阶梯带来的宽度差别
                     const fws = lis.map((li) => parseFloat(li.style.getPropertyValue("--f-w")));
-                    // 封面尽量是完整的 16:9：平行四边形每一横条的宽度都等于栏宽，所以栏宽取行高 × 16/9；
-                    // 只有文字面板会窄过 8rem 时才收窄
-                    const minText = 128;
-                    list.style.setProperty("--img-w", `${Math.max(40, Math.min(rowH * 16 / 9, li0.offsetWidth - minText)).toFixed(1)}px`);
-                    list.style.setProperty("--img-w-f", `${Math.max(40, Math.min(rowF * 16 / 9, Math.min(...fws) - minText)).toFixed(1)}px`);
+                    // 封面宽度 = 最窄那张卡减去文字面板宽度（--text-w 是 clamp()，放个探针量出实际值）
+                    const probe = document.createElement("div");
+                    probe.style.cssText = "position:absolute;visibility:hidden;width:var(--text-w)";
+                    tech.append(probe);
+                    const textW = probe.offsetWidth || 200;
+                    probe.remove();
+                    list.style.setProperty("--img-w", `${Math.max(40, li0.offsetWidth - textW).toFixed(1)}px`);
+                    list.style.setProperty("--img-w-f", `${Math.max(40, Math.min(...fws) - textW).toFixed(1)}px`);
                     // 黄条的右斜边也换到新斜度，落在第二列斜边那条线往上的延长线上
                     section.style.setProperty("--bar-rt-f", `${(L(b.top) - b.left).toFixed(1)}px`);
                     section.style.setProperty("--bar-rb-f", `${(L(b.top + bar.offsetHeight) - b.left).toFixed(1)}px`);
