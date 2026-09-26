@@ -34,7 +34,7 @@ export const techArtWorks: TechArtWork[] = [
             ja: "AI リペイントで目標の雰囲気を決め、微分可能レンダリングでライトを逆算して Blender に書き戻す。",
             ko: "AI 리페인트로 목표 분위기를 정하고, 미분 가능 렌더링으로 조명을 역산해 Blender에 다시 씁니다.",
         },
-        tags: { en: "Blender · Mitsuba 3 · DCC Tool", zh: "Blender · Mitsuba 3 · DCC 工具", ja: "Blender · Mitsuba 3 · DCC ツール", ko: "Blender · Mitsuba 3 · DCC 툴" },
+        tags: { en: "Blender · Neural Rendering", zh: "Blender · 神经渲染", ja: "Blender · ニューラルレンダリング", ko: "Blender · 뉴럴 렌더링" },
     },
     {
         projectId: "technical-project-ai-pixelart-repair-tool",
