@@ -2,15 +2,30 @@
 import { getCollection } from "astro:content";
 import { COLORS } from "@/consts";
 import { PORTFOLIO_ROLES } from "@/i18n/components/portfolio/PortfolioRoles_i18";
+import { aiWorks } from "@/i18n/components/portfolio/AiAppShowcase_i18";
+import { techArtWorks } from "@/i18n/components/portfolio/TechArtShowcase_i18";
+import type { Lang } from "@/i18n";
+import { getGameDesignShowcase } from "./gameDesign/data";
+import { getGameDevShowcase } from "./gameDev/data";
 
-export async function getOverviewData() {
+export async function getOverviewData(lang: Lang) {
     const projects = await getCollection("projects");
     const byId = new Map(projects.map((p) => [p.id, p]));
+
+    // 每个方向的项目数 = 下面对应 Part 里实际展示的卡片数（和各 Part 用同一份数据，改了展示内容这里自动跟着变）
+    const design = await getGameDesignShowcase(lang);
+    const dev = await getGameDevShowcase(lang);
+    const shown: Record<string, number> = {
+        "game-design": design.featured.length + design.selected.length,
+        "game-dev": dev.works.length,
+        "ai-app": aiWorks.filter((w) => byId.has(w.projectId)).length,
+        "tech-art": techArtWorks.filter((w) => byId.has(w.projectId)).length,
+    };
 
     const roles = PORTFOLIO_ROLES.map((role) => ({
         ...role,
         color: COLORS[role.colorKey],
-        count: role.projectIds.filter((id) => byId.has(id)).length,
+        count: shown[role.id] ?? role.projectIds.filter((id) => byId.has(id)).length,
         flagship: byId.get(role.flagshipId),
     }));
 

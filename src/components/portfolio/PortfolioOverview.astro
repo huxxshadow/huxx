@@ -14,7 +14,7 @@ import aiAppArt from "@/assets/portfolio/roles/ai-app.svg";
 import techArtArt from "@/assets/portfolio/roles/tech-art.svg";
 
 const t = useTranslations((Astro.currentLocale as Lang) || "en");
-const { roles } = await getOverviewData();
+const { roles } = await getOverviewData((Astro.currentLocale as Lang) || "en");
 const theme = { light: COLORS.khakiMilan, dark: COLORS.black };
 
 const { lead, roleParagraphs } = parseIntro(t(L.positioning), roles);
