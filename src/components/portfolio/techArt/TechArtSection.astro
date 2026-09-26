@@ -459,9 +459,9 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% 100%, 0 100%);
     }
     .ta-side-tech .pa-text { padding-right: calc(1.1rem + var(--cut)); }
-    /* 斜边上的深黄描边：行被 clip-path 切过，普通 border 会被切掉，所以用一层伪元素沿斜边画一条等宽的斜带 */
+    /* 斜边上的深黄描边（横向 12px）：行被 clip-path 切过，普通 border 会被切掉，所以用一层伪元素沿斜边画一条等宽的斜带 */
     .pa-row::after {
-        --edge: 5px;
+        --edge: 12px;
         content: "";
         position: absolute;
         inset: 0;
