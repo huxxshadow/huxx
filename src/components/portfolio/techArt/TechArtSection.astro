@@ -195,15 +195,15 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                     const d = apexY / BH;
                     return `translate(${x0.toFixed(1)}px, 0px) skewX(${Math.atan2(c, d).toFixed(4)}rad) scale(${a.toFixed(4)}, ${d.toFixed(4)})`;
                 };
-                // 居中时白色三角边的斜率（每往下 1px 横向收多少），列表行的斜边和阶梯都跟它平行
-                section.style.setProperty("--tri-slope", ((w * 0.525) / H).toFixed(4));
-                // 居中：三角整体往下挪，尖落在 Part 底边以下 drop 处，Part 里看到的是底边被切平的梯形；
-                // 边的斜率不变（顶边半宽跟着按 (H + drop) / H 放大），所以卡片、黄条还是和它平行
-                const drop = H * 0.12;
-                const grow = (H + drop) / H;
+                // 居中：顶边宽度不变（半宽 0.525 / 0.6 倍吉祥物宽），尖往下伸到 Part 底边以下 drop 处，
+                // Part 里看到的是底边被切平的梯形；两边因此更陡
+                const drop = H * 0.5;
                 for (const [layer, hw] of [["f", 0.525], ["b", 0.6]] as const) {
-                    section.style.setProperty(`--tri-none-${layer}`, place(cx - w * hw * grow, cx + w * hw * grow, cx, H + drop));
+                    section.style.setProperty(`--tri-none-${layer}`, place(cx - w * hw, cx + w * hw, cx, H + drop));
                 }
+                // 居中梯形白色层边的斜率（每往下 1px 横向收多少），列表行的斜边、阶梯和黄条都跟它平行
+                const triSlope = (w * 0.525) / (H + drop);
+                section.style.setProperty("--tri-slope", triSlope.toFixed(4));
                 for (const [name, sign, tip] of [["tech", 1, cx + toArt], ["art", -1, cx + toTech]] as const) {
                     const f = frame(sign);
                     section.style.setProperty(`--tri-${name}-f`, place(tip + f.front[0], tip + f.front[1], tip + f.ax, H + depth));
@@ -223,14 +223,14 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                         }
                         return { left, top };
                     };
-                    const slope = (w * 0.525) / H;
+                    const slope = triSlope;
                     const rowH = li0.offsetHeight;
                     const step = (rowH + (parseFloat(getComputedStyle(list).rowGap) || 0)) * slope;
                     const n = list.children.length;
                     const y0 = pos(li0).top;
                     // 第一张卡不拉近时的右上角（斜边顶端）
                     const x0 = pos(list).left + list.offsetWidth - (n - 1) * step - rowH * slope;
-                    const edgeBack = (y: number) => cx - w * 0.6 * ((H + drop - y) / H);
+                    const edgeBack = (y: number) => cx - w * 0.6 * ((H + drop - y) / (H + drop));
                     const pull = Math.max(0, (edgeBack(y0) - x0) * 0.45);
                     section.style.setProperty("--pull-tech", `${pull.toFixed(1)}px`);
                     const line = (y: number) => x0 + pull + slope * (y - y0);
