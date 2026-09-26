@@ -373,6 +373,33 @@ const HERO_ITEMS: [ImageMetadata, string, string][] = [
         .skin-et .project-prose .et-cast figcaption { font-size: 0.75rem; }
     }
 
+    /* 灵感来源：参考作品的 Steam 封面一排，下面写作品名和借鉴了什么 */
+    .skin-et .project-prose .et-refs {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+        gap: clamp(1rem, 2vw, 1.75rem);
+        margin: 1.75rem 0 2rem;
+    }
+    .skin-et .project-prose .et-refs figure { margin: 0; align-items: stretch; }
+    .skin-et .project-prose .et-refs img {
+        width: 100%;
+        aspect-ratio: 460 / 215;
+        height: auto;
+        object-fit: cover;
+        margin: 0 !important;
+    }
+    .skin-et .project-prose .et-refs figcaption {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+        text-align: left;
+        color: var(--et-mute);
+    }
+    .skin-et .project-prose .et-refs figcaption strong {
+        color: var(--et-ghost);
+        font-size: 1rem;
+    }
+
     /* 游戏内截图三张一排 */
     @media (min-width: 900px) {
         .skin-et .project-prose .image-grid-2.et-shots { grid-template-columns: repeat(3, minmax(0, 1fr)); }
