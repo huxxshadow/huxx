@@ -200,18 +200,34 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                     section.style.setProperty(`--tri-${name}-f`, place(tip + f.front[0], tip + f.front[1], tip + f.ax, H + depth));
                     section.style.setProperty(`--tri-${name}-b`, place(tip + f.back[0], tip + f.back[1], tip + f.ax, H + depth));
                 }
-                // 左栏黄条：左边伸到画面最左，右边斜着正好贴在居中三角（深黄外层）的左边上。
-                // 三角左边：顶上在 cx - 0.6w，尖在 (cx, H)；量出黄条在 section 里的位置，算出它上下两条边碰到三角边的 x
-                if (bar) {
-                    let left = 0;
-                    let top = 0;
-                    for (let el: HTMLElement | null = bar; el && el !== section; el = el.offsetParent as HTMLElement | null) {
-                        left += el.offsetLeft;
-                        top += el.offsetTop;
-                    }
-                    const edge = (y: number) => cx - w * 0.6 * (1 - y / H);
-                    section.style.setProperty("--bar-rt", `${(edge(top) - left).toFixed(1)}px`);
-                    section.style.setProperty("--bar-rb", `${(edge(top + bar.offsetHeight) - left).toFixed(1)}px`);
+                // 左栏：卡片的斜边连成一条和三角平行的线。先按「不往里拉」算出第一张卡右上角到三角深黄外边的横向间距，
+                // 整栏往三角拉近其中的 45%（--pull-tech）；黄条的右斜边就落在这条线往上的延长线上，和下面的卡片对齐
+                const list = tech.querySelector<HTMLElement>(".pa-list");
+                const li0 = list?.querySelector<HTMLElement>(":scope > li");
+                if (bar && list && li0) {
+                    const pos = (el: HTMLElement) => {
+                        let left = 0;
+                        let top = 0;
+                        for (let e: HTMLElement | null = el; e && e !== section; e = e.offsetParent as HTMLElement | null) {
+                            left += e.offsetLeft;
+                            top += e.offsetTop;
+                        }
+                        return { left, top };
+                    };
+                    const slope = (w * 0.525) / H;
+                    const rowH = li0.offsetHeight;
+                    const step = (rowH + (parseFloat(getComputedStyle(list).rowGap) || 0)) * slope;
+                    const n = list.children.length;
+                    const y0 = pos(li0).top;
+                    // 第一张卡不拉近时的右上角（斜边顶端）
+                    const x0 = pos(list).left + list.offsetWidth - (n - 1) * step - rowH * slope;
+                    const edgeBack = (y: number) => cx - w * 0.6 * (1 - y / H);
+                    const pull = Math.max(0, (edgeBack(y0) - x0) * 0.45);
+                    section.style.setProperty("--pull-tech", `${pull.toFixed(1)}px`);
+                    const line = (y: number) => x0 + pull + slope * (y - y0);
+                    const b = pos(bar);
+                    section.style.setProperty("--bar-rt", `${(line(b.top) - b.left).toFixed(1)}px`);
+                    section.style.setProperty("--bar-rb", `${(line(b.top + bar.offsetHeight) - b.left).toFixed(1)}px`);
                 }
                 if (!section.dataset.triReady) {
                     // 第一次摆好时不要动画（否则三角会从没变换的样子飞过来，后台标签页里还会卡在半路），
@@ -390,7 +406,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         transform: skewX(-14deg);
     }
     /* 宽屏左栏的黄条：梯形——左边伸到画面最左（section 的 overflow: hidden 在屏幕边裁掉），
-       右边是斜边，和居中三角的边平行、正好贴在三角深黄外层的左边上（--bar-rt / --bar-rb 由脚本算，相对黄条自身左边）。
+       右边是斜边，落在下面卡片斜边连成的那条线上、和卡片对齐（--bar-rt / --bar-rb 由脚本算，相对黄条自身左边）。
        不再整体 skew，改用 clip-path 切，字保持斜体，仍然从栏的左边开始排 */
     @media (min-width: 1024px) {
         .ta-side-tech .pa-head-name {
@@ -415,7 +431,8 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         flex-direction: column;
         gap: var(--row-gap);
     }
-    .ta-side-tech .pa-list > li { margin-right: calc((var(--n) - 1 - var(--i)) * var(--step)); }
+    /* 左栏整体再往三角拉近 --pull-tech（脚本算），卡片可以伸进栏和吉祥物之间的空隙 */
+    .ta-side-tech .pa-list > li { margin-right: calc((var(--n) - 1 - var(--i)) * var(--step) - var(--pull-tech, 0px)); }
     .ta-side-art .pa-list > li { margin-left: calc((var(--n) - 1 - var(--i)) * var(--step)); }
     .pa-row {
         display: grid;
