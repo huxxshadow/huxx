@@ -85,7 +85,10 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
 
     <div class="ta-stage pa">
         {sides.map((s) => (
-                <div class:list={["ta-side", `ta-side-${s.side}`]}>
+                <div
+                        class:list={["ta-side", `ta-side-${s.side}`]}
+                        {...(s.side === "tech" ? { "data-variant-group": "part5-tech", "data-variant-options": "A,B,C", "data-variant-label": "Part 5 · 技术卡片" } : {})}
+                >
                     <div class="pa-head" data-reveal={s.reveal} data-reveal-once>
                         <span class="pa-head-en">{s.heading}</span>
                         <span class="pa-head-name">{s.name}</span>
@@ -93,7 +96,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                     <ol class="pa-list" style={`--n: ${s.items.length};`} data-reveal-children={s.reveal} data-reveal-once>
                         {s.items.map((w, i) => (
                                 <li style={`--i: ${i};`}>
-                                    <a href={href(w.id)} class="pa-row">
+                                    <a href={href(w.id)} class="pa-row" data-num={w.num}>
                                         <div class="pa-text">
                                             <div class="pa-line">
                                                 <span class="pa-num">{w.num}</span>
@@ -476,7 +479,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     }
     /* 斜边上的深黄描边（横向 12px）：那一块被 clip-path 切过，普通 border 会被切掉，所以用伪元素沿斜边画一条等宽的斜带 */
     .ta-side-art .pa-thumb::after,
-    .ta-side-tech .pa-text::after {
+    .ta-side-tech .pa-row::after {
         --edge: 12px;
         content: "";
         position: absolute;
@@ -488,8 +491,64 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     .ta-side-art .pa-thumb::after {
         clip-path: polygon(var(--cut) 0, calc(var(--cut) + var(--edge)) 0, var(--edge) 100%, 0 100%);
     }
-    .ta-side-tech .pa-text::after {
+    .ta-side-tech .pa-row::after {
         clip-path: polygon(calc(100% - var(--cut) - var(--edge)) 0, calc(100% - var(--cut)) 0, 100% 100%, calc(100% - var(--edge)) 100%);
+    }
+
+    /* ---------- 技术栏卡片的三个候选（右下角 Debug 面板「Part 5 · 技术卡片」切换，只在宽屏生效）----------
+       A（默认）：图片矩形 + 斜边文字面板（编号、标题、标签）
+       B：编号单独成一块深黄方块（白字），然后图片、再然后斜边文字面板（只放标题和标签），三块分开
+       C：编号方块 + 一整块斜边大图，标题贴在图片左下角的白色小标签里 */
+    @media (min-width: 1024px) {
+        .ta-side-tech[data-variant-current="B"] .pa-row,
+        .ta-side-tech[data-variant-current="C"] .pa-row {
+            --tile: calc(var(--row-h) * 0.8);
+            padding-left: calc(var(--tile) + 0.6rem);
+        }
+        /* 编号方块：用整行的 ::before（取 data-num）画在最左边——文字面板带 clip-path，里面的编号挪出去会被切掉 */
+        .ta-side-tech[data-variant-current="B"] .pa-num,
+        .ta-side-tech[data-variant-current="C"] .pa-num { display: none; }
+        .ta-side-tech[data-variant-current="B"] .pa-row::before,
+        .ta-side-tech[data-variant-current="C"] .pa-row::before {
+            content: attr(data-num);
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: var(--tile);
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            font-size: calc(var(--row-h) * 0.42);
+            line-height: 1;
+            background-color: var(--ta-accent);
+            color: var(--ta-paper);
+            transition: background-color 180ms ease, color 180ms ease;
+        }
+        .ta-side-tech[data-variant-current="B"] .pa-row:hover::before,
+        .ta-side-tech[data-variant-current="C"] .pa-row:hover::before {
+            background-color: var(--ta-paper);
+            color: var(--ta-accent);
+        }
+
+        /* C：图片占满编号方块右边的整块，右边斜；文字面板压在图片左下角 */
+        .ta-side-tech[data-variant-current="C"] .pa-row { grid-template-columns: minmax(0, 1fr); }
+        .ta-side-tech[data-variant-current="C"] .pa-thumb {
+            grid-area: 1 / 1;
+            clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% 100%, 0 100%);
+        }
+        .ta-side-tech[data-variant-current="C"] .pa-text {
+            grid-area: 1 / 1;
+            z-index: 2;
+            align-self: end;
+            justify-self: start;
+            max-width: 70%;
+            margin: 0 0 0.5rem 0.5rem;
+            padding: 0.3rem 0.75rem;
+            clip-path: none;
+        }
+        .ta-side-tech[data-variant-current="C"] .pa-title { -webkit-line-clamp: 1; }
+        .ta-side-tech[data-variant-current="C"] .pa-tags { display: none; }
     }
     /* 文字排法照这页最上面的总览菜单：大号实心编号（深黄、font-black、行高 0.8）+ 粗体标题（这里栏窄，编号叠在标题上面），
        下面一行粗体标签（不大写、不加字距，和总览里「N 个项目」那行一样） */
@@ -559,7 +618,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         .ta-side-tech .pa-list > li,
         .ta-side-art .pa-list > li { margin: 0; }
         .ta-side-tech .pa-text { clip-path: none; padding-right: 1.1rem; }
-        .ta-side-tech .pa-text::after { display: none; }
+        .ta-side-tech .pa-row::after { display: none; }
         .ta-side-tech .pa-thumb { clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%); }
         .ta-side-tech .pa-thumb::after {
             content: "";
