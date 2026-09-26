@@ -32,7 +32,6 @@ import will from "@/assets/projects/game-project-empty-throne/deco/will.png";
 import token from "@/assets/projects/game-project-empty-throne/deco/token.png";
 import mirrorBig from "@/assets/projects/game-project-empty-throne/deco/mirror-big.png";
 // 正文左右两侧的大号角色立绘（原色，透明度 22%，阴影直接烤进图里，免得给整页高的图层加 filter）
-import bgWitch from "@/assets/projects/game-project-empty-throne/deco/bg-witch.png";
 import bgSnow from "@/assets/projects/game-project-empty-throne/deco/bg-snow.png";
 import bgHunter from "@/assets/projects/game-project-empty-throne/deco/bg-hunter.png";
 import bgDwarf from "@/assets/projects/game-project-empty-throne/deco/bg-dwarf.png";
@@ -52,7 +51,6 @@ const vars = [
     `--et-mirrors: url("${mirrors.src}")`,
     `--et-cursor: url("${cursor.src}")`,
     `--et-mirror-big: url("${mirrorBig.src}")`,
-    `--et-bg-witch: url("${bgWitch.src}")`,
     `--et-bg-snow: url("${bgSnow.src}")`,
     `--et-bg-hunter: url("${bgHunter.src}")`,
     `--et-bg-dwarf: url("${bgDwarf.src}")`,
@@ -226,7 +224,6 @@ const vars = [
             pointer-events: none;
             image-rendering: pixelated;
             background:
-                    var(--et-bg-witch) left -3rem top 1% / auto clamp(24rem, 34vw, 32rem) no-repeat,
                     var(--et-scene-study) center top 12% / 100% auto no-repeat,
                     var(--et-bg-snow) right -8rem top 24% / auto clamp(24rem, 34vw, 30rem) no-repeat,
                     var(--et-scene-witchroom) center top 35% / 100% auto no-repeat,
@@ -426,6 +423,69 @@ const vars = [
     .skin-et .project-prose .et-split > div > :last-child { margin-bottom: 0; }
     @media (min-width: 1024px) {
         .skin-et .project-prose .et-split { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 2.5rem; }
+    }
+
+    /* 特别栏：Steam 入库人数 + 女巫立绘 */
+    .skin-et .project-prose .et-milestone {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+        gap: 1.5rem;
+        margin: 3rem 0;
+        padding: 2rem 2.25rem 0;
+        border-width: 14px;
+        border-style: solid;
+        border-color: transparent;
+        border-image: var(--et-frame) 16 / 14px / 0 round;
+        image-rendering: pixelated;
+        background:
+                radial-gradient(ellipse 60% 90% at 85% 100%, color-mix(in srgb, var(--et-wine) 85%, transparent) 0%, transparent 70%),
+                var(--et-deep);
+        overflow: hidden;
+    }
+    .skin-et .project-prose .et-milestone-text { padding-bottom: 2rem; }
+    .skin-et .project-prose .et-milestone-kicker {
+        margin: 0 0 0.5rem;
+        font-size: 0.9rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        color: var(--et-ghost);
+    }
+    .skin-et .project-prose .et-milestone-num {
+        margin: 0;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 900;
+        font-size: clamp(3.5rem, 8vw, 6rem);
+        line-height: 1;
+        color: var(--et-cream-hi);
+        text-shadow: 4px 4px 0 var(--et-coral);
+    }
+    .skin-et .project-prose .et-milestone-num small {
+        font-size: 0.4em;
+        margin-left: 0.3rem;
+        color: var(--et-cream);
+        text-shadow: none;
+    }
+    .skin-et .project-prose .et-milestone-desc {
+        margin: 0.75rem 0 0;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--et-cream);
+    }
+    .skin-et .project-prose .et-milestone img {
+        width: clamp(9rem, 20vw, 15rem);
+        height: auto;
+        margin: 0 !important;
+        border: 0 !important;
+        border-image: none !important;
+        background: none;
+        image-rendering: pixelated;
+        filter: drop-shadow(6px 8px 0 rgb(0 0 0 / 0.35));
+    }
+    @media (max-width: 639px) {
+        .skin-et .project-prose .et-milestone { grid-template-columns: 1fr; padding: 1.5rem 1.25rem 0; }
+        .skin-et .project-prose .et-milestone img { justify-self: end; width: 8rem; margin-top: -3rem !important; }
     }
 
     /* 游戏内截图三张一排 */
