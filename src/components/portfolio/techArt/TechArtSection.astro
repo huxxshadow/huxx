@@ -637,7 +637,17 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
             transition: clip-path var(--ta-move);
         }
         /* 标题区是展开的触发区：悬停时黄条往三角伸出 --grow，末端的箭头往前挪 */
-        .pa-head { cursor: pointer; }
+        .pa-head { cursor: pointer; position: relative; }
+        /* 看不见的感应区：比标题区上下各多出一截，更容易碰到（下沿不压到第一张卡） */
+        .pa-head::after {
+            content: "";
+            position: absolute;
+            top: -2.5rem;
+            bottom: -1rem;
+            z-index: -1;
+        }
+        .ta-side-tech .pa-head::after { left: -100vw; right: -1rem; }
+        .ta-side-art .pa-head::after { right: -100vw; left: -1rem; }
         .pa-head-name { --grow: 0px; position: relative; }
         .pa-head:hover .pa-head-name { --grow: 1.1rem; }
         .ta-side-tech .pa-head-name {
