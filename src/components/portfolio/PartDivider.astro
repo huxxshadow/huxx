@@ -1,21 +1,17 @@
 ---
-// 作品集相邻两个 Part 之间的分隔。两种候选（右下角 Debug 面板「Part 过渡」切换，外层 .part-flow 上的 data-variant-current）：
-//   A 不加（默认）：两个 Part 直接相接
-//   B 深色线：一条贯穿全宽的深色细线（下一个 Part 的强调色）
+// 作品集相邻两个 Part 之间的分界线：一条贯穿全宽的深色细线，颜色是下一个 Part 的深色主题色
 interface Props {
-    /** 线的颜色：下一个 Part 的强调色 */
+    /** 下一个 Part 的深色主题色 */
     accent: string;
 }
 const { accent } = Astro.props;
 ---
 
-<div class="pd" style={`--pd-accent: ${accent};`} aria-hidden="true"></div>
+<div class="pd" style={`background-color: ${accent};`} aria-hidden="true"></div>
 
 <style>
-    .pd { display: none; }
-    :global(.part-flow[data-variant-current="B"]) .pd {
-        display: block;
+    .pd {
+        width: 100%;
         height: 4px;
-        background-color: var(--pd-accent);
     }
 </style>
