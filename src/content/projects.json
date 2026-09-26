@@ -1230,8 +1230,9 @@
         "icon": "fa-brands fa-bilibili"
       }
     ],
-    "colorText": "blue",
-    "colorBackground": "blue"
+    "colorText": "#CCC4B1",
+    "colorBackground": "#33262A",
+    "skin": "et"
   },
   {
     "id": "technical-project-lego-voxelizer",

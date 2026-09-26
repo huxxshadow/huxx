@@ -6,6 +6,14 @@ import img1 from '@/assets/projects/game-project-empty-throne/game-project-empty
 import img2 from '@/assets/projects/game-project-empty-throne/game-project-empty-throne2.webp';
 import img3 from '@/assets/projects/game-project-empty-throne/game-project-empty-throne3.webp';
 import img4 from '@/assets/projects/game-project-empty-throne/game-project-empty-throne4.webp';
+import puzzleClip from '@/assets/projects/game-project-empty-throne/clips/puzzle-en.mp4?url';
+import puzzleClipPoster from '@/assets/projects/game-project-empty-throne/clips/puzzle-en-poster.webp?url';
+import rhythmClip from '@/assets/projects/game-project-empty-throne/clips/rhythm.mp4?url';
+import rhythmClipPoster from '@/assets/projects/game-project-empty-throne/clips/rhythm-poster.webp?url';
+import mirrorClip from '@/assets/projects/game-project-empty-throne/clips/mirror-en.mp4?url';
+import mirrorClipPoster from '@/assets/projects/game-project-empty-throne/clips/mirror-en-poster.webp?url';
+import novelClip from '@/assets/projects/game-project-empty-throne/clips/novel-en.mp4?url';
+import novelClipPoster from '@/assets/projects/game-project-empty-throne/clips/novel-en-poster.webp?url';
 
 ## 担当業務
 
@@ -60,6 +68,17 @@ import img4 from '@/assets/projects/game-project-empty-throne/game-project-empty
     <figcaption>ゲーム内マップ：プレイヤーはシーン探索とルート計画でナラティブを推進します。マップデザインはポイント&クリック謎解きのレベルペースに奉仕しています</figcaption>
 </figure>
 
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={puzzleClip} poster={puzzleClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="シーン探索型謎解きのデモ"></video>
+        <figcaption>シーン探索型の謎解き：クリックで探索し、手がかりを集めて物語を進める</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={rhythmClip} poster={rhythmClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="音楽演出のデモ"></video>
+        <figcaption>音楽演出とリズムゲーム：リズムパートが物語とキャラクターの感情を支える</figcaption>
+    </figure>
+</div>
+
 ### インスピレーションと初期デザイン探索
 
 プロジェクトのコンセプトが徐々に形成される過程で、鮮明なデザイン言語を持つ複数の作品を参考にしましたが、焦点は既存の形式を複製することではなく、真に学ぶ価値のあるデザイン原則を抽出することでした。ナラティブの強い作品がテキストの分岐を通じてどうキャラクターの深みを構築するか、音楽リズムゲームがどうシンプルで直感的な入力フィードバックを通じて感情的なペースを確立するかに注目しました。最終的に単純な組み合わせではなく、「ダークフェアリーテールナラティブ」の文脈で自然に成立する新しい体験を作りたいと思いました。
@@ -84,6 +103,11 @@ import img4 from '@/assets/projects/game-project-empty-throne/game-project-empty
 #### 1. モジュラーな対話とナラティブスクリプトシステム
 
 大量のナラティブテキスト・キャラクターインタラクション・分岐フローに対応するために、プロットの進行・条件分岐・選択肢フィードバック・イベントトリガーをサポートするモジュラーな対話システムを設計しました。このシステムは通常の対話表示だけでなく、シーン状態・キャラクター演出・謎解きの進行と連携でき、ナラティブコンテンツをレベルフローにより自然に組み込めるようにします。
+
+<figure>
+    <video class="clip" src={novelClip} poster={novelClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="インタラクティブノベルのデモ"></video>
+    <figcaption>インタラクティブノベル：対話の進行と分岐選択</figcaption>
+</figure>
 
 #### 2. リズムゲームプレイシステム
 
@@ -120,6 +144,11 @@ import img4 from '@/assets/projects/game-project-empty-throne/game-project-empty
 <figure>
     <Image src={img3} alt="魔鏡揭示メカニズムの初期スケッチ" width={1920} height={1080} />
     <figcaption>魔鏡メカニズムの初期スケッチ：「ノートの手がかり」から「魔鏡による真実の解明」へのデザイン再構築プロセスとコアインタラクションロジックの原初構想を記録しています</figcaption>
+</figure>
+
+<figure>
+    <video class="clip" src={mirrorClip} poster={mirrorClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="魔鏡のデモ"></video>
+    <figcaption>魔鏡メカニズム：魔鏡で隠された真実を映し出す</figcaption>
 </figure>
 
 特に第1幕と第4幕のリズムデザインでは、プレイヤーの入力負担・フィードバックの遅延感・操作の複雑さ・視覚情報の明瞭さについて多くの調整を行いました。目標は単純に難易度を下げることではなく、リズムゲームプレイがナラティブ体験により自然に奉仕して主役を食わないようにすることです。これらの変更を通じて、プロジェクトのリズム感・流暢さ・没入感が顕著に向上しました。

@@ -6,6 +6,14 @@ import img1 from '@/assets/projects/game-project-empty-throne/game-project-empty
 import img2 from '@/assets/projects/game-project-empty-throne/game-project-empty-throne2.webp';
 import img3 from '@/assets/projects/game-project-empty-throne/game-project-empty-throne3.webp';
 import img4 from '@/assets/projects/game-project-empty-throne/game-project-empty-throne4.webp';
+import puzzleClip from '@/assets/projects/game-project-empty-throne/clips/puzzle-en.mp4?url';
+import puzzleClipPoster from '@/assets/projects/game-project-empty-throne/clips/puzzle-en-poster.webp?url';
+import rhythmClip from '@/assets/projects/game-project-empty-throne/clips/rhythm.mp4?url';
+import rhythmClipPoster from '@/assets/projects/game-project-empty-throne/clips/rhythm-poster.webp?url';
+import mirrorClip from '@/assets/projects/game-project-empty-throne/clips/mirror-en.mp4?url';
+import mirrorClipPoster from '@/assets/projects/game-project-empty-throne/clips/mirror-en-poster.webp?url';
+import novelClip from '@/assets/projects/game-project-empty-throne/clips/novel-en.mp4?url';
+import novelClipPoster from '@/assets/projects/game-project-empty-throne/clips/novel-en-poster.webp?url';
 
 ## My Role
 
@@ -60,6 +68,17 @@ The third component is **musical performance and rhythm gameplay**. The rhythm s
     <figcaption>In-game map: players advance the narrative through scene exploration and route planning; the map design serves the pacing of the point-and-click puzzle levels</figcaption>
 </figure>
 
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={puzzleClip} poster={puzzleClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="Interactive scene puzzle demo"></video>
+        <figcaption>Interactive scene puzzles: explore by clicking, collect clues and move the story forward</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={rhythmClip} poster={rhythmClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="Rhythm performance demo"></video>
+        <figcaption>Music performance and rhythm gameplay: rhythm sections serve the story and the characters' emotions</figcaption>
+    </figure>
+</div>
+
 ### Inspirations and Early Design Exploration
 
 As the project concept gradually took shape, we referenced a number of works with distinctive design languages, though the focus was not to copy existing forms but to distill design principles genuinely worth learning. We paid attention to how narrative-heavy works use text branching to build character depth, and observed how music rhythm games establish emotional pacing through clean, intuitive input feedback. We wanted the final result to not be a simple combination, but a new experience that naturally holds up within a "dark fairy-tale narrative" context.
@@ -84,6 +103,11 @@ During this phase, I built and refined multiple core systems:
 #### 1. Modular Dialogue and Narrative Scripting System
 
 To accommodate large volumes of narrative text, character interactions, and branching flows, I designed a modular dialogue system supporting plot advancement, conditional branching, choice feedback, and event triggering. The system handles not just standard dialogue display but also links to scene state, character performance, and puzzle progress, allowing narrative content to integrate more naturally into the level flow.
+
+<figure>
+    <video class="clip" src={novelClip} poster={novelClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="Interactive novel demo"></video>
+    <figcaption>Interactive novel: dialogue progression and branching choices</figcaption>
+</figure>
 
 #### 2. Rhythm Gameplay System
 
@@ -120,6 +144,11 @@ The most critical adjustment was restructuring the original "notebook-style" clu
 <figure>
     <Image src={img3} alt="Magic Mirror mechanic early sketch" width={1920} height={1080} />
     <figcaption>Magic Mirror mechanic early sketch: documents the design restructuring process from "notebook clues" to "Mirror truth revelation" and the original conception of the core interaction logic</figcaption>
+</figure>
+
+<figure>
+    <video class="clip" src={mirrorClip} poster={mirrorClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="Magic Mirror demo"></video>
+    <figcaption>The Magic Mirror mechanic: reveal the hidden truth with the mirror</figcaption>
 </figure>
 
 Particularly in the rhythm design of Acts 1 and 4, we made numerous adjustments targeting player input burden, perceived feedback latency, operational complexity, and visual information clarity. The goal was not simply to lower difficulty, but to make the rhythm gameplay serve the narrative experience more naturally rather than overshadowing it. Through these changes, the project achieved noticeable improvements in rhythmic feel, fluidity, and immersion.

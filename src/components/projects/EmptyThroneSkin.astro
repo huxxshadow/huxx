@@ -1,0 +1,257 @@
+---
+// Empty Throne 项目页专属皮肤（projects.json 里 skin: "et" 时由 [id].astro 挂载）
+//
+// 视觉照着游戏本身走：黑暗童话。底色是近黑与暗酒红，文字和像素描边用游戏 UI 的奶油色（#CCC4B1，
+// 直接从 NameBar / 物品框取样），强调色取海报里的珊瑚红（地毯）和幽灵般的青绿（白雪公主的魂）。
+// 游戏的像素 UI 直接拿来当 border-image：名字条（NameBar）做徽章、按钮和二级标题，物品框做图片与视频的边框，
+// 魔镜那一排像素图做分隔线，像素手指做鼠标指针，标题换成游戏的像素 logo。
+// - 所有规则都限定在 .skin-et / html:has(.skin-et) 下，避免污染其他项目页（样式表是整条路由共用的）。
+// - 像素图一律 image-rendering: pixelated，放大也不糊。
+// - 边框只写 border-width / border-style / border-color：border 简写（尤其带 !important 时）会把 border-image 重置成 none
+interface Props {
+    /** true 时只输出 hero 里的装饰层（样式由页面顶部那次挂载负责） */
+    stickers?: boolean;
+}
+const { stickers = false } = Astro.props;
+
+import title from "@/assets/projects/game-project-empty-throne/skin/title.webp";
+import poster from "@/assets/projects/game-project-empty-throne/skin/poster.webp";
+import namebar from "@/assets/projects/game-project-empty-throne/skin/namebar.png";
+import frame from "@/assets/projects/game-project-empty-throne/skin/frame.png";
+import mirrors from "@/assets/projects/game-project-empty-throne/skin/mirrors.png";
+import cursor from "@/assets/projects/game-project-empty-throne/skin/cursor.png";
+
+const vars = [
+    `--et-title: url("${title.src}")`,
+    `--et-title-ratio: ${title.width} / ${title.height}`,
+    `--et-poster: url("${poster.src}")`,
+    `--et-namebar: url("${namebar.src}")`,
+    `--et-frame: url("${frame.src}")`,
+    `--et-mirrors: url("${mirrors.src}")`,
+    `--et-cursor: url("${cursor.src}")`,
+].join("; ");
+---
+
+{stickers ? (
+        <div class="et-deco" aria-hidden="true">
+            <div class="et-mirror-row"></div>
+        </div>
+) : (
+        <style is:inline set:html={`html:has(.skin-et) { ${vars}; }`} />
+)}
+
+<style is:global>
+    /* ========================================================= */
+    /* 调色板                                                     */
+    /* ========================================================= */
+    html:has(.skin-et) {
+        --et-ink: #33262A;        /* 页面底色：深玫瑰棕（原来的近黑太暗） */
+        --et-ink-rgb: 51 38 42;
+        --et-deep: #241A1C;       /* 更暗的一档：视频底、描边后面 */
+        --et-wine: #5A2426;       /* 海报里的酒红，做顶部的光晕 */
+        --et-cream: #CCC4B1;      /* 游戏 UI 的奶油色：正文与像素描边 */
+        --et-cream-hi: #E8E0CC;   /* 加粗强调 */
+        --et-mute: #A29D8F;       /* 次要文字 */
+        --et-coral: #D9564F;      /* 海报地毯的珊瑚红 */
+        --et-ghost: #7FC2BB;      /* 白雪公主魂魄的青绿 */
+    }
+    html:has(.skin-et) body {
+        background-color: var(--et-ink);
+        cursor: var(--et-cursor) 6 2, auto;
+    }
+    html:has(.skin-et) a,
+    html:has(.skin-et) button {
+        cursor: var(--et-cursor) 6 2, pointer;
+    }
+
+    /* ========================================================= */
+    /* HERO：海报做底，左侧压暗放文字                                */
+    /* ========================================================= */
+    header.skin-et {
+        position: relative;
+        background:
+                linear-gradient(90deg, rgb(var(--et-ink-rgb) / 0.92) 0%, rgb(var(--et-ink-rgb) / 0.72) 40%, rgb(var(--et-ink-rgb) / 0.2) 75%, rgb(var(--et-ink-rgb) / 0) 100%),
+                linear-gradient(0deg, var(--et-ink) 0%, transparent 35%),
+                var(--et-poster) center / cover no-repeat;
+        color: var(--et-cream) !important;
+        border-bottom: 0 !important;
+        padding-bottom: 5rem !important;
+    }
+    header.skin-et > .absolute { display: none; }
+
+    /* 标题换成游戏的像素 logo（文字还在，只是不显示，读屏照样能读） */
+    .skin-et .project-hero-screen h1 {
+        width: min(100%, 30rem);
+        aspect-ratio: var(--et-title-ratio);
+        font-size: 0 !important;
+        color: transparent;
+        background: var(--et-title) left center / contain no-repeat;
+        filter: drop-shadow(0 0 18px rgb(127 194 187 / 0.25));
+    }
+
+    .skin-et .back-btn {
+        color: var(--et-cream);
+        opacity: 0.85;
+    }
+    .skin-et .back-btn:hover { color: var(--et-ghost); opacity: 1; }
+
+    /* 徽章：游戏的名字条（NameBar）当边框 */
+    .skin-et .brutalist-badge {
+        border-width: 12px !important;
+        border-style: solid !important;
+        border-color: transparent !important;
+        border-image: var(--et-namebar) 12 fill / 12px / 0 stretch;
+        image-rendering: pixelated;
+        background: transparent !important;
+        color: var(--et-cream) !important;
+        box-shadow: none !important;
+        padding: 0.05rem 0.4rem !important;
+        border-radius: 0 !important;
+        font-weight: 800;
+    }
+    .skin-et .project-hero-screen .border-l-\[4px\] {
+        border-color: var(--et-coral) !important;
+    }
+
+    /* 链接按钮：同样的名字条，悬停时反色 */
+    .skin-et .project-links-wrapper .brutalist-tag {
+        border-width: 12px !important;
+        border-style: solid !important;
+        border-color: transparent !important;
+        border-image: var(--et-namebar) 12 fill / 12px / 0 stretch;
+        image-rendering: pixelated;
+        background: transparent !important;
+        color: var(--et-cream) !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        transform: none !important;
+        transition: filter 120ms ease;
+    }
+    .skin-et .project-links-wrapper .brutalist-tag:hover {
+        filter: invert(1) brightness(1.15);
+    }
+
+    /* 封面：物品框做像素边框 */
+    .skin-et .project-hero-shell .project-hero-image {
+        border-width: 14px !important;
+        border-style: solid !important;
+        border-color: transparent !important;
+        border-image: var(--et-frame) 16 / 14px / 0 round;
+        image-rendering: pixelated;
+        border-radius: 0 !important;
+        background-color: var(--et-deep) !important;
+        box-shadow: 0 0 40px rgb(0 0 0 / 0.35);
+    }
+    .skin-et .project-hero-image img { image-rendering: auto; }
+
+    /* hero 底部一排魔镜 */
+    .skin-et .et-deco {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 1rem;
+        pointer-events: none;
+    }
+    .skin-et .et-mirror-row {
+        height: 32px;
+        background: var(--et-mirrors) left center / auto 32px repeat-x;
+        image-rendering: pixelated;
+        opacity: 0.55;
+    }
+
+    /* ========================================================= */
+    /* 正文                                                       */
+    /* ========================================================= */
+    main.skin-et {
+        background:
+                radial-gradient(ellipse 80% 45% at 50% 0%, var(--et-wine) 0%, transparent 75%),
+                radial-gradient(ellipse 60% 40% at 100% 100%, rgb(127 194 187 / 0.10) 0%, transparent 70%),
+                var(--et-ink);
+        color: var(--et-cream) !important;
+        --theme-text: var(--et-cream);
+    }
+    .skin-et .project-prose {
+        color: var(--et-cream);
+    }
+    .skin-et .project-prose p,
+    .skin-et .project-prose li { color: var(--et-cream); }
+    .skin-et .project-prose strong { color: var(--et-cream-hi); }
+    .skin-et .project-prose li::marker { color: var(--et-coral); }
+
+    /* 二级标题：名字条 + 一面魔镜 */
+    .skin-et .project-prose h2 {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        border-width: 12px;
+        border-style: solid;
+        border-color: transparent;
+        border-image: var(--et-namebar) 12 fill / 12px / 0 stretch;
+        image-rendering: pixelated;
+        padding: 0.1rem 1.1rem 0.1rem 0.6rem;
+        color: var(--et-cream);
+        background: none;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        transform: none !important;
+    }
+    .skin-et .project-prose h2::before {
+        content: "";
+        flex: none;
+        width: 32px;
+        height: 32px;
+        background: var(--et-mirrors) 0 0 / auto 32px no-repeat;
+        image-rendering: pixelated;
+    }
+
+    /* 三级标题：珊瑚红，下面一道像素虚线 */
+    .skin-et .project-prose h3 {
+        color: var(--et-coral);
+        padding-bottom: 0.4rem;
+        background: repeating-linear-gradient(90deg, var(--et-cream) 0 8px, transparent 8px 14px) left bottom / 100% 3px no-repeat;
+    }
+    .skin-et .project-prose h3::after { display: none; }
+    .skin-et .project-prose h4 { color: var(--et-ghost); }
+
+    /* 图片、视频、嵌入：物品框像素边框，不要圆角和偏移阴影 */
+    .skin-et .project-prose img,
+    .skin-et .project-prose video.clip,
+    .skin-et .project-prose .video-embed iframe {
+        border-width: 14px !important;
+        border-style: solid !important;
+        border-color: transparent !important;
+        border-image: var(--et-frame) 16 / 14px / 0 round;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        background-color: var(--et-deep);
+    }
+    .skin-et .project-prose figcaption {
+        color: var(--et-mute);
+        opacity: 1;
+    }
+
+    /* 分隔线：一排魔镜 */
+    .skin-et .project-prose hr {
+        height: 32px;
+        border: 0;
+        background: var(--et-mirrors) center / auto 32px repeat-x;
+        image-rendering: pixelated;
+        opacity: 0.6;
+    }
+
+    .skin-et .project-prose a {
+        color: var(--et-ghost);
+        text-decoration-color: color-mix(in srgb, var(--et-ghost) 50%, transparent);
+    }
+    .skin-et .project-prose a:hover { color: var(--et-cream-hi); }
+
+    .skin-et .project-prose blockquote {
+        border-width: 12px;
+        border-style: solid;
+        border-color: transparent;
+        border-image: var(--et-namebar) 12 fill / 12px / 0 stretch;
+        image-rendering: pixelated;
+        background: none;
+        color: var(--et-cream);
+    }
+</style>
