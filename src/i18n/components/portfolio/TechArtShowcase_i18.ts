@@ -98,6 +98,4 @@ export const techArtWorks: TechArtWork[] = [
 export const techArtLabels = {
     tech: { en: "Technical", zh: "技术", ja: "テクニカル", ko: "테크니컬" } as Multilingual,
     art: { en: "Art", zh: "美术", ja: "アート", ko: "아트" } as Multilingual,
-    techSub: { en: "Shaders · Procedural · Tools", zh: "Shader · 程序化 · 工具", ja: "シェーダー · プロシージャル · ツール", ko: "셰이더 · 절차적 생성 · 툴" } as Multilingual,
-    artSub: { en: "CG Shorts · Scenes · Lighting", zh: "CG 短片 · 场景 · 布光", ja: "CG 短編 · シーン · ライティング", ko: "CG 단편 · 씬 · 라이팅" } as Multilingual,
 };

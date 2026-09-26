@@ -47,7 +47,6 @@ const sides = (["tech", "art"] as const).map((side) => ({
     })),
     name: t(side === "tech" ? L.tech : L.art),
     en: side === "tech" ? "TECHNICAL" : "ART",
-    sub: t(side === "tech" ? L.techSub : L.artSub),
     reveal: side === "tech" ? "right" : "left",
 }));
 
@@ -86,7 +85,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                 <div class:list={["ta-side", `ta-side-${s.side}`]}>
                     <div class="pa-head" data-reveal={s.reveal} data-reveal-once>
                         <span class="pa-head-en">{s.en}</span>
-                        <span class="pa-head-name">{s.name}<small>{s.sub}</small></span>
+                        <span class="pa-head-name">{s.name}</span>
                     </div>
                     <ol class="pa-list" style={`--n: ${s.items.length};`} data-reveal-children={s.reveal} data-reveal-once>
                         {s.items.map((w, i) => (
@@ -200,7 +199,12 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
                     section.style.setProperty(`--tri-${name}-f`, place(tip + f.front[0], tip + f.front[1], tip + f.ax, H + depth));
                     section.style.setProperty(`--tri-${name}-b`, place(tip + f.back[0], tip + f.back[1], tip + f.ax, H + depth));
                 }
-                section.dataset.triReady = "1";
+                if (!section.dataset.triReady) {
+                    // 第一次摆好时不要动画（否则三角会从没变换的样子飞过来，后台标签页里还会卡在半路），
+                    // 下一帧之后再打开过渡
+                    section.dataset.triReady = "1";
+                    requestAnimationFrame(() => requestAnimationFrame(() => { section.dataset.triAnim = "1"; }));
+                }
                 techEdge = (stage.offsetLeft + tech.offsetLeft + tech.offsetWidth) / W;
                 artEdge = (stage.offsetLeft + art.offsetLeft) / W;
             };
@@ -341,9 +345,9 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         transform-origin: 0 0;
         clip-path: polygon(0 0, 100% 0, 50% 100%);
         transform: var(--tri-none-f);
-        transition: transform var(--ta-move);
         will-change: transform;
     }
+    [data-tri-anim] .pa-tri-page .pa-tri { transition: transform var(--ta-move); }
     [data-tri-ready] .pa-tri-page .pa-tri-back { transform: var(--tri-none-b); }
     [data-tri-ready][data-focus="tech"] .pa-tri-page .pa-tri { transform: var(--tri-tech-f); }
     [data-tri-ready][data-focus="tech"] .pa-tri-page .pa-tri-back { transform: var(--tri-tech-b); }
@@ -358,14 +362,11 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         font-style: italic;
         font-size: clamp(2.6rem, 4.6vw, 5rem);
         letter-spacing: -0.03em;
-        color: var(--ta-paper);
-        -webkit-text-stroke: 0.08em var(--ta-accent);
-        paint-order: stroke fill;
+        /* 实心深黄，不描边 */
+        color: var(--ta-accent);
     }
     .pa-head-name {
-        display: inline-flex;
-        align-items: baseline;
-        gap: 0.8rem;
+        display: inline-block;
         margin-top: 0.3rem;
         padding: 0.3rem 1rem;
         font-weight: 900;
@@ -374,13 +375,6 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         color: var(--ta-ink);
         transform: skewX(-14deg);
     }
-    .pa-head-name small {
-        font-size: 0.72rem;
-        font-weight: 800;
-        letter-spacing: 0.1em;
-        color: var(--ta-paper);
-    }
-    .ta-side-tech .pa-head-name { flex-direction: row-reverse; }
     /* ---------- 列表行：直角梯形，靠中间的那条边是斜的，和居中时三角最近的那条边平行 ----------
        行高固定（--row-h），斜边的横向收进量 = 行高 × 三角斜率（--tri-slope，脚本按三角算好，之前先用 0.18）。
        每行再往中间错开一个「(行高 + 行距) × 斜率」，几行的斜边连成一条和三角边平行的直线。
@@ -478,7 +472,6 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         .ta-mascot { order: -1; width: 9rem; margin: 0 auto; }
         .ta-side-tech { text-align: left; }
         .ta-side-tech .pa-head { align-items: flex-start; }
-        .ta-side-tech .pa-head-name { flex-direction: row; }
         /* 窄屏不错开，两栏都用右栏的样子：图在左、左边是斜边 */
         .ta-side-tech .pa-list > li,
         .ta-side-art .pa-list > li { margin: 0; }
