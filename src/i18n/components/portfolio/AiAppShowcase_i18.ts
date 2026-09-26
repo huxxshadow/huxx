@@ -12,6 +12,7 @@ export interface AiWork {
 export const aiWorks: AiWork[] = [
     {
         projectId: "technical-project-terraria-ai-teammate",
+        title: { en: "Terraria AI Teammate Mod", zh: "泰拉瑞亚AI队友Mod", ja: "Terraria AI チームメイト Mod", ko: "테라리아 AI 팀메이트 모드" },
         caption: {
             en: "Combines the JEV model with a classic behavior tree to strengthen game-AI decision-making.",
             zh: "融合 JEV 模型与传统行为树，增强游戏 AI 决策能力。",
@@ -22,7 +23,7 @@ export const aiWorks: AiWork[] = [
     },
     {
         projectId: "technical-project-blender-inverse-lighting",
-        title: { en: "AI Neural Inverse Lighting with Mitsuba 3", zh: "基于Mitsuba3的灯光逆向AI神经渲染", ja: "Mitsuba 3 による AI ニューラル逆ライティング", ko: "Mitsuba 3 기반 AI 뉴럴 조명 역렌더링" },
+        title: { en: "AI Neural Inverse Lighting", zh: "灯光逆向AI神经渲染", ja: "AI ニューラル逆ライティング", ko: "AI 뉴럴 조명 역렌더링" },
         caption: {
             en: "Uses physically based differentiable rendering to solve 3D lighting back from a 2D image.",
             zh: "基于物理可微渲染，将 2D 图像反向求解为 3D 灯光。",
