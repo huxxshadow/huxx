@@ -61,7 +61,7 @@ export const techArtWorks: TechArtWork[] = [
     {
         projectId: "technical-project-comfyui-ai-eco-film",
         side: "tech",
-        // 标题、说明、标签和 Part 4 一致
+        // 标题、说明和 Part 4 一致
         title: { en: "ComfyUI AI Video Workflow", zh: "ComfyUI AI视频工作流", ja: "ComfyUI AI 動画ワークフロー", ko: "ComfyUI AI 영상 워크플로" },
         caption: {
             en: "Storyboard generation, first-and-last-frame video synthesis, upscaling, frame interpolation and AI voice.",
@@ -69,7 +69,7 @@ export const techArtWorks: TechArtWork[] = [
             ja: "絵コンテ生成、始点・終点フレームからの動画合成、超解像、フレーム補間、AI 音声。",
             ko: "콘티 생성, 첫·끝 프레임 영상 합성, 업스케일, 프레임 보간, AI 음성.",
         },
-        tags: { en: "Team Lead · ComfyUI · WAN2.2", zh: "组长 · ComfyUI · WAN2.2", ja: "リーダー · ComfyUI · WAN2.2", ko: "팀장 · ComfyUI · WAN2.2" },
+        tags: { en: "ComfyUI · WAN2.2", zh: "ComfyUI · WAN2.2", ja: "ComfyUI · WAN2.2", ko: "ComfyUI · WAN2.2" },
     },
     {
         projectId: "technical-project-lego-voxelizer",
