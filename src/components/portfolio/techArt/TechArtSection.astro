@@ -428,7 +428,7 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     /* ---------- 列表行：直角梯形，靠中间的那条边是斜的，和居中时三角最近的那条边平行 ----------
        行高固定（--row-h），斜边的横向收进量 = 行高 × 三角斜率（--tri-slope，脚本按三角算好，之前先用 0.18）。
        每行再往中间错开一个「(行高 + 行距) × 斜率」，几行的斜边连成一条和三角边平行的直线。
-       内容只留编号、标题（最多两行）、一行标签，图片占 46%，两栏都放在左边 */
+       内容只留编号、标题（最多两行）、一行标签，图片固定尺寸，两栏都放在左边 */
     .pa-list {
         /* 一屏高度扣掉 section 内边距、Part 标题、栏标题和黄条（约 21.5rem），按行数（--rows，两栏取多的）平分 */
         --row-h: clamp(3.5rem, calc((100vh - 21.5rem) / var(--rows, 5) - var(--row-gap)), 9rem);
@@ -442,38 +442,17 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     /* 左栏整体再往三角拉近 --pull-tech（脚本算），卡片可以伸进栏和吉祥物之间的空隙 */
     .ta-side-tech .pa-list > li { margin-right: calc((var(--n) - 1 - var(--i)) * var(--step) - var(--pull-tech, 0px)); }
     .ta-side-art .pa-list > li { margin-left: calc((var(--n) - 1 - var(--i)) * var(--step)); }
+    /* 每张卡拆成两块，中间留一道缝：图片 + 文字面板。靠中间（靠三角）的那一块带斜边和深黄描边，另一块是直角矩形——
+       左栏靠中间的是文字面板（右边斜），右栏靠中间的是图片（左边斜） */
     .pa-row {
         position: relative;
         /* 行高随屏幕变，矮到放不下标签那一行时就不显示标签（见下面的 @container） */
         container: pa-row / size;
         display: grid;
-        grid-template-columns: 46% minmax(0, 1fr);
+        /* 图片固定宽高比（1.9 : 1，宽度 = 行高 × 1.9），所有卡片的图一样大；行宽的差别（阶梯错开）都由文字面板吸收 */
+        grid-template-columns: calc(var(--row-h) * 1.9) minmax(0, 1fr);
+        column-gap: 0.6rem;
         height: var(--row-h);
-        background-color: var(--ta-paper);
-        /* 右栏：左边（靠中间）是斜边，上宽下窄，和三角右边平行 */
-        clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%);
-        transition: background-color 180ms ease;
-    }
-    /* 左栏：右边（靠中间）是斜边；两栏都是图在左、文字在右，左栏的文字右边多留出斜边切掉的那一块 */
-    .ta-side-tech .pa-row {
-        clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% 100%, 0 100%);
-    }
-    .ta-side-tech .pa-text { padding-right: calc(1.1rem + var(--cut)); }
-    /* 斜边上的深黄描边（横向 12px）：行被 clip-path 切过，普通 border 会被切掉，所以用一层伪元素沿斜边画一条等宽的斜带 */
-    .pa-row::after {
-        --edge: 12px;
-        content: "";
-        position: absolute;
-        inset: 0;
-        z-index: 1;
-        pointer-events: none;
-        background-color: var(--ta-accent);
-        /* 右栏：斜边在左，上端在 --cut、下端在 0 */
-        clip-path: polygon(var(--cut) 0, calc(var(--cut) + var(--edge)) 0, var(--edge) 100%, 0 100%);
-    }
-    .ta-side-tech .pa-row::after {
-        /* 左栏：斜边在右，上端在 100% - --cut、下端在 100% */
-        clip-path: polygon(calc(100% - var(--cut) - var(--edge)) 0, calc(100% - var(--cut)) 0, 100% 100%, calc(100% - var(--edge)) 100%);
     }
     /* 图在 DOM 里排在文字后面，挪到最前（左边） */
     .pa-thumb {
@@ -484,6 +463,34 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
     }
     .pa-thumb :global(img) { transition: scale 500ms ease; }
     .pa-row:hover .pa-thumb :global(img) { scale: 1.06; }
+    .pa-text {
+        position: relative;
+        background-color: var(--ta-paper);
+        transition: background-color 180ms ease;
+    }
+    /* 斜边：上端往里收 --cut，和居中三角最近的边平行 */
+    .ta-side-art .pa-thumb { clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%); }
+    .ta-side-tech .pa-text {
+        clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% 100%, 0 100%);
+        padding-right: calc(1.1rem + var(--cut));
+    }
+    /* 斜边上的深黄描边（横向 12px）：那一块被 clip-path 切过，普通 border 会被切掉，所以用伪元素沿斜边画一条等宽的斜带 */
+    .ta-side-art .pa-thumb::after,
+    .ta-side-tech .pa-text::after {
+        --edge: 12px;
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        background-color: var(--ta-accent);
+    }
+    .ta-side-art .pa-thumb::after {
+        clip-path: polygon(var(--cut) 0, calc(var(--cut) + var(--edge)) 0, var(--edge) 100%, 0 100%);
+    }
+    .ta-side-tech .pa-text::after {
+        clip-path: polygon(calc(100% - var(--cut) - var(--edge)) 0, calc(100% - var(--cut)) 0, 100% 100%, calc(100% - var(--edge)) 100%);
+    }
     /* 文字排法照这页最上面的总览菜单：大号实心编号（深黄、font-black、行高 0.8）+ 粗体标题（这里栏窄，编号叠在标题上面），
        下面一行粗体标签（不大写、不加字距，和总览里「N 个项目」那行一样） */
     .pa-text {
@@ -536,8 +543,8 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    /* 悬停：和总览一样整行填成主题深色（深黄），编号变白 */
-    .pa-row:hover { background-color: var(--ta-accent); }
+    /* 悬停：和总览一样文字面板填成主题深色（深黄），编号变白 */
+    .pa-row:hover .pa-text { background-color: var(--ta-accent); }
     .pa-row:hover .pa-num { color: var(--ta-paper); }
 
     /* ---------- 窄屏：吉祥物缩小放最上面，两栏依次往下，全部左对齐 ---------- */
@@ -551,8 +558,18 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
         /* 窄屏不错开，两栏都用右栏的样子：图在左、左边是斜边 */
         .ta-side-tech .pa-list > li,
         .ta-side-art .pa-list > li { margin: 0; }
-        .ta-side-tech .pa-row { clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%); }
-        .ta-side-tech .pa-text { padding-right: 1.1rem; }
+        .ta-side-tech .pa-text { clip-path: none; padding-right: 1.1rem; }
+        .ta-side-tech .pa-text::after { display: none; }
+        .ta-side-tech .pa-thumb { clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%); }
+        .ta-side-tech .pa-thumb::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background-color: var(--ta-accent);
+            clip-path: polygon(var(--cut) 0, calc(var(--cut) + 12px) 0, 12px 100%, 0 100%);
+        }
     }
     /* 中等宽度（1024~1399px）两边栏窄：图和文字对半，标签不显示 */
     @media (min-width: 1024px) and (max-width: 1399px) {
@@ -564,6 +581,6 @@ const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
 
     @media (prefers-reduced-motion: reduce) {
         [data-ta-section] { --ta-move: 0ms linear; }
-        .pa-row, .pa-thumb :global(img) { transition: none; }
+        .pa-text, .pa-thumb :global(img) { transition: none; }
     }
 </style>
