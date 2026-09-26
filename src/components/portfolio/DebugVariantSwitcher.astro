@@ -100,7 +100,8 @@ const enabled = import.meta.env.DEV;
                     });
                 };
 
-                const initial = readChoice(name);
+                // ?variant-part5=B 这样的查询参数优先于 localStorage（方便无头截图直接指定版式）
+                const initial = new URLSearchParams(location.search).get(`variant-${name}`) || readChoice(name);
                 const current = initial ? show(group, initial) : values[0];
                 sync(current);
                 panel.append(row);
