@@ -22,9 +22,8 @@ export const getStaticPaths = () =>
 ---
 
 <Layout>
-    <!-- Part 之间用下一个 Part 深色主题色的细线分界 -->
+    <!-- Part 之间用下一个 Part 深色主题色的细线分界（总览和游戏设计之间不加） -->
     <PortfolioOverview />
-    <PartDivider accent={COLORS.orange.dark} />
     <GameDesignSection />
     <PartDivider accent={COLORS.blue.dark} />
     <GameDevSection />
