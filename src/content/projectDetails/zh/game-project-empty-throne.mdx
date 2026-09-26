@@ -48,6 +48,25 @@ import novelClipPoster from '@/assets/projects/game-project-empty-throne/clips/n
 
 <div class="image-grid-2">
     <figure>
+        <video class="clip" src={puzzleClip} poster={puzzleClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="场景交互式解谜演示"></video>
+        <figcaption>场景交互式解谜：点击探索场景、收集线索并推进剧情</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={rhythmClip} poster={rhythmClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="音乐游戏演出演示"></video>
+        <figcaption>音乐演出与节奏玩法：节奏段落服务于剧情与角色情绪</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={novelClip} poster={novelClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="交互式小说演示"></video>
+        <figcaption>交互式小说：对话推进与分支选择</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={mirrorClip} poster={mirrorClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="用魔镜寻找真相演示"></video>
+        <figcaption>魔镜揭示机制：用魔镜照出隐藏的真相</figcaption>
+    </figure>
+</div>
+
+<div class="image-grid-2">
+    <figure>
         <Image src={img1} alt="空王座游戏内截图一" width={1920} height={1080} />
         <figcaption>游戏内截图（一）：点击探索与环境叙事构成关卡体验的核心框架</figcaption>
     </figure>
@@ -80,17 +99,6 @@ import novelClipPoster from '@/assets/projects/game-project-empty-throne/clips/n
     <figcaption>游戏内地图：玩家通过场景探索与路径规划推进叙事，地图设计服务于点击解谜的关卡节奏</figcaption>
 </figure>
 
-<div class="image-grid-2">
-    <figure>
-        <video class="clip" src={puzzleClip} poster={puzzleClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="场景交互式解谜演示"></video>
-        <figcaption>场景交互式解谜：点击探索场景、收集线索并推进剧情</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={rhythmClip} poster={rhythmClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="音乐游戏演出演示"></video>
-        <figcaption>音乐演出与节奏玩法：节奏段落服务于剧情与角色情绪</figcaption>
-    </figure>
-</div>
-
 ### 灵感来源与前期设计探索
 
 在项目概念逐步成型的过程中，我们曾参考过数款具有鲜明设计语言的作品，但参考的重点并不是复制已有形式，而是提炼其中真正值得学习的设计原则。例如，我们关注了一些叙事强烈的作品如何通过文本分支塑造人物层次，也观察了一些音乐节奏游戏如何通过简洁直观的输入反馈建立情绪节奏。我们希望最终做出的不是简单拼接，而是一个在“黑暗童话叙事”语境中自然成立的新体验。
@@ -115,11 +123,6 @@ import novelClipPoster from '@/assets/projects/game-project-empty-throne/clips/n
 #### 1. 模块化对话与叙事脚本系统
 
 为了适配大量叙事文本、角色互动和分支流程，我设计了一个较为模块化的对话系统，用于支持剧情推进、条件分支、选项反馈和事件触发。系统不仅能处理普通对话展示，还能与场景状态、角色演出和谜题进程联动，使剧情内容能够更自然地嵌入关卡流程之中。
-
-<figure>
-    <video class="clip" src={novelClip} poster={novelClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="交互式小说演示"></video>
-    <figcaption>交互式小说：对话推进与分支选择</figcaption>
-</figure>
 
 #### 2. 节奏玩法系统
 
@@ -158,11 +161,6 @@ import novelClipPoster from '@/assets/projects/game-project-empty-throne/clips/n
     <figcaption>魔镜机制早期草图：记录了从”笔记线索”到”魔镜揭示真相”的设计重构过程与核心交互逻辑的原始构思</figcaption>
 </figure>
 
-<figure>
-    <video class="clip" src={mirrorClip} poster={mirrorClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="用魔镜寻找真相演示"></video>
-    <figcaption>魔镜揭示机制：用魔镜照出隐藏的真相</figcaption>
-</figure>
-
 特别是在第一幕和第四幕的节奏设计上，我们针对玩家输入负担、反馈延迟感、操作复杂度和视觉信息清晰度进行了较多调整。目标不是单纯降低难度，而是让节奏玩法更自然地服务叙事体验，而不是喧宾夺主。通过这些修改，项目在节奏感、流畅度和沉浸感上都获得了明显提升。
 
 ### Alpha / Beta 测试：从内部验证走向玩家反馈
@@ -178,8 +176,6 @@ import novelClipPoster from '@/assets/projects/game-project-empty-throne/clips/n
 与此同时，我也参与和主导了项目的宣传工作，包括在 **Twitter、Bilibili、Discord** 等平台上进行内容发布、预热传播和素材整理。我们制作并投放了项目相关的宣传图、演示视频与社媒内容，以吸引更多玩家关注。整个上线传播周期中，项目累计获得了超过 **20,000** 的平台浏览与曝光。
 
 最终，游戏于 **2025 年 9 月 17 日** 正式上线 Steam。对于我们这个小型团队而言，这不仅意味着一个项目的完成，更意味着我们真正把一个最初源于兴趣和热情的创意，转化成了一款被公开发布、能够进入玩家库中的商业产品。更令人惊喜的是，在上线后的第一周内，游戏进入了超过 **10,000** 名玩家的游戏库。这一结果远超我们最初预期，也让我们更加确信：这个项目所承载的情绪表达与叙事方式，确实触达到了玩家。
-
-
 
 ## 项目总结
 

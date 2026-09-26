@@ -49,6 +49,25 @@ import novelClipPoster from '@/assets/projects/game-project-empty-throne/clips/n
 
 <div class="image-grid-2">
     <figure>
+        <video class="clip" src={puzzleClip} poster={puzzleClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="씬 인터랙티브 퍼즐 시연"></video>
+        <figcaption>씬 인터랙티브 퍼즐: 클릭으로 탐색하고 단서를 모아 이야기를 진행</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={rhythmClip} poster={rhythmClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="음악 연출 시연"></video>
+        <figcaption>음악 연출과 리듬 게임플레이: 리듬 파트가 이야기와 캐릭터의 감정을 뒷받침</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={novelClip} poster={novelClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="인터랙티브 노벨 시연"></video>
+        <figcaption>인터랙티브 노벨: 대화 진행과 분기 선택</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={mirrorClip} poster={mirrorClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="마법 거울 시연"></video>
+        <figcaption>마법 거울 메커니즘: 거울로 숨겨진 진실을 비춰 보기</figcaption>
+    </figure>
+</div>
+
+<div class="image-grid-2">
+    <figure>
         <Image src={img1} alt="공왕좌 게임 내 스크린샷 1" width={1920} height={1080} />
         <figcaption>게임 내 스크린샷 (1): 클릭 탐험과 환경 내러티브가 레벨 경험의 핵심 프레임워크를 형성합니다</figcaption>
     </figure>
@@ -81,17 +100,6 @@ import novelClipPoster from '@/assets/projects/game-project-empty-throne/clips/n
     <figcaption>게임 내 맵: 플레이어는 씬 탐험과 경로 계획으로 내러티브를 추진합니다. 맵 설계는 포인트 앤 클릭 퍼즐의 레벨 페이스에 봉사합니다</figcaption>
 </figure>
 
-<div class="image-grid-2">
-    <figure>
-        <video class="clip" src={puzzleClip} poster={puzzleClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="씬 인터랙티브 퍼즐 시연"></video>
-        <figcaption>씬 인터랙티브 퍼즐: 클릭으로 탐색하고 단서를 모아 이야기를 진행</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={rhythmClip} poster={rhythmClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="음악 연출 시연"></video>
-        <figcaption>음악 연출과 리듬 게임플레이: 리듬 파트가 이야기와 캐릭터의 감정을 뒷받침</figcaption>
-    </figure>
-</div>
-
 ### 영감과 초기 설계 탐구
 
 프로젝트 컨셉이 점차 형성되는 과정에서 선명한 설계 언어를 가진 여러 작품을 참고했지만, 초점은 기존 형식을 복제하는 것이 아니라 진정으로 배울 가치 있는 설계 원칙을 추출하는 것이었습니다. 내러티브가 강한 작품들이 텍스트 브랜치를 통해 어떻게 캐릭터의 깊이를 쌓는지, 음악 리듬 게임들이 심플하고 직관적인 입력 피드백을 통해 어떻게 감정적인 페이스를 구축하는지에 주목했습니다. 최종적으로 단순한 조합이 아니라 "다크 동화 내러티브" 맥락에서 자연스럽게 성립하는 새로운 경험을 만들고 싶었습니다.
@@ -116,11 +124,6 @@ import novelClipPoster from '@/assets/projects/game-project-empty-throne/clips/n
 #### 1. 모듈형 대화 및 내러티브 스크립트 시스템
 
 대량의 내러티브 텍스트·캐릭터 인터랙션·브랜치 플로우에 대응하기 위해 플롯 진행·조건 분기·선택지 피드백·이벤트 트리거를 지원하는 모듈형 대화 시스템을 설계했습니다. 시스템은 일반 대화 표시만 처리하는 것이 아니라 씬 상태·캐릭터 연출·퍼즐 진행과도 연동되어, 내러티브 콘텐츠가 레벨 플로우에 더 자연스럽게 임베드될 수 있도록 합니다.
-
-<figure>
-    <video class="clip" src={novelClip} poster={novelClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="인터랙티브 노벨 시연"></video>
-    <figcaption>인터랙티브 노벨: 대화 진행과 분기 선택</figcaption>
-</figure>
 
 #### 2. 리듬 게임플레이 시스템
 
@@ -153,11 +156,6 @@ import novelClipPoster from '@/assets/projects/game-project-empty-throne/clips/n
 <figure>
     <Image src={img3} alt="마법 거울 해명 메커니즘 초기 스케치" width={1920} height={1080} />
     <figcaption>마법 거울 메커니즘 초기 스케치: "노트 단서"에서 "마법 거울로 진실 해명"으로의 설계 재구축 과정과 핵심 인터랙션 로직의 원초적 구상을 기록합니다</figcaption>
-</figure>
-
-<figure>
-    <video class="clip" src={mirrorClip} poster={mirrorClipPoster} width="1280" height="702" autoplay muted loop playsinline preload="metadata" aria-label="마법 거울 시연"></video>
-    <figcaption>마법 거울 메커니즘: 거울로 숨겨진 진실을 비춰 보기</figcaption>
 </figure>
 
 ### Alpha / Beta 테스트: 내부 검증에서 플레이어 피드백으로
