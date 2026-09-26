@@ -56,7 +56,9 @@ const accent = COLORS.yellow.dark;
 // 背景用米色（和 Part 1、2 同一个），深黄只留作强调色
 const tint = COLORS.khakiMilan;
 const paper = "#FFFDF7";
-const sizesThumb = "(min-width: 1024px) 18vw, 50vw";
+// 封面按「展开后」的尺寸挑图：展开时封面约 18vw 宽、但高度也变大，宽屏封面图（约 2:1）按 object-fit: cover 填满时
+// 实际要放到约 1.4 倍宽，所以按 36vw 取图，默认状态下只是多下一档，展开后不会糊
+const sizesThumb = "(min-width: 1024px) 36vw, 50vw";
 ---
 
 <section
