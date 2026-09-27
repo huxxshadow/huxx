@@ -5,6 +5,10 @@ import shotGameplay from '@/assets/projects/game-project-speed-pixel/shots/gamep
 import shotUpgrade from '@/assets/projects/game-project-speed-pixel/shots/upgrade.png';
 import speedCombatClip from '@/assets/projects/game-project-speed-pixel/clips/speed-combat.mp4?url';
 import speedCombatClipPoster from '@/assets/projects/game-project-speed-pixel/clips/speed-combat-poster.webp?url';
+import orbRunClip from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-run.mp4?url';
+import orbRunClipPoster from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-run-poster.webp?url';
+import orbAimClip from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-aim.mp4?url';
+import orbAimClipPoster from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-aim-poster.webp?url';
 
 <div class="image-grid-2">
     <figure>
@@ -39,16 +43,27 @@ import speedCombatClipPoster from '@/assets/projects/game-project-speed-pixel/cl
 
 *Speed Pixel* はプレイヤーが高速状態で戦闘と移動操作を完成させることを求めます。ゲームのスピードバーは単なる表示コンポーネントではなく、プレイヤーの行動を誘導する重要なフィードバックシステムです。スピードの上昇とともにプレイヤーは異なるスピード段階に入り、より強いダメージ出力・追加攻撃効果・より効率的なエネミー一掃能力を獲得します。スピードが重要な閾値を下回るとキャラクターの出力能力が著しく低下し、戦闘とサバイバルの圧力が急速に高まります。このデザインによりプレイヤーは常に「さらに加速する」と「失速を避ける」の二重の動機によって行動することになります。
 
-<figure>
-    <video class="clip" src={speedCombatClip} poster={speedCombatClipPoster} width="1280" height="716" autoplay muted loop playsinline preload="metadata" aria-label="スピード駆動の戦闘デモ"></video>
-    <figcaption>スピード駆動の戦闘：高速状態で自動射撃しながら敵を倒す</figcaption>
-</figure>
-
 このコアループをサポートするために、スピードと連動した複数の移動メカニクスを設計しました。基礎レベルとして走る・ジャンプするがあり、上級レベルとしてエナジースフィアダッシュ・ウォールスライド・グラップルスイングなどの高機動アクションを追加しました。このうちエナジースフィアダッシュは *Ori and the Blind Forest* の方向ダッシュのデザイン思想を参考にしており、特定のインタラクションポイントに触れた後に指定方向に素早く移動することで、高リスクエリアを越えたり連続したリズムを維持したりできます。グラップルメカニクスはマップトラバーサルの表現力をさらに高め、複雑な地形でプレイヤーが高速スイングと移動の連携を完成させられるようにしました。これらのメカニクスが共同で、リズムとルート判断に高度に依存する移動システムを形成しています。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={orbRunClip} poster={orbRunClipPoster} width="1280" height="722" autoplay muted loop playsinline preload="metadata" aria-label="エネルギーボール・ダッシュのデモ"></video>
+        <figcaption>エネルギーボール・ダッシュ：ボールを連続で使いスピードを一気に上げる</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={orbAimClip} poster={orbAimClipPoster} width="1280" height="580" autoplay muted loop playsinline preload="metadata" aria-label="エネルギーボール方向ダッシュのデモ"></video>
+        <figcaption>エネルギーボール・ダッシュ：ボールに触れて指定方向へダッシュ</figcaption>
+    </figure>
+</div>
 
 ### 戦闘システム：高速制圧と弾幕出力の融合
 
 戦闘デザインでは、従来の近接コンボシステムを採用せず、「高速移動」と「自動または半自動の火力出力」を組み合わせて、プレイヤーが継続的に前進しながらエネミーを一掃し制圧できるようにしました。プレイヤーはスピードで直接衝突ダメージを与えることができ、特定のスピード段階に達した後にエナジーウェーブを放出でき、さらに異なる効果を持つ弾を発射するさまざまなタイプのタレットや武器モジュールを装備することもできます。
+
+<figure>
+    <video class="clip" src={speedCombatClip} poster={speedCombatClipPoster} width="1280" height="716" autoplay muted loop playsinline preload="metadata" aria-label="スピード駆動の戦闘デモ"></video>
+    <figcaption>スピード駆動の戦闘：高速状態で自動射撃しながら敵を倒す</figcaption>
+</figure>
 
 シングルショット高ダメージ・デュアルショットバランス型・トリプルショット低ダメージ高頻度・範囲爆発能力を持つロケット型攻撃など複数の武器を設計しました。これらの武器はステータスの差異だけでなく、プレイヤーの戦闘リズムとビルドの方向性にも影響を与えます。例えば高バースト武器はエリートエネミーと重要な脅威目標の処理に適しており、高頻度弾幕武器は高速前進中の密集したエネミー群の素早い一掃に適しています。このデザインにより戦闘システムとローグライトビルドシステムが強い連携を形成し、毎回のプレイでプレイヤーが強化の選択に基づいて異なる戦い方を展開できます。
 

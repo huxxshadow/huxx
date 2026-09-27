@@ -5,6 +5,10 @@ import shotGameplay from '@/assets/projects/game-project-speed-pixel/shots/gamep
 import shotUpgrade from '@/assets/projects/game-project-speed-pixel/shots/upgrade.png';
 import speedCombatClip from '@/assets/projects/game-project-speed-pixel/clips/speed-combat.mp4?url';
 import speedCombatClipPoster from '@/assets/projects/game-project-speed-pixel/clips/speed-combat-poster.webp?url';
+import orbRunClip from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-run.mp4?url';
+import orbRunClipPoster from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-run-poster.webp?url';
+import orbAimClip from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-aim.mp4?url';
+import orbAimClipPoster from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-aim-poster.webp?url';
 
 <div class="image-grid-2">
     <figure>
@@ -39,16 +43,27 @@ The entire project's design revolves around a single, clear mechanical principle
 
 *Speed Pixel* requires players to complete combat and traversal at high speed. The speed bar in the game is not just a display component — it is an important feedback system that guides player behavior. As speed increases, players enter different speed tiers and gain stronger damage output, additional attack effects, or more efficient enemy-clearing ability; when speed drops below key thresholds, the character's output capability drops noticeably and both combat and survival pressure rapidly increase. This design keeps players constantly driven by the dual motivation of "keep accelerating" and "avoid stalling."
 
-<figure>
-    <video class="clip" src={speedCombatClip} poster={speedCombatClipPoster} width="1280" height="716" autoplay muted loop playsinline preload="metadata" aria-label="Speed-driven combat demo"></video>
-    <figcaption>Speed-driven combat: auto-firing through enemies at high speed</figcaption>
-</figure>
-
 To support this core loop, I designed multiple movement mechanics linked to speed. The foundational layer includes running and jumping; the advanced layer adds energy-sphere dashes, wall-sliding, and grapple-swinging as high-mobility actions. Among these, the energy-sphere dash draws on the directional dash design from *Ori and the Blind Forest*, allowing players to rapidly displace in a specified direction upon contact with certain interaction points to cross high-risk areas or maintain continuous rhythm. The grapple mechanic further enhances map traversal expressiveness, enabling players to complete high-speed swings and movement chaining across complex terrain. Together these mechanics form a movement system highly dependent on rhythm and route judgment.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={orbRunClip} poster={orbRunClipPoster} width="1280" height="722" autoplay muted loop playsinline preload="metadata" aria-label="Energy orb dash demo"></video>
+        <figcaption>Energy orb dash: chaining orbs to build speed fast</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={orbAimClip} poster={orbAimClipPoster} width="1280" height="580" autoplay muted loop playsinline preload="metadata" aria-label="Aimed energy orb dash demo"></video>
+        <figcaption>Energy orb dash: touch an orb, then dash in the chosen direction</figcaption>
+    </figure>
+</div>
 
 ### Combat System: High-Speed Suppression and Bullet Output
 
 For combat design, rather than adopting a traditional melee combo system, I combined "high-speed movement" with "automatic or semi-automatic firepower output," allowing players to clear enemies and maintain suppression while continuously advancing. Players can deal collision damage through speed directly, release energy waves upon reaching certain speed tiers, and equip different types of turrets or weapon modules that fire projectiles with differentiated effects.
+
+<figure>
+    <video class="clip" src={speedCombatClip} poster={speedCombatClipPoster} width="1280" height="716" autoplay muted loop playsinline preload="metadata" aria-label="Speed-driven combat demo"></video>
+    <figcaption>Speed-driven combat: auto-firing through enemies at high speed</figcaption>
+</figure>
 
 I designed multiple weapon expressions, including single-shot high damage, dual-shot balanced, triple-shot low-damage high-frequency, and rocket-type attacks with area explosion capability. These weapons differ not only in stats but also affect the player's combat rhythm and build direction. For example, high-burst weapons better handle elite enemies and key threats, while high-frequency bullet weapons better suit rapid clearance of dense enemy groups during high-speed advancement. Through this design, the combat system forms strong integration with the Roguelite build system, allowing players to develop different playstyles based on their upgrade choices in each run.
 
