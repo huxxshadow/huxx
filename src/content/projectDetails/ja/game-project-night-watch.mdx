@@ -8,6 +8,8 @@ import imgMaterials from '@/assets/projects/game-project-night-watch/game-projec
 import imgEquipment from '@/assets/projects/game-project-night-watch/game-project-night-watch_Equipment.webp';
 import imgEvents from '@/assets/projects/game-project-night-watch/game-project-night-watch_Events.webp';
 import imgMeta from '@/assets/projects/game-project-night-watch/game-project-night-watch_MetaCards.webp';
+import refStacklands from '@/assets/projects/game-project-night-watch/refs/stacklands.jpg';
+import refCultist from '@/assets/projects/game-project-night-watch/refs/cultist-simulator.jpg';
 import GameEmbed from '@/components/mdx/GameEmbed.astro';
 
 ## ブラウザでプレイ
@@ -33,6 +35,17 @@ import GameEmbed from '@/components/mdx/GameEmbed.astro';
 ゲームはWeb上で動作します。プレイヤーはランプを提げた夜警人として危険な列車に乗り込み、冷たく湿った通路、一等客室、食堂車、ボイラー室、そして霧に呑まれた車両を進みながら、戦いのたびに生き延びる術を探します。
 
 遊びのフレームワークとして、『ナイトウォッチ』は『Stacklands』と『Cultist Simulator』のカードインタラクション設計を参考にし、キャラクター・装備・素材・地点・イベント・状態といった要素をすべてドラッグ可能なカードオブジェクトへ統一的に抽象化しました。「カードを使用スロットへドラッグする」という単一の操作で、合成・装備・地点への進入・アイテム使用といった中核行動が完結します。
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={refStacklands} alt="Stacklands" />
+        <figcaption><strong>Stacklands</strong>：カードを重ねると新しいものが生まれる</figcaption>
+    </figure>
+    <figure>
+        <Image src={refCultist} alt="Cultist Simulator" />
+        <figcaption><strong>Cultist Simulator</strong>：カードを行動スロットに置いて物事を進める</figcaption>
+    </figure>
+</div>
 
 ひとつ補足があります。このページ上部の **Play** から遊べるWeb体験版は、現在AIバックエンドサービスを配置していないため、イベントカードと敵カードはリアルタイム生成されず、あらかじめ用意した静的カードプールから供給されます。システム・進行・数値はすべて完全に遊べる状態で、変わるのはランダムコンテンツの幅が静的プール内に固定される点だけです。
 

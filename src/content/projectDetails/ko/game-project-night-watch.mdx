@@ -8,6 +8,8 @@ import imgMaterials from '@/assets/projects/game-project-night-watch/game-projec
 import imgEquipment from '@/assets/projects/game-project-night-watch/game-project-night-watch_Equipment.webp';
 import imgEvents from '@/assets/projects/game-project-night-watch/game-project-night-watch_Events.webp';
 import imgMeta from '@/assets/projects/game-project-night-watch/game-project-night-watch_MetaCards.webp';
+import refStacklands from '@/assets/projects/game-project-night-watch/refs/stacklands.jpg';
+import refCultist from '@/assets/projects/game-project-night-watch/refs/cultist-simulator.jpg';
 import GameEmbed from '@/components/mdx/GameEmbed.astro';
 
 ## 바로 플레이
@@ -33,6 +35,17 @@ import GameEmbed from '@/components/mdx/GameEmbed.astro';
 게임은 웹 기반으로 개발되었습니다. 플레이어는 등불을 든 야경꾼이 되어 위험한 열차에 올라 축축한 통로, 일등실, 식당차, 보일러실, 그리고 안개에 삼켜진 객차 사이를 계속 나아가며, 매 전투에서 살아남을 길을 찾습니다.
 
 플레이 프레임워크 측면에서 《나이트 워치》는 《Stacklands》와 《Cultist Simulator》의 카드 인터랙션 설계를 참고해, 캐릭터·장비·재료·지점·이벤트·상태 등을 모두 드래그 가능한 카드 객체로 통일해 추상화했습니다. 플레이어는 "카드를 사용 슬롯에 끌어다 놓는다"는 단일 조작으로 제작, 장착, 지점 진입, 아이템 사용 같은 핵심 행동을 수행합니다.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={refStacklands} alt="Stacklands" />
+        <figcaption><strong>Stacklands</strong>: 카드를 겹치면 새로운 것이 만들어진다</figcaption>
+    </figure>
+    <figure>
+        <Image src={refCultist} alt="Cultist Simulator" />
+        <figcaption><strong>Cultist Simulator</strong>: 카드를 행동 슬롯에 넣어 진행한다</figcaption>
+    </figure>
+</div>
 
 한 가지 덧붙이면, 이 페이지 상단의 **Play** 로 제공되는 웹 체험판은 현재 AI 백엔드 서비스를 배포하지 않은 상태로 동작합니다. 그래서 이벤트 카드와 적 카드는 실시간으로 생성되지 않고 미리 준비된 정적 카드 풀에서 공급됩니다. 시스템과 진행, 수치는 모두 온전히 플레이할 수 있으며, 달라지는 것은 무작위 콘텐츠의 폭이 정적 풀 안으로 고정된다는 점뿐입니다.
 

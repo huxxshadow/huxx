@@ -8,6 +8,8 @@ import imgMaterials from '@/assets/projects/game-project-night-watch/game-projec
 import imgEquipment from '@/assets/projects/game-project-night-watch/game-project-night-watch_Equipment.webp';
 import imgEvents from '@/assets/projects/game-project-night-watch/game-project-night-watch_Events.webp';
 import imgMeta from '@/assets/projects/game-project-night-watch/game-project-night-watch_MetaCards.webp';
+import refStacklands from '@/assets/projects/game-project-night-watch/refs/stacklands.jpg';
+import refCultist from '@/assets/projects/game-project-night-watch/refs/cultist-simulator.jpg';
 import GameEmbed from '@/components/mdx/GameEmbed.astro';
 
 ## 在线试玩
@@ -33,6 +35,17 @@ import GameEmbed from '@/components/mdx/GameEmbed.astro';
 游戏基于 Web 端开发，玩家将扮演一名提灯的守夜人，登上一列危险的列车，在湿冷走廊、头等舱包厢、餐车、锅炉房与被雾吞没的车厢之间不断前进，在一次次战斗中寻找存活下来的可能。
 
 在玩法框架上，《守夜人》参考了《堆叠大陆》和《密教模拟器》的卡牌交互设计，将角色、装备、材料、地点、事件、状态等内容统一抽象为可拖拽的卡牌对象。玩家通过“将卡牌拖入使用槽”这一单一操作，完成合成、穿戴、进入地点、使用道具等核心行为。
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={refStacklands} alt="堆叠大陆（Stacklands）" />
+        <figcaption><strong>堆叠大陆（Stacklands）</strong>：把卡牌叠在一起就能产生新东西</figcaption>
+    </figure>
+    <figure>
+        <Image src={refCultist} alt="密教模拟器（Cultist Simulator）" />
+        <figcaption><strong>密教模拟器（Cultist Simulator）</strong>：把卡牌放进行动槽来推进</figcaption>
+    </figure>
+</div>
 
 需要说明的是，本页顶部 **Play** 链接提供的 Web 体验版本目前没有部署 AI 后端服务，因此局内的事件卡与敌人卡不会实时生成，而是走预置的静态卡池。系统、流程与数值完整可玩，只是随机内容的变化范围被固定在静态池之内。
 
