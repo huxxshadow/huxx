@@ -30,8 +30,10 @@ const FAMILY_COLOR: Record<string, string> = {
     place: "var(--nw-rust)", mat: "var(--nw-navy)", meta: "var(--nw-gold)",
 };
 // 背景卡牌（三版共用同一组，各版只是摆法不同）：六类轮流，左右交替；j 是这一侧的第几张
-const ORDER = ["enemy-1", "place-1", "equip-1", "event-1", "mat-1", "meta-1", "enemy-2", "place-2", "equip-2", "event-2", "mat-2", "meta-2",
-    "enemy-3", "place-3", "equip-3", "event-3", "mat-3", "meta-3", "enemy-4", "place-4", "equip-4", "event-4", "mat-4", "place-1"];
+// 一直排到页面底部：每侧 40 张（超出页面的被容器裁掉），循环使用 23 张卡面，不会多下载图片
+const FACES = ["enemy-1", "place-1", "equip-1", "event-1", "mat-1", "meta-1", "enemy-2", "place-2", "equip-2", "event-2", "mat-2", "meta-2",
+    "enemy-3", "place-3", "equip-3", "event-3", "mat-3", "meta-3", "enemy-4", "place-4", "equip-4", "event-4", "mat-4"];
+const ORDER = Array.from({ length: 80 }, (_, i) => FACES[(i * 7) % FACES.length]);
 const TILTS = [-9, 6, -4, 10, -7, 3, -11, 5, -3, 8, -6, 9];
 const JITTER = [0.1, 0.7, 0.35, 0.9, 0.2, 0.55, 0.8, 0.05, 0.6, 0.3, 0.95, 0.45];
 const rails = ORDER.map((name, i) => ({
@@ -80,6 +82,26 @@ const vars = [
             <DebugVariantSwitcher />
         </>
 )}
+
+<script>
+    // 量顶部组件下沿到背景卡牌容器所在的定位父级（Base 的 main）顶部的距离
+    function measureNwHero() {
+        const bg = document.querySelector<HTMLElement>(".nw-bg");
+        const hero = document.querySelector<HTMLElement>("header.skin-nw");
+        if (!bg || !hero || bg.dataset.ready) return;
+        bg.dataset.ready = "1";
+        const update = () => {
+            const parent = bg.offsetParent as HTMLElement | null;
+            if (!parent) return;
+            const bottom = hero.getBoundingClientRect().bottom - parent.getBoundingClientRect().top;
+            document.documentElement.style.setProperty("--nw-hero-bottom", `${Math.round(bottom)}px`);
+        };
+        new ResizeObserver(update).observe(hero);
+        update();
+    }
+    document.addEventListener("astro:page-load", measureNwHero);
+    document.addEventListener("astro:before-swap", () => document.documentElement.style.removeProperty("--nw-hero-bottom"));
+</script>
 
 <style is:global>
     /* ========================================================= */
@@ -479,7 +501,8 @@ const vars = [
             --gutter: calc(50vw - 32rem);
             display: block;
             position: absolute;
-            inset: 0;
+            /* 从顶部组件下沿开始（--nw-hero-bottom 由下面的脚本量），卡牌永远不会被它盖住 */
+            inset: calc(var(--nw-hero-bottom, 48rem) + 2.5rem) 0 0 0;
             overflow: hidden;
             pointer-events: none;
             z-index: 0;
@@ -516,7 +539,7 @@ const vars = [
         /* A 牌桌：像随手发在桌上的牌，斜放、互相错开，压暗 */
         .nw-bg[data-variant-current="A"] .nw-bg-card {
             --w: clamp(9rem, calc(var(--gutter) - 5rem), 13rem);
-            top: calc(52rem + var(--j) * 22rem + var(--dx) * 6rem);
+            top: calc(var(--j) * (var(--w) * 1.7 + 2.5rem));
             rotate: var(--tilt);
             border: 4px solid #0B0C0F;
             box-shadow: 0 18px 32px rgba(0, 0, 0, .55);
@@ -537,7 +560,7 @@ const vars = [
         .nw-bg[data-variant-current="B"]::after {
             content: "";
             position: absolute;
-            top: 44rem;
+            top: 0;
             bottom: 0;
             width: min(calc(var(--gutter) - 2.5rem), 314px);
             background: var(--nw-wall) 0 0 / 100% auto repeat-y;
@@ -555,7 +578,7 @@ const vars = [
         /* C 列车车窗：拱顶车窗 + 黄铜内框，窗外是卡面场景，罩一层雾 */
         .nw-bg[data-variant-current="C"] .nw-bg-card {
             --w: clamp(9rem, calc(var(--gutter) - 6rem), 13rem);
-            top: calc(50rem + var(--j) * 25rem);
+            top: calc(var(--j) * (var(--w) * 1.3 + 6rem));
             overflow: hidden;
             border: 12px solid #1A0F09;
             border-radius: 50% 50% .6rem .6rem / 22% 22% .6rem .6rem;
