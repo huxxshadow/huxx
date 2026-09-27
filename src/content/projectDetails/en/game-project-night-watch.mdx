@@ -134,14 +134,6 @@ The technical core of this project is the **runtime LLM generation pipeline** fo
 * **Context awareness**: Generation carries the player's build tendency (firearm route, light-stacking anti-inhuman, melee blade/blunt, bare fists), current pressure (sustained low HP), recent choices and recent enemies, so the text tracks the actual state of this run.
 * **Fallback and caching**: Results feed a cache pool that can be refreshed on demand; on timeout or failure the system silently degrades to the static pool. The player never sees an error — only a slightly more conventional card.
 
-The pipeline expresses a design position: **an LLM is good at infinite variation of atmosphere and text, and bad at being the referee of a game's rules.** So I placed it on the outermost layer. It can write a thousand versions of "there is a crate in the corner", but what is in the crate, how much HP you lose, and how the fight resolves are always decided by code.
-
-### Presentation Layer and Quality Tiers
-
-The front end uses React + Zustand + Immer for state, with Three.js driving card flips, dealing, and battle camera work. Because browser hardware varies wildly, rendering is split into four quality tiers: **pure 2D table** (3D off, smoothest on low-end machines), **3D cards without battle camera**, **supersampling with halved particles**, and **full 3D with battle camera, supersampling and full particles**. Saves, volume and quality settings persist to localStorage, and an error boundary offers "reset save and reload" instead of stranding the player on a white screen.
-
-For audio, the game carries a fog-night BGM, a set of card and combat sound effects, and three narrated voice lines for the opening epigraph.
-
 ### The AI Pipeline: What Was Batch-Generated
 
 Most of the content in the game was batch-generated once the AI workflow was in place:
