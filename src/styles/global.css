@@ -7,11 +7,37 @@
 @import "@fontsource-variable/noto-sans-jp/wght.css";
 @import "@fontsource-variable/noto-sans-kr/wght.css";
 
+/* 中日韩页：只含站内用到的字的 Noto Sans SC / JP / KR（可变字重），每种一个文件、各页共用缓存；
+   原来按 unicode-range 切的 100 多片要下十几片，每到一片整页重排一次。
+   新加的字不在子集里时，会落到后面的 Noto Sans * Variable 分片上，不会缺字（重新生成见 scripts/cjk-subset.py） */
+@font-face {
+    font-family: 'Noto Sans SC Site';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 100 900;
+    src: url('../fonts/noto-sans-sc-site.woff2') format('woff2-variations'), url('../fonts/noto-sans-sc-site.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Noto Sans JP Site';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 100 900;
+    src: url('../fonts/noto-sans-jp-site.woff2') format('woff2-variations'), url('../fonts/noto-sans-jp-site.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Noto Sans KR Site';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 100 900;
+    src: url('../fonts/noto-sans-kr-site.woff2') format('woff2-variations'), url('../fonts/noto-sans-kr-site.woff2') format('woff2');
+}
 
 
 
 
 
+
+/* Roboto：每个字重两份——拉丁 + 希腊 + 箭头 / 数学 / 几何符号子集（常用，约 25K）和原来的完整文件（只在出现西里尔等其它字符时才下载） */
 /* roboto-100 - cyrillic_greek_latin_latin-ext_math_symbols */
 @font-face {
     font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
@@ -19,6 +45,15 @@
     font-style: normal;
     font-weight: 100;
     src: url('../fonts/roboto-v51-cyrillic_greek_latin_latin-ext_math_symbols-100.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0400-052F, U+1C80-1C8F, U+1F00-1FFF, U+2100-218F, U+2800-2BFF, U+2DE0-2DFF, U+A640-A69F, U+1D400-1D7FF;
+}
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 100;
+    src: url('../fonts/roboto-v51-latin_latin-ext-100.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF, U+0370-03FF, U+2190-21FF, U+2200-23FF, U+25A0-27BF;
 }
 /* roboto-100italic - cyrillic_greek_latin_latin-ext_math_symbols */
 @font-face {
@@ -27,6 +62,15 @@
     font-style: italic;
     font-weight: 100;
     src: url('../fonts/roboto-v51-cyrillic_greek_latin_latin-ext_math_symbols-100italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0400-052F, U+1C80-1C8F, U+1F00-1FFF, U+2100-218F, U+2800-2BFF, U+2DE0-2DFF, U+A640-A69F, U+1D400-1D7FF;
+}
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 100;
+    src: url('../fonts/roboto-v51-latin_latin-ext-100italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF, U+0370-03FF, U+2190-21FF, U+2200-23FF, U+25A0-27BF;
 }
 /* roboto-200 - cyrillic_greek_latin_latin-ext_math_symbols */
 @font-face {
@@ -35,6 +79,15 @@
     font-style: normal;
     font-weight: 200;
     src: url('../fonts/roboto-v51-cyrillic_greek_latin_latin-ext_math_symbols-200.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0400-052F, U+1C80-1C8F, U+1F00-1FFF, U+2100-218F, U+2800-2BFF, U+2DE0-2DFF, U+A640-A69F, U+1D400-1D7FF;
+}
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 200;
+    src: url('../fonts/roboto-v51-latin_latin-ext-200.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF, U+0370-03FF, U+2190-21FF, U+2200-23FF, U+25A0-27BF;
 }
 /* roboto-200italic - cyrillic_greek_latin_latin-ext_math_symbols */
 @font-face {
@@ -43,6 +96,15 @@
     font-style: italic;
     font-weight: 200;
     src: url('../fonts/roboto-v51-cyrillic_greek_latin_latin-ext_math_symbols-200italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0400-052F, U+1C80-1C8F, U+1F00-1FFF, U+2100-218F, U+2800-2BFF, U+2DE0-2DFF, U+A640-A69F, U+1D400-1D7FF;
+}
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 200;
+    src: url('../fonts/roboto-v51-latin_latin-ext-200italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF, U+0370-03FF, U+2190-21FF, U+2200-23FF, U+25A0-27BF;
 }
 /* roboto-300 - cyrillic_greek_latin_latin-ext_math_symbols */
 @font-face {
@@ -51,6 +113,15 @@
     font-style: normal;
     font-weight: 300;
     src: url('../fonts/roboto-v51-cyrillic_greek_latin_latin-ext_math_symbols-300.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0400-052F, U+1C80-1C8F, U+1F00-1FFF, U+2100-218F, U+2800-2BFF, U+2DE0-2DFF, U+A640-A69F, U+1D400-1D7FF;
+}
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    src: url('../fonts/roboto-v51-latin_latin-ext-300.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF, U+0370-03FF, U+2190-21FF, U+2200-23FF, U+25A0-27BF;
 }
 /* roboto-300italic - cyrillic_greek_latin_latin-ext_math_symbols */
 @font-face {
@@ -59,6 +130,15 @@
     font-style: italic;
     font-weight: 300;
     src: url('../fonts/roboto-v51-cyrillic_greek_latin_latin-ext_math_symbols-300italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0400-052F, U+1C80-1C8F, U+1F00-1FFF, U+2100-218F, U+2800-2BFF, U+2DE0-2DFF, U+A640-A69F, U+1D400-1D7FF;
+}
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 300;
+    src: url('../fonts/roboto-v51-latin_latin-ext-300italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF, U+0370-03FF, U+2190-21FF, U+2200-23FF, U+25A0-27BF;
 }
 /* roboto-regular - cyrillic_greek_latin_latin-ext_math_symbols */
 @font-face {
@@ -67,6 +147,15 @@
     font-style: normal;
     font-weight: 400;
     src: url('../fonts/roboto-v51-cyrillic_greek_latin_latin-ext_math_symbols-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0400-052F, U+1C80-1C8F, U+1F00-1FFF, U+2100-218F, U+2800-2BFF, U+2DE0-2DFF, U+A640-A69F, U+1D400-1D7FF;
+}
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/roboto-v51-latin_latin-ext-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF, U+0370-03FF, U+2190-21FF, U+2200-23FF, U+25A0-27BF;
 }
 /* roboto-italic - cyrillic_greek_latin_latin-ext_math_symbols */
 @font-face {
@@ -75,6 +164,15 @@
     font-style: italic;
     font-weight: 400;
     src: url('../fonts/roboto-v51-cyrillic_greek_latin_latin-ext_math_symbols-italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0400-052F, U+1C80-1C8F, U+1F00-1FFF, U+2100-218F, U+2800-2BFF, U+2DE0-2DFF, U+A640-A69F, U+1D400-1D7FF;
+}
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 400;
+    src: url('../fonts/roboto-v51-latin_latin-ext-italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF, U+0370-03FF, U+2190-21FF, U+2200-23FF, U+25A0-27BF;
 }
 /* roboto-500 - cyrillic_greek_latin_latin-ext_math_symbols */
 @font-face {
@@ -83,6 +181,15 @@
     font-style: normal;
     font-weight: 500;
     src: url('../fonts/roboto-v51-cyrillic_greek_latin_latin-ext_math_symbols-500.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0400-052F, U+1C80-1C8F, U+1F00-1FFF, U+2100-218F, U+2800-2BFF, U+2DE0-2DFF, U+A640-A69F, U+1D400-1D7FF;
+}
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    src: url('../fonts/roboto-v51-latin_latin-ext-500.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF, U+0370-03FF, U+2190-21FF, U+2200-23FF, U+25A0-27BF;
 }
 /* roboto-500italic - cyrillic_greek_latin_latin-ext_math_symbols */
 @font-face {
@@ -91,6 +198,15 @@
     font-style: italic;
     font-weight: 500;
     src: url('../fonts/roboto-v51-cyrillic_greek_latin_latin-ext_math_symbols-500italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0400-052F, U+1C80-1C8F, U+1F00-1FFF, U+2100-218F, U+2800-2BFF, U+2DE0-2DFF, U+A640-A69F, U+1D400-1D7FF;
+}
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 500;
+    src: url('../fonts/roboto-v51-latin_latin-ext-500italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF, U+0370-03FF, U+2190-21FF, U+2200-23FF, U+25A0-27BF;
 }
 /* roboto-600 - cyrillic_greek_latin_latin-ext_math_symbols */
 @font-face {
@@ -99,6 +215,15 @@
     font-style: normal;
     font-weight: 600;
     src: url('../fonts/roboto-v51-cyrillic_greek_latin_latin-ext_math_symbols-600.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0400-052F, U+1C80-1C8F, U+1F00-1FFF, U+2100-218F, U+2800-2BFF, U+2DE0-2DFF, U+A640-A69F, U+1D400-1D7FF;
+}
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    src: url('../fonts/roboto-v51-latin_latin-ext-600.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF, U+0370-03FF, U+2190-21FF, U+2200-23FF, U+25A0-27BF;
 }
 /* roboto-600italic - cyrillic_greek_latin_latin-ext_math_symbols */
 @font-face {
@@ -107,6 +232,15 @@
     font-style: italic;
     font-weight: 600;
     src: url('../fonts/roboto-v51-cyrillic_greek_latin_latin-ext_math_symbols-600italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0400-052F, U+1C80-1C8F, U+1F00-1FFF, U+2100-218F, U+2800-2BFF, U+2DE0-2DFF, U+A640-A69F, U+1D400-1D7FF;
+}
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 600;
+    src: url('../fonts/roboto-v51-latin_latin-ext-600italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF, U+0370-03FF, U+2190-21FF, U+2200-23FF, U+25A0-27BF;
 }
 /* roboto-700 - cyrillic_greek_latin_latin-ext_math_symbols */
 @font-face {
@@ -115,6 +249,15 @@
     font-style: normal;
     font-weight: 700;
     src: url('../fonts/roboto-v51-cyrillic_greek_latin_latin-ext_math_symbols-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0400-052F, U+1C80-1C8F, U+1F00-1FFF, U+2100-218F, U+2800-2BFF, U+2DE0-2DFF, U+A640-A69F, U+1D400-1D7FF;
+}
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    src: url('../fonts/roboto-v51-latin_latin-ext-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF, U+0370-03FF, U+2190-21FF, U+2200-23FF, U+25A0-27BF;
 }
 /* roboto-700italic - cyrillic_greek_latin_latin-ext_math_symbols */
 @font-face {
@@ -123,6 +266,15 @@
     font-style: italic;
     font-weight: 700;
     src: url('../fonts/roboto-v51-cyrillic_greek_latin_latin-ext_math_symbols-700italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0400-052F, U+1C80-1C8F, U+1F00-1FFF, U+2100-218F, U+2800-2BFF, U+2DE0-2DFF, U+A640-A69F, U+1D400-1D7FF;
+}
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 700;
+    src: url('../fonts/roboto-v51-latin_latin-ext-700italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF, U+0370-03FF, U+2190-21FF, U+2200-23FF, U+25A0-27BF;
 }
 /* roboto-800 - cyrillic_greek_latin_latin-ext_math_symbols */
 @font-face {
@@ -131,6 +283,15 @@
     font-style: normal;
     font-weight: 800;
     src: url('../fonts/roboto-v51-cyrillic_greek_latin_latin-ext_math_symbols-800.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0400-052F, U+1C80-1C8F, U+1F00-1FFF, U+2100-218F, U+2800-2BFF, U+2DE0-2DFF, U+A640-A69F, U+1D400-1D7FF;
+}
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 800;
+    src: url('../fonts/roboto-v51-latin_latin-ext-800.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF, U+0370-03FF, U+2190-21FF, U+2200-23FF, U+25A0-27BF;
 }
 /* roboto-800italic - cyrillic_greek_latin_latin-ext_math_symbols */
 @font-face {
@@ -139,6 +300,15 @@
     font-style: italic;
     font-weight: 800;
     src: url('../fonts/roboto-v51-cyrillic_greek_latin_latin-ext_math_symbols-800italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0400-052F, U+1C80-1C8F, U+1F00-1FFF, U+2100-218F, U+2800-2BFF, U+2DE0-2DFF, U+A640-A69F, U+1D400-1D7FF;
+}
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 800;
+    src: url('../fonts/roboto-v51-latin_latin-ext-800italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF, U+0370-03FF, U+2190-21FF, U+2200-23FF, U+25A0-27BF;
 }
 /* roboto-900 - cyrillic_greek_latin_latin-ext_math_symbols */
 @font-face {
@@ -147,6 +317,15 @@
     font-style: normal;
     font-weight: 900;
     src: url('../fonts/roboto-v51-cyrillic_greek_latin_latin-ext_math_symbols-900.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0400-052F, U+1C80-1C8F, U+1F00-1FFF, U+2100-218F, U+2800-2BFF, U+2DE0-2DFF, U+A640-A69F, U+1D400-1D7FF;
+}
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 900;
+    src: url('../fonts/roboto-v51-latin_latin-ext-900.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF, U+0370-03FF, U+2190-21FF, U+2200-23FF, U+25A0-27BF;
 }
 /* roboto-900italic - cyrillic_greek_latin_latin-ext_math_symbols */
 @font-face {
@@ -155,15 +334,29 @@
     font-style: italic;
     font-weight: 900;
     src: url('../fonts/roboto-v51-cyrillic_greek_latin_latin-ext_math_symbols-900italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0400-052F, U+1C80-1C8F, U+1F00-1FFF, U+2100-218F, U+2800-2BFF, U+2DE0-2DFF, U+A640-A69F, U+1D400-1D7FF;
+}
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 900;
+    src: url('../fonts/roboto-v51-latin_latin-ext-900italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF, U+0370-03FF, U+2190-21FF, U+2200-23FF, U+25A0-27BF;
 }
 
+
+/* 语言菜单里的语言名（简体中文 / 日本語 / 한국어）用系统字体：否则英文页为了这几个字也要下载好几片 Noto CJK（约 300K） */
+.lang-name {
+    font-family: 'Roboto', system-ui, sans-serif;
+}
 
 /* 1. 先定义各个语言的字体包 */
 :root {
     --font-sans-en: 'Roboto','Noto Sans SC Variable','Noto Sans JP Variable','Noto Sans KR Variable', system-ui, sans-serif;
-    --font-sans-zh: 'Roboto', 'Noto Sans SC Variable','Noto Sans JP Variable','Noto Sans KR Variable', system-ui, sans-serif;
-    --font-sans-ja: 'Roboto', 'Noto Sans JP Variable','Noto Sans SC Variable','Noto Sans KR Variable', system-ui, sans-serif;
-    --font-sans-ko: 'Roboto', 'Noto Sans KR Variable','Noto Sans SC Variable','Noto Sans JP Variable', system-ui, sans-serif;
+    --font-sans-zh: 'Roboto', 'Noto Sans SC Site', 'Noto Sans SC Variable','Noto Sans JP Variable','Noto Sans KR Variable', system-ui, sans-serif;
+    --font-sans-ja: 'Roboto', 'Noto Sans JP Site', 'Noto Sans JP Variable','Noto Sans SC Variable','Noto Sans KR Variable', system-ui, sans-serif;
+    --font-sans-ko: 'Roboto', 'Noto Sans KR Site', 'Noto Sans KR Variable', 'Noto Sans SC Site', 'Noto Sans SC Variable','Noto Sans JP Variable', system-ui, sans-serif;
 
     /* 2. 定义一个“当前激活”的字体变量，默认使用英文 */
     --theme-font-active: var(--font-sans-en);

@@ -9,6 +9,12 @@ import { SITE_TITLE, SITE_DESCRIPTION, X_ACCOUNT } from "@/consts";
 import { useTranslations, LOCALES, getLocalePaths, type Lang } from "@/i18n";
 const t = useTranslations(Astro.currentLocale as Lang);
 import "@/styles/global.css";
+// 图标：自托管的 Font Awesome 子集（原来从 CDN 拉完整的 CSS + 两套字体，约 280K）
+import "@/styles/fontawesome-subset.css";
+import notoScSite from "@/fonts/noto-sans-sc-site.woff2?url";
+import notoJpSite from "@/fonts/noto-sans-jp-site.woff2?url";
+import notoKrSite from "@/fonts/noto-sans-kr-site.woff2?url";
+const cjkFont: Partial<Record<Lang, string>> = { zh: notoScSite, ja: notoJpSite, ko: notoKrSite };
 import { ClientRouter } from "astro:transitions";
 import { pageShift } from "@/transitions";
 interface Props {
@@ -48,8 +54,11 @@ const localeDescription = description || t(SITE_DESCRIPTION);
     }
 
     <!-- icon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"/>
-    <link rel="icon" type="image/x-icon" href={`/AvatarColored.ico`} />
+    <!-- 16/32/48 三档的小图标（原来的 AvatarColored.ico 含到 256px，208K，每页都要下） -->
+    <!-- 中日韩页的正文字体提前下载（和 global.css 里的 Noto Sans * Site 是同一个文件） -->
+    {cjkFont[locale] && <link rel="preload" href={cjkFont[locale]} as="font" type="font/woff2" crossorigin />}
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="color-scheme" content="light dark" />
 
     <!-- OGP -->
@@ -148,16 +157,39 @@ const localeDescription = description || t(SITE_DESCRIPTION);
     });
 
     // Astro 客户端换页（比如切换语言）换进来的 <video> 播不了：新页面的内容是先在一个没有浏览上下文的文档里
-    // 解析好再搬过来的，视频在那里选源就失败了（没有可用的源），搬进页面后也不会重试。
-    // 换页完成后对这些视频重新 load() 一次，自动播放的再手动 play()（都是静音的，浏览器允许）
+    // 解析好再搬过来的，视频在那里选源就失败了（没有可用的源），搬进页面后也不会重试。换页完成后对这些视频重新 load() 一次。
+    // 正文里的演示片段（data-autoplay）不带 autoplay、preload="none"：进入视口附近才开始下载并播放，离开就暂停，
+    // 首屏不再一口气下载整页的视频
+    let clipObserver: IntersectionObserver | undefined;
+    document.addEventListener('astro:before-swap', () => clipObserver?.disconnect());
     document.addEventListener('astro:page-load', () => {
-        document.querySelectorAll<HTMLVideoElement>('video').forEach((v) => {
-            if (v.readyState === 0 || v.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) v.load();
+        const videos = Array.from(document.querySelectorAll<HTMLVideoElement>('video'));
+        videos.forEach((v) => {
+            if (v.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) v.load();
             if (v.autoplay && v.paused) {
                 v.muted = true;
                 v.play().catch(() => {});
             }
         });
+        const clips = videos.filter((v) => v.hasAttribute('data-autoplay'));
+        if (!clips.length) return;
+        if (!('IntersectionObserver' in window)) {
+            clips.forEach((v) => { v.muted = true; v.play().catch(() => {}); });
+            return;
+        }
+        clipObserver?.disconnect();
+        clipObserver = new IntersectionObserver((entries) => {
+            entries.forEach(({ target, isIntersecting }) => {
+                const v = target as HTMLVideoElement;
+                if (isIntersecting) {
+                    v.muted = true;
+                    v.play().catch(() => {});
+                } else if (!v.paused) {
+                    v.pause();
+                }
+            });
+        }, { rootMargin: '300px 0px' });
+        clips.forEach((v) => clipObserver!.observe(v));
     });
 
     document.addEventListener('astro:page-load', () => {

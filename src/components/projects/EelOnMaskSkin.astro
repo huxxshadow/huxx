@@ -584,7 +584,11 @@ const assetVars = `:root{--eel-desk-lg:url("${deskLg.src}");--eel-desk-sm:url("$
     }
 
     /* ---- 图片：模切贴纸 ---- */
-    .skin-eel .project-prose img {
+    .skin-eel .project-prose img,
+    .skin-eel .project-prose video.clip {
+        display: block;
+        width: 100%;
+        height: auto;
         border: 7px solid var(--eel-cut);
         border-radius: 4px;
         background-color: var(--eel-cut);
@@ -592,11 +596,11 @@ const assetVars = `:root{--eel-desk-lg:url("${deskLg.src}");--eel-desk-sm:url("$
         filter: drop-shadow(0 9px 15px rgba(18, 30, 25, .35));
     }
 
-    .skin-eel .project-prose figure:nth-of-type(odd) img {
+    .skin-eel .project-prose figure:nth-of-type(odd) :is(img, video.clip) {
         rotate: -.9deg;
     }
 
-    .skin-eel .project-prose figure:nth-of-type(even) img {
+    .skin-eel .project-prose figure:nth-of-type(even) :is(img, video.clip) {
         rotate: .9deg;
     }
 

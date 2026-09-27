@@ -135,14 +135,14 @@ const NAV_LINKS = [
                     aria-expanded="false"
                     aria-controls="lang-menu-panel"
             >
-                <span>{LOCALES[currentLocale].label}</span>
+                <span class="lang-name">{LOCALES[currentLocale].label}</span>
                 <i class="fa-solid fa-chevron-down text-xs ml-1"></i>
             </button>
             <div id="lang-menu-panel" class="lang-panel absolute left-1/2 top-full pt-2 z-50">
                 <div class="hdr-dropdown flex flex-col shadow-sm rounded-sm py-2">
                     {
                         localePaths.map((lp) => (
-                                <a href={lp.path} class="px-5 py-2 hover:bg-black/5 transition-colors text-center whitespace-nowrap">
+                                <a href={lp.path} class="lang-name px-5 py-2 hover:bg-black/5 transition-colors text-center whitespace-nowrap">
                                     {LOCALES[lp.lang].label}
                                 </a>
                         ))
@@ -222,7 +222,7 @@ const NAV_LINKS = [
                     localePaths.map((lp) => (
                             <a
                                     href={lp.path}
-                                    class={`px-1 transition-opacity ${
+                                    class={`lang-name px-1 transition-opacity ${
                                         lp.lang === currentLocale
                                             ? 'border-b-2 border-current opacity-100 font-bold'
                                             : 'opacity-50 hover:opacity-100'

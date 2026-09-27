@@ -26,6 +26,7 @@
     "tailwindcss": "^4.2.2"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^7.0.1",
     "@types/matter-js": "^0.20.2"
   }
 }

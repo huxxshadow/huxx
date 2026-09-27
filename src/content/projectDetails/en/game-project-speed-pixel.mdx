@@ -62,11 +62,11 @@ To support this core loop, I designed multiple movement mechanics linked to spee
 
 <div class="image-grid-2">
     <figure>
-        <video class="clip" src={orbRunClip} poster={orbRunClipPoster} width="1280" height="722" autoplay muted loop playsinline preload="metadata" aria-label="Energy orb dash demo"></video>
+        <video class="clip" src={orbRunClip} poster={orbRunClipPoster} width="1280" height="722" muted loop playsinline preload="none" data-autoplay aria-label="Energy orb dash demo"></video>
         <figcaption>Energy orb dash: chaining orbs to build speed fast</figcaption>
     </figure>
     <figure>
-        <video class="clip" src={orbAimClip} poster={orbAimClipPoster} width="1280" height="722" autoplay muted loop playsinline preload="metadata" aria-label="Aimed energy orb dash demo"></video>
+        <video class="clip" src={orbAimClip} poster={orbAimClipPoster} width="1280" height="722" muted loop playsinline preload="none" data-autoplay aria-label="Aimed energy orb dash demo"></video>
         <figcaption>Energy orb dash: touch an orb, then dash in the chosen direction</figcaption>
     </figure>
 </div>
@@ -76,7 +76,7 @@ To support this core loop, I designed multiple movement mechanics linked to spee
 For combat design, rather than adopting a traditional melee combo system, I combined "high-speed movement" with "automatic or semi-automatic firepower output," allowing players to clear enemies and maintain suppression while continuously advancing. Players can deal collision damage through speed directly, release energy waves upon reaching certain speed tiers, and equip different types of turrets or weapon modules that fire projectiles with differentiated effects.
 
 <figure>
-    <video class="clip" src={speedCombatClip} poster={speedCombatClipPoster} width="1280" height="716" autoplay muted loop playsinline preload="metadata" aria-label="Speed-driven combat demo"></video>
+    <video class="clip" src={speedCombatClip} poster={speedCombatClipPoster} width="1280" height="716" muted loop playsinline preload="none" data-autoplay aria-label="Speed-driven combat demo"></video>
     <figcaption>Speed-driven combat: auto-firing through enemies at high speed</figcaption>
 </figure>
 
@@ -89,7 +89,7 @@ For the projectile system implementation, I built a unified logic structure supp
 To increase replayability value, I added a fairly complete Roguelite progression framework to the project. Players return to the starting point after each failure, but retain resources earned during the run to unlock permanent upgrades, ability branches, and new equipment; within a single run, players can also gain temporary buffs through random upgrade choices, creating an in-run build experience with variety.
 
 <figure>
-    <video class="clip" src={menuClip} poster={menuClipPoster} width="1280" height="716" autoplay muted loop playsinline preload="metadata" aria-label="Character and skill tree menu demo"></video>
+    <video class="clip" src={menuClip} poster={menuClipPoster} width="1280" height="716" muted loop playsinline preload="none" data-autoplay aria-label="Character and skill tree menu demo"></video>
     <figcaption>Meta-progression: the character panel and skill tree</figcaption>
 </figure>
 

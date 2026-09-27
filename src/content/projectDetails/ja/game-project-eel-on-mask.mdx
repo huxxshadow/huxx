@@ -9,8 +9,10 @@ import img4 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on
 import img5 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask5.webp';
 import img6 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask6.webp';
 import img7 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask7.webp';
-import gifClippingMask from '@/assets/projects/game-project-eel-on-mask/eel-clipping-mask.gif?url';
-import gifPlatforming from '@/assets/projects/game-project-eel-on-mask/eel-platforming-puzzle.gif?url';
+import gifClippingMask from '@/assets/projects/game-project-eel-on-mask/eel-clipping-mask.mp4?url';
+import gifClippingMaskPoster from '@/assets/projects/game-project-eel-on-mask/eel-clipping-mask-poster.webp?url';
+import gifPlatforming from '@/assets/projects/game-project-eel-on-mask/eel-platforming-puzzle.mp4?url';
+import gifPlatformingPoster from '@/assets/projects/game-project-eel-on-mask/eel-platforming-puzzle-poster.webp?url';
 
 ## プレイする
 
@@ -29,12 +31,12 @@ import gifPlatforming from '@/assets/projects/game-project-eel-on-mask/eel-platf
 </div>
 
 <figure>
-    <img src={gifClippingMask} alt="Clipping Maskメカニクスのデモ" width="1909" height="1080" loading="lazy" />
+    <video class="clip" src={gifClippingMask} poster={gifClippingMaskPoster} width="1280" height="724" muted loop playsinline preload="none" data-autoplay aria-label="Clipping Maskメカニクスのデモ"></video>
     <figcaption>Clipping Mask：パネルからマスクをドラッグしてシーンに重ね、地形も生物もマテリアルを上書きする</figcaption>
 </figure>
 
 <figure>
-    <img src={gifPlatforming} alt="プラットフォームアクションとパズルのデモ" width="1080" height="606" loading="lazy" />
+    <video class="clip" src={gifPlatforming} poster={gifPlatformingPoster} width="1080" height="606" muted loop playsinline preload="none" data-autoplay aria-label="プラットフォームアクションとパズルのデモ"></video>
     <figcaption>プラットフォームアクションとパズル：マスクを回転・配置してルートを作り、一気に駆け抜ける</figcaption>
 </figure>
 

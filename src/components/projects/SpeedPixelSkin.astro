@@ -33,10 +33,11 @@ import framePill from "@/assets/projects/game-project-speed-pixel/skin/frame-pil
 import bgTile from "@/assets/projects/game-project-speed-pixel/skin/bg-tile.png";
 import bgSideL from "@/assets/projects/game-project-speed-pixel/skin/bg-side-l.png";
 import bgSideR from "@/assets/projects/game-project-speed-pixel/skin/bg-side-r.png";
-// 中日韩像素字体：Fusion Pixel 12px（OFL），只在这一页按语言加载
-import pixelSC from "@fontsource/fusion-pixel-12px-proportional-sc/files/fusion-pixel-12px-proportional-sc-latin-400-normal.woff2?url";
-import pixelJP from "@fontsource/fusion-pixel-12px-proportional-jp/files/fusion-pixel-12px-proportional-jp-latin-400-normal.woff2?url";
-import pixelKR from "@fontsource/fusion-pixel-12px-proportional-kr/files/fusion-pixel-12px-proportional-kr-latin-400-normal.woff2?url";
+// 中日韩像素字体：Fusion Pixel 12px（OFL），只在这一页按语言加载；裁到站内用到的字（每个约 100K，原文件约 600K），
+// 重新生成见 scripts/cjk-subset.py
+import pixelSC from "@/assets/projects/game-project-speed-pixel/skin/fusion-pixel-sc.woff2?url";
+import pixelJP from "@/assets/projects/game-project-speed-pixel/skin/fusion-pixel-jp.woff2?url";
+import pixelKR from "@/assets/projects/game-project-speed-pixel/skin/fusion-pixel-kr.woff2?url";
 
 const vars = [
     `--sp-logo: url("${logo.src}")`,
