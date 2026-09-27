@@ -45,7 +45,7 @@ const t = useTranslations(currentLang);
             <div class="flex-grow"></div>
 
             {/* 卡片大小调节滑块 */}
-            <div class="flex items-center gap-2 sm:gap-3 shrink-0 bg-white px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl border-[3px] sm:border-4" style={`border-color: ${COLORS.black}; box-shadow: 3px 3px 0px ${COLORS.black};`}>
+            <div class="project-size-control flex items-center gap-2 sm:gap-3 shrink-0 bg-white px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl border-[3px] sm:border-4" style={`border-color: ${COLORS.black}; box-shadow: 3px 3px 0px ${COLORS.black};`}>
                 <i class="fa-solid fa-compress text-lg opacity-60"></i>
                 <input
                         type="range"
@@ -246,15 +246,16 @@ const t = useTranslations(currentLang);
             grid-template-columns: repeat(auto-fill, minmax(calc(var(--card-size) * 0.55), 1fr)) !important;
         }
     }
-    /* ===== 手机：列宽按滑块值的 0.4 倍算（默认两列），标题栏、描边、阴影都收小 ===== */
+    /* ===== 手机：固定两列，不显示大小滑块；标题栏、描边、阴影都收小 ===== */
     @media (max-width: 639px) {
         #all-projects-grid {
-            grid-template-columns: repeat(auto-fill, minmax(calc(var(--card-size) * 0.4), 1fr)) !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             gap: 0.8rem;
         }
+        .project-size-control { display: none !important; }
         .project-hover-card { border-width: 2px; border-radius: 0.6rem; box-shadow: 3px 3px 0px #494949; }
         .project-title-bar { height: 2.1rem; padding: 0 0.55rem; border-top-width: 2px; }
-        .project-title-bar h3 { font-size: 12px; }
+        .project-title-bar h3 { font-size: 13px; }
         [data-card-mode="full"] .project-hover-card,
         [data-card-mode="compact"] .project-hover-card { padding-bottom: 2.1rem; }
         [data-card-mode="full"] .project-slide-panel,

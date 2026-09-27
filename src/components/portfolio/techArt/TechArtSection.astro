@@ -942,8 +942,32 @@ const sizesThumb = "(min-width: 1024px) 36vw, 50vw";
         .pa-num { font-size: clamp(0.72rem, 2.6vw, 1.1rem); }
         .pa-title { font-size: clamp(10.5px, 2.7vw, 0.95rem); line-height: 1.25; }
     }
+    /* 手机：吉祥物缩小放最上面（背后一个小倒三角），两栏依次往下；每行文字在左、封面在右 */
     @media (max-width: 639px) {
-        .ta-mascot { margin-bottom: -2.5rem; }
+        [data-ta-section] { --bar-h: 1rem; }
+        .ta-stage { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+        .pa-tri-page, .ta-mascot-inv { display: none; }
+        .pa-tri-local { display: block; z-index: -1; top: 2%; bottom: -3%; width: 115%; }
+        .pa-tri-local.pa-tri-back { top: 0; bottom: -6%; width: 130%; }
+        .ta-mascot { order: -1; align-self: center; width: 8.5rem; margin: 0 auto; }
+        .pa-head,
+        .ta-side-art .pa-head { text-align: left; }
+        .pa-head-en { font-size: 2rem; }
+        .pa-head-name { font-size: 0.9rem; padding: 0.25rem 0.8rem; align-self: flex-start; }
+        .pa-row { flex-direction: row; height: 4.75rem; }
+        .ta-side-tech .pa-thumb,
+        .ta-side-art .pa-thumb { order: 1; width: 42%; flex: none; aspect-ratio: auto; }
+        .ta-side-tech .pa-text,
+        .ta-side-art .pa-text {
+            flex: 1;
+            justify-content: center;
+            align-items: flex-start;
+            text-align: left;
+            padding: 0.4rem 0.8rem 0.4rem calc(6px + 0.8rem);
+        }
+        .ta-side-art .pa-text::before { left: 0; right: auto; }
+        .pa-num { font-size: 1rem; }
+        .pa-title { font-size: 14px; }
     }
     /* 中等宽度（1024~1399px）两边栏窄：图和文字对半，标签不显示 */
     @media (min-width: 1024px) and (max-width: 1399px) {

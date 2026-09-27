@@ -62,12 +62,12 @@ const artBox = "absolute -left-4 sm:-left-12 lg:-left-20 xl:-left-28 inset-y-0 w
         </div>
 
         <div
-                class="mt-8 lg:mt-16 grid grid-cols-[minmax(0,1fr)_minmax(0,4fr)] sm:grid-cols-[minmax(0,3fr)_minmax(0,7fr)] gap-2 sm:gap-8 lg:gap-12 xl:gap-16"
+                class="mt-8 lg:mt-16 grid grid-cols-1 sm:grid-cols-[minmax(0,3fr)_minmax(0,7fr)] gap-2 sm:gap-8 lg:gap-12 xl:gap-16"
                 data-role-showcase
         >
             <!-- 左：角色插画舞台（只在宽屏显示，窄屏没有悬停）。插画抵消 section 左内边距、紧贴屏幕左边，按原比例放大，
                  右边缘止于本栏右边缘，任何屏宽下都不会压到右侧菜单 -->
-            <div class="relative z-0 min-h-[12rem] lg:min-h-[28rem]" data-reveal="fade" data-reveal-once aria-hidden="true">
+            <div class="relative z-0 hidden sm:block min-h-[12rem] lg:min-h-[28rem]" data-reveal="fade" data-reveal-once aria-hidden="true">
                 {items.map(({ role }, i) => {
                     const art = roleArt[role.id];
                     return (
@@ -96,16 +96,16 @@ const artBox = "absolute -left-4 sm:-left-12 lg:-left-20 xl:-left-28 inset-y-0 w
                                 style={`--step: ${i}; --role-dark: ${role.color.dark}; --role-light: ${role.color.light}; border-color: ${role.color.dark};`}
                                 data-role-link={role.id}
                         >
-                            <div class="p3-unskew flex flex-col gap-1.5 sm:gap-3 px-3 sm:px-6 lg:px-8 py-2.5 sm:py-5">
+                            <div class="p3-unskew flex flex-col gap-2 sm:gap-3 px-4 sm:px-6 lg:px-8 py-3.5 sm:py-5">
                                 <div class="flex items-end gap-2 sm:gap-4">
-                                    <span class="p3-num font-black leading-[0.8] text-4xl sm:text-6xl lg:text-7xl">{role.index}</span>
-                                    <span class="font-black text-[15px] sm:text-2xl lg:text-3xl leading-tight pb-0.5 sm:pb-1 min-w-0 [word-break:keep-all]">{name}</span>
-                                    <span class="ml-auto shrink-0 flex items-center gap-1 sm:gap-2 font-black whitespace-nowrap pb-0.5 sm:pb-1 text-[11px] sm:text-base">
+                                    <span class="p3-num font-black leading-[0.8] text-5xl sm:text-6xl lg:text-7xl">{role.index}</span>
+                                    <span class="font-black text-lg sm:text-2xl lg:text-3xl leading-tight pb-0.5 sm:pb-1 min-w-0 [word-break:keep-all]">{name}</span>
+                                    <span class="ml-auto shrink-0 flex items-center gap-1 sm:gap-2 font-black whitespace-nowrap pb-0.5 sm:pb-1 text-xs sm:text-base">
                                         {role.count} {unit}
                                         <i class="fa-solid fa-arrow-right transition-transform duration-200 group-hover:translate-x-1.5"></i>
                                     </span>
                                 </div>
-                                <p class="text-[11.5px] leading-[1.6] sm:text-base sm:leading-[1.8] lg:text-lg font-medium">
+                                <p class="text-[13px] leading-[1.7] sm:text-base sm:leading-[1.8] lg:text-lg font-medium">
                                     <Segments segments={segments} />
                                 </p>
                             </div>

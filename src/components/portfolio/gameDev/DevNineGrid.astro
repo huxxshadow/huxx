@@ -331,22 +331,25 @@ const after = cells.slice(4);
         .ng-center { min-height: 0; }
         .ng-mascot { inset: -4% 0; }
     }
+    /* 手机：吉祥物单独一行放在最上（小一点），项目两列 */
     @media (max-width: 639px) {
-        .ng-cell { --lw: 2px; border-radius: 9px; box-shadow: 0 3px 0 var(--line); }
-        .ng-cell.is-selected { translate: none; box-shadow: 0 3px 0 var(--line); }
-        .ng-body { padding: 0.35rem 0.4rem 0.45rem; gap: 0.2rem; }
-        .ng-title { font-size: 12px; line-height: 1.15; }
+        .ng { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.9rem 0.75rem; }
+        .ng-center { grid-column: 1 / -1; order: -1; height: 11rem; }
+        .ng-mascot { inset: 0; }
+        .ng-cell { --lw: 2.5px; border-radius: 12px; box-shadow: 0 4px 0 var(--line); }
+        .ng-cell.is-selected { translate: none; box-shadow: 0 4px 0 var(--line); }
+        .ng-body { padding: 0.5rem 0.6rem 0.65rem; gap: 0.3rem; }
+        .ng-title { font-size: 15px; line-height: 1.2; }
         .ng-caption {
-            font-size: 10px;
-            line-height: 1.35;
+            font-size: 12px;
+            line-height: 1.4;
             white-space: normal;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
         }
-        .ng-tags { gap: 0.2rem; padding-top: 0.1rem; }
-        .ng-tags li { font-size: 9px; border-width: 1.5px; padding: 0 0.3rem; line-height: 1.45; }
-        /* 标签最多两个，免得卡片被撑得很高 */
+        .ng-tags { gap: 0.25rem; }
+        .ng-tags li { font-size: 10.5px; border-width: 2px; padding: 0 0.4rem; }
         .ng-tags li:nth-child(n + 3) { display: none; }
     }
 </style>
