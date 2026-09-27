@@ -20,6 +20,10 @@ import chunk6 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-6.we
 import chunk7 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-7.webp';
 import chunk8 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-8.webp';
 import chunk9 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-9.webp';
+import visPalette from '@/assets/projects/game-project-speed-pixel/visual/palette.webp';
+import visShader from '@/assets/projects/game-project-speed-pixel/visual/shader-graph.webp';
+import visClear from '@/assets/projects/game-project-speed-pixel/visual/level-clear.webp';
+import visTurrets from '@/assets/projects/game-project-speed-pixel/visual/turrets.webp';
 
 <div class="image-grid-2">
     <figure>
@@ -117,6 +121,25 @@ import chunk9 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-9.we
 在视觉层面，《Speed Pixel》采用了极简像素美术风格，强调高对比度、强识别性与高速运动下的可读性。由于游戏节奏较快，我在设计视觉反馈时优先考虑信息传达效率，而不是复杂装饰。角色、敌人、陷阱与可交互元素都尽可能使用清晰的几何轮廓与明确的颜色区分，让玩家可以在高速移动中快速识别危险和路径机会。
 
 UI 设计则遵循“极简但高辨识度”的原则。速度条是整个界面最关键的信息组件，因此我在位置、色彩变化和阶段反馈上做了重点设计，使玩家能够在不分散过多注意力的前提下掌握当前状态。除此之外，我还设计了升级选择界面、局外商店界面以及结算界面，用于承载 Roguelite 玩法中的成长与反馈环节。为了增强速度感与打击感，项目中还加入了粒子特效、受击形变、状态变化颜色反馈以及高速状态下的运动视觉强化效果。
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={visPalette} alt="高对比度的主色板" />
+        <figcaption>高对比度的主色板</figcaption>
+    </figure>
+    <figure>
+        <Image src={visShader} alt="像素化后处理 Shader Graph" />
+        <figcaption>像素化后处理 Shader Graph</figcaption>
+    </figure>
+    <figure>
+        <Image src={visClear} alt="关卡结算界面" />
+        <figcaption>关卡结算界面</figcaption>
+    </figure>
+    <figure>
+        <Image src={visTurrets} alt="炮塔像素图标" />
+        <figcaption>炮塔像素图标</figcaption>
+    </figure>
+</div>
 
 ### 技术实现与工程组织
 

@@ -20,6 +20,10 @@ import chunk6 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-6.we
 import chunk7 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-7.webp';
 import chunk8 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-8.webp';
 import chunk9 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-9.webp';
+import visPalette from '@/assets/projects/game-project-speed-pixel/visual/palette.webp';
+import visShader from '@/assets/projects/game-project-speed-pixel/visual/shader-graph.webp';
+import visClear from '@/assets/projects/game-project-speed-pixel/visual/level-clear.webp';
+import visTurrets from '@/assets/projects/game-project-speed-pixel/visual/turrets.webp';
 
 <div class="image-grid-2">
     <figure>
@@ -117,6 +121,25 @@ import chunk9 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-9.we
 비주얼 측면에서 *Speed Pixel*은 미니멀한 픽셀 아트 스타일을 채택하여 고대비·강한 식별성·고속 이동 중의 가독성을 강조합니다. 게임 페이스가 빠르기 때문에 비주얼 피드백 설계에서 복잡한 장식보다 정보 전달 효율을 우선시했습니다. 캐릭터·에너미·트랩·인터랙트 가능한 요소들은 모두 명확한 기하학적 윤곽과 뚜렷한 색상 구분을 최대한 사용하여, 플레이어가 고속 이동 중에도 위험과 경로 기회를 빠르게 인식할 수 있도록 했습니다.
 
 UI 설계는 "미니멀하지만 고가독성" 원칙을 따릅니다. 스피드 바는 전체 인터페이스에서 가장 중요한 정보 컴포넌트이므로, 위치·색상 변화·단계적 피드백 설계에 중점을 두어 플레이어가 과도하게 주의를 분산시키지 않고도 현재 상태를 파악할 수 있도록 했습니다. 또한 업그레이드 선택 화면·메타 상점 화면·리절트 화면도 설계하여 로그라이트 게임플레이의 성장과 피드백 루프를 담당하도록 했습니다. 스피드감과 타격감을 강화하기 위해 파티클 이펙트·피격 변형·상태 변화 색상 피드백·고속 상태에서의 모션 비주얼 강화 이펙트도 추가했습니다.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={visPalette} alt="고대비 메인 팔레트" />
+        <figcaption>고대비 메인 팔레트</figcaption>
+    </figure>
+    <figure>
+        <Image src={visShader} alt="픽셀화 포스트 프로세스 Shader Graph" />
+        <figcaption>픽셀화 포스트 프로세스 Shader Graph</figcaption>
+    </figure>
+    <figure>
+        <Image src={visClear} alt="스테이지 클리어 화면" />
+        <figcaption>스테이지 클리어 화면</figcaption>
+    </figure>
+    <figure>
+        <Image src={visTurrets} alt="터렛 픽셀 아이콘" />
+        <figcaption>터렛 픽셀 아이콘</figcaption>
+    </figure>
+</div>
 
 ### 기술 구현 및 엔지니어링 조직
 

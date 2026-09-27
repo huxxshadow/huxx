@@ -20,6 +20,10 @@ import chunk6 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-6.we
 import chunk7 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-7.webp';
 import chunk8 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-8.webp';
 import chunk9 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-9.webp';
+import visPalette from '@/assets/projects/game-project-speed-pixel/visual/palette.webp';
+import visShader from '@/assets/projects/game-project-speed-pixel/visual/shader-graph.webp';
+import visClear from '@/assets/projects/game-project-speed-pixel/visual/level-clear.webp';
+import visTurrets from '@/assets/projects/game-project-speed-pixel/visual/turrets.webp';
 
 <div class="image-grid-2">
     <figure>
@@ -117,6 +121,25 @@ The main path primarily uses noise functions to generate natural elevation varia
 Visually, *Speed Pixel* uses a minimal pixel art style, emphasizing high contrast, strong recognizability, and readability during high-speed movement. Because of the game's fast pace, I prioritized information delivery efficiency over decorative complexity in all visual feedback design. Characters, enemies, traps, and interactive elements all use clear geometric outlines and distinct color differentiation as much as possible, allowing players to quickly identify hazards and path opportunities while moving at high speed.
 
 The UI design follows the principle of "minimal but highly legible." The speed bar is the single most critical information component in the entire interface, so I focused design effort on its position, color transition, and tier feedback, enabling players to grasp their current state without dividing too much attention. Beyond this, I designed upgrade selection screens, meta-shop screens, and results screens to carry the progression and feedback loops of the Roguelite gameplay. To reinforce the sense of speed and impact, the project also incorporates particle effects, hit deformation, state-change color feedback, and visual motion enhancement effects at high speed.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={visPalette} alt="High-contrast core palette" />
+        <figcaption>High-contrast core palette</figcaption>
+    </figure>
+    <figure>
+        <Image src={visShader} alt="Pixelation post-process Shader Graph" />
+        <figcaption>Pixelation post-process Shader Graph</figcaption>
+    </figure>
+    <figure>
+        <Image src={visClear} alt="Level clear screen" />
+        <figcaption>Level clear screen</figcaption>
+    </figure>
+    <figure>
+        <Image src={visTurrets} alt="Turret pixel icons" />
+        <figcaption>Turret pixel icons</figcaption>
+    </figure>
+</div>
 
 ### Technical Implementation and Engineering Organization
 
