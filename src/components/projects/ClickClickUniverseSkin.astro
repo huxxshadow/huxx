@@ -94,19 +94,10 @@ const assetVars = `:root{--ccu-world-lg:url("${worldLg.src}");--ccu-world-sm:url
 
 {stickers ? (
         <div class="ccu-world-props" aria-hidden="true">
+            {/* 顶部只留三件大道具，不再铺一排小草、碎石和图标 */}
             <span class="ccu-prop cp-tree-common"></span>
-            <span class="ccu-prop cp-tree-poplar"></span>
-            <span class="ccu-prop cp-shrub-round"></span>
-            <span class="ccu-prop cp-shrub-common"></span>
-            <span class="ccu-prop cp-grass-long"></span>
-            <span class="ccu-prop cp-stone-gravel"></span>
-            <span class="ccu-prop cp-stone-small"></span>
-            <span class="ccu-prop cp-grass-radial"></span>
             <span class="ccu-prop cp-stone-round"></span>
             <span class="ccu-prop cp-tree-apple"></span>
-            <span class="ccu-prop cp-tree-maple"></span>
-            {/* 唯一一个浮在背景上的 UI 图标，垫一层半透明白底 */}
-            <span class="ccu-icon ci-click-burst"></span>
         </div>
 ) : (
         <>
