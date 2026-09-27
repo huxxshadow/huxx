@@ -11,6 +11,15 @@ import orbAimClip from '@/assets/projects/game-project-speed-pixel/clips/orb-das
 import orbAimClipPoster from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-aim-poster.webp?url';
 import menuClip from '@/assets/projects/game-project-speed-pixel/clips/menu.mp4?url';
 import menuClipPoster from '@/assets/projects/game-project-speed-pixel/clips/menu-poster.webp?url';
+import chunk1 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-1.webp';
+import chunk2 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-2.webp';
+import chunk3 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-3.webp';
+import chunk4 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-4.webp';
+import chunk5 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-5.webp';
+import chunk6 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-6.webp';
+import chunk7 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-7.webp';
+import chunk8 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-8.webp';
+import chunk9 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-9.webp';
 
 <div class="image-grid-2">
     <figure>
@@ -85,6 +94,21 @@ import menuClipPoster from '@/assets/projects/game-project-speed-pixel/clips/men
 ### 程序化地图生成：兼顾随机性与可玩性
 
 地图生成系统是这个项目中我投入较多精力的模块之一。考虑到游戏需要不断向前推进、强调重复游玩和路线变化，我采用了基于模块化区块拼接的程序化生成方式。整体场景由一系列具有不同功能和地形特征的小型预制块组成，再通过主路径算法和分支生成逻辑拼接成完整关卡流程。
+
+<figure class="sp-chunks">
+    <div>
+        <Image src={chunk1} alt="地图预制块 1" />
+        <Image src={chunk2} alt="地图预制块 2" />
+        <Image src={chunk3} alt="地图预制块 3" />
+        <Image src={chunk4} alt="地图预制块 4" />
+        <Image src={chunk5} alt="地图预制块 5" />
+        <Image src={chunk6} alt="地图预制块 6" />
+        <Image src={chunk7} alt="地图预制块 7" />
+        <Image src={chunk8} alt="地图预制块 8" />
+        <Image src={chunk9} alt="地图预制块 9" />
+    </div>
+    <figcaption>程序化生成使用的部分预制块：平台、加速带与能量球的不同组合</figcaption>
+</figure>
 
 主路径主要使用噪声函数来生成自然的高低起伏，确保整体地形变化具有一定节奏感；分支路径则根据参数控制生成频率、距离和难度，避免地图在随机化之后变得不可通过或缺乏趣味。系统同时加入了碰撞检测、路径连续性检查与局部密度控制，以减少区块重叠、跳跃断层和无效空间问题。通过这种方法，地图既能保持较强的重玩差异，又不会破坏平台动作游戏对“可读性”和“可预判性”的基本要求。
 

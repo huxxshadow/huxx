@@ -11,6 +11,15 @@ import orbAimClip from '@/assets/projects/game-project-speed-pixel/clips/orb-das
 import orbAimClipPoster from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-aim-poster.webp?url';
 import menuClip from '@/assets/projects/game-project-speed-pixel/clips/menu.mp4?url';
 import menuClipPoster from '@/assets/projects/game-project-speed-pixel/clips/menu-poster.webp?url';
+import chunk1 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-1.webp';
+import chunk2 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-2.webp';
+import chunk3 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-3.webp';
+import chunk4 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-4.webp';
+import chunk5 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-5.webp';
+import chunk6 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-6.webp';
+import chunk7 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-7.webp';
+import chunk8 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-8.webp';
+import chunk9 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-9.webp';
 
 <div class="image-grid-2">
     <figure>
@@ -85,6 +94,21 @@ import menuClipPoster from '@/assets/projects/game-project-speed-pixel/clips/men
 ### プロシージャルマップ生成：ランダム性と遊び応えのバランス
 
 マップ生成システムは本プロジェクトで最も力を入れたモジュールの一つです。ゲームが継続的な前進・再プレイ・ルートの変化を強調することを考慮して、モジュラーなチャンクアセンブリに基づくプロシージャル生成方式を採用しました。全体のシーンは異なる機能と地形特徴を持つ小型のプレハブチャンクシリーズで構成され、メインパスアルゴリズムと分岐生成ロジックによって完全なレベルフローに組み立てられます。
+
+<figure class="sp-chunks">
+    <div>
+        <Image src={chunk1} alt="マッププレハブチャンク 1" />
+        <Image src={chunk2} alt="マッププレハブチャンク 2" />
+        <Image src={chunk3} alt="マッププレハブチャンク 3" />
+        <Image src={chunk4} alt="マッププレハブチャンク 4" />
+        <Image src={chunk5} alt="マッププレハブチャンク 5" />
+        <Image src={chunk6} alt="マッププレハブチャンク 6" />
+        <Image src={chunk7} alt="マッププレハブチャンク 7" />
+        <Image src={chunk8} alt="マッププレハブチャンク 8" />
+        <Image src={chunk9} alt="マッププレハブチャンク 9" />
+    </div>
+    <figcaption>生成に使う一部のプレハブチャンク：足場・加速帯・エネルギーボールのさまざまな組み合わせ</figcaption>
+</figure>
 
 メインパスは主にノイズ関数を使用して自然な高低起伏を生成し、全体的な地形変化に一定のリズム感を確保します。分岐パスはパラメータ制御の頻度・距離・難易度に基づいて生成され、マップのランダム化後に通過不可能になったり面白みがなくなったりすることを防ぎます。システムにはまた衝突検出・パスの連続性チェック・局所密度制御も組み込まれており、チャンクの重複・ジャンプギャップ・無効な空間の問題を削減しています。この方法により、マップは強い再プレイの差異を維持しながらも、プラットフォームアクションゲームの「可読性」と「予測可能性」の基本的な要件を壊しません。
 

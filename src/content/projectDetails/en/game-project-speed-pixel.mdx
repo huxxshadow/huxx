@@ -11,6 +11,15 @@ import orbAimClip from '@/assets/projects/game-project-speed-pixel/clips/orb-das
 import orbAimClipPoster from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-aim-poster.webp?url';
 import menuClip from '@/assets/projects/game-project-speed-pixel/clips/menu.mp4?url';
 import menuClipPoster from '@/assets/projects/game-project-speed-pixel/clips/menu-poster.webp?url';
+import chunk1 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-1.webp';
+import chunk2 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-2.webp';
+import chunk3 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-3.webp';
+import chunk4 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-4.webp';
+import chunk5 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-5.webp';
+import chunk6 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-6.webp';
+import chunk7 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-7.webp';
+import chunk8 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-8.webp';
+import chunk9 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-9.webp';
 
 <div class="image-grid-2">
     <figure>
@@ -85,6 +94,21 @@ This "dual-layer progression" mechanic satisfies both short-term feedback and lo
 ### Procedural Map Generation: Balancing Randomness and Playability
 
 The map generation system is one of the modules I invested the most effort in during this project. Given that the game requires continuous forward advancement and emphasizes replayability and route variety, I adopted a modular chunk-assembly procedural generation approach. The overall scene is composed of a series of small prefab chunks with different functions and terrain characteristics, assembled into a complete level flow through a main path algorithm and branch generation logic.
+
+<figure class="sp-chunks">
+    <div>
+        <Image src={chunk1} alt="Map prefab chunk 1" />
+        <Image src={chunk2} alt="Map prefab chunk 2" />
+        <Image src={chunk3} alt="Map prefab chunk 3" />
+        <Image src={chunk4} alt="Map prefab chunk 4" />
+        <Image src={chunk5} alt="Map prefab chunk 5" />
+        <Image src={chunk6} alt="Map prefab chunk 6" />
+        <Image src={chunk7} alt="Map prefab chunk 7" />
+        <Image src={chunk8} alt="Map prefab chunk 8" />
+        <Image src={chunk9} alt="Map prefab chunk 9" />
+    </div>
+    <figcaption>Some of the prefab chunks used by the generator: different mixes of platforms, boost pads and energy orbs</figcaption>
+</figure>
 
 The main path primarily uses noise functions to generate natural elevation variation, ensuring the overall terrain has a rhythmic sense of change; branch paths generate based on parameter-controlled frequency, distance, and difficulty, preventing the map from becoming impassable or uninteresting after randomization. The system also incorporates collision detection, path continuity checking, and local density control to reduce chunk overlap, jump gaps, and invalid space issues. Through this approach, the map maintains strong replay variation without breaking the platformer's fundamental requirements for "readability" and "predictability."
 

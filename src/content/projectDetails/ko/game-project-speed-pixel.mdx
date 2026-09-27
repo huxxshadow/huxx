@@ -11,6 +11,15 @@ import orbAimClip from '@/assets/projects/game-project-speed-pixel/clips/orb-das
 import orbAimClipPoster from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-aim-poster.webp?url';
 import menuClip from '@/assets/projects/game-project-speed-pixel/clips/menu.mp4?url';
 import menuClipPoster from '@/assets/projects/game-project-speed-pixel/clips/menu-poster.webp?url';
+import chunk1 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-1.webp';
+import chunk2 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-2.webp';
+import chunk3 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-3.webp';
+import chunk4 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-4.webp';
+import chunk5 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-5.webp';
+import chunk6 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-6.webp';
+import chunk7 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-7.webp';
+import chunk8 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-8.webp';
+import chunk9 from '@/assets/projects/game-project-speed-pixel/chunks/chunk-9.webp';
 
 <div class="image-grid-2">
     <figure>
@@ -85,6 +94,21 @@ import menuClipPoster from '@/assets/projects/game-project-speed-pixel/clips/men
 ### 프로시저럴 맵 생성: 랜덤성과 플레이 가능성의 균형
 
 맵 생성 시스템은 본 프로젝트에서 가장 많은 노력을 기울인 모듈 중 하나입니다. 게임이 지속적인 전진·반복 플레이·루트 변화를 강조하는 것을 고려하여, 모듈형 청크 조립 기반의 프로시저럴 생성 방식을 채택했습니다. 전체 씬은 서로 다른 기능과 지형 특성을 가진 소형 프리팹 청크 시리즈로 구성되며, 메인 패스 알고리즘과 브랜치 생성 로직으로 완전한 레벨 플로우로 조립됩니다.
+
+<figure class="sp-chunks">
+    <div>
+        <Image src={chunk1} alt="맵 프리팹 청크 1" />
+        <Image src={chunk2} alt="맵 프리팹 청크 2" />
+        <Image src={chunk3} alt="맵 프리팹 청크 3" />
+        <Image src={chunk4} alt="맵 프리팹 청크 4" />
+        <Image src={chunk5} alt="맵 프리팹 청크 5" />
+        <Image src={chunk6} alt="맵 프리팹 청크 6" />
+        <Image src={chunk7} alt="맵 프리팹 청크 7" />
+        <Image src={chunk8} alt="맵 프리팹 청크 8" />
+        <Image src={chunk9} alt="맵 프리팹 청크 9" />
+    </div>
+    <figcaption>생성기에 쓰이는 일부 프리팹 청크: 발판, 가속대, 에너지 구슬의 다양한 조합</figcaption>
+</figure>
 
 메인 패스는 주로 노이즈 함수를 사용하여 자연스러운 고저 기복을 생성하여 전체적인 지형 변화에 일정한 리듬감을 부여합니다. 브랜치 패스는 파라미터 제어의 빈도·거리·난이도에 기반하여 생성되어 랜덤화 후 맵이 통과 불가능하거나 재미없어지는 것을 방지합니다. 시스템에는 또한 충돌 감지·패스 연속성 체크·로컬 밀도 제어도 내장되어 청크 중복·점프 갭·무효 공간 문제를 줄입니다. 이 방법으로 맵은 강한 리플레이 다양성을 유지하면서도 플랫폼 액션 게임의 "가독성"과 "예측 가능성"에 대한 기본 요구사항을 깨뜨리지 않습니다.
 

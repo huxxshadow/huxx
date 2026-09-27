@@ -487,6 +487,23 @@ const fontFace = [
         box-shadow: 6px 6px 0 rgb(79 120 208 / 0.3) !important;
     }
     .skin-sp .project-prose figure :is(img, video.clip) { margin: 0 !important; display: block; width: 100%; height: auto; }
+    /* 地图预制块：3×3 */
+    .skin-sp .project-prose .sp-chunks { margin: 2.5rem 0; }
+    .skin-sp .project-prose .sp-chunks > div {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: clamp(0.5rem, 1.5vw, 1rem);
+    }
+    .skin-sp .project-prose .sp-chunks img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        border-width: 6px !important;
+        border-image-width: 6px !important;
+        box-shadow: 3px 3px 0 rgb(79 120 208 / 0.3) !important;
+    }
+    .skin-sp .project-prose .sp-chunks figcaption { margin-top: 0.9rem; }
     .skin-sp .project-prose figcaption {
         color: var(--sp-blue-lo);
         opacity: 1;
