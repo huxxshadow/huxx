@@ -9,6 +9,8 @@ import orbRunClip from '@/assets/projects/game-project-speed-pixel/clips/orb-das
 import orbRunClipPoster from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-run-poster.webp?url';
 import orbAimClip from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-aim.mp4?url';
 import orbAimClipPoster from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-aim-poster.webp?url';
+import menuClip from '@/assets/projects/game-project-speed-pixel/clips/menu.mp4?url';
+import menuClipPoster from '@/assets/projects/game-project-speed-pixel/clips/menu-poster.webp?url';
 
 <div class="image-grid-2">
     <figure>
@@ -72,6 +74,11 @@ import orbAimClipPoster from '@/assets/projects/game-project-speed-pixel/clips/o
 ### Roguelite 成长结构：局内构筑与局外成长并存
 
 为了提升重复游玩的价值，我在项目中加入了较完整的 Roguelite 成长框架。玩家在每次失败后会返回起点，但可以保留游戏中获得的资源，用于解锁永久升级、能力分支和新装备；而在单次流程中，玩家又能通过随机强化选项获得临时增益，从而形成具有变数的局内构筑体验。
+
+<figure>
+    <video class="clip" src={menuClip} poster={menuClipPoster} width="1280" height="716" autoplay muted loop playsinline preload="metadata" aria-label="角色与技能树界面演示"></video>
+    <figcaption>局外成长：角色面板与技能树</figcaption>
+</figure>
 
 这种“双层成长”机制能够同时满足短期反馈与长期目标：一方面，玩家每次开局都可以尝试新的强化组合，获得不同的战斗风格；另一方面，即使失败，也能通过累积资源感受到持续成长，降低重复挑战的挫败感。在实现上，我为技能树系统设计了基于唯一 ID、解锁依赖与花费条件的管理逻辑，通过数据驱动方式管理技能与能力项，使后续扩展新升级内容更加方便。
 

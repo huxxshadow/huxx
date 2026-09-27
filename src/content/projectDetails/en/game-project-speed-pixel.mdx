@@ -9,6 +9,8 @@ import orbRunClip from '@/assets/projects/game-project-speed-pixel/clips/orb-das
 import orbRunClipPoster from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-run-poster.webp?url';
 import orbAimClip from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-aim.mp4?url';
 import orbAimClipPoster from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-aim-poster.webp?url';
+import menuClip from '@/assets/projects/game-project-speed-pixel/clips/menu.mp4?url';
+import menuClipPoster from '@/assets/projects/game-project-speed-pixel/clips/menu-poster.webp?url';
 
 <div class="image-grid-2">
     <figure>
@@ -72,6 +74,11 @@ For the projectile system implementation, I built a unified logic structure supp
 ### Roguelite Progression: In-Run Builds and Meta-Progression Together
 
 To increase replayability value, I added a fairly complete Roguelite progression framework to the project. Players return to the starting point after each failure, but retain resources earned during the run to unlock permanent upgrades, ability branches, and new equipment; within a single run, players can also gain temporary buffs through random upgrade choices, creating an in-run build experience with variety.
+
+<figure>
+    <video class="clip" src={menuClip} poster={menuClipPoster} width="1280" height="716" autoplay muted loop playsinline preload="metadata" aria-label="Character and skill tree menu demo"></video>
+    <figcaption>Meta-progression: the character panel and skill tree</figcaption>
+</figure>
 
 This "dual-layer progression" mechanic satisfies both short-term feedback and long-term goals simultaneously: on one hand, players can try new upgrade combinations and experience different combat styles each run; on the other, even in failure, accumulated resources create a sense of ongoing growth that reduces the frustration of repeated challenges. For the implementation, I designed the skill tree system with a management logic based on unique IDs, unlock dependencies, and cost conditions, managing skills and abilities through a data-driven approach to make future extension of new upgrade content more convenient.
 

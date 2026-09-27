@@ -9,6 +9,8 @@ import orbRunClip from '@/assets/projects/game-project-speed-pixel/clips/orb-das
 import orbRunClipPoster from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-run-poster.webp?url';
 import orbAimClip from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-aim.mp4?url';
 import orbAimClipPoster from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-aim-poster.webp?url';
+import menuClip from '@/assets/projects/game-project-speed-pixel/clips/menu.mp4?url';
+import menuClipPoster from '@/assets/projects/game-project-speed-pixel/clips/menu-poster.webp?url';
 
 <div class="image-grid-2">
     <figure>
@@ -72,6 +74,11 @@ import orbAimClipPoster from '@/assets/projects/game-project-speed-pixel/clips/o
 ### 로그라이트 성장 구조: 인런 빌드와 메타 성장의 공존
 
 재플레이 가치를 높이기 위해 비교적 완전한 로그라이트 성장 프레임워크를 추가했습니다. 플레이어는 매 실패 후 시작 지점으로 돌아가지만, 게임 중 획득한 리소스를 보유하여 영구적인 업그레이드·능력 브랜치·새로운 장비 언락에 사용할 수 있습니다. 한편 단일 플레이 중에는 랜덤 강화 옵션을 통해 일시적인 버프를 획득하여 변화가 있는 인런 빌드 경험을 형성합니다.
+
+<figure>
+    <video class="clip" src={menuClip} poster={menuClipPoster} width="1280" height="716" autoplay muted loop playsinline preload="metadata" aria-label="캐릭터와 스킬 트리 화면 시연"></video>
+    <figcaption>런 외 성장: 캐릭터 패널과 스킬 트리</figcaption>
+</figure>
 
 이 "이중 성장" 메커니즘은 단기적인 피드백과 장기적인 목표를 동시에 충족합니다. 한편으로 플레이어는 매번 새로운 강화 조합을 시도하여 서로 다른 전투 스타일을 경험할 수 있고, 다른 한편으로 실패해도 누적된 리소스로 지속적인 성장감을 느낄 수 있어 반복 도전의 좌절감을 줄여줍니다. 구현에서는 스킬 트리 시스템에 고유 ID·언락 의존성·비용 조건 기반의 관리 로직을 설계하고, 데이터 주도 방식으로 스킬과 능력 항목을 관리하여 이후 새로운 업그레이드 콘텐츠 추가를 편리하게 했습니다.
 

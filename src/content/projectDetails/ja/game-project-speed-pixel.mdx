@@ -9,6 +9,8 @@ import orbRunClip from '@/assets/projects/game-project-speed-pixel/clips/orb-das
 import orbRunClipPoster from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-run-poster.webp?url';
 import orbAimClip from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-aim.mp4?url';
 import orbAimClipPoster from '@/assets/projects/game-project-speed-pixel/clips/orb-dash-aim-poster.webp?url';
+import menuClip from '@/assets/projects/game-project-speed-pixel/clips/menu.mp4?url';
+import menuClipPoster from '@/assets/projects/game-project-speed-pixel/clips/menu-poster.webp?url';
 
 <div class="image-grid-2">
     <figure>
@@ -72,6 +74,11 @@ import orbAimClipPoster from '@/assets/projects/game-project-speed-pixel/clips/o
 ### ローグライト成長構造：インランビルドとメタ成長の並存
 
 再プレイ価値を高めるために、比較的完全なローグライト成長フレームワークを追加しました。プレイヤーは毎回の失敗後にスタート地点に戻りますが、ゲーム中に獲得したリソースを保持して永続的なアップグレード・能力ブランチ・新装備のアンロックに使用できます。一方で単一のプレイ中にランダムな強化オプションを通じて一時的なバフを獲得することで、変化のあるインランビルド体験を形成します。
+
+<figure>
+    <video class="clip" src={menuClip} poster={menuClipPoster} width="1280" height="716" autoplay muted loop playsinline preload="metadata" aria-label="キャラクターとスキルツリー画面のデモ"></video>
+    <figcaption>ラン外成長：キャラクターパネルとスキルツリー</figcaption>
+</figure>
 
 この「二層成長」メカニクスは短期的なフィードバックと長期的な目標を同時に満たします。一方でプレイヤーは毎回新しい強化の組み合わせを試して異なる戦闘スタイルを体験でき、他方で失敗しても蓄積されたリソースで継続的な成長感を感じられ、繰り返しチャレンジする挫折感を軽減します。実装においてはスキルツリーシステムにユニークID・アンロック依存関係・コスト条件に基づく管理ロジックを設計し、データ駆動方式でスキルと能力項目を管理することで、後続の新アップグレードコンテンツの追加を容易にしました。
 
