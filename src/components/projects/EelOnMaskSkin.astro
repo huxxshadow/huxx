@@ -574,6 +574,14 @@ const assetVars = `:root{--eel-desk-lg:url("${deskLg.src}");--eel-desk-sm:url("$
         border-radius: 4px;
         box-shadow: 0 9px 20px rgba(18, 30, 25, .28);
     }
+    /* 手机：卡片整体按比例缩小放进纸面，不再横向滚动（itch.io 的卡片不会自己换版式） */
+    @media (max-width: 639px) {
+        .skin-eel .project-prose .itch-embed { overflow: visible; }
+        .skin-eel .project-prose .itch-embed iframe { zoom: 0.58; }
+    }
+    @media (max-width: 359px) {
+        .skin-eel .project-prose .itch-embed iframe { zoom: 0.5; }
+    }
 
     /* ---- 图片：模切贴纸 ---- */
     .skin-eel .project-prose img {

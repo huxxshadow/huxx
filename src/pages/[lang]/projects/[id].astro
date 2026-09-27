@@ -573,6 +573,8 @@ if (detailEntry) {
         border-radius: 0.25rem;
         font-weight: 600;
         font-size: 0.9em;
+        /* 行内的长网址在手机上会把页面撑宽，允许任意处断行 */
+        overflow-wrap: anywhere;
     }
 
     /* 代码块 */
@@ -586,6 +588,7 @@ if (detailEntry) {
     }
 
     :global(.project-prose pre code) {
+        overflow-wrap: normal;
         background: none;
         padding: 0;
         border-radius: 0;
