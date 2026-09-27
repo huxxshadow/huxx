@@ -94,10 +94,8 @@ const assetVars = `:root{--ccu-world-lg:url("${worldLg.src}");--ccu-world-sm:url
 
 {stickers ? (
         <div class="ccu-world-props" aria-hidden="true">
-            {/* 顶部只留三件大道具，不再铺一排小草、碎石和图标 */}
-            <span class="ccu-prop cp-tree-common"></span>
+            {/* 顶部只留一块圆石，不放树、小草、碎石和图标 */}
             <span class="ccu-prop cp-stone-round"></span>
-            <span class="ccu-prop cp-tree-apple"></span>
         </div>
 ) : (
         <>
@@ -169,8 +167,7 @@ const assetVars = `:root{--ccu-world-lg:url("${worldLg.src}");--ccu-world-sm:url
         position: relative;
         max-width: 88rem;
         margin: 0 auto;
-        /* 底部留出一条空地给低多边形道具站 */
-        padding-bottom: 9rem;
+        padding-bottom: 2rem;
     }
 
     .skin-ccu .project-hero-screen {
@@ -754,7 +751,7 @@ const assetVars = `:root{--ccu-world-lg:url("${worldLg.src}");--ccu-world-sm:url
         }
 
         .skin-ccu .project-hero-shell {
-            padding-bottom: 7rem;
+            padding-bottom: 2rem;
         }
     }
 
@@ -796,7 +793,7 @@ const assetVars = `:root{--ccu-world-lg:url("${worldLg.src}");--ccu-world-sm:url
         }
 
         .skin-ccu .project-hero-shell {
-            padding-bottom: 6rem;
+            padding-bottom: 1.5rem;
         }
     }
 
