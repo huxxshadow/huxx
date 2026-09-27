@@ -133,15 +133,3 @@ The technical core of this project is the **runtime LLM generation pipeline** fo
 * **A second proofreading pass**: After generation, a separate "proofreader" prompt checks tone, vagueness, and fit with the enemy's atmosphere, and swaps any drop that duplicates gear already granted this run for one that has not appeared.
 * **Context awareness**: Generation carries the player's build tendency (firearm route, light-stacking anti-inhuman, melee blade/blunt, bare fists), current pressure (sustained low HP), recent choices and recent enemies, so the text tracks the actual state of this run.
 * **Fallback and caching**: Results feed a cache pool that can be refreshed on demand; on timeout or failure the system silently degrades to the static pool. The player never sees an error — only a slightly more conventional card.
-
-### The AI Pipeline: What Was Batch-Generated
-
-Most of the content in the game was batch-generated once the AI workflow was in place:
-
-* **Card art**: 80 card illustrations (12 characters, 24 pieces of equipment, 13 materials, 15 locations, 10 event types, 5 meta progression cards and 1 item), style-unified and exported at three resolutions — 240 asset files in total.
-* **Card text**: 27 static event cards; names and entrance narration for 40 enemy preset variants (8 location traits × 5); descriptions for 24 pieces of equipment and 13 materials; 12 prefix affixes; plus the scene prose and win/loss resolution lines for every location.
-* **Localization**: two complete text sets, Chinese and English — roughly 340 interface strings plus all card text.
-* **Audio**: one fog-night BGM, 8 card and combat sound effects, and 3 narrated lines for the opening epigraph.
-* **Code**: the React + Zustand + Immer + Three.js front end, covering card interaction, combat resolution, crafting and salvage, saves, and quality tiers.
-
-My part was to build the skeleton first — card types, damage and resistances, loot tables, location traits, the generation protocol and the prose constraints — then have AI mass-produce content in the shapes that skeleton allows, and review, replace and recycle it piece by piece.
