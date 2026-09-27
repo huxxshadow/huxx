@@ -1,8 +1,8 @@
 ---
 // Night Watch 项目页专属皮肤（projects.json 里 skin: "nw" 时由 [id].astro 挂载）
 //
-// 视觉完全照着游戏走，直接用游戏内的素材：hero 是主菜单那一屏（原画铺满、宽字距标题、主角卡），
-// 整页背景是罩了骨白纱的主菜单原画，正文两侧斜放着一张张游戏卡牌，H2 前面插一张小卡。
+// 视觉照着游戏的美术走：hero 是一张木刻海报（骨白底、黑块、放射色楔），
+// 整页背景是罩了骨白纱的主菜单原画，正文两侧是低透明度的游戏卡牌（纯背景，不挡内容），H2 前面插一张小卡。
 // 装饰艺术 / 立体未来主义的木刻海报质感：骨白底、厚重黑块、每一类卡牌一个高饱和重色。
 // 颜色是从 src/assets/projects/game-project-night-watch/*.webp 里直接取样的，
 // 标题字沿用游戏 --font-display 的 Oswald。
@@ -43,12 +43,18 @@ const rails = ORDER.map((name, i) => ({
 const headCards = ["enemy-1", "equip-2", "event-2", "place-2", "mat-2", "meta-1"].map(card);
 const vars = [
     `--nw-keyart: url("${keyArt.src}")`,
-    `--nw-card-hero: url("${card("hero-1")}")`,
     ...headCards.map((u, i) => `--nw-head-${i + 1}: url("${u}")`),
 ].join("; ");
 ---
 
-{stickers ? null : (
+{stickers ? (
+        <div class="nw-deco" aria-hidden="true">
+            <span class="nw-shard nw-shard-a"></span>
+            <span class="nw-shard nw-shard-b"></span>
+            <span class="nw-shard nw-shard-c"></span>
+            <span class="nw-shard nw-shard-d"></span>
+        </div>
+) : (
         <>
             {/* 游戏本体的 --font-display 就是 Oswald */}
             <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -118,12 +124,7 @@ const vars = [
         max-width: 86rem;
         margin: 0 auto;
         padding: 2.6rem 2.4rem 3rem;
-        background-color: var(--nw-ink);
-        background-image:
-            linear-gradient(90deg, rgba(20, 22, 26, .95) 0%, rgba(20, 22, 26, .88) 36%, rgba(20, 22, 26, .45) 62%, rgba(20, 22, 26, .15) 100%),
-            var(--nw-keyart);
-        background-size: cover, cover;
-        background-position: center, 60% 40%;
+        background-color: var(--nw-bone);
         border: 6px solid var(--nw-ink);
         /* 木刻海报的硬投影，不要模糊 */
         box-shadow: 14px 14px 0 var(--nw-crimson);
@@ -134,22 +135,73 @@ const vars = [
         z-index: 2;
     }
 
-    /* ---- 标题：照游戏主菜单的「守 夜 人」——宽字距骨白大字 + 一道绯红下划线 ---- */
+    /* ---- 角落的色楔 ---- */
+    .skin-nw .nw-deco {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .skin-nw .nw-shard {
+        position: absolute;
+        display: block;
+    }
+
+    .skin-nw .nw-shard-a {
+        top: 0;
+        left: 0;
+        width: 190px;
+        height: 150px;
+        background-color: var(--nw-gold);
+        clip-path: polygon(0 0, 100% 0, 0 100%);
+    }
+
+    .skin-nw .nw-shard-b {
+        top: 0;
+        right: 0;
+        width: 120px;
+        height: 230px;
+        background-color: var(--nw-steel);
+        clip-path: polygon(100% 0, 100% 100%, 0 0);
+    }
+
+    .skin-nw .nw-shard-c {
+        bottom: 0;
+        left: 0;
+        width: 150px;
+        height: 110px;
+        background-color: var(--nw-plum);
+        clip-path: polygon(0 100%, 0 0, 100% 100%);
+    }
+
+    .skin-nw .nw-shard-d {
+        bottom: 0;
+        right: 0;
+        width: 240px;
+        height: 90px;
+        background-color: var(--nw-navy);
+        clip-path: polygon(100% 100%, 100% 0, 0 100%);
+    }
+
+    /* ---- 标题：黑色实心条上的骨白大写字 ---- */
     .skin-nw .project-hero-screen h1 {
         display: inline-block;
-        padding-bottom: .22em;
+        padding: .35em .5em .3em;
+        background-color: var(--nw-ink);
         color: var(--nw-bone);
         font-family: var(--nw-display);
         font-weight: 700;
-        letter-spacing: .28em;
+        letter-spacing: .02em;
         text-transform: uppercase;
-        background: linear-gradient(var(--nw-crimson), var(--nw-crimson)) left bottom / 100% .09em no-repeat;
+        box-shadow: 10px 10px 0 var(--nw-gold);
     }
 
     .skin-nw .back-btn {
         font-family: var(--nw-display);
         font-weight: 600;
-        color: var(--nw-bone);
+        color: var(--nw-ink);
         opacity: 1;
         letter-spacing: .22em;
         transition: color .15s ease, translate .15s ease;
@@ -198,9 +250,9 @@ const vars = [
     /* ---- 简介：厚黑竖条 ---- */
     .skin-nw .project-hero-screen .border-l-\[4px\] {
         border-left-width: 10px;
-        border-color: var(--nw-crimson) !important;
+        border-color: var(--nw-ink) !important;
         padding-left: 1.3rem;
-        color: var(--nw-bone);
+        color: var(--nw-ink);
         font-weight: 600;
     }
 
@@ -228,22 +280,13 @@ const vars = [
         box-shadow: 3px 3px 0 var(--nw-crimson);
     }
 
-    /* ---- 封面：换成游戏里的主角卡（提灯的守夜人），卡框照游戏：黑框 + 内圈骨白细线 ---- */
+    /* ---- 封面图：粗黑框 + 硬投影 ---- */
     .skin-nw .project-hero-shell .project-hero-image {
-        aspect-ratio: 2 / 3 !important;
-        max-width: 19rem;
-        margin: 0 auto;
         border-width: 6px;
         border-color: var(--nw-ink) !important;
         border-radius: 0;
-        background: var(--nw-card-hero) center / cover no-repeat, var(--nw-ink) !important;
-        outline: 2px solid rgba(239, 232, 216, .85);
-        outline-offset: -12px;
-        box-shadow: 12px 12px 0 var(--nw-crimson);
-        rotate: 3deg;
-    }
-    .skin-nw .project-hero-shell .project-hero-image img {
-        opacity: 0;
+        background-color: var(--nw-ink) !important;
+        box-shadow: 12px 12px 0 var(--nw-steel);
     }
 
     /* ========================================================= */
@@ -320,7 +363,7 @@ const vars = [
     .skin-nw .project-prose h2:nth-of-type(6n + 5)::before { background-image: var(--nw-head-5); }
     .skin-nw .project-prose h2:nth-of-type(6n)::before { background-image: var(--nw-head-6); }
 
-    /* ---- 两侧卡牌栏：斜放的游戏卡牌，黑框 + 所属卡类重色的硬投影；只有正文两侧放得下时才显示 ---- */
+    /* ---- 两侧的游戏卡牌：低透明度、无边框，纯粹是背景，垫在所有内容下面 ---- */
     html:has(.skin-nw) .nw-rails {
         display: none;
     }
@@ -336,10 +379,24 @@ const vars = [
             pointer-events: none;
             z-index: 0;
         }
-        .skin-nw.project-prose,
-        main.skin-nw .project-prose {
+        /* 顶部不放卡：hero 整块垫一层和页面一模一样的固定背景，盖住伸到上面的卡 */
+        header.skin-nw {
             position: relative;
             z-index: 1;
+            background-color: var(--nw-bone);
+            background-image:
+                linear-gradient(rgba(239, 232, 216, .8), rgba(239, 232, 216, .88)),
+                var(--nw-keyart);
+            background-repeat: no-repeat, no-repeat;
+            background-size: cover, cover;
+            background-position: center, center top;
+            background-attachment: fixed, fixed;
+        }
+        main.skin-nw {
+            position: relative;
+            z-index: 1;
+        }
+        main.skin-nw .project-prose {
             max-width: 64rem;
         }
         html:has(.skin-nw) .nw-rail-card {
@@ -347,16 +404,12 @@ const vars = [
             width: clamp(8.5rem, calc((100vw - 64rem) / 2 - 5rem), 12rem);
             margin: 0;
             rotate: var(--tilt);
-            border: 5px solid var(--nw-ink);
-            background-color: var(--nw-ink);
-            box-shadow: 9px 9px 0 var(--c);
+            opacity: .16;
         }
         html:has(.skin-nw) .nw-rail-card img {
             display: block;
             width: 100%;
             height: auto;
-            outline: 1.5px solid rgba(239, 232, 216, .8);
-            outline-offset: -7px;
         }
         html:has(.skin-nw) .nw-rail-left {
             right: calc(50% + 32rem + 2.2rem);
@@ -502,6 +555,11 @@ const vars = [
             box-shadow: 9px 9px 0 var(--nw-crimson);
         }
 
+        .skin-nw .nw-shard-b,
+        .skin-nw .nw-shard-c {
+            display: none;
+        }
+
     }
 
     @media (max-width: 767px) {
@@ -533,16 +591,13 @@ const vars = [
             height: 2.7rem;
         }
 
-        .skin-nw .project-hero-shell .project-hero-image {
-            max-width: 13rem;
-            rotate: 0deg;
-            box-shadow: 8px 8px 0 var(--nw-crimson);
+        .skin-nw .nw-shard-a,
+        .skin-nw .nw-shard-d {
+            display: none;
         }
 
-        .skin-nw .project-hero-shell {
-            background-image:
-                linear-gradient(180deg, rgba(20, 22, 26, .92) 0%, rgba(20, 22, 26, .8) 55%, rgba(20, 22, 26, .6) 100%),
-                var(--nw-keyart);
+        .skin-nw .project-hero-screen h1 {
+            box-shadow: 6px 6px 0 var(--nw-gold);
         }
 
     }
