@@ -1842,8 +1842,8 @@
         "icon": "fa-solid fa-gamepad"
       }
     ],
-    "colorText": "#14161A",
-    "colorBackground": "#EFE8D8",
+    "colorText": "#EFE8D8",
+    "colorBackground": "#15171B",
     "skin": "nw"
   },
   {
