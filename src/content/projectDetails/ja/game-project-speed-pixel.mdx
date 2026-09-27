@@ -1,5 +1,19 @@
 ---
 ---
+import { Image } from 'astro:assets';
+import shotGameplay from '@/assets/projects/game-project-speed-pixel/shots/gameplay.png';
+import shotUpgrade from '@/assets/projects/game-project-speed-pixel/shots/upgrade.png';
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={shotGameplay} alt="ゲームプレイ画面" />
+        <figcaption>ステージ画面：スピードバー・コイン・レベル</figcaption>
+    </figure>
+    <figure>
+        <Image src={shotUpgrade} alt="アップグレード選択画面" />
+        <figcaption>ラン内アップグレード：3枚から1枚を選ぶ強化カード</figcaption>
+    </figure>
+</div>
 
 ## 担当業務
 

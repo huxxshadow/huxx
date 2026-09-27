@@ -1,5 +1,19 @@
 ---
 ---
+import { Image } from 'astro:assets';
+import shotGameplay from '@/assets/projects/game-project-speed-pixel/shots/gameplay.png';
+import shotUpgrade from '@/assets/projects/game-project-speed-pixel/shots/upgrade.png';
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={shotGameplay} alt="Gameplay screenshot" />
+        <figcaption>In a level: speed bar, coins and level</figcaption>
+    </figure>
+    <figure>
+        <Image src={shotUpgrade} alt="Upgrade selection screen" />
+        <figcaption>In-run upgrades: pick one of three cards</figcaption>
+    </figure>
+</div>
 
 ## My Role
 

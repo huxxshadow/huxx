@@ -1,5 +1,19 @@
 ---
 ---
+import { Image } from 'astro:assets';
+import shotGameplay from '@/assets/projects/game-project-speed-pixel/shots/gameplay.png';
+import shotUpgrade from '@/assets/projects/game-project-speed-pixel/shots/upgrade.png';
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={shotGameplay} alt="게임플레이 화면" />
+        <figcaption>스테이지 화면: 스피드 바, 코인, 레벨</figcaption>
+    </figure>
+    <figure>
+        <Image src={shotUpgrade} alt="업그레이드 선택 화면" />
+        <figcaption>인런 업그레이드: 세 장 중 하나를 고르는 강화 카드</figcaption>
+    </figure>
+</div>
 
 ## 담당 업무
 
