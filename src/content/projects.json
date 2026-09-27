@@ -1807,10 +1807,10 @@
       ]
     },
     "desc": {
-      "zh": "《守夜人》是我在网易推进的实验性课题：一款维多利亚哥特题材的 AI 原生卡牌 Roguelike。项目旨在探索 AI 原生游戏的玩法设计与开发工作流，通过直观但具深度的卡牌系统，以及严格的内容、数值和规则约束，让 AI 稳定参与局内随机拓展，成为可控的系统变量，而非内容噪声。",
-      "en": "Night Watch is an experimental project I ran at NetEase: a Victorian-gothic AI-native card roguelike. It explores how gameplay and development workflows are designed for AI-native games — using a card system that stays intuitive while carrying real depth, plus strict content, numeric and rule constraints, so that AI takes part reliably in the random expansion inside a run as a controllable system variable rather than content noise.",
-      "ja": "『ナイトウォッチ』は、私がネットイース（NetEase）で進めた実験的な課題です。ヴィクトリア朝ゴシックを題材としたAIネイティブ・カードローグライクであり、AIネイティブゲームの遊びの設計と開発ワークフローを探ります。直感的でありながら深さを備えたカードシステムと、コンテンツ・数値・ルールの厳密な制約によって、AIを制御不能なコンテンツのノイズではなく制御可能なシステム変数として、局内のランダム拡張へ安定的に参加させます。",
-      "ko": "《나이트 워치》는 제가 넷이즈(NetEase)에서 진행한 실험적 과제로, 빅토리아 고딕을 소재로 한 AI 네이티브 카드 로그라이크입니다. AI 네이티브 게임의 플레이 설계와 개발 워크플로를 탐색하며, 직관적이면서도 깊이를 갖춘 카드 시스템과 콘텐츠·수치·규칙의 엄격한 제약을 통해 AI가 통제 불가능한 콘텐츠 노이즈가 아니라 통제 가능한 시스템 변수로서 런 내부의 무작위 확장에 안정적으로 참여하도록 합니다."
+      "zh": "《守夜人》是我在网易推进的实验性课题：一款维多利亚哥特题材的 AI 原生卡牌 Roguelike。项目旨在探索 AI 原生游戏的玩法设计与开发工作流，通过直观但具深度的卡牌系统，以及严格的内容、数值和规则约束，让 AI 稳定参与局内随机拓展，成为可控的系统变量。",
+      "en": "Night Watch is an experimental project I ran at NetEase: a Victorian-gothic AI-native card roguelike. It explores how gameplay and development workflows are designed for AI-native games — using a card system that stays intuitive while carrying real depth, plus strict content, numeric and rule constraints, so that AI takes part reliably in the random expansion inside a run as a controllable system variable.",
+      "ja": "『ナイトウォッチ』は、私がネットイース（NetEase）で進めた実験的な課題です。ヴィクトリア朝ゴシックを題材としたAIネイティブ・カードローグライクであり、AIネイティブゲームの遊びの設計と開発ワークフローを探ります。直感的でありながら深さを備えたカードシステムと、コンテンツ・数値・ルールの厳密な制約によって、AIを制御可能なシステム変数として、局内のランダム拡張へ安定的に参加させます。",
+      "ko": "《나이트 워치》는 제가 넷이즈(NetEase)에서 진행한 실험적 과제로, 빅토리아 고딕을 소재로 한 AI 네이티브 카드 로그라이크입니다. AI 네이티브 게임의 플레이 설계와 개발 워크플로를 탐색하며, 직관적이면서도 깊이를 갖춘 카드 시스템과 콘텐츠·수치·규칙의 엄격한 제약을 통해 AI가 통제 가능한 시스템 변수로서 런 내부의 무작위 확장에 안정적으로 참여하도록 합니다."
     },
     "tags": {
       "en": [
