@@ -19,6 +19,7 @@ interface Props {
 const { stickers = false } = Astro.props;
 
 // 游戏内素材：主菜单原画 + 各类卡牌卡面（从游戏构建里导出，300 × 450；主角卡 640 × 960）
+import DebugVariantSwitcher from "@/components/portfolio/DebugVariantSwitcher.astro";
 import keyArt from "@/assets/projects/game-project-night-watch/game-project-night-watch_KeyArt.webp";
 const cardFiles = import.meta.glob<{ default: ImageMetadata }>("@/assets/projects/game-project-night-watch/cards/*.webp", { eager: true });
 const card = (name: string) => Object.entries(cardFiles).find(([k]) => k.endsWith(`/${name}.webp`))![1].default.src;
@@ -28,21 +29,25 @@ const FAMILY_COLOR: Record<string, string> = {
     enemy: "var(--nw-crimson)", equip: "var(--nw-steel)", event: "var(--nw-plum)",
     place: "var(--nw-rust)", mat: "var(--nw-navy)", meta: "var(--nw-gold)",
 };
-// 两侧卡牌栏：六类卡轮流出现，左右错开；越往下越稀疏
+// 背景卡牌（三版共用同一组，各版只是摆法不同）：六类轮流，左右交替；j 是这一侧的第几张
 const ORDER = ["enemy-1", "place-1", "equip-1", "event-1", "mat-1", "meta-1", "enemy-2", "place-2", "equip-2", "event-2", "mat-2", "meta-2",
-    "enemy-3", "place-3", "equip-3", "event-3", "mat-3", "meta-3", "enemy-4", "place-4", "equip-4", "event-4", "mat-4"];
-const TILTS = [-7, 5, -3, 8, -6, 4, -8, 3, -5, 7, -4, 6];
+    "enemy-3", "place-3", "equip-3", "event-3", "mat-3", "meta-3", "enemy-4", "place-4", "equip-4", "event-4", "mat-4", "place-1"];
+const TILTS = [-9, 6, -4, 10, -7, 3, -11, 5, -3, 8, -6, 9];
+const JITTER = [0.1, 0.7, 0.35, 0.9, 0.2, 0.55, 0.8, 0.05, 0.6, 0.3, 0.95, 0.45];
 const rails = ORDER.map((name, i) => ({
     src: card(name),
+    family: name.split("-")[0],
     side: i % 2 ? "right" : "left",
-    top: 46 + Math.floor(i / 2) * 34 + (i % 2) * 17,
+    j: Math.floor(i / 2),
     tilt: TILTS[i % TILTS.length],
+    dx: JITTER[i % JITTER.length],
     color: FAMILY_COLOR[name.split("-")[0]],
 }));
 // H2 前面的小卡：按顺序轮换六类
 const headCards = ["enemy-1", "equip-2", "event-2", "place-2", "mat-2", "meta-1"].map(card);
 const vars = [
     `--nw-keyart: url("${keyArt.src}")`,
+    `--nw-wall: url("${card("wall-strip")}")`,
     ...headCards.map((u, i) => `--nw-head-${i + 1}: url("${u}")`),
 ].join("; ");
 ---
@@ -64,14 +69,15 @@ const vars = [
                     href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap"
             />
             <style is:inline set:html={`html:has(.skin-nw) { ${vars}; }`} />
-            {/* 正文两侧：一张张斜放的游戏卡牌（只在够宽的屏幕上显示，图片懒加载） */}
-            <div class="nw-rails" aria-hidden="true">
+            {/* 背景卡牌：三版候选（A 牌桌 / B 海报墙 / C 列车车窗），本地 dev 右下角切换；线上用 data-variant-current 的默认值 */}
+            <div class="nw-bg" data-variant-group="nwbg" data-variant-label="背景" data-variant-options="A,B,C" data-variant-current="A" aria-hidden="true">
                 {rails.map((r) => (
-                        <figure class:list={["nw-rail-card", `nw-rail-${r.side}`]} style={`top: ${r.top}rem; --tilt: ${r.tilt}deg; --c: ${r.color};`}>
+                        <figure class:list={["nw-bg-card", `nw-bg-${r.side}`, `nw-fam-${r.family}`]} style={`--j: ${r.j}; --k: ${r.j % 2}; --r: ${Math.floor(r.j / 2)}; --tilt: ${r.tilt}deg; --dx: ${r.dx}; --c: ${r.color};`}>
                             <img src={r.src} alt="" width="300" height="450" loading="lazy" decoding="async" />
                         </figure>
                 ))}
             </div>
+            <DebugVariantSwitcher />
         </>
 )}
 
@@ -93,16 +99,45 @@ const vars = [
         --nw-display: "Oswald", var(--theme-font-active), sans-serif;
     }
 
-    /* ---- 整页背景：游戏主菜单原画（提灯人与放射状的四幅群像），罩一层骨白纱，只在两侧露出来 ---- */
-    html:has(.skin-nw) body {
-        background-color: var(--nw-bone);
-        background-image:
-            linear-gradient(rgba(239, 232, 216, .8), rgba(239, 232, 216, .88)),
+    /* ---- 整页背景：三版各一套（变量），hero 外面垫同一套，盖住伸到顶部的背景卡 ---- */
+    /* A 牌桌：深色桌面，顶上透出主菜单原画 */
+    html:has(.skin-nw) {
+        --nw-page-color: #15171B;
+        --nw-page-image:
+            radial-gradient(ellipse 80% 60% at 50% 18%, rgba(21, 23, 27, .5) 0%, rgba(21, 23, 27, .9) 62%, #111216 100%),
             var(--nw-keyart);
-        background-repeat: no-repeat, no-repeat;
-        background-size: cover, cover;
-        background-position: center, center top;
-        background-attachment: fixed, fixed;
+        --nw-page-size: cover, 100% auto;
+        --nw-page-pos: center, center top;
+        --nw-page-repeat: no-repeat, no-repeat;
+    }
+    /* B 海报墙：骨白纸面 + 细横纹 */
+    html:has(.nw-bg[data-variant-current="B"]) {
+        --nw-page-color: var(--nw-bone);
+        --nw-page-image:
+            repeating-linear-gradient(0deg, rgba(20, 22, 26, .03) 0 2px, transparent 2px 6px),
+            linear-gradient(180deg, var(--nw-bone), var(--nw-bone-deep));
+        --nw-page-size: auto, cover;
+        --nw-page-pos: 0 0, center;
+        --nw-page-repeat: repeat, no-repeat;
+    }
+    /* C 列车车窗：深色木墙板（竖向拼板 + 板缝） */
+    html:has(.nw-bg[data-variant-current="C"]) {
+        --nw-page-color: #2A190F;
+        --nw-page-image:
+            repeating-linear-gradient(90deg, rgba(0, 0, 0, .28) 0 3px, transparent 3px 112px),
+            repeating-linear-gradient(90deg, #3A2417 0 56px, #331F13 56px 112px);
+        --nw-page-size: auto, auto;
+        --nw-page-pos: 0 0, 0 0;
+        --nw-page-repeat: repeat, repeat;
+    }
+
+    html:has(.skin-nw) body {
+        background-color: var(--nw-page-color);
+        background-image: var(--nw-page-image);
+        background-size: var(--nw-page-size);
+        background-position: var(--nw-page-pos);
+        background-repeat: var(--nw-page-repeat);
+        background-attachment: fixed;
         overflow-x: clip;
     }
 
@@ -289,6 +324,75 @@ const vars = [
         box-shadow: 12px 12px 0 var(--nw-steel);
     }
 
+    /* ---- 顶部组件 · A 牌桌（跟背景一起切）：墨黑牌面，骨白字，照游戏卡框的黑框 + 内圈金色细线；不放色楔 ---- */
+    html:has(.nw-bg[data-variant-current="A"]) .skin-nw .project-hero-shell {
+        background-color: #1B1D22;
+        border-color: #0B0C0F;
+        outline: 2px solid var(--nw-gold);
+        outline-offset: -16px;
+        box-shadow: 0 26px 50px rgba(0, 0, 0, .55);
+    }
+    html:has(.nw-bg[data-variant-current="A"]) .skin-nw .project-hero-screen h1 {
+        padding: 0 0 .2em;
+        background: linear-gradient(var(--nw-crimson), var(--nw-crimson)) left bottom / 100% .09em no-repeat;
+        color: var(--nw-bone);
+        letter-spacing: .28em;
+        box-shadow: none;
+    }
+    html:has(.nw-bg[data-variant-current="A"]) .skin-nw .back-btn,
+    html:has(.nw-bg[data-variant-current="A"]) .skin-nw .project-hero-screen .border-l-\[4px\] {
+        color: var(--nw-bone);
+    }
+    html:has(.nw-bg[data-variant-current="A"]) .skin-nw .project-hero-screen .border-l-\[4px\] {
+        border-color: var(--nw-gold) !important;
+    }
+    html:has(.nw-bg[data-variant-current="A"]) .skin-nw .project-hero-shell .project-hero-image {
+        border-color: #0B0C0F !important;
+        box-shadow: 0 16px 30px rgba(0, 0, 0, .6);
+        outline: 2px solid rgba(239, 232, 216, .8);
+        outline-offset: -10px;
+    }
+
+    /* ---- 顶部组件 · C 列车车厢：深色木板面，黄铜镶边，标题刻在黄铜铭牌上，封面是一扇拱顶车窗 ---- */
+    html:has(.nw-bg[data-variant-current="C"]) .skin-nw .project-hero-shell {
+        background-color: #3A2417;
+        background-image:
+            repeating-linear-gradient(90deg, rgba(0, 0, 0, .22) 0 2px, transparent 2px 96px),
+            repeating-linear-gradient(90deg, #452A1A 0 48px, #3E2617 48px 96px);
+        border: 10px solid #1A0F09;
+        outline: 3px solid #B08440;
+        outline-offset: -10px;
+        box-shadow: 0 26px 50px rgba(0, 0, 0, .5);
+    }
+    html:has(.nw-bg[data-variant-current="C"]) .skin-nw .project-hero-screen h1 {
+        padding: .3em .7em .25em;
+        background: linear-gradient(180deg, #E2C27A 0%, #B08440 55%, #8A6329 100%);
+        color: #2A190F;
+        letter-spacing: .2em;
+        border: 3px solid #5C3F17;
+        border-radius: .3rem;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), 0 6px 0 #1A0F09;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, .4);
+    }
+    html:has(.nw-bg[data-variant-current="C"]) .skin-nw .back-btn,
+    html:has(.nw-bg[data-variant-current="C"]) .skin-nw .project-hero-screen .border-l-\[4px\] {
+        color: #EFE2C6;
+    }
+    html:has(.nw-bg[data-variant-current="C"]) .skin-nw .project-hero-screen .border-l-\[4px\] {
+        border-color: #B08440 !important;
+    }
+    html:has(.nw-bg[data-variant-current="C"]) .skin-nw .project-hero-shell .project-hero-image {
+        border: 12px solid #1A0F09 !important;
+        border-radius: 46% 46% .6rem .6rem / 30% 30% .6rem .6rem;
+        outline: 3px solid #B08440;
+        outline-offset: -3px;
+        box-shadow: 0 16px 30px rgba(0, 0, 0, .55);
+    }
+    html:has(.nw-bg[data-variant-current="A"]) .skin-nw .nw-deco,
+    html:has(.nw-bg[data-variant-current="C"]) .skin-nw .nw-deco {
+        display: none;
+    }
+
     /* ========================================================= */
     /* 正文：一张贴在骨白纸上的说明版                               */
     /* ========================================================= */
@@ -363,15 +467,16 @@ const vars = [
     .skin-nw .project-prose h2:nth-of-type(6n + 5)::before { background-image: var(--nw-head-5); }
     .skin-nw .project-prose h2:nth-of-type(6n)::before { background-image: var(--nw-head-6); }
 
-    /* ---- 两侧的游戏卡牌：低透明度、无边框，纯粹是背景，垫在所有内容下面 ---- */
-    html:has(.skin-nw) .nw-rails {
+    /* ---- 背景卡牌：只在正文两侧放得下时显示，垫在所有内容下面，不挡字 ---- */
+    html:has(.skin-nw) .nw-bg {
         display: none;
     }
     @media (min-width: 1360px) {
         main.l-main:has(.skin-nw) {
             position: relative;
         }
-        html:has(.skin-nw) .nw-rails {
+        html:has(.skin-nw) .nw-bg {
+            --gutter: calc(50vw - 32rem);
             display: block;
             position: absolute;
             inset: 0;
@@ -379,18 +484,16 @@ const vars = [
             pointer-events: none;
             z-index: 0;
         }
-        /* 顶部不放卡：hero 整块垫一层和页面一模一样的固定背景，盖住伸到上面的卡 */
+        /* hero 外面垫一层和页面一样的固定背景，顶部不露卡 */
         header.skin-nw {
             position: relative;
             z-index: 1;
-            background-color: var(--nw-bone);
-            background-image:
-                linear-gradient(rgba(239, 232, 216, .8), rgba(239, 232, 216, .88)),
-                var(--nw-keyart);
-            background-repeat: no-repeat, no-repeat;
-            background-size: cover, cover;
-            background-position: center, center top;
-            background-attachment: fixed, fixed;
+            background-color: var(--nw-page-color);
+            background-image: var(--nw-page-image);
+            background-size: var(--nw-page-size);
+            background-position: var(--nw-page-pos);
+            background-repeat: var(--nw-page-repeat);
+            background-attachment: fixed;
         }
         main.skin-nw {
             position: relative;
@@ -399,23 +502,83 @@ const vars = [
         main.skin-nw .project-prose {
             max-width: 64rem;
         }
-        html:has(.skin-nw) .nw-rail-card {
+        html:has(.skin-nw) .nw-bg-card {
             position: absolute;
-            width: clamp(8.5rem, calc((100vw - 64rem) / 2 - 5rem), 12rem);
+            width: var(--w);
             margin: 0;
-            rotate: var(--tilt);
-            opacity: .16;
         }
-        html:has(.skin-nw) .nw-rail-card img {
+        html:has(.skin-nw) .nw-bg-card img {
             display: block;
             width: 100%;
             height: auto;
         }
-        html:has(.skin-nw) .nw-rail-left {
-            right: calc(50% + 32rem + 2.2rem);
+
+        /* A 牌桌：像随手发在桌上的牌，斜放、互相错开，压暗 */
+        .nw-bg[data-variant-current="A"] .nw-bg-card {
+            --w: clamp(9rem, calc(var(--gutter) - 5rem), 13rem);
+            top: calc(52rem + var(--j) * 22rem + var(--dx) * 6rem);
+            rotate: var(--tilt);
+            border: 4px solid #0B0C0F;
+            box-shadow: 0 18px 32px rgba(0, 0, 0, .55);
+            filter: brightness(.5) saturate(.85);
         }
-        html:has(.skin-nw) .nw-rail-right {
-            left: calc(50% + 32rem + 2.2rem);
+        .nw-bg[data-variant-current="A"] .nw-bg-left {
+            right: calc(50% + 32rem + 1.2rem + var(--dx) * 2.5rem);
+        }
+        .nw-bg[data-variant-current="A"] .nw-bg-right {
+            left: calc(50% + 32rem + 1.2rem + (1 - var(--dx)) * 2.5rem);
+        }
+
+        /* B 海报墙：两侧整条去色的卡牌墙（预先拼好的一条图纵向平铺），低透明度，像贴在纸墙上的旧海报 */
+        .nw-bg[data-variant-current="B"] .nw-bg-card {
+            display: none;
+        }
+        .nw-bg[data-variant-current="B"]::before,
+        .nw-bg[data-variant-current="B"]::after {
+            content: "";
+            position: absolute;
+            top: 44rem;
+            bottom: 0;
+            width: min(calc(var(--gutter) - 2.5rem), 314px);
+            background: var(--nw-wall) 0 0 / 100% auto repeat-y;
+            opacity: .2;
+        }
+        .nw-bg[data-variant-current="B"]::before {
+            right: calc(50% + 32rem + 1.5rem);
+            background-position: right 0 top 0;
+        }
+        .nw-bg[data-variant-current="B"]::after {
+            left: calc(50% + 32rem + 1.5rem);
+            background-position: left 0 top 120px;
+        }
+
+        /* C 列车车窗：拱顶车窗 + 黄铜内框，窗外是卡面场景，罩一层雾 */
+        .nw-bg[data-variant-current="C"] .nw-bg-card {
+            --w: clamp(9rem, calc(var(--gutter) - 6rem), 13rem);
+            top: calc(50rem + var(--j) * 25rem);
+            overflow: hidden;
+            border: 12px solid #1A0F09;
+            border-radius: 50% 50% .6rem .6rem / 22% 22% .6rem .6rem;
+            outline: 3px solid #B08440;
+            outline-offset: -3px;
+            box-shadow: inset 0 0 0 2px rgba(0, 0, 0, .5), 0 12px 24px rgba(0, 0, 0, .45);
+        }
+        .nw-bg[data-variant-current="C"] .nw-bg-card img {
+            height: calc(var(--w) * 1.3);
+            object-fit: cover;
+            filter: sepia(.25) brightness(.8);
+        }
+        .nw-bg[data-variant-current="C"] .nw-bg-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(239, 232, 216, .45) 0%, rgba(239, 232, 216, .05) 45%, rgba(20, 22, 26, .45) 100%);
+        }
+        .nw-bg[data-variant-current="C"] .nw-bg-left {
+            right: calc(50% + 32rem + (var(--gutter) - var(--w)) / 2);
+        }
+        .nw-bg[data-variant-current="C"] .nw-bg-right {
+            left: calc(50% + 32rem + (var(--gutter) - var(--w)) / 2);
         }
     }
 
@@ -564,8 +727,7 @@ const vars = [
 
     @media (max-width: 767px) {
         html:has(.skin-nw) body {
-            /* iOS 上 fixed 背景会抖，窄屏改成贴在页面顶部的一段 */
-            background-size: 100% 60vh;
+            /* iOS 上 fixed 背景会抖，窄屏改成跟着页面滚动 */
             background-attachment: scroll;
         }
 
@@ -604,7 +766,6 @@ const vars = [
 
     @media (prefers-reduced-motion: reduce) {
         html:has(.skin-nw) body {
-            background-size: 100% 80vh;
             background-attachment: scroll;
         }
     }
