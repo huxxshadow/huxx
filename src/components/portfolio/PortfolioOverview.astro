@@ -36,38 +36,38 @@ const roleArt: Record<string, ImageMetadata> = {
 
 
 // 插画框定位：抵消 section 左内边距紧贴屏幕左边，右边缘止于本栏右边缘
-const artBox = "absolute left-0 lg:-left-20 xl:-left-28 inset-y-0 w-full lg:w-[calc(100%+5rem)] xl:w-[calc(100%+7rem)]";
+const artBox = "absolute -left-4 sm:-left-12 lg:-left-20 xl:-left-28 inset-y-0 w-[calc(100%+1rem)] sm:w-[calc(100%+3rem)] lg:w-[calc(100%+5rem)] xl:w-[calc(100%+7rem)]";
 ---
 
 <section
-        class="relative overflow-hidden w-full px-6 sm:px-12 lg:px-20 xl:px-28 py-20 lg:py-24"
+        class="relative overflow-hidden w-full px-4 sm:px-12 lg:px-20 xl:px-28 py-12 sm:py-20 lg:py-24"
         style={`background-color: ${theme.light}; color: ${theme.dark}; --theme-bg: ${theme.light}; --theme-text: ${theme.dark};`}
         data-theme-bg={theme.light}
         data-theme-text={theme.dark}
 >
     <div class="p3" style={`--paper: ${paper};`}>
         <div class="relative" data-reveal-children="left" data-reveal-once data-reveal-stagger="100">
-            <h1 class="p3-title font-black leading-[0.85] tracking-tighter text-[4rem] sm:text-[6rem] lg:text-[8rem]">
+            <h1 class="p3-title font-black leading-[0.85] tracking-tighter text-[3.2rem] sm:text-[6rem] lg:text-[8rem]">
                 {title}
             </h1>
 
-            <Typewriter words={words} prefix={prefix} suffix={suffix} class="mt-6 lg:mt-8 text-3xl sm:text-5xl lg:text-6xl min-h-[2.6em] lg:min-h-0" />
+            <Typewriter words={words} prefix={prefix} suffix={suffix} class="mt-4 lg:mt-8 text-2xl sm:text-5xl lg:text-6xl min-h-[1.4em] lg:min-h-0" />
         </div>
 
         <!-- 总述：倾斜的纸面板，文字转回正 -->
         <div class="p3-panel relative mt-6 lg:mt-8 border-l-[10px]" style={`background-color: ${paper}; border-color: ${theme.dark};`} data-reveal="left" data-reveal-once>
-            <div class="p3-unskew flex flex-col gap-4 px-6 lg:px-10 py-6 lg:py-8 text-lg lg:text-xl font-medium leading-[1.85]">
+            <div class="p3-unskew flex flex-col gap-4 px-4 sm:px-6 lg:px-10 py-4 sm:py-6 lg:py-8 text-[13px] leading-[1.7] sm:text-lg sm:leading-[1.85] lg:text-xl font-medium gap-2 sm:gap-4">
                 {lead.map((segments) => <p><Segments segments={segments} /></p>)}
             </div>
         </div>
 
         <div
-                class="mt-12 lg:mt-16 grid lg:grid-cols-[3fr_7fr] gap-8 lg:gap-12 xl:gap-16"
+                class="mt-8 lg:mt-16 grid grid-cols-[minmax(0,1fr)_minmax(0,4fr)] sm:grid-cols-[minmax(0,3fr)_minmax(0,7fr)] gap-2 sm:gap-8 lg:gap-12 xl:gap-16"
                 data-role-showcase
         >
             <!-- 左：角色插画舞台（只在宽屏显示，窄屏没有悬停）。插画抵消 section 左内边距、紧贴屏幕左边，按原比例放大，
                  右边缘止于本栏右边缘，任何屏宽下都不会压到右侧菜单 -->
-            <div class="relative z-0 hidden lg:block min-h-[28rem]" data-reveal="fade" data-reveal-once aria-hidden="true">
+            <div class="relative z-0 min-h-[12rem] lg:min-h-[28rem]" data-reveal="fade" data-reveal-once aria-hidden="true">
                 {items.map(({ role }, i) => {
                     const art = roleArt[role.id];
                     return (
@@ -88,24 +88,24 @@ const artBox = "absolute left-0 lg:-left-20 xl:-left-28 inset-y-0 w-full lg:w-[c
 
             <!-- 右：角色菜单，平行四边形，逐级向右错开。负右外边距把菜单推到离屏幕右边约 1rem，
                  行向右倾斜多出来的宽度由脚本按行高算出、留成右内边距（默认 3rem 兜底） -->
-            <nav class="relative z-10 lg:-mr-16 xl:-mr-24 lg:pr-12 flex flex-col gap-5 lg:gap-6" data-role-menu data-reveal-children="left" data-reveal-once data-reveal-stagger="90">
+            <nav class="relative z-10 lg:-mr-16 xl:-mr-24 lg:pr-12 flex flex-col gap-3 sm:gap-5 lg:gap-6" data-role-menu data-reveal-children="left" data-reveal-once data-reveal-stagger="90">
                 {items.map(({ role, name, segments }, i) => (
                         <a
                                 href={`#${role.anchor}`}
-                                class="p3-row group relative block border-l-[10px]"
+                                class="p3-row group relative block border-l-[6px] sm:border-l-[10px]"
                                 style={`--step: ${i}; --role-dark: ${role.color.dark}; --role-light: ${role.color.light}; border-color: ${role.color.dark};`}
                                 data-role-link={role.id}
                         >
-                            <div class="p3-unskew flex flex-col gap-3 px-6 lg:px-8 py-5">
-                                <div class="flex items-end gap-4">
-                                    <span class="p3-num font-black leading-[0.8] text-6xl lg:text-7xl">{role.index}</span>
-                                    <span class="font-black text-2xl lg:text-3xl leading-tight pb-1">{name}</span>
-                                    <span class="ml-auto shrink-0 flex items-center gap-2 font-black whitespace-nowrap pb-1">
+                            <div class="p3-unskew flex flex-col gap-1.5 sm:gap-3 px-3 sm:px-6 lg:px-8 py-2.5 sm:py-5">
+                                <div class="flex items-end gap-2 sm:gap-4">
+                                    <span class="p3-num font-black leading-[0.8] text-4xl sm:text-6xl lg:text-7xl">{role.index}</span>
+                                    <span class="font-black text-[15px] sm:text-2xl lg:text-3xl leading-tight pb-0.5 sm:pb-1 min-w-0 [word-break:keep-all]">{name}</span>
+                                    <span class="ml-auto shrink-0 flex items-center gap-1 sm:gap-2 font-black whitespace-nowrap pb-0.5 sm:pb-1 text-[11px] sm:text-base">
                                         {role.count} {unit}
                                         <i class="fa-solid fa-arrow-right transition-transform duration-200 group-hover:translate-x-1.5"></i>
                                     </span>
                                 </div>
-                                <p class="text-base lg:text-lg font-medium leading-[1.8]">
+                                <p class="text-[11.5px] leading-[1.6] sm:text-base sm:leading-[1.8] lg:text-lg font-medium">
                                     <Segments segments={segments} />
                                 </p>
                             </div>
@@ -120,6 +120,10 @@ const artBox = "absolute left-0 lg:-left-20 xl:-left-28 inset-y-0 w-full lg:w-[c
     .p3 {
         position: relative;
         --skew: -10deg;
+    }
+    /* 手机：行又窄又高，10° 会让行顶往右偏出很多，改成 5° */
+    @media (max-width: 639px) {
+        .p3 { --skew: -5deg; }
     }
     .p3-title {
         transform: skewX(var(--skew));
@@ -157,7 +161,10 @@ const artBox = "absolute left-0 lg:-left-20 xl:-left-28 inset-y-0 w-full lg:w-[c
     .p3-row:focus-visible :global([data-kw]) {
         color: #fff !important;
     }
-    /* 宽屏上逐级错开，像 P3 的菜单 */
+    /* 逐级错开，像 P3 的菜单（手机上错开得少一点） */
+    .p3-row {
+        margin-left: calc(var(--step) * 0.5rem);
+    }
     @media (min-width: 1024px) {
         .p3-row {
             margin-left: calc(var(--step) * 1.5rem);
@@ -185,7 +192,6 @@ const artBox = "absolute left-0 lg:-left-20 xl:-left-28 inset-y-0 w-full lg:w-[c
     // 悬停 / 聚焦菜单里的某一行，左侧插画切到该角色（残影拖尾）：新角色从屏幕左边缘外滑入，
     // 身后拖着几层角色色剪影，追上本体时淡掉；旧角色向右滑出淡出。离开菜单时保持最后一个，不回退。
     // 最终状态由 data-active 决定，动画只负责过程；每次切换前取消上一轮所有动画。
-    const SKEW_TAN = Math.tan((10 * Math.PI) / 180);
 
     function initShowcase(root: HTMLElement) {
         const arts = new Map(
@@ -265,13 +271,15 @@ const artBox = "absolute left-0 lg:-left-20 xl:-left-28 inset-y-0 w-full lg:w-[c
     function reserveSkewRoom(root: HTMLElement) {
         const menu = root.querySelector<HTMLElement>('[data-role-menu]');
         if (!menu || !('ResizeObserver' in window)) return;
-        const wide = window.matchMedia('(min-width: 1024px)');
+        // 触屏没有悬停右移，不用留那 12px
+        const shift = window.matchMedia('(hover: hover)').matches ? HOVER_SHIFT : 0;
         const rows = Array.from(menu.querySelectorAll<HTMLElement>('.p3-row'));
 
         const update = () => {
-            if (!wide.matches) { menu.style.paddingRight = ''; return; }
             const tallest = Math.max(...rows.map((row) => row.offsetHeight));
-            menu.style.paddingRight = `${Math.ceil(tallest * SKEW_TAN) + HOVER_SHIFT}px`;
+            // 倾斜角读 CSS 的 --skew（手机上更小）
+            const deg = Math.abs(parseFloat(getComputedStyle(rows[0] ?? menu).getPropertyValue('--skew')) || 10);
+            menu.style.paddingRight = `${Math.ceil(tallest * Math.tan((deg * Math.PI) / 180)) + shift}px`;
         };
 
         skewObserver?.disconnect();

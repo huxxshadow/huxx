@@ -63,7 +63,7 @@ const sizesThumb = "(min-width: 1024px) 36vw, 50vw";
 
 <section
         id={role.anchor}
-        class="relative overflow-hidden w-full px-6 sm:px-12 lg:px-20 xl:px-28 py-14 lg:py-16 scroll-mt-16"
+        class="relative overflow-hidden w-full px-4 sm:px-12 lg:px-20 xl:px-28 py-10 sm:py-14 lg:py-16 scroll-mt-16"
         style={`background-color: ${tint}; color: ${ink}; --theme-bg: ${tint}; --theme-text: ${ink}; --ta-accent: ${accent}; --ta-tint: ${tint}; --ta-ink: ${ink}; --ta-paper: ${paper}; --rows: ${rows};`}
         data-theme-bg={tint}
         data-theme-text={accent}
@@ -86,9 +86,9 @@ const sizesThumb = "(min-width: 1024px) 36vw, 50vw";
     <header class="relative z-10 flex flex-wrap items-end gap-x-8 gap-y-3 mb-6 lg:mb-4" data-reveal-children="up" data-reveal-once data-reveal-stagger="80">
         <!-- 和其他 Part 同一套标题：编号和名称一样大、正体，中间一道深色竖线 -->
         <div class="flex items-stretch gap-4">
-            <span class="font-black leading-none tracking-tight text-4xl lg:text-5xl pb-1" style={`color: ${ink};`}>{role.index}</span>
+            <span class="font-black leading-none tracking-tight text-3xl sm:text-4xl lg:text-5xl pb-1" style={`color: ${ink};`}>{role.index}</span>
             <span class="w-[5px] self-stretch" style={`background-color: ${ink};`} aria-hidden="true"></span>
-            <h2 class="self-end font-black leading-none tracking-tight text-4xl lg:text-5xl pb-1">{t(role.name)}</h2>
+            <h2 class="self-end font-black leading-none tracking-tight text-3xl sm:text-4xl lg:text-5xl pb-1">{t(role.name)}</h2>
         </div>
     </header>
 
@@ -899,31 +899,51 @@ const sizesThumb = "(min-width: 1024px) 36vw, 50vw";
     [data-lite] .pa-head-name { transition: none !important; }
     [data-lite] .pa-text { transition: background-color 180ms ease !important; }
 
-    /* ---------- 窄屏：吉祥物缩小放最上面，两栏依次往下，全部左对齐；卡片不错开、不切斜边：文字在左、封面在右 ---------- */
+    /* ---------- 窄屏：保持桌面的「左栏 · 吉祥物 · 右栏」，倒三角照样贯穿整个 Part ----------
+       不展开（没有悬停）；卡片改成上图下字，不错开、不切斜边；外侧一道深黄边（左栏在左、右栏在右） */
     @media (max-width: 1023px) {
-        .ta-stage { grid-template-columns: 1fr; }
-        .pa-tri-page, .ta-mascot-inv { display: none; }
-        .pa-tri-local { display: block; z-index: -1; top: 2%; bottom: -3%; width: 115%; }
-        .pa-tri-local.pa-tri-back { top: 0; bottom: -6%; width: 130%; }
-        .ta-mascot { order: -1; width: 9rem; margin: 0 auto; }
-        .pa-head,
-        .ta-side-art .pa-head { text-align: left; }
+        [data-ta-section] { --mascot-w: 25vw; --bar-h: 1.5rem; }
+        .ta-stage { gap: clamp(0.5rem, 2vw, 1.5rem); align-items: start; }
+        .ta-side { gap: 0.8rem; }
+        .ta-mascot { align-self: end; margin-top: 0; margin-bottom: -3.5rem; }
+        .pa-head-en { font-size: clamp(1.3rem, 5vw, 2.4rem); }
+        .pa-head-name {
+            margin-top: 0.2rem;
+            padding: 0.2rem 0.5rem;
+            font-size: clamp(0.62rem, 2.4vw, 1rem);
+            line-height: 1.3;
+        }
+        .pa-list { gap: 0.55rem; }
         .pa-list > li,
         .ta-side-tech .pa-list > li,
         .ta-side-art .pa-list > li { margin: 0; }
-        .ta-side-tech .pa-row,
-        .ta-side-art .pa-row { grid-template-columns: minmax(0, 1fr) 45%; }
+        .pa-row {
+            container-type: normal;
+            display: flex;
+            flex-direction: column;
+            height: auto;
+        }
         .ta-side-tech .pa-thumb,
-        .ta-side-art .pa-thumb { order: 1; margin: 0; clip-path: none; }
+        .ta-side-art .pa-thumb {
+            order: -1;
+            aspect-ratio: 16 / 9;
+            margin: 0;
+            clip-path: none;
+        }
         .ta-side-tech .pa-text,
         .ta-side-art .pa-text {
             clip-path: none;
-            padding: 0.45rem 1.1rem 0.45rem calc(12px + 1.1rem);
-            align-items: flex-start;
-            text-align: left;
+            gap: 0.1rem;
+            padding: 0.3rem 0.45rem 0.35rem calc(5px + 0.45rem);
         }
-        .ta-side-tech .pa-text::before,
-        .ta-side-art .pa-text::before { clip-path: none; right: auto; width: 12px; }
+        .ta-side-art .pa-text { padding: 0.3rem calc(5px + 0.45rem) 0.35rem 0.45rem; }
+        .ta-side-tech .pa-text::before { clip-path: none; right: auto; width: 5px; }
+        .ta-side-art .pa-text::before { clip-path: none; left: auto; width: 5px; }
+        .pa-num { font-size: clamp(0.72rem, 2.6vw, 1.1rem); }
+        .pa-title { font-size: clamp(10.5px, 2.7vw, 0.95rem); line-height: 1.25; }
+    }
+    @media (max-width: 639px) {
+        .ta-mascot { margin-bottom: -2.5rem; }
     }
     /* 中等宽度（1024~1399px）两边栏窄：图和文字对半，标签不显示 */
     @media (min-width: 1024px) and (max-width: 1399px) {

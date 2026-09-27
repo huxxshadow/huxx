@@ -33,19 +33,19 @@ const t = useTranslations(currentLang);
     <div class="mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ===== 标题与调节滑块 ===== */}
-        <div class="flex flex-col sm:flex-row sm:items-end gap-4 mb-8 sm:mb-12" data-reveal-children="up">
+        <div class="flex flex-wrap items-end gap-3 sm:gap-4 mb-6 sm:mb-12" data-reveal-children="up">
             <!-- 和 Part 2、3 同一套标题：编号和名称一样大、正体，中间一道深色竖线，名称后面括号里是项目总数 -->
             <div class="flex items-stretch gap-4 shrink-0">
-                <span class="font-black leading-none tracking-tight text-4xl lg:text-5xl pb-1" style={`color: ${COLORS.black};`}>5</span>
+                <span class="font-black leading-none tracking-tight text-3xl sm:text-4xl lg:text-5xl pb-1" style={`color: ${COLORS.black};`}>5</span>
                 <span class="w-[5px] self-stretch" style={`background-color: ${COLORS.black};`} aria-hidden="true"></span>
-                <h2 class="self-end font-black leading-none tracking-tight text-4xl lg:text-5xl pb-1" style={`color: ${COLORS.black};`}>
+                <h2 class="self-end font-black leading-none tracking-tight text-3xl sm:text-4xl lg:text-5xl pb-1" style={`color: ${COLORS.black};`}>
                     {t(allProjectsLabels.libraryHeader)}<span class="opacity-50">（{orderedProjects.length}）</span>
                 </h2>
             </div>
-            <div class="hidden sm:block flex-grow"></div>
+            <div class="flex-grow"></div>
 
             {/* 卡片大小调节滑块 */}
-            <div class="flex items-center gap-3 shrink-0 bg-white px-4 py-2 rounded-xl border-4" style={`border-color: ${COLORS.black}; box-shadow: 3px 3px 0px ${COLORS.black};`}>
+            <div class="flex items-center gap-2 sm:gap-3 shrink-0 bg-white px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl border-[3px] sm:border-4" style={`border-color: ${COLORS.black}; box-shadow: 3px 3px 0px ${COLORS.black};`}>
                 <i class="fa-solid fa-compress text-lg opacity-60"></i>
                 <input
                         type="range"
@@ -54,7 +54,7 @@ const t = useTranslations(currentLang);
                         max="600"
                         value="400"
                         step="10"
-                        class="w-24 sm:w-32 h-2 rounded-lg appearance-none cursor-pointer"
+                        class="w-20 sm:w-32 h-2 rounded-lg appearance-none cursor-pointer"
                         style={`background-color: ${COLORS.black};`}
                 />
                 <i class="fa-solid fa-expand text-xl opacity-60"></i>
@@ -238,6 +238,29 @@ const t = useTranslations(currentLang);
     }
     [data-card-mode="compact"] .project-detail-area {
         visibility: hidden;
+    }
+
+    /* ===== 平板：列宽按滑块值的 0.55 倍算（默认三列，和桌面一样） ===== */
+    @media (min-width: 640px) and (max-width: 1023px) {
+        #all-projects-grid {
+            grid-template-columns: repeat(auto-fill, minmax(calc(var(--card-size) * 0.55), 1fr)) !important;
+        }
+    }
+    /* ===== 手机：列宽按滑块值的 0.4 倍算（默认两列），标题栏、描边、阴影都收小 ===== */
+    @media (max-width: 639px) {
+        #all-projects-grid {
+            grid-template-columns: repeat(auto-fill, minmax(calc(var(--card-size) * 0.4), 1fr)) !important;
+            gap: 0.8rem;
+        }
+        .project-hover-card { border-width: 2px; border-radius: 0.6rem; box-shadow: 3px 3px 0px #494949; }
+        .project-title-bar { height: 2.1rem; padding: 0 0.55rem; border-top-width: 2px; }
+        .project-title-bar h3 { font-size: 12px; }
+        [data-card-mode="full"] .project-hover-card,
+        [data-card-mode="compact"] .project-hover-card { padding-bottom: 2.1rem; }
+        [data-card-mode="full"] .project-slide-panel,
+        [data-card-mode="compact"] .project-slide-panel,
+        [data-card-mode] .project-hover-card:hover .project-slide-panel { transform: translateY(calc(100% - 2.1rem)); }
+        [data-card-mode="full"] .project-detail-area { visibility: hidden; }
     }
 
     /* ===== Minimal 模式：不显示标题栏，只有图片 ===== */

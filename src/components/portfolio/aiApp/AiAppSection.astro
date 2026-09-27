@@ -48,7 +48,7 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
 
 <section
         id={role.anchor}
-        class="relative w-full px-6 sm:px-12 lg:px-20 xl:px-28 py-14 lg:py-16 scroll-mt-16"
+        class="relative w-full px-4 sm:px-12 lg:px-20 xl:px-28 py-10 sm:py-14 lg:py-16 scroll-mt-16"
         style={`background-color: ${tint}; color: ${ink}; --theme-bg: ${tint}; --theme-text: ${ink}; --ai-accent: ${accent}; --ai-tint: ${tint};`}
         data-theme-bg={tint}
         data-theme-text={accent}
@@ -57,9 +57,9 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
     <header class="flex flex-wrap items-end gap-x-8 gap-y-3 mb-8 lg:mb-10" data-reveal-children="up" data-reveal-once data-reveal-stagger="80">
         <div class="flex items-stretch gap-4">
             <!-- 编号和名称一样大、都用正体，中间一道深色竖线 -->
-            <span class="font-black leading-none tracking-tight text-4xl lg:text-5xl pb-1" style={`color: ${accent};`}>{role.index}</span>
+            <span class="font-black leading-none tracking-tight text-3xl sm:text-4xl lg:text-5xl pb-1" style={`color: ${accent};`}>{role.index}</span>
             <span class="w-[5px] self-stretch" style={`background-color: ${accent};`} aria-hidden="true"></span>
-            <h2 class="self-end font-black leading-none tracking-tight text-4xl lg:text-5xl pb-1" style={`color: ${accent};`}>{t(role.name)}</h2>
+            <h2 class="self-end font-black leading-none tracking-tight text-3xl sm:text-4xl lg:text-5xl pb-1" style={`color: ${accent};`}>{t(role.name)}</h2>
         </div>
     </header>
 
@@ -115,12 +115,7 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
             const figure = layout.querySelector<HTMLElement>(".ai-figure");
             if (!cards || !title || !figure) return;
             const ratio = parseFloat(getComputedStyle(layout).getPropertyValue("--fig-ratio")) || 6;
-            const wide = window.matchMedia("(min-width: 1024px)");
             const update = () => {
-                if (!wide.matches) {
-                    layout.style.removeProperty("--fig-w");
-                    return;
-                }
                 const gap = parseFloat(getComputedStyle(figure).rowGap) || 0;
                 const avail = cards.getBoundingClientRect().height - title.getBoundingClientRect().height - gap;
                 if (avail <= 0) return;
@@ -129,7 +124,6 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
                 if (Math.abs(w - current) > 1) layout.style.setProperty("--fig-w", w.toFixed(1) + "px");
             };
             new ResizeObserver(update).observe(cards);
-            wide.addEventListener("change", update);
             update();
         });
     }
@@ -268,7 +262,7 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-top: clamp(6rem, 12vw, 11rem);
+        margin-top: clamp(3.5rem, 12vw, 11rem);
     }
     .ai-motto-text {
         display: flex;
@@ -276,7 +270,7 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
         flex-wrap: nowrap;
         font-family: 'Roboto', sans-serif;
         font-weight: 900;
-        font-size: clamp(2.2rem, 7.4vw, 8.5rem);
+        font-size: clamp(1rem, 7.4vw, 8.5rem);
         line-height: 1;
         letter-spacing: 0.02em;
         white-space: nowrap;
@@ -358,37 +352,11 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
         object-position: center;
     }
 
-    /* 窄屏：结构图放到最上面，缩小；卡片单列 */
+    /* 窄屏：保持桌面的结构（三列卡片 + 右边结构图），整体缩小 */
     @media (max-width: 1023px) {
-        .ai-layout {
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-        .ai-figure {
-            order: -1;
-        }
-        .ai-figure-box {
-            flex: none;
-        }
-        .ai-figure-box :global(img) {
-            position: static;
-            display: block;
-            width: 100%;
-            max-width: 12rem;
-            height: auto;
-            margin: 0 auto;
-        }
-    }
-    @media (max-width: 767px) {
-        .ai-cards {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 1.25rem;
-        }
-    }
-    @media (max-width: 519px) {
-        .ai-cards {
-            grid-template-columns: 1fr;
-        }
+        .ai-layout { gap: clamp(0.6rem, 2.5vw, 2rem); }
+        .ai-cards { gap: clamp(0.6rem, 2.4vw, 1.5rem); }
+        .ai-card { border-radius: 0.7rem; box-shadow: 5px 5px 0 var(--ai-accent); }
     }
     /* 分辨率低一些的屏幕（1600px 以下）：三列卡片更窄，字号和内边距都收一点 */
     @media (max-width: 1599px) {
@@ -396,6 +364,31 @@ const figSizes = "(min-width: 1024px) 20rem, 40vw";
         .ai-caption { font-size: 0.875rem; line-height: 1.55; }
         .ai-tag { font-size: 0.75rem; padding: 0.15rem 0.55rem; }
         .ai-body { gap: 0.75rem; padding: 1rem 1.1rem 1.15rem; }
+    }
+    @media (max-width: 1023px) {
+        .ai-title { font-size: 1rem; }
+        .ai-caption { font-size: 0.78rem; }
+        .ai-body { gap: 0.5rem; padding: 0.7rem 0.8rem 0.8rem; }
+    }
+    @media (max-width: 639px) {
+        .ai-card { border-width: 1.5px; border-radius: 0.5rem; box-shadow: 3px 3px 0 var(--ai-accent); }
+        .ai-card:hover { transform: none; box-shadow: 3px 3px 0 var(--ai-accent); }
+        .ai-img { border-bottom-width: 1.5px; }
+        .ai-body { gap: 0.3rem; padding: 0.35rem 0.4rem 0.45rem; }
+        .ai-title { font-size: 11.5px; line-height: 1.2; }
+        .ai-caption {
+            font-size: 10px;
+            line-height: 1.35;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .ai-body ul { gap: 0.2rem; }
+        .ai-tag { font-size: 9px; padding: 0 0.25rem; border-width: 1.5px; border-radius: 0.3rem; }
+        .ai-tag:nth-child(n + 3) { display: none; }
+        .ai-figure { gap: 0.3rem; }
+        .ai-figure-title { font-size: 11px; }
     }
     @media (prefers-reduced-motion: reduce) {
         .ai-card,
