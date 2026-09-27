@@ -307,8 +307,11 @@ const vars = [
         position: relative;
         padding: 3.4rem 3rem 3.8rem;
         background-color: var(--nw-bone);
-        border: 6px solid var(--nw-ink);
-        box-shadow: 14px 14px 0 var(--nw-navy);
+        /* 和顶部组件同一套：墨黑外框 + 一圈金色内线 + 柔和投影 */
+        border: 6px solid #0B0C0F;
+        outline: 2px solid var(--nw-gold);
+        outline-offset: -16px;
+        box-shadow: 0 26px 50px rgba(0, 0, 0, .55);
     }
 
     .skin-nw .project-prose p,
@@ -566,7 +569,7 @@ const vars = [
     @media (max-width: 1023px) {
         .skin-nw .project-hero-shell {
             padding: 2rem 1.3rem 2.2rem;
-            box-shadow: 9px 9px 0 var(--nw-crimson);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, .5);
         }
 
 
@@ -581,12 +584,14 @@ const vars = [
         .skin-nw .project-hero-shell,
         .skin-nw .project-prose {
             border-width: 4px;
-            box-shadow: 7px 7px 0 var(--nw-crimson);
+            outline-offset: -10px;
+            box-shadow: 0 16px 30px rgba(0, 0, 0, .5);
         }
 
         .skin-nw .project-prose {
             padding: 2.2rem 1.2rem 2.4rem;
-            box-shadow: 7px 7px 0 var(--nw-navy);
+            outline-offset: -10px;
+            box-shadow: 0 16px 30px rgba(0, 0, 0, .5);
         }
 
         .skin-nw .project-prose h2 {
