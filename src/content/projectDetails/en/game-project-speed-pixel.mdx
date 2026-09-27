@@ -3,6 +3,8 @@
 import { Image } from 'astro:assets';
 import shotGameplay from '@/assets/projects/game-project-speed-pixel/shots/gameplay.png';
 import shotUpgrade from '@/assets/projects/game-project-speed-pixel/shots/upgrade.png';
+import speedCombatClip from '@/assets/projects/game-project-speed-pixel/clips/speed-combat.mp4?url';
+import speedCombatClipPoster from '@/assets/projects/game-project-speed-pixel/clips/speed-combat-poster.webp?url';
 
 <div class="image-grid-2">
     <figure>
@@ -36,6 +38,11 @@ The entire project's design revolves around a single, clear mechanical principle
 ### Core Gameplay Design: The Speed-Driven Combat Loop
 
 *Speed Pixel* requires players to complete combat and traversal at high speed. The speed bar in the game is not just a display component — it is an important feedback system that guides player behavior. As speed increases, players enter different speed tiers and gain stronger damage output, additional attack effects, or more efficient enemy-clearing ability; when speed drops below key thresholds, the character's output capability drops noticeably and both combat and survival pressure rapidly increase. This design keeps players constantly driven by the dual motivation of "keep accelerating" and "avoid stalling."
+
+<figure>
+    <video class="clip" src={speedCombatClip} poster={speedCombatClipPoster} width="1280" height="716" autoplay muted loop playsinline preload="metadata" aria-label="Speed-driven combat demo"></video>
+    <figcaption>Speed-driven combat: auto-firing through enemies at high speed</figcaption>
+</figure>
 
 To support this core loop, I designed multiple movement mechanics linked to speed. The foundational layer includes running and jumping; the advanced layer adds energy-sphere dashes, wall-sliding, and grapple-swinging as high-mobility actions. Among these, the energy-sphere dash draws on the directional dash design from *Ori and the Blind Forest*, allowing players to rapidly displace in a specified direction upon contact with certain interaction points to cross high-risk areas or maintain continuous rhythm. The grapple mechanic further enhances map traversal expressiveness, enabling players to complete high-speed swings and movement chaining across complex terrain. Together these mechanics form a movement system highly dependent on rhythm and route judgment.
 

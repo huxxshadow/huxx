@@ -3,6 +3,8 @@
 import { Image } from 'astro:assets';
 import shotGameplay from '@/assets/projects/game-project-speed-pixel/shots/gameplay.png';
 import shotUpgrade from '@/assets/projects/game-project-speed-pixel/shots/upgrade.png';
+import speedCombatClip from '@/assets/projects/game-project-speed-pixel/clips/speed-combat.mp4?url';
+import speedCombatClipPoster from '@/assets/projects/game-project-speed-pixel/clips/speed-combat-poster.webp?url';
 
 <div class="image-grid-2">
     <figure>
@@ -36,6 +38,11 @@ import shotUpgrade from '@/assets/projects/game-project-speed-pixel/shots/upgrad
 ### コアゲームプレイデザイン：スピード駆動の戦闘ループ
 
 *Speed Pixel* はプレイヤーが高速状態で戦闘と移動操作を完成させることを求めます。ゲームのスピードバーは単なる表示コンポーネントではなく、プレイヤーの行動を誘導する重要なフィードバックシステムです。スピードの上昇とともにプレイヤーは異なるスピード段階に入り、より強いダメージ出力・追加攻撃効果・より効率的なエネミー一掃能力を獲得します。スピードが重要な閾値を下回るとキャラクターの出力能力が著しく低下し、戦闘とサバイバルの圧力が急速に高まります。このデザインによりプレイヤーは常に「さらに加速する」と「失速を避ける」の二重の動機によって行動することになります。
+
+<figure>
+    <video class="clip" src={speedCombatClip} poster={speedCombatClipPoster} width="1280" height="716" autoplay muted loop playsinline preload="metadata" aria-label="スピード駆動の戦闘デモ"></video>
+    <figcaption>スピード駆動の戦闘：高速状態で自動射撃しながら敵を倒す</figcaption>
+</figure>
 
 このコアループをサポートするために、スピードと連動した複数の移動メカニクスを設計しました。基礎レベルとして走る・ジャンプするがあり、上級レベルとしてエナジースフィアダッシュ・ウォールスライド・グラップルスイングなどの高機動アクションを追加しました。このうちエナジースフィアダッシュは *Ori and the Blind Forest* の方向ダッシュのデザイン思想を参考にしており、特定のインタラクションポイントに触れた後に指定方向に素早く移動することで、高リスクエリアを越えたり連続したリズムを維持したりできます。グラップルメカニクスはマップトラバーサルの表現力をさらに高め、複雑な地形でプレイヤーが高速スイングと移動の連携を完成させられるようにしました。これらのメカニクスが共同で、リズムとルート判断に高度に依存する移動システムを形成しています。
 

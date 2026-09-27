@@ -477,6 +477,7 @@ const fontFace = [
 
     /* 图片、嵌入：白色像素卡片框 */
     .skin-sp .project-prose img,
+    .skin-sp .project-prose video.clip,
     .skin-sp .project-prose iframe {
         border-width: 12px !important;
         border-style: solid !important;
@@ -485,7 +486,7 @@ const fontFace = [
         border-radius: 0 !important;
         box-shadow: 6px 6px 0 rgb(79 120 208 / 0.3) !important;
     }
-    .skin-sp .project-prose figure img { margin: 0 !important; }
+    .skin-sp .project-prose figure :is(img, video.clip) { margin: 0 !important; display: block; width: 100%; height: auto; }
     .skin-sp .project-prose figcaption {
         color: var(--sp-blue-lo);
         opacity: 1;

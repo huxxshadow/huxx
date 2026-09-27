@@ -3,6 +3,8 @@
 import { Image } from 'astro:assets';
 import shotGameplay from '@/assets/projects/game-project-speed-pixel/shots/gameplay.png';
 import shotUpgrade from '@/assets/projects/game-project-speed-pixel/shots/upgrade.png';
+import speedCombatClip from '@/assets/projects/game-project-speed-pixel/clips/speed-combat.mp4?url';
+import speedCombatClipPoster from '@/assets/projects/game-project-speed-pixel/clips/speed-combat-poster.webp?url';
 
 <div class="image-grid-2">
     <figure>
@@ -36,6 +38,11 @@ import shotUpgrade from '@/assets/projects/game-project-speed-pixel/shots/upgrad
 ### 核心玩法设计：速度驱动的战斗循环
 
 《Speed Pixel》强调玩家必须在高速状态下完成战斗与穿越操作。游戏中的速度条不仅是一个显示组件，更是引导玩家行为的重要反馈系统。随着速度上升，玩家会进入不同的速度阶段，并获得更强的伤害输出、额外攻击效果或更高效的清怪能力；当速度跌破关键阈值时，角色输出能力会明显下降，战斗与生存压力迅速提升。这样的设计让玩家始终处于“继续加速”与“避免失速”的双重驱动之中。
+
+<figure>
+    <video class="clip" src={speedCombatClip} poster={speedCombatClipPoster} width="1280" height="716" autoplay muted loop playsinline preload="metadata" aria-label="速度驱动的战斗演示"></video>
+    <figcaption>速度驱动的战斗：高速状态下自动射击清怪</figcaption>
+</figure>
 
 为了支撑这一核心循环，我设计了多种与速度联动的移动机制。基础层面包括奔跑与跳跃；进阶层面则加入了能量球冲刺、贴墙滑行以及抓钩摆荡等高机动动作。其中，能量球冲刺参考了《Ori and the Blind Forest》中方向冲刺的设计思路，允许玩家在接触特定交互点后朝指定方向迅速位移，从而跨越高风险区域或维持连贯节奏。抓钩机制则进一步提升了地图 traversal 的表现力，使玩家能够在复杂地形中完成高速摆荡与位移衔接。这些机制共同构成了一个高度依赖节奏与路线判断的移动系统。
 
