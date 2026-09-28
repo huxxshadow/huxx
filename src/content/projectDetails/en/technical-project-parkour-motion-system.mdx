@@ -54,7 +54,7 @@ The first principle set for the project was simple: **when feel and physical rea
 
 Movement abilities are split into a set of independent components attached to the character, each owning one job:
 
-* **Traversal**: traces forward for an obstacle and classifies it (thin and low → hurdle, thin but no ground behind → vault, thick → mantle), then picks a stand / walk / run montage based on entry speed. This module hands control the other way — to root motion and Motion Warping — because the traversal animations ship with their own warping windows, and code-driven displacement would only be worse.
+* **Traversal**: traces forward for an obstacle and classifies it (thin and low → hurdle, thin but no ground behind → vault, thick → mantle), then picks a stand / walk / run montage based on entry speed. This module hands control the other way, to root motion and Motion Warping.
 * **Wall run and wall jump**: detects side walls, maintains the attached state and its duration limits, and handles wall jump direction and impulse.
 * **Jump and landing**: latches horizontal speed at takeoff so the animation can blend across stand / walk / run / sprint tiers, tracks the airborne apex to compute fall height, and uses that height on touchdown to decide between a normal landing and a roll. Every blend weight comes from a latched value, so it stays stable through the whole airborne state instead of jittering with mid-air adjustments.
 * **Slide**: entry conditions, speed decay and exit type (stand up, stay crouched, crouch-walk, walk out, run out) are configured separately, with the exit type mapping directly to the animation the state machine should play next.
