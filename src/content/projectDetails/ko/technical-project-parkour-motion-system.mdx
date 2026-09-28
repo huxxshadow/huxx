@@ -2,7 +2,19 @@
 ---
 
 import { Image } from 'astro:assets';
-import imgKeyArt from '@/assets/projects/technical-project-parkour-motion-system/technical-project-parkour-motion-system_KeyArt_en.webp';
+import refGhostrunner from '@/assets/projects/technical-project-parkour-motion-system/refs/ghostrunner.jpg';
+import refMirrorsEdge from '@/assets/projects/technical-project-parkour-motion-system/refs/mirrors-edge.jpg';
+
+<div class="video-embed">
+    <iframe
+            src="https://www.youtube-nocookie.com/embed/ttajBsbz1Ls?rel=0"
+            title="파쿠르 모션 시스템 시연"
+            loading="lazy"
+            allowfullscreen
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
+</div>
 
 ## 담당 역할
 
@@ -19,10 +31,16 @@ import imgKeyArt from '@/assets/projects/technical-project-parkour-motion-system
 
 《파쿠르 모션 시스템》은 파쿠르 게임의 모션 시스템과 3C 디자인을 처음부터 끝까지 한 번 훑어보기 위해 7일 만에 완성한 Unreal Engine 5 연습 프로젝트입니다. 참고한 것은 제가 좋아하는 《Ghostrunner》와 《Mirror’s Edge》입니다. 이 두 작품의 공통점은 **동작이 물리적으로 타당한지는 거의 중요하지 않고, 속도가 끊기지 않는지 그리고 카메라가 "내가 날고 있다"고 믿게 만드는지가 중요하다**는 점입니다.
 
-<figure>
-    <Image src={imgKeyArt} alt="파쿠르 모션 시스템 키 비주얼" width={1672} height={941} />
-    <figcaption>7일 연습 프로젝트: 속도감과 카메라 연출을 목표로 한 파쿠르 모션 및 카메라 시스템</figcaption>
-</figure>
+<div class="image-grid-2">
+    <figure>
+        <Image src={refGhostrunner} alt="Ghostrunner" />
+        <figcaption>Ghostrunner</figcaption>
+    </figure>
+    <figure>
+        <Image src={refMirrorsEdge} alt="Mirror's Edge" />
+        <figcaption>Mirror's Edge</figcaption>
+    </figure>
+</div>
 
 ### 전제: 사실성을 버리고 속도감을 취한다
 

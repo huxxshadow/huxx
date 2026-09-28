@@ -2,7 +2,19 @@
 ---
 
 import { Image } from 'astro:assets';
-import imgKeyArt from '@/assets/projects/technical-project-parkour-motion-system/technical-project-parkour-motion-system_KeyArt_en.webp';
+import refGhostrunner from '@/assets/projects/technical-project-parkour-motion-system/refs/ghostrunner.jpg';
+import refMirrorsEdge from '@/assets/projects/technical-project-parkour-motion-system/refs/mirrors-edge.jpg';
+
+<div class="video-embed">
+    <iframe
+            src="https://www.youtube-nocookie.com/embed/ttajBsbz1Ls?rel=0"
+            title="パルクールモーションシステムのデモ"
+            loading="lazy"
+            allowfullscreen
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
+</div>
 
 ## 担当した役割
 
@@ -19,10 +31,16 @@ import imgKeyArt from '@/assets/projects/technical-project-parkour-motion-system
 
 『パルクール・モーションシステム』は、パルクールゲームのモーションシステムと3C設計を一通り通しで作ってみるために、7日間で仕上げた Unreal Engine 5 の練習プロジェクトです。参照したのは私の好きな『Ghostrunner』と『Mirror’s Edge』。この2本に共通するのは、**動きが物理的に妥当かどうかはほとんど問題ではなく、速度が途切れないこと、そしてカメラが「自分は飛んでいる」と信じさせることこそが重要**だという点です。
 
-<figure>
-    <Image src={imgKeyArt} alt="パルクール・モーションシステムのキービジュアル" width={1672} height={941} />
-    <figcaption>7日間の練習プロジェクト：スピード感とカメラ演出を目的としたパルクールのモーション＆カメラシステム</figcaption>
-</figure>
+<div class="image-grid-2">
+    <figure>
+        <Image src={refGhostrunner} alt="Ghostrunner" />
+        <figcaption>Ghostrunner</figcaption>
+    </figure>
+    <figure>
+        <Image src={refMirrorsEdge} alt="Mirror's Edge" />
+        <figcaption>Mirror's Edge</figcaption>
+    </figure>
+</div>
 
 ### 前提：リアリティを捨ててスピード感を取る
 

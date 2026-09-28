@@ -2,7 +2,18 @@
 ---
 
 import { Image } from 'astro:assets';
-import imgKeyArt from '@/assets/projects/technical-project-parkour-motion-system/technical-project-parkour-motion-system_KeyArt_zh.webp';
+import refGhostrunner from '@/assets/projects/technical-project-parkour-motion-system/refs/ghostrunner.jpg';
+import refMirrorsEdge from '@/assets/projects/technical-project-parkour-motion-system/refs/mirrors-edge.jpg';
+
+<div class="video-embed">
+    <iframe
+            src="https://player.bilibili.com/player.html?bvid=BV1CD8Z6EEs7&autoplay=0&danmaku=0&high_quality=1"
+            title="跑酷运动系统演示视频"
+            loading="lazy"
+            allowfullscreen
+            allow="fullscreen; picture-in-picture"
+    ></iframe>
+</div>
 
 ## 我的职责
 
@@ -19,10 +30,16 @@ import imgKeyArt from '@/assets/projects/technical-project-parkour-motion-system
 
 《跑酷运动系统》是我用七天时间完成的一个 Unreal Engine 5 练习项目，目标是把跑酷类游戏的运动系统与 3C 设计从头走一遍。参考对象是我很喜欢的《Ghostrunner》与《Mirror's Edge》——它们的共同点是，**动作看上去合不合物理并不重要，重要的是速度是否连续、镜头是否让人相信自己在飞**。
 
-<figure>
-    <Image src={imgKeyArt} alt="跑酷运动系统主视觉" width={1672} height={941} />
-    <figcaption>七天练习项目：一套以速度感与镜头叙事为目标的跑酷运动与相机系统</figcaption>
-</figure>
+<div class="image-grid-2">
+    <figure>
+        <Image src={refGhostrunner} alt="幽灵行者（Ghostrunner）" />
+        <figcaption>幽灵行者（Ghostrunner）</figcaption>
+    </figure>
+    <figure>
+        <Image src={refMirrorsEdge} alt="镜之边缘（Mirror's Edge）" />
+        <figcaption>镜之边缘（Mirror's Edge）</figcaption>
+    </figure>
+</div>
 
 ### 设计前提：为速度感牺牲真实性
 

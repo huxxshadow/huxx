@@ -2,7 +2,19 @@
 ---
 
 import { Image } from 'astro:assets';
-import imgKeyArt from '@/assets/projects/technical-project-parkour-motion-system/technical-project-parkour-motion-system_KeyArt_en.webp';
+import refGhostrunner from '@/assets/projects/technical-project-parkour-motion-system/refs/ghostrunner.jpg';
+import refMirrorsEdge from '@/assets/projects/technical-project-parkour-motion-system/refs/mirrors-edge.jpg';
+
+<div class="video-embed">
+    <iframe
+            src="https://www.youtube-nocookie.com/embed/ttajBsbz1Ls?rel=0"
+            title="Parkour motion system demo"
+            loading="lazy"
+            allowfullscreen
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
+</div>
 
 ## My Role
 
@@ -19,10 +31,16 @@ A seven-day solo practice project: building a parkour movement and camera system
 
 *Parkour Motion System* is a seven-day Unreal Engine 5 practice project built to walk through the movement systems and 3C design of a parkour game end to end. The reference points are two games I love — *Ghostrunner* and *Mirror's Edge* — which share one quality: **whether the motion is physically plausible barely matters; what matters is whether the speed stays continuous and whether the camera makes you believe you are flying.**
 
-<figure>
-    <Image src={imgKeyArt} alt="Parkour Motion System key art" width={1672} height={941} />
-    <figcaption>A seven-day practice project: a parkour movement and camera system aimed at speed, flow, and camera-driven storytelling</figcaption>
-</figure>
+<div class="image-grid-2">
+    <figure>
+        <Image src={refGhostrunner} alt="Ghostrunner" />
+        <figcaption>Ghostrunner</figcaption>
+    </figure>
+    <figure>
+        <Image src={refMirrorsEdge} alt="Mirror's Edge" />
+        <figcaption>Mirror's Edge</figcaption>
+    </figure>
+</div>
 
 ### The Premise: Trading Realism for Speed
 
