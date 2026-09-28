@@ -50,8 +50,6 @@ The first principle set for the project was simple: **when feel and physical rea
 * **Sliding is velocity-driven, not root-motion-driven**: the slide loop animation moves at a constant speed, while the whole point of a slide is that speed decays. So animation only carries the performance and code owns the speed curve — animation serves feel, not the other way around.
 * **Traversal deliberately omits climbing**: traversal is classified into hurdle, vault and mantle, each a "play one montage and you're done" structure. Climbing would require a persistent "hanging on a wall" state and a whole suspended-movement state machine, which drags the pacing against the continuity this system is built for — so it was cut.
 
-What these trade-offs share is a goal: **push uncertainty out of the system.** The worst thing that can happen to parkour feel is "why did that attempt behave differently from the last one," so anything code can pin down is not left to physics simulation or animation side effects.
-
 ### The Movement System: Component-Based Modules
 
 Movement abilities are split into a set of independent components attached to the character, each owning one job:
