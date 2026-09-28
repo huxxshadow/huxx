@@ -11,9 +11,9 @@ const splitTags = (...parts: string[]) => parts.flatMap((x) => x.split(/\s*[·/]
 
 // 九宫格外圈 8 格的顺序：左上、上、右上、左、右、左下、下、右下
 const GRID = [
-    "game-project-rephrased",
-    "game-project-eel-on-mask",
     "game-project-empty-throne",
+    "game-project-eel-on-mask",
+    "game-project-rephrased",
     "technical-project-parkour-motion-system",
     "game-project-speed-pixel",
     "game-project-lost-realm",
