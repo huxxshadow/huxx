@@ -57,7 +57,7 @@ Movement abilities are split into a set of independent components attached to th
 * **Traversal**: traces forward for an obstacle and classifies it (thin and low → hurdle, thin but no ground behind → vault, thick → mantle), then picks a stand / walk / run montage based on entry speed. This module hands control the other way, to root motion and Motion Warping.
 * **Wall run and wall jump**: detects side walls, maintains the attached state and its duration limits, and handles wall jump direction and impulse.
 * **Jump and landing**: latches horizontal speed at takeoff so the animation can blend across stand / walk / run / sprint tiers, tracks the airborne apex to compute fall height, and uses that height on touchdown to decide between a normal landing and a roll. Every blend weight comes from a latched value, so it stays stable through the whole airborne state instead of jittering with mid-air adjustments.
-* **Slide**: entry conditions, speed decay and exit type (stand up, stay crouched, crouch-walk, walk out, run out) are configured separately, with the exit type mapping directly to the animation the state machine should play next.
+* **Slide**: entry conditions, speed decay and exit type (stand up, stay crouched, crouch-walk, walk out, run out) are configured separately.
 * **Sprint and air control**: sprint drives speed tier changes and pushes its intensity to the camera distortion; air control separately manages mid-air steering so corrections feel neither floaty nor locked.
 * **Turn blending**: handles in-place turns and orientation interpolation while moving, paired with the 8-way locomotion blend spaces.
 
