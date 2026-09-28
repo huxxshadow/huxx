@@ -20,17 +20,27 @@ import tree from '@/assets/projects/technical-project-terraria-ai-teammate/tree-
 
 A solo project at the intersection of **games and AI**: an AI teammate for *Terraria* that follows the player and helps in combat. It uses a traditional behaviour tree as its framework and hands most decision nodes to the Jev model, while the tree handles flow orchestration, real-time reactions and fallbacks. I designed and built everything myself, from the tModLoader mod and the movement system to integrating and calibrating the Jev nodes. My main work included:
 
-- **Decision architecture**: Deciding, gate by gate, what stays in code and what becomes a judgment, and the rule that makes that split hold up in a real-time game.
+- **Decision architecture**: Designed the layered "LLM brain + Jev cerebellum + behaviour tree" structure, decided which gates go to Jev and which stay as code reflexes, and distilled the rule that keeps this split sound in a real-time game.
 - **Jev nodes**: Designing the questions, the state snapshots they see, the symmetric option wording, the confidence thresholds, and the asynchronous plumbing that lets a 300 ms answer live inside a 16 ms tick.
 - **Classical layer**: Pathfinding whose jump and flight arcs are traced from the game's physics, lead aiming, dodging, and a boss ring that never closes.
-- **Knowledge layer**: ChatGPT playbooks per boss and mining plans, consumed by the tree as state rather than as commands.
+- **Brain layer (LLM)**: ChatGPT writes a survival playbook per boss and a mining plan; as upper-level strategy these set the conditions and state snapshots of the Jev nodes, rather than issuing key presses directly.
 - **Calibration and tooling**: Every question measured on drawn scenarios before being trusted; two self-test suites; in-game diagnostics.
 
 ## Design Approach
 
-A traditional behaviour tree leans heavily on hand-authored condition nodes to choose between states: every "should I retreat" or "which weapon now" has to be written in advance as a fixed rule, which gets tedious and rigid once combat states become complex. My approach replaces these small nodes that need to weigh complex state with Jev, using its inference speed so each node can judge the current situation directly at runtime, while the tree keeps its clear flow structure.
+The system uses a layered "brain + cerebellum" structure: the LLM handles strategy, Jev handles judgment, and the behaviour tree and code handle execution.
 
-These Jev nodes are not fixed either. Above them sits an LLM acting as the "brain": it reads the overall situation and long-term goals and dynamically adjusts the preset conditions inside each Jev node, while the Jev nodes act as the "cerebellum", executing those judgments quickly and continuously. Together they form a layered, brain-plus-cerebellum intelligence: the upper layer sets the strategy, the lower layer keeps reactions immediate.
+**The problem: hand-authored condition nodes.** A traditional behaviour tree leans heavily on hand-authored conditions to choose between states: every "should I retreat" or "which weapon now" has to be written in advance as a fixed rule, which gets tedious and rigid once combat states become complex.
+
+**Layer one · Jev as the cerebellum: replacing judgment nodes.** The small nodes that need to weigh complex state are replaced with Jev. Its inference speed lets each node judge the current situation directly at runtime, while the tree keeps its clear flow structure.
+
+**Layer two · the LLM as the brain: setting conditions dynamically.** The Jev nodes are not fixed either. An upper-level LLM reads the overall situation and long-term goals and adjusts the preset conditions inside each Jev node, so the same tree makes different trade-offs across bosses and phases.
+
+| Layer | Role | Responsible for | Update rate |
+| --- | --- | --- | --- |
+| LLM (ChatGPT) | Brain | Reads the situation and goals, sets the Jev nodes' conditions | Once per boss; mining plan every 12 s |
+| Jev nodes | Cerebellum | Fast judgment over complex state | About 300 ms per answer |
+| Behaviour tree and code | Execution | Flow orchestration, real-time reactions, fallbacks | 30 ticks per second |
 
 ---
 
@@ -45,7 +55,7 @@ The thing those gates have in common is that a player settles them by feel, from
     <figcaption>The teammate is a real player client; the tree runs in a Python backend and reloads on save</figcaption>
 </figure>
 
-So the tree keeps its structure, and some of its gates become Jev nodes.
+So the behaviour tree keeps its structure, while the great majority of its judgment gates became Jev nodes.
 
 ---
 
@@ -102,7 +112,7 @@ The rule: a gate can be a model node only if it tolerates a stale answer, has mo
 
 Everything below the gates is deterministic and fast. The pathfinder derives its tables from vanilla constants and traces jump, run-up and flight arcs tile by tile, so the routes it plans are routes the body can follow; a controller turns them into key presses that land. Aim leads a moving target by iterating flight time. Incoming projectiles are dodged by closest approach. Against a boss he holds the far end of his range and never takes a step toward it, and a final layer predicts the boss's position ten ticks ahead and refuses any step that would close within three tiles of its hitbox, whoever asked for it.
 
-ChatGPT sits above, not inside: once per boss it writes a survival playbook (phases, what each throws, how to dodge it, what to do on a charge, how far to keep), and every twelve seconds a mining plan. The tree reads these as state. The playbook's "on charge: fly up" becomes the action behind a code gate; its "escape toward height" becomes a field in the snapshot Jev sees when choosing a way out. The model that knows about bosses never presses a key, and the model that presses keys never has to know about bosses.
+ChatGPT sits at the top as the "brain": it writes a survival playbook once per boss (phases, what each phase throws, how to dodge, what to do about charges, how far to stay) and a mining plan every twelve seconds. These strategies never drive key presses; they dynamically set the conditions and snapshot contents of the Jev nodes below. "Fly up when it charges" in a playbook becomes an action behind a code gate; "escape upward" becomes a field in the snapshot Jev sees when choosing an exit. The brain understands the boss, the cerebellum judges quickly, and key presses are always done by deterministic code.
 
 ---
 
