@@ -100,14 +100,6 @@ At the same time, I separated **static configuration data** from **runtime data*
     </figure>
 </div>
 
-### Managers, State Machines, and System Interconnection
-
-To handle multi-system collaboration, I used a large number of domain-specific Managers for unified indexing and runtime coordination — covering entities, rewards, effects, accessories, animals, quests, progression data, and more, each with its own clearly defined management layer. This is not about stacking singletons, but about establishing stable access points with low maintenance cost in an indie development context, reducing scene reference chaos and repeated lookups.
-
-For objects whose behaviors switch noticeably over time, I used **state machines** to organize logic, particularly in the entity and companion systems. Entities transition between states such as idle, attacked, false-attacked, floating, and sucking; companions have states including idle, moving, chasing, attacking, and recovering. Compared to stuffing all logic into a single `Update()`, this approach makes it easier to locate issues, extend new behaviors, and keep object state transitions clear.
-
-The value of this structure is that the project, though completed solo, is not written as a "just-works" demo, but aims as closely as possible toward a genuinely iterable mid-scale project framework — one of my most important technical achievements in this thesis.
-
 ### Companions, Quests, Rewards, and Collections
 
 Beyond player growth itself, the project designed multiple parallel progression paths to strengthen exploration and long-term motivation.
