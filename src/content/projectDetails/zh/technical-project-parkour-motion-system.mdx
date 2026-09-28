@@ -97,10 +97,16 @@ import refMirrorsEdge from '@/assets/projects/technical-project-parkour-motion-s
     <li>抖动</li>
 </ul>
 
-<figure>
-    <img src={turnDynamicsClip.src} alt="转向动态演示" width="800" height="450" loading="lazy" decoding="async" />
-    <figcaption>转向动态：构图偏移与轻微 roll</figcaption>
-</figure>
+<div class="image-grid-2">
+    <figure>
+        <img src={turnDynamicsClip.src} alt="转向动态演示" width="800" height="450" loading="lazy" decoding="async" />
+        <figcaption>转向动态：构图偏移与轻微 roll</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={comparisonTrack} poster={comparisonTrackPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="全功能对比赛道"></video>
+        <figcaption>全功能对比赛道：左右两个角色跑同一段路线，对比开启前后的效果</figcaption>
+    </figure>
+</div>
 
 ### 镜头叙事：把镜头变成可编排的语言
 
@@ -114,11 +120,6 @@ import refMirrorsEdge from '@/assets/projects/technical-project-parkour-motion-s
 ### 验证工具：让调参可被看见
 
 手感调参最难的地方是说不清"这次改了什么"。所以我额外写了一个演示装置：场景里放主 / 从两个角色，从属角色按指定改写运行不同参数，开演时自动把两边所有自定义组件的可编辑属性逐一导出比对，**把差异直接列在屏幕上**。
-
-<figure>
-    <video class="clip" src={comparisonTrack} poster={comparisonTrackPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="全功能对比赛道"></video>
-    <figcaption>全功能对比赛道：左右两个角色跑同一段路线，对比开启前后的效果</figcaption>
-</figure>
 
 这样录出来的对比视频不需要旁白解释，画面本身就写着"这条录像在演什么"——同一段路线，左边和右边差的就是屏幕上列出的那几个参数。
 

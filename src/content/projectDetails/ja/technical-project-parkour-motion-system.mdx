@@ -98,10 +98,16 @@ import refMirrorsEdge from '@/assets/projects/technical-project-parkour-motion-s
     <li>シェイク</li>
 </ul>
 
-<figure>
-    <img src={turnDynamicsClip.src} alt="ターンダイナミクスのデモ" width="800" height="450" loading="lazy" decoding="async" />
-    <figcaption>ターンダイナミクス：構図オフセットと軽いロール</figcaption>
-</figure>
+<div class="image-grid-2">
+    <figure>
+        <img src={turnDynamicsClip.src} alt="ターンダイナミクスのデモ" width="800" height="450" loading="lazy" decoding="async" />
+        <figcaption>ターンダイナミクス：構図オフセットと軽いロール</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={comparisonTrack} poster={comparisonTrackPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="全機能比較コース"></video>
+        <figcaption>全機能比較コース：左右2体のキャラクターが同じルートを走り、適用前後を比較</figcaption>
+    </figure>
+</div>
 
 ### カメラ演出：カメラを「組み立てられる言語」にする
 
@@ -115,11 +121,6 @@ import refMirrorsEdge from '@/assets/projects/technical-project-parkour-motion-s
 ### 検証ツール：チューニングを目に見えるようにする
 
 手触りのチューニングで最も難しいのは「今回何を変えたのか」を言葉にすることです。そこでデモリグを別途書きました。シーンにリーダーとフォロワーの2体を置き、フォロワーには指定した上書きで異なるパラメータを走らせます。開演時にリグが両者のカスタムコンポーネントの編集可能プロパティをすべてエクスポートして比較し、**差分をそのまま画面に列挙します**。
-
-<figure>
-    <video class="clip" src={comparisonTrack} poster={comparisonTrackPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="全機能比較コース"></video>
-    <figcaption>全機能比較コース：左右2体のキャラクターが同じルートを走り、適用前後を比較</figcaption>
-</figure>
 
 この方法で録った比較映像にはナレーションが要りません。画面そのものが「このテイクは何を見せているのか」を語っています。同じルートで、左右の違いは画面に並んだ数個のパラメータだけです。
 
