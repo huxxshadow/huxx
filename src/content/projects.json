@@ -2031,10 +2031,10 @@
       ]
     },
     "desc": {
-      "en": "A Terraria AI teammate that combines a traditional behaviour tree with the Jev model. The behaviour tree owns the overall decision flow, real-time reactions and fallbacks, and calls Jev only at the few nodes that need holistic judgment — which way to disengage in a boss fight, which weapon to use, when to drink a potion. Per-boss strategies are fed to the model as structured state, and every model node was calibrated and validated against preset scenarios before being integrated.",
-      "zh": "一个融合传统行为树与 Jev 模型的《泰拉瑞亚》AI 队友。行为树负责整体决策流程、即时反应与失败兜底，只在少数需要综合判断的节点调用 Jev，例如 Boss 战中的脱离方向、武器选择与用药时机；各 Boss 的应对策略以结构化状态输入模型，每个模型节点在接入前都经过预设场景的校准与验证。",
-      "ja": "従来のビヘイビアツリーと Jev モデルを組み合わせた『テラリア』の AI チームメイトです。ビヘイビアツリーが全体の意思決定フロー、即時の反応、失敗時のフォールバックを担い、総合的な判断が必要な少数のノードでのみ Jev を呼び出します。たとえばボス戦での離脱方向、武器の選択、回復薬を使うタイミングです。各ボスの攻略方針は構造化された状態としてモデルに入力し、すべてのモデルノードは組み込む前に用意したシナリオで調整と検証を行いました。",
-      "ko": "전통적인 행동 트리와 Jev 모델을 결합한 《테라리아》 AI 팀원입니다. 행동 트리가 전체 의사결정 흐름, 즉각 반응, 실패 시 대체 처리를 맡고, 종합적인 판단이 필요한 소수의 노드에서만 Jev를 호출합니다. 예를 들어 보스전에서의 이탈 방향, 무기 선택, 물약 사용 시점입니다. 보스별 공략 방침은 구조화된 상태로 모델에 입력되며, 모든 모델 노드는 연동 전에 미리 준비한 시나리오로 보정과 검증을 거쳤습니다."
+      "en": "A Terraria AI teammate whose behaviour-tree decisions are driven by the Jev model. On top of a traditional behaviour tree, most decision nodes are handed to Jev — which way to disengage in a boss fight, which weapon to use, when to drink a potion and more — while the tree handles flow orchestration, real-time reactions and fallbacks. Per-boss strategies are fed to the model as structured state, and every Jev node was calibrated and validated against preset scenarios before being integrated.",
+      "zh": "一个以 Jev 模型驱动行为树决策的《泰拉瑞亚》AI 队友。在传统行为树的结构上，把大部分决策节点交给 Jev 判断，包括 Boss 战中的脱离方向、武器选择、用药时机等；行为树负责流程编排、即时反应与失败兜底。各 Boss 的应对策略以结构化状态输入模型，每个 Jev 节点在接入前都经过预设场景的校准与验证。",
+      "ja": "Jev モデルがビヘイビアツリーの意思決定を担う『テラリア』の AI チームメイトです。従来のビヘイビアツリーの構造の上で、ボス戦での離脱方向、武器の選択、回復薬を使うタイミングなど、大半の判断ノードを Jev に任せ、ツリー自体はフローの制御、即時の反応、失敗時のフォールバックを担います。各ボスの攻略方針は構造化された状態としてモデルに入力し、すべての Jev ノードは組み込む前に用意したシナリオで調整と検証を行いました。",
+      "ko": "Jev 모델이 행동 트리의 의사결정을 이끄는 《테라리아》 AI 팀원입니다. 전통적인 행동 트리 구조 위에서 보스전의 이탈 방향, 무기 선택, 물약 사용 시점 등 대부분의 결정 노드를 Jev에 맡기고, 트리는 흐름 제어, 즉각 반응, 실패 시 대체 처리를 담당합니다. 보스별 공략 방침은 구조화된 상태로 모델에 입력되며, 모든 Jev 노드는 연동 전에 미리 준비한 시나리오로 보정과 검증을 거쳤습니다."
     },
     "tags": {
       "en": [
