@@ -44,7 +44,7 @@ A seven-day solo practice project: building a parkour movement and camera system
 
 ### The Premise: Trading Realism for Speed
 
-The first principle set for the project was simple: **when feel and physical realism conflict, realism gives way, unconditionally.** That principle left concrete marks all over the implementation:
+The first principle set for the project was simple: **when feel and physical realism conflict, realism gives way, unconditionally.** For example:
 
 * **Wall running never switches movement mode**: the character stays in `MOVE_Falling` the entire time, with `GravityScale` zeroed and velocity fully overwritten by the component every frame. The "hold flat, then sink" arc along a wall is therefore a curve I author and tune, not the byproduct of engine gravity integration — it can bend however it needs to. The cost is that writing velocity directly bypasses CharacterMovement's network prediction, which makes the system single-player only.
 * **Sliding is velocity-driven, not root-motion-driven**: the slide loop animation moves at a constant speed, while the whole point of a slide is that speed decays. So animation only carries the performance and code owns the speed curve — animation serves feel, not the other way around.
