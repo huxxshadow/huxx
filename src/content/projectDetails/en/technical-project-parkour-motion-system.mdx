@@ -2,6 +2,8 @@
 ---
 
 import { Image } from 'astro:assets';
+import wallRunClip from '@/assets/projects/technical-project-parkour-motion-system/wallrun.webp';
+import traversalClip from '@/assets/projects/technical-project-parkour-motion-system/traversal.webp';
 import refGhostrunner from '@/assets/projects/technical-project-parkour-motion-system/refs/ghostrunner.jpg';
 import refMirrorsEdge from '@/assets/projects/technical-project-parkour-motion-system/refs/mirrors-edge.jpg';
 
@@ -55,7 +57,19 @@ The first principle set for the project was simple: **when feel and physical rea
 Movement abilities are split into a set of independent components attached to the character, each owning one job:
 
 * **Traversal**: traces forward for an obstacle and classifies it (thin and low → hurdle, thin but no ground behind → vault, thick → mantle), then picks a stand / walk / run montage based on entry speed. This module hands control the other way, to root motion and Motion Warping.
+
+<figure>
+    <img src={traversalClip.src} alt="Traversal demo" width="800" height="450" loading="lazy" decoding="async" />
+    <figcaption>Traversal: hurdle, vault and mantle</figcaption>
+</figure>
+
 * **Wall run and wall jump**: detects side walls, maintains the attached state and its duration limits, and handles wall jump direction and impulse.
+
+<figure>
+    <img src={wallRunClip.src} alt="Wall run demo" width="800" height="450" loading="lazy" decoding="async" />
+    <figcaption>Wall run and wall jump</figcaption>
+</figure>
+
 * **Jump and landing**: latches horizontal speed at takeoff so the animation can blend across stand / walk / run / sprint tiers, tracks the airborne apex to compute fall height, and uses that height on touchdown to decide between a normal landing and a roll. Every blend weight comes from a latched value, so it stays stable through the whole airborne state instead of jittering with mid-air adjustments.
 * **Slide**: entry conditions, speed decay and exit type (stand up, stay crouched, crouch-walk, walk out, run out) are configured separately.
 * **Sprint and air control**: sprint drives speed tier changes and pushes its intensity to the camera distortion; air control separately manages mid-air steering so corrections feel neither floaty nor locked.

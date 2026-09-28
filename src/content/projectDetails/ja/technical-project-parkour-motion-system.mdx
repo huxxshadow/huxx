@@ -2,6 +2,8 @@
 ---
 
 import { Image } from 'astro:assets';
+import wallRunClip from '@/assets/projects/technical-project-parkour-motion-system/wallrun.webp';
+import traversalClip from '@/assets/projects/technical-project-parkour-motion-system/traversal.webp';
 import refGhostrunner from '@/assets/projects/technical-project-parkour-motion-system/refs/ghostrunner.jpg';
 import refMirrorsEdge from '@/assets/projects/technical-project-parkour-motion-system/refs/mirrors-edge.jpg';
 
@@ -55,7 +57,19 @@ import refMirrorsEdge from '@/assets/projects/technical-project-parkour-motion-s
 移動能力はキャラクターに付く独立したコンポーネント群に分割され、それぞれが一つの役割を持ちます。
 
 * **踏破**：前方の障害物をトレースして分類し（薄くて低い → ハードル、薄いが裏に地面がない → ヴォルト、厚い → マントル）、進入速度に応じて立ち／歩き／走りの3段階のモンタージュを選びます。このモジュールだけは逆に主導権をルートモーションと Motion Warping に渡します。
+
+<figure>
+    <img src={traversalClip.src} alt="踏破のデモ" width="800" height="450" loading="lazy" decoding="async" />
+    <figcaption>踏破：ハードル、ヴォルト、マントル</figcaption>
+</figure>
+
 * **壁走りと壁ジャンプ**：側面の壁を検出し、貼り付き状態と継続時間の上限を管理、壁ジャンプの方向と初速を処理します。
+
+<figure>
+    <img src={wallRunClip.src} alt="壁走りのデモ" width="800" height="450" loading="lazy" decoding="async" />
+    <figcaption>壁走りと壁ジャンプ</figcaption>
+</figure>
+
 * **ジャンプと着地**：離陸の瞬間に水平速度をラッチし、立ち／歩き／走り／スプリントの4段階でアニメーションをブレンド。滞空中の最高点を追跡して落下高度を算出し、接地時にその高度から通常着地か受け身かを決めます。すべてのブレンド重みはラッチ値由来なので、空中で微調整しても滞空中ずっと安定します。
 * **スライディング**：進入条件、速度減衰、離脱方法（立ち上がる／しゃがみ維持／しゃがみ歩き／歩いて出る／走って出る）を個別に設定できます。
 * **スプリントと空中制御**：スプリントは速度ティアの切り替えを担い、その強度をカメラの歪みへ渡します。空中制御は滞空中の旋回能力を個別に管理し、修正が浮つきすぎず固すぎない範囲に収めます。
