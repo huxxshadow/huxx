@@ -8,7 +8,7 @@ import imgKeyArt from '@/assets/projects/technical-project-parkour-motion-system
 
 A seven-day solo practice project: building a parkour movement and camera system from scratch in Unreal Engine 5. Apart from the animation assets, every gameplay system, camera behaviour and line of code is mine:
 
-* **Movement System Architecture and Implementation**: Broke parkour down into traversal, wall running and wall jumping, jumping and landing, sliding, sprinting, air control and turn blending — each implemented as its own character component, with explicit ownership of who writes velocity and state on any given frame so the modules never fight each other.
+* **Movement System Architecture and Implementation**: Broke parkour down into traversal, wall running and wall jumping, jumping and landing, sliding, sprinting, air control and turn blending — each implemented as its own character component.
 * **3C Tuning**: Set the tone around "running feels great" rather than "running looks real" — designing speed tiers, entry/exit conditions and cooldowns, and the division of labour between animation and code, with a tunable parameter behind every perceivable quantity.
 * **Camera System and Camera Storytelling**: Built a camera dynamics system driven by speed, state and events — covering lag, FOV, arm length, dolly zoom, turn framing, distortion, shake, airborne framing and a view window — and exposed a set of camera channels that cutscenes and scripted moments can reuse.
 * **Time Scaling and Beat Design**: Implemented a slow-motion system at the jump apex, with normal and dramatic profiles plus per-character time compensation, turning "the highest point" into a beat that can be authored.
