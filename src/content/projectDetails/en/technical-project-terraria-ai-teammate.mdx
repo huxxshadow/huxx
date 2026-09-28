@@ -26,6 +26,12 @@ A solo project at the intersection of **games and AI**: an AI teammate for *Terr
 - **Knowledge layer**: ChatGPT playbooks per boss and mining plans, consumed by the tree as state rather than as commands.
 - **Calibration and tooling**: Every question measured on drawn scenarios before being trusted; two self-test suites; in-game diagnostics.
 
+## Design Approach
+
+A traditional behaviour tree leans heavily on hand-authored condition nodes to choose between states: every "should I retreat" or "which weapon now" has to be written in advance as a fixed rule, which gets tedious and rigid once combat states become complex. My approach replaces these small nodes that need to weigh complex state with Jev, using its inference speed so each node can judge the current situation directly at runtime, while the tree keeps its clear flow structure.
+
+These Jev nodes are not fixed either. Above them sits an LLM acting as the "brain": it reads the overall situation and long-term goals and dynamically adjusts the preset conditions inside each Jev node, while the Jev nodes act as the "cerebellum", executing those judgments quickly and continuously. Together they form a layered, brain-plus-cerebellum intelligence: the upper layer sets the strategy, the lower layer keeps reactions immediate.
+
 ---
 
 ## The Problem With Gates
