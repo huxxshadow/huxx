@@ -565,6 +565,20 @@ if (detailEntry) {
         display: block;
     }
 
+    /* 两列的短列表（只列名称时用）：窄屏一列 */
+    :global(.project-prose .list-2col) {
+        columns: 2;
+        column-gap: 2.5rem;
+        margin: 1.25rem 0 1.75rem;
+    }
+    :global(.project-prose .list-2col li) {
+        break-inside: avoid;
+        margin: 0 0 .5rem;
+    }
+    @media (max-width: 639px) {
+        :global(.project-prose .list-2col) { columns: 1; }
+    }
+
     /* 正文末尾「开发中…」的标记：居中、虚线分隔，三个点依次闪烁 */
     :global(.project-prose .wip-note) {
         margin: 4rem 0 0 !important;

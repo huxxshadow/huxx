@@ -65,14 +65,14 @@ The character itself is coordinated by a State Tree, with GASP's 8-way locomotio
 
 ### Camera: Draw the Speed First
 
-The camera system is the largest single piece in the project (about 2,800 lines). It is not a follow component but a set of channels driven jointly by speed, state and events, each tunable and disableable on its own:
-
-* **Speed → FOV and arm length**: speed within a configured band maps to an FOV boost and a camera pull-in, optionally shaped by a curve.
-* **Speed-driven camera lag**: SpringArm ships with lag, but it is a static value. Here lag speed becomes a function of movement speed — tight at low speed, loose at high speed, so the camera gets "thrown" behind the character and picks up a sense of weight.
-* **Turn dynamics**: turning produces a framing offset and a slight roll, with strength decaying smoothly with speed instead of snapping at a threshold.
-* **Lens distortion**: sprinting pulls the frame edges slightly inward through a post-process material. Its strength tracks the **actual speed** interpolated across the run/sprint band rather than whether the sprint key is held — the distortion is meant to say "you really are faster now."
-* **Airborne framing**: the camera holds still through the rise and only strengthens the falling effect past the apex; the airborne turn offset is scaled separately, because horizontal speed in the air is usually high enough that an unscaled offset overshoots.
-* **Shake**: takeoff, landing and sustained falling each carry their own shake configuration.
+<ul class="list-2col">
+    <li>Speed → FOV and arm length</li>
+    <li>Speed-driven camera lag</li>
+    <li>Turn dynamics</li>
+    <li>Lens distortion</li>
+    <li>Airborne framing</li>
+    <li>Shake</li>
+</ul>
 
 ### Camera Storytelling: Turning the Camera Into an Authorable Language
 
