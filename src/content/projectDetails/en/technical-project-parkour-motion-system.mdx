@@ -11,7 +11,7 @@ A seven-day solo practice project: building a parkour movement and camera system
 * **Movement System Architecture and Implementation**: Broke parkour down into traversal, wall running and wall jumping, jumping and landing, sliding, sprinting, air control and turn blending — each implemented as a detachable, building-block character component.
 * **3C Tuning**: Set the tone around a sense of speed rather than realism — designing speed tiers, entry/exit conditions and cooldowns, and the division of labour between animation and code, with a tunable parameter behind every perceivable quantity.
 * **Camera System and Camera Storytelling**: Built a camera dynamics system driven by speed, state and events — covering lag, FOV, arm length, dolly zoom, turn framing, distortion, shake, airborne framing and a view window — and exposed a set of camera channels that cutscenes and scripted moments can reuse.
-* **Time Scaling and Beat Design**: Implemented a slow-motion system at the jump apex, with normal and dramatic profiles plus per-character time compensation, turning "the highest point" into a beat that can be authored.
+* **Automatic Pacing Design**: Triggers a global time slowdown automatically at the jump apex while compensating the player character's own time dilation, so controls stay responsive during the slowdown; the slowdown curve ships with normal and dramatic profiles, turning the apex of a jump into a beat that can be choreographed per level.
 * **Debug and Verification Tooling**: Wrote a leader/follower demo rig that automatically diffs every editable property across both characters' custom components at showtime and lists the differences on screen, so a tuning pass can be verified rather than argued about.
 
 ---
