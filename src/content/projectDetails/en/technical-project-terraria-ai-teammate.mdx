@@ -18,7 +18,7 @@ import tree from '@/assets/projects/technical-project-terraria-ai-teammate/tree-
 
 ## My Role
 
-A solo project in **game AI and AI product design**: an AI teammate for Terraria whose behaviour tree keeps the shape of classical game AI but hands its hardest gates to a model that returns typed judgments. I designed and built all of it, from the tModLoader mod and the physics-based movement to the model integration and the calibration process. My responsibilities included:
+A solo project at the intersection of **games and AI**: an AI teammate for *Terraria* that follows the player and helps in combat. Its basic behaviour runs on a behaviour tree, and a language model is consulted only at a few key decision points. I built the tModLoader mod, the movement system, the model integration and the calibration process myself. My main work included:
 
 - **Decision architecture**: Deciding, gate by gate, what stays in code and what becomes a judgment, and the rule that makes that split hold up in a real-time game.
 - **Jev nodes**: Designing the questions, the state snapshots they see, the symmetric option wording, the confidence thresholds, and the asynchronous plumbing that lets a 300 ms answer live inside a 16 ms tick.
