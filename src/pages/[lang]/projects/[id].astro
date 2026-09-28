@@ -565,6 +565,30 @@ if (detailEntry) {
         display: block;
     }
 
+    /* 正文末尾「开发中…」的标记：居中、虚线分隔，三个点依次闪烁 */
+    :global(.project-prose .wip-note) {
+        margin: 3.5rem 0 0 !important;
+        padding-top: 2rem;
+        border-top: 2px dashed color-mix(in srgb, var(--theme-text) 35%, transparent);
+        text-align: center;
+        font-weight: 900;
+        font-size: 1.35rem;
+        letter-spacing: .08em;
+        opacity: .75;
+    }
+    :global(.project-prose .wip-dots span) {
+        animation: wip-dot 1.4s infinite both;
+    }
+    :global(.project-prose .wip-dots span:nth-child(2)) { animation-delay: .2s; }
+    :global(.project-prose .wip-dots span:nth-child(3)) { animation-delay: .4s; }
+    @keyframes wip-dot {
+        0%, 80%, 100% { opacity: .15; }
+        40% { opacity: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        :global(.project-prose .wip-dots span) { animation: none; }
+    }
+
     /* 行内代码 */
     :global(.project-prose code) {
         color: var(--theme-text);
