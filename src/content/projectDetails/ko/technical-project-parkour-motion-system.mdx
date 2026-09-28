@@ -58,17 +58,18 @@ import refMirrorsEdge from '@/assets/projects/technical-project-parkour-motion-s
 
 * **돌파**: 전방 장애물을 트레이스해 분류하고(얇고 낮으면 → 허들, 얇지만 뒤에 바닥이 없으면 → 볼트, 두꺼우면 → 맨틀), 진입 속도에 따라 서기/걷기/달리기 3단계 몽타주를 고릅니다. 이 모듈만은 반대로 주도권을 루트 모션과 Motion Warping에 넘깁니다.
 
-<figure>
-    <img src={traversalClip.src} alt="돌파 시연" width="800" height="450" loading="lazy" decoding="async" />
-    <figcaption>돌파: 허들, 볼트, 맨틀</figcaption>
-</figure>
-
 * **월 러닝과 월 점프**: 측면 벽을 감지하고 부착 상태와 지속 시간 상한을 관리하며, 월 점프의 방향과 충격량을 처리합니다.
 
-<figure>
-    <img src={wallRunClip.src} alt="월 러닝 시연" width="800" height="450" loading="lazy" decoding="async" />
-    <figcaption>월 러닝과 월 점프</figcaption>
-</figure>
+<div class="image-grid-2">
+    <figure>
+        <img src={traversalClip.src} alt="돌파 시연" width="800" height="450" loading="lazy" decoding="async" />
+        <figcaption>돌파: 허들, 볼트, 맨틀</figcaption>
+    </figure>
+    <figure>
+        <img src={wallRunClip.src} alt="월 러닝 시연" width="800" height="450" loading="lazy" decoding="async" />
+        <figcaption>월 러닝과 월 점프</figcaption>
+    </figure>
+</div>
 
 * **점프와 착지**: 도약 순간의 수평 속도를 래치해 서기/걷기/달리기/스프린트 네 단계로 애니메이션을 블렌드하고, 체공 중 최고점을 추적해 낙하 높이를 계산한 뒤 착지 시 그 높이로 일반 착지와 구르기를 결정합니다. 모든 블렌드 가중치가 래치 값에서 나오므로 공중에서 미세 조정을 해도 체공 내내 안정적입니다.
 * **슬라이딩**: 진입 조건, 속도 감쇠, 종료 방식(일어서기, 웅크림 유지, 웅크려 걷기, 걸어 나가기, 뛰어 나가기)을 각각 설정합니다.

@@ -57,17 +57,18 @@ import refMirrorsEdge from '@/assets/projects/technical-project-parkour-motion-s
 
 * **翻越**：向前检测障碍并分类（薄且矮 → 跨栏，薄但背面没地 → 撑越，厚 → 上台），再按起手速度选择站立 / 行走 / 奔跑三档蒙太奇。这一块反过来交给 root motion 与 Motion Warping。
 
-<figure>
-    <img src={traversalClip.src} alt="翻越演示" width="800" height="450" loading="lazy" decoding="async" />
-    <figcaption>翻越：跨栏、撑越与上台</figcaption>
-</figure>
-
 * **贴墙跑与蹬墙跳**：检测侧向墙面、维持贴墙状态与时长上限，并处理蹬墙跳的方向与冲量。
 
-<figure>
-    <img src={wallRunClip.src} alt="贴墙跑演示" width="800" height="450" loading="lazy" decoding="async" />
-    <figcaption>贴墙跑与蹬墙跳</figcaption>
-</figure>
+<div class="image-grid-2">
+    <figure>
+        <img src={traversalClip.src} alt="翻越演示" width="800" height="450" loading="lazy" decoding="async" />
+        <figcaption>翻越：跨栏、撑越与上台</figcaption>
+    </figure>
+    <figure>
+        <img src={wallRunClip.src} alt="贴墙跑演示" width="800" height="450" loading="lazy" decoding="async" />
+        <figcaption>贴墙跑与蹬墙跳</figcaption>
+    </figure>
+</div>
 
 * **跳跃与落地**：起跳瞬间锁存水平速度，供动画按站立 / 走 / 跑 / 冲刺四档混合；同时跟踪腾空最高点算出坠落高度，触地时据此决定是普通落地还是翻滚。所有混合权重都用锁存值，整个空中阶段保持稳定，不会因为空中微调而抖动。
 * **滑铲**：入场条件、速度衰减与退出方式（站起、保持蹲伏、蹲走、起身走、起身跑）分开配置。
