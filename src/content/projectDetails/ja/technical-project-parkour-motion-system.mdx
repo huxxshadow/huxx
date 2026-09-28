@@ -2,6 +2,10 @@
 ---
 
 import { Image } from 'astro:assets';
+import locomotionClip from '@/assets/projects/technical-project-parkour-motion-system/locomotion.webp';
+import turnDynamicsClip from '@/assets/projects/technical-project-parkour-motion-system/turn-dynamics.webp';
+import comparisonTrack from '@/assets/projects/technical-project-parkour-motion-system/comparison-track.mp4?url';
+import comparisonTrackPoster from '@/assets/projects/technical-project-parkour-motion-system/comparison-track-poster.webp?url';
 import wallRunClip from '@/assets/projects/technical-project-parkour-motion-system/wallrun.webp';
 import traversalClip from '@/assets/projects/technical-project-parkour-motion-system/traversal.webp';
 import refGhostrunner from '@/assets/projects/technical-project-parkour-motion-system/refs/ghostrunner.jpg';
@@ -76,6 +80,11 @@ import refMirrorsEdge from '@/assets/projects/technical-project-parkour-motion-s
 * **スプリントと空中制御**：スプリントは速度ティアの切り替えを担い、その強度をカメラの歪みへ渡します。空中制御は滞空中の旋回能力を個別に管理し、修正が浮つきすぎず固すぎない範囲に収めます。
 * **旋回ブレンド**：その場旋回と移動中の向きの補間を扱い、8方向ロコモーションのブレンドスペースと組み合わせます。
 
+<figure>
+    <img src={locomotionClip.src} alt="8方向移動・旋回ブレンド・ジャンプのデモ" width="800" height="450" loading="lazy" decoding="async" />
+    <figcaption>8方向移動、旋回ブレンド、ジャンプ</figcaption>
+</figure>
+
 キャラクター全体はステートツリーが統括し、GASP の8方向ロコモーションとリーンのブレンドスペースがアニメーション層を駆動します。自作コードはおよそ12,700行のC++で、9つのコンポーネントと1つのデモリグに分かれています。
 
 ### カメラ：まず速度を絵にする
@@ -89,6 +98,11 @@ import refMirrorsEdge from '@/assets/projects/technical-project-parkour-motion-s
     <li>シェイク</li>
 </ul>
 
+<figure>
+    <img src={turnDynamicsClip.src} alt="ターンダイナミクスのデモ" width="800" height="450" loading="lazy" decoding="async" />
+    <figcaption>ターンダイナミクス：構図オフセットと軽いロール</figcaption>
+</figure>
+
 ### カメラ演出：カメラを「組み立てられる言語」にする
 
 このプロジェクトが本当に探りたかったのは、**カメラが受動的に追従するのではなく、能動的に語れるか**という点です。そのためカメラシステムは、ゲームプレイ・カットシーン・演出スクリプトから呼べる機能をいくつか公開しています。
@@ -101,6 +115,11 @@ import refMirrorsEdge from '@/assets/projects/technical-project-parkour-motion-s
 ### 検証ツール：チューニングを目に見えるようにする
 
 手触りのチューニングで最も難しいのは「今回何を変えたのか」を言葉にすることです。そこでデモリグを別途書きました。シーンにリーダーとフォロワーの2体を置き、フォロワーには指定した上書きで異なるパラメータを走らせます。開演時にリグが両者のカスタムコンポーネントの編集可能プロパティをすべてエクスポートして比較し、**差分をそのまま画面に列挙します**。
+
+<figure>
+    <video class="clip" src={comparisonTrack} poster={comparisonTrackPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="全機能比較コース"></video>
+    <figcaption>全機能比較コース：左右2体のキャラクターが同じルートを走り、適用前後を比較</figcaption>
+</figure>
 
 この方法で録った比較映像にはナレーションが要りません。画面そのものが「このテイクは何を見せているのか」を語っています。同じルートで、左右の違いは画面に並んだ数個のパラメータだけです。
 

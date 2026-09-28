@@ -2,6 +2,10 @@
 ---
 
 import { Image } from 'astro:assets';
+import locomotionClip from '@/assets/projects/technical-project-parkour-motion-system/locomotion.webp';
+import turnDynamicsClip from '@/assets/projects/technical-project-parkour-motion-system/turn-dynamics.webp';
+import comparisonTrack from '@/assets/projects/technical-project-parkour-motion-system/comparison-track.mp4?url';
+import comparisonTrackPoster from '@/assets/projects/technical-project-parkour-motion-system/comparison-track-poster.webp?url';
 import wallRunClip from '@/assets/projects/technical-project-parkour-motion-system/wallrun.webp';
 import traversalClip from '@/assets/projects/technical-project-parkour-motion-system/traversal.webp';
 import refGhostrunner from '@/assets/projects/technical-project-parkour-motion-system/refs/ghostrunner.jpg';
@@ -76,6 +80,11 @@ Movement abilities are split into a set of independent components attached to th
 * **Sprint and air control**: sprint drives speed tier changes and pushes its intensity to the camera distortion; air control separately manages mid-air steering so corrections feel neither floaty nor locked.
 * **Turn blending**: handles in-place turns and orientation interpolation while moving, paired with the 8-way locomotion blend spaces.
 
+<figure>
+    <img src={locomotionClip.src} alt="8-way locomotion, turn blending and jump demo" width="800" height="450" loading="lazy" decoding="async" />
+    <figcaption>8-way locomotion, turn blending and jumping</figcaption>
+</figure>
+
 The character itself is coordinated by a State Tree, with GASP's 8-way locomotion and lean blend spaces driving the animation layer. The custom code runs to roughly 12,700 lines of C++ across nine components and one demo rig.
 
 ### Camera: Draw the Speed First
@@ -89,6 +98,11 @@ The character itself is coordinated by a State Tree, with GASP's 8-way locomotio
     <li>Shake</li>
 </ul>
 
+<figure>
+    <img src={turnDynamicsClip.src} alt="Turn dynamics demo" width="800" height="450" loading="lazy" decoding="async" />
+    <figcaption>Turn dynamics: framing offset and a slight roll</figcaption>
+</figure>
+
 ### Camera Storytelling: Turning the Camera Into an Authorable Language
 
 The part this project really set out to explore is whether **the camera can narrate actively instead of merely following**. To that end the camera system exposes several capabilities that gameplay, cutscenes or scripted moments can call:
@@ -101,6 +115,11 @@ The part this project really set out to explore is whether **the camera can narr
 ### Verification Tooling: Making Tuning Visible
 
 The hardest part of tuning feel is articulating what actually changed. So I wrote a demo rig: a leader and a follower character in the scene, the follower running different parameters via specified overrides. At showtime the rig exports and compares every editable property across both sides' custom components and **lists the differences straight on screen**.
+
+<figure>
+    <video class="clip" src={comparisonTrack} poster={comparisonTrackPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Full-feature comparison track"></video>
+    <figcaption>Full-feature comparison track: two characters run the same route side by side, before and after</figcaption>
+</figure>
 
 Comparison footage recorded this way needs no narration — the frame itself states what the take is demonstrating. Same route, and the only difference between left and right is the handful of parameters listed on screen.
 
