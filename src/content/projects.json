@@ -2031,10 +2031,10 @@
       ]
     },
     "desc": {
-      "en": "An AI teammate for Terraria whose behaviour tree keeps the shape of classical game AI but hands its judgment gates to Jev: which way to break away from a boss, which weapon, whether to drink now. Code owns the reflexes and the fallbacks, ChatGPT feeds per-boss playbooks in as state, and every model node was calibrated on drawn scenarios before it earned its place.",
-      "zh": "一个泰拉瑞亚 AI 队友：行为树保留传统游戏 AI 的形状，但把需要判断的几道门交给 Jev —— 打 boss 往哪边脱离、用哪把武器、现在要不要喝药。反射和兜底归代码，ChatGPT 的 boss 手册作为状态喂入，每个模型节点都先在手绘场景上校准过才赢得位置。",
-      "ja": "Terraria の AI チームメイト。ビヘイビアツリーは従来のゲーム AI の形を保ちつつ、判断が必要なゲートを Jev に委ねます：ボスからどちらへ離脱するか、どの武器か、今飲むか。反射とフォールバックはコードが持ち、ChatGPT のボス別プレイブックは状態として流し込み、すべてのモデルノードは手描きのシナリオで校正してから席を得ました。",
-      "ko": "테라리아 AI 팀메이트. 행동 트리는 고전적 게임 AI의 형태를 유지하되 판단이 필요한 게이트를 Jev에 맡깁니다. 보스에게서 어느 쪽으로 빠질지, 어떤 무기인지, 지금 마실지. 반사와 폴백은 코드가 맡고, ChatGPT의 보스별 플레이북은 상태로 흘러들며, 모든 모델 노드는 손으로 그린 시나리오로 보정한 뒤에야 자리를 얻었습니다."
+      "en": "A Terraria AI teammate that combines a traditional behaviour tree with the Jev model. The behaviour tree owns the overall decision flow, real-time reactions and fallbacks, and calls Jev only at the few nodes that need holistic judgment — which way to disengage in a boss fight, which weapon to use, when to drink a potion. Per-boss strategies are fed to the model as structured state, and every model node was calibrated and validated against preset scenarios before being integrated.",
+      "zh": "一个融合传统行为树与 Jev 模型的《泰拉瑞亚》AI 队友。行为树负责整体决策流程、即时反应与失败兜底，只在少数需要综合判断的节点调用 Jev，例如 Boss 战中的脱离方向、武器选择与用药时机；各 Boss 的应对策略以结构化状态输入模型，每个模型节点在接入前都经过预设场景的校准与验证。",
+      "ja": "従来のビヘイビアツリーと Jev モデルを組み合わせた『テラリア』の AI チームメイトです。ビヘイビアツリーが全体の意思決定フロー、即時の反応、失敗時のフォールバックを担い、総合的な判断が必要な少数のノードでのみ Jev を呼び出します。たとえばボス戦での離脱方向、武器の選択、回復薬を使うタイミングです。各ボスの攻略方針は構造化された状態としてモデルに入力し、すべてのモデルノードは組み込む前に用意したシナリオで調整と検証を行いました。",
+      "ko": "전통적인 행동 트리와 Jev 모델을 결합한 《테라리아》 AI 팀원입니다. 행동 트리가 전체 의사결정 흐름, 즉각 반응, 실패 시 대체 처리를 맡고, 종합적인 판단이 필요한 소수의 노드에서만 Jev를 호출합니다. 예를 들어 보스전에서의 이탈 방향, 무기 선택, 물약 사용 시점입니다. 보스별 공략 방침은 구조화된 상태로 모델에 입력되며, 모든 모델 노드는 연동 전에 미리 준비한 시나리오로 보정과 검증을 거쳤습니다."
     },
     "tags": {
       "en": [
