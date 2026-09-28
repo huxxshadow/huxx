@@ -567,14 +567,15 @@ if (detailEntry) {
 
     /* 正文末尾「开发中…」的标记：居中、虚线分隔，三个点依次闪烁 */
     :global(.project-prose .wip-note) {
-        margin: 3.5rem 0 0 !important;
-        padding-top: 2rem;
+        margin: 4rem 0 0 !important;
+        padding-top: 3rem;
         border-top: 2px dashed color-mix(in srgb, var(--theme-text) 35%, transparent);
         text-align: center;
         font-weight: 900;
-        font-size: 1.35rem;
-        letter-spacing: .08em;
-        opacity: .75;
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        line-height: 1.2;
+        letter-spacing: .1em;
+        opacity: .8;
     }
     :global(.project-prose .wip-dots span) {
         animation: wip-dot 1.4s infinite both;
