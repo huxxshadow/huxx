@@ -84,12 +84,7 @@ This "one action, multiple gains" design is key to the project's long-term playa
 
 Because the project contains many deeply coupled systems, I prioritized **data-driven design** and **separation of concerns** to avoid the codebase becoming an unmaintainable pile of hardcoded logic.
 
-A large amount of content — entities, quests, rewards, effects, accessories, growth tables, companions, skills, titles, and more — is not hardcoded directly into logic scripts, but first maintained in spreadsheets, exported as CSV, converted to ScriptableObject assets via custom Editor tools, and then indexed and queried at runtime by dedicated Managers. The direct benefits include:
-
-* Adding content does not require frequent changes to core logic;
-* Numeric adjustments are more intuitive and better suited for iterative balancing;
-* Different systems can collaborate around a unified data structure;
-* The cost of extending new entities, quests, or rewards in the future is significantly lower.
+Entities, quests, rewards, effects, accessories, growth tables, companions, skills, titles and the rest of the content are not hard-coded in scripts. They are maintained in spreadsheets, exported to CSV, turned into ScriptableObject assets by a custom Editor tool, and indexed at runtime by the managers. I did it this way because there is a lot of this content, it changes often, and several systems reference it at once; as a solo developer I needed content and number changes not to send me back into the code every time.
 
 At the same time, I separated **static configuration data** from **runtime data** in the architecture. For example, an entity's base HP, resistances, and reward values are configuration data, while current HP, current level, and current progress are runtime data. Companions, quests, player resources, and other systems follow a similar split. This structure keeps "content definition" and "current state" clearly separated — cleaner, easier to save, easier to extend, and easier to debug.
 
