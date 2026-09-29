@@ -228,6 +228,9 @@ const fontFace = [
         inset: 15px !important;
         width: calc(100% - 30px) !important;
         height: calc(100% - 30px) !important;
+        /* 相框不再裁切图片，悬停放大会溢出到框外，这一页不放大 */
+        scale: none !important;
+        transform: none !important;
     }
     .skin-lr .project-hero-shell .project-hero-image::after {
         content: "";
