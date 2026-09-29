@@ -44,7 +44,7 @@ export const introLabels = {
             title: { en: "I love long-distance running", zh: "喜欢长跑", ja: "長距離走が好き", ko: "장거리 달리기를 좋아해요" },
             notes: [{
                 en: "Ran the Standard Chartered Hong Kong Half Marathon",
-                zh: "跑过香港渣打半程马拉松",
+                zh: "跑过香港渣打半马",
                 ja: "スタンダードチャータード香港マラソン（ハーフ）に出場",
                 ko: "스탠다드차타드 홍콩 하프 마라톤 출전",
             }],
