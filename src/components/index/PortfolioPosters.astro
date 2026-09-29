@@ -69,17 +69,17 @@ const posters = await Promise.all(POSTERS.map(async (p, i) => {
     };
 }));
 
-// 双色调：先按亮度灰度化，再把暗部映射成主题深色、亮部映射成海报底色（和参考图一样，白色的地方「透」成纸色）
-const PAPER = COLORS.khakiMilan;
+// 每张海报的底色是它主题色的浅色。双色调：先按亮度灰度化，再把暗部映射成主题深色、亮部映射成海报底色
+// （和参考图一样，白色的地方「透」成底色）
 const hex = (c: string) => [1, 3, 5].map((k) => parseInt(c.slice(k, k + 2), 16) / 255);
-const paper = hex(PAPER);
 const levels = (p: Poster) => {
     const [lo, hi] = p.levels ?? [0, 1];
     return { slope: (1 / (hi - lo)).toFixed(3), intercept: (-lo / (hi - lo)).toFixed(3) };
 };
-const table = (dark: string, ch: number) => `${hex(dark)[ch].toFixed(3)} ${paper[ch].toFixed(3)}`;
+const table = (c: { light: string; dark: string }, ch: number) => `${hex(c.dark)[ch].toFixed(3)} ${hex(c.light)[ch].toFixed(3)}`;
 
-const bg = PAPER;
+// 海报排不满一行时，右边空出来的部分用白色
+const bg = COLORS.white;
 const ink = COLORS.black;
 ---
 
@@ -88,7 +88,7 @@ const ink = COLORS.black;
         class="relative w-full overflow-hidden"
         data-theme-bg={bg}
         data-theme-text={ink}
-        style={`background-color: ${bg}; color: ${ink}; --theme-bg: ${bg}; --theme-text: ${ink}; --paper: ${PAPER};`}
+        style={`background-color: ${bg}; color: ${ink}; --theme-bg: ${bg}; --theme-text: ${ink};`}
 >
     <svg width="0" height="0" class="absolute" aria-hidden="true" focusable="false">
         {posters.map((p) => (
@@ -100,9 +100,9 @@ const ink = COLORS.black;
                     <feFuncB type="linear" slope={levels(p).slope} intercept={levels(p).intercept} />
                 </feComponentTransfer>
                 <feComponentTransfer>
-                    <feFuncR type="table" tableValues={table(p.color.dark, 0)} />
-                    <feFuncG type="table" tableValues={table(p.color.dark, 1)} />
-                    <feFuncB type="table" tableValues={table(p.color.dark, 2)} />
+                    <feFuncR type="table" tableValues={table(p.color, 0)} />
+                    <feFuncG type="table" tableValues={table(p.color, 1)} />
+                    <feFuncB type="table" tableValues={table(p.color, 2)} />
                 </feComponentTransfer>
             </filter>
         ))}
@@ -110,7 +110,7 @@ const ink = COLORS.black;
 
     <ul class="poster-row">
         {posters.map((p) => (
-            <li style={`--c: ${p.color.dark};`}>
+            <li style={`--c: ${p.color.dark}; --paper: ${p.color.light};`}>
                 <a href={p.href} class="poster">
                     <span class="poster-halo" aria-hidden="true"></span>
                     <div class="poster-figure" style={`width: ${p.artW}cqw; height: ${p.artH}cqw;`}>
