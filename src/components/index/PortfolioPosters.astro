@@ -128,7 +128,7 @@ const ink = COLORS.black;
 </section>
 
 <style>
-    /* 一行排开：每张 1/5 屏宽、2:3 竖版，贴着屏幕左边无缝排开，放不下时横向滑动；相邻两张之间用前一张的主题色细线分开 */
+    /* 一行排开：每张 1/5 屏宽、2:3 竖版，贴着屏幕左边无缝排开，放不下时横向滑动；海报之间不加分隔线 */
     .poster-row {
         display: flex;
         overflow-x: auto;
@@ -140,16 +140,6 @@ const ink = COLORS.black;
     .poster-row > li {
         flex: 0 0 20%;
         scroll-snap-align: start;
-    }
-    /* 分隔线画在海报内部右边缘，粗细和人物头顶的横线一样（1.8cqw） */
-    .poster-row > li:not(:last-child) .poster::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        width: 1.8cqw;
-        background: var(--c);
     }
 
     .poster {
