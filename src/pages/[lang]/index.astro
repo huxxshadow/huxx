@@ -2,7 +2,7 @@
 import { LOCALES, useTranslations, type Lang } from "@/i18n";
 import Layout from "@/layouts/Base.astro";
 import { getImage } from "astro:assets";
-import { getEntry } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
 import Avatar from "@/assets/avater.svg";
 import { COLORS } from "@/consts";
 
@@ -20,6 +20,9 @@ export const getStaticPaths = () =>
         params: { lang },
     }));
 // 首页经历里的两款 Steam 游戏名：悬停浮出游戏封面（取自 projects.json 的封面图，缩成 360px 宽的 webp）
+// 「已完成项目」= 作品集项目库里的项目数
+const projectCount = (await getCollection("projects")).length;
+
 const GAME_IDS: Record<string, string> = { et: "game-project-empty-throne", eel: "game-project-eel-on-mask" };
 const GAME_TIPS: Record<string, { cover?: string }> = {};
 for (const [key, id] of Object.entries(GAME_IDS)) {
@@ -124,7 +127,7 @@ const withGameTips = (text: string) =>
                 <div class="flex items-center gap-3">
                     <i class="fa-solid fa-diagram-project text-[2rem] lg:text-[2.5rem] opacity-90"></i>
                     <div class="flex flex-col">
-                        <span class="text-xl lg:text-2xl font-black leading-none">25+</span>
+                        <span class="text-xl lg:text-2xl font-black leading-none">{projectCount}</span>
                         <span class="text-sm lg:text-base font-bold opacity-80 mt-1">{t(indexTranslations.statProjects)}</span>
                     </div>
                 </div>
@@ -132,7 +135,7 @@ const withGameTips = (text: string) =>
                 <div class="flex items-center gap-3">
                     <i class="fa-solid fa-gamepad text-[2rem] lg:text-[2.5rem] opacity-90"></i>
                     <div class="flex flex-col">
-                        <span class="text-xl lg:text-2xl font-black leading-none">7+</span>
+                        <span class="text-xl lg:text-2xl font-black leading-none">9</span>
                         <span class="text-sm lg:text-base font-bold opacity-80 mt-1">{t(indexTranslations.statGames)}</span>
                     </div>
                 </div>
