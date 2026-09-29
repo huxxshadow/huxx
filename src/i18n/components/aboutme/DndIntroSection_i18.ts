@@ -75,6 +75,11 @@ export const introLabels = {
             title: { en: "I fence", zh: "我会击剑", ja: "フェンシングをやります", ko: "펜싱을 합니다" },
             notes: [{ en: "Foil is my weapon", zh: "我会打花剑", ja: "種目はフルーレ", ko: "플뢰레를 합니다" }],
         },
+        {
+            icon: "fa-music",
+            title: { en: "I love music", zh: "我很喜欢音乐", ja: "音楽が大好き", ko: "음악을 정말 좋아합니다" },
+            notes: [{ en: "I play a little flute and piano", zh: "我会一点长笛和钢琴", ja: "フルートとピアノを少し弾けます", ko: "플루트와 피아노를 조금 연주해요" }],
+        },
     ] as { icon: string; iconSvg?: string; title: Multilingual; notes: Multilingual[]; image?: ImageMetadata }[],
 
     transition: {

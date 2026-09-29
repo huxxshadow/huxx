@@ -363,6 +363,29 @@ const roleList = rolesData[locale] || rolesData.en;
     [data-variant-current="D"] .hobby-5 .hobby-icon { font-size: clamp(3.2rem, 5vw, 4.6rem); opacity: 1; }
     [data-variant-current="D"] .hobby-5 .hobby-note:first-child { rotate: -2deg; }
 
+    /* 06 音乐：再甩回右边，圆形徽章，和 02 / 04 呼应 */
+    [data-variant-current="D"] .hobby-6 {
+        grid-column: 5 / 13;
+        margin-top: 3rem;
+        flex-direction: row-reverse;
+        align-items: center;
+        text-align: right;
+        rotate: -1.5deg;
+    }
+    [data-variant-current="D"] .hobby-6 .hobby-media {
+        flex: none;
+        width: clamp(8rem, 12vw, 11rem);
+        height: clamp(8rem, 12vw, 11rem);
+        border-radius: 999px;
+        border: 4px solid currentColor;
+        background: #fffdf8;
+        box-shadow: 8px 8px 0 currentColor;
+    }
+    [data-variant-current="D"] .hobby-6 .hobby-icon { font-size: clamp(3.2rem, 5vw, 4.6rem); }
+    [data-variant-current="D"] .hobby-6 .hobby-notes { justify-content: flex-end; }
+    [data-variant-current="D"] .hobby-6 .hobby-note:first-child { rotate: 2deg; }
+    [data-variant-current="D"] .hobby-6.has-image { rotate: 0deg; align-items: flex-end; }
+
     /* 有配图的条目：插画放大显示，不套圆形 / 方块框 */
     [data-variant-current="D"] .has-image .hobby-media {
         width: auto;
@@ -380,7 +403,8 @@ const roleList = rolesData[locale] || rolesData.en;
     /* 这里的选择器比「03 长跑方块徽章」更具体，有配图时把方块框完全去掉 */
     [data-variant-current="D"] .hobby-3.has-image .hobby-media,
     [data-variant-current="D"] .hobby-4.has-image .hobby-media,
-    [data-variant-current="D"] .hobby-5.has-image .hobby-media {
+    [data-variant-current="D"] .hobby-5.has-image .hobby-media,
+    [data-variant-current="D"] .hobby-6.has-image .hobby-media {
         width: auto;
         height: clamp(16rem, 28vw, 26rem);
         border: 0;
@@ -428,7 +452,9 @@ const roleList = rolesData[locale] || rolesData.en;
         [data-variant-current="D"] .hobby-2 { margin-top: 0; flex-direction: column; text-align: center; }
         [data-variant-current="D"] .hobby-3,
         [data-variant-current="D"] .hobby-4,
-        [data-variant-current="D"] .hobby-5 { margin-top: 0; }
+        [data-variant-current="D"] .hobby-5,
+        [data-variant-current="D"] .hobby-6 { margin-top: 0; }
+        [data-variant-current="D"] .hobby-6 { flex-direction: column; text-align: center; }
         [data-variant-current="D"] .hobby-4 { flex-direction: column; text-align: center; }
         [data-variant-current="D"] .hobby-1 .hobby-text { margin-left: 0; padding-bottom: 0; }
         }
