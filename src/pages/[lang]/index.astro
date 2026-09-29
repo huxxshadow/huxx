@@ -1,6 +1,8 @@
 ﻿---
 import { LOCALES, useTranslations, type Lang } from "@/i18n";
 import Layout from "@/layouts/Base.astro";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { getImage } from "astro:assets";
 import Avatar from "@/assets/avater.svg";
 import { COLORS } from "@/consts";
 
@@ -17,6 +19,15 @@ export const getStaticPaths = () =>
     Object.keys(LOCALES).map((lang) => ({
         params: { lang },
     }));
+// 首页「两款免费独立游戏」后面嵌入的游戏图标
+import iconEmptyThrone from "@/assets/projects/game-project-empty-throne/skin/logo-eye.png";
+import iconEel from "@/assets/projects/game-project-eel-on-mask/stickers/eel-dark.png";
+// 鳗鱼贴纸原图 1024px、近 500K，行内只显示约 30px，生成一张 96px 的 webp；空王座是 128px 的像素图，原样用
+const eelSmall = await getImage({ src: iconEel, width: 96, format: "webp" });
+const steamGames = [
+    { id: "game-project-empty-throne", title: "Empty Throne", icon: iconEmptyThrone.src, pixel: true },
+    { id: "game-project-eel-on-mask", title: "Eel On Mask", icon: eelSmall.src, pixel: false },
+];
 ---
 
 <Layout>
@@ -81,7 +92,19 @@ export const getStaticPaths = () =>
                             class="space-y-4 lg:space-y-6 text-lg lg:text-xl font-medium leading-relaxed opacity-95 lg:border-l-[4px] lg:pl-5 py-1 text-center lg:text-left"
                             style="border-color: currentColor; --reveal-opacity: 0.95;"
                     >
-                        <p>{t(indexTranslations.experience1Sub)}</p>
+                        <p>
+                            {t(indexTranslations.experience1Sub).split("{games}").map((part, i) => i === 0 ? part : (
+                                    <>
+                                        <span class="steam-games">
+                                            {steamGames.map((g) => (
+                                                    <a href={getRelativeLocaleUrl(locale, `projects/${g.id}`)} title={g.title} aria-label={g.title}>
+                                                        <img src={g.icon} alt="" width="40" height="40" class:list={[g.pixel && "pixelated"]} />
+                                                    </a>
+                                            ))}
+                                        </span>{part}
+                                    </>
+                            ))}
+                        </p>
                         <p>{t(indexTranslations.experience2)}</p>
                         <p>{t(indexTranslations.experience3)}</p>
                         <p>{t(indexTranslations.experience3Sub)}</p>
@@ -219,5 +242,26 @@ export const getStaticPaths = () =>
 
     @media (prefers-reduced-motion: reduce) {
         .bg-orb-1, .bg-strip, .bg-square { animation: none; }
+    }
+    .steam-games {
+        display: inline-flex;
+        gap: 0.3em;
+        margin: 0 0.25em;
+        vertical-align: -0.5em;
+    }
+    .steam-games a {
+        display: inline-block;
+        transition: translate 0.15s ease;
+    }
+    .steam-games a:hover {
+        translate: 0 -3px;
+    }
+    .steam-games img {
+        width: 1.8em;
+        height: 1.8em;
+        object-fit: contain;
+    }
+    .steam-games img.pixelated {
+        image-rendering: pixelated;
     }
 </style>
