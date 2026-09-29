@@ -68,7 +68,14 @@ export const introLabels = {
                 ko: "디저트와 허니 치킨윙이 특기",
             }],
         },
-    ] as { icon: string; title: Multilingual; notes: Multilingual[]; image?: ImageMetadata }[],
+        {
+            // Font Awesome 没有击剑图标，用 iconSvg 画两把交叉的花剑
+            icon: "",
+            iconSvg: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 52 L50 10"/><path d="M52 52 L14 10"/><path d="M6 46 q6 -2 10 4 q2 6 -4 8"/><path d="M58 46 q-6 -2 -10 4 q-2 6 4 8"/><circle cx="50" cy="10" r="2" fill="currentColor"/><circle cx="14" cy="10" r="2" fill="currentColor"/></svg>`,
+            title: { en: "I fence", zh: "我会击剑", ja: "フェンシングをやります", ko: "펜싱을 합니다" },
+            notes: [{ en: "Foil is my weapon", zh: "我会打花剑", ja: "種目はフルーレ", ko: "플뢰레를 합니다" }],
+        },
+    ] as { icon: string; iconSvg?: string; title: Multilingual; notes: Multilingual[]; image?: ImageMetadata }[],
 
     transition: {
         en: "Mundane resumes end here. Now then—roll the die!\n1d20... Natural 20! 'Identify' is a critical success. Character sheet revealed.",
