@@ -2,6 +2,7 @@
 import type { ImageMetadata } from "astro";
 import hobbyGames from "@/assets/aboutme/hobby-games.webp";
 import hobbyAnime from "@/assets/aboutme/hobby-anime.webp";
+import hobbyRunning from "@/assets/aboutme/hobby-running.webp";
 
 // ============================================================
 //  Intro Section i18n Data
@@ -48,6 +49,7 @@ export const introLabels = {
         },
         {
             icon: "fa-medal",
+            image: hobbyRunning,
             title: { en: "I love long-distance running", zh: "我喜欢长跑", ja: "長距離ランが好き", ko: "장거리 달리기를 좋아합니다" },
             notes: [{
                 en: "Ran the Standard Chartered Hong Kong Half Marathon",

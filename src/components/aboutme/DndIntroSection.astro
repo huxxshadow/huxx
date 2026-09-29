@@ -351,6 +351,20 @@ const roleList = rolesData[locale] || rolesData.en;
     [data-variant-current="D"] .has-image .hobby-img { height: 100%; }
     [data-variant-current="D"] .hobby-2.has-image { grid-column: 3 / 13; rotate: 0deg; align-items: flex-end; }
     [data-variant-current="D"] .has-image .hobby-title { white-space: nowrap; }
+    [data-variant-current="D"] .hobby-3.has-image { align-items: flex-end; }
+    /* 这里的选择器比「03 长跑方块徽章」更具体，有配图时把方块框完全去掉 */
+    [data-variant-current="D"] .hobby-3.has-image .hobby-media,
+    [data-variant-current="D"] .hobby-4.has-image .hobby-media {
+        width: auto;
+        height: clamp(16rem, 28vw, 26rem);
+        border: 0;
+        border-radius: 0;
+        background: none;
+        box-shadow: none;
+        rotate: 0deg;
+        color: inherit;
+    }
+    [data-variant-current="D"] .hobby-3.has-image .hobby-text { margin-left: -1rem; padding-bottom: 2rem; }
     [data-variant-current="D"] .hobby-2.has-image .hobby-text { margin-right: -1.5rem; padding-bottom: 2rem; rotate: -2deg; }
 
     /* 03 长跑：回到左侧但往里缩，方形徽章斜放 */
