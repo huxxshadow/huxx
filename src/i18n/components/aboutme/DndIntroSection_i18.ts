@@ -7,7 +7,7 @@
 export const introLabels = {
     greeting: {
         en: "Hi, I'm huxx",
-        zh: "你好，我是 Jeff Hu",
+        zh: "你好，我是 huxx",
         ja: "こんにちは、huxxです",
         ko: "안녕하세요, huxx입니다",
     } as Multilingual,
