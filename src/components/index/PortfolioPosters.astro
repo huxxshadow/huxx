@@ -151,9 +151,10 @@ const ink = COLORS.black;
      * 角色永远靠右上，框在标题上方的区域里，不压字：
      * 海报高 150cqw，文字块（标题 + 作品名）从底边往上约 45cqw，所以图框止于顶部往下 96cqw
      */
+    /* 人物紧贴海报右边 */
     .poster-figure {
         position: absolute;
-        right: 7cqw;
+        right: 0;
         top: 14cqw;
         pointer-events: none;
         transition: scale 400ms ease-out;
@@ -165,13 +166,13 @@ const ink = COLORS.black;
         width: 100%;
         height: 100%;
     }
-    /* 人物头顶的圆角横线，主题色，对准人物图的正中 */
+    /* 人物头顶的圆角横线，主题色，和人物图一样宽 */
     .poster-halo {
         position: absolute;
         left: 50%;
         bottom: calc(100% + 3cqw);
         translate: -50% 0;
-        width: max(14cqw, 34%);
+        width: 100%;
         height: 1.8cqw;
         border-radius: 999px;
         background: var(--c);
