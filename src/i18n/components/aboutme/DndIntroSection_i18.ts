@@ -15,47 +15,55 @@ export const introLabels = {
         ko: "안녕하세요, Jeffery Hu입니다",
     } as Multilingual,
 
-    // 关于我：不写履历，只写几个爱好，每条一句话 + 一行小字。
+    // 关于我：不写履历，只写几个爱好，每条一句话 + 若干小标签（notes，可以放多个）。
     // 加配图：在对应条目里写 image: 某张 import 进来的图片，卡片顶部就会显示这张图（没有配图时显示图标）
     hobbies: [
         {
             icon: "fa-gamepad",
             image: hobbyGames,
             title: { en: "I love video games", zh: "我热爱电子游戏", ja: "ビデオゲームが大好き", ko: "비디오 게임을 사랑합니다" },
-            note: {
-                en: "Over 5,000 hours played on Steam",
-                zh: "我的 Steam 总时长超过 5000 小时",
-                ja: "Steam の総プレイ時間は 5000 時間以上",
-                ko: "Steam 총 플레이 시간 5,000시간 이상",
-            },
+            notes: [
+                {
+                    en: "Over 5,000 hours played on Steam",
+                    zh: "我的 Steam 总时长超过 5000 小时",
+                    ja: "Steam の総プレイ時間は 5000 時間以上",
+                    ko: "Steam 총 플레이 시간 5,000시간 이상",
+                },
+                {
+                    en: "Favourites: CRPGs and strategy games",
+                    zh: "最喜欢 CRPG 和策略类游戏",
+                    ja: "一番好きなのは CRPG とストラテジー",
+                    ko: "가장 좋아하는 장르는 CRPG와 전략 게임",
+                },
+            ],
         },
         {
             icon: "fa-tv",
             image: hobbyAnime,
             title: { en: "I'm an anime fan", zh: "我是个二次元", ja: "アニメオタクです", ko: "저는 오타쿠입니다" },
-            note: { en: "Always watching something new", zh: "喜欢看动画", ja: "アニメを見るのが好き", ko: "애니메이션 보는 걸 좋아해요" },
+            notes: [{ en: "Always watching something new", zh: "喜欢看动画", ja: "アニメを見るのが好き", ko: "애니메이션 보는 걸 좋아해요" }],
         },
         {
             icon: "fa-medal",
             title: { en: "I love long-distance running", zh: "我喜欢长跑", ja: "長距離ランが好き", ko: "장거리 달리기를 좋아합니다" },
-            note: {
+            notes: [{
                 en: "Ran the Standard Chartered Hong Kong Half Marathon",
                 zh: "曾参加过香港渣打半程马拉松",
                 ja: "スタンダードチャータード香港マラソンのハーフに出場",
                 ko: "스탠다드차타드 홍콩 하프 마라톤 완주",
-            },
+            }],
         },
         {
             icon: "fa-cake-candles",
             title: { en: "I love cooking", zh: "我喜欢烹饪", ja: "料理が好き", ko: "요리를 좋아합니다" },
-            note: {
+            notes: [{
                 en: "Best at desserts and honey-glazed chicken wings",
                 zh: "最擅长做甜品和蜜糖鸡翅",
                 ja: "得意料理はスイーツとハニーチキンウィング",
                 ko: "디저트와 허니 치킨윙이 특기",
-            },
+            }],
         },
-    ] as { icon: string; title: Multilingual; note: Multilingual; image?: ImageMetadata }[],
+    ] as { icon: string; title: Multilingual; notes: Multilingual[]; image?: ImageMetadata }[],
 
     transition: {
         en: "Mundane resumes end here. Now then—roll the die!\n1d20... Natural 20! 'Identify' is a critical success. Character sheet revealed.",
