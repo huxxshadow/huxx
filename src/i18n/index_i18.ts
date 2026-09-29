@@ -63,12 +63,6 @@ export const indexTranslations: Record<string, Multilingual> = {
         ja: "現在は南カリフォルニア大学でゲーム開発の修士課程に在籍し、ゲームデザイン、ゲームエンジニアリング、インタラクティブ体験が交わる領域をさらに探求しています。",
         ko: "현재는 서던캘리포니아대학교에서 게임 개발 석사 과정을 밟으며, 게임 디자인과 게임 엔지니어링, 인터랙티브 경험이 만나는 지점을 더 깊이 탐구하고 있습니다.",
     },
-    experience5: {
-        en: "Beyond that, I am currently leading an 8-person team developing an indie CRPG.",
-        zh: "除此之外，我目前也在带领一支 8 人团队开发一款 CRPG 类型独立游戏。",
-        ja: "そのほか、現在は8人のチームを率いてCRPGジャンルのインディーゲームを開発しています。",
-        ko: "그 외에도 현재 8인 팀을 이끌고 CRPG 장르의 인디 게임을 개발하고 있습니다.",
-    },
     statProjects: {
         en: "Projects Completed",
         zh: "已完成项目",
