@@ -22,6 +22,16 @@ export const getStaticPaths = () =>
         params: { lang },
     }));
 // 首页经历里的两款 Steam 游戏名：悬停浮出游戏封面（取自 projects.json 的封面图，缩成 360px 宽的 webp）
+// 自我介绍的五段：每段一个小标签 + 图标，正文里 **…** 标出的重点渲染成高亮
+const INTRO = [
+    { icon: "fa-gamepad", label: indexTranslations.introLabelGames, text: indexTranslations.experience1Sub },
+    { icon: "fa-laptop-code", label: indexTranslations.introLabelIndustry, text: indexTranslations.experience2 },
+    { icon: "fa-graduation-cap", label: indexTranslations.introLabelEducation, text: indexTranslations.experience3 },
+    { icon: "fa-trophy", label: indexTranslations.introLabelAwards, text: indexTranslations.experience3Sub },
+    { icon: "fa-route", label: indexTranslations.introLabelNow, text: indexTranslations.experience4 },
+];
+const highlight = (text: string) => text.replace(/\*\*(.+?)\*\*/g, '<strong class="hl">$1</strong>');
+
 // 「已完成项目」= 作品集项目库里的项目数
 const projectCount = (await getCollection("projects")).length;
 
@@ -86,16 +96,17 @@ const projectCount = (await getCollection("projects")).length;
                         {t(indexTranslations.experience1)}
                     </div>
 
-                    <div
-                            class="space-y-4 lg:space-y-6 text-lg lg:text-xl font-medium leading-relaxed opacity-95 lg:border-l-[4px] lg:pl-5 py-1 text-center lg:text-left"
-                            style="border-color: currentColor; --reveal-opacity: 0.95;"
-                    >
-                        <p>{t(indexTranslations.experience1Sub)}</p>
-                        <p>{t(indexTranslations.experience2)}</p>
-                        <p>{t(indexTranslations.experience3)}</p>
-                        <p>{t(indexTranslations.experience3Sub)}</p>
-                        <p>{t(indexTranslations.experience4)}</p>
-                    </div>
+                    <ul class="intro-list w-full text-lg lg:text-xl font-medium leading-relaxed text-center lg:text-left">
+                        {INTRO.map((item) => (
+                                <li class="intro-item">
+                                    <span class="intro-label">
+                                        <i class={`fa-solid ${item.icon}`} aria-hidden="true"></i>
+                                        {t(item.label)}
+                                    </span>
+                                    <p set:html={highlight(t(item.text))} />
+                                </li>
+                        ))}
+                    </ul>
                 </div>
             </div>
 
@@ -168,6 +179,71 @@ const projectCount = (await getCollection("projects")).length;
 </script>
 
 <style>
+    /* 自我介绍列表：左侧一条竖线串起五段，每段顶上是反色小标签 */
+    .intro-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.4rem;
+    }
+    .intro-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .intro-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.2rem 0.7rem;
+        border-radius: 0.4rem;
+        background: var(--theme-text);
+        font-size: 0.8rem;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        line-height: 1.4;
+    }
+    /* 反色：底是区块文字色，字和图标是区块底色 */
+    .intro-label,
+    .intro-label i {
+        color: var(--theme-bg);
+    }
+    .intro-item p {
+        opacity: 0.92;
+    }
+    /* 重点：加粗 + 半高的主题色底纹 */
+    .intro-item :global(.hl) {
+        font-weight: 800;
+        background: linear-gradient(transparent 58%, color-mix(in srgb, currentColor 22%, transparent) 58%);
+        padding: 0 0.1em;
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+    }
+    @media (min-width: 1024px) {
+        .intro-list {
+            position: relative;
+            gap: 1.6rem;
+            padding-left: 1.6rem;
+            border-left: 4px solid currentColor;
+        }
+        .intro-item {
+            position: relative;
+            align-items: flex-start;
+        }
+        /* 竖线上对应每段的小圆点 */
+        .intro-item::before {
+            content: "";
+            position: absolute;
+            left: calc(-1.6rem - 4px - 0.45rem + 2px);
+            top: 0.35rem;
+            width: 0.9rem;
+            height: 0.9rem;
+            border-radius: 999px;
+            background: var(--theme-bg);
+            border: 3px solid currentColor;
+        }
+    }
+
     .bg-orb-1 {
         animation: float-orb 8s ease-in-out infinite;
     }
