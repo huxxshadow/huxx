@@ -22,13 +22,13 @@ export const getStaticPaths = () =>
         params: { lang },
     }));
 // 首页经历里的两款 Steam 游戏名：悬停浮出游戏封面（取自 projects.json 的封面图，缩成 360px 宽的 webp）
-// 自我介绍的五段：每段一个小标签 + 图标，正文里 **…** 标出的重点渲染成高亮
+// 自我介绍的五段，正文里 **…** 标出的重点加粗
 const INTRO = [
-    { icon: "fa-gamepad", label: indexTranslations.introLabelGames, text: indexTranslations.experience1Sub },
-    { icon: "fa-laptop-code", label: indexTranslations.introLabelIndustry, text: indexTranslations.experience2 },
-    { icon: "fa-graduation-cap", label: indexTranslations.introLabelEducation, text: indexTranslations.experience3 },
-    { icon: "fa-trophy", label: indexTranslations.introLabelAwards, text: indexTranslations.experience3Sub },
-    { icon: "fa-route", label: indexTranslations.introLabelNow, text: indexTranslations.experience4 },
+    indexTranslations.experience1Sub,
+    indexTranslations.experience2,
+    indexTranslations.experience3,
+    indexTranslations.experience3Sub,
+    indexTranslations.experience4,
 ];
 const highlight = (text: string) => text.replace(/\*\*(.+?)\*\*/g, '<strong class="hl">$1</strong>');
 
@@ -99,11 +99,7 @@ const projectCount = (await getCollection("projects")).length;
                     <ul class="intro-list w-full text-lg lg:text-xl font-medium leading-relaxed text-center lg:text-left">
                         {INTRO.map((item) => (
                                 <li class="intro-item">
-                                    <span class="intro-label">
-                                        <i class={`fa-solid ${item.icon}`} aria-hidden="true"></i>
-                                        {t(item.label)}
-                                    </span>
-                                    <p set:html={highlight(t(item.text))} />
+                                    <p set:html={highlight(t(item))} />
                                 </li>
                         ))}
                     </ul>
@@ -179,7 +175,7 @@ const projectCount = (await getCollection("projects")).length;
 </script>
 
 <style>
-    /* 自我介绍列表：左侧一条竖线串起五段，每段顶上是反色小标签 */
+    /* 自我介绍列表：电脑上左侧一条竖线串起五段，每段一个圆点 */
     .intro-list {
         display: flex;
         flex-direction: column;
@@ -191,33 +187,12 @@ const projectCount = (await getCollection("projects")).length;
         align-items: center;
         gap: 0.5rem;
     }
-    .intro-label {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.45rem;
-        padding: 0.2rem 0.7rem;
-        border-radius: 0.4rem;
-        background: var(--theme-text);
-        font-size: 0.8rem;
-        font-weight: 800;
-        letter-spacing: 0.06em;
-        line-height: 1.4;
-    }
-    /* 反色：底是区块文字色，字和图标是区块底色 */
-    .intro-label,
-    .intro-label i {
-        color: var(--theme-bg);
-    }
     .intro-item p {
         opacity: 0.92;
     }
-    /* 重点：加粗 + 半高的主题色底纹 */
+    /* 重点：加粗 */
     .intro-item :global(.hl) {
         font-weight: 800;
-        background: linear-gradient(transparent 58%, color-mix(in srgb, currentColor 22%, transparent) 58%);
-        padding: 0 0.1em;
-        -webkit-box-decoration-break: clone;
-        box-decoration-break: clone;
     }
     @media (min-width: 1024px) {
         .intro-list {
@@ -235,7 +210,7 @@ const projectCount = (await getCollection("projects")).length;
             content: "";
             position: absolute;
             left: calc(-1.6rem - 4px - 0.45rem + 2px);
-            top: 0.35rem;
+            top: 0.5rem;
             width: 0.9rem;
             height: 0.9rem;
             border-radius: 999px;

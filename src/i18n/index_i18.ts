@@ -32,7 +32,7 @@ export const indexTranslations: Record<string, Multilingual> = {
         ja: "2020年から、ビデオゲームを作り続けています。",
         ko: "2020년부터 비디오 게임을 만들어 왔습니다.",
     },
-    // 正文里用 **…** 标出重点，首页渲染成主题色高亮
+    // 正文里用 **…** 标出重点，首页渲染成粗体
     experience1Sub: {
         en: "I led a team to publish two complete, free indie games, **Empty Throne** and **Eel**, on Steam, reaching **over 60,000 players** in total.",
         zh: "我曾带领团队在 Steam 上发布 2 款完整的免费独立游戏**《空王座》**与**《鳗》**，并累计吸引了**超过 6 万名玩家**。",
@@ -63,11 +63,6 @@ export const indexTranslations: Record<string, Multilingual> = {
         ja: "現在は**南カリフォルニア大学**で**ゲーム開発の修士課程**に在籍し、ゲームデザイン、ゲームエンジニアリング、インタラクティブ体験が交わる領域をさらに探求しています。",
         ko: "현재는 **서던캘리포니아대학교**에서 **게임 개발 석사** 과정을 밟으며, 게임 디자인과 게임 엔지니어링, 인터랙티브 경험이 만나는 지점을 더 깊이 탐구하고 있습니다.",
     },
-    introLabelGames: { en: "Indie Games", zh: "独立游戏", ja: "インディーゲーム", ko: "인디 게임" },
-    introLabelIndustry: { en: "Industry", zh: "商业项目", ja: "商業プロジェクト", ko: "상업 프로젝트" },
-    introLabelEducation: { en: "Education", zh: "教育背景", ja: "学歴", ko: "학력" },
-    introLabelAwards: { en: "Awards", zh: "竞赛荣誉", ja: "受賞", ko: "수상" },
-    introLabelNow: { en: "Now", zh: "现在", ja: "現在", ko: "현재" },
     statProjects: {
         en: "Projects Completed",
         zh: "已完成项目",
