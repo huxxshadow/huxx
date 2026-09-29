@@ -2,6 +2,14 @@
 ---
 
 import { Image } from 'astro:assets';
+import terrainEscape1 from '@/assets/projects/technical-project-terraria-ai-teammate/clips/terrain-escape-1.mp4?url';
+import terrainEscape1Poster from '@/assets/projects/technical-project-terraria-ai-teammate/clips/terrain-escape-1-poster.webp?url';
+import terrainEscape2 from '@/assets/projects/technical-project-terraria-ai-teammate/clips/terrain-escape-2.mp4?url';
+import terrainEscape2Poster from '@/assets/projects/technical-project-terraria-ai-teammate/clips/terrain-escape-2-poster.webp?url';
+import obstacleAvoidance from '@/assets/projects/technical-project-terraria-ai-teammate/clips/obstacle-avoidance.mp4?url';
+import obstacleAvoidancePoster from '@/assets/projects/technical-project-terraria-ai-teammate/clips/obstacle-avoidance-poster.webp?url';
+import autoPickup from '@/assets/projects/technical-project-terraria-ai-teammate/clips/auto-pickup.mp4?url';
+import autoPickupPoster from '@/assets/projects/technical-project-terraria-ai-teammate/clips/auto-pickup-poster.webp?url';
 
 <div class="video-embed">
     <iframe
@@ -39,6 +47,17 @@ The system uses a layered "brain + cerebellum" structure: the LLM handles strate
 | Jev nodes | Cerebellum | Fast judgment over complex state | About 300 ms per answer |
 | Behaviour tree and code | Execution | Flow orchestration, real-time reactions, fallbacks | 30 ticks per second |
 
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={terrainEscape1} poster={terrainEscape1Poster} width="896" height="768" muted loop playsinline preload="none" data-autoplay aria-label="Terrain escape"></video>
+        <figcaption>Terrain escape: choosing a way out and avoiding dead ends</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={terrainEscape2} poster={terrainEscape2Poster} width="896" height="768" muted loop playsinline preload="none" data-autoplay aria-label="Terrain escape in complex terrain"></video>
+        <figcaption>Terrain escape: picking a route through complex terrain</figcaption>
+    </figure>
+</div>
+
 ---
 
 ## Anatomy of a Jev Node
@@ -54,3 +73,14 @@ A Jev node is a behaviour-tree gate driven by semantic judgment rather than a tr
 **Asynchronous execution**: The behaviour tree runs 30 times per second, while a model response takes about 300 ms. Nodes never block the main loop; they read the latest result on their channel, the system re-requests in the background when the snapshot changes, and each channel has at most one request in flight.
 
 **Rule fallback**: When a result is missing or its confidence is too low, the node falls back to a deterministic rule — the highest-damage weapon, a health threshold for potions, or a scored exit choice. This lets AI decisions improve behaviour without ever dropping below the stability of the baseline script.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={obstacleAvoidance} poster={obstacleAvoidancePoster} width="960" height="876" muted loop playsinline preload="none" data-autoplay aria-label="Smart obstacle avoidance"></video>
+        <figcaption>Smart obstacle avoidance</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={autoPickup} poster={autoPickupPoster} width="960" height="876" muted loop playsinline preload="none" data-autoplay aria-label="Automatic pickup"></video>
+        <figcaption>Automatic pickup</figcaption>
+    </figure>
+</div>

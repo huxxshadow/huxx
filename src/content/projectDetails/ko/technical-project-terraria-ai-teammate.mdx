@@ -2,6 +2,14 @@
 ---
 
 import { Image } from 'astro:assets';
+import terrainEscape1 from '@/assets/projects/technical-project-terraria-ai-teammate/clips/terrain-escape-1.mp4?url';
+import terrainEscape1Poster from '@/assets/projects/technical-project-terraria-ai-teammate/clips/terrain-escape-1-poster.webp?url';
+import terrainEscape2 from '@/assets/projects/technical-project-terraria-ai-teammate/clips/terrain-escape-2.mp4?url';
+import terrainEscape2Poster from '@/assets/projects/technical-project-terraria-ai-teammate/clips/terrain-escape-2-poster.webp?url';
+import obstacleAvoidance from '@/assets/projects/technical-project-terraria-ai-teammate/clips/obstacle-avoidance.mp4?url';
+import obstacleAvoidancePoster from '@/assets/projects/technical-project-terraria-ai-teammate/clips/obstacle-avoidance-poster.webp?url';
+import autoPickup from '@/assets/projects/technical-project-terraria-ai-teammate/clips/auto-pickup.mp4?url';
+import autoPickupPoster from '@/assets/projects/technical-project-terraria-ai-teammate/clips/auto-pickup-poster.webp?url';
 
 <div class="video-embed">
     <iframe
@@ -39,6 +47,17 @@ import { Image } from 'astro:assets';
 | Jev 노드 | 소뇌 | 복잡한 상태를 빠르게 판단 | 답변당 약 300 ms |
 | 행동 트리와 코드 | 실행 | 흐름 제어, 즉각 반응, 실패 시 대체 처리 | 초당 30 tick |
 
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={terrainEscape1} poster={terrainEscape1Poster} width="896" height="768" muted loop playsinline preload="none" data-autoplay aria-label="지형 탈출"></video>
+        <figcaption>지형 탈출: 이탈 방향을 판단해 막다른 길 피하기</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={terrainEscape2} poster={terrainEscape2Poster} width="896" height="768" muted loop playsinline preload="none" data-autoplay aria-label="복잡한 지형에서의 탈출"></video>
+        <figcaption>지형 탈출: 복잡한 지형에서의 경로 선택</figcaption>
+    </figure>
+</div>
+
 ---
 
 ## Jev 노드 해부
@@ -54,3 +73,14 @@ Jev 노드는 전통적인 수치 비교가 아니라 의미 기반 판단으로
 **비동기 실행**: 행동 트리는 초당 30회 실행되지만 모델 응답에는 약 300밀리초가 걸립니다. 노드는 메인 루프를 막지 않고 해당 채널의 최신 결과를 읽으며, 상태 스냅샷이 바뀌면 백그라운드에서 다시 요청하고 채널마다 동시에 하나의 요청만 실행되도록 제한합니다.
 
 **규칙 기반 대체 처리**: 결과가 없거나 신뢰도가 부족하면 가장 피해량이 높은 무기 선택, 체력 임계값에 따른 물약 사용, 점수 기반 출구 선택 같은 결정적 규칙으로 돌아갑니다. 이를 통해 AI 판단이 행동의 질을 높이면서도 기본 스크립트의 안정성 아래로 떨어지지 않도록 했습니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={obstacleAvoidance} poster={obstacleAvoidancePoster} width="960" height="876" muted loop playsinline preload="none" data-autoplay aria-label="스마트 장애물 회피"></video>
+        <figcaption>스마트 장애물 회피</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={autoPickup} poster={autoPickupPoster} width="960" height="876" muted loop playsinline preload="none" data-autoplay aria-label="자동 줍기"></video>
+        <figcaption>자동 줍기</figcaption>
+    </figure>
+</div>

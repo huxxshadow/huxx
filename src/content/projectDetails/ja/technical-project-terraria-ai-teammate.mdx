@@ -2,6 +2,14 @@
 ---
 
 import { Image } from 'astro:assets';
+import terrainEscape1 from '@/assets/projects/technical-project-terraria-ai-teammate/clips/terrain-escape-1.mp4?url';
+import terrainEscape1Poster from '@/assets/projects/technical-project-terraria-ai-teammate/clips/terrain-escape-1-poster.webp?url';
+import terrainEscape2 from '@/assets/projects/technical-project-terraria-ai-teammate/clips/terrain-escape-2.mp4?url';
+import terrainEscape2Poster from '@/assets/projects/technical-project-terraria-ai-teammate/clips/terrain-escape-2-poster.webp?url';
+import obstacleAvoidance from '@/assets/projects/technical-project-terraria-ai-teammate/clips/obstacle-avoidance.mp4?url';
+import obstacleAvoidancePoster from '@/assets/projects/technical-project-terraria-ai-teammate/clips/obstacle-avoidance-poster.webp?url';
+import autoPickup from '@/assets/projects/technical-project-terraria-ai-teammate/clips/auto-pickup.mp4?url';
+import autoPickupPoster from '@/assets/projects/technical-project-terraria-ai-teammate/clips/auto-pickup-poster.webp?url';
 
 <div class="video-embed">
     <iframe
@@ -39,6 +47,17 @@ import { Image } from 'astro:assets';
 | Jev ノード | 小脳 | 複雑な状態をすばやく判断 | 1 回答あたり約 300 ms |
 | ビヘイビアツリーとコード | 実行 | フロー制御、即時の反応、フォールバック | 毎秒 30 tick |
 
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={terrainEscape1} poster={terrainEscape1Poster} width="896" height="768" muted loop playsinline preload="none" data-autoplay aria-label="地形からの離脱"></video>
+        <figcaption>地形からの離脱：離脱方向を判断し、行き止まりを避ける</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={terrainEscape2} poster={terrainEscape2Poster} width="896" height="768" muted loop playsinline preload="none" data-autoplay aria-label="複雑な地形での離脱"></video>
+        <figcaption>地形からの離脱：複雑な地形でのルート選択</figcaption>
+    </figure>
+</div>
+
 ---
 
 ## Jev ノードの解剖
@@ -54,3 +73,14 @@ Jev ノードは、従来の数値比較ではなく意味的な判断にもと�
 **非同期実行**：ビヘイビアツリーは毎秒 30 回実行されますが、モデルの応答には約 300 ミリ秒かかります。ノードはメインループをブロックせず、対応するチャンネルの最新結果を読み取ります。状態スナップショットが変わるとバックグラウンドで再リクエストし、各チャンネルで同時に実行できるリクエストは1つに制限しています。
 
 **ルールによるフォールバック**：結果がない、または信頼度が足りない場合は、ダメージが最も高い武器を選ぶ、HP の閾値で回復薬を使う、スコアで出口を選ぶといった決定的なルールに戻ります。これにより、AI の判断が行動の質を高めつつ、基本スクリプトの安定性を下回ることはありません。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={obstacleAvoidance} poster={obstacleAvoidancePoster} width="960" height="876" muted loop playsinline preload="none" data-autoplay aria-label="スマートな障害物回避"></video>
+        <figcaption>スマートな障害物回避</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={autoPickup} poster={autoPickupPoster} width="960" height="876" muted loop playsinline preload="none" data-autoplay aria-label="自動拾得"></video>
+        <figcaption>自動拾得</figcaption>
+    </figure>
+</div>
