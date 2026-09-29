@@ -13,6 +13,8 @@
 // - 所有规则都限定在 .skin-lr / html:has(.skin-lr) 下（样式表是整条路由共用的）。
 import panelPeach from "@/assets/projects/game-project-lost-realm/skin/panel-peach.png";
 import panelGold from "@/assets/projects/game-project-lost-realm/skin/panel-gold.png";
+import panelOrange from "@/assets/projects/game-project-lost-realm/skin/panel-orange.png";
+import plateHex from "@/assets/projects/game-project-lost-realm/skin/plate-hex.png";
 import ribbon from "@/assets/projects/game-project-lost-realm/skin/ribbon.png";
 import ribbonGold from "@/assets/projects/game-project-lost-realm/skin/ribbon-gold.png";
 import panelOrnate from "@/assets/projects/game-project-lost-realm/skin/panel-ornate.png";
@@ -31,6 +33,8 @@ const { stickers = false } = Astro.props;
 const vars = [
     `--lr-panel-1: url("${panelGold.src}")`,
     `--lr-panel-2: url("${panelPeach.src}")`,
+    `--lr-panel-hero: url("${panelOrange.src}")`,
+    `--lr-plate-hex: url("${plateHex.src}")`,
     `--lr-ribbon: url("${ribbon.src}")`,
     `--lr-ribbon-gold: url("${ribbonGold.src}")`,
     `--lr-panel-ornate: url("${panelOrnate.src}")`,
@@ -119,7 +123,7 @@ const fontFace = [
         border-width: 24px;
         border-style: solid;
         border-color: transparent;
-        border-image: var(--lr-panel-1) 24 fill / 24px / 0 stretch;
+        border-image: var(--lr-panel-hero) 24 fill / 24px / 0 stretch;
         color: var(--lr-ink);
         --theme-text: var(--lr-ink);
     }
@@ -139,15 +143,15 @@ const fontFace = [
     }
     .skin-lr .back-btn:hover { color: var(--lr-peach); }
 
-    /* 外链按钮：二级面板（蓝色角钉的蜜桃面板），小号边框 */
+    /* 外链按钮：UI 包的六角名牌（蓝宝石） */
     /* 顶部只保留三层框：外层一级面板、封面相框、外链按钮。徽章和简介不再套框，免得满屏都是边 */
     .skin-lr .brutalist-badge {
         border: 0 !important;
         border-radius: 0 !important;
-        background: rgba(61, 41, 54, .1) !important;
+        background: transparent !important;
         color: var(--lr-ink) !important;
         box-shadow: none !important;
-        padding: .2rem .65rem !important;
+        padding: 0 .9rem 0 0 !important;
         font-family: var(--lr-title);
         font-weight: 600 !important;
         font-size: 1rem !important;
@@ -157,22 +161,23 @@ const fontFace = [
     .skin-lr .project-hero-screen [data-reveal-children] > div:first-child .brutalist-badge {
         background: var(--lr-ink) !important;
         color: var(--lr-peach) !important;
+        padding: .2rem .6rem !important;
     }
 
     .skin-lr .project-links-wrapper .brutalist-tag {
-        border-width: 12px !important;
+        border-width: 15px 24px !important;
         border-style: solid !important;
         border-color: transparent !important;
-        border-image: var(--lr-panel-2) 24 fill / 12px / 0 stretch;
+        border-image: var(--lr-plate-hex) 15 24 fill / 15px 24px / 0 stretch;
         background: transparent !important;
-        color: var(--lr-ink) !important;
+        color: #ffe6c9 !important;
         box-shadow: none !important;
         border-radius: 0 !important;
-        padding: 0 .2rem !important;
+        padding: 0 .3rem !important;
         font-family: var(--lr-title);
-        font-weight: 400 !important;
-        font-size: 1.375rem !important;
-        line-height: 1.2 !important;
+        font-weight: 600 !important;
+        font-size: 1.1rem !important;
+        line-height: 1.1 !important;
         transform: none !important;
     }
     .skin-lr .project-links-wrapper .brutalist-tag {
@@ -188,12 +193,10 @@ const fontFace = [
         color: var(--lr-ink);
     }
 
-    /* 封面：UI 包里金色角饰、绿宝石的相框 */
+    /* 封面：不加框 */
     .skin-lr .project-hero-shell .project-hero-image {
-        border-width: 30px !important;
-        border-style: solid !important;
-        border-color: transparent !important;
-        border-image: var(--lr-panel-ornate) 30 fill / 30px / 0 stretch;
+        border: 0 !important;
+        border-image: none !important;
         border-radius: 0 !important;
         background: transparent !important;
         box-shadow: none !important;
