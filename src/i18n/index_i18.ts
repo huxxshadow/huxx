@@ -52,10 +52,10 @@ export const indexTranslations: Record<string, Multilingual> = {
         ko: "홍콩침례대학교 컴퓨터과학 전공을 1등급 우등(First Class Honours)으로 졸업하고 이학사 학위를 취득했습니다. 소프트웨어 공학, AI 및 머신러닝, 컴퓨터 그래픽스, 데이터 분석을 아우르는 탄탄한 컴퓨터과학 기초를 갖추고 있습니다.",
     },
     experience3Sub: {
-        en: "In my sophomore year, I founded an AI start-up that went on to win the overall championship of AI OpenCup, Hong Kong’s regional AI application development competition. I later served as technical lead at the University of Oxford’s AI & Machine Learning Summer Programme, taking my team to the top spot on its Kaggle competition leaderboard.",
-        zh: "早在大二时，我便创立了自己的 AI 初创团队，并一举夺得香港地区 AI 应用开发大赛 AI OpenCup 总冠军；此后在牛津大学 AI 与机器学习暑期项目中担任技术组长，带领团队在 Kaggle 竞赛中取得全场最高排名。",
-        ja: "学部2年次には自らAIスタートアップを立ち上げ、香港地区のAIアプリケーション開発コンテスト「AI OpenCup」で総合優勝を果たしました。その後、オックスフォード大学のAI・機械学習サマープログラムでは技術リーダーを務め、チームをKaggleコンペティションの最高順位へと導きました。",
-        ko: "학부 2학년 때 AI 스타트업을 창업해 홍콩 지역 AI 애플리케이션 개발 대회인 AI OpenCup에서 종합 우승을 차지했습니다. 이후 옥스퍼드 대학교 AI·머신러닝 서머 프로그램에서는 기술 리더를 맡아 팀을 Kaggle 대회 최고 순위로 이끌었습니다.",
+        en: "In my sophomore year, I founded an AI start-up team and went on to win the overall championship of AI OpenCup, Hong Kong’s regional AI application development competition. I later served as technical lead at the University of Oxford’s AI & Machine Learning Summer Programme, taking my team to the top spot on its Kaggle competition leaderboard.",
+        zh: "在大二时，我曾创立了 AI 初创团队，并一举夺得香港地区 AI 应用开发大赛 AI OpenCup 总冠军；此后在牛津大学 AI 与机器学习暑期项目中担任技术组长，带领团队在 Kaggle 竞赛中取得全场最高排名。",
+        ja: "学部2年次にはAIスタートアップチームを立ち上げ、香港地区のAIアプリケーション開発コンテスト「AI OpenCup」で総合優勝を果たしました。その後、オックスフォード大学のAI・機械学習サマープログラムでは技術リーダーを務め、チームをKaggleコンペティションの最高順位へと導きました。",
+        ko: "학부 2학년 때 AI 스타트업 팀을 창업해 홍콩 지역 AI 애플리케이션 개발 대회인 AI OpenCup에서 종합 우승을 차지했습니다. 이후 옥스퍼드 대학교 AI·머신러닝 서머 프로그램에서는 기술 리더를 맡아 팀을 Kaggle 대회 최고 순위로 이끌었습니다.",
     },
     experience4: {
         en: "I am currently pursuing a Master’s in Game Development at the University of Southern California, going deeper into where game design, game engineering, and interactive experience meet.",
