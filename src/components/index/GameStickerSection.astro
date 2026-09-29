@@ -3,6 +3,7 @@
 import { useTranslations, type Lang } from "@/i18n.ts";
 import { COLORS } from "@/consts.ts";
 import { gamesListData, gameSectionUI } from "@/i18n/components/index/GameStickerSection_i18.ts";
+import { getRelativeLocaleUrl } from "astro:i18n";
 
 const locale = Astro.currentLocale as Lang;
 const t = useTranslations(locale);
@@ -14,21 +15,17 @@ const gamesData = gamesListData.map(game => ({
     platformText: t(game.platformText),
     desc: t(game.desc)
 }));
+
+const portfolioHref = getRelativeLocaleUrl(locale, "portfolio");
 ---
 
 <section
         id="games-sticker-section"
         class="relative w-full h-[var(--mobile-height)] lg:h-[1000px] overflow-hidden pt-12 lg:pt-16"
-        style={`--mobile-height: ${gamesData.length * 120}vw; background-color: ${COLORS.khakiMilan}; color: ${COLORS.black};`}
+        style={`--mobile-height: ${gamesData.length * 120 + 60}vw; background-color: ${COLORS.khakiMilan}; color: ${COLORS.black};`}
         data-theme-bg={COLORS.khakiMilan}
         data-theme-text={COLORS.black}
 >
-    <div class="absolute top-12 lg:top-16 inset-x-0 mx-auto w-full px-4 sm:px-8 z-0 pointer-events-none flex justify-start">
-        <h2 class="brutalist-tag bg-white text-3xl lg:text-4xl" data-reveal="left">
-            {t(gameSectionUI.sectionTitle)}
-        </h2>
-    </div>
-
     <div class="absolute top-12 lg:top-16 inset-x-0 mx-auto w-full px-4 sm:px-8 z-20 pointer-events-none flex justify-end">
         <div class="flex gap-3 sm:gap-4 pointer-events-auto" data-reveal-children="right" data-reveal-stagger="80">
             <button id="btn-shake" class="brutalist-tag bg-white cursor-pointer">
@@ -43,6 +40,18 @@ const gamesData = gamesListData.map(game => ({
     </div>
 
     <div id="physics-container" class="absolute inset-0 z-10 w-full h-full touch-pan-y overflow-hidden">
+        <!-- 「作品集」大贴纸：最先落下，停在中间底部；点一下进作品集页 -->
+        <div
+                id="portfolio-sticker"
+                data-href={portfolioHref}
+                class="game-sticker portfolio-sticker absolute top-0 left-0 rounded-3xl border-[3px] bg-white select-none px-10 sm:px-16 py-4 sm:py-6 shadow-[8px_8px_0px_rgba(73,73,73,1)]"
+                style={`border-color: ${COLORS.black}; color: ${COLORS.black};`}
+        >
+            <span class="block font-black leading-none whitespace-nowrap pointer-events-none">
+                {t({ en: "Portfolio", zh: "作品集", ja: "作品集", ko: "포트폴리오" })}
+            </span>
+        </div>
+
         {gamesData.map((game, i) => (
                 <div
                         id={game.id}
@@ -98,8 +107,19 @@ const gamesData = gamesListData.map(game => ({
     </div>
 </section>
 
+<style>
+    .portfolio-sticker span {
+        font-size: clamp(4.5rem, 16vw, 11rem);
+    }
+    html[lang="en"] .portfolio-sticker span,
+    html[lang="ko"] .portfolio-sticker span {
+        font-size: clamp(3rem, 11vw, 8rem);
+    }
+</style>
+
 <script>
     import Matter from 'matter-js';
+    import { navigate } from 'astro:transitions/client';
 
         document.addEventListener('astro:page-load', () => {
             // ==========================================
@@ -167,6 +187,11 @@ const gamesData = gamesListData.map(game => ({
                     const dx = Math.abs(e.clientX - startX);
                     const dy = Math.abs(e.clientY - startY);
                     if (dx < 10 && dy < 10) {
+                        const href = el.getAttribute('data-href');
+                        if (href) {
+                            navigate(href);
+                            return;
+                            }
                         const link = el.getAttribute('data-link');
                         if (link) {
                             window.open(link, '_blank');
