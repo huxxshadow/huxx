@@ -1,7 +1,7 @@
 ---
 // src/components/index/PortfolioPosters.astro
-// 首页的作品集区：一排项目海报，从屏幕最左边开始无缝排开。按 6 张设计：每张占屏宽的 1/6、2:3 竖版，
-// 高度因此固定（屏宽的 1/4），6 张正好铺满整个宽度；不足 6 张时右边空着。始终只排一行，窄屏上横向滑动。
+// 首页的作品集区：一排项目海报，从屏幕最左边开始无缝排开。每张占屏宽的 1/5、2:3 竖版（高度固定为屏宽的 3/10），
+// 始终只排一行，放不下时横向滑动；不足一屏时右边空着。
 // 每张海报一个项目——主题色单色的角色立绘、大号作品名、副标题 Portfolio，点进对应项目页。
 // 版式参考《分形收容所》的角色海报：米色纸底（站内存的 khakiMilan），角色靠右上，标题压在左下
 import { useTranslations, type Lang } from "@/i18n.ts";
@@ -128,12 +128,18 @@ const ink = COLORS.black;
 </section>
 
 <style>
-    /* 固定 6 个位置：每张 1/6 屏宽、2:3 竖版，贴着屏幕左边无缝排开；相邻两张之间用前一张的主题色细线分开 */
+    /* 一行排开：每张 1/5 屏宽、2:3 竖版，贴着屏幕左边无缝排开，放不下时横向滑动；相邻两张之间用前一张的主题色细线分开 */
     .poster-row {
-        --slots: 6;
-        display: grid;
-        grid-template-columns: repeat(var(--slots), minmax(0, 1fr));
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
         list-style: none;
+    }
+    .poster-row::-webkit-scrollbar { display: none; }
+    .poster-row > li {
+        flex: 0 0 20%;
+        scroll-snap-align: start;
     }
     .poster-row > li:not(:last-child) { border-right: 2px solid var(--c); }
 
@@ -212,21 +218,11 @@ const ink = COLORS.black;
         letter-spacing: 0.04em;
     }
 
-    /* 始终只有一行：平板一屏 3 张、手机一屏 2 张，海报多于一屏时横向滑动 */
+    /* 平板一屏约 2.5 张、手机一屏约 1.7 张 */
     @media (max-width: 1023px) {
-        .poster-row {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: none;
-        }
-        .poster-row::-webkit-scrollbar { display: none; }
-        .poster-row > li {
-            flex: 0 0 calc(100% / 3);
-            scroll-snap-align: start;
-        }
+        .poster-row > li { flex-basis: 40%; }
     }
     @media (max-width: 639px) {
-        .poster-row > li { flex-basis: 50%; }
+        .poster-row > li { flex-basis: 60%; }
     }
 </style>
