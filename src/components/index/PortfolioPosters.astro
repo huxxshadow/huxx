@@ -1,6 +1,7 @@
 ---
 // src/components/index/PortfolioPosters.astro
-// 首页的作品集区：并排的项目海报，每张占满整个区块的高度、宽度平分，没有外框和底色。
+// 首页的作品集区：一排项目海报，从屏幕最左边开始无缝排开。按 6 张设计：每张占屏宽的 1/6、2:3 竖版，
+// 高度因此固定（屏宽的 1/4），6 张正好铺满整个宽度；不足 6 张时右边空着。
 // 每张海报一个项目——主题色单色的角色立绘、大号作品名、副标题 Portfolio，点进对应项目页。
 // 版式参考《分形收容所》的角色海报：米色纸底（站内存的 khakiMilan），角色靠右上，标题压在左下
 import { useTranslations, type Lang } from "@/i18n.ts";
@@ -70,7 +71,7 @@ const ink = COLORS.black;
         ))}
     </svg>
 
-    <ul class="poster-row" style={`--n: ${posters.length};`}>
+    <ul class="poster-row">
         {posters.map((p) => (
             <li>
                 <a href={p.href} class="poster" style={`--c: ${p.color.dark};`}>
@@ -96,19 +97,20 @@ const ink = COLORS.black;
 </section>
 
 <style>
-    /* 每张海报占满区块高度，宽度平分；相邻两张之间只有一条细线 */
+    /* 固定 6 个位置：每张 1/6 屏宽、2:3 竖版，贴着屏幕左边无缝排开；相邻两张之间一条细线 */
     .poster-row {
+        --slots: 6;
         display: grid;
-        grid-template-columns: repeat(var(--n), minmax(0, 1fr));
-        height: clamp(560px, 92vh, 1000px);
+        grid-template-columns: repeat(var(--slots), minmax(0, 1fr));
         list-style: none;
     }
     .poster-row > li + li { border-left: 1px solid rgb(73 73 73 / 0.12); }
+    .poster-row > li:last-child { border-right: 1px solid rgb(73 73 73 / 0.12); }
 
     .poster {
         position: relative;
         display: block;
-        height: 100%;
+        aspect-ratio: 2 / 3;
         overflow: hidden;
         background: var(--paper);
         color: var(--c);
@@ -142,17 +144,17 @@ const ink = COLORS.black;
         font-weight: 900;
         line-height: 0.92;
         letter-spacing: -0.02em;
-        font-size: min(13cqw, 11cqh);
+        font-size: 15cqw;
         text-wrap: balance;
     }
     html[lang="en"] .poster-title,
     html[lang="ko"] .poster-title {
-        font-size: min(11cqw, 9.5cqh);
+        font-size: 12cqw;
     }
     .poster-sub {
         margin-top: 0.35em;
         font-weight: 800;
-        font-size: min(5.5cqw, 4.6cqh);
+        font-size: 7cqw;
         line-height: 1;
         font-family: 'Roboto', sans-serif;
     }
@@ -164,17 +166,18 @@ const ink = COLORS.black;
         text-align: center;
         font-family: 'Roboto', sans-serif;
         font-weight: 700;
-        font-size: min(1.8cqw, 1.5cqh);
+        font-size: 3cqw;
         letter-spacing: 0.14em;
     }
 
-    /* 手机：两张上下排，每张占满屏宽 */
+    /* 平板一行 3 张、手机一行 2 张，多出来的往下排 */
+    @media (max-width: 1023px) {
+        .poster-row { --slots: 3; }
+        .poster-row > li:nth-child(3n + 1) { border-left: 0; }
+    }
     @media (max-width: 639px) {
-        .poster-row {
-            grid-template-columns: 1fr;
-            height: auto;
-        }
-        .poster-row > li + li { border-left: 0; border-top: 1px solid rgb(73 73 73 / 0.12); }
-        .poster { height: auto; aspect-ratio: 3 / 4; }
+        .poster-row { --slots: 2; }
+        .poster-row > li:nth-child(3n + 1) { border-left: 1px solid rgb(73 73 73 / 0.12); }
+        .poster-row > li:nth-child(2n + 1) { border-left: 0; }
     }
 </style>
