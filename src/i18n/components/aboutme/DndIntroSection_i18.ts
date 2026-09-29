@@ -3,6 +3,7 @@ import type { ImageMetadata } from "astro";
 import hobbyGames from "@/assets/aboutme/hobby-games.webp";
 import hobbyAnime from "@/assets/aboutme/hobby-anime.webp";
 import hobbyRunning from "@/assets/aboutme/hobby-running.webp";
+import hobbyCooking from "@/assets/aboutme/hobby-cooking.webp";
 
 // ============================================================
 //  Intro Section i18n Data
@@ -60,6 +61,7 @@ export const introLabels = {
         },
         {
             icon: "fa-cake-candles",
+            image: hobbyCooking,
             title: { en: "I love cooking", zh: "我喜欢烹饪", ja: "料理が好き", ko: "요리를 좋아합니다" },
             notes: [{
                 en: "Best at desserts and honey-glazed chicken wings",
