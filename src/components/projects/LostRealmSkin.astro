@@ -223,11 +223,11 @@ const fontFace = [
         box-shadow: none !important;
         overflow: visible !important;
     }
-    /* 图片铺到相框描边的内沿（框的外圈 18px 是描边，内侧底色已抠成透明），框作为一层叠在图片上 */
+    /* 图片铺到相框描边下面 3px（框的外圈 18px 是描边，内侧底色已抠成透明），框作为一层叠在图片上，任何缩放下都不会露缝 */
     .skin-lr .project-hero-shell .project-hero-image img {
-        inset: 18px !important;
-        width: calc(100% - 36px) !important;
-        height: calc(100% - 36px) !important;
+        inset: 15px !important;
+        width: calc(100% - 30px) !important;
+        height: calc(100% - 30px) !important;
     }
     .skin-lr .project-hero-shell .project-hero-image::after {
         content: "";
@@ -356,7 +356,7 @@ const fontFace = [
         .skin-lr .project-prose h3 { font-size: 1.1rem; }
         .skin-lr .project-prose h3::before { width: 24px; height: 24px; background-size: 384px 24px; background-position: calc(var(--lr-i, 8) * -24px) 0; }
         .skin-lr .project-hero-shell .project-hero-image::after { border-width: 20px; border-image-width: 20px; }
-        .skin-lr .project-hero-shell .project-hero-image img { inset: 12px !important; width: calc(100% - 24px) !important; height: calc(100% - 24px) !important; }
+        .skin-lr .project-hero-shell .project-hero-image img { inset: 10px !important; width: calc(100% - 20px) !important; height: calc(100% - 20px) !important; }
         .skin-lr .project-prose h3 { border-width: 6px 16px 16px; border-image-width: 6px 16px 16px; }
     }
 </style>
