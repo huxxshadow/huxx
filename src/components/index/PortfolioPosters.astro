@@ -1,7 +1,7 @@
 ---
 // src/components/index/PortfolioPosters.astro
 // 首页的作品集区：一排项目海报，从屏幕最左边开始无缝排开。按 6 张设计：每张占屏宽的 1/6、2:3 竖版，
-// 高度因此固定（屏宽的 1/4），6 张正好铺满整个宽度；不足 6 张时右边空着。
+// 高度因此固定（屏宽的 1/4），6 张正好铺满整个宽度；不足 6 张时右边空着。始终只排一行，窄屏上横向滑动。
 // 每张海报一个项目——主题色单色的角色立绘、大号作品名、副标题 Portfolio，点进对应项目页。
 // 版式参考《分形收容所》的角色海报：米色纸底（站内存的 khakiMilan），角色靠右上，标题压在左下
 import { useTranslations, type Lang } from "@/i18n.ts";
@@ -22,12 +22,22 @@ const POSTERS: Poster[] = [
     { id: "game-project-night-watch", art: nightWatchCard, color: COLORS.orange, artHeight: 52, levels: [0.1, 0.85] },
 ];
 
+// 主标题统一是「作品集」，副标题是作品名。两行都只排一行：按字数估算宽度（中日韩字约 1em、拉丁字母约 0.56em），
+// 放不下 86% 版宽时缩小字号，max 是不超过的字号（cqw）
+const fitSize = (text: string, max: number) => {
+    const em = Array.from(text).reduce((w, ch) => w + (/[⺀-￯]/.test(ch) ? 1 : ch === " " ? 0.28 : 0.56), 0);
+    return Math.min(max, 86 / Math.max(em, 1)).toFixed(2);
+};
+const heading = t({ en: "Portfolio", zh: "作品集", ja: "作品集", ko: "포트폴리오" });
+const headingSize = fitSize(heading, 17);
+
 const posters = await Promise.all(POSTERS.map(async (p, i) => {
     const entry = await getEntry("projects", p.id);
     return {
         ...p,
         filter: `poster-duo-${i}`,
         title: entry ? t(entry.data.title) : p.id,
+        titleSize: fitSize(entry ? t(entry.data.title) : p.id, 8.5),
         href: getRelativeLocaleUrl(locale, `projects/${p.id}`),
     };
 }));
@@ -73,8 +83,8 @@ const ink = COLORS.black;
 
     <ul class="poster-row">
         {posters.map((p) => (
-            <li>
-                <a href={p.href} class="poster" style={`--c: ${p.color.dark};`}>
+            <li style={`--c: ${p.color.dark};`}>
+                <a href={p.href} class="poster">
                     <img
                             src={p.art.src}
                             width={p.art.width}
@@ -86,8 +96,8 @@ const ink = COLORS.black;
                             style={`filter: url(#${p.filter}); --art-h: ${p.artHeight ?? 64}%;`}
                     />
                     <div class="poster-text">
-                        <h3 class="poster-title">{p.title}</h3>
-                        <p class="poster-sub">Portfolio</p>
+                        <p class="poster-title" style={`--title-size: ${headingSize}cqw;`}>{heading}</p>
+                        <h3 class="poster-sub" style={`--sub-size: ${p.titleSize}cqw;`}>{p.title}</h3>
                     </div>
                     <p class="poster-foot">JEFFERY HU</p>
                 </a>
@@ -97,15 +107,14 @@ const ink = COLORS.black;
 </section>
 
 <style>
-    /* 固定 6 个位置：每张 1/6 屏宽、2:3 竖版，贴着屏幕左边无缝排开；相邻两张之间一条细线 */
+    /* 固定 6 个位置：每张 1/6 屏宽、2:3 竖版，贴着屏幕左边无缝排开；相邻两张之间用前一张的主题色细线分开 */
     .poster-row {
         --slots: 6;
         display: grid;
         grid-template-columns: repeat(var(--slots), minmax(0, 1fr));
         list-style: none;
     }
-    .poster-row > li + li { border-left: 1px solid rgb(73 73 73 / 0.12); }
-    .poster-row > li:last-child { border-right: 1px solid rgb(73 73 73 / 0.12); }
+    .poster-row > li:not(:last-child) { border-right: 2px solid var(--c); }
 
     .poster {
         position: relative;
@@ -144,19 +153,15 @@ const ink = COLORS.black;
         font-weight: 900;
         line-height: 0.92;
         letter-spacing: -0.02em;
-        font-size: 15cqw;
-        text-wrap: balance;
-    }
-    html[lang="en"] .poster-title,
-    html[lang="ko"] .poster-title {
-        font-size: 12cqw;
+        font-size: var(--title-size, 15cqw);
+        white-space: nowrap;
     }
     .poster-sub {
         margin-top: 0.35em;
         font-weight: 800;
-        font-size: 7cqw;
+        font-size: var(--sub-size, 7cqw);
         line-height: 1;
-        font-family: 'Roboto', sans-serif;
+        white-space: nowrap;
     }
     .poster-foot {
         position: absolute;
@@ -170,14 +175,21 @@ const ink = COLORS.black;
         letter-spacing: 0.14em;
     }
 
-    /* 平板一行 3 张、手机一行 2 张，多出来的往下排 */
+    /* 始终只有一行：平板一屏 3 张、手机一屏 2 张，海报多于一屏时横向滑动 */
     @media (max-width: 1023px) {
-        .poster-row { --slots: 3; }
-        .poster-row > li:nth-child(3n + 1) { border-left: 0; }
+        .poster-row {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+        }
+        .poster-row::-webkit-scrollbar { display: none; }
+        .poster-row > li {
+            flex: 0 0 calc(100% / 3);
+            scroll-snap-align: start;
+        }
     }
     @media (max-width: 639px) {
-        .poster-row { --slots: 2; }
-        .poster-row > li:nth-child(3n + 1) { border-left: 1px solid rgb(73 73 73 / 0.12); }
-        .poster-row > li:nth-child(2n + 1) { border-left: 0; }
+        .poster-row > li { flex-basis: 50%; }
     }
 </style>
