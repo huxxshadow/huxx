@@ -8,6 +8,9 @@ const locale = Astro.currentLocale as Lang || 'en';
 const t = useTranslations(locale);
 
 const roleList = rolesData[locale] || rolesData.en;
+
+// D 版（海报）背景里的描边大字，和每条爱好一一对应
+const POSTER_WORDS = ["5000H", "ANIME", "21.0975KM"];
 ---
 
 <section
@@ -41,14 +44,16 @@ const roleList = rolesData[locale] || rolesData.en;
                     class="hobbies"
                     data-variant-group="hobbies"
                     data-variant-label="爱好"
-                    data-variant-options="A,B,C"
-                    data-variant-current="A"
+                    data-variant-options="A,B,C,D"
+                    data-variant-current="D"
             >
                 {introLabels.hobbies.map((h, i) => (
                         <li class={`hobby hobby-${i + 1}`}>
+                            <span class="hobby-bg" aria-hidden="true">{POSTER_WORDS[i]}</span>
+                            <span class="hobby-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
                             <div class="hobby-media">
                                 {h.image ? (
-                                        <Image src={h.image} alt="" widths={[240, 480]} sizes="240px" class="hobby-img" />
+                                        <Image src={h.image} alt="" widths={[320, 640]} sizes="(min-width: 1024px) 320px, 200px" class="hobby-img" />
                                 ) : (
                                         <i class={`fa-solid ${h.icon} hobby-icon`} aria-hidden="true"></i>
                                 )}
@@ -244,6 +249,128 @@ const roleList = rolesData[locale] || rolesData.en;
     [data-variant-current="C"] .hobby-title { font-size: clamp(1.4rem, 2.3vw, 2rem); }
     [data-variant-current="C"] .hobby-note { font-size: 0.95rem; margin-top: 0.3rem; }
 
+    /* 编号和背景大字只在 D 版出现 */
+    .hobby-bg,
+    .hobby-num { display: none; }
+
+    /* ================= D：海报。B 的大字错落再放开：人物很大，三条大幅左右错开、互相咬合，
+       背景压着描边大字（5000H / ANIME / 21.0975KM），每条带编号和细线 ================= */
+    .hobbies[data-variant-current="D"] {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        padding: 2rem 0 3rem;
+    }
+    [data-variant-current="D"] .hobby {
+        display: flex;
+        align-items: flex-end;
+        gap: 1.2rem;
+    }
+    [data-variant-current="D"] .hobby-bg {
+        display: block;
+        position: absolute;
+        z-index: 0;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 900;
+        font-size: clamp(5rem, 11vw, 10.5rem);
+        line-height: 0.8;
+        letter-spacing: -0.04em;
+        white-space: nowrap;
+        /* 描边色不能用 currentColor（字色是透明的） */
+        color: transparent;
+        -webkit-text-stroke: 2px #494949;
+        opacity: 0.22;
+        pointer-events: none;
+        user-select: none;
+    }
+    [data-variant-current="D"] .hobby-num {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        position: absolute;
+        z-index: 2;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 900;
+        font-size: 1rem;
+        letter-spacing: 0.1em;
+    }
+    [data-variant-current="D"] .hobby-num::after {
+        content: "";
+        width: 4.5rem;
+        height: 3px;
+        background: currentColor;
+    }
+    [data-variant-current="D"] .hobby-media,
+    [data-variant-current="D"] .hobby-text { position: relative; z-index: 1; }
+    [data-variant-current="D"] .hobby-title {
+        font-size: clamp(2.4rem, 5.4vw, 5rem);
+        line-height: 1;
+        letter-spacing: -0.03em;
+    }
+    [data-variant-current="D"] .hobby-note {
+        display: inline-block;
+        margin-top: 0.8rem;
+        padding: 0.25rem 0.7rem;
+        border-radius: 0.3rem;
+        font-size: 1.05rem;
+        color: #fffdf8;
+        background: #494949;
+        opacity: 1;
+    }
+
+    /* 01 游戏：左边，大人物站着，标题压在人物右侧脚边 */
+    [data-variant-current="D"] .hobby-1 { grid-column: 1 / 10; }
+    [data-variant-current="D"] .hobby-1 .hobby-media { height: clamp(18rem, 32vw, 30rem); }
+    [data-variant-current="D"] .hobby-1 .hobby-img { height: 100%; }
+    [data-variant-current="D"] .hobby-1 .hobby-text { margin-left: -1.5rem; padding-bottom: 2.5rem; }
+    [data-variant-current="D"] .hobby-1 .hobby-note { rotate: -3deg; }
+    [data-variant-current="D"] .hobby-1 .hobby-bg { left: 30%; top: 12%; }
+    [data-variant-current="D"] .hobby-1 .hobby-num { left: 30%; top: 2%; }
+
+    /* 02 二次元：右边，往上咬进第一条的空白，大圆 + 右对齐，整体微微倾斜 */
+    [data-variant-current="D"] .hobby-2 {
+        grid-column: 6 / 13;
+        margin-top: -1rem;
+        flex-direction: row-reverse;
+        align-items: center;
+        text-align: right;
+        rotate: -2deg;
+    }
+    [data-variant-current="D"] .hobby-2 .hobby-media {
+        flex: none;
+        width: clamp(9rem, 14vw, 13rem);
+        height: clamp(9rem, 14vw, 13rem);
+        border-radius: 999px;
+        border: 4px solid currentColor;
+        background: #fffdf8;
+        box-shadow: 8px 8px 0 currentColor;
+    }
+    [data-variant-current="D"] .hobby-2 .hobby-icon { font-size: clamp(3.5rem, 5.5vw, 5rem); }
+    [data-variant-current="D"] .hobby-2 .hobby-bg { right: 12%; top: 58%; }
+    [data-variant-current="D"] .hobby-2 .hobby-num { right: 0; top: -12%; flex-direction: row-reverse; }
+
+    /* 03 长跑：回到左侧但往里缩，方形徽章斜放 */
+    [data-variant-current="D"] .hobby-3 {
+        grid-column: 2 / 11;
+        margin-top: 3rem;
+        align-items: center;
+    }
+    [data-variant-current="D"] .hobby-3 .hobby-media {
+        flex: none;
+        width: clamp(8rem, 12vw, 11rem);
+        height: clamp(8rem, 12vw, 11rem);
+        border: 4px solid currentColor;
+        border-radius: 1.4rem;
+        background: #494949;
+        color: #fffdf8;
+        rotate: 8deg;
+        box-shadow: 8px 8px 0 rgb(73 73 73 / 0.35);
+    }
+    [data-variant-current="D"] .hobby-3 .hobby-icon { font-size: clamp(3.2rem, 5vw, 4.6rem); opacity: 1; }
+    [data-variant-current="D"] .hobby-3 .hobby-note { rotate: 2deg; }
+    [data-variant-current="D"] .hobby-3 .hobby-bg { left: 30%; top: 55%; }
+    [data-variant-current="D"] .hobby-3 .hobby-num { left: 0; top: -22%; }
+
     /* 手机：三版都改成一列，保留各自的风格 */
     @media (max-width: 639px) {
         .hobbies[data-variant-current="A"] { grid-template-columns: 1fr; gap: 2.4rem; padding-top: 3.5rem; }
@@ -254,6 +381,13 @@ const roleList = rolesData[locale] || rolesData.en;
         [data-variant-current="B"] .hobby-1 .hobby-media { height: 9rem; }
         .hobbies[data-variant-current="C"] { grid-template-columns: 1fr; }
         [data-variant-current="C"] .hobby-1 { grid-row: auto; }
+        .hobbies[data-variant-current="D"] { display: flex; flex-direction: column; gap: 3rem; }
+        [data-variant-current="D"] .hobby { flex-direction: column; align-items: center; text-align: center; }
+        [data-variant-current="D"] .hobby-2 { margin-top: 0; flex-direction: column; text-align: center; }
+        [data-variant-current="D"] .hobby-3 { margin-top: 0; }
+        [data-variant-current="D"] .hobby-1 .hobby-text { margin-left: 0; padding-bottom: 0; }
+        [data-variant-current="D"] .hobby-bg { left: 50% !important; right: auto !important; top: 0 !important; translate: -50% 0; font-size: 4.5rem; }
+        [data-variant-current="D"] .hobby-num { display: none; }
     }
 
     .cta-box {
