@@ -652,11 +652,6 @@
         "name": "Demo",
         "url": "https://drive.google.com/file/d/15EWscQGZn_iomTZJ1PxeUxlKfjzNvdEu/view",
         "icon": "fa-brands fa-google-drive"
-      },
-      {
-        "name": "Instruction",
-        "url": "https://docs.google.com/document/d/1OTs1PAHzFozQi4C-dgQDY2KAv-aUJxA04lkSluy654o/edit?tab=t.0#heading=h.prfq1ldq3k9p",
-        "icon": "fa-brands fa-google-drive"
       }
     ],
     "colorText": "#3D2936",
