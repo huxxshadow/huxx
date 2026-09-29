@@ -195,7 +195,7 @@ const GAME_THEMES = [
             spin: number; rot: number; trail: { x: number; y: number }[];
             lastHit: Paddle | null;
         };
-        const START_SPEED = 6;
+        const START_SPEED = 7.5;
         const makeBall = (x: number, y: number): Ball => ({
             x, y, radius: 8, currentRadius: 8,
             speed: START_SPEED, velocityX: 0, velocityY: 0,
@@ -215,8 +215,8 @@ const GAME_THEMES = [
         let powerUpTimer = 360;
 
         // 难度曲线：巡航速度随关卡和连击上涨，上限随关卡放宽
-        const cruiseSpeed = () => Math.min(8.5 + (currentLevel - 1) * 0.9, 15) + Math.min(rally * 0.12, 2.5);
-        const maxSpeed = () => Math.min(15 + (currentLevel - 1) * 0.6, 20);
+        const cruiseSpeed = () => Math.min(10.5 + (currentLevel - 1) * 1.0, 18) + Math.min(rally * 0.15, 3);
+        const maxSpeed = () => Math.min(19 + (currentLevel - 1) * 0.7, 24);
         const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 
         function createParticles(x: number, y: number, color: string, count: number = 25, power: number = 12) {
@@ -655,7 +655,7 @@ const GAME_THEMES = [
             } else {
                 targetY = gameHeight / 2 + (balls[0].y - gameHeight / 2) * 0.3;
             }
-            const aiMax = Math.min(4.2 + 0.5 * (currentLevel - 1), 9) * (gameHeight / 250);
+            const aiMax = Math.min(5.2 + 0.6 * (currentLevel - 1), 11) * (gameHeight / 250);
             com.y += clamp((targetY - (com.y + com.height / 2)) * 0.2, -aiMax, aiMax);
             updatePaddle(com);
 
@@ -672,7 +672,7 @@ const GAME_THEMES = [
                 const b = balls[i];
 
                 if (b.speed < cruise) {
-                    b.speed += 0.05;
+                    b.speed += 0.08;
                     setSpeed(b, b.speed);
                 }
 
