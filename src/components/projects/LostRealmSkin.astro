@@ -2,8 +2,8 @@
 // Lost Realm 项目页专属皮肤（projects.json 里 skin: "lr" 时由 [id].astro 挂载）
 //
 // 视觉照着游戏本身走：长满青苔的遗迹场景当底，面板都是游戏 UI 用的 Franuka「RPG UI pack」。
-// 两级面板：一级（hero、正文）统一用金边橙色面板（--lr-panel-1）；嵌在里面的二级（封面框、简介、徽章、外链、
-// 正文图片与片段）统一用带蓝色角钉的蜜桃面板（--lr-panel-2）。主题色取自一级面板：底色 #FFAE70、描边深色 #3D2936。
+// 两级面板：一级（hero、正文）统一用金边橙色面板（--lr-panel-1）；嵌在里面的二级（简介、徽章、外链）统一用
+// 带蓝色角钉的蜜桃面板（--lr-panel-2）。封面用金色角饰相框，H2 用宝石横幅，H3 用金色卷轴；正文图片不加边框。主题色取自一级面板：底色 #FFAE70、描边深色 #3D2936。
 // - 面板、横幅、名牌、图标都是从 UI 包 1x 图集里按像素坐标裁出来、最近邻放大 3 倍的 9-slice（skin/*.png），
 //   用 border-image 套上，1 个原始像素 = 3 个 CSS 像素，所以切片和边宽都是 3 的倍数。
 // - 标题用 Google Fonts 的 Pixelify Sans，中日韩字回落到 Fusion Pixel 子集（和极速像素页共用那三个文件），
@@ -14,6 +14,8 @@
 import panelPeach from "@/assets/projects/game-project-lost-realm/skin/panel-peach.png";
 import panelGold from "@/assets/projects/game-project-lost-realm/skin/panel-gold.png";
 import ribbon from "@/assets/projects/game-project-lost-realm/skin/ribbon.png";
+import ribbonGold from "@/assets/projects/game-project-lost-realm/skin/ribbon-gold.png";
+import panelOrnate from "@/assets/projects/game-project-lost-realm/skin/panel-ornate.png";
 import icons from "@/assets/projects/game-project-lost-realm/skin/icons.png";
 import scene from "@/assets/projects/game-project-lost-realm/skin/scene.webp";
 import pixelSC from "@/assets/projects/game-project-speed-pixel/skin/fusion-pixel-sc.woff2?url";
@@ -30,6 +32,8 @@ const vars = [
     `--lr-panel-1: url("${panelGold.src}")`,
     `--lr-panel-2: url("${panelPeach.src}")`,
     `--lr-ribbon: url("${ribbon.src}")`,
+    `--lr-ribbon-gold: url("${ribbonGold.src}")`,
+    `--lr-panel-ornate: url("${panelOrnate.src}")`,
     `--lr-icons: url("${icons.src}")`,
     `--lr-scene: url("${scene.src}")`,
 ].join("; ");
@@ -171,12 +175,12 @@ const fontFace = [
         color: var(--lr-ink);
     }
 
-    /* 封面：二级面板 */
+    /* 封面：UI 包里金色角饰、绿宝石的相框 */
     .skin-lr .project-hero-shell .project-hero-image {
-        border-width: 24px !important;
+        border-width: 30px !important;
         border-style: solid !important;
         border-color: transparent !important;
-        border-image: var(--lr-panel-2) 24 fill / 24px / 0 stretch;
+        border-image: var(--lr-panel-ornate) 30 fill / 30px / 0 stretch;
         border-radius: 0 !important;
         background: transparent !important;
         box-shadow: none !important;
@@ -226,14 +230,21 @@ const fontFace = [
         letter-spacing: .04em;
     }
 
-    /* H3：前面一枚 UI 包图标，按顺序轮换剑 / 盾 / 书 / 法杖 / 骷髅 / 星 */
+    /* H3：UI 包的金色卷轴横幅，前面一枚图标，按顺序轮换剑 / 盾 / 书 / 法杖 / 骷髅 / 星 */
     .skin-lr .project-prose h3 {
         display: flex;
         align-items: center;
-        gap: .7rem;
+        gap: .6rem;
+        width: fit-content;
+        max-width: 100%;
+        padding: .1rem .4rem .15rem;
+        border-width: 9px 24px 24px;
+        border-style: solid;
+        border-color: transparent;
+        border-image: var(--lr-ribbon-gold) 9 24 24 fill / 9px 24px 24px / 0 stretch;
         color: var(--lr-ink);
         font-family: var(--lr-title);
-        font-weight: 400;
+        font-weight: 600;
         font-size: 1.375rem;
         letter-spacing: .03em;
     }
@@ -251,18 +262,15 @@ const fontFace = [
     .skin-lr .project-prose h3:nth-of-type(6n + 5) { --lr-i: 5; }
     .skin-lr .project-prose h3:nth-of-type(6n) { --lr-i: 0; }
 
-    /* 图片 / 演示片段：二级面板 */
+    /* 图片 / 演示片段：不加边框 */
     .skin-lr .project-prose img,
     .skin-lr .project-prose video.clip {
         display: block;
         width: 100%;
         height: auto;
-        border-width: 18px !important;
-        border-style: solid !important;
-        border-color: transparent !important;
-        border-image: var(--lr-panel-2) 24 fill / 18px / 0 stretch !important;
+        border: 0 !important;
         border-radius: 0 !important;
-        box-shadow: 0 8px 0 rgba(90, 47, 53, .25) !important;
+        box-shadow: none !important;
         background: transparent;
     }
     .skin-lr .project-prose figure :is(img, video.clip) { margin: 0 !important; }
@@ -300,8 +308,7 @@ const fontFace = [
         .skin-lr .project-prose h2 { font-size: 1.375rem; border-width: 12px 20px; border-image-width: 12px 20px; }
         .skin-lr .project-prose h3 { font-size: 1.1rem; }
         .skin-lr .project-prose h3::before { width: 24px; height: 24px; background-size: 384px 24px; background-position: calc(var(--lr-i, 8) * -24px) 0; }
-        .skin-lr .project-prose img,
-        .skin-lr .project-prose video.clip { border-width: 12px !important; border-image-width: 12px !important; }
-        .skin-lr .project-hero-shell .project-hero-image { border-width: 18px !important; border-image-width: 18px !important; }
+        .skin-lr .project-hero-shell .project-hero-image { border-width: 20px !important; border-image-width: 20px !important; }
+        .skin-lr .project-prose h3 { border-width: 6px 16px 16px; border-image-width: 6px 16px 16px; }
     }
 </style>
