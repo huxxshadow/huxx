@@ -176,7 +176,7 @@ const GAME_THEMES = [
 
         const ball = {
             x: 0, y: 0, radius: 8, currentRadius: 8,
-            startSpeed: 3, speed: 3, velocityX: 0, velocityY: 0
+            startSpeed: 5, speed: 5, velocityX: 0, velocityY: 0
         };
 
         function createParticles(x: number, y: number, color: string) {
@@ -429,8 +429,9 @@ const GAME_THEMES = [
                 return;
             }
 
-            let baseCruiseSpeed = 6 + (currentLevel - 1) * 0.8;
-            let aiSpeed = 0.05 + (currentLevel - 1) * 0.015;
+            // 起始难度：巡航速度 8、AI 跟球系数 0.08（原来是 6 和 0.05，开局太容易）
+            let baseCruiseSpeed = 8 + (currentLevel - 1) * 0.8;
+            let aiSpeed = 0.08 + (currentLevel - 1) * 0.015;
 
             if (ball.speed < baseCruiseSpeed) {
                 ball.speed += 0.04;
@@ -459,7 +460,7 @@ const GAME_THEMES = [
                 if (ball.speed < baseCruiseSpeed) ball.speed = baseCruiseSpeed;
                 ball.velocityX = direction * ball.speed * Math.cos(angleRad);
                 ball.velocityY = ball.speed * Math.sin(angleRad);
-                if (ball.speed < 12) ball.speed += 0.4;
+                if (ball.speed < 14) ball.speed += 0.4;
 
                 for(let i=0; i<5; i++) {
                     particles.push({
