@@ -23,64 +23,55 @@ export const introLabels = {
         {
             icon: "fa-gamepad",
             image: hobbyGames,
-            title: { en: "I love video games", zh: "我热爱电子游戏", ja: "ビデオゲームが大好き", ko: "비디오 게임을 사랑합니다" },
+            title: { en: "Games are my thing", zh: "游戏是我的热爱", ja: "ゲームが生きがい", ko: "게임이 제 전부예요" },
             notes: [
-                {
-                    en: "Over 5,000 hours played on Steam",
-                    zh: "我的 Steam 总时长超过 5000 小时",
-                    ja: "Steam の総プレイ時間は 5000 時間以上",
-                    ko: "Steam 총 플레이 시간 5,000시간 이상",
-                },
-                {
-                    en: "Favourites: CRPGs and strategy games",
-                    zh: "最喜欢 CRPG 和策略类游戏",
-                    ja: "一番好きなのは CRPG とストラテジー",
-                    ko: "가장 좋아하는 장르는 CRPG와 전략 게임",
-                },
+                { en: "5,000+ hours on Steam", zh: "Steam 时长 5000+ 小时", ja: "Steam 5000 時間以上", ko: "Steam 5,000시간 이상" },
+                { en: "CRPGs and strategy, forever", zh: "最爱 CRPG 与策略游戏", ja: "CRPG とストラテジーが一番", ko: "최애는 CRPG와 전략 게임" },
             ],
         },
         {
             icon: "fa-tv",
             image: hobbyAnime,
-            title: { en: "I'm an anime fan", zh: "我是个二次元", ja: "アニメオタクです", ko: "저는 오타쿠입니다" },
+            title: { en: "Anime at heart", zh: "资深二次元", ja: "根っからのアニメ好き", ko: "뼛속까지 애니 덕후" },
             notes: [
-                { en: "Love watching anime", zh: "喜欢看动画", ja: "アニメを見るのが好き", ko: "애니메이션 보는 걸 좋아해요" },
-                { en: "Drawn to stream-of-consciousness direction", zh: "喜欢意识流演出风格", ja: "意識の流れ的な演出が好き", ko: "의식의 흐름 같은 연출을 좋아해요" },
+                { en: "Always watching", zh: "动画看不停", ja: "アニメは欠かせない", ko: "애니는 늘 챙겨 봐요" },
+                { en: "Soft spot for stream-of-consciousness direction", zh: "偏爱意识流演出", ja: "意識の流れ的な演出に弱い", ko: "의식의 흐름 연출을 특히 좋아해요" },
             ],
         },
         {
             icon: "fa-medal",
             image: hobbyRunning,
-            title: { en: "I love long-distance running", zh: "我喜欢长跑", ja: "長距離ランが好き", ko: "장거리 달리기를 좋아합니다" },
+            title: { en: "Long-distance runner", zh: "跑者一枚", ja: "長距離ランナー", ko: "장거리 러너" },
             notes: [{
                 en: "Ran the Standard Chartered Hong Kong Half Marathon",
-                zh: "曾参加过香港渣打半程马拉松",
-                ja: "スタンダードチャータード香港マラソンのハーフに出場",
-                ko: "스탠다드차타드 홍콩 하프 마라톤 완주",
+                zh: "跑过香港渣打半程马拉松",
+                ja: "スタンダードチャータード香港マラソン（ハーフ）に出場",
+                ko: "스탠다드차타드 홍콩 하프 마라톤 출전",
             }],
         },
         {
             icon: "fa-cake-candles",
             image: hobbyCooking,
-            title: { en: "I love cooking", zh: "我喜欢烹饪", ja: "料理が好き", ko: "요리를 좋아합니다" },
-            notes: [{
-                en: "Best at desserts and honey-glazed chicken wings",
-                zh: "最擅长做甜品和蜜糖鸡翅",
-                ja: "得意料理はスイーツとハニーチキンウィング",
-                ko: "디저트와 허니 치킨윙이 특기",
-            }],
+            title: { en: "Home cook", zh: "爱下厨", ja: "料理好き", ko: "요리하는 걸 좋아해요" },
+            notes: [
+                { en: "Desserts are my specialty", zh: "拿手甜品", ja: "得意はスイーツ", ko: "디저트가 특기" },
+                { en: "Signature: honey-glazed wings", zh: "招牌蜜糖鸡翅", ja: "看板メニューはハニーチキンウィング", ko: "시그니처는 허니 치킨윙" },
+            ],
         },
         {
             // Font Awesome 没有击剑图标，用 iconSvg 画两把交叉的花剑
             icon: "",
             iconSvg: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 52 L50 10"/><path d="M52 52 L14 10"/><path d="M6 46 q6 -2 10 4 q2 6 -4 8"/><path d="M58 46 q-6 -2 -10 4 q-2 6 4 8"/><circle cx="50" cy="10" r="2" fill="currentColor"/><circle cx="14" cy="10" r="2" fill="currentColor"/></svg>`,
-            title: { en: "I fence", zh: "我会击剑", ja: "フェンシングをやります", ko: "펜싱을 합니다" },
-            notes: [{ en: "Foil is my weapon", zh: "我会打花剑", ja: "種目はフルーレ", ko: "플뢰레를 합니다" }],
+            title: { en: "En garde!", zh: "会击剑", ja: "フェンシングもやります", ko: "펜싱도 해요" },
+            notes: [{ en: "Foil fencer", zh: "主项花剑", ja: "種目はフルーレ", ko: "종목은 플뢰레" }],
         },
         {
             icon: "fa-music",
-            title: { en: "I love music", zh: "我很喜欢音乐", ja: "音楽が大好き", ko: "음악을 정말 좋아합니다" },
-            notes: [{ en: "I play a little flute and piano", zh: "我会一点长笛和钢琴", ja: "フルートとピアノを少し弾けます", ko: "플루트와 피아노를 조금 연주해요" }],
+            title: { en: "Music lover", zh: "离不开音乐", ja: "音楽が欠かせない", ko: "음악 없이는 못 살아요" },
+            notes: [
+                { en: "A little flute", zh: "会一点长笛", ja: "フルートを少し", ko: "플루트 조금" },
+                { en: "A little piano", zh: "也会一点钢琴", ja: "ピアノも少し", ko: "피아노도 조금" },
+            ],
         },
     ] as { icon: string; iconSvg?: string; title: Multilingual; notes: Multilingual[]; image?: ImageMetadata }[],
 

@@ -151,24 +151,25 @@ const roleList = rolesData[locale] || rolesData.en;
         opacity: 1;
     }
 
-    /* 每条下面一条圆角横线，跟着这条靠左或靠右 */
+    /* 每条下面一条圆角横线，长度就是这一段（插画 + 文字）的宽度：
+       条目收缩到内容宽度，靠左的贴左、靠右的贴右，横线铺满条目 */
     .hobbies .hobby {
         position: relative;
         padding-bottom: 2.2rem;
+        width: fit-content;
+        max-width: 100%;
+        justify-self: start;
     }
+    .hobbies .hobby:nth-child(even) { justify-self: end; }
     .hobbies .hobby::after {
         content: "";
         position: absolute;
         bottom: 0;
         left: 0;
-        width: min(22rem, 60%);
+        right: 0;
         height: 6px;
         border-radius: 999px;
         background: currentColor;
-    }
-    .hobbies .hobby:nth-child(even)::after {
-        left: auto;
-        right: 0;
     }
 
     /* 01 游戏：左边，大人物站着，标题压在人物右侧脚边 */
@@ -317,8 +318,7 @@ const roleList = rolesData[locale] || rolesData.en;
 
     /* 手机：三版都改成一列，保留各自的风格 */
     @media (max-width: 639px) {
-        .hobbies .hobby::after,
-        .hobbies .hobby:nth-child(even)::after { left: 50%; right: auto; translate: -50% 0; width: 50%; }
+        .hobbies .hobby { align-self: center; }
         /* 手机上文字不再往插画那边挤，标签居中、可以换行 */
         .hobbies .hobby .hobby-text { margin: 0 !important; padding-bottom: 0 !important; rotate: 0deg !important; }
         .hobbies .hobby .hobby-notes { justify-content: center; }
