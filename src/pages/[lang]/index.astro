@@ -12,7 +12,9 @@ const t = useTranslations(locale);
 
 import PongGame from "@/components/index/PongGame.astro";
 import ExperienceSection from "@/components/index/ExperienceSection.astro";
-import GameStickerSection from "@/components/index/GameStickerSection.astro";
+// 游戏项目贴纸区暂时隐藏（组件保留）
+// import GameStickerSection from "@/components/index/GameStickerSection.astro";
+import PortfolioBanner from "@/components/index/PortfolioBanner.astro";
 import BrickGame from "@/components/index/BrickGame.astro";
 
 export const getStaticPaths = () =>
@@ -170,7 +172,7 @@ const withGameTips = (text: string) =>
     </section>
 
     <ExperienceSection />
-    <GameStickerSection />
+    <PortfolioBanner />
 
     <BrickGame />
 </Layout>
