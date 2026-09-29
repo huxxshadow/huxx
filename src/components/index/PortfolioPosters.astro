@@ -151,10 +151,10 @@ const ink = COLORS.black;
      * 角色永远靠右上，框在标题上方的区域里，不压字：
      * 海报高 150cqw，文字块（标题 + 作品名）从底边往上约 45cqw，所以图框止于顶部往下 96cqw
      */
-    /* 人物紧贴海报右边 */
+    /* 人物靠右，和海报右边只留一点间距 */
     .poster-figure {
         position: absolute;
-        right: 0;
+        right: 3cqw;
         top: 14cqw;
         pointer-events: none;
         transition: scale 400ms ease-out;
@@ -199,16 +199,17 @@ const ink = COLORS.black;
         line-height: 1;
         white-space: nowrap;
     }
+    /* 底边正中的 huxx：小号、中等粗细 */
     .poster-foot {
         position: absolute;
         left: 0;
         right: 0;
-        bottom: 4%;
+        bottom: 2.5%;
         text-align: center;
         font-family: 'Roboto', sans-serif;
-        font-weight: 900;
-        font-size: 5cqw;
-        letter-spacing: 0.02em;
+        font-weight: 500;
+        font-size: max(10px, 3.8cqw);
+        letter-spacing: 0.04em;
     }
 
     /* 始终只有一行：平板一屏 3 张、手机一屏 2 张，海报多于一屏时横向滑动 */
