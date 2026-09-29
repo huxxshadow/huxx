@@ -444,14 +444,6 @@ const getSkillClass = (level: string) => {
             if (isPlaying) movePaddleToTouch(e as TouchEvent);
         }, { signal, passive: false });
 
-        // 桌面端也可以用鼠标在框里左右移动挡板
-        container.addEventListener('mousemove', (e) => {
-            if (!isPlaying) return;
-            const rect = container.getBoundingClientRect();
-            const scale = rect.width ? container.clientWidth / rect.width : 1;
-            paddleX = clamp((e.clientX - rect.left) * scale - paddleWidth / 2, 0, container.clientWidth - paddleWidth);
-        }, { signal });
-
         container.addEventListener('touchend', () => { touchInsideContainer = false; }, { signal });
         container.addEventListener('touchcancel', () => { touchInsideContainer = false; }, { signal });
 
