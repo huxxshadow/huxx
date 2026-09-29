@@ -9,16 +9,20 @@ import { COLORS } from "@/consts.ts";
 import { getEntry } from "astro:content";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import type { ImageMetadata } from "astro";
-import fractalGirl from "@/assets/projects/game-project-fractal-shelter/fractal-shelter_Character.webp";
+// 分形收容所的人物是矢量图（从位图描出来的单色路径，fill 用 currentColor），直接按海报主题色上色，不走双色调滤镜
+import FractalGirl from "@/assets/projects/game-project-fractal-shelter/fractal-shelter_Character.svg";
 import nightWatchCard from "@/assets/projects/game-project-night-watch/cards/enemy-1.webp";
 
 const locale = (Astro.currentLocale || "en") as Lang;
 const t = useTranslations(locale);
 
 // levels：灰度的黑点 / 白点（0~1），原图偏浅或偏平时拉开对比，默认不调
-type Poster = { id: string; art: ImageMetadata; color: { light: string; dark: string }; pixel?: boolean; levels?: [number, number] };
+// art 是位图（走双色调滤镜）或 SVG 组件（单色路径，直接用主题色）
+type SvgArt = ((props: Record<string, unknown>) => unknown) & { width: number; height: number };
+type Poster = { id: string; art: ImageMetadata | SvgArt; color: { light: string; dark: string }; pixel?: boolean; levels?: [number, number] };
+const isSvg = (art: Poster["art"]): art is SvgArt => typeof art === "function";
 const POSTERS: Poster[] = [
-    { id: "game-project-fractal-shelter", art: fractalGirl, color: COLORS.red },
+    { id: "game-project-fractal-shelter", art: FractalGirl as unknown as SvgArt, color: COLORS.red },
     { id: "game-project-night-watch", art: nightWatchCard, color: COLORS.orange, levels: [0.1, 0.85] },
 ];
 
@@ -33,7 +37,7 @@ const headingSize = fitSize(heading, 17);
 
 // 人物图按比例塞进右上角 86×82cqw 的框里，算出实际显示宽高，这样头顶的横线能对准图的正中
 const ART_W = 86, ART_H = 82;
-const artBox = (img: ImageMetadata) => {
+const artBox = (img: { width: number; height: number }) => {
     const ratio = img.width / img.height;
     return ratio > ART_W / ART_H
         ? { artW: ART_W, artH: +(ART_W / ratio).toFixed(2) }
@@ -97,6 +101,9 @@ const ink = COLORS.black;
                 <a href={p.href} class="poster">
                     <div class="poster-figure" style={`width: ${p.artW}cqw; height: ${p.artH}cqw;`}>
                         <span class="poster-halo" aria-hidden="true"></span>
+                        {isSvg(p.art) ? (
+                            <p.art class="poster-art" aria-hidden="true" preserveAspectRatio="xMidYMid meet" />
+                        ) : (
                         <img
                                 src={p.art.src}
                                 width={p.art.width}
@@ -107,6 +114,7 @@ const ink = COLORS.black;
                                 class:list={["poster-art", p.pixel && "pixelated"]}
                                 style={`filter: url(#${p.filter});`}
                         />
+                        )}
                     </div>
                     <div class="poster-text">
                         <p class="poster-title" style={`--title-size: ${headingSize}cqw;`}>{heading}</p>
