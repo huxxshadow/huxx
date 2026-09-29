@@ -127,20 +127,20 @@ const ink = COLORS.black;
     }
 
     /*
-     * 角色永远放在左上，框在标题上方的区域里，不压字：
+     * 角色永远靠右上，框在标题上方的区域里，不压字：
      * 海报高 150cqw，文字块（标题 + 作品名）从底边往上约 45cqw，所以图框止于顶部往下 96cqw
      */
     .poster-art {
         position: absolute;
-        left: 7cqw;
+        right: 7cqw;
         top: 8cqw;
         width: 86cqw;
         height: 88cqw;
         object-fit: contain;
-        object-position: left top;
+        object-position: right top;
         pointer-events: none;
         transition: scale 400ms ease-out;
-        transform-origin: left top;
+        transform-origin: right top;
     }
     .poster:hover .poster-art { scale: 1.03; }
     .poster-art.pixelated { image-rendering: pixelated; }
