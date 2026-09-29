@@ -23,7 +23,7 @@ export const introLabels = {
         {
             icon: "fa-gamepad",
             image: hobbyGames,
-            title: { en: "Games are my thing", zh: "游戏是我的热爱", ja: "ゲームが生きがい", ko: "게임이 제 전부예요" },
+            title: { en: "Video game enthusiast", zh: "电子游戏爱好者", ja: "ビデオゲーム愛好家", ko: "비디오 게임 애호가" },
             notes: [
                 { en: "5,000+ hours on Steam", zh: "Steam 时长 5000+ 小时", ja: "Steam 5000 時間以上", ko: "Steam 5,000시간 이상" },
                 { en: "CRPGs and strategy, forever", zh: "最爱 CRPG 与策略游戏", ja: "CRPG とストラテジーが一番", ko: "최애는 CRPG와 전략 게임" },
