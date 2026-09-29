@@ -659,8 +659,9 @@
         "icon": "fa-brands fa-google-drive"
       }
     ],
-    "colorText": "orange",
-    "colorBackground": "orange"
+    "colorText": "#FFCBA4",
+    "colorBackground": "#14201E",
+    "skin": "lr"
   },
   {
     "id": "technical-project-smart-pot-joi",

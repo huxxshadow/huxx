@@ -7,6 +7,10 @@ import img2 from '@/assets/projects/game-project-lost-realm/game-project-lost-re
 import img3 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm3.png';
 import img4 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm4.webp';
 import img5 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm5.webp';
+import uguiClip from '@/assets/projects/game-project-lost-realm/clips/ugui.mp4?url';
+import uguiClipPoster from '@/assets/projects/game-project-lost-realm/clips/ugui-poster.webp?url';
+import artClip from '@/assets/projects/game-project-lost-realm/clips/art.mp4?url';
+import artClipPoster from '@/assets/projects/game-project-lost-realm/clips/art-poster.webp?url';
 
 ## My Role
 
@@ -45,6 +49,11 @@ To present this complex system intuitively to players, I conducted in-depth UI/U
     <figcaption>Action Editor UI: including card slots, real-time attribute panel, and the real-time action combo preview box at the top</figcaption>
 </figure>
 
+<figure>
+    <video class="clip" src={uguiClip} poster={uguiClipPoster} width="1280" height="712" muted loop playsinline preload="none" data-autoplay aria-label="Combat UI demo"></video>
+    <figcaption>The action editor UI in game: dragging cards to combine actions and effects</figcaption>
+</figure>
+
 ### Pixel Art Repair and Scene Atmosphere Building
 
 Visually, the game established a retro yet refined high-contrast pixel aesthetic. However, during early scene construction, some pixel assets generated through AI tools like MidJourney exhibited obvious edge noise, perspective distortion, and color block discontinuities.
@@ -63,6 +72,11 @@ To ensure ultimate visual unity and improve efficiency, I specifically developed
     </figure>
 </div>
 
+<figure>
+    <video class="clip" src={artClip} poster={artClipPoster} width="1280" height="712" muted loop playsinline preload="none" data-autoplay aria-label="Scene art demo"></video>
+    <figcaption>In-game scene: ruins, water reflections and lighting</figcaption>
+</figure>
+
 ### Boss AI Behavior Tree Design
 
 In the project's later stages, I focused on designing the first core Boss, the "Goblin King." To give the Boss an oppressive yet intelligent combat rhythm, I abandoned simple hardcoded logic and instead used a Behavior Tree system to drive its AI decision-making.
@@ -73,3 +87,5 @@ The behavior tree dynamically selects the optimal action branch through continuo
     <Image src={img5} alt="AI behavior tree node diagram driving Boss intelligent combat decisions" width={1600} height={900} />
     <figcaption>Complex AI behavior tree node system driving the Boss's multi-phase intelligent combat decision-making</figcaption>
 </figure>
+
+<p class="lr-credit">UI art from the RPG UI pack and Fantasy RPG icon pack by <a href="https://franuka.itch.io/" target="_blank" rel="noopener">Franuka</a>.</p>

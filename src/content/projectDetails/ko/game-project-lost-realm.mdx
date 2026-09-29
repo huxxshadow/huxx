@@ -7,6 +7,10 @@ import img2 from '@/assets/projects/game-project-lost-realm/game-project-lost-re
 import img3 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm3.png';
 import img4 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm4.webp';
 import img5 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm5.webp';
+import uguiClip from '@/assets/projects/game-project-lost-realm/clips/ugui.mp4?url';
+import uguiClipPoster from '@/assets/projects/game-project-lost-realm/clips/ugui-poster.webp?url';
+import artClip from '@/assets/projects/game-project-lost-realm/clips/art.mp4?url';
+import artClipPoster from '@/assets/projects/game-project-lost-realm/clips/art-poster.webp?url';
 
 ## 담당 업무
 
@@ -45,6 +49,11 @@ import img5 from '@/assets/projects/game-project-lost-realm/game-project-lost-re
     <figcaption>액션 에디터 UI: 카드 슬롯·실시간 속성 패널·상단의 액션 콤보 실시간 미리보기 박스를 포함</figcaption>
 </figure>
 
+<figure>
+    <video class="clip" src={uguiClip} poster={uguiClipPoster} width="1280" height="712" muted loop playsinline preload="none" data-autoplay aria-label="전투 UI 시연"></video>
+    <figcaption>액션 에디터 UI 실제 시연: 카드를 드래그해 액션과 효과를 조합</figcaption>
+</figure>
+
 ### 픽셀 아트 복구와 씬 분위기 구축
 
 비주얼 스타일로는 레트로하면서도 세련된 고대비 픽셀 아트 미학을 확립했습니다. 그러나 초기 씬 구축 단계에서 MidJourney 등의 AI 툴로 생성된 일부 픽셀 에셋에 명확한 엣지 노이즈·원근감 붕괴·색 블록 단절 등의 문제가 있었습니다.
@@ -63,6 +72,11 @@ import img5 from '@/assets/projects/game-project-lost-realm/game-project-lost-re
     </figure>
 </div>
 
+<figure>
+    <video class="clip" src={artClip} poster={artClipPoster} width="1280" height="712" muted loop playsinline preload="none" data-autoplay aria-label="씬 아트 시연"></video>
+    <figcaption>실제 씬: 유적, 수면 반사, 빛의 분위기</figcaption>
+</figure>
+
 ### 보스 AI 비헤이비어 트리 설계
 
 프로젝트 후기에는 첫 번째 핵심 보스 "고블린 킹"의 설계에 집중했습니다. 보스가 극도로 압박감 있고 지능적인 전투 리듬을 보여주기 위해 단순한 하드코딩 로직을 버리고 비헤이비어 트리(Behavior Tree) 시스템으로 AI 의사결정을 구동하기로 했습니다.
@@ -73,3 +87,5 @@ import img5 from '@/assets/projects/game-project-lost-realm/game-project-lost-re
     <Image src={img5} alt="보스의 지능적인 전투 의사결정을 구동하는 AI 비헤이비어 트리 노드 다이어그램" width={1600} height={900} />
     <figcaption>보스의 다단계 지능적 전투 의사결정을 구동하는 복잡한 AI 비헤이비어 트리 노드 시스템</figcaption>
 </figure>
+
+<p class="lr-credit">UI 소재는 <a href="https://franuka.itch.io/" target="_blank" rel="noopener">Franuka</a>의 RPG UI pack과 Fantasy RPG icon pack을 사용했습니다.</p>

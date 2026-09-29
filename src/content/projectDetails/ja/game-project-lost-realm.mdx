@@ -7,6 +7,10 @@ import img2 from '@/assets/projects/game-project-lost-realm/game-project-lost-re
 import img3 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm3.png';
 import img4 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm4.webp';
 import img5 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm5.webp';
+import uguiClip from '@/assets/projects/game-project-lost-realm/clips/ugui.mp4?url';
+import uguiClipPoster from '@/assets/projects/game-project-lost-realm/clips/ugui-poster.webp?url';
+import artClip from '@/assets/projects/game-project-lost-realm/clips/art.mp4?url';
+import artClipPoster from '@/assets/projects/game-project-lost-realm/clips/art-poster.webp?url';
 
 ## 担当業務
 
@@ -45,6 +49,11 @@ import img5 from '@/assets/projects/game-project-lost-realm/game-project-lost-re
     <figcaption>アクションエディター UI：カードスロット・リアルタイム属性パネル・上部のアクションコンボリアルタイムプレビューボックスを含む</figcaption>
 </figure>
 
+<figure>
+    <video class="clip" src={uguiClip} poster={uguiClipPoster} width="1280" height="712" muted loop playsinline preload="none" data-autoplay aria-label="戦闘 UI のデモ"></video>
+    <figcaption>アクションエディター UI の実機デモ：カードをドラッグしてアクションと効果を組み合わせる</figcaption>
+</figure>
+
 ### ピクセルアートの修復とシーンの雰囲気づくり
 
 ビジュアルスタイルとして、レトロで洗練された高コントラストのピクセルアート美学を確立しました。しかし初期のシーン構築段階では、MidJourney などの AI ツールで生成された一部のピクセルアセットに、明らかなエッジノイズ・パースペクティブの崩壊・カラーブロックの断絶などの問題がありました。
@@ -63,6 +72,11 @@ import img5 from '@/assets/projects/game-project-lost-realm/game-project-lost-re
     </figure>
 </div>
 
+<figure>
+    <video class="clip" src={artClip} poster={artClipPoster} width="1280" height="712" muted loop playsinline preload="none" data-autoplay aria-label="シーン美術のデモ"></video>
+    <figcaption>実機のシーン：遺跡、水面の反射、光の雰囲気</figcaption>
+</figure>
+
 ### ボス AI ビヘイビアツリーの設計
 
 プロジェクト後期では、最初のコアボス「ゴブリンキング」のデザインに集中的に取り組みました。ボスに極めて圧迫感があり知的な戦闘リズムを見せるために、単純なハードコードされたロジックを捨てて、ビヘイビアツリー（Behavior Tree）システムで AI の意思決定を駆動することにしました。
@@ -73,3 +87,5 @@ import img5 from '@/assets/projects/game-project-lost-realm/game-project-lost-re
     <Image src={img5} alt="ボスのインテリジェントな戦闘意思決定を駆動する AI ビヘイビアツリーのノード図" width={1600} height={900} />
     <figcaption>ボスの多段階インテリジェント戦闘意思決定を駆動する複雑な AI ビヘイビアツリーノードシステム</figcaption>
 </figure>
+
+<p class="lr-credit">UI 素材は <a href="https://franuka.itch.io/" target="_blank" rel="noopener">Franuka</a> の RPG UI pack と Fantasy RPG icon pack によるものです。</p>

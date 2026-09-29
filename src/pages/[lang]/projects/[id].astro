@@ -13,6 +13,7 @@ import NightWatchSkin from "@/components/projects/NightWatchSkin.astro";
 import FractalShelterSkin from "@/components/projects/FractalShelterSkin.astro";
 import EmptyThroneSkin from "@/components/projects/EmptyThroneSkin.astro";
 import SpeedPixelSkin from "@/components/projects/SpeedPixelSkin.astro";
+import LostRealmSkin from "@/components/projects/LostRealmSkin.astro";
 import { getRelativeLocaleUrl } from "astro:i18n";
 
 export async function getStaticPaths() {
@@ -51,6 +52,7 @@ const SKINS: Record<string, any> = {
     fs: FractalShelterSkin,
     et: EmptyThroneSkin,
     sp: SpeedPixelSkin,
+    lr: LostRealmSkin,
 };
 const skin = project.data.skin;
 const Skin = skin ? SKINS[skin] : undefined;

@@ -1,4 +1,4 @@
-﻿---
+---
 ---
 
 import { Image } from 'astro:assets';
@@ -7,6 +7,10 @@ import img2 from '@/assets/projects/game-project-lost-realm/game-project-lost-re
 import img3 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm3.png';
 import img4 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm4.webp';
 import img5 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm5.webp';
+import uguiClip from '@/assets/projects/game-project-lost-realm/clips/ugui.mp4?url';
+import uguiClipPoster from '@/assets/projects/game-project-lost-realm/clips/ugui-poster.webp?url';
+import artClip from '@/assets/projects/game-project-lost-realm/clips/art.mp4?url';
+import artClipPoster from '@/assets/projects/game-project-lost-realm/clips/art-poster.webp?url';
 
 ## 我的职责
 
@@ -45,6 +49,11 @@ import img5 from '@/assets/projects/game-project-lost-realm/game-project-lost-re
     <figcaption>动作编辑器 UI：包含卡牌插槽、属性实时面板与顶部的动作连招即时预览框</figcaption>
 </figure>
 
+<figure>
+    <video class="clip" src={uguiClip} poster={uguiClipPoster} width="1280" height="712" muted loop playsinline preload="none" data-autoplay aria-label="战斗 UI 演示"></video>
+    <figcaption>动作编辑器 UI 实机演示：拖拽卡牌组合动作与附加效果</figcaption>
+</figure>
+
 ### 像素美术修复与场景氛围搭建
 
 在美术风格上，游戏确立了复古而精致的高对比度像素美学。然而，在初期场景搭建时，部分通过 MidJourney 等 AI 工具生成的像素素材存在着明显的边缘噪点、透视崩坏和色块断层等问题。
@@ -63,6 +72,11 @@ import img5 from '@/assets/projects/game-project-lost-realm/game-project-lost-re
     </figure>
 </div>
 
+<figure>
+    <video class="clip" src={artClip} poster={artClipPoster} width="1280" height="712" muted loop playsinline preload="none" data-autoplay aria-label="场景美术效果演示"></video>
+    <figcaption>实机场景：遗迹、水面倒影与光影氛围</figcaption>
+</figure>
+
 ### Boss AI 行为树设计
 
 在项目的后期，我重点攻坚了首个核心 Boss“哥布林之王”的设计。为了让 Boss 展现出极具压迫感且智能的战斗节奏，我抛弃了简单的硬编码逻辑，转而使用行为树（Behavior Tree）系统来驱动其 AI 决策。
@@ -74,3 +88,4 @@ import img5 from '@/assets/projects/game-project-lost-realm/game-project-lost-re
     <figcaption>驱动 Boss 多阶段智能战斗决策的复杂 AI 行为树节点系统</figcaption>
 </figure>
 
+<p class="lr-credit">界面素材来自 <a href="https://franuka.itch.io/" target="_blank" rel="noopener">Franuka</a> 的 RPG UI pack 与 Fantasy RPG icon pack。</p>
