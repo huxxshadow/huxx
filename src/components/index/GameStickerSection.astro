@@ -7,6 +7,9 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 import witch from "@/assets/projects/game-project-empty-throne/deco/witch.png";
 import eelHero from "@/assets/stickers/eel-on-mask-hero.webp";
 import eelFish from "@/assets/stickers/eel-fish.webp";
+import clickHand from "@/assets/projects/game-project-click-click-universe/props/icon-click.png";
+import fractalShelter from "@/assets/stickers/fractal-shelter-girl.webp";
+import nightWatchCard from "@/assets/projects/game-project-night-watch/cards/enemy-1.webp";
 
 const locale = Astro.currentLocale as Lang;
 const t = useTranslations(locale);
@@ -14,9 +17,15 @@ const t = useTranslations(locale);
 // 角色贴纸：透明底立绘，不带文字。显示大小 = 原图像素尺寸 × 统一比例 × 各自的 scale（默认 1）
 const characterStickers = [
     { src: witch, alt: t({ en: "The Witch from Empty Throne", zh: "《空王座》女巫小姐", ja: "『空の玉座』の魔女", ko: "《빈 왕좌》의 마녀" }), pixel: true, scale: 1.85 },
-    // 下面两张原图自带贴纸描边，不再叠加白边
-    { src: eelHero, alt: t({ en: "The protagonist of Eel On Mask", zh: "《鳗！》主角", ja: "『Eel On Mask』の主人公", ko: "《Eel On Mask》의 주인공" }), outlined: true },
-    { src: eelFish, alt: t({ en: "The eel from Eel On Mask", zh: "《鳗！》里的鳗鱼", ja: "『Eel On Mask』のウナギ", ko: "《Eel On Mask》의 장어" }), outlined: true, scale: 1.4 },
+    // 下面两张原图自带的描边已在素材里去掉（透明区域向内收了一圈），和其他贴纸统一用同一种描边
+    { src: eelHero, alt: t({ en: "The protagonist of Eel On Mask", zh: "《鳗！》主角", ja: "『Eel On Mask』の主人公", ko: "《Eel On Mask》의 주인공" }) },
+    { src: eelFish, alt: t({ en: "The eel from Eel On Mask", zh: "《鳗！》里的鳗鱼", ja: "『Eel On Mask』のウナギ", ko: "《Eel On Mask》의 장어" }), scale: 1.4 },
+    // 《点点宇宙》的点击手势图标
+    { src: clickHand, alt: t({ en: "The click hand from Click Click Universe", zh: "《点点宇宙》点击手势", ja: "『Click Click Universe』のクリックの手", ko: "《Click Click Universe》의 클릭 손" }), scale: 1.6 },
+    // 《分形收容所》角色
+    { src: fractalShelter, alt: t({ en: "A character from Fractal Shelter", zh: "《分形收容所》角色", ja: "『フラクタル・シェルター』のキャラクター", ko: "《프랙탈 셸터》 캐릭터" }), scale: 1.5 },
+    // 《守夜人》红色敌人卡：方形卡面，按卡片贴纸处理（圆角 + 白边）
+    { src: nightWatchCard, alt: t({ en: "An enemy card from Night Watch", zh: "《守夜人》敌人卡牌", ja: "『ナイトウォッチ』の敵カード", ko: "《나이트 워치》 적 카드" }), card: true, scale: 3.3 },
 ];
 
 // 「作品集」拆成一个字一张贴纸；英文单词不拆
@@ -65,7 +74,7 @@ const portfolioHref = getRelativeLocaleUrl(locale, "portfolio");
                         width={c.src.width}
                         height={c.src.height}
                         alt={c.alt}
-                        class:list={["block h-full w-auto pointer-events-none", c.pixel && "pixelated", c.outlined && "outlined"]}
+                        class:list={["block h-full w-auto pointer-events-none", c.pixel && "pixelated", c.card && "card"]}
                         draggable="false"
                         loading="lazy"
                 />
@@ -75,37 +84,40 @@ const portfolioHref = getRelativeLocaleUrl(locale, "portfolio");
 </section>
 
 <style>
-    .word-sticker span {
-        font-size: clamp(7rem, 26vw, 16rem);
-        padding: 0.06em 0.08em;
-        /* 白色描边画在字的外侧（先描边后填充），再用四向投影叠一圈深色外轮廓，最后是硬阴影 */
-        -webkit-text-stroke: 0.14em #fff;
-        paint-order: stroke fill;
-        filter:
-            drop-shadow(3px 0 0 #494949) drop-shadow(-3px 0 0 #494949)
-            drop-shadow(0 3px 0 #494949) drop-shadow(0 -3px 0 #494949)
-            drop-shadow(7px 7px 0 rgba(73, 73, 73, 0.9));
+    #games-sticker-section {
+        --sticker-white:
+            drop-shadow(6px 0 0 #fff) drop-shadow(-6px 0 0 #fff)
+            drop-shadow(0 6px 0 #fff) drop-shadow(0 -6px 0 #fff);
+        --sticker-rim:
+            drop-shadow(2px 0 0 #494949) drop-shadow(-2px 0 0 #494949)
+            drop-shadow(0 2px 0 #494949) drop-shadow(0 -2px 0 #494949)
+            drop-shadow(6px 6px 0 #494949);
     }
-    /* 角色贴纸：沿透明轮廓描白边（八向白色投影），外面一圈深色细线，再加硬阴影 */
+    /*
+     * 所有贴纸统一一种边：6px 白边 + 2px 深色细线 + 右下 6px 硬阴影。
+     * 用 drop-shadow 按显示像素描边，所以不论原图多大、缩放多少，边的粗细都一样。
+     */
+    .word-sticker span {
+        font-size: clamp(5rem, 24vw, 16rem);
+        padding: 0.06em 0.08em;
+        /* 描边一半在字外：12px 描边 = 字外 6px 白边 */
+        -webkit-text-stroke: 12px #fff;
+        paint-order: stroke fill;
+        filter: var(--sticker-rim);
+    }
     .char-sticker {
         /* 原图高度 × 统一比例（桌面约 0.15，手机按屏宽缩小）× 单张的 scale */
         height: calc(var(--nat-h) * var(--k) * min(0.15px, 0.0104vw));
-        padding: 8px;
+        padding: 10px;
         will-change: transform;
     }
     .char-sticker img {
-        filter:
-            drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff)
-            drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff)
-            drop-shadow(2px 0 0 #494949) drop-shadow(-2px 0 0 #494949)
-            drop-shadow(0 2px 0 #494949) drop-shadow(0 -2px 0 #494949)
-            drop-shadow(6px 6px 0 rgba(73, 73, 73, 0.9));
+        filter: var(--sticker-white) var(--sticker-rim);
     }
-    .char-sticker img.outlined {
-        filter:
-            drop-shadow(2px 0 0 #494949) drop-shadow(-2px 0 0 #494949)
-            drop-shadow(0 2px 0 #494949) drop-shadow(0 -2px 0 #494949)
-            drop-shadow(6px 6px 0 rgba(73, 73, 73, 0.9));
+    .char-sticker img.card {
+        filter: none;
+        border-radius: 10px;
+        box-shadow: 0 0 0 6px #fff, 0 0 0 8px #494949, 6px 6px 0 8px #494949;
     }
     .char-sticker img.pixelated {
         image-rendering: pixelated;
