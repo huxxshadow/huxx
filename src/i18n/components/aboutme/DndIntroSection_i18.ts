@@ -52,7 +52,7 @@ export const introLabels = {
         {
             icon: "fa-cake-candles",
             image: hobbyCooking,
-            title: { en: "Home cook", zh: "爱下厨", ja: "料理好き", ko: "요리하는 걸 좋아해요" },
+            title: { en: "I love cooking", zh: "喜欢烹饪", ja: "料理が好き", ko: "요리를 좋아해요" },
             notes: [
                 { en: "Desserts are my specialty", zh: "拿手甜品", ja: "得意はスイーツ", ko: "디저트가 특기" },
                 { en: "Signature: honey-glazed wings", zh: "招牌蜜糖鸡翅", ja: "看板メニューはハニーチキンウィング", ko: "시그니처는 허니 치킨윙" },
