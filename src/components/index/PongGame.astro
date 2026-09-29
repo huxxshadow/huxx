@@ -166,7 +166,6 @@ const GAME_THEMES = [
 
         let particles: any[] = [];
         let rings: { x: number; y: number; r: number; maxR: number; life: number; width: number }[] = [];
-        let popups: { x: number; y: number; text: string; life: number; size: number }[] = [];
         let shake = 0;
         let shakeX = 0;
         let shakeY = 0;
@@ -179,12 +178,12 @@ const GAME_THEMES = [
 
         type Paddle = {
             x: number; y: number; width: number; height: number;
-            targetHeight: number; sizeTimer: number;
+            baseHeight: number; targetHeight: number; sizeTimer: number;
             vy: number; prevY: number; flash: number; squash: number;
         };
         const makePaddle = (x: number): Paddle => ({
             x, y: 0, width: paddleWidth, height: paddleHeight,
-            targetHeight: paddleHeight, sizeTimer: 0,
+            baseHeight: paddleHeight, targetHeight: paddleHeight, sizeTimer: 0,
             vy: 0, prevY: 0, flash: 0, squash: 0
         });
         const user = makePaddle(20);
@@ -204,16 +203,14 @@ const GAME_THEMES = [
         });
         let balls: Ball[] = [makeBall(0, 0)];
 
-        // 连击：每次接球 +1，越长球越快；最高纪录存本地
+        // 连击：每次接球 +1，越长球越快
         let rally = 0;
-        let rallyBump = 0;
-        let bestRally = parseInt(localStorage.getItem('pongBestRally') || '0', 10) || 0;
 
         // AI 的失误量和瞄准：每次玩家回球时重新决定
         let aiOffset = 0;
         let aiAimed = false;
 
-        type PowerUp = { x: number; y: number; kind: 'grow' | 'shrink' | 'multi'; life: number; t: number };
+        type PowerUp = { x: number; y: number; kind: 'grow' | 'shrink' | 'multi'; t: number };
         let powerUp: PowerUp | null = null;
         let powerUpTimer = 360;
 
@@ -236,10 +233,6 @@ const GAME_THEMES = [
             rings.push({ x, y, r: 4, maxR, life: 1, width });
         }
 
-        function addPopup(x: number, y: number, text: string, size: number = 16) {
-            popups.push({ x: clamp(x, 40, gameWidth - 40), y: clamp(y, 24, gameHeight - 24), text, life: 1, size });
-        }
-
         function addShake(amount: number) {
             if (!prefersReducedMotion) shake = Math.max(shake, amount);
         }
@@ -257,18 +250,11 @@ const GAME_THEMES = [
                 r.life -= 0.04;
                 if (r.life <= 0) rings.splice(i, 1);
             }
-            for (let i = popups.length - 1; i >= 0; i--) {
-                const p = popups[i];
-                p.y -= 0.6;
-                p.life -= 0.02;
-                if (p.life <= 0) popups.splice(i, 1);
-            }
             shake *= 0.85;
             if (shake < 0.3) shake = 0;
             shakeX = (Math.random() - 0.5) * 2 * shake;
             shakeY = (Math.random() - 0.5) * 2 * shake;
             screenFlash *= 0.9;
-            rallyBump *= 0.85;
         }
 
         function triggerReset(explodeX: number, explodeY: number, doExplode: boolean = true) {
@@ -282,8 +268,6 @@ const GAME_THEMES = [
             const b = makeBall(gameWidth / 2, gameHeight / 2);
             b.currentRadius = 0;
             balls = [b];
-            powerUp = null;
-            powerUpTimer = 300 + Math.random() * 240;
             rally = 0;
         }
 
@@ -296,7 +280,6 @@ const GAME_THEMES = [
 
             oldTheme = currentTheme;
             currentLevel++;
-            addPopup(gameWidth / 2, gameHeight / 2 - 60, `${i18nLevel}${currentLevel}`, 28);
 
             localStorage.setItem('pongLevel', currentLevel.toString());
             sessionStorage.setItem('pongLevel', currentLevel.toString());
@@ -316,8 +299,8 @@ const GAME_THEMES = [
                 b.velocityX = 0; b.velocityY = 0;
                 b.trail = [];
             }
-            powerUp = null;
-            for (const p of [user, com]) { p.targetHeight = paddleHeight; p.sizeTimer = 0; }
+            // 过关后接不到球攒下的加长清零
+            for (const p of [user, com]) { p.baseHeight = paddleHeight; p.targetHeight = paddleHeight; p.sizeTimer = 0; }
         }
 
         function easeOutBack(x: number): number {
@@ -496,7 +479,7 @@ const GAME_THEMES = [
         }
 
         function updatePaddle(p: Paddle) {
-            if (p.sizeTimer > 0 && --p.sizeTimer === 0) p.targetHeight = paddleHeight;
+            if (p.sizeTimer > 0 && --p.sizeTimer === 0) p.targetHeight = p.baseHeight;
             const dh = p.targetHeight - p.height;
             if (Math.abs(dh) > 0.1) {
                 const center = p.y + p.height / 2;
@@ -530,11 +513,6 @@ const GAME_THEMES = [
             p.flash = 1;
             p.squash = 1;
             rally++;
-            rallyBump = 1;
-            if (rally > bestRally) {
-                bestRally = rally;
-                localStorage.setItem('pongBestRally', String(bestRally));
-            }
 
             for (let i = 0; i < 10; i++) {
                 particles.push({
@@ -546,17 +524,19 @@ const GAME_THEMES = [
             addRing(b.x, b.y, smash ? 64 : 34, smash ? 4 : 2.5);
             addShake(smash ? 7 : 2 + b.speed * 0.12);
 
-            if (smash) {
-                addPopup(b.x + dir * 40, b.y - 20, 'SMASH!', 18);
-                screenFlash = Math.max(screenFlash, 0.25);
-            } else if (Math.abs(b.spin) > 0.12) {
-                addPopup(b.x + dir * 40, b.y - 20, 'SPIN!', 14);
-            }
+            if (smash) screenFlash = Math.max(screenFlash, 0.25);
+            // 每 5 连击一次大冲击波
             if (rally >= 5 && rally % 5 === 0) {
-                addPopup(gameWidth / 2, gameHeight * 0.22, `×${rally} COMBO`, 22);
+                addRing(b.x, b.y, 110, 4);
+                createParticles(b.x, b.y, currentTheme.dark, 16, 10);
             }
 
             if (isUser) {
+                // 接到球：漏球攒下的加长逐步恢复
+                if (user.baseHeight > paddleHeight) {
+                    user.baseHeight = Math.max(paddleHeight, user.baseHeight - 5);
+                    if (user.sizeTimer === 0) user.targetHeight = user.baseHeight;
+                }
                 // AI 失误量随关卡减小
                 const err = Math.max(0.2, 1.0 - 0.1 * (currentLevel - 1)) * com.height;
                 aiOffset = (Math.random() - 0.5) * err;
@@ -582,22 +562,19 @@ const GAME_THEMES = [
                 x: gameWidth * (0.36 + Math.random() * 0.28),
                 y: gameHeight * (0.2 + Math.random() * 0.6),
                 kind: kinds[Math.floor(Math.random() * kinds.length)],
-                life: 600, t: 0
+                t: 0
             };
             addRing(powerUp.x, powerUp.y, 30, 2);
         }
 
+        // 道具只对玩家有利：变长的是玩家的拍子，变短的是电脑的拍子
         function applyPowerUp(b: Ball, pu: PowerUp) {
-            const owner = b.lastHit ?? (b.velocityX > 0 ? user : com);
-            const other = owner === user ? com : user;
             if (pu.kind === 'grow') {
-                owner.targetHeight = paddleHeight * 1.6;
-                owner.sizeTimer = 540;
-                addPopup(owner.x, owner.y + owner.height / 2, 'BIG!', 16);
+                user.targetHeight = Math.min(user.baseHeight * 1.6, gameHeight * 0.55);
+                user.sizeTimer = 540;
             } else if (pu.kind === 'shrink') {
-                other.targetHeight = paddleHeight * 0.6;
-                other.sizeTimer = 540;
-                addPopup(other.x, other.y + other.height / 2, 'SMALL!', 16);
+                com.targetHeight = com.baseHeight * 0.6;
+                com.sizeTimer = 540;
             } else {
                 const nb = makeBall(b.x, b.y);
                 nb.speed = b.speed;
@@ -606,7 +583,6 @@ const GAME_THEMES = [
                 setSpeed(nb, nb.speed);
                 nb.lastHit = b.lastHit;
                 balls.push(nb);
-                addPopup(pu.x, pu.y - 24, 'MULTI!', 18);
             }
             createParticles(pu.x, pu.y, currentTheme.dark, 20, 10);
             addRing(pu.x, pu.y, 70, 3);
@@ -686,10 +662,6 @@ const GAME_THEMES = [
             // ===== 道具 =====
             if (powerUp) {
                 powerUp.t++;
-                if (--powerUp.life <= 0) {
-                    powerUp = null;
-                    powerUpTimer = 300 + Math.random() * 240;
-                }
             } else if (--powerUpTimer <= 0) {
                 spawnPowerUp();
             }
@@ -732,7 +704,8 @@ const GAME_THEMES = [
                     else if (b.velocityX > 0 && collision(b, com)) hitPaddle(b, com, -1);
                 }
 
-                if (powerUp && Math.hypot(b.x - powerUp.x, b.y - powerUp.y) < 16 + b.radius) {
+                // 只有玩家打出去的球能吃到道具，电脑的球直接穿过
+                if (powerUp && b.lastHit === user && Math.hypot(b.x - powerUp.x, b.y - powerUp.y) < 16 + b.radius) {
                     applyPowerUp(b, powerUp);
                 }
 
@@ -741,6 +714,11 @@ const GAME_THEMES = [
                     return;
                 } else if (b.x < 0) {
                     balls.splice(i, 1);
+                    // 每漏一个球，玩家的拍子长一截（最多到原来的两倍），过关后复原
+                    if (user.baseHeight < paddleHeight * 2) {
+                        user.baseHeight = Math.min(user.baseHeight + 10, paddleHeight * 2);
+                        if (user.sizeTimer === 0) user.targetHeight = user.baseHeight;
+                    }
                     if (balls.length === 0) {
                         triggerReset(0, b.y, true);
                         return;
@@ -813,7 +791,6 @@ const GAME_THEMES = [
         }
 
         function drawPowerUp(pu: PowerUp, theme: any) {
-            if (pu.life < 90 && Math.floor(pu.life / 6) % 2 === 0) return;
             const grow = Math.min(1, pu.t / 15);
             const pulse = 1 + Math.sin(pu.t * 0.12) * 0.08;
             const r = 14 * grow * pulse;
@@ -855,17 +832,6 @@ const GAME_THEMES = [
             ctx!.textBaseline = "middle";
             ctx!.fillText(i18nLevel + levelNum, gameWidth / 2, gameHeight / 2);
 
-            if (rally >= 2) {
-                ctx!.globalAlpha = 0.22 + rallyBump * 0.4;
-                ctx!.font = `bold ${Math.round(24 + rallyBump * 12)}px sans-serif`;
-                ctx!.fillText(`×${rally}`, gameWidth / 2, gameHeight / 2 + 58);
-            }
-            if (bestRally > 0) {
-                ctx!.globalAlpha = 0.25;
-                ctx!.font = "bold 12px sans-serif";
-                ctx!.fillText(`BEST ×${bestRally}`, gameWidth / 2, 16);
-            }
-
             particles.forEach(p => {
                 ctx!.globalAlpha = Math.max(0, p.life);
                 ctx!.fillStyle = p.color;
@@ -891,18 +857,6 @@ const GAME_THEMES = [
 
             balls.forEach(b => drawBall(b, theme));
 
-            ctx!.textAlign = "center";
-            ctx!.textBaseline = "middle";
-            popups.forEach(p => {
-                const pop = p.life > 0.85 ? 1 + (p.life - 0.85) * 3 : 1;
-                ctx!.globalAlpha = Math.min(1, p.life * 1.6);
-                ctx!.font = `900 ${Math.round(p.size * pop)}px sans-serif`;
-                ctx!.lineWidth = 4;
-                ctx!.strokeStyle = theme.light;
-                ctx!.strokeText(p.text, p.x, p.y);
-                ctx!.fillStyle = theme.dark;
-                ctx!.fillText(p.text, p.x, p.y);
-            });
             ctx!.globalAlpha = 1.0;
         }
 
