@@ -70,7 +70,7 @@ export const introLabels = {
         {
             icon: "fa-music",
             image: hobbyMusic,
-            title: { en: "Music lover", zh: "离不开音乐", ja: "音楽が欠かせない", ko: "음악 없이는 못 살아요" },
+            title: { en: "J-pop lover", zh: "J-pop 爱好者", ja: "J-POP 好き", ko: "J-pop 애호가" },
             notes: [
                 { en: "A little flute", zh: "会一点长笛", ja: "フルートを少し", ko: "플루트 조금" },
                 { en: "A little piano", zh: "也会一点钢琴", ja: "ピアノも少し", ko: "피아노도 조금" },
