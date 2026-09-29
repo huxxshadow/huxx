@@ -7,7 +7,7 @@
 // - 面板、横幅、名牌、图标都是从 UI 包 1x 图集里按像素坐标裁出来、最近邻放大 3 倍的 9-slice（skin/*.png），
 //   用 border-image 套上，1 个原始像素 = 3 个 CSS 像素，所以切片和边宽都是 3 的倍数。
 // - 标题用 Google Fonts 的 Pixelify Sans，中日韩字回落到 Fusion Pixel 子集（和极速像素页共用那三个文件），
-//   正文保持普通字体好读。
+//   正文和简介也用同一套像素字。
 // - 场景图是游戏录屏（美术效果）里截的一帧遗迹，上面罩一层浅苔绿的雾，整体偏亮。
 // - 所有规则都限定在 .skin-lr / html:has(.skin-lr) 下（样式表是整条路由共用的）。
 import panelPeach from "@/assets/projects/game-project-lost-realm/skin/panel-peach.png";
@@ -262,6 +262,11 @@ const fontFace = [
     }
     .skin-lr .project-prose p,
     .skin-lr .project-prose li { color: var(--lr-ink); }
+    /* 正文和顶部简介也用像素字（拉丁字母 Pixelify Sans，中日韩 Fusion Pixel） */
+    .skin-lr .project-prose :is(p, li, figcaption, td, th),
+    .skin-lr .project-hero-screen p.whitespace-pre-line {
+        font-family: var(--lr-text);
+    }
     .skin-lr .project-prose strong { color: #9b3d2f; }
     .skin-lr .project-prose a { color: #b0502c; }
     .skin-lr .project-prose li::marker { color: var(--lr-orange); }
