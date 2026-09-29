@@ -151,6 +151,9 @@ const roleList = rolesData[locale] || rolesData.en;
         opacity: 1;
     }
 
+    /* 有大插画的几条往上叠进前一条旁边的空白（左右交错）；击剑、音乐两条字更宽，不叠，免得英文撞字 */
+    .hobbies { --lift-up: clamp(-9rem, -10vw, -3rem); }
+
     /* 每条下面一条圆角横线，长度就是这一段（插画 + 文字）的宽度：
        条目收缩到内容宽度，靠左的贴左、靠右的贴右，横线铺满条目 */
     .hobbies .hobby {
@@ -182,7 +185,7 @@ const roleList = rolesData[locale] || rolesData.en;
     /* 02 二次元：右边，往上咬进第一条的空白，大圆 + 右对齐，整体微微倾斜 */
     .hobbies .hobby-2 {
         grid-column: 6 / 13;
-        margin-top: -1rem;
+        margin-top: var(--lift-up);
         flex-direction: row-reverse;
         align-items: center;
         text-align: right;
@@ -202,7 +205,7 @@ const roleList = rolesData[locale] || rolesData.en;
     /* 04 烹饪：再甩到右边，圆形徽章，和 02 呼应 */
     .hobbies .hobby-4 {
         grid-column: 5 / 13;
-        margin-top: 3rem;
+        margin-top: var(--lift-up);
         flex-direction: row-reverse;
         align-items: center;
         text-align: right;
@@ -298,8 +301,8 @@ const roleList = rolesData[locale] || rolesData.en;
 
     /* 03 长跑：回到左侧但往里缩，方形徽章斜放 */
     .hobbies .hobby-3 {
-        grid-column: 2 / 11;
-        margin-top: 3rem;
+        grid-column: 1 / 10;
+        margin-top: var(--lift-up);
         align-items: center;
     }
     .hobbies .hobby-3 .hobby-media {
@@ -319,6 +322,7 @@ const roleList = rolesData[locale] || rolesData.en;
     /* 手机：三版都改成一列，保留各自的风格 */
     @media (max-width: 639px) {
         .hobbies .hobby { align-self: center; }
+        .hobbies { --lift-up: 0rem; }
         /* 手机上文字不再往插画那边挤，标签居中、可以换行 */
         .hobbies .hobby .hobby-text { margin: 0 !important; padding-bottom: 0 !important; rotate: 0deg !important; }
         .hobbies .hobby .hobby-notes { justify-content: center; }
