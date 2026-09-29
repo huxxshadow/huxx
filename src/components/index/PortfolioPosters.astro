@@ -35,8 +35,8 @@ const fitSize = (text: string, max: number) => {
 const heading = t({ en: "Portfolio", zh: "作品集", ja: "作品集", ko: "포트폴리오" });
 const headingSize = fitSize(heading, 17);
 
-// 人物图按比例塞进右上角 86×82cqw 的框里，算出实际显示宽高，这样头顶的横线能对准图的正中
-const ART_W = 86, ART_H = 82;
+// 人物图按比例塞进右上角 86×92cqw 的框里（底边离标题约 8cqw），算出实际显示宽高，按实际大小摆放
+const ART_W = 86, ART_H = 92;
 const artBox = (img: { width: number; height: number }) => {
     const ratio = img.width / img.height;
     return ratio > ART_W / ART_H
