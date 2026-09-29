@@ -1,24 +1,21 @@
 ---
 // Lost Realm 项目页专属皮肤（projects.json 里 skin: "lr" 时由 [id].astro 挂载）
 //
-// 视觉照着游戏本身走：长满青苔的遗迹场景当底，游戏 UI 用的 Franuka「RPG UI pack」暖橙像素面板当内容框。
+// 视觉照着游戏本身走：长满青苔的遗迹场景当底，面板都是游戏 UI 用的 Franuka「RPG UI pack」。
+// 两级面板：一级（hero、正文）统一用金边橙色面板（--lr-panel-1）；嵌在里面的二级（封面框、简介、徽章、外链、
+// 正文图片与片段）统一用带蓝色角钉的蜜桃面板（--lr-panel-2）。主题色取自一级面板：底色 #FFAE70、描边深色 #3D2936。
 // - 面板、横幅、名牌、图标都是从 UI 包 1x 图集里按像素坐标裁出来、最近邻放大 3 倍的 9-slice（skin/*.png），
 //   用 border-image 套上，1 个原始像素 = 3 个 CSS 像素，所以切片和边宽都是 3 的倍数。
-// - 标题用 UI 包自带的 FantasyRPGtitle（按作者说明用 11 的倍数字号才不糊），中日韩字回落到 Fusion Pixel 子集
-//   （和极速像素页共用那三个文件），正文保持普通字体好读。
-// - 场景图是游戏录屏（美术效果）里截的一帧遗迹。
+// - 标题用 Google Fonts 的 Pixelify Sans，中日韩字回落到 Fusion Pixel 子集（和极速像素页共用那三个文件），
+//   正文保持普通字体好读。
+// - 场景图是游戏录屏（美术效果）里截的一帧遗迹，上面罩一层浅苔绿的雾，整体偏亮。
 // - UI 包许可要求注明作者：页面底部有一行署名，别删。
 // - 所有规则都限定在 .skin-lr / html:has(.skin-lr) 下（样式表是整条路由共用的）。
 import panelPeach from "@/assets/projects/game-project-lost-realm/skin/panel-peach.png";
-import panelSlate from "@/assets/projects/game-project-lost-realm/skin/panel-slate.png";
 import panelGold from "@/assets/projects/game-project-lost-realm/skin/panel-gold.png";
-import panelOrnate from "@/assets/projects/game-project-lost-realm/skin/panel-ornate.png";
 import ribbon from "@/assets/projects/game-project-lost-realm/skin/ribbon.png";
-import plate from "@/assets/projects/game-project-lost-realm/skin/plate.png";
 import icons from "@/assets/projects/game-project-lost-realm/skin/icons.png";
 import scene from "@/assets/projects/game-project-lost-realm/skin/scene.webp";
-import titleFont from "@/assets/projects/game-project-lost-realm/skin/fantasy-rpg-title.ttf?url";
-import textFont from "@/assets/projects/game-project-lost-realm/skin/fantasy-rpg-text.ttf?url";
 import pixelSC from "@/assets/projects/game-project-speed-pixel/skin/fusion-pixel-sc.woff2?url";
 import pixelJP from "@/assets/projects/game-project-speed-pixel/skin/fusion-pixel-jp.woff2?url";
 import pixelKR from "@/assets/projects/game-project-speed-pixel/skin/fusion-pixel-kr.woff2?url";
@@ -30,18 +27,13 @@ interface Props {
 const { stickers = false } = Astro.props;
 
 const vars = [
-    `--lr-panel-peach: url("${panelPeach.src}")`,
-    `--lr-panel-slate: url("${panelSlate.src}")`,
-    `--lr-panel-gold: url("${panelGold.src}")`,
-    `--lr-panel-ornate: url("${panelOrnate.src}")`,
+    `--lr-panel-1: url("${panelGold.src}")`,
+    `--lr-panel-2: url("${panelPeach.src}")`,
     `--lr-ribbon: url("${ribbon.src}")`,
-    `--lr-plate: url("${plate.src}")`,
     `--lr-icons: url("${icons.src}")`,
     `--lr-scene: url("${scene.src}")`,
 ].join("; ");
 const fontFace = [
-    `@font-face { font-family: "Fantasy RPG Title"; src: url("${titleFont}") format("truetype"); font-display: swap; }`,
-    `@font-face { font-family: "Fantasy RPG Text"; src: url("${textFont}") format("truetype"); font-display: swap; }`,
     `@font-face { font-family: "LR Pixel SC"; src: url("${pixelSC}") format("woff2"); font-display: swap; }`,
     `@font-face { font-family: "LR Pixel JP"; src: url("${pixelJP}") format("woff2"); font-display: swap; }`,
     `@font-face { font-family: "LR Pixel KR"; src: url("${pixelKR}") format("woff2"); font-display: swap; }`,
@@ -49,7 +41,13 @@ const fontFace = [
 ---
 
 {stickers ? null : (
-        <style is:inline set:html={`${fontFace} html:has(.skin-lr) { ${vars}; }`} />
+        <>
+            {/* 拉丁字母用 Google Fonts 的 Pixelify Sans；中日韩字回落到 Fusion Pixel 子集 */}
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&display=swap" />
+            <style is:inline set:html={`${fontFace} html:has(.skin-lr) { ${vars}; }`} />
+        </>
 )}
 
 <style is:global>
@@ -58,26 +56,27 @@ const fontFace = [
     /* ========================================================= */
     html:has(.skin-lr) {
         --lr-night: #14201e;
+        --lr-mist: #e6efd8;
         --lr-moss: #2c4634;
         --lr-leaf: #6aa84f;
-        --lr-peach: #ffcba4;
+        --lr-peach: #ffc2a1;   /* 面板底色 */
         --lr-orange: #f29d58;
         --lr-gold: #f3c44b;
-        --lr-ink: #5a2f35;
+        --lr-ink: #3d2936;     /* 面板描边的深色 */
         --lr-ink-soft: #8a5a5a;
         --lr-slate: #4d5a86;
         --lr-cjk: "LR Pixel SC";
-        --lr-title: "Fantasy RPG Title", var(--lr-cjk), var(--theme-font-active), serif;
-        --lr-text: "Fantasy RPG Text", var(--lr-cjk), var(--theme-font-active), monospace;
+        --lr-title: "Pixelify Sans", var(--lr-cjk), var(--theme-font-active), sans-serif;
+        --lr-text: "Pixelify Sans", var(--lr-cjk), var(--theme-font-active), sans-serif;
     }
     html[lang="ja"]:has(.skin-lr) { --lr-cjk: "LR Pixel JP"; }
     html[lang="ko"]:has(.skin-lr) { --lr-cjk: "LR Pixel KR"; }
 
-    /* ---- 整页背景：遗迹场景，罩一层夜色，越往下越暗 ---- */
+    /* ---- 整页背景：遗迹场景，罩一层浅苔绿的雾，越往下越淡 ---- */
     html:has(.skin-lr) body {
-        background-color: var(--lr-night);
+        background-color: var(--lr-mist);
         background-image:
-            linear-gradient(180deg, rgba(20, 32, 30, .35) 0%, rgba(20, 32, 30, .78) 45%, rgba(20, 32, 30, .92) 100%),
+            linear-gradient(180deg, rgba(236, 244, 226, .25) 0%, rgba(236, 244, 226, .6) 45%, rgba(236, 244, 226, .78) 100%),
             var(--lr-scene);
         background-size: cover, cover;
         background-position: center, center top;
@@ -100,7 +99,7 @@ const fontFace = [
     }
 
     /* ========================================================= */
-    /* HERO：一块橙色金边的游戏面板                                   */
+    /* HERO：一级面板（金边橙色）                                   */
     /* ========================================================= */
     header.skin-lr {
         background-color: transparent;
@@ -117,14 +116,14 @@ const fontFace = [
         border-width: 24px;
         border-style: solid;
         border-color: transparent;
-        border-image: var(--lr-panel-gold) 24 fill / 24px / 0 stretch;
+        border-image: var(--lr-panel-1) 24 fill / 24px / 0 stretch;
         color: var(--lr-ink);
         --theme-text: var(--lr-ink);
     }
 
     .skin-lr .project-hero-screen h1 {
         font-family: var(--lr-title);
-        font-weight: 400 !important;
+        font-weight: 700 !important;
         font-size: clamp(2.75rem, 6vw, 4.125rem);
         letter-spacing: .04em;
         color: var(--lr-peach);
@@ -137,13 +136,13 @@ const fontFace = [
     }
     .skin-lr .back-btn:hover { color: var(--lr-peach); }
 
-    /* 徽章与外链：UI 包的蜜桃名牌 */
+    /* 徽章与外链：二级面板（蓝色角钉的蜜桃面板），小号边框 */
     .skin-lr .brutalist-badge,
     .skin-lr .project-links-wrapper .brutalist-tag {
-        border-width: 18px !important;
+        border-width: 12px !important;
         border-style: solid !important;
         border-color: transparent !important;
-        border-image: var(--lr-plate) 18 fill / 18px / 0 stretch;
+        border-image: var(--lr-panel-2) 24 fill / 12px / 0 stretch;
         background: transparent !important;
         color: var(--lr-ink) !important;
         box-shadow: none !important;
@@ -161,25 +160,30 @@ const fontFace = [
     .skin-lr .project-links-wrapper .brutalist-tag:hover { translate: 0 -3px; filter: brightness(1.05); }
     .skin-lr .project-links-wrapper .brutalist-tag:active { translate: 0 3px; }
 
+    /* 简介：二级面板（和封面框同一种） */
     .skin-lr .project-hero-screen .border-l-\[4px\] {
-        border-color: var(--lr-ink) !important;
-        background: rgba(255, 203, 164, .45);
+        padding: .6rem 1rem !important;
+        border-width: 18px !important;
+        border-style: solid !important;
+        border-color: transparent !important;
+        border-image: var(--lr-panel-2) 24 fill / 18px / 0 stretch;
+        background: transparent;
         color: var(--lr-ink);
     }
 
-    /* 封面：UI 包里带金色角饰的相框 */
+    /* 封面：二级面板 */
     .skin-lr .project-hero-shell .project-hero-image {
-        border-width: 36px !important;
+        border-width: 24px !important;
         border-style: solid !important;
         border-color: transparent !important;
-        border-image: var(--lr-panel-ornate) 36 / 36px / 0 stretch;
+        border-image: var(--lr-panel-2) 24 fill / 24px / 0 stretch;
         border-radius: 0 !important;
-        background-color: var(--lr-night) !important;
+        background: transparent !important;
         box-shadow: none !important;
     }
 
     /* ========================================================= */
-    /* 正文：蜜桃色的游戏内面板                                       */
+    /* 正文：一级面板（金边橙色）                                   */
     /* ========================================================= */
     main.skin-lr {
         background: transparent !important;
@@ -192,7 +196,7 @@ const fontFace = [
         border-width: 24px;
         border-style: solid;
         border-color: transparent;
-        border-image: var(--lr-panel-peach) 24 fill / 24px / 0 stretch;
+        border-image: var(--lr-panel-1) 24 fill / 24px / 0 stretch;
         color: var(--lr-ink);
     }
     .skin-lr .project-prose p,
@@ -247,7 +251,7 @@ const fontFace = [
     .skin-lr .project-prose h3:nth-of-type(6n + 5) { --lr-i: 5; }
     .skin-lr .project-prose h3:nth-of-type(6n) { --lr-i: 0; }
 
-    /* 图片 / 演示片段：石板蓝的像素框 */
+    /* 图片 / 演示片段：二级面板 */
     .skin-lr .project-prose img,
     .skin-lr .project-prose video.clip {
         display: block;
@@ -256,10 +260,10 @@ const fontFace = [
         border-width: 18px !important;
         border-style: solid !important;
         border-color: transparent !important;
-        border-image: var(--lr-panel-slate) 24 fill / 18px / 0 stretch !important;
+        border-image: var(--lr-panel-2) 24 fill / 18px / 0 stretch !important;
         border-radius: 0 !important;
         box-shadow: 0 8px 0 rgba(90, 47, 53, .25) !important;
-        background: var(--lr-night);
+        background: transparent;
     }
     .skin-lr .project-prose figure :is(img, video.clip) { margin: 0 !important; }
     .skin-lr .project-prose figcaption {
@@ -298,6 +302,6 @@ const fontFace = [
         .skin-lr .project-prose h3::before { width: 24px; height: 24px; background-size: 384px 24px; background-position: calc(var(--lr-i, 8) * -24px) 0; }
         .skin-lr .project-prose img,
         .skin-lr .project-prose video.clip { border-width: 12px !important; border-image-width: 12px !important; }
-        .skin-lr .project-hero-shell .project-hero-image { border-width: 24px !important; border-image-width: 24px !important; }
+        .skin-lr .project-hero-shell .project-hero-image { border-width: 18px !important; border-image-width: 18px !important; }
     }
 </style>
