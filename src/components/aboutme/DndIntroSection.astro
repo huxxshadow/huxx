@@ -37,14 +37,8 @@ const roleList = rolesData[locale] || rolesData.en;
                 </div>
             </div>
 
-            <!-- 爱好：三版排版待选（A 剪贴簿 / B 大字错落 / C 便当格），本地开发时用右下角的 DebugVariantSwitcher 切换 -->
-            <ul
-                    class="hobbies"
-                    data-variant-group="hobbies"
-                    data-variant-label="爱好"
-                    data-variant-options="A,B,C,D"
-                    data-variant-current="D"
-            >
+            <!-- 爱好：海报式排版，左右交替、人物放大，每条下面一条圆角横线 -->
+            <ul class="hobbies">
                 {introLabels.hobbies.map((h, i) => (
                         <li class:list={["hobby", `hobby-${i + 1}`, { "has-image": !!h.image }]}>
                             <div class="hobby-media">
@@ -118,173 +112,36 @@ const roleList = rolesData[locale] || rolesData.en;
     .hobby-svg { display: inline-flex; width: 1em; height: 1em; }
     .hobby-svg :global(svg) { width: 100%; height: 100%; }
 
-    /* ================= A：剪贴簿，卡片歪着、错开、上面贴胶带，插画探出卡片 ================= */
-    .hobbies[data-variant-current="A"] {
-        display: grid;
-        grid-template-columns: 1.25fr 1fr 1fr;
-        gap: 2.5rem 2rem;
-        padding: 3rem 0.5rem 1rem;
-        align-items: start;
-    }
-    [data-variant-current="A"] .hobby {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        padding: 1.4rem 1.6rem 1.6rem;
-        border: 3px solid currentColor;
-        border-radius: 1.1rem;
-        background: #fffdf8;
-        box-shadow: 6px 6px 0 currentColor;
-        transition: rotate 0.25s ease, translate 0.25s ease;
-    }
-    [data-variant-current="A"] .hobby:hover { rotate: 0deg; translate: 0 -4px; }
-    [data-variant-current="A"] .hobby-1 { rotate: -3deg; margin-top: 1.5rem; }
-    [data-variant-current="A"] .hobby-2 { rotate: 2.5deg; margin-top: 4.5rem; }
-    [data-variant-current="A"] .hobby-3 { rotate: -1.5deg; margin-top: 0; }
-    /* 胶带 */
-    [data-variant-current="A"] .hobby::before {
-        content: "";
-        position: absolute;
-        top: -14px;
-        left: 50%;
-        width: 5.5rem;
-        height: 1.6rem;
-        translate: -50% 0;
-        rotate: -4deg;
-        background: rgb(73 73 73 / 0.18);
-        border-left: 2px dashed rgb(73 73 73 / 0.25);
-        border-right: 2px dashed rgb(73 73 73 / 0.25);
-    }
-    [data-variant-current="A"] .hobby-media { height: 9rem; }
-    [data-variant-current="A"] .hobby-1 .hobby-media { height: 12rem; margin-top: -4.5rem; }
-    [data-variant-current="A"] .hobby-img { height: 100%; }
-    [data-variant-current="A"] .hobby-icon { font-size: 4.5rem; }
-    [data-variant-current="A"] .hobby-title { font-size: clamp(1.5rem, 2.2vw, 2rem); }
-    [data-variant-current="A"] .hobby-note { font-size: 0.95rem; }
-
-    /* ================= B：大字错落，没有卡片，一左一右一左地排，插画和图标放在字旁边 ================= */
-    .hobbies[data-variant-current="B"] {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        padding: 1rem 0;
-    }
-    [data-variant-current="B"] .hobby {
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-        max-width: 75%;
-    }
-    [data-variant-current="B"] .hobby-2 {
-        align-self: flex-end;
-        flex-direction: row-reverse;
-        text-align: right;
-    }
-    [data-variant-current="B"] .hobby-3 { margin-left: 8%; }
-    [data-variant-current="B"] .hobby-media {
-        flex: none;
-        width: 8rem;
-        height: 8rem;
-        border-radius: 999px;
-        border: 3px solid currentColor;
-        background: #fffdf8;
-        box-shadow: 5px 5px 0 currentColor;
-    }
-    [data-variant-current="B"] .hobby-1 .hobby-media {
-        width: auto;
-        height: 13rem;
-        border: 0;
-        border-radius: 0;
-        background: none;
-        box-shadow: none;
-    }
-    [data-variant-current="B"] .hobby-img { height: 100%; }
-    [data-variant-current="B"] .hobby-icon { font-size: 3.2rem; }
-    [data-variant-current="B"] .hobby-title {
-        font-size: clamp(2rem, 4.6vw, 4rem);
-        letter-spacing: -0.02em;
-    }
-    [data-variant-current="B"] .hobby-note {
-        display: inline-block;
-        margin-top: 0.5rem;
-        padding: 0.15rem 0.6rem;
-        border-radius: 0.4rem;
-        font-size: 1.05rem;
-        color: #fffdf8;
-        background: #494949;
-        opacity: 1;
-    }
-
-    /* ================= C：便当格，大小不一的格子，游戏占左边一整块，长跑那格反色 ================= */
-    .hobbies[data-variant-current="C"] {
-        display: grid;
-        grid-template-columns: 1.1fr 1fr;
-        grid-template-rows: auto auto;
-        gap: 1.1rem;
-    }
-    [data-variant-current="C"] .hobby {
-        display: flex;
-        border: 3px solid currentColor;
-        border-radius: 1.4rem;
-        overflow: hidden;
-        background: #fffdf8;
-    }
-    [data-variant-current="C"] .hobby-1 {
-        grid-row: span 2;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 1.8rem;
-    }
-    [data-variant-current="C"] .hobby-1 .hobby-media { justify-content: flex-end; height: 15rem; }
-    [data-variant-current="C"] .hobby-1 .hobby-img { height: 100%; }
-    [data-variant-current="C"] .hobby-1 .hobby-title { font-size: clamp(2rem, 3.6vw, 3.2rem); }
-    [data-variant-current="C"] .hobby-2,
-    [data-variant-current="C"] .hobby-3 {
-        align-items: center;
-        gap: 1.2rem;
-        padding: 1.4rem 1.6rem;
-    }
-    [data-variant-current="C"] .hobby-2 .hobby-media,
-    [data-variant-current="C"] .hobby-3 .hobby-media { flex: none; width: 5rem; }
-    [data-variant-current="C"] .hobby-2 .hobby-icon,
-    [data-variant-current="C"] .hobby-3 .hobby-icon { font-size: 3.4rem; }
-    [data-variant-current="C"] .hobby-3 { background: #494949; color: #fffdf8; border-color: #494949; }
-    [data-variant-current="C"] .hobby-2 { rotate: 1.2deg; }
-    [data-variant-current="C"] .hobby-title { font-size: clamp(1.4rem, 2.3vw, 2rem); }
-    [data-variant-current="C"] .hobby-note { font-size: 0.95rem; margin-top: 0.3rem; }
-
-
-    /* ================= D：海报。B 的大字错落再放开：人物很大，各条大幅左右错开、互相咬合
-       ================= */
-    .hobbies[data-variant-current="D"] {
+    /* ================= 海报式排版：人物很大，各条大幅左右错开 ================= */
+    .hobbies {
         position: relative;
         display: grid;
         grid-template-columns: repeat(12, minmax(0, 1fr));
         padding: 2rem 0 3rem;
     }
-    [data-variant-current="D"] .hobby {
+    .hobbies .hobby {
         display: flex;
         align-items: flex-end;
         gap: 1.2rem;
     }
-    [data-variant-current="D"] .hobby-media,
-    [data-variant-current="D"] .hobby-text { position: relative; z-index: 1; }
-    [data-variant-current="D"] .hobby-title {
+    .hobbies .hobby-media,
+    .hobbies .hobby-text { position: relative; z-index: 1; }
+    .hobbies .hobby-title {
         font-size: clamp(2.4rem, 5.4vw, 5rem);
         line-height: 1;
         letter-spacing: -0.03em;
     }
-    [data-variant-current="D"] .hobby-notes {
+    .hobbies .hobby-notes {
         flex-direction: row;
         flex-wrap: wrap;
         gap: 0.5rem 0.6rem;
         margin-top: 0.8rem;
     }
-    [data-variant-current="D"] .hobby-2 .hobby-notes,
-    [data-variant-current="D"] .hobby-4 .hobby-notes { justify-content: flex-end; }
-    [data-variant-current="D"] .hobby-note:nth-child(2) { rotate: 2.5deg; translate: 0 0.2rem; }
-    [data-variant-current="D"] .hobby-note:nth-child(3) { rotate: -1.5deg; }
-    [data-variant-current="D"] .hobby-note {
+    .hobbies .hobby-2 .hobby-notes,
+    .hobbies .hobby-4 .hobby-notes { justify-content: flex-end; }
+    .hobbies .hobby-note:nth-child(2) { rotate: 2.5deg; translate: 0 0.2rem; }
+    .hobbies .hobby-note:nth-child(3) { rotate: -1.5deg; }
+    .hobbies .hobby-note {
         display: inline-block;
         padding: 0.25rem 0.7rem;
         border-radius: 0.3rem;
@@ -294,15 +151,35 @@ const roleList = rolesData[locale] || rolesData.en;
         opacity: 1;
     }
 
+    /* 每条下面一条圆角横线，跟着这条靠左或靠右 */
+    .hobbies .hobby {
+        position: relative;
+        padding-bottom: 2.2rem;
+    }
+    .hobbies .hobby::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: min(22rem, 60%);
+        height: 6px;
+        border-radius: 999px;
+        background: currentColor;
+    }
+    .hobbies .hobby:nth-child(even)::after {
+        left: auto;
+        right: 0;
+    }
+
     /* 01 游戏：左边，大人物站着，标题压在人物右侧脚边 */
-    [data-variant-current="D"] .hobby-1 { grid-column: 1 / 10; }
-    [data-variant-current="D"] .hobby-1 .hobby-media { height: clamp(18rem, 32vw, 30rem); }
-    [data-variant-current="D"] .hobby-1 .hobby-img { height: 100%; }
-    [data-variant-current="D"] .hobby-1 .hobby-text { margin-left: -1.5rem; padding-bottom: 2.5rem; }
-    [data-variant-current="D"] .hobby-1 .hobby-note:first-child { rotate: -3deg; }
+    .hobbies .hobby-1 { grid-column: 1 / 10; }
+    .hobbies .hobby-1 .hobby-media { height: clamp(18rem, 32vw, 30rem); }
+    .hobbies .hobby-1 .hobby-img { height: 100%; }
+    .hobbies .hobby-1 .hobby-text { margin-left: -1.5rem; padding-bottom: 2.5rem; }
+    .hobbies .hobby-1 .hobby-note:first-child { rotate: -3deg; }
 
     /* 02 二次元：右边，往上咬进第一条的空白，大圆 + 右对齐，整体微微倾斜 */
-    [data-variant-current="D"] .hobby-2 {
+    .hobbies .hobby-2 {
         grid-column: 6 / 13;
         margin-top: -1rem;
         flex-direction: row-reverse;
@@ -310,7 +187,7 @@ const roleList = rolesData[locale] || rolesData.en;
         text-align: right;
         rotate: -2deg;
     }
-    [data-variant-current="D"] .hobby-2 .hobby-media {
+    .hobbies .hobby-2 .hobby-media {
         flex: none;
         width: clamp(9rem, 14vw, 13rem);
         height: clamp(9rem, 14vw, 13rem);
@@ -319,10 +196,10 @@ const roleList = rolesData[locale] || rolesData.en;
         background: #fffdf8;
         box-shadow: 8px 8px 0 currentColor;
     }
-    [data-variant-current="D"] .hobby-2 .hobby-icon { font-size: clamp(3.5rem, 5.5vw, 5rem); }
+    .hobbies .hobby-2 .hobby-icon { font-size: clamp(3.5rem, 5.5vw, 5rem); }
 
     /* 04 烹饪：再甩到右边，圆形徽章，和 02 呼应 */
-    [data-variant-current="D"] .hobby-4 {
+    .hobbies .hobby-4 {
         grid-column: 5 / 13;
         margin-top: 3rem;
         flex-direction: row-reverse;
@@ -330,7 +207,7 @@ const roleList = rolesData[locale] || rolesData.en;
         text-align: right;
         rotate: 1.5deg;
     }
-    [data-variant-current="D"] .hobby-4 .hobby-media {
+    .hobbies .hobby-4 .hobby-media {
         flex: none;
         width: clamp(8rem, 12vw, 11rem);
         height: clamp(8rem, 12vw, 11rem);
@@ -339,18 +216,18 @@ const roleList = rolesData[locale] || rolesData.en;
         background: #fffdf8;
         box-shadow: 8px 8px 0 currentColor;
     }
-    [data-variant-current="D"] .hobby-4 .hobby-icon { font-size: clamp(3.2rem, 5vw, 4.6rem); }
-    [data-variant-current="D"] .hobby-4 .hobby-note:first-child { rotate: -2deg; }
-    [data-variant-current="D"] .hobby-4.has-image { rotate: 0deg; align-items: flex-end; }
-    [data-variant-current="D"] .hobby-4.has-image .hobby-text { margin-right: -1rem; padding-bottom: 2rem; }
+    .hobbies .hobby-4 .hobby-icon { font-size: clamp(3.2rem, 5vw, 4.6rem); }
+    .hobbies .hobby-4 .hobby-note:first-child { rotate: -2deg; }
+    .hobbies .hobby-4.has-image { rotate: 0deg; align-items: flex-end; }
+    .hobbies .hobby-4.has-image .hobby-text { margin-right: -1rem; padding-bottom: 2rem; }
 
     /* 05 击剑：回到左边，斜放的深色方块徽章，和 03 呼应 */
-    [data-variant-current="D"] .hobby-5 {
+    .hobbies .hobby-5 {
         grid-column: 1 / 10;
         margin-top: 3rem;
         align-items: center;
     }
-    [data-variant-current="D"] .hobby-5 .hobby-media {
+    .hobbies .hobby-5 .hobby-media {
         flex: none;
         width: clamp(8rem, 12vw, 11rem);
         height: clamp(8rem, 12vw, 11rem);
@@ -361,11 +238,11 @@ const roleList = rolesData[locale] || rolesData.en;
         rotate: -7deg;
         box-shadow: 8px 8px 0 rgb(73 73 73 / 0.35);
     }
-    [data-variant-current="D"] .hobby-5 .hobby-icon { font-size: clamp(3.2rem, 5vw, 4.6rem); opacity: 1; }
-    [data-variant-current="D"] .hobby-5 .hobby-note:first-child { rotate: -2deg; }
+    .hobbies .hobby-5 .hobby-icon { font-size: clamp(3.2rem, 5vw, 4.6rem); opacity: 1; }
+    .hobbies .hobby-5 .hobby-note:first-child { rotate: -2deg; }
 
     /* 06 音乐：再甩回右边，圆形徽章，和 02 / 04 呼应 */
-    [data-variant-current="D"] .hobby-6 {
+    .hobbies .hobby-6 {
         grid-column: 5 / 13;
         margin-top: 3rem;
         flex-direction: row-reverse;
@@ -373,7 +250,7 @@ const roleList = rolesData[locale] || rolesData.en;
         text-align: right;
         rotate: -1.5deg;
     }
-    [data-variant-current="D"] .hobby-6 .hobby-media {
+    .hobbies .hobby-6 .hobby-media {
         flex: none;
         width: clamp(8rem, 12vw, 11rem);
         height: clamp(8rem, 12vw, 11rem);
@@ -382,13 +259,13 @@ const roleList = rolesData[locale] || rolesData.en;
         background: #fffdf8;
         box-shadow: 8px 8px 0 currentColor;
     }
-    [data-variant-current="D"] .hobby-6 .hobby-icon { font-size: clamp(3.2rem, 5vw, 4.6rem); }
-    [data-variant-current="D"] .hobby-6 .hobby-notes { justify-content: flex-end; }
-    [data-variant-current="D"] .hobby-6 .hobby-note:first-child { rotate: 2deg; }
-    [data-variant-current="D"] .hobby-6.has-image { rotate: 0deg; align-items: flex-end; }
+    .hobbies .hobby-6 .hobby-icon { font-size: clamp(3.2rem, 5vw, 4.6rem); }
+    .hobbies .hobby-6 .hobby-notes { justify-content: flex-end; }
+    .hobbies .hobby-6 .hobby-note:first-child { rotate: 2deg; }
+    .hobbies .hobby-6.has-image { rotate: 0deg; align-items: flex-end; }
 
     /* 有配图的条目：插画放大显示，不套圆形 / 方块框 */
-    [data-variant-current="D"] .has-image .hobby-media {
+    .hobbies .has-image .hobby-media {
         width: auto;
         height: clamp(16rem, 28vw, 26rem);
         border: 0;
@@ -397,15 +274,15 @@ const roleList = rolesData[locale] || rolesData.en;
         box-shadow: none;
         rotate: 0deg;
     }
-    [data-variant-current="D"] .has-image .hobby-img { height: 100%; }
-    [data-variant-current="D"] .hobby-2.has-image { grid-column: 3 / 13; rotate: 0deg; align-items: flex-end; }
-    [data-variant-current="D"] .has-image .hobby-title { white-space: nowrap; }
-    [data-variant-current="D"] .hobby-3.has-image { align-items: flex-end; }
+    .hobbies .has-image .hobby-img { height: 100%; }
+    .hobbies .hobby-2.has-image { grid-column: 3 / 13; rotate: 0deg; align-items: flex-end; }
+    .hobbies .has-image .hobby-title { white-space: nowrap; }
+    .hobbies .hobby-3.has-image { align-items: flex-end; }
     /* 这里的选择器比「03 长跑方块徽章」更具体，有配图时把方块框完全去掉 */
-    [data-variant-current="D"] .hobby-3.has-image .hobby-media,
-    [data-variant-current="D"] .hobby-4.has-image .hobby-media,
-    [data-variant-current="D"] .hobby-5.has-image .hobby-media,
-    [data-variant-current="D"] .hobby-6.has-image .hobby-media {
+    .hobbies .hobby-3.has-image .hobby-media,
+    .hobbies .hobby-4.has-image .hobby-media,
+    .hobbies .hobby-5.has-image .hobby-media,
+    .hobbies .hobby-6.has-image .hobby-media {
         width: auto;
         height: clamp(16rem, 28vw, 26rem);
         border: 0;
@@ -415,16 +292,16 @@ const roleList = rolesData[locale] || rolesData.en;
         rotate: 0deg;
         color: inherit;
     }
-    [data-variant-current="D"] .hobby-3.has-image .hobby-text { margin-left: -1rem; padding-bottom: 2rem; }
-    [data-variant-current="D"] .hobby-2.has-image .hobby-text { margin-right: -1.5rem; padding-bottom: 2rem; rotate: -2deg; }
+    .hobbies .hobby-3.has-image .hobby-text { margin-left: -1rem; padding-bottom: 2rem; }
+    .hobbies .hobby-2.has-image .hobby-text { margin-right: -1.5rem; padding-bottom: 2rem; rotate: -2deg; }
 
     /* 03 长跑：回到左侧但往里缩，方形徽章斜放 */
-    [data-variant-current="D"] .hobby-3 {
+    .hobbies .hobby-3 {
         grid-column: 2 / 11;
         margin-top: 3rem;
         align-items: center;
     }
-    [data-variant-current="D"] .hobby-3 .hobby-media {
+    .hobbies .hobby-3 .hobby-media {
         flex: none;
         width: clamp(8rem, 12vw, 11rem);
         height: clamp(8rem, 12vw, 11rem);
@@ -435,29 +312,27 @@ const roleList = rolesData[locale] || rolesData.en;
         rotate: 8deg;
         box-shadow: 8px 8px 0 rgb(73 73 73 / 0.35);
     }
-    [data-variant-current="D"] .hobby-3 .hobby-icon { font-size: clamp(3.2rem, 5vw, 4.6rem); opacity: 1; }
-    [data-variant-current="D"] .hobby-3 .hobby-note:first-child { rotate: 2deg; }
+    .hobbies .hobby-3 .hobby-icon { font-size: clamp(3.2rem, 5vw, 4.6rem); opacity: 1; }
+    .hobbies .hobby-3 .hobby-note:first-child { rotate: 2deg; }
 
     /* 手机：三版都改成一列，保留各自的风格 */
     @media (max-width: 639px) {
-        .hobbies[data-variant-current="A"] { grid-template-columns: 1fr; gap: 2.4rem; padding-top: 3.5rem; }
-        [data-variant-current="A"] .hobby-2 { margin-top: 0; }
-        [data-variant-current="B"] .hobby { max-width: 100%; }
-        [data-variant-current="B"] .hobby-3 { margin-left: 0; }
-        [data-variant-current="B"] .hobby-media { width: 5rem; height: 5rem; }
-        [data-variant-current="B"] .hobby-1 .hobby-media { height: 9rem; }
-        .hobbies[data-variant-current="C"] { grid-template-columns: 1fr; }
-        [data-variant-current="C"] .hobby-1 { grid-row: auto; }
-        .hobbies[data-variant-current="D"] { display: flex; flex-direction: column; gap: 3rem; }
-        [data-variant-current="D"] .hobby { flex-direction: column; align-items: center; text-align: center; }
-        [data-variant-current="D"] .hobby-2 { margin-top: 0; flex-direction: column; text-align: center; }
-        [data-variant-current="D"] .hobby-3,
-        [data-variant-current="D"] .hobby-4,
-        [data-variant-current="D"] .hobby-5,
-        [data-variant-current="D"] .hobby-6 { margin-top: 0; }
-        [data-variant-current="D"] .hobby-6 { flex-direction: column; text-align: center; }
-        [data-variant-current="D"] .hobby-4 { flex-direction: column; text-align: center; }
-        [data-variant-current="D"] .hobby-1 .hobby-text { margin-left: 0; padding-bottom: 0; }
+        .hobbies .hobby::after,
+        .hobbies .hobby:nth-child(even)::after { left: 50%; right: auto; translate: -50% 0; width: 50%; }
+        /* 手机上文字不再往插画那边挤，标签居中、可以换行 */
+        .hobbies .hobby .hobby-text { margin: 0 !important; padding-bottom: 0 !important; rotate: 0deg !important; }
+        .hobbies .hobby .hobby-notes { justify-content: center; }
+        .hobbies .has-image .hobby-title { white-space: normal; }
+        .hobbies { display: flex; flex-direction: column; gap: 3rem; }
+        .hobbies .hobby { flex-direction: column; align-items: center; text-align: center; }
+        .hobbies .hobby-2 { margin-top: 0; flex-direction: column; text-align: center; }
+        .hobbies .hobby-3,
+        .hobbies .hobby-4,
+        .hobbies .hobby-5,
+        .hobbies .hobby-6 { margin-top: 0; }
+        .hobbies .hobby-6 { flex-direction: column; text-align: center; }
+        .hobbies .hobby-4 { flex-direction: column; text-align: center; }
+        .hobbies .hobby-1 .hobby-text { margin-left: 0; padding-bottom: 0; }
         }
 
     .cta-box {
