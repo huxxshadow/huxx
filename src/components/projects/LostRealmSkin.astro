@@ -15,6 +15,8 @@ import panelPeach from "@/assets/projects/game-project-lost-realm/skin/panel-pea
 import panelGold from "@/assets/projects/game-project-lost-realm/skin/panel-gold.png";
 import panelOrange from "@/assets/projects/game-project-lost-realm/skin/panel-orange.png";
 import plateHex from "@/assets/projects/game-project-lost-realm/skin/plate-hex.png";
+import buttonPlum from "@/assets/projects/game-project-lost-realm/skin/button-plum.png";
+import gem from "@/assets/projects/game-project-lost-realm/skin/gem.png";
 import ribbon from "@/assets/projects/game-project-lost-realm/skin/ribbon.png";
 import ribbonGold from "@/assets/projects/game-project-lost-realm/skin/ribbon-gold.png";
 import panelOrnate from "@/assets/projects/game-project-lost-realm/skin/panel-ornate.png";
@@ -35,6 +37,8 @@ const vars = [
     `--lr-panel-2: url("${panelPeach.src}")`,
     `--lr-panel-hero: url("${panelOrange.src}")`,
     `--lr-plate-hex: url("${plateHex.src}")`,
+    `--lr-button-plum: url("${buttonPlum.src}")`,
+    `--lr-gem: url("${gem.src}")`,
     `--lr-ribbon: url("${ribbon.src}")`,
     `--lr-ribbon-gold: url("${ribbonGold.src}")`,
     `--lr-panel-ornate: url("${panelOrnate.src}")`,
@@ -144,25 +148,44 @@ const fontFace = [
     .skin-lr .back-btn:hover { color: var(--lr-peach); }
 
     /* 外链按钮：UI 包的六角名牌（蓝宝石） */
-    /* 顶部只保留三层框：外层一级面板、封面相框、外链按钮。徽章和简介不再套框，免得满屏都是边 */
+    /* 技能标签：不要底色，前面一颗 UI 包的橙色像素宝石 */
     .skin-lr .brutalist-badge {
+        display: inline-flex !important;
+        align-items: center;
+        gap: .45rem;
         border: 0 !important;
         border-radius: 0 !important;
         background: transparent !important;
         color: var(--lr-ink) !important;
         box-shadow: none !important;
-        padding: 0 .9rem 0 0 !important;
+        padding: 0 1rem 0 0 !important;
         font-family: var(--lr-title);
         font-weight: 600 !important;
-        font-size: 1rem !important;
+        font-size: 1.05rem !important;
         transform: none !important;
     }
-    /* 编号和分类：实心深色，作为这一组的起点 */
-    .skin-lr .project-hero-screen [data-reveal-children] > div:first-child .brutalist-badge {
-        background: var(--lr-ink) !important;
-        color: var(--lr-peach) !important;
-        padding: .2rem .6rem !important;
+    .skin-lr .brutalist-badge::before {
+        content: "";
+        flex: none;
+        width: 18px;
+        height: 18px;
+        background: var(--lr-gem) center / 18px 18px no-repeat;
+        image-rendering: pixelated;
     }
+    .skin-lr .brutalist-badge i { display: none; }
+    /* 编号和分类：UI 包的深紫按钮底，浅色字，不要宝石 */
+    .skin-lr .project-hero-screen [data-reveal-children] > div:first-child .brutalist-badge {
+        border-width: 9px 12px 12px !important;
+        border-style: solid !important;
+        border-color: transparent !important;
+        border-image: var(--lr-button-plum) 9 12 12 fill / 9px 12px 12px / 0 stretch !important;
+        color: var(--lr-peach) !important;
+        padding: 0 .3rem !important;
+        font-size: .95rem !important;
+        letter-spacing: .06em;
+    }
+    .skin-lr .project-hero-screen [data-reveal-children] > div:first-child .brutalist-badge::before { display: none; }
+    .skin-lr .project-hero-screen [data-reveal-children] > div:first-child .brutalist-badge i { display: inline; }
 
     .skin-lr .project-links-wrapper .brutalist-tag {
         border-width: 15px 24px !important;
@@ -193,13 +216,13 @@ const fontFace = [
         color: var(--lr-ink);
     }
 
-    /* 封面：不加框 */
+    /* 封面：不用贴图面板，只加一道深色像素描边和硬投影 */
     .skin-lr .project-hero-shell .project-hero-image {
-        border: 0 !important;
+        border: 6px solid var(--lr-ink) !important;
         border-image: none !important;
         border-radius: 0 !important;
-        background: transparent !important;
-        box-shadow: none !important;
+        background: var(--lr-ink) !important;
+        box-shadow: 6px 6px 0 rgba(61, 41, 54, .35) !important;
     }
 
     /* ========================================================= */
