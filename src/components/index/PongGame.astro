@@ -7,17 +7,10 @@ import { COLORS } from "@/consts.ts";
 const currentLocale = (Astro.currentLocale || "en") as Lang;
 const t = useTranslations(currentLocale);
 
-const GAME_THEMES = [
-    COLORS.blue,
-    COLORS.green,
-    COLORS.yellow,
-    COLORS.orange,
-    COLORS.purple,
-    COLORS.red
-];
+// 配色由首页统一主题色 src/scripts/homeTheme.ts 控制，这里的蓝色只是首屏默认值
 ---
 
-<div id="pong-container" class="w-full min-h-[220px] overflow-hidden relative font-sans transition-colors duration-300"
+<div id="pong-container" data-home-theme class="w-full min-h-[220px] overflow-hidden relative font-sans transition-colors duration-300"
      style={`height: 260px; background-color: var(--theme-light); --theme-light: ${COLORS.blue.light};
 --theme-dark: ${COLORS.blue.dark};`}
      data-i18n-start={t(pongTranslations.startGame)}
@@ -26,7 +19,6 @@ const GAME_THEMES = [
      data-i18n-press={t(pongTranslations.pressWS)}
      data-i18n-touch={t(pongTranslations.touchScreen)}
      data-i18n-level={t(pongTranslations.level)}
-     data-themes={JSON.stringify(GAME_THEMES)}
      data-kaomoji={JSON.stringify(KAOMOJI)}
      data-theme-bg={COLORS.blue.light}
      data-theme-text={COLORS.blue.dark}
@@ -65,6 +57,8 @@ const GAME_THEMES = [
 </div>
 
 <script>
+    import { getHomeTheme, advanceHomeTheme, HOME_THEME_EVENT, type HomeTheme } from "@/scripts/homeTheme";
+
     document.addEventListener('astro:page-load', () => {
         const container = document.getElementById("pong-container");
         const canvas = document.getElementById("pong") as HTMLCanvasElement;
@@ -123,35 +117,24 @@ const GAME_THEMES = [
             }, 2000);
         }
 
-        const themesRaw = container.getAttribute("data-themes");
-        const THEMES = themesRaw ? JSON.parse(themesRaw) : [{ light: "#BDF1CD", dark: "#16A062" }];
-
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
 
         const controller = new AbortController();
         const { signal } = controller;
 
-        // ========== 广播主题色给 Header ==========
-        function broadcastTheme(theme: { light: string; dark: string }) {
-            container!.setAttribute('data-theme-bg', theme.light);
-            container!.setAttribute('data-theme-text', theme.dark);
-            document.dispatchEvent(new CustomEvent('section-theme-change', {
-                detail: { bg: theme.light, text: theme.dark, source: container }
-            }));
-        }
-
         let currentLevel = parseInt(sessionStorage.getItem('pongLevel') || '1', 10);
 
-        const initialThemeIndex = (currentLevel <= THEMES.length) ? (currentLevel - 1) : 0;
-        let currentTheme = THEMES[initialThemeIndex];
+        // 颜色用首页统一主题色（src/scripts/homeTheme.ts），区块本身的底色由那边统一写入
+        let currentTheme: HomeTheme = getHomeTheme();
         let oldTheme = currentTheme;
 
-        container.style.setProperty('--theme-light', currentTheme.light);
-        container.style.setProperty('--theme-dark', currentTheme.dark);
-        container.style.backgroundColor = currentTheme.light;
-
-        broadcastTheme(currentTheme);
+        // 打砖块升级换色时，弹球跟着换（自己升级时由 levelUp 处理过渡动画）
+        document.addEventListener(HOME_THEME_EVENT, ((e: CustomEvent) => {
+            if (e.detail?.source === 'pong') return;
+            currentTheme = e.detail.theme;
+            if (!isTransitioning) oldTheme = currentTheme;
+        }) as EventListener, { signal });
 
         let hasStarted = false;
         let isPaused = false;
@@ -285,10 +268,8 @@ const GAME_THEMES = [
             sessionStorage.setItem('pongLevel', currentLevel.toString());
             document.dispatchEvent(new CustomEvent('pong-level-update', { detail: { level: currentLevel } }));
 
-            const themeIndex = (currentLevel <= THEMES.length) ? (currentLevel - 1) : 0;
-            currentTheme = THEMES[themeIndex];
-
-            broadcastTheme(currentTheme);
+            // 推进整页的主题色（打砖块也会同步换色）
+            currentTheme = advanceHomeTheme('pong');
 
             isTransitioning = true;
             transitionRadius = 0;
@@ -605,10 +586,7 @@ const GAME_THEMES = [
                 transitionRadius += maxTransitionRadius / 45;
                 if (transitionRadius >= maxTransitionRadius) {
                     isTransitioning = false;
-                    container!.style.setProperty('--theme-light', currentTheme.light);
-                    container!.style.setProperty('--theme-dark', currentTheme.dark);
-                    container!.style.backgroundColor = currentTheme.light;
-                    broadcastTheme(currentTheme);
+                    oldTheme = currentTheme;
                     triggerReset(gameWidth / 2, gameHeight / 2, false);
                 }
                 updatePaddle(com);

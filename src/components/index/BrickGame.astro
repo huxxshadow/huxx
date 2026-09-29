@@ -32,7 +32,7 @@ const t = useTranslations(currentLocale);
 // =========================
 const DEFAULT_CUSTOM_ICON_SIZE = 24;
 const SECTION_ID = "skill-brick-section";
-const THEMES = [COLORS.green, COLORS.yellow, COLORS.blue, COLORS.orange, COLORS.purple, COLORS.red];
+// 配色由首页统一主题色 src/scripts/homeTheme.ts 控制，这里的蓝色只是首屏默认值
 
 // =========================
 // Types
@@ -192,10 +192,11 @@ const getSkillClass = (level: string) => {
 
 <section
         id={SECTION_ID}
+        data-home-theme
         class="relative overflow-hidden w-full px-4 sm:px-6 py-12 flex flex-col lg:flex-row gap-12 items-stretch transition-colors duration-700"
-        style={`--theme-light: ${COLORS.orange.light}; --theme-dark: ${COLORS.orange.dark}; background-color: var(--theme-light); color: var(--theme-dark);`}
-        data-theme-bg={COLORS.orange.light}
-        data-theme-text={COLORS.orange.dark}
+        style={`--theme-light: ${COLORS.blue.light}; --theme-dark: ${COLORS.blue.dark}; background-color: var(--theme-light); color: var(--theme-dark);`}
+        data-theme-bg={COLORS.blue.light}
+        data-theme-text={COLORS.blue.dark}
 >
     {/* ====== Left: Skill List ====== */}
     <div
@@ -276,7 +277,6 @@ const getSkillClass = (level: string) => {
                 style="border-color: var(--theme-dark);"
                 data-skills={JSON.stringify(FLAT_SKILLS)}
                 data-custom-icon-size={DEFAULT_CUSTOM_ICON_SIZE}
-                data-themes={JSON.stringify(THEMES)}
                 data-section-id={SECTION_ID}
                 data-i18n-start={t(brickTranslations.startGame)}
                 data-i18n-press={t(brickTranslations.pressAD)}
@@ -334,19 +334,16 @@ const getSkillClass = (level: string) => {
 </style>
 
 <script>
+    import { advanceHomeTheme } from "@/scripts/homeTheme";
+
     document.addEventListener('astro:page-load', () => {
         const container = document.getElementById('bb-container');
         if (!container) return;
 
-        const sectionId = container.getAttribute('data-section-id');
-        const section = sectionId ? document.getElementById(sectionId) : null;
 
         const rawSkills = container.getAttribute('data-skills');
         const SKILLS: any[] = rawSkills ? JSON.parse(rawSkills) : [];
         const DEFAULT_CUSTOM_ICON_SIZE = Number(container.getAttribute('data-custom-icon-size') || 24);
-
-        const rawThemes = container.getAttribute('data-themes');
-        const THEMES: { light: string; dark: string }[] = rawThemes ? JSON.parse(rawThemes) : [{ light: "#FDCEA4", dark: "#F06E1C" }];
 
         const i18nStart = container.getAttribute('data-i18n-start') || 'Start Game';
         const i18nTryAgain = container.getAttribute('data-i18n-try-again') || 'Try Again';
@@ -404,19 +401,6 @@ const getSkillClass = (level: string) => {
         if (!sessionSeed) {
             sessionSeed = Math.floor(Math.random() * 100000);
             sessionStorage.setItem('brickSessionSeed', sessionSeed.toString());
-            }
-
-        // ========== Theme broadcast ==========
-        function broadcastTheme(theme: { light: string; dark: string }) {
-            if (section) {
-                section.setAttribute('data-theme-bg', theme.light);
-                section.setAttribute('data-theme-text', theme.dark);
-                section.style.setProperty('--theme-light', theme.light);
-                section.style.setProperty('--theme-dark', theme.dark);
-                }
-            document.dispatchEvent(new CustomEvent('section-theme-change', {
-                detail: { bg: theme.light, text: theme.dark, source: section || container }
-                }));
             }
 
         // ========== Keyboard ==========
@@ -523,9 +507,6 @@ const getSkillClass = (level: string) => {
         function loadLevel(level: number) {
             currentLevel = level;
             levelText.innerText = level.toString();
-
-            const theme = THEMES[(level - 1) % THEMES.length];
-            broadcastTheme(theme);
 
             bricksContainer.innerHTML = '';
             brickData = [];
@@ -674,6 +655,8 @@ const getSkillClass = (level: string) => {
 
                 document.dispatchEvent(new CustomEvent('brick-level-update', { detail: { level: currentLevel } }));
 
+                // 过关推进整页主题色（弹球也会同步换色）
+                advanceHomeTheme('brick');
                 loadLevel(currentLevel);
                 btnTitle.innerText = i18nNextLevel;
                 btnSubtitle.innerText = i18nPress;
