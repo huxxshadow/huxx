@@ -1,9 +1,9 @@
 ---
 // src/components/index/PortfolioPosters.astro
-// 首页的作品集区：一排项目海报，从屏幕最左边开始无缝排开。按 6 张设计：每张占屏宽的 1/6、2:3 竖版，
-// 高度因此固定（屏宽的 1/4），6 张正好铺满整个宽度；不足 6 张时右边空着。始终只排一行，窄屏上横向滑动。
-// 每张海报一个项目——主题色单色的角色立绘、大号作品名、副标题 Portfolio，点进对应项目页。
-// 版式参考《分形收容所》的角色海报：米色纸底（站内存的 khakiMilan），角色靠右上，标题压在左下
+// 首页的作品集区：一排项目海报，从屏幕最左边开始无缝排开，始终只排一行，放不下时横向滑动。
+// 版式和比例参考《分形收容所》的角色海报（2:3 竖版，米色纸底 khakiMilan）：
+// 主题色单色的角色占右上，角色底部左边是大标题「作品集」，下面是作品名，再下面一行是我在项目里的职责，最底下是 huxx。
+// 点海报进对应项目页
 import { useTranslations, type Lang } from "@/i18n.ts";
 import { COLORS } from "@/consts.ts";
 import { getEntry } from "astro:content";
@@ -22,14 +22,18 @@ const POSTERS: Poster[] = [
     { id: "game-project-night-watch", art: nightWatchCard, color: COLORS.orange, levels: [0.1, 0.85] },
 ];
 
-// 主标题统一是「作品集」，副标题是作品名。两行都只排一行：按字数估算宽度（中日韩字约 1em、拉丁字母约 0.56em），
-// 放不下 86% 版宽时缩小字号，max 是不超过的字号（cqw）
-const fitSize = (text: string, max: number) => {
+// 各行文字都只排一行：按字数估算宽度（中日韩字约 1em、拉丁字母约 0.56em），放不下 room（cqw）时缩小字号，max 是字号上限（cqw）
+// squeeze 是横向压缩比例（大标题用窄体效果：字号放大、横向压扁，看起来更高更窄）
+const fitSize = (text: string, max: number, room: number, squeeze = 1) => {
     const em = Array.from(text).reduce((w, ch) => w + (/[⺀-￯]/.test(ch) ? 1 : ch === " " ? 0.28 : 0.56), 0);
-    return Math.min(max, 86 / Math.max(em, 1)).toFixed(2);
+    return Math.min(max, room / (Math.max(em, 1) * squeeze)).toFixed(2);
 };
+const SQUEEZE = 0.7;
+// 大标题放在角色左边那一块（约 40% 版宽），底边和角色底部对齐；放进去会小于 11cqw 的（英文 Portfolio、韩文）
+// 改成角色下方单独占满一行。作品名和职责都可以占满整行
 const heading = t({ en: "Portfolio", zh: "作品集", ja: "作品集", ko: "포트폴리오" });
-const headingSize = fitSize(heading, 17);
+const headingBeside = Number(fitSize(heading, 20, 40, SQUEEZE)) >= 15;
+const headingSize = headingBeside ? fitSize(heading, 20, 40, SQUEEZE) : fitSize(heading, 21, 88, SQUEEZE);
 
 const posters = await Promise.all(POSTERS.map(async (p, i) => {
     const entry = await getEntry("projects", p.id);
@@ -37,7 +41,8 @@ const posters = await Promise.all(POSTERS.map(async (p, i) => {
         ...p,
         filter: `poster-duo-${i}`,
         title: entry ? t(entry.data.title) : p.id,
-        titleSize: fitSize(entry ? t(entry.data.title) : p.id, 8.5),
+        titleSize: fitSize(entry ? t(entry.data.title) : p.id, 11, 88),
+        roles: ((entry?.data.roles as Record<string, string[]> | undefined)?.[locale] ?? []).join(" / "),
         href: getRelativeLocaleUrl(locale, `projects/${p.id}`),
     };
 }));
@@ -81,7 +86,7 @@ const ink = COLORS.black;
         ))}
     </svg>
 
-    <ul class="poster-row">
+    <ul class:list={["poster-row", { wide: !headingBeside }]}>
         {posters.map((p) => (
             <li style={`--c: ${p.color.dark};`}>
                 <a href={p.href} class="poster">
@@ -95,9 +100,10 @@ const ink = COLORS.black;
                             class:list={["poster-art", p.pixel && "pixelated"]}
                             style={`filter: url(#${p.filter});`}
                     />
-                    <div class="poster-text">
-                        <p class="poster-title" style={`--title-size: ${headingSize}cqw;`}>{heading}</p>
+                    <div class:list={["poster-text", { beside: headingBeside }]} style={`--title-size: ${headingSize}cqw;`}>
+                        <p class="poster-title">{heading}</p>
                         <h3 class="poster-sub" style={`--sub-size: ${p.titleSize}cqw;`}>{p.title}</h3>
+                        {p.roles && <p class="poster-role">{p.roles}</p>}
                     </div>
                     <p class="poster-foot">huxx</p>
                 </a>
@@ -107,14 +113,27 @@ const ink = COLORS.black;
 </section>
 
 <style>
-    /* 固定 6 个位置：每张 1/6 屏宽、2:3 竖版，贴着屏幕左边无缝排开；相邻两张之间用前一张的主题色细线分开 */
+    /* 一行排开：桌面每张 1/4 屏宽（2:3，高度固定为屏宽的 3/8），贴着屏幕左边无缝排开，多于 4 张时横向滑动；
+       相邻两张之间用前一张的主题色细线分开 */
     .poster-row {
-        --slots: 6;
-        display: grid;
-        grid-template-columns: repeat(var(--slots), minmax(0, 1fr));
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
         list-style: none;
     }
+    .poster-row::-webkit-scrollbar { display: none; }
+    .poster-row > li {
+        flex: 0 0 25%;
+        scroll-snap-align: start;
+    }
     .poster-row > li:not(:last-child) { border-right: 2px solid var(--c); }
+    @media (max-width: 1023px) {
+        .poster-row > li { flex-basis: 40%; }
+    }
+    @media (max-width: 639px) {
+        .poster-row > li { flex-basis: 72%; }
+    }
 
     .poster {
         position: relative;
@@ -127,43 +146,69 @@ const ink = COLORS.black;
     }
 
     /*
-     * 角色永远靠右上，框在标题上方的区域里，不压字：
-     * 海报高 150cqw，文字块（标题 + 作品名）从底边往上约 45cqw，所以图框止于顶部往下 96cqw
+     * 版面坐标（海报宽 100cqw、高 150cqw）：
+     * 角色占右上，框在 x 47~95、y 18~104，贴框的右下角放；大标题在它左边、底边和角色底部对齐（y=104），
+     * 两者横向不重叠，所以角色不会挡字
      */
+    .poster {
+        --art-bottom: 104cqw;
+    }
+    /* 标题在角色下方单独一行时，角色整体上移，给下面的三行文字留位置 */
+    .poster-row.wide .poster {
+        --art-bottom: 86cqw;
+    }
     .poster-art {
         position: absolute;
-        right: 7cqw;
-        top: 8cqw;
-        width: 86cqw;
-        height: 88cqw;
+        right: 5cqw;
+        top: calc(var(--art-bottom) - 86cqw);
+        width: 48cqw;
+        height: 86cqw;
         object-fit: contain;
-        object-position: right top;
+        object-position: right bottom;
         pointer-events: none;
         transition: scale 400ms ease-out;
-        transform-origin: right top;
+        transform-origin: right bottom;
     }
     .poster:hover .poster-art { scale: 1.03; }
     .poster-art.pixelated { image-rendering: pixelated; }
 
     .poster-text {
         position: absolute;
-        left: 7%;
-        right: 7%;
-        bottom: 11%;
+        left: 6cqw;
+        right: 6cqw;
+        /* 标题放不进角色左边时，整块文字从角色下方开始 */
+        top: calc(var(--art-bottom) + 3cqw);
     }
+    /* 标题在角色左边：标题底边落在角色底部，往上让出一个标题行高 */
+    .poster-text.beside {
+        top: calc(var(--art-bottom) - var(--title-size) * 0.92);
+    }
+    /* 窄体大标题：字号放大后横向压到 70%，所以更高、更扁 */
     .poster-title {
         font-weight: 900;
         line-height: 0.92;
         letter-spacing: -0.02em;
-        font-size: var(--title-size, 15cqw);
+        font-size: var(--title-size, 14cqw);
         white-space: nowrap;
+        scale: 0.7 1;
+        transform-origin: left center;
     }
     .poster-sub {
-        margin-top: 0.35em;
-        font-weight: 800;
-        font-size: var(--sub-size, 7cqw);
-        line-height: 1;
+        margin-top: 0.12em;
+        font-weight: 900;
+        font-size: var(--sub-size, 11cqw);
+        line-height: 1.05;
+        letter-spacing: -0.01em;
         white-space: nowrap;
+    }
+    .poster-role {
+        margin-top: 0.9em;
+        font-weight: 700;
+        font-size: 4.6cqw;
+        line-height: 1.2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .poster-foot {
         position: absolute;
@@ -173,25 +218,7 @@ const ink = COLORS.black;
         text-align: center;
         font-family: 'Roboto', sans-serif;
         font-weight: 900;
-        font-size: 5cqw;
+        font-size: 4.5cqw;
         letter-spacing: 0.02em;
-    }
-
-    /* 始终只有一行：平板一屏 3 张、手机一屏 2 张，海报多于一屏时横向滑动 */
-    @media (max-width: 1023px) {
-        .poster-row {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: none;
-        }
-        .poster-row::-webkit-scrollbar { display: none; }
-        .poster-row > li {
-            flex: 0 0 calc(100% / 3);
-            scroll-snap-align: start;
-        }
-    }
-    @media (max-width: 639px) {
-        .poster-row > li { flex-basis: 50%; }
     }
 </style>
