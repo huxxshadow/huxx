@@ -43,15 +43,14 @@ The system uses a layered "brain + cerebellum" structure: the LLM handles strate
 
 ## Anatomy of a Jev Node
 
-A Jev node is a gate whose condition is a judgment rather than a comparison. Each one has the same five parts.
+A Jev node is a behaviour-tree gate driven by semantic judgment rather than a traditional numeric comparison. Each node has five parts:
 
-**A snapshot.** Code builds a small structured state with only what the question needs: health, whether he was hit in the last two seconds, the boss's distance and closing speed, how much ground lies each way. Numbers a person would notice, not a dump of the world.
+**State snapshot**: Code extracts only the structured information the current decision needs — health, whether the player was hit recently, the boss's distance and closing speed, the free space in each direction — instead of passing redundant global state to the model.
 
-**A question with symmetric options.** Every option names both what it buys and what it costs. The first weapon question described melee only by its limit and ranged only by its advantage, and the model picked the bow six times out of six, including against a zombie two tiles away. Giving every option a reach and a cost took it to four out of five. A question that leans in its wording leans hard enough to be unusable while reading perfectly reasonably.
+**Symmetric options**: Every option states both its benefit and its cost, to reduce wording bias. In early tests, when only the ranged weapon's advantages were described, the model picked the bow six times in a row; after adding each weapon's range and limitations, it made the expected choice in four of five tests.
 
-**A typed answer and a threshold.** A choice comes back with a probability per option and a confidence; a noul comes back as a probability of yes. The threshold is set per question from measurement, not by default: three weapons spread the probability, so the weapon node acts on confidence 0.35, while the "drink now" node acts on 0.5.
+**Typed output and per-node thresholds**: Multiple-choice decisions return a probability for each option plus an overall confidence; binary judgments return the probability that the condition holds. Thresholds are set per node from measured results — for example 0.35 for weapon choice and 0.5 for "use a potion now".
 
-**Asynchrony.** The tree ticks thirty times a second; an answer takes about 300 ms. The node never waits. It reads the latest answer for its channel, asks again in the background when the snapshot's key has changed, and one request per channel is in flight at most.
+**Asynchronous execution**: The behaviour tree runs 30 times per second, while a model response takes about 300 ms. Nodes never block the main loop; they read the latest result on their channel, the system re-requests in the background when the snapshot changes, and each channel has at most one request in flight.
 
-**A fallback.** Without an answer, or below the threshold, the gate runs a plain rule: the hardest hitter, a health floor, a scored exit. The teammate is never smarter than the model, but never dumber than a scripted one.
-
+**Rule fallback**: When a result is missing or its confidence is too low, the node falls back to a deterministic rule — the highest-damage weapon, a health threshold for potions, or a scored exit choice. This lets AI decisions improve behaviour without ever dropping below the stability of the baseline script.
