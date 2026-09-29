@@ -45,7 +45,8 @@ const portfolioHref = getRelativeLocaleUrl(locale, "portfolio");
         {portfolioPieces.map((ch) => (
             <div
                     data-href={portfolioHref}
-                    class="game-sticker word-sticker absolute top-0 left-0 select-none leading-none"
+                    data-fixed
+                    class="game-sticker word-sticker absolute top-0 left-0 select-none leading-none cursor-pointer"
                     style={`color: ${COLORS.black};`}
             >
                 <span class="block font-black whitespace-nowrap pointer-events-none">{ch}</span>
@@ -140,38 +141,58 @@ const portfolioHref = getRelativeLocaleUrl(locale, "portfolio");
             const ceiling = Bodies.rectangle(width / 2, -1500, width * 2, wallThickness, wallOptions);
 
             World.add(engine.world, [ground, ceiling, leftWall, rightWall]);
-            const stickers = document.querySelectorAll('.game-sticker');
-            // 横向并排落下：以容器中线为中心，一张贴纸一个位置
-            const spawnX = (index: number, w: number) =>
-                Math.min(Math.max(width / 2 + (index - (stickers.length - 1) / 2) * w * 1.05, w / 2), width - w / 2);
-            const bodiesMap: { body: Matter.Body; el: HTMLElement }[] = [];
+            const stickers = Array.from(document.querySelectorAll('.game-sticker')) as HTMLElement[];
+            type Item = { body: Matter.Body; el: HTMLElement; fixed: boolean; slot: number };
+            const bodiesMap: Item[] = [];
 
-            stickers.forEach((sticker, index) => {
-                const el = sticker as HTMLElement;
+            // 「作品集」字贴纸固定悬在空中：横向居中排成一行（放不下就折行），每个字带一点固定的歪斜
+            const FIXED_TILTS = [-0.07, 0.05, -0.03, 0.06, -0.05];
+            const fixedEls = stickers.filter(el => el.hasAttribute('data-fixed'));
+            const freeEls = stickers.filter(el => !el.hasAttribute('data-fixed'));
+            const fixedLayout = () => {
+                const gap = Math.min(width * 0.02, 24);
+                const rows: HTMLElement[][] = [[]];
+                let rowW = 0;
+                for (const el of fixedEls) {
+                    const w = el.offsetWidth;
+                    if (rows[rows.length - 1].length && rowW + gap + w > width * 0.94) { rows.push([]); rowW = 0; }
+                    rowW += (rows[rows.length - 1].length ? gap : 0) + w;
+                    rows[rows.length - 1].push(el);
+                }
+                const rowH = Math.max(...fixedEls.map(el => el.offsetHeight), 0);
+                const top = height * 0.42 - (rows.length * rowH) / 2;
+                const pos = new Map<HTMLElement, { x: number; y: number }>();
+                rows.forEach((row, ri) => {
+                    const total = row.reduce((sum, el) => sum + el.offsetWidth, 0) + gap * (row.length - 1);
+                    let x = width / 2 - total / 2;
+                    row.forEach(el => {
+                        pos.set(el, { x: x + el.offsetWidth / 2, y: top + rowH * (ri + 0.5) });
+                        x += el.offsetWidth + gap;
+                    });
+                });
+                return pos;
+            };
+            // 角色贴纸从上方横向错开落下
+            const spawnX = (slot: number, w: number) =>
+                Math.min(Math.max(width / 2 + (slot - (freeEls.length - 1) / 2) * w * 1.05, w / 2), width - w / 2);
+
+            const freeOptions = { restitution: 0.6, friction: 0.3, density: 0.002, chamfer: { radius: 16 } };
+            const makeBody = (el: HTMLElement, fixed: boolean, slot: number, layout?: Map<HTMLElement, { x: number; y: number }>) => {
                 const w = el.offsetWidth;
                 const h = el.offsetHeight;
-
-                const body = Bodies.rectangle(
-                    spawnX(index, w),
-                    -h * (0.5 + index * 0.6),
-                    w,
-                    h,
-                    {
-                        restitution: 0.6,
-                        friction: 0.3,
-                        density: 0.002,
-                        chamfer: { radius: 16 }
-                        }
-                    );
-
+                if (fixed) {
+                    const p = (layout ?? fixedLayout()).get(el)!;
+                    const body = Bodies.rectangle(p.x, p.y, w, h, { isStatic: true, friction: 0.3, chamfer: { radius: 16 } });
+                    Matter.Body.setAngle(body, FIXED_TILTS[slot % FIXED_TILTS.length]);
+                    return body;
+                }
+                const body = Bodies.rectangle(spawnX(slot, w), -h * (0.5 + slot * 0.6), w, h, freeOptions);
                 Matter.Body.setAngle(body, (Math.random() - 0.5) * 0.4);
-                bodiesMap.push({ body, el });
-                World.add(engine.world, body);
+                return body;
+            };
 
-                // 竖向手势留给页面滚动，横向手势才拖动贴纸
-                el.classList.add('touch-pan-y', 'cursor-grab');
-
-                // 点击跳转逻辑（桌面和手机端都保留）
+            // 点击跳转逻辑（桌面和手机端都保留）
+            function bindClick(el: HTMLElement) {
                 let startX = 0, startY = 0;
                 el.addEventListener('pointerdown', (e) => {
                     startX = e.clientX;
@@ -192,6 +213,21 @@ const portfolioHref = getRelativeLocaleUrl(locale, "portfolio");
                             }
                         }
                     }, { signal });
+            }
+
+            const initialLayout = fixedLayout();
+            stickers.forEach((el) => {
+                const fixed = fixedEls.includes(el);
+                const slot = fixed ? fixedEls.indexOf(el) : freeEls.indexOf(el);
+                const body = makeBody(el, fixed, slot, initialLayout);
+                bodiesMap.push({ body, el, fixed, slot });
+                World.add(engine.world, body);
+                if (fixed) return void bindClick(el);
+
+                // 竖向手势留给页面滚动，横向手势才拖动贴纸
+                el.classList.add('touch-pan-y', 'cursor-grab');
+
+                bindClick(el);
                 });
 
             // --- 按钮逻辑 ---
@@ -199,7 +235,8 @@ const portfolioHref = getRelativeLocaleUrl(locale, "portfolio");
             const btnReset = document.getElementById('btn-reset');
 
             btnShake?.addEventListener('click', () => {
-                bodiesMap.forEach(({ body }) => {
+                bodiesMap.forEach(({ body, fixed }) => {
+                    if (fixed) return;
                     Matter.Body.setVelocity(body, {
                         x: (Math.random() - 0.5) * 15,
                         y: -25 - (Math.random() * 10)
@@ -209,30 +246,11 @@ const portfolioHref = getRelativeLocaleUrl(locale, "portfolio");
                 });
 
             btnReset?.addEventListener('click', () => {
-                bodiesMap.forEach((item, index) => {
-                    const { body, el } = item;
-
-                    World.remove(engine.world, body);
-
-                    const w = el.offsetWidth;
-                    const h = el.offsetHeight;
-
-                    const newBody = Bodies.rectangle(
-                        spawnX(index, w),
-                        -h * (0.5 + index * 0.6),
-                        w,
-                        h,
-                        {
-                            restitution: 0.6,
-                            friction: 0.3,
-                            density: 0.002,
-                            chamfer: { radius: 16 }
-                            }
-                        );
-
-                    Matter.Body.setAngle(newBody, (Math.random() - 0.5) * 0.4);
-                    item.body = newBody;
-                    World.add(engine.world, newBody);
+                bodiesMap.forEach((item) => {
+                    if (item.fixed) return;
+                    World.remove(engine.world, item.body);
+                    item.body = makeBody(item.el, false, item.slot);
+                    World.add(engine.world, item.body);
                     });
                 });
 
@@ -269,6 +287,7 @@ const portfolioHref = getRelativeLocaleUrl(locale, "portfolio");
                 };
 
             bodiesMap.forEach((item) => {
+                if (item.fixed) return;
                 let touchId: number | null = null;
                 let startX = 0, startY = 0;
                 let mode: 'undecided' | 'drag' | 'scroll' = 'undecided';
@@ -355,7 +374,14 @@ const portfolioHref = getRelativeLocaleUrl(locale, "portfolio");
                     Matter.Body.setPosition(leftWall, { x: -wallThickness / 2, y: height / 2 });
                     Matter.Body.setPosition(rightWall, { x: width + wallThickness / 2, y: height / 2 });
 
+                    const layout = fixedLayout();
                     bodiesMap.forEach((item) => {
+                        if (item.fixed) {
+                            World.remove(engine.world, item.body);
+                            item.body = makeBody(item.el, true, item.slot, layout);
+                            World.add(engine.world, item.body);
+                            return;
+                            }
                         const el = item.el;
                         const newW = el.offsetWidth;
                         const newH = el.offsetHeight;
