@@ -2,7 +2,6 @@
 ---
 
 import { Image } from 'astro:assets';
-import hero from '@/assets/projects/technical-project-terraria-ai-teammate/hero-en.png';
 import tree from '@/assets/projects/technical-project-terraria-ai-teammate/tree-en.png';
 
 <div class="video-embed">
@@ -40,21 +39,6 @@ The system uses a layered "brain + cerebellum" structure: the LLM handles strate
 | LLM (ChatGPT) | Brain | Reads the situation and goals, sets the Jev nodes' conditions | Once per boss; mining plan every 12 s |
 | Jev nodes | Cerebellum | Fast judgment over complex state | About 300 ms per answer |
 | Behaviour tree and code | Execution | Flow orchestration, real-time reactions, fallbacks | 30 ticks per second |
-
----
-
-## The Problem With Gates
-
-A behaviour tree is the right shape for a fight: a priority list of things worth doing, each behind a gate that says whether now is the moment. Classical trees go wrong at the gates. "Is he in trouble?" written as a health threshold is wrong against a boss that takes seventy percent in one bite. "Which way should he run?" written as "the nearest open direction" runs him into a dead end. "Which weapon?" written as "the highest damage" holds a shortsword at twenty tiles. Each rule is right most of the time and wrong exactly when it matters, and every patch adds a special case.
-
-The thing those gates have in common is that a player settles them by feel, from the whole situation, and could explain the choice afterwards. That is what Jev, TypeSafe's System One model, is built to do: given a structured state and a question, it returns a typed answer, a choice with probabilities or a yes/no lean, in a few hundred milliseconds, without generating text.
-
-<figure>
-    <Image src={hero} alt="Cover art: the player and the AI teammate side by side in a Terraria landscape" width={1672} height={941} />
-    <figcaption>The teammate is a real player client; the tree runs in a Python backend and reloads on save</figcaption>
-</figure>
-
-So the behaviour tree keeps its structure, while the great majority of its judgment gates became Jev nodes.
 
 ---
 

@@ -2,7 +2,6 @@
 ---
 
 import { Image } from 'astro:assets';
-import hero from '@/assets/projects/technical-project-terraria-ai-teammate/hero-zh.png';
 import tree from '@/assets/projects/technical-project-terraria-ai-teammate/tree-zh.png';
 
 <div class="video-embed">
@@ -39,21 +38,6 @@ import tree from '@/assets/projects/technical-project-terraria-ai-teammate/tree-
 | LLM（ChatGPT） | 大脑 | 理解战况与长期目标，设置 Jev 节点的条件 | 每个 Boss 一次；挖矿计划每 12 秒 |
 | Jev 节点 | 小脑 | 对复杂状态做快速判断 | 约 300 ms 一个答案 |
 | 行为树与代码 | 执行 | 流程编排、即时反应、失败兜底 | 每秒 30 次 tick |
-
----
-
-## 门的问题
-
-行为树是打架的正确形状：一张按优先级排列的"值得做的事"清单，每件事前面一道门，判断现在是不是时候。传统行为树出错的地方正是这些门。"他有危险吗"写成血量阈值，遇到一口咬掉七成血的 boss 就是错的。"该往哪边跑"写成"最近的开口方向"，会把他送进死路。"用哪把武器"写成"伤害最高的"，会让他在二十格外举着短剑。每条规则大部分时候对，偏偏在关键时刻错，每打一个补丁就多一个特例。
-
-这些门的共同点是：玩家凭手感、看整个局面就能定，事后还能解释为什么。这正是 Jev（TypeSafe 的 System One 模型）擅长的事：给它一份结构化状态和一个问题，几百毫秒内返回一个类型化的答案，带概率的选择或者一个是/否的倾向，不生成文本。
-
-<figure>
-    <Image src={hero} alt="封面：玩家和 AI 队友并肩站在泰拉瑞亚的地形里" width={1672} height={941} />
-    <figcaption>队友是真实的玩家客户端；行为树跑在 Python 后端里，存盘即重载</figcaption>
-</figure>
-
-所以行为树保留它的结构，而其中绝大多数需要判断的门都换成了 Jev 节点。
 
 ---
 

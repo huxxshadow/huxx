@@ -2,7 +2,6 @@
 ---
 
 import { Image } from 'astro:assets';
-import hero from '@/assets/projects/technical-project-terraria-ai-teammate/hero-en.png';
 import tree from '@/assets/projects/technical-project-terraria-ai-teammate/tree-en.png';
 
 <div class="video-embed">
@@ -40,21 +39,6 @@ import tree from '@/assets/projects/technical-project-terraria-ai-teammate/tree-
 | LLM（ChatGPT） | 大脳 | 戦況と目標を理解し、Jev ノードの条件を設定 | ボスごとに一度、採掘計画は 12 秒ごと |
 | Jev ノード | 小脳 | 複雑な状態をすばやく判断 | 1 回答あたり約 300 ms |
 | ビヘイビアツリーとコード | 実行 | フロー制御、即時の反応、フォールバック | 毎秒 30 tick |
-
----
-
-## ゲートの問題
-
-戦闘にはビヘイビアツリーが正しい形です。やる価値のあることを優先順に並べ、それぞれの前に「今がその時か」を判定するゲートを置く。従来のツリーが間違えるのは、まさにそのゲートです。「彼は危険か」を体力の閾値で書けば、一撃で 7 割を奪うボスの前では間違い。「どちらへ逃げるか」を「最も近い開けた方向」と書けば、行き止まりに走り込む。「どの武器か」を「最大ダメージ」と書けば、20 タイル先の敵にショートソードを構える。どのルールも大抵は正しく、肝心なときにだけ間違い、パッチを当てるたびに特例が増えていきます。
-
-これらのゲートに共通するのは、プレイヤーなら状況全体から勘で決め、後から理由を説明できるということです。それがまさに Jev（TypeSafe の System One モデル）の得意分野です。構造化された状態と問いを与えると、確率付きの選択か、はい/いいえの傾きという型付きの答えを、テキストを生成せずに数百ミリ秒で返します。
-
-<figure>
-    <Image src={hero} alt="カバー：Terraria の地形にプレイヤーと AI チームメイトが並ぶ" width={1672} height={941} />
-    <figcaption>チームメイトは本物のプレイヤークライアント。ツリーは Python バックエンドで動き、保存すると再読み込みされる</figcaption>
-</figure>
-
-そのため、ビヘイビアツリーは構造を保ちつつ、判断が必要なゲートの大半を Jev ノードに置き換えました。
 
 ---
 
