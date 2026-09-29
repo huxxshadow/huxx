@@ -45,6 +45,16 @@ export const introLabels = {
                 ko: "스탠다드차타드 홍콩 하프 마라톤 완주",
             },
         },
+        {
+            icon: "fa-cake-candles",
+            title: { en: "I love cooking", zh: "我喜欢烹饪", ja: "料理が好き", ko: "요리를 좋아합니다" },
+            note: {
+                en: "Best at desserts and honey-glazed chicken wings",
+                zh: "最擅长做甜品和蜜糖鸡翅",
+                ja: "得意料理はスイーツとハニーチキンウィング",
+                ko: "디저트와 허니 치킨윙이 특기",
+            },
+        },
     ] as { icon: string; title: Multilingual; note: Multilingual; image?: ImageMetadata }[],
 
     transition: {

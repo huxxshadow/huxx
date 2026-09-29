@@ -527,9 +527,6 @@
 .fa-cubes-stacked {
   --fa: "\e4e6";
 }
-.fa-people-group {
-  --fa: "\e533";
-}
 .fa-music {
   --fa: "\f001";
 }
@@ -577,9 +574,6 @@
 }
 .fa-leaf {
   --fa: "\f06c";
-}
-.fa-fire {
-  --fa: "\f06d";
 }
 .fa-eye {
   --fa: "\f06e";
@@ -641,6 +635,9 @@
 .fa-file-powerpoint {
   --fa: "\f1c4";
 }
+.fa-cake-candles {
+  --fa: "\f1fd";
+}
 .fa-chart-line {
   --fa: "\f201";
 }
@@ -655,9 +652,6 @@
 }
 .fa-hourglass-half {
   --fa: "\f252";
-}
-.fa-hand-spock {
-  --fa: "\f259";
 }
 .fa-tv {
   --fa: "\f26c";
@@ -792,9 +786,6 @@
 }
 .fa-youtube {
   --fa: "\f167";
-}
-.fa-windows {
-  --fa: "\f17a";
 }
 .fa-android {
   --fa: "\f17b";
