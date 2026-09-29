@@ -142,7 +142,7 @@ const t = useTranslations(locale);
         opacity: 1;
     }
 
-    /* 有大插画的几条往上叠进前一条旁边的空白（左右交错）；音乐那条字更宽，不叠，免得英文撞字 */
+    /* 有大插画的几条往上叠进前一条旁边的空白（左右交错） */
     .hobbies { --lift-up: clamp(-9rem, -10vw, -3rem); }
 
     /* 每条下面一条圆角横线，长度就是这一段（插画 + 文字）的宽度：
@@ -241,7 +241,7 @@ const t = useTranslations(locale);
     /* 06 音乐：再甩回右边，圆形徽章，和 02 / 04 呼应 */
     .hobbies .hobby-6 {
         grid-column: 5 / 13;
-        margin-top: 3rem;
+        margin-top: var(--lift-up);
         flex-direction: row-reverse;
         align-items: center;
         text-align: right;
@@ -260,6 +260,7 @@ const t = useTranslations(locale);
     .hobbies .hobby-6 .hobby-notes { justify-content: flex-end; }
     .hobbies .hobby-6 .hobby-note:first-child { rotate: 2deg; }
     .hobbies .hobby-6.has-image { rotate: 0deg; align-items: flex-end; }
+    .hobbies .hobby-6.has-image .hobby-text { margin-right: -1rem; padding-bottom: 2rem; }
 
     /* 有配图的条目：插画放大显示，不套圆形 / 方块框 */
     .hobbies .has-image .hobby-media {

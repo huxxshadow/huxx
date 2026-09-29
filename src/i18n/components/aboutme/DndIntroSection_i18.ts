@@ -5,6 +5,7 @@ import hobbyAnime from "@/assets/aboutme/hobby-anime.webp";
 import hobbyRunning from "@/assets/aboutme/hobby-running.webp";
 import hobbyCooking from "@/assets/aboutme/hobby-cooking.webp";
 import hobbyFencing from "@/assets/aboutme/hobby-fencing.webp";
+import hobbyMusic from "@/assets/aboutme/hobby-music.webp";
 
 // ============================================================
 //  Intro Section i18n Data
@@ -68,6 +69,7 @@ export const introLabels = {
         },
         {
             icon: "fa-music",
+            image: hobbyMusic,
             title: { en: "Music lover", zh: "离不开音乐", ja: "音楽が欠かせない", ko: "음악 없이는 못 살아요" },
             notes: [
                 { en: "A little flute", zh: "会一点长笛", ja: "フルートを少し", ko: "플루트 조금" },
