@@ -1,6 +1,8 @@
 ﻿---
 import { LOCALES, useTranslations, type Lang } from "@/i18n";
 import Layout from "@/layouts/Base.astro";
+import { getImage } from "astro:assets";
+import { getEntry } from "astro:content";
 import Avatar from "@/assets/avater.svg";
 import { COLORS } from "@/consts";
 
@@ -17,6 +19,20 @@ export const getStaticPaths = () =>
     Object.keys(LOCALES).map((lang) => ({
         params: { lang },
     }));
+// 首页经历里的两款 Steam 游戏名：悬停浮出游戏封面（取自 projects.json 的封面图，缩成 360px 宽的 webp）
+const GAME_IDS: Record<string, string> = { et: "game-project-empty-throne", eel: "game-project-eel-on-mask" };
+const GAME_TIPS: Record<string, { cover?: string }> = {};
+for (const [key, id] of Object.entries(GAME_IDS)) {
+    const entry = await getEntry("projects", id);
+    const img = entry?.data.coverImage || entry?.data.backupCoverImage;
+    GAME_TIPS[key] = { cover: img ? (await getImage({ src: img, width: 360, format: "webp" })).src : undefined };
+}
+// 把 "…{et:空王座}…" 拆成文字片段和游戏名片段
+const withGameTips = (text: string) =>
+    text.split(/(\{(?:et|eel):[^}]*\})/).map((part) => {
+        const m = part.match(/^\{(et|eel):([^}]*)\}$/);
+        return m ? { key: m[1], name: m[2] } : { text: part };
+    });
 ---
 
 <Layout>
@@ -81,7 +97,16 @@ export const getStaticPaths = () =>
                             class="space-y-4 lg:space-y-6 text-lg lg:text-xl font-medium leading-relaxed opacity-95 lg:border-l-[4px] lg:pl-5 py-1 text-center lg:text-left"
                             style="border-color: currentColor; --reveal-opacity: 0.95;"
                     >
-                        <p>{t(indexTranslations.experience1Sub)}</p>
+                        <p>
+                            {withGameTips(t(indexTranslations.experience1Sub)).map((seg) => "text" in seg ? seg.text : (
+                                    <span class="game-tip" tabindex="0">
+                                        {seg.name}
+                                        <span class="game-tip-pop" aria-hidden="true">
+                                            {GAME_TIPS[seg.key].cover && <img src={GAME_TIPS[seg.key].cover} alt="" width="240" height="135" loading="lazy" />}
+                                        </span>
+                                    </span>
+                            ))}
+                        </p>
                         <p>{t(indexTranslations.experience2)}</p>
                         <p>{t(indexTranslations.experience3)}</p>
                         <p>{t(indexTranslations.experience3Sub)}</p>
@@ -192,6 +217,43 @@ export const getStaticPaths = () =>
 </script>
 
 <style>
+    /* 经历里的游戏名：下划虚线，悬停 / 聚焦时上方浮出游戏封面 */
+    .game-tip {
+        position: relative;
+        font-weight: 700;
+        text-decoration: underline dashed;
+        cursor: help;
+        text-underline-offset: 0.2em;
+    }
+    .game-tip-pop {
+        position: absolute;
+        left: 50%;
+        bottom: calc(100% + 0.5rem);
+        z-index: 20;
+        width: max-content;
+        padding: 0.3rem;
+        border: 3px solid currentColor;
+        border-radius: 0.75rem;
+        background: var(--theme-bg, #fff);
+        box-shadow: 4px 4px 0 currentColor;
+        opacity: 0;
+        pointer-events: none;
+        translate: -50% 6px;
+        transition: opacity 0.15s ease, translate 0.15s ease;
+    }
+    .game-tip-pop img {
+        display: block;
+        width: 240px;
+        max-width: none;
+        height: auto;
+        border-radius: 0.4rem;
+    }
+    .game-tip:hover .game-tip-pop,
+    .game-tip:focus .game-tip-pop {
+        opacity: 1;
+        translate: -50% 0;
+    }
+
     .bg-orb-1 {
         animation: float-orb 8s ease-in-out infinite;
     }
