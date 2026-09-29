@@ -13,6 +13,8 @@
 // - 所有规则都限定在 .skin-lr / html:has(.skin-lr) 下（样式表是整条路由共用的）。
 import panelPeach from "@/assets/projects/game-project-lost-realm/skin/panel-peach.png";
 import panelGold from "@/assets/projects/game-project-lost-realm/skin/panel-gold.png";
+import panelSlate from "@/assets/projects/game-project-lost-realm/skin/panel-slate.png";
+import DebugVariantSwitcher from "@/components/portfolio/DebugVariantSwitcher.astro";
 import ribbon from "@/assets/projects/game-project-lost-realm/skin/ribbon.png";
 import ribbonGold from "@/assets/projects/game-project-lost-realm/skin/ribbon-gold.png";
 import panelOrnate from "@/assets/projects/game-project-lost-realm/skin/panel-ornate.png";
@@ -31,6 +33,7 @@ const { stickers = false } = Astro.props;
 const vars = [
     `--lr-panel-1: url("${panelGold.src}")`,
     `--lr-panel-2: url("${panelPeach.src}")`,
+    `--lr-panel-slate: url("${panelSlate.src}")`,
     `--lr-ribbon: url("${ribbon.src}")`,
     `--lr-ribbon-gold: url("${ribbonGold.src}")`,
     `--lr-panel-ornate: url("${panelOrnate.src}")`,
@@ -51,6 +54,9 @@ const fontFace = [
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
             <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&display=swap" />
             <style is:inline set:html={`${fontFace} html:has(.skin-lr) { ${vars}; }`} />
+            {/* 顶部三版候选：A 标题画面 / B 深色菜单 / C 纸面极简，本地 dev 右下角切换；线上用 data-variant-current 的默认值 */}
+            <div class="lr-v" data-variant-group="lrhero" data-variant-label="顶部" data-variant-options="A,B,C" data-variant-current="A" hidden></div>
+            <DebugVariantSwitcher />
         </>
 )}
 
@@ -310,6 +316,103 @@ const fontFace = [
         opacity: .7;
         text-align: right;
     }
+
+
+    /* ========================================================= */
+    /* 顶部三版候选（覆盖上面的默认 hero 样式）                        */
+    /* ========================================================= */
+
+    /* ---- A 标题画面：不套面板，遗迹场景铺满整个顶部，像游戏的标题界面 ---- */
+    html:has(.lr-v[data-variant-current="A"]) header.skin-lr {
+        background:
+            linear-gradient(90deg, rgba(34, 24, 30, .78) 0%, rgba(34, 24, 30, .5) 45%, rgba(34, 24, 30, 0) 75%),
+            linear-gradient(0deg, rgba(34, 24, 30, .45) 0%, rgba(34, 24, 30, 0) 30%),
+            var(--lr-scene) center 40% / cover no-repeat;
+        image-rendering: pixelated;
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+    }
+    html:has(.lr-v[data-variant-current="A"]) .skin-lr .project-hero-shell {
+        border: 0;
+        border-image: none;
+        background: none;
+        padding: 0 1rem;
+        color: #fff4e6;
+        --theme-text: #fff4e6;
+    }
+    html:has(.lr-v[data-variant-current="A"]) .skin-lr .project-hero-image { display: none; }
+    html:has(.lr-v[data-variant-current="A"]) .skin-lr .back-btn { color: #fff4e6; }
+    html:has(.lr-v[data-variant-current="A"]) .skin-lr .project-hero-screen h1 {
+        color: #ffe08a;
+        font-size: clamp(3.5rem, 8vw, 6rem);
+    }
+    html:has(.lr-v[data-variant-current="A"]) .skin-lr .brutalist-badge {
+        background: rgba(255, 244, 230, .16) !important;
+        color: #fff4e6 !important;
+    }
+    html:has(.lr-v[data-variant-current="A"]) .skin-lr .project-hero-screen [data-reveal-children] > div:first-child .brutalist-badge {
+        background: #f0b541 !important;
+        color: var(--lr-ink) !important;
+    }
+    html:has(.lr-v[data-variant-current="A"]) .skin-lr .project-hero-screen .border-l-\[4px\] {
+        border-color: #f0b541 !important;
+        color: #fff4e6;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, .5);
+    }
+    html:has(.lr-v[data-variant-current="A"]) .skin-lr .project-links-wrapper .brutalist-tag {
+        border: 3px solid var(--lr-ink) !important;
+        border-image: none !important;
+        background: #f0b541 !important;
+        color: var(--lr-ink) !important;
+        box-shadow: inset 0 -4px 0 #cf752b, 0 4px 0 var(--lr-ink) !important;
+        padding: .35rem .9rem !important;
+        font-size: 1.1rem !important;
+    }
+
+    /* ---- B 深色菜单：石板蓝面板当顶部，浅字；封面保留角饰相框 ---- */
+    html:has(.lr-v[data-variant-current="B"]) .skin-lr .project-hero-shell {
+        border-image: var(--lr-panel-slate) 24 fill / 24px / 0 stretch;
+        color: #eef0ff;
+        --theme-text: #eef0ff;
+    }
+    html:has(.lr-v[data-variant-current="B"]) .skin-lr .back-btn { color: #d9ddff; }
+    html:has(.lr-v[data-variant-current="B"]) .skin-lr .project-hero-screen h1 { color: #ffe08a; }
+    html:has(.lr-v[data-variant-current="B"]) .skin-lr .brutalist-badge {
+        background: rgba(255, 255, 255, .14) !important;
+        color: #eef0ff !important;
+    }
+    html:has(.lr-v[data-variant-current="B"]) .skin-lr .project-hero-screen [data-reveal-children] > div:first-child .brutalist-badge {
+        background: #f0b541 !important;
+        color: var(--lr-ink) !important;
+    }
+    html:has(.lr-v[data-variant-current="B"]) .skin-lr .project-hero-screen .border-l-\[4px\] {
+        border-color: #f0b541 !important;
+        color: #eef0ff;
+    }
+
+    /* ---- C 纸面极简：顶部和正文都不用贴图面板，改成纯色纸面 + 3px 像素描边 + 硬投影；只在标题上用 UI 包 ---- */
+    html:has(.lr-v[data-variant-current="C"]) .skin-lr .project-hero-shell,
+    html:has(.lr-v[data-variant-current="C"]) .skin-lr .project-prose {
+        border: 3px solid var(--lr-ink);
+        border-image: none;
+        background: #fff1e0;
+        box-shadow: 6px 6px 0 var(--lr-ink);
+    }
+    html:has(.lr-v[data-variant-current="C"]) .skin-lr .project-hero-shell { padding: 2rem 2.2rem 2.4rem; }
+    html:has(.lr-v[data-variant-current="C"]) .skin-lr .project-hero-shell .project-hero-image {
+        border: 3px solid var(--lr-ink) !important;
+        border-image: none !important;
+        box-shadow: 6px 6px 0 #f0b541 !important;
+    }
+    html:has(.lr-v[data-variant-current="C"]) .skin-lr .project-links-wrapper .brutalist-tag {
+        border: 3px solid var(--lr-ink) !important;
+        border-image: none !important;
+        background: #fff1e0 !important;
+        box-shadow: 3px 3px 0 var(--lr-ink) !important;
+        padding: .3rem .8rem !important;
+        font-size: 1.05rem !important;
+    }
+    html:has(.lr-v[data-variant-current="C"]) .skin-lr .project-hero-screen h1 { color: #f0b541; }
 
     /* ========================================================= */
     /* 手机                                                          */
