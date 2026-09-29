@@ -54,8 +54,7 @@ export const introLabels = {
             image: hobbyCooking,
             title: { en: "I love cooking", zh: "喜欢烹饪", ja: "料理が好き", ko: "요리를 좋아해요" },
             notes: [
-                { en: "Desserts are my specialty", zh: "拿手甜品", ja: "得意はスイーツ", ko: "디저트가 특기" },
-                { en: "Signature: honey-glazed wings", zh: "招牌蜜糖鸡翅", ja: "看板メニューはハニーチキンウィング", ko: "시그니처는 허니 치킨윙" },
+                { en: "Best at desserts and Cantonese dishes", zh: "擅长做甜品和粤菜", ja: "得意はスイーツと広東料理", ko: "디저트와 광둥 요리가 특기" },
             ],
         },
         {
