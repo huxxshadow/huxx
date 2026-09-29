@@ -99,8 +99,8 @@ const ink = COLORS.black;
         {posters.map((p) => (
             <li style={`--c: ${p.color.dark};`}>
                 <a href={p.href} class="poster">
+                    <span class="poster-halo" aria-hidden="true"></span>
                     <div class="poster-figure" style={`width: ${p.artW}cqw; height: ${p.artH}cqw;`}>
-                        <span class="poster-halo" aria-hidden="true"></span>
                         {isSvg(p.art) ? (
                             <p.art class="poster-art" aria-hidden="true" preserveAspectRatio="xMidYMid meet" />
                         ) : (
@@ -171,12 +171,12 @@ const ink = COLORS.black;
         width: 100%;
         height: 100%;
     }
-    /* 人物右边的圆角竖线，主题色，和人物图一样高 */
+    /* 海报右侧的圆角竖线，主题色，从上到下贯穿整张海报，上下各留一点间距 */
     .poster-halo {
         position: absolute;
-        top: 0;
-        bottom: 0;
-        left: calc(100% + 2cqw);
+        top: 5cqw;
+        bottom: 5cqw;
+        right: 2.5cqw;
         width: 1.8cqw;
         border-radius: 999px;
         background: var(--c);
