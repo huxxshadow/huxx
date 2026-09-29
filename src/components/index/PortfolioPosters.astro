@@ -13,6 +13,7 @@ import type { ImageMetadata } from "astro";
 import FractalGirl from "@/assets/projects/game-project-fractal-shelter/fractal-shelter_Character.svg";
 import witch from "@/assets/projects/game-project-empty-throne/deco/witch.png";
 import eelHero from "@/assets/stickers/eel-on-mask-hero.webp";
+import nightWatchCard from "@/assets/projects/game-project-night-watch/cards/enemy-1.webp";
 
 const locale = (Astro.currentLocale || "en") as Lang;
 const t = useTranslations(locale);
@@ -35,6 +36,10 @@ const POSTERS: Poster[] = [
     {
         id: "game-project-eel-on-mask", art: eelHero, color: COLORS.green,
         note: { zh: "Steam 独立游戏 / Director", en: "Steam Indie Game / Director", ja: "Steam インディーゲーム / Director", ko: "Steam 인디 게임 / Director" },
+    },
+    {
+        id: "game-project-night-watch", art: nightWatchCard, color: COLORS.orange, levels: [0.1, 0.85],
+        note: { zh: "网易实验项目 / Solo Dev", en: "NetEase Prototype / Solo Dev", ja: "NetEase 実験プロジェクト / Solo Dev", ko: "NetEase 실험 프로젝트 / Solo Dev" },
     },
 ];
 
