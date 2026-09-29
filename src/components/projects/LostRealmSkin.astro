@@ -18,7 +18,7 @@ import buttonPlum from "@/assets/projects/game-project-lost-realm/skin/button-pl
 import gem from "@/assets/projects/game-project-lost-realm/skin/gem.png";
 import ribbon from "@/assets/projects/game-project-lost-realm/skin/ribbon.png";
 import ribbonGold from "@/assets/projects/game-project-lost-realm/skin/ribbon-gold.png";
-import panelOrnate from "@/assets/projects/game-project-lost-realm/skin/panel-ornate.png";
+import panelOrnate from "@/assets/projects/game-project-lost-realm/skin/panel-ornate-ring.png";
 import icons from "@/assets/projects/game-project-lost-realm/skin/icons.png";
 import scene from "@/assets/projects/game-project-lost-realm/skin/scene.webp";
 import pixelSC from "@/assets/projects/game-project-speed-pixel/skin/fusion-pixel-sc.woff2?url";
@@ -217,13 +217,27 @@ const fontFace = [
 
     /* 封面：UI 包里金色角饰、绿宝石的相框（只用边，不填中间） */
     .skin-lr .project-hero-shell .project-hero-image {
-        border-width: 30px !important;
-        border-style: solid !important;
-        border-color: transparent !important;
-        border-image: var(--lr-panel-ornate) 30 / 30px / 0 stretch !important;
+        border: 0 !important;
         border-radius: 0 !important;
         background: transparent !important;
         box-shadow: none !important;
+        overflow: visible !important;
+    }
+    /* 图片铺到相框描边的内沿（框的外圈 18px 是描边，内侧底色已抠成透明），框作为一层叠在图片上 */
+    .skin-lr .project-hero-shell .project-hero-image img {
+        inset: 18px !important;
+        width: calc(100% - 36px) !important;
+        height: calc(100% - 36px) !important;
+    }
+    .skin-lr .project-hero-shell .project-hero-image::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+        border: 30px solid transparent;
+        border-image: var(--lr-panel-ornate) 30 / 30px / 0 stretch;
+        image-rendering: pixelated;
     }
 
     /* ========================================================= */
@@ -341,7 +355,8 @@ const fontFace = [
         .skin-lr .project-prose h2 { font-size: 1.375rem; border-width: 12px 20px; border-image-width: 12px 20px; }
         .skin-lr .project-prose h3 { font-size: 1.1rem; }
         .skin-lr .project-prose h3::before { width: 24px; height: 24px; background-size: 384px 24px; background-position: calc(var(--lr-i, 8) * -24px) 0; }
-        .skin-lr .project-hero-shell .project-hero-image { border-width: 20px !important; border-image-width: 20px !important; }
+        .skin-lr .project-hero-shell .project-hero-image::after { border-width: 20px; border-image-width: 20px; }
+        .skin-lr .project-hero-shell .project-hero-image img { inset: 12px !important; width: calc(100% - 24px) !important; height: calc(100% - 24px) !important; }
         .skin-lr .project-prose h3 { border-width: 6px 16px 16px; border-image-width: 6px 16px 16px; }
     }
 </style>
