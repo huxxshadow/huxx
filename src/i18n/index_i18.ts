@@ -33,10 +33,10 @@ export const indexTranslations: Record<string, Multilingual> = {
         ko: "2020년부터 비디오 게임을 만들어 왔습니다.",
     },
     experience1Sub: {
-        en: "I led a team to publish two complete, free indie games on Steam, reaching over 60,000 players in total.",
-        zh: "我曾带领团队在 Steam 上发布 2 款完整的免费独立游戏，并累计吸引了超过 6 万名玩家。",
-        ja: "チームを率いて2本の無料インディーゲームをSteamでリリースし、累計6万人を超えるプレイヤーに遊んでいただきました。",
-        ko: "팀을 이끌고 두 편의 완성된 무료 인디 게임을 Steam에 출시했으며, 누적 6만 명이 넘는 플레이어를 모았습니다.",
+        en: "I led a team to publish two complete, free indie games, Empty Throne and Eel On Mask, on Steam, reaching over 60,000 players in total.",
+        zh: "我曾带领团队在 Steam 上发布 2 款完整的免费独立游戏《空王座》与《鳗》，并累计吸引了超过 6 万名玩家。",
+        ja: "チームを率いて2本の無料インディーゲーム『エンプティ・スローン』と『イール・オン・マスク』をSteamでリリースし、累計6万人を超えるプレイヤーに遊んでいただきました。",
+        ko: "팀을 이끌고 두 편의 완성된 무료 인디 게임 《엠프티 스론》과 《일 온 마스크》를 Steam에 출시했으며, 누적 6만 명이 넘는 플레이어를 모았습니다.",
     },
     experience2: {
         en: "I also have commercial project experience in game development, combat design, and AI application development, having contributed to projects at a game company in Hong Kong, Tencent’s TiMi Studio, and NetEase’s Technology Center.",
