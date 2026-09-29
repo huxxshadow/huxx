@@ -62,6 +62,7 @@ Font Awesome 7.0.1 自托管，只保留站内用到的图标：`src/styles/font
 
   `data-autoplay` 的视频进入视口附近才开始下载并播放，离开就暂停（逻辑在 `Base.astro`）。**不要写 `autoplay`**，否则页面一打开就会下载所有视频。
 - GIF 转 MP4 的参数：`ffmpeg -i in.gif -vf "scale='min(1280,iw)':-2,fps=30" -c:v libx264 -crf 23 -pix_fmt yuv420p -movflags +faststart out.mp4`，再截第一帧做 webp 封面。
+- **不要用 GIF 或动画 WebP 放实机录像**：它们逐帧独立压缩，同样画质比视频大好几倍。
 - 列表里的图片用 `<Image>` 时给上 `widths` 和 `sizes`，手机会取小图。
 
 ## 需要手动重新生成的东西

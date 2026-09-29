@@ -2,12 +2,16 @@
 ---
 
 import { Image } from 'astro:assets';
-import locomotionClip from '@/assets/projects/technical-project-parkour-motion-system/locomotion.webp';
-import turnDynamicsClip from '@/assets/projects/technical-project-parkour-motion-system/turn-dynamics.webp';
+import locomotionClip from '@/assets/projects/technical-project-parkour-motion-system/clips/locomotion.mp4?url';
+import locomotionClipPoster from '@/assets/projects/technical-project-parkour-motion-system/clips/locomotion-poster.webp?url';
+import turnDynamicsClip from '@/assets/projects/technical-project-parkour-motion-system/clips/turn-dynamics.mp4?url';
+import turnDynamicsClipPoster from '@/assets/projects/technical-project-parkour-motion-system/clips/turn-dynamics-poster.webp?url';
 import comparisonTrack from '@/assets/projects/technical-project-parkour-motion-system/comparison-track.mp4?url';
 import comparisonTrackPoster from '@/assets/projects/technical-project-parkour-motion-system/comparison-track-poster.webp?url';
-import wallRunClip from '@/assets/projects/technical-project-parkour-motion-system/wallrun.webp';
-import traversalClip from '@/assets/projects/technical-project-parkour-motion-system/traversal.webp';
+import wallRunClip from '@/assets/projects/technical-project-parkour-motion-system/clips/wallrun.mp4?url';
+import wallRunClipPoster from '@/assets/projects/technical-project-parkour-motion-system/clips/wallrun-poster.webp?url';
+import traversalClip from '@/assets/projects/technical-project-parkour-motion-system/clips/traversal.mp4?url';
+import traversalClipPoster from '@/assets/projects/technical-project-parkour-motion-system/clips/traversal-poster.webp?url';
 import refGhostrunner from '@/assets/projects/technical-project-parkour-motion-system/refs/ghostrunner.jpg';
 import refMirrorsEdge from '@/assets/projects/technical-project-parkour-motion-system/refs/mirrors-edge.jpg';
 
@@ -66,11 +70,11 @@ Movement abilities are split into a set of independent components attached to th
 
 <div class="image-grid-2">
     <figure>
-        <img src={traversalClip.src} alt="Traversal demo" width="800" height="450" loading="lazy" decoding="async" />
+        <video class="clip" src={traversalClip} poster={traversalClipPoster} width="960" height="540" muted loop playsinline preload="none" data-autoplay aria-label="Traversal demo"></video>
         <figcaption>Traversal: hurdle, vault and mantle</figcaption>
     </figure>
     <figure>
-        <img src={wallRunClip.src} alt="Wall run demo" width="800" height="450" loading="lazy" decoding="async" />
+        <video class="clip" src={wallRunClip} poster={wallRunClipPoster} width="960" height="540" muted loop playsinline preload="none" data-autoplay aria-label="Wall run demo"></video>
         <figcaption>Wall run and wall jump</figcaption>
     </figure>
 </div>
@@ -82,11 +86,11 @@ Movement abilities are split into a set of independent components attached to th
 
 <div class="image-grid-2">
     <figure>
-        <img src={locomotionClip.src} alt="8-way locomotion, turn blending and jump demo" width="800" height="450" loading="lazy" decoding="async" />
+        <video class="clip" src={locomotionClip} poster={locomotionClipPoster} width="960" height="540" muted loop playsinline preload="none" data-autoplay aria-label="8-way locomotion, turn blending and jump demo"></video>
         <figcaption>8-way locomotion, turn blending and jumping</figcaption>
     </figure>
     <figure>
-        <img src={turnDynamicsClip.src} alt="Turn dynamics demo" width="800" height="450" loading="lazy" decoding="async" />
+        <video class="clip" src={turnDynamicsClip} poster={turnDynamicsClipPoster} width="960" height="540" muted loop playsinline preload="none" data-autoplay aria-label="Turn dynamics demo"></video>
         <figcaption>Turn dynamics: framing offset and a slight roll</figcaption>
     </figure>
 </div>
