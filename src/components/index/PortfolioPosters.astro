@@ -4,7 +4,7 @@
 // 始终只排一行，放不下时横向滑动；不足一屏时右边空着。
 // 每张海报一个项目——主题色单色的角色立绘、大号作品名、副标题 Portfolio，点进对应项目页。
 // 版式参考《分形收容所》的角色海报：米色纸底（站内存的 khakiMilan），角色靠右上，标题压在左下
-import { useTranslations, type Lang } from "@/i18n.ts";
+import { useTranslations, type Lang, type Multilingual } from "@/i18n.ts";
 import { COLORS } from "@/consts.ts";
 import { getEntry } from "astro:content";
 import { getRelativeLocaleUrl } from "astro:i18n";
@@ -19,11 +19,18 @@ const t = useTranslations(locale);
 // levels：灰度的黑点 / 白点（0~1），原图偏浅或偏平时拉开对比，默认不调
 // art 是位图（走双色调滤镜）或 SVG 组件（单色路径，直接用主题色）
 type SvgArt = ((props: Record<string, unknown>) => unknown) & { width: number; height: number };
-type Poster = { id: string; art: ImageMetadata | SvgArt; color: { light: string; dark: string }; pixel?: boolean; levels?: [number, number] };
+// note：作品名下面的一行小字（项目出处 / 我的职责）
+type Poster = { id: string; art: ImageMetadata | SvgArt; color: { light: string; dark: string }; note: Multilingual; pixel?: boolean; levels?: [number, number] };
 const isSvg = (art: Poster["art"]): art is SvgArt => typeof art === "function";
 const POSTERS: Poster[] = [
-    { id: "game-project-fractal-shelter", art: FractalGirl as unknown as SvgArt, color: COLORS.red },
-    { id: "game-project-empty-throne", art: witch, color: COLORS.blue, pixel: true },
+    {
+        id: "game-project-fractal-shelter", art: FractalGirl as unknown as SvgArt, color: COLORS.red,
+        note: { zh: "南加州 AGP Pitch / Lead", en: "USC AGP Pitch / Lead", ja: "USC AGP Pitch / Lead", ko: "USC AGP Pitch / Lead" },
+    },
+    {
+        id: "game-project-empty-throne", art: witch, color: COLORS.blue, pixel: true,
+        note: { zh: "Steam 发行 / 主程序", en: "Steam Release / Lead Developer", ja: "Steam 配信 / リードプログラマー", ko: "Steam 출시 / 리드 개발자" },
+    },
 ];
 
 // 主标题统一是「作品集」，副标题是作品名。两行都只排一行：按字数估算宽度（中日韩字约 1em、拉丁字母约 0.56em），
@@ -52,6 +59,7 @@ const posters = await Promise.all(POSTERS.map(async (p, i) => {
         title: entry ? t(entry.data.title) : p.id,
         titleSize: fitSize(entry ? t(entry.data.title) : p.id, 8.5),
         href: getRelativeLocaleUrl(locale, `projects/${p.id}`),
+        noteText: t(p.note),
         ...artBox(p.art),
     };
 }));
@@ -119,6 +127,7 @@ const ink = COLORS.black;
                     <div class="poster-text">
                         <p class="poster-title" style={`--title-size: ${headingSize}cqw;`}>{heading}</p>
                         <h3 class="poster-sub" style={`--sub-size: ${p.titleSize}cqw;`}>{p.title}</h3>
+                        <p class="poster-note">{p.noteText}</p>
                     </div>
                     <p class="poster-foot">huxx</p>
                 </a>
@@ -187,7 +196,8 @@ const ink = COLORS.black;
         position: absolute;
         left: 7%;
         right: 7%;
-        bottom: 11%;
+        /* 贴近底部的 huxx，同时让人物图的底边留在标题上方 */
+        bottom: 7.5%;
     }
     .poster-title {
         font-weight: 900;
@@ -204,6 +214,13 @@ const ink = COLORS.black;
         white-space: nowrap;
     }
     /* 底边正中的 huxx：小号、中等粗细 */
+    .poster-note {
+        margin-top: 0.7em;
+        font-weight: 800;
+        font-size: 4.2cqw;
+        line-height: 1.2;
+        white-space: nowrap;
+    }
     .poster-foot {
         position: absolute;
         left: 0;
