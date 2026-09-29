@@ -41,7 +41,7 @@ const roleList = rolesData[locale] || rolesData.en;
                 {introLabels.hobbies.map((h) => (
                         <li class="hobby-card">
                             {h.image ? (
-                                    <Image src={h.image} alt="" widths={[360, 720]} sizes="(min-width: 640px) 30vw, 90vw" class="hobby-img" />
+                                    <Image src={h.image} alt="" widths={[240, 480]} sizes="240px" class="hobby-img" />
                             ) : (
                                     <i class={`fa-solid ${h.icon} hobby-icon`} aria-hidden="true"></i>
                             )}
@@ -105,16 +105,23 @@ const roleList = rolesData[locale] || rolesData.en;
         translate: -2px -2px;
         box-shadow: 8px 8px 0 currentColor;
     }
+    /* 配图是透明底的插画：固定高度、按比例缩放，居中放在卡片顶部 */
     .hobby-img {
-        width: 100%;
-        aspect-ratio: 4 / 3;
-        object-fit: cover;
-        border: 3px solid currentColor;
-        border-radius: 0.8rem;
+        align-self: center;
+        width: auto;
+        height: 13rem;
+        object-fit: contain;
         margin-bottom: 0.4rem;
     }
+    /* 还没配图的卡片：图标占同样高度的位置，三张卡片的文字对齐 */
     .hobby-icon {
-        font-size: 2.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        align-self: center;
+        height: 13rem;
+        font-size: 5rem;
+        opacity: 0.85;
         margin-bottom: 0.4rem;
     }
 

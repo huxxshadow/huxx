@@ -1,5 +1,6 @@
 ﻿import type { Multilingual } from "@/i18n";
 import type { ImageMetadata } from "astro";
+import hobbyGames from "@/assets/aboutme/hobby-games.webp";
 
 // ============================================================
 //  Intro Section i18n Data
@@ -18,8 +19,14 @@ export const introLabels = {
     hobbies: [
         {
             icon: "fa-gamepad",
+            image: hobbyGames,
             title: { en: "I love video games", zh: "我热爱电子游戏", ja: "ビデオゲームが大好き", ko: "비디오 게임을 사랑합니다" },
-            note: { en: "Playing them, and making them", zh: "喜欢玩，也喜欢做", ja: "遊ぶのも、作るのも", ko: "하는 것도, 만드는 것도" },
+            note: {
+                en: "Over 5,000 hours played on Steam",
+                zh: "我的 Steam 总时长超过 5000 小时",
+                ja: "Steam の総プレイ時間は 5000 時間以上",
+                ko: "Steam 총 플레이 시간 5,000시간 이상",
+            },
         },
         {
             icon: "fa-tv",
