@@ -3,7 +3,7 @@
 //
 // 视觉照着游戏本身走：长满青苔的遗迹场景当底，面板都是游戏 UI 用的 Franuka「RPG UI pack」。
 // 两级面板：一级（hero、正文）统一用金边橙色面板（--lr-panel-1）；嵌在里面的二级（简介、徽章、外链）统一用
-// 带蓝色角钉的蜜桃面板（--lr-panel-2）。封面用金色角饰相框，H2 用宝石横幅，H3 用金色卷轴；正文图片不加边框。主题色取自一级面板：底色 #FFAE70、描边深色 #3D2936。
+// 带蓝色角钉的蜜桃面板（--lr-panel-2）；只有外链按钮用它，徽章是扁平小标签、简介只有一道竖线，顶部不堆太多框。封面用金色角饰相框，H2 用宝石横幅，H3 用金色卷轴；正文图片不加边框。主题色取自一级面板：底色 #FFAE70、描边深色 #3D2936。
 // - 面板、横幅、名牌、图标都是从 UI 包 1x 图集里按像素坐标裁出来、最近邻放大 3 倍的 9-slice（skin/*.png），
 //   用 border-image 套上，1 个原始像素 = 3 个 CSS 像素，所以切片和边宽都是 3 的倍数。
 // - 标题用 Google Fonts 的 Pixelify Sans，中日韩字回落到 Fusion Pixel 子集（和极速像素页共用那三个文件），
@@ -97,7 +97,6 @@ const fontFace = [
     .skin-lr .project-prose h3::before,
     .skin-lr .project-prose img,
     .skin-lr .project-prose video.clip,
-    .skin-lr .brutalist-badge,
     .skin-lr .project-links-wrapper .brutalist-tag {
         image-rendering: pixelated;
     }
@@ -140,8 +139,26 @@ const fontFace = [
     }
     .skin-lr .back-btn:hover { color: var(--lr-peach); }
 
-    /* 徽章与外链：二级面板（蓝色角钉的蜜桃面板），小号边框 */
-    .skin-lr .brutalist-badge,
+    /* 外链按钮：二级面板（蓝色角钉的蜜桃面板），小号边框 */
+    /* 顶部只保留三层框：外层一级面板、封面相框、外链按钮。徽章和简介不再套框，免得满屏都是边 */
+    .skin-lr .brutalist-badge {
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: rgba(61, 41, 54, .1) !important;
+        color: var(--lr-ink) !important;
+        box-shadow: none !important;
+        padding: .2rem .65rem !important;
+        font-family: var(--lr-title);
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+        transform: none !important;
+    }
+    /* 编号和分类：实心深色，作为这一组的起点 */
+    .skin-lr .project-hero-screen [data-reveal-children] > div:first-child .brutalist-badge {
+        background: var(--lr-ink) !important;
+        color: var(--lr-peach) !important;
+    }
+
     .skin-lr .project-links-wrapper .brutalist-tag {
         border-width: 12px !important;
         border-style: solid !important;
@@ -164,13 +181,9 @@ const fontFace = [
     .skin-lr .project-links-wrapper .brutalist-tag:hover { translate: 0 -3px; filter: brightness(1.05); }
     .skin-lr .project-links-wrapper .brutalist-tag:active { translate: 0 3px; }
 
-    /* 简介：二级面板（和封面框同一种） */
+    /* 简介：不套框，只留左侧一道深色竖线 */
     .skin-lr .project-hero-screen .border-l-\[4px\] {
-        padding: .6rem 1rem !important;
-        border-width: 18px !important;
-        border-style: solid !important;
-        border-color: transparent !important;
-        border-image: var(--lr-panel-2) 24 fill / 18px / 0 stretch;
+        border-color: var(--lr-ink) !important;
         background: transparent;
         color: var(--lr-ink);
     }
