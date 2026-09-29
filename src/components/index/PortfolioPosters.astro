@@ -9,6 +9,7 @@ import { COLORS } from "@/consts.ts";
 import { getEntry } from "astro:content";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import type { ImageMetadata } from "astro";
+import Avatar from "@/assets/avater.svg";
 import fractalGirl from "@/assets/projects/game-project-fractal-shelter/fractal-shelter_Character.webp";
 import nightWatchCard from "@/assets/projects/game-project-night-watch/cards/enemy-1.webp";
 
@@ -85,6 +86,7 @@ const ink = COLORS.black;
         {posters.map((p) => (
             <li style={`--c: ${p.color.dark};`}>
                 <a href={p.href} class="poster">
+                    <Avatar class="poster-avatar" fill="currentColor" aria-hidden="true" />
                     <img
                             src={p.art.src}
                             width={p.art.width}
@@ -99,7 +101,7 @@ const ink = COLORS.black;
                         <p class="poster-title" style={`--title-size: ${headingSize}cqw;`}>{heading}</p>
                         <h3 class="poster-sub" style={`--sub-size: ${p.titleSize}cqw;`}>{p.title}</h3>
                     </div>
-                    <p class="poster-foot">JEFFERY HU</p>
+                    <p class="poster-foot">huxx</p>
                 </a>
             </li>
         ))}
@@ -130,7 +132,7 @@ const ink = COLORS.black;
     .poster-art {
         position: absolute;
         right: 6%;
-        top: 12%;
+        top: 15%;
         height: var(--art-h);
         width: auto;
         max-width: 80%;
@@ -163,6 +165,15 @@ const ink = COLORS.black;
         line-height: 1;
         white-space: nowrap;
     }
+    /* 顶部居中的猫头像（和首页大头像同一张），用海报的主题色 */
+    .poster-avatar {
+        position: absolute;
+        top: 2.5%;
+        left: 50%;
+        translate: -50% 0;
+        width: 17cqw;
+        height: auto;
+    }
     .poster-foot {
         position: absolute;
         left: 0;
@@ -170,9 +181,9 @@ const ink = COLORS.black;
         bottom: 4%;
         text-align: center;
         font-family: 'Roboto', sans-serif;
-        font-weight: 700;
-        font-size: 3cqw;
-        letter-spacing: 0.14em;
+        font-weight: 900;
+        font-size: 5cqw;
+        letter-spacing: 0.02em;
     }
 
     /* 始终只有一行：平板一屏 3 张、手机一屏 2 张，海报多于一屏时横向滑动 */
