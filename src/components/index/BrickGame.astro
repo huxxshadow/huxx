@@ -305,8 +305,12 @@ const getSkillClass = (level: string) => {
 
             <!-- Game Elements -->
             <div id="bb-bricks-container" class="absolute top-6 left-4 right-4 flex flex-wrap gap-3 justify-center z-10 pointer-events-none"></div>
-            <div id="bb-ball" class="absolute w-5 h-5 rounded-full z-10 shadow-sm transition-none" style="background-color: var(--theme-dark);"></div>
+            <!-- 特效层：拖尾、碎屑、冲击波、掉落的道具 -->
+            <canvas id="bb-fx" class="absolute inset-0 w-full h-full z-[15] pointer-events-none" aria-hidden="true"></canvas>
+            <div id="bb-ball" class="bb-ball absolute w-5 h-5 rounded-full z-10 shadow-sm transition-none" style="background-color: var(--theme-dark);"></div>
             <div id="bb-paddle" class="absolute bottom-6 w-32 h-5 rounded-full z-10 shadow-sm transition-none" style="background-color: var(--theme-dark);"></div>
+            <!-- 剩余生命 -->
+            <div id="bb-lives" class="absolute bottom-1.5 left-1/2 -translate-x-1/2 z-10 flex gap-1.5 pointer-events-none" aria-hidden="true"></div>
         </div>
     </div>
 </section>
@@ -333,25 +337,24 @@ const getSkillClass = (level: string) => {
     }
 </style>
 
+
 <script>
-    import { advanceHomeTheme } from "@/scripts/homeTheme";
+    import { advanceHomeTheme, getHomeTheme, HOME_THEME_EVENT, type HomeTheme } from "@/scripts/homeTheme";
 
     document.addEventListener('astro:page-load', () => {
         const container = document.getElementById('bb-container');
         if (!container) return;
 
-
         const rawSkills = container.getAttribute('data-skills');
         const SKILLS: any[] = rawSkills ? JSON.parse(rawSkills) : [];
         const DEFAULT_CUSTOM_ICON_SIZE = Number(container.getAttribute('data-custom-icon-size') || 24);
 
-        const i18nStart = container.getAttribute('data-i18n-start') || 'Start Game';
         const i18nTryAgain = container.getAttribute('data-i18n-try-again') || 'Try Again';
         const i18nNextLevel = container.getAttribute('data-i18n-next-level') || 'Next Level';
-        const i18nLevel = container.getAttribute('data-i18n-level') || 'Level';
 
         const isTouchDevice = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
             (window.matchMedia("(pointer: coarse)").matches && window.innerWidth <= 1024);
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
         const i18nPress = isTouchDevice
             ? (container.getAttribute('data-i18n-touch') || 'Swipe Screen')
@@ -363,10 +366,13 @@ const getSkillClass = (level: string) => {
         const keyHintWrapper = document.getElementById('bb-key-hint-wrapper');
         const levelText = document.getElementById('bb-level-text');
         const bricksContainer = document.getElementById('bb-bricks-container');
-        const ball = document.getElementById('bb-ball');
+        const ballTemplate = document.getElementById('bb-ball');
         const paddle = document.getElementById('bb-paddle');
+        const livesEl = document.getElementById('bb-lives');
+        const fx = document.getElementById('bb-fx') as HTMLCanvasElement | null;
+        const ctx = fx?.getContext('2d');
 
-        if (!startScreen || !btnTitle || !btnSubtitle || !levelText || !bricksContainer || !ball || !paddle) return;
+        if (!startScreen || !btnTitle || !btnSubtitle || !levelText || !bricksContainer || !ballTemplate || !paddle || !livesEl || !fx || !ctx) return;
 
         const controller = new AbortController();
         const { signal } = controller;
@@ -375,7 +381,11 @@ const getSkillClass = (level: string) => {
         if (isTouchDevice && keyHintWrapper) {
             keyHintWrapper.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--theme-dark);"><path d="M5 12h14"/><path d="m8 15-3-3 3-3"/><path d="m16 9 3 3-3 3"/></svg>`;
             btnSubtitle.innerText = i18nPress;
-            }
+        }
+
+        // ========== 颜色：跟随首页统一主题色 ==========
+        let theme: HomeTheme = getHomeTheme();
+        document.addEventListener(HOME_THEME_EVENT, ((e: CustomEvent) => { theme = e.detail.theme; }) as EventListener, { signal });
 
         // ========== Seeded PRNG (mulberry32) ==========
         function mulberry32(a: number) {
@@ -384,8 +394,8 @@ const getSkillClass = (level: string) => {
                 let t = Math.imul(a ^ a >>> 15, 1 | a);
                 t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
                 return ((t ^ t >>> 14) >>> 0) / 4294967296;
-                };
-            }
+            };
+        }
 
         function seededShuffle(arr: any[], seed: number) {
             const rng = mulberry32(seed);
@@ -393,15 +403,17 @@ const getSkillClass = (level: string) => {
             for (let i = shuffled.length - 1; i > 0; i--) {
                 const j = Math.floor(rng() * (i + 1));
                 [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-                }
-            return shuffled;
             }
+            return shuffled;
+        }
 
         let sessionSeed = parseInt(sessionStorage.getItem('brickSessionSeed') || '0', 10);
         if (!sessionSeed) {
             sessionSeed = Math.floor(Math.random() * 100000);
             sessionStorage.setItem('brickSessionSeed', sessionSeed.toString());
-            }
+        }
+
+        const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 
         // ========== Keyboard ==========
         const keys: Record<string, boolean> = {};
@@ -412,8 +424,8 @@ const getSkillClass = (level: string) => {
             keys[e.code] = true;
             if (['KeyA', 'KeyD'].includes(e.code) && !isPlaying && startScreen.style.opacity !== '0') {
                 startGame();
-                }
-            }, { signal });
+            }
+        }, { signal });
         window.addEventListener('keyup', (e) => { keys[e.code] = false; }, { signal });
 
         // ========== Touch handling (mobile) ==========
@@ -421,144 +433,221 @@ const getSkillClass = (level: string) => {
 
         container.addEventListener('touchstart', (e) => {
             touchInsideContainer = true;
-
-            if (!isPlaying && startScreen.style.opacity !== '0') {
-                startGame();
-                }
-
+            if (!isPlaying && startScreen.style.opacity !== '0') startGame();
             if (e.cancelable) e.preventDefault();
-
-            if (isPlaying && e.touches.length > 0) {
-                movePaddleToTouch(e as TouchEvent);
-                }
-            }, { signal, passive: false });
+            if (isPlaying && e.touches.length > 0) movePaddleToTouch(e as TouchEvent);
+        }, { signal, passive: false });
 
         container.addEventListener('touchmove', (e) => {
             if (!touchInsideContainer) return;
             if (e.cancelable) e.preventDefault();
             if (isPlaying) movePaddleToTouch(e as TouchEvent);
-            }, { signal, passive: false });
+        }, { signal, passive: false });
+
+        // 桌面端也可以用鼠标在框里左右移动挡板
+        container.addEventListener('mousemove', (e) => {
+            if (!isPlaying) return;
+            const rect = container.getBoundingClientRect();
+            const scale = rect.width ? container.clientWidth / rect.width : 1;
+            paddleX = clamp((e.clientX - rect.left) * scale - paddleWidth / 2, 0, container.clientWidth - paddleWidth);
+        }, { signal });
 
         container.addEventListener('touchend', () => { touchInsideContainer = false; }, { signal });
         container.addEventListener('touchcancel', () => { touchInsideContainer = false; }, { signal });
 
-        // ===== 修复：touch 坐标转换 =====
         function movePaddleToTouch(e: TouchEvent) {
-            const rect = container.getBoundingClientRect();
-            const clientX = e.touches[0].clientX;
-            const mouseX = clientX - rect.left;
-            const cw = container.clientWidth;
-            paddleX = mouseX - paddleWidth / 2;
-            if (paddleX < 0) paddleX = 0;
-            if (paddleX + paddleWidth > cw) paddleX = cw - paddleWidth;
-            paddle.style.left = `${paddleX}px`;
-            }
+            const rect = container!.getBoundingClientRect();
+            const scale = rect.width ? container!.clientWidth / rect.width : 1;
+            const mouseX = (e.touches[0].clientX - rect.left) * scale;
+            paddleX = clamp(mouseX - paddleWidth / 2, 0, container!.clientWidth - paddleWidth);
+        }
 
         // ========== Skill brick rendering ==========
         const getSkillClassJS = (level: string) => {
-            const baseClass = "px-4 py-2 rounded-full font-bold flex items-center gap-2 transition-all duration-300";
+            const baseClass = "bb-brick px-4 py-2 rounded-full font-bold flex items-center gap-2";
             if (level === "proficient") {
                 return `${baseClass} border-[3px] bg-white/70 border-current shadow-sm`;
-                }
+            }
             return `${baseClass} border-[2px] border-dashed bg-white/20 border-current opacity-80`;
-            };
+        };
 
         const getSvgIconMarkup = (key: string) => {
             const tpl = document.querySelector(`template[data-icon-key="${key}"]`);
             return tpl ? tpl.innerHTML.trim() : '';
-            };
+        };
 
         const isValidIcon = (icon: any): boolean => {
             if (icon.type === 'fa' && icon.value) return true;
             if (icon.type === 'svg' && icon.key && icon.key !== 'Null') {
                 return !!document.querySelector(`template[data-icon-key="${icon.key}"]`);
-                }
+            }
             return false;
-            };
+        };
 
         const renderSkillIcon = (icon: any) => {
             if (!isValidIcon(icon)) return '';
-            if (icon.type === 'fa') {
-                return `<i class="${icon.value} text-xl" aria-hidden="true"></i>`;
-                }
+            if (icon.type === 'fa') return `<i class="${icon.value} text-xl" aria-hidden="true"></i>`;
             if (icon.type === 'svg') {
                 const iconSize = icon.size || DEFAULT_CUSTOM_ICON_SIZE;
                 return `<span class="inline-flex items-center justify-center shrink-0 skill-svg-icon" aria-hidden="true" style="width: ${iconSize}px; height: ${iconSize}px;">${getSvgIconMarkup(icon.key)}</span>`;
-                }
+            }
             return '';
-            };
+        };
 
         // ========== Game state ==========
         currentLevel = parseInt(sessionStorage.getItem('brickLevel') || localStorage.getItem('brickLevel') || '1', 10);
         let hasActivatedThisSession = false;
-        let animationId: number;
+        let animationId = 0;
 
-        const ballRadius = 10;
-        let ballX = 0, ballY = 0, ballDX = 0, ballDY = 0;
-
-        const paddleWidth = 128;
-        const paddleHeight = 20;
-        let paddleX = 0;
+        const BALL_R = 10;
+        const BASE_PADDLE_W = 128;
+        const PADDLE_H = 20;
         const PADDLE_BOTTOM = 24;
+        const MAX_LIVES = 3;
 
-        let brickData: any[] = [];
+        type Ball = { x: number; y: number; dx: number; dy: number; el: HTMLElement; trail: { x: number; y: number }[] };
+        type Brick = { el: HTMLElement; x: number; y: number; w: number; h: number; hp: number; active: boolean };
+        type DropKind = 'wide' | 'multi' | 'fire' | 'life';
+        type Drop = { x: number; y: number; vy: number; kind: DropKind; t: number };
+
+        let balls: Ball[] = [];
+        let bricks: Brick[] = [];
+        let drops: Drop[] = [];
+        let particles: { x: number; y: number; vx: number; vy: number; life: number; size: number; rot: number; vr: number }[] = [];
+        let rings: { x: number; y: number; r: number; max: number; life: number; w: number }[] = [];
+
+        let paddleX = 0;
+        let prevPaddleX = 0;
+        let paddleVX = 0;
+        let paddleWidth = BASE_PADDLE_W;
+        let wideTimer = 0;
+        let fireTimer = 0;
+        let lives = MAX_LIVES;
+        let combo = 0;
+        let speed = 5;
+        let shake = 0;
+        let paddleFlash = 0;
+
+        const baseSpeed = () => Math.min(4.5 + currentLevel * 0.5, 12);
+
+        // ---------- 特效画布 ----------
+        function resizeFx() {
+            const dpr = window.devicePixelRatio || 1;
+            fx!.width = container!.clientWidth * dpr;
+            fx!.height = container!.clientHeight * dpr;
+            ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        function burst(x: number, y: number, count: number, power: number) {
+            for (let i = 0; i < count; i++) {
+                const a = Math.random() * Math.PI * 2;
+                const v = (0.4 + Math.random()) * power;
+                particles.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1, life: 1, size: 2 + Math.random() * 4, rot: Math.random() * 6, vr: (Math.random() - 0.5) * 0.4 });
+            }
+        }
+        const ring = (x: number, y: number, max: number, w = 3) => { rings.push({ x, y, r: 4, max, life: 1, w }); };
+        const addShake = (n: number) => { if (!prefersReducedMotion) shake = Math.max(shake, n); };
+
+        function renderLives() {
+            livesEl!.innerHTML = Array.from({ length: MAX_LIVES }, (_, i) =>
+                `<span class="block w-2.5 h-2.5 rounded-full border-2 border-current ${i < lives ? 'bg-current' : 'opacity-40'}"></span>`
+            ).join('');
+        }
+
+        // ---------- 球 ----------
+        function makeBall(x: number, y: number, dx: number, dy: number): Ball {
+            const first = balls.length === 0;
+            const el = first ? ballTemplate! : (ballTemplate!.cloneNode() as HTMLElement);
+            if (!first) { el.removeAttribute('id'); container!.appendChild(el); }
+            el.style.display = '';
+            return { x, y, dx, dy, el, trail: [] };
+        }
+        function clearBalls() {
+            balls.forEach((b) => { if (b.el !== ballTemplate) b.el.remove(); });
+            balls = [];
+        }
+        function placeBallOnPaddle() {
+            clearBalls();
+            const ch = container!.clientHeight;
+            balls.push(makeBall(paddleX + paddleWidth / 2, ch - PADDLE_BOTTOM - PADDLE_H - BALL_R - 2, 0, 0));
+            drawBalls();
+        }
+        function launch(b: Ball) {
+            const angle = (Math.random() * Math.PI / 3) - (Math.PI / 6);
+            b.dx = speed * Math.sin(angle);
+            b.dy = -speed * Math.cos(angle);
+        }
+        function setSpeed(b: Ball, s: number) {
+            const v = Math.hypot(b.dx, b.dy) || 1;
+            b.dx = b.dx / v * s;
+            b.dy = b.dy / v * s;
+            // 别让球太平：竖直分量至少占三成
+            if (Math.abs(b.dy) < s * 0.3) {
+                b.dy = Math.sign(b.dy || -1) * s * 0.3;
+                b.dx = Math.sign(b.dx || 1) * Math.sqrt(s * s - b.dy * b.dy);
+            }
+        }
 
         // ========== Load level (seeded) ==========
-        function loadLevel(level: number) {
+        function loadLevel(level: number, resetLives = true) {
             currentLevel = level;
-            levelText.innerText = level.toString();
+            levelText!.innerText = level.toString();
 
-            bricksContainer.innerHTML = '';
-            brickData = [];
+            bricksContainer!.innerHTML = '';
+            bricks = [];
+            drops = [];
+            wideTimer = fireTimer = 0;
+            paddleWidth = BASE_PADDLE_W;
+            combo = 0;
+            if (resetLives) lives = MAX_LIVES;
+            renderLives();
 
             const brickCount = Math.min(4 + (level - 1) * 2, 16);
-            const levelSeed = sessionSeed * 100 + level;
-            const shuffledSkills = seededShuffle(SKILLS, levelSeed);
+            const shuffledSkills = seededShuffle(SKILLS, sessionSeed * 100 + level);
 
             for (let i = 0; i < brickCount; i++) {
                 const skill = shuffledSkills[i % shuffledSkills.length];
                 const brickEl = document.createElement('div');
                 brickEl.className = getSkillClassJS(skill.level);
                 brickEl.innerHTML = `${renderSkillIcon(skill.icon)}<span>${skill.name}</span>`;
-                bricksContainer.appendChild(brickEl);
-                }
+                // 熟练的技能要打两下：第一下变成虚线（和「了解」一样），第二下才碎
+                brickEl.dataset.hp = skill.level === 'proficient' ? '2' : '1';
+                bricksContainer!.appendChild(brickEl);
+            }
 
             setTimeout(() => {
-                const parentRect = container.getBoundingClientRect();
-                const domBricks = bricksContainer.children;
-                for (let i = 0; i < domBricks.length; i++) {
-                    const el = domBricks[i] as HTMLElement;
+                const parentRect = container!.getBoundingClientRect();
+                const scale = parentRect.width ? container!.clientWidth / parentRect.width : 1;
+                bricks = Array.from(bricksContainer!.children).map((node) => {
+                    const el = node as HTMLElement;
                     const rect = el.getBoundingClientRect();
-                    brickData.push({
+                    return {
                         el,
-                        x: rect.left - parentRect.left,
-                        y: rect.top - parentRect.top,
-                        w: rect.width,
-                        h: rect.height,
+                        x: (rect.left - parentRect.left) * scale,
+                        y: (rect.top - parentRect.top) * scale,
+                        w: rect.width * scale,
+                        h: rect.height * scale,
+                        hp: Number(el.dataset.hp || 1),
                         active: true,
-                        });
-                    }
-                }, 150);
+                    };
+                });
+            }, 150);
 
             resetPositions();
-            }
+        }
 
-        // ===== 修复：用 clientWidth/clientHeight 代替 getBoundingClientRect =====
         function resetPositions() {
-            const cw = container.clientWidth;
-            const ch = container.clientHeight;
-            paddleX = cw / 2 - paddleWidth / 2;
-            ballX = cw / 2;
-            ballY = ch - PADDLE_BOTTOM - paddleHeight - ballRadius - 2;
-            ball.style.left = `${ballX - ballRadius}px`;
-            ball.style.top = `${ballY - ballRadius}px`;
-            paddle.style.left = `${paddleX}px`;
-            }
+            resizeFx();
+            paddleX = container!.clientWidth / 2 - paddleWidth / 2;
+            prevPaddleX = paddleX;
+            drawPaddle();
+            placeBallOnPaddle();
+        }
 
         // ========== Start game ==========
         function startGame() {
-            startScreen.style.opacity = '0';
-            startScreen.style.pointerEvents = 'none';
+            startScreen!.style.opacity = '0';
+            startScreen!.style.pointerEvents = 'none';
             isPlaying = true;
 
             if (!hasActivatedThisSession) {
@@ -566,113 +655,369 @@ const getSkillClass = (level: string) => {
                 localStorage.setItem('brickHasStarted', 'true');
                 sessionStorage.setItem('brickHasStarted', 'true');
                 document.dispatchEvent(new CustomEvent('brick-level-update', { detail: { level: currentLevel } }));
-                }
+            }
 
-            const speed = Math.min(4 + currentLevel * 0.5, 12);
-            const angle = (Math.random() * Math.PI / 3) - (Math.PI / 6);
-            ballDX = speed * Math.sin(angle);
-            ballDY = -speed * Math.cos(angle);
+            speed = baseSpeed();
+            balls.forEach(launch);
 
             cancelAnimationFrame(animationId);
-            gameLoop();
-            }
-
-        // ===== 修复：gameLoop 全部用 clientWidth/clientHeight =====
-        function gameLoop() {
-            if (!isPlaying) return;
-
-            const currentPaddleSpeed = 10;
-            if (keys['KeyA']) paddleX -= currentPaddleSpeed;
-            if (keys['KeyD']) paddleX += currentPaddleSpeed;
-            if (paddleX < 0) paddleX = 0;
-            const cw = container.clientWidth;
-            const ch = container.clientHeight;
-            if (paddleX + paddleWidth > cw) paddleX = cw - paddleWidth;
-            paddle.style.left = `${paddleX}px`;
-
-            ballX += ballDX;
-            ballY += ballDY;
-
-            if (ballX - ballRadius < 0) { ballX = ballRadius; ballDX *= -1; }
-            if (ballX + ballRadius > cw) { ballX = cw - ballRadius; ballDX *= -1; }
-            if (ballY - ballRadius < 0) { ballY = ballRadius; ballDY *= -1; }
-
-            // 失败
-            if (ballY + ballRadius > ch) {
-                isPlaying = false;
-                startScreen.style.opacity = '1';
-                startScreen.style.pointerEvents = 'auto';
-                btnTitle.innerText = i18nTryAgain;
-                btnSubtitle.innerText = i18nPress;
-                loadLevel(currentLevel);
-                return;
-                }
-
-            const paddleY = ch - PADDLE_BOTTOM - paddleHeight;
-            if (
-                ballDY > 0 &&
-                    ballY + ballRadius > paddleY &&
-                    ballY - ballRadius < paddleY + paddleHeight &&
-                    ballX + ballRadius > paddleX &&
-                    ballX - ballRadius < paddleX + paddleWidth
-                ) {
-                ballDY *= -1;
-                ballY = paddleY - ballRadius;
-                const hitPoint = (ballX - (paddleX + paddleWidth / 2)) / (paddleWidth / 2);
-                ballDX = hitPoint * 6;
-                }
-
-            for (let i = 0; i < brickData.length; i++) {
-                const b = brickData[i];
-                if (!b.active) continue;
-                if (
-                    ballX + ballRadius > b.x && ballX - ballRadius < b.x + b.w &&
-                        ballY + ballRadius > b.y && ballY - ballRadius < b.y + b.h
-                    ) {
-                    b.active = false;
-                    b.el.style.opacity = '0';
-                    b.el.style.transform = 'scale(0.8)';
-                    ballDY *= -1;
-                    checkWin();
-                    break;
-                    }
-                }
-
-            ball.style.left = `${ballX - ballRadius}px`;
-            ball.style.top = `${ballY - ballRadius}px`;
+            lastTime = performance.now();
+            acc = 0;
             animationId = requestAnimationFrame(gameLoop);
+        }
+
+        function showScreen(title: string) {
+            isPlaying = false;
+            startScreen!.style.opacity = '1';
+            startScreen!.style.pointerEvents = 'auto';
+            btnTitle!.innerText = title;
+            btnSubtitle!.innerText = i18nPress;
+        }
+
+        // ========== 碰撞 ==========
+        function hitBrick(b: Ball, br: Brick) {
+            const fire = fireTimer > 0;
+            // 火球直接穿过并打碎；普通球按重叠较少的方向反弹
+            if (!fire) {
+                const overlapX = Math.min(b.x + BALL_R - br.x, br.x + br.w - (b.x - BALL_R));
+                const overlapY = Math.min(b.y + BALL_R - br.y, br.y + br.h - (b.y - BALL_R));
+                if (overlapX < overlapY) b.dx *= -1; else b.dy *= -1;
             }
+            br.hp = fire ? 0 : br.hp - 1;
+            combo++;
+            const cx = br.x + br.w / 2, cy = br.y + br.h / 2;
+
+            if (br.hp > 0) {
+                // 裂开：变成虚线样式，弹一下
+                br.el.className = getSkillClassJS('experienced');
+                br.el.animate([{ scale: '1' }, { scale: '1.12' }, { scale: '1' }], { duration: 180 });
+                burst(cx, cy, 6, 2.5);
+                ring(cx, cy, 30, 2);
+                addShake(2);
+            } else {
+                br.active = false;
+                br.el.animate(
+                    [
+                        { scale: '1', opacity: 1, rotate: '0deg' },
+                        { scale: '1.25', opacity: 0.9, offset: 0.25 },
+                        { scale: '0.4', opacity: 0, rotate: `${(Math.random() - 0.5) * 40}deg` },
+                    ],
+                    { duration: 320, easing: 'ease-out', fill: 'forwards' }
+                );
+                burst(cx, cy, 14 + Math.min(combo, 8) * 2, 3.5);
+                ring(cx, cy, 40 + Math.min(combo, 6) * 8, combo >= 3 ? 4 : 3);
+                addShake(3 + Math.min(combo, 5));
+                maybeDrop(cx, cy);
+            }
+
+            // 越打越快，最多比本关初速快 3
+            speed = Math.min(speed + 0.08, baseSpeed() + 3);
+            balls.forEach((x) => setSpeed(x, speed));
+            checkWin();
+        }
+
+        function maybeDrop(x: number, y: number) {
+            // 每块砖碎掉时 18% 概率掉道具；满血时不掉生命
+            if (Math.random() > 0.18) return;
+            const pool: DropKind[] = ['wide', 'multi', 'fire', 'wide', 'multi'];
+            if (lives < MAX_LIVES) pool.push('life');
+            drops.push({ x, y, vy: 1.6, kind: pool[Math.floor(Math.random() * pool.length)], t: 0 });
+        }
+
+        function catchDrop(d: Drop) {
+            ring(d.x, d.y, 60, 3);
+            burst(d.x, d.y, 16, 3);
+            paddleFlash = 1;
+            if (d.kind === 'wide') wideTimer = 600;
+            else if (d.kind === 'fire') fireTimer = 420;
+            else if (d.kind === 'life') { lives = Math.min(MAX_LIVES, lives + 1); renderLives(); }
+            else if (d.kind === 'multi' && balls[0]) {
+                const src = balls[0];
+                const s = Math.hypot(src.dx, src.dy) || speed;
+                for (const a of [-0.5, 0.5]) {
+                    const ang = Math.atan2(src.dy, src.dx) + a;
+                    const nb = makeBall(src.x, src.y, Math.cos(ang) * s, -Math.abs(Math.sin(ang) * s));
+                    balls.push(nb);
+                }
+            }
+        }
+
+        // ========== 主循环（固定 60Hz 逻辑步长） ==========
+        const STEP = 1000 / 60;
+        let lastTime = 0;
+        let acc = 0;
+
+        function step() {
+            const cw = container!.clientWidth;
+            const ch = container!.clientHeight;
+
+            // 道具计时；宽挡板平滑变宽 / 变回
+            if (wideTimer > 0) wideTimer--;
+            if (fireTimer > 0) fireTimer--;
+            const targetW = wideTimer > 0 ? BASE_PADDLE_W * 1.6 : BASE_PADDLE_W;
+            const center = paddleX + paddleWidth / 2;
+            paddleWidth += (targetW - paddleWidth) * 0.2;
+            paddleX = center - paddleWidth / 2;
+
+            const paddleSpeed = 11;
+            if (keys['KeyA']) paddleX -= paddleSpeed;
+            if (keys['KeyD']) paddleX += paddleSpeed;
+            paddleX = clamp(paddleX, 0, cw - paddleWidth);
+            paddleVX = paddleX - prevPaddleX;
+            prevPaddleX = paddleX;
+
+            const paddleY = ch - PADDLE_BOTTOM - PADDLE_H;
+
+            for (let i = balls.length - 1; i >= 0; i--) {
+                const b = balls[i];
+                b.trail.push({ x: b.x, y: b.y });
+                if (b.trail.length > 12) b.trail.shift();
+
+                // 分步移动，高速时不会穿砖
+                const steps = Math.max(1, Math.ceil(Math.hypot(b.dx, b.dy) / 6));
+                for (let s = 0; s < steps; s++) {
+                    b.x += b.dx / steps;
+                    b.y += b.dy / steps;
+
+                    if (b.x - BALL_R < 0) { b.x = BALL_R; b.dx = Math.abs(b.dx); ring(b.x, b.y, 16, 2); }
+                    if (b.x + BALL_R > cw) { b.x = cw - BALL_R; b.dx = -Math.abs(b.dx); ring(b.x, b.y, 16, 2); }
+                    if (b.y - BALL_R < 0) { b.y = BALL_R; b.dy = Math.abs(b.dy); ring(b.x, b.y, 16, 2); }
+
+                    // 挡板：按击中位置决定角度，挡板在移动时再带一点方向
+                    if (b.dy > 0 && b.y + BALL_R > paddleY && b.y - BALL_R < paddleY + PADDLE_H &&
+                        b.x + BALL_R > paddleX && b.x - BALL_R < paddleX + paddleWidth) {
+                        const hit = clamp((b.x - (paddleX + paddleWidth / 2)) / (paddleWidth / 2), -1, 1);
+                        const ang = hit * (Math.PI / 3) + clamp(paddleVX * 0.02, -0.25, 0.25);
+                        const sp = Math.hypot(b.dx, b.dy) || speed;
+                        b.dx = Math.sin(ang) * sp;
+                        b.dy = -Math.abs(Math.cos(ang) * sp);
+                        b.y = paddleY - BALL_R;
+                        combo = 0;
+                        paddleFlash = 1;
+                        ring(b.x, paddleY, 26, 2);
+                        burst(b.x, paddleY, 5, 2);
+                    }
+
+                    let hitOne = false;
+                    for (const br of bricks) {
+                        if (!br.active) continue;
+                        if (b.x + BALL_R > br.x && b.x - BALL_R < br.x + br.w && b.y + BALL_R > br.y && b.y - BALL_R < br.y + br.h) {
+                            hitBrick(b, br);
+                            hitOne = true;
+                            if (!isPlaying || fireTimer <= 0) break;
+                        }
+                    }
+                    if (!isPlaying) return;
+                    if (hitOne && fireTimer <= 0) break;
+                }
+
+                // 掉出底部
+                if (b.y - BALL_R > ch) {
+                    if (b.el !== ballTemplate) b.el.remove(); else b.el.style.display = 'none';
+                    balls.splice(i, 1);
+                    burst(b.x, ch - 4, 18, 3);
+                    ring(b.x, ch, 60, 3);
+                }
+            }
+
+            if (balls.length === 0) {
+                lives--;
+                renderLives();
+                addShake(10);
+                combo = 0;
+                if (lives <= 0) {
+                    showScreen(i18nTryAgain);
+                    loadLevel(currentLevel);
+                    return;
+                }
+                // 还有命：球回到挡板上直接再发
+                wideTimer = fireTimer = 0;
+                drops = [];
+                placeBallOnPaddle();
+                balls.forEach(launch);
+            }
+
+            // 道具下落，碰到挡板就生效
+            for (let i = drops.length - 1; i >= 0; i--) {
+                const d = drops[i];
+                d.y += d.vy; d.t++;
+                if (d.y + 12 > paddleY && d.y - 12 < paddleY + PADDLE_H && d.x > paddleX - 8 && d.x < paddleX + paddleWidth + 8) {
+                    catchDrop(d);
+                    drops.splice(i, 1);
+                } else if (d.y > ch + 20) {
+                    drops.splice(i, 1);
+                }
+            }
+
+            updateFx();
+        }
+
+        function updateFx() {
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx; p.y += p.vy; p.vy += 0.12; p.vx *= 0.98; p.rot += p.vr; p.life -= 0.025;
+                if (p.life <= 0) particles.splice(i, 1);
+            }
+            for (let i = rings.length - 1; i >= 0; i--) {
+                const r = rings[i];
+                r.r += (r.max - r.r) * 0.14; r.life -= 0.045;
+                if (r.life <= 0) rings.splice(i, 1);
+            }
+            shake *= 0.85;
+            if (shake < 0.3) shake = 0;
+            paddleFlash *= 0.88;
+        }
+
+        function drawPaddle() {
+            paddle!.style.left = `${paddleX}px`;
+            paddle!.style.width = `${paddleWidth}px`;
+            paddle!.style.boxShadow = paddleFlash > 0.05 ? `0 0 ${Math.round(18 * paddleFlash)}px ${theme.dark}` : '';
+        }
+
+        function drawBalls() {
+            const fire = fireTimer > 0;
+            balls.forEach((b) => {
+                b.el.style.left = `${b.x - BALL_R}px`;
+                b.el.style.top = `${b.y - BALL_R}px`;
+                b.el.style.boxShadow = fire ? `0 0 14px 4px ${theme.dark}` : '';
+                b.el.style.scale = fire ? '1.2' : '1';
+            });
+        }
+
+        function drawFx() {
+            const cw = container!.clientWidth, ch = container!.clientHeight;
+            ctx!.clearRect(0, 0, cw, ch);
+            ctx!.fillStyle = theme.dark;
+            ctx!.strokeStyle = theme.dark;
+
+            // 拖尾（火球时更浓）
+            balls.forEach((b) => {
+                b.trail.forEach((p, i) => {
+                    const k = (i + 1) / b.trail.length;
+                    ctx!.globalAlpha = k * (fireTimer > 0 ? 0.5 : 0.25);
+                    ctx!.beginPath();
+                    ctx!.arc(p.x, p.y, BALL_R * (0.3 + 0.7 * k), 0, Math.PI * 2);
+                    ctx!.fill();
+                });
+            });
+
+            // 碎屑：小方块，翻滚着落下
+            particles.forEach((p) => {
+                ctx!.globalAlpha = Math.max(0, p.life);
+                ctx!.save();
+                ctx!.translate(p.x, p.y);
+                ctx!.rotate(p.rot);
+                ctx!.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                ctx!.restore();
+            });
+
+            // 冲击波
+            rings.forEach((r) => {
+                ctx!.globalAlpha = Math.max(0, r.life) * 0.7;
+                ctx!.lineWidth = Math.max(0.5, r.w * r.life);
+                ctx!.beginPath();
+                ctx!.arc(r.x, r.y, r.r, 0, Math.PI * 2);
+                ctx!.stroke();
+            });
+
+            // 道具：主题色圆 + 白色图形（宽挡板 ↔、多球 三个点、火球 菱形、生命 +）
+            drops.forEach((d) => {
+                const pulse = 1 + Math.sin(d.t * 0.2) * 0.08;
+                ctx!.globalAlpha = 1;
+                ctx!.fillStyle = theme.dark;
+                ctx!.beginPath();
+                ctx!.arc(d.x, d.y, 12 * pulse, 0, Math.PI * 2);
+                ctx!.fill();
+                ctx!.fillStyle = '#fff';
+                ctx!.strokeStyle = '#fff';
+                ctx!.lineWidth = 2.5;
+                ctx!.lineCap = 'round';
+                ctx!.beginPath();
+                if (d.kind === 'wide') {
+                    ctx!.moveTo(d.x - 6, d.y); ctx!.lineTo(d.x + 6, d.y);
+                    ctx!.moveTo(d.x - 3, d.y - 3); ctx!.lineTo(d.x - 6, d.y); ctx!.lineTo(d.x - 3, d.y + 3);
+                    ctx!.moveTo(d.x + 3, d.y - 3); ctx!.lineTo(d.x + 6, d.y); ctx!.lineTo(d.x + 3, d.y + 3);
+                    ctx!.stroke();
+                } else if (d.kind === 'multi') {
+                    for (const [ox, oy] of [[0, -4], [-4, 3], [4, 3]]) { ctx!.moveTo(d.x + ox + 2.2, d.y + oy); ctx!.arc(d.x + ox, d.y + oy, 2.2, 0, Math.PI * 2); }
+                    ctx!.fill();
+                } else if (d.kind === 'fire') {
+                    ctx!.moveTo(d.x, d.y - 6); ctx!.lineTo(d.x + 5, d.y); ctx!.lineTo(d.x, d.y + 6); ctx!.lineTo(d.x - 5, d.y); ctx!.closePath();
+                    ctx!.fill();
+                } else {
+                    ctx!.moveTo(d.x - 5, d.y); ctx!.lineTo(d.x + 5, d.y); ctx!.moveTo(d.x, d.y - 5); ctx!.lineTo(d.x, d.y + 5);
+                    ctx!.stroke();
+                }
+                ctx!.fillStyle = theme.dark;
+                ctx!.strokeStyle = theme.dark;
+            });
+            ctx!.globalAlpha = 1;
+
+            container!.style.translate = shake ? `${((Math.random() - 0.5) * 2 * shake).toFixed(1)}px ${((Math.random() - 0.5) * 2 * shake).toFixed(1)}px` : '';
+        }
+
+        function gameLoop(now: number) {
+            acc += Math.min(now - lastTime, 100);
+            lastTime = now;
+            let n = 0;
+            while (acc >= STEP - 1 && n < 5 && isPlaying) { step(); acc -= STEP; n++; }
+            if (n === 5) acc = 0;
+            drawPaddle();
+            drawBalls();
+            drawFx();
+            if (isPlaying) animationId = requestAnimationFrame(gameLoop);
+            else fadeOutFx();
+        }
+
+        // 停下后把残留的碎屑、冲击波播完，再清空画布
+        function fadeOutFx() {
+            let frames = 45;
+            drops = [];
+            balls.forEach((b) => (b.trail = []));
+            const tick = () => {
+                if (isPlaying) return;
+                if (frames-- <= 0 || (!particles.length && !rings.length && !shake)) {
+                    ctx!.clearRect(0, 0, container!.clientWidth, container!.clientHeight);
+                    container!.style.translate = '';
+                    return;
+                }
+                updateFx();
+                drawFx();
+                requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+        }
 
         function checkWin() {
-            if (brickData.every((b: any) => !b.active)) {
-                isPlaying = false;
-                startScreen.style.opacity = '1';
-                startScreen.style.pointerEvents = 'auto';
+            if (!bricks.length || !bricks.every((b) => !b.active)) return;
+            const cw = container!.clientWidth, ch = container!.clientHeight;
+            // 过关：一排烟花 + 满框冲击波 + 强震动
+            for (let i = 0; i < 5; i++) burst(cw * (0.15 + i * 0.175), ch * (0.25 + Math.random() * 0.3), 22, 4.5);
+            ring(cw / 2, ch / 2, Math.max(cw, ch), 5);
+            addShake(12);
 
-                currentLevel++;
-                localStorage.setItem('brickLevel', currentLevel.toString());
-                sessionStorage.setItem('brickLevel', currentLevel.toString());
+            currentLevel++;
+            localStorage.setItem('brickLevel', currentLevel.toString());
+            sessionStorage.setItem('brickLevel', currentLevel.toString());
+            document.dispatchEvent(new CustomEvent('brick-level-update', { detail: { level: currentLevel } }));
 
-                document.dispatchEvent(new CustomEvent('brick-level-update', { detail: { level: currentLevel } }));
-
-                // 过关推进整页主题色（弹球也会同步换色）
-                advanceHomeTheme('brick');
-                loadLevel(currentLevel);
-                btnTitle.innerText = i18nNextLevel;
-                btnSubtitle.innerText = i18nPress;
-                }
-            }
+            // 过关推进整页主题色（弹球也会同步换色）
+            advanceHomeTheme('brick');
+            showScreen(i18nNextLevel);
+            loadLevel(currentLevel);
+        }
 
         // ========== Init ==========
         loadLevel(currentLevel);
 
         window.addEventListener('resize', () => {
-            if (!isPlaying) loadLevel(currentLevel || 1);
-            }, { signal });
+            if (!isPlaying) loadLevel(currentLevel || 1, false);
+            else resizeFx();
+        }, { signal });
 
         document.addEventListener('astro:before-swap', () => {
             cancelAnimationFrame(animationId);
             controller.abort();
-            }, { once: true });
-        });
+        }, { once: true });
+    });
 </script>
