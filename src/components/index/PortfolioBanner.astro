@@ -1,6 +1,7 @@
 ---
 // src/components/index/PortfolioBanner.astro
-// 首页的「作品集」大字区：米色底，中间三个大字，两侧站着项目里的角色（静态摆放，没有物理效果）
+// 首页的「作品集」大字区：参照作品集页 AI 部分「Attention is all you need」标语的做法——
+// 深色描边 + 浅色填充的大字，角色直接站 / 趴 / 倚在字上，鼠标经过时离得近的字抬起并填深，字上的角色跟着一起动
 import { useTranslations, type Lang } from "@/i18n.ts";
 import { COLORS } from "@/consts.ts";
 import type { ImageMetadata } from "astro";
@@ -14,21 +15,29 @@ const t = useTranslations(Astro.currentLocale as Lang);
 const bg = COLORS.khakiMilan;
 const text = COLORS.black;
 
+const word = t({ en: "Portfolio", zh: "作品集", ja: "作品集", ko: "포트폴리오" });
+const letters = Array.from(word);
+const last = letters.length - 1;
+const middle = Math.floor(last / 2);
+
 /*
- * 角色摆位：side 决定在大字左边还是右边；
- * gap 是角色离画面中线的距离（vw，大字半宽之外再往外），height 是桌面端高度（px），
- * lift 是离底边的高度（px），z 决定前后遮挡。手机端统一按比例缩小。
+ * 角色挂在某个字上（at：字的序号），随这个字一起抬起。
+ * spot 决定摆法：left = 倚在字左侧、right = 站在字右侧、top = 站 / 趴在字顶上。
+ * size 是高度（em，相对大字字号），x 是横向微调（em）。
  */
-type Character = {
-    src: ImageMetadata; alt: string; side: "left" | "right";
-    gap: number; height: number; lift?: number; z?: number; pixel?: boolean; flip?: boolean;
-};
+type Spot = "left" | "right" | "top";
+type Character = { src: ImageMetadata; at: number; spot: Spot; size: number; x?: number; pixel?: boolean; flip?: boolean };
 const characters: Character[] = [
-    { src: witch, alt: t({ en: "The Witch from Empty Throne", zh: "《空王座》女巫小姐", ja: "『空の玉座』の魔女", ko: "《빈 왕좌》의 마녀" }), side: "left", gap: 31, height: 380, pixel: true, z: 1 },
-    { src: eelHero, alt: t({ en: "The protagonist of Eel On Mask", zh: "《鳗！》主角", ja: "『Eel On Mask』の主人公", ko: "《Eel On Mask》의 주인공" }), side: "left", gap: 23, height: 300, z: 2 },
-    { src: fractalShelter, alt: t({ en: "A character from Fractal Shelter", zh: "《分形收容所》角色", ja: "『フラクタル・シェルター』のキャラクター", ko: "《프랙탈 셸터》 캐릭터" }), side: "right", gap: 23, height: 400, z: 1 },
-    { src: eelFish, alt: t({ en: "The eel from Eel On Mask", zh: "《鳗！》里的鳗鱼", ja: "『Eel On Mask』のウナギ", ko: "《Eel On Mask》의 장어" }), side: "right", gap: 21.5, height: 100, lift: 6, z: 2, flip: true },
+    // 《空王座》女巫小姐
+    { src: witch, at: 0, spot: "left", size: 1.75, x: 0.12, pixel: true },
+    // 《鳗！》主角，站在第一个字顶上
+    { src: eelHero, at: 0, spot: "top", size: 0.95, x: 0.05 },
+    // 《鳗！》鳗鱼，趴在中间的字顶上
+    { src: eelFish, at: middle, spot: "top", size: 0.36, flip: true },
+    // 《分形收容所》角色
+    { src: fractalShelter, at: last, spot: "right", size: 1.6, x: -0.18 },
 ];
+const onLetter = (i: number) => characters.filter((c) => c.at === i);
 ---
 
 <section
@@ -36,62 +45,131 @@ const characters: Character[] = [
         class="relative w-full overflow-hidden"
         data-theme-bg={bg}
         data-theme-text={text}
-        style={`background-color: ${bg}; color: ${text}; --theme-bg: ${bg}; --theme-text: ${text};`}
+        style={`background-color: ${bg}; color: ${text}; --theme-bg: ${bg}; --theme-text: ${text}; --pf-ink: ${text}; --pf-fill: ${COLORS.white};`}
 >
-    <div class="relative mx-auto flex h-[360px] sm:h-[480px] lg:h-[640px] max-w-[1600px] items-center justify-center px-4">
-        <h2
-                class="banner-title relative z-10 font-black leading-none tracking-tight whitespace-nowrap select-none"
-                data-reveal="scale"
-                data-reveal-once
-        >
-            {t({ en: "Portfolio", zh: "作品集", ja: "作品集", ko: "포트폴리오" })}
+    <div class="relative mx-auto flex h-[300px] sm:h-[520px] lg:h-[680px] max-w-[1600px] items-end justify-center px-4 pb-16 sm:pb-20 lg:pb-24">
+        <h2 class="pf-word" aria-label={word} data-pf-attention data-reveal="up" data-reveal-once>
+            {letters.map((ch, i) => (
+                <span class="pf-ch" aria-hidden="true">
+                    {ch}
+                    {onLetter(i).map((c) => (
+                        <img
+                                src={c.src.src}
+                                width={c.src.width}
+                                height={c.src.height}
+                                alt=""
+                                loading="lazy"
+                                draggable="false"
+                                class:list={["pf-char", `pf-${c.spot}`, c.pixel && "pixelated", c.flip && "flip"]}
+                                style={`--size: ${c.size}em; --x: ${c.x ?? 0}em;`}
+                        />
+                    ))}
+                </span>
+            ))}
         </h2>
-
-        {characters.map((c, i) => (
-            <div
-                    class:list={["banner-char absolute pointer-events-none", c.side === "left" ? "left-side" : "right-side"]}
-                    style={`--char-h: ${c.height}; --gap: ${c.gap}vw; --lift: ${c.lift ?? 0}px; z-index: ${c.z ?? 1};`}
-                    data-reveal="up"
-                    data-reveal-delay={String(120 + i * 90)}
-            >
-                <img
-                        src={c.src.src}
-                        width={c.src.width}
-                        height={c.src.height}
-                        alt={c.alt}
-                        loading="lazy"
-                        draggable="false"
-                        class:list={["h-full w-auto max-w-none", c.pixel && "pixelated", c.flip && "flip"]}
-                />
-            </div>
-        ))}
     </div>
 </section>
 
+<script>
+    // 「注意力」悬停，同作品集页 AI 标语：离鼠标越近的字权重越高（高斯衰减），权重决定抬多高、填多深。
+    // 字只上下动，进来时量一次各字中心，之后每帧只算数、写样式
+    function initPortfolioAttention() {
+        document.querySelectorAll<HTMLElement>("[data-pf-attention]").forEach((line) => {
+            if (line.dataset.attnReady) return;
+            line.dataset.attnReady = "1";
+            const chars = [...line.querySelectorAll<HTMLElement>(".pf-ch")];
+            let raf = 0;
+            let mouseX: number | null = null;
+            let centers: number[] = [];
+            let sigma = 120;
+            const measure = () => {
+                sigma = (parseFloat(getComputedStyle(line).fontSize) || 120) * 0.8;
+                centers = chars.map((el) => {
+                    const r = el.getBoundingClientRect();
+                    return r.left + scrollX + r.width / 2;
+                });
+            };
+            const apply = () => {
+                raf = 0;
+                chars.forEach((el, i) => {
+                    let w = 0;
+                    if (mouseX !== null) {
+                        const d = mouseX - centers[i];
+                        w = Math.exp(-(d * d) / (2 * sigma * sigma));
+                    }
+                    el.style.setProperty("--w", w.toFixed(3));
+                });
+            };
+            const schedule = () => { if (!raf) raf = requestAnimationFrame(apply); };
+            line.addEventListener("pointerenter", measure);
+            line.addEventListener("pointermove", (e) => {
+                if (!centers.length) measure();
+                mouseX = e.clientX + scrollX;
+                schedule();
+            });
+            line.addEventListener("pointerleave", () => { mouseX = null; schedule(); });
+            window.addEventListener("resize", () => { centers = []; }, { passive: true });
+        });
+    }
+    document.addEventListener("astro:page-load", initPortfolioAttention);
+</script>
+
 <style>
-    .banner-title {
-        /* 字宽约占屏宽 43%，给两侧角色留位置 */
-        font-size: clamp(4rem, 14.5vw, 13rem);
+    .pf-word {
+        display: flex;
+        align-items: flex-end;
+        white-space: nowrap;
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: 0.02em;
+        font-size: clamp(4rem, 15vw, 13.5rem);
+        /* 深色描边、白色填充；描边画在填充下面，露出来的是外侧一半 */
+        color: var(--pf-fill);
+        -webkit-text-stroke: 0.06em var(--pf-ink);
+        paint-order: stroke fill;
+        user-select: none;
     }
-    html[lang="en"] .banner-title,
-    html[lang="ko"] .banner-title {
-        font-size: clamp(3rem, 10vw, 9.5rem);
-    }
-
-    .banner-char {
-        bottom: var(--lift);
-        /* 1440 宽的屏幕上是设定高度，更窄的屏幕按屏宽等比缩小 */
-        height: calc(var(--char-h) * min(1px, 0.0694vw));
-    }
-    /* 以画面中线为基准往两侧推：左侧角色的右边缘、右侧角色的左边缘离中线 --gap */
-    .banner-char.left-side { right: calc(50% + var(--gap)); }
-    .banner-char.right-side { left: calc(50% + var(--gap)); }
-
-    @media (max-width: 639px) {
-        .banner-char { height: calc(var(--char-h) * 0.09vw); }
+    html[lang="en"] .pf-word,
+    html[lang="ko"] .pf-word {
+        font-size: clamp(3rem, 11vw, 10rem);
     }
 
-    .banner-char img.pixelated { image-rendering: pixelated; }
-    .banner-char img.flip { transform: scaleX(-1); }
+    /* 权重 --w（0~1）让字抬起、填充从白过渡到深色；字上的角色是字的子元素，跟着一起抬 */
+    .pf-ch {
+        position: relative;
+        display: inline-block;
+        translate: 0 calc(var(--w, 0) * -0.12em);
+        color: color-mix(in srgb, var(--pf-ink) calc(var(--w, 0) * 100%), var(--pf-fill));
+        transition: translate 200ms ease-out, color 200ms ease-out;
+    }
 
+    .pf-char {
+        position: absolute;
+        height: var(--size);
+        width: auto;
+        max-width: none;
+        pointer-events: none;
+    }
+    /* 倚在字左侧：脚踩在字的底线上，身体贴着字的左边 */
+    .pf-left {
+        bottom: -0.02em;
+        right: calc(100% - var(--x));
+    }
+    /* 站在字右侧 */
+    .pf-right {
+        bottom: -0.02em;
+        left: calc(100% + var(--x));
+    }
+    /* 站 / 趴在字顶上：底边压在字顶的描边上 */
+    .pf-top {
+        bottom: 0.9em;
+        left: calc(50% + var(--x));
+        translate: -50% 0;
+    }
+    .pf-char.pixelated { image-rendering: pixelated; }
+    .pf-char.flip { scale: -1 1; }
+
+    @media (prefers-reduced-motion: reduce) {
+        .pf-ch { translate: 0 0; }
+    }
 </style>
