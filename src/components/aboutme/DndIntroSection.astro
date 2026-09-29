@@ -1,5 +1,6 @@
 ﻿---
 import { COLORS } from "@/consts";
+import { Image } from "astro:assets";
 import { useTranslations, type Lang } from "@/i18n";
 import { introLabels, rolesData } from "@/i18n/components/aboutme/DndIntroSection_i18";
 
@@ -35,42 +36,20 @@ const roleList = rolesData[locale] || rolesData.en;
                 </div>
             </div>
 
-            <!-- 自我介绍段落 -->
-            <div class="text-base sm:text-lg lg:text-xl font-medium leading-relaxed opacity-95 border-l-[4px] pl-5 py-1 flex flex-col gap-5" style={`border-color: ${COLORS.black}; --reveal-opacity: 0.95;`}>
-                <p>{t(introLabels.descTop)}</p>
-                <p>{t(introLabels.descBottom)}</p>
-            </div>
-
-            <!-- 数据/能力矩阵 -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2">
-                <div class="flex items-center gap-3">
-                    <i class="fa-solid fa-fire text-[2rem] lg:text-[2.5rem] opacity-90"></i>
-                    <div class="flex flex-col">
-                        <span class="text-xl lg:text-2xl font-black leading-none">{t(introLabels.stat1Title)}</span>
-                        {t(introLabels.stat1Desc) && (
-                                <span class="text-xs lg:text-sm font-bold opacity-80 mt-1">{t(introLabels.stat1Desc)}</span>
-                        )}
-                    </div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <i class="fa-solid fa-people-group text-[2rem] lg:text-[2.5rem] opacity-90"></i>
-                    <div class="flex flex-col">
-                        <span class="text-xl lg:text-2xl font-black leading-none">{t(introLabels.stat2Title)}</span>
-                        {t(introLabels.stat2Desc) && (
-                                <span class="text-xs lg:text-sm font-bold opacity-80 mt-1">{t(introLabels.stat2Desc)}</span>
-                        )}
-                    </div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <i class="fa-solid fa-hammer text-[2rem] lg:text-[2.5rem] opacity-90"></i>
-                    <div class="flex flex-col">
-                        <span class="text-xl lg:text-2xl font-black leading-none">{t(introLabels.stat3Title)}</span>
-                        {t(introLabels.stat3Desc) && (
-                                <span class="text-xs lg:text-sm font-bold opacity-80 mt-1">{t(introLabels.stat3Desc)}</span>
-                        )}
-                    </div>
-                </div>
-            </div>
+            <!-- 爱好：三张卡片，每张一句话 -->
+            <ul class="grid grid-cols-1 sm:grid-cols-3 gap-5 lg:gap-8">
+                {introLabels.hobbies.map((h) => (
+                        <li class="hobby-card">
+                            {h.image ? (
+                                    <Image src={h.image} alt="" widths={[360, 720]} sizes="(min-width: 640px) 30vw, 90vw" class="hobby-img" />
+                            ) : (
+                                    <i class={`fa-solid ${h.icon} hobby-icon`} aria-hidden="true"></i>
+                            )}
+                            <p class="text-2xl lg:text-3xl font-black leading-tight">{t(h.title)}</p>
+                            <p class="text-sm lg:text-base font-bold opacity-75">{t(h.note)}</p>
+                        </li>
+                ))}
+            </ul>
 
             {/* 「凡俗的履历」引导按钮暂时隐藏
             <div class="mt-4   border-current/15">
@@ -109,6 +88,34 @@ const roleList = rolesData[locale] || rolesData.en;
             writing-mode: vertical-lr;
             text-orientation: upright;
         }
+    }
+
+    .hobby-card {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        padding: 1.5rem 1.5rem 1.6rem;
+        border: 3px solid currentColor;
+        border-radius: 1.25rem;
+        background: rgb(255 255 255 / 0.55);
+        box-shadow: 6px 6px 0 currentColor;
+        transition: translate 0.15s ease, box-shadow 0.15s ease;
+    }
+    .hobby-card:hover {
+        translate: -2px -2px;
+        box-shadow: 8px 8px 0 currentColor;
+    }
+    .hobby-img {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        border: 3px solid currentColor;
+        border-radius: 0.8rem;
+        margin-bottom: 0.4rem;
+    }
+    .hobby-icon {
+        font-size: 2.4rem;
+        margin-bottom: 0.4rem;
     }
 
     .cta-box {
