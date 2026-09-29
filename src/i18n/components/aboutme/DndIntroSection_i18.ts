@@ -1,6 +1,7 @@
 ﻿import type { Multilingual } from "@/i18n";
 import type { ImageMetadata } from "astro";
 import hobbyGames from "@/assets/aboutme/hobby-games.webp";
+import hobbyAnime from "@/assets/aboutme/hobby-anime.webp";
 
 // ============================================================
 //  Intro Section i18n Data
@@ -30,6 +31,7 @@ export const introLabels = {
         },
         {
             icon: "fa-tv",
+            image: hobbyAnime,
             title: { en: "I'm an anime fan", zh: "我是个二次元", ja: "アニメオタクです", ko: "저는 오타쿠입니다" },
             note: { en: "Always watching something new", zh: "喜欢看动画", ja: "アニメを見るのが好き", ko: "애니메이션 보는 걸 좋아해요" },
         },
