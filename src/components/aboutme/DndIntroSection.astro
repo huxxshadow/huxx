@@ -2,12 +2,11 @@
 import { COLORS } from "@/consts";
 import { Image } from "astro:assets";
 import { useTranslations, type Lang } from "@/i18n";
-import { introLabels, rolesData } from "@/i18n/components/aboutme/DndIntroSection_i18";
+import { introLabels } from "@/i18n/components/aboutme/DndIntroSection_i18";
 
 const locale = Astro.currentLocale as Lang || 'en';
 const t = useTranslations(locale);
 
-const roleList = rolesData[locale] || rolesData.en;
 
 ---
 
@@ -26,16 +25,8 @@ const roleList = rolesData[locale] || rolesData.en;
                 data-reveal-stagger="90"
         >
 
-            <!-- 问候语 & 标签 -->
-            <div class="flex flex-col gap-4">
-                <h3 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight">{t(introLabels.greeting)}</h3>
-
-                <div class="flex flex-wrap items-center gap-3">
-                    {roleList.map((role) => (
-                            <span class="brutalist-tag">{role}</span>
-                    ))}
-                </div>
-            </div>
+            <!-- 问候语 -->
+            <h3 class="text-center text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight">{t(introLabels.greeting)}</h3>
 
             <!-- 爱好：海报式排版，左右交替、人物放大，每条下面一条圆角横线 -->
             <ul class="hobbies">
@@ -151,7 +142,7 @@ const roleList = rolesData[locale] || rolesData.en;
         opacity: 1;
     }
 
-    /* 有大插画的几条往上叠进前一条旁边的空白（左右交错）；击剑、音乐两条字更宽，不叠，免得英文撞字 */
+    /* 有大插画的几条往上叠进前一条旁边的空白（左右交错）；音乐那条字更宽，不叠，免得英文撞字 */
     .hobbies { --lift-up: clamp(-9rem, -10vw, -3rem); }
 
     /* 每条下面一条圆角横线，长度就是这一段（插画 + 文字）的宽度：
@@ -224,11 +215,13 @@ const roleList = rolesData[locale] || rolesData.en;
     .hobbies .hobby-4 .hobby-note:first-child { rotate: -2deg; }
     .hobbies .hobby-4.has-image { rotate: 0deg; align-items: flex-end; }
     .hobbies .hobby-4.has-image .hobby-text { margin-right: -1rem; padding-bottom: 2rem; }
+    .hobbies .hobby-5.has-image { align-items: flex-end; }
+    .hobbies .hobby-5.has-image .hobby-text { margin-left: -2rem; padding-bottom: 1.5rem; }
 
     /* 05 击剑：回到左边，斜放的深色方块徽章，和 03 呼应 */
     .hobbies .hobby-5 {
         grid-column: 1 / 10;
-        margin-top: 3rem;
+        margin-top: clamp(-4rem, -4vw, -1rem);
         align-items: center;
     }
     .hobbies .hobby-5 .hobby-media {

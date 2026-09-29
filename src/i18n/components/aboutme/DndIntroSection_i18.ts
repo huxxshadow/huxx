@@ -4,6 +4,7 @@ import hobbyGames from "@/assets/aboutme/hobby-games.webp";
 import hobbyAnime from "@/assets/aboutme/hobby-anime.webp";
 import hobbyRunning from "@/assets/aboutme/hobby-running.webp";
 import hobbyCooking from "@/assets/aboutme/hobby-cooking.webp";
+import hobbyFencing from "@/assets/aboutme/hobby-fencing.webp";
 
 // ============================================================
 //  Intro Section i18n Data
@@ -58,8 +59,9 @@ export const introLabels = {
             ],
         },
         {
-            // Font Awesome 没有击剑图标，用 iconSvg 画两把交叉的花剑
+            // Font Awesome 没有击剑图标，用 iconSvg 画两把交叉的花剑（有配图时不显示）
             icon: "",
+            image: hobbyFencing,
             iconSvg: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 52 L50 10"/><path d="M52 52 L14 10"/><path d="M6 46 q6 -2 10 4 q2 6 -4 8"/><path d="M58 46 q-6 -2 -10 4 q-2 6 4 8"/><circle cx="50" cy="10" r="2" fill="currentColor"/><circle cx="14" cy="10" r="2" fill="currentColor"/></svg>`,
             title: { en: "En garde!", zh: "会击剑", ja: "フェンシングもやります", ko: "펜싱도 해요" },
             notes: [{ en: "Foil fencer", zh: "主项花剑", ja: "種目はフルーレ", ko: "종목은 플뢰레" }],
