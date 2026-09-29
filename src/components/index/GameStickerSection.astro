@@ -2,27 +2,28 @@
 // src/components/GameStickerSection.astro
 import { useTranslations, type Lang } from "@/i18n.ts";
 import { COLORS } from "@/consts.ts";
-import { gamesListData, gameSectionUI } from "@/i18n/components/index/GameStickerSection_i18.ts";
+import { gameSectionUI } from "@/i18n/components/index/GameStickerSection_i18.ts";
 import { getRelativeLocaleUrl } from "astro:i18n";
+import witch from "@/assets/projects/game-project-empty-throne/deco/witch.png";
 
 const locale = Astro.currentLocale as Lang;
 const t = useTranslations(locale);
 
-// 将 i18n 数据转换为当前语言可用的扁平数据
-const gamesData = gamesListData.map(game => ({
-    ...game,
-    title: t(game.title),
-    platformText: t(game.platformText),
-    desc: t(game.desc)
-}));
+// 角色贴纸：透明底立绘，不带文字
+const characterStickers = [
+    { src: witch, alt: t({ en: "The Witch from Empty Throne", zh: "《空王座》女巫小姐", ja: "『空の玉座』の魔女", ko: "《빈 왕좌》의 마녀" }), pixel: true },
+];
 
+// 「作品集」拆成一个字一张贴纸；英文单词不拆
+const portfolioWord = t({ en: "Portfolio", zh: "作品集", ja: "作品集", ko: "포트폴리오" });
+const portfolioPieces = locale === "en" ? [portfolioWord] : Array.from(portfolioWord);
 const portfolioHref = getRelativeLocaleUrl(locale, "portfolio");
 ---
 
 <section
         id="games-sticker-section"
         class="relative w-full h-[var(--mobile-height)] lg:h-[1000px] overflow-hidden pt-12 lg:pt-16"
-        style={`--mobile-height: ${gamesData.length * 120 + 60}vw; background-color: ${COLORS.khakiMilan}; color: ${COLORS.black};`}
+        style={`--mobile-height: 110vw; background-color: ${COLORS.khakiMilan}; color: ${COLORS.black};`}
         data-theme-bg={COLORS.khakiMilan}
         data-theme-text={COLORS.black}
 >
@@ -40,80 +41,70 @@ const portfolioHref = getRelativeLocaleUrl(locale, "portfolio");
     </div>
 
     <div id="physics-container" class="absolute inset-0 z-10 w-full h-full touch-pan-y overflow-hidden">
-        <!-- 「作品集」大贴纸：最先落下，停在中间底部；点一下进作品集页 -->
-        <div
-                id="portfolio-sticker"
-                data-href={portfolioHref}
-                class="game-sticker portfolio-sticker absolute top-0 left-0 rounded-3xl border-[3px] bg-white select-none px-10 sm:px-16 py-4 sm:py-6 shadow-[8px_8px_0px_rgba(73,73,73,1)]"
-                style={`border-color: ${COLORS.black}; color: ${COLORS.black};`}
-        >
-            <span class="block font-black leading-none whitespace-nowrap pointer-events-none">
-                {t({ en: "Portfolio", zh: "作品集", ja: "作品集", ko: "포트폴리오" })}
-            </span>
-        </div>
+        <!-- 「作品集」字形贴纸：每个字一张，沿字形描白边 + 深色外轮廓；点一下进作品集页 -->
+        {portfolioPieces.map((ch) => (
+            <div
+                    data-href={portfolioHref}
+                    class="game-sticker word-sticker absolute top-0 left-0 select-none leading-none"
+                    style={`color: ${COLORS.black};`}
+            >
+                <span class="block font-black whitespace-nowrap pointer-events-none">{ch}</span>
+            </div>
+        ))}
 
-        {gamesData.map((game, i) => (
-                <div
-                        id={game.id}
-                        data-link={game.link}
-                        class="game-sticker absolute top-0 left-0 group flex flex-col sm:flex-row w-[80vw] sm:w-[680px] rounded-2xl overflow-hidden shadow-[6px_6px_0px_rgba(73,73,73,1)]  transition-[box-shadow] border-2 select-none bg-white"
-                        style={`border-color: ${COLORS.black};`}
-                >
-                    <div
-                            class="relative w-full sm:w-[320px] flex-shrink-0 border-b-2 sm:border-b-0 sm:border-r-2 overflow-hidden pointer-events-none"
-                            style={`border-color: ${COLORS.black}; background-color: ${game.theme.light}; aspect-ratio: 1232 / 706;`}
-                    >
-                        <img
-                                src={game.image?.src || game.image}
-                                alt={game.title}
-                                class="absolute inset-0 w-full h-full object-cover"
-                                loading="lazy"
-                                draggable="false"
-                        />
-
-                        <!-- 主题色柔和染色层 -->
-                        <div
-                                class="absolute inset-0 opacity-10 mix-blend-multiply"
-                                style={`background-color: ${game.theme.dark};`}
-                        ></div>
-
-                    </div>
-
-                    <div class="flex-1 p-5 flex flex-col justify-between pointer-events-none" style={`background-color: ${game.theme.light}; color: ${game.theme.dark};`}>
-                        <div>
-                            <div class="flex justify-between items-start mb-2 gap-2">
-                                <h3 class="font-black text-2xl leading-tight">
-                                    {game.title}
-                                </h3>
-                                <i class="fa-brands fa-steam text-2xl flex-shrink-0"></i>
-                            </div>
-                            <span class="text-xs font-bold opacity-70 px-2 py-1 border border-current rounded-md inline-block mb-2">{game.platformText}</span>
-                            <p class="text-sm font-bold opacity-90 line-clamp-3 leading-relaxed mt-1">
-                                {game.desc}
-                            </p>
-                        </div>
-
-                        <div class="flex justify-between items-end mt-4">
-                            <div class="flex gap-2 text-xl opacity-80">
-                                <i class="fa-brands fa-windows"></i>
-                            </div>
-                            <div class="px-5 py-2 rounded-lg font-black text-sm pointer-events-none" style={`background-color: ${game.theme.dark}; color: ${game.theme.light};`}>
-                                {t(gameSectionUI.learnMore)}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        {characterStickers.map((c) => (
+            <div class="game-sticker char-sticker absolute top-0 left-0 select-none">
+                <img
+                        src={c.src.src}
+                        width={c.src.width}
+                        height={c.src.height}
+                        alt={c.alt}
+                        class:list={["block h-full w-auto pointer-events-none", c.pixel && "pixelated"]}
+                        draggable="false"
+                        loading="lazy"
+                />
+            </div>
         ))}
     </div>
 </section>
 
 <style>
-    .portfolio-sticker span {
-        font-size: clamp(4.5rem, 16vw, 11rem);
+    .word-sticker span {
+        font-size: clamp(7rem, 26vw, 16rem);
+        padding: 0.06em 0.08em;
+        /* 白色描边画在字的外侧（先描边后填充），再用四向投影叠一圈深色外轮廓，最后是硬阴影 */
+        -webkit-text-stroke: 0.14em #fff;
+        paint-order: stroke fill;
+        filter:
+            drop-shadow(3px 0 0 #494949) drop-shadow(-3px 0 0 #494949)
+            drop-shadow(0 3px 0 #494949) drop-shadow(0 -3px 0 #494949)
+            drop-shadow(7px 7px 0 rgba(73, 73, 73, 0.9));
     }
-    html[lang="en"] .portfolio-sticker span,
-    html[lang="ko"] .portfolio-sticker span {
-        font-size: clamp(3rem, 11vw, 8rem);
+    /* 角色贴纸：沿透明轮廓描白边（八向白色投影），外面一圈深色细线，再加硬阴影 */
+    .char-sticker {
+        height: clamp(200px, 26vw, 380px);
+        padding: 8px;
+        will-change: transform;
+    }
+    .char-sticker img {
+        filter:
+            drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff)
+            drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff)
+            drop-shadow(2px 0 0 #494949) drop-shadow(-2px 0 0 #494949)
+            drop-shadow(0 2px 0 #494949) drop-shadow(0 -2px 0 #494949)
+            drop-shadow(6px 6px 0 rgba(73, 73, 73, 0.9));
+    }
+    .char-sticker img.pixelated {
+        image-rendering: pixelated;
+    }
+    .word-sticker {
+        will-change: transform;
+    }
+    html[lang="en"] .word-sticker span {
+        font-size: clamp(4rem, 14vw, 10rem);
+    }
+    html[lang="ko"] .word-sticker span {
+        font-size: clamp(5rem, 18vw, 12rem);
     }
 </style>
 
@@ -150,6 +141,9 @@ const portfolioHref = getRelativeLocaleUrl(locale, "portfolio");
 
             World.add(engine.world, [ground, ceiling, leftWall, rightWall]);
             const stickers = document.querySelectorAll('.game-sticker');
+            // 横向并排落下：以容器中线为中心，一张贴纸一个位置
+            const spawnX = (index: number, w: number) =>
+                Math.min(Math.max(width / 2 + (index - (stickers.length - 1) / 2) * w * 1.05, w / 2), width - w / 2);
             const bodiesMap: { body: Matter.Body; el: HTMLElement }[] = [];
 
             stickers.forEach((sticker, index) => {
@@ -158,8 +152,8 @@ const portfolioHref = getRelativeLocaleUrl(locale, "portfolio");
                 const h = el.offsetHeight;
 
                 const body = Bodies.rectangle(
-                    width / 2 ,
-                    -(h * (index + 1)) + 200,
+                    spawnX(index, w),
+                    -h * (0.5 + index * 0.6),
                     w,
                     h,
                     {
@@ -224,8 +218,8 @@ const portfolioHref = getRelativeLocaleUrl(locale, "portfolio");
                     const h = el.offsetHeight;
 
                     const newBody = Bodies.rectangle(
-                        width / 2 ,
-                        -(h * (index + 1)) + 200,
+                        spawnX(index, w),
+                        -h * (0.5 + index * 0.6),
                         w,
                         h,
                         {
