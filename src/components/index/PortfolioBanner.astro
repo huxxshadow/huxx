@@ -1,0 +1,97 @@
+---
+// src/components/index/PortfolioBanner.astro
+// 首页的「作品集」大字区：米色底，中间三个大字，两侧站着项目里的角色（静态摆放，没有物理效果）
+import { useTranslations, type Lang } from "@/i18n.ts";
+import { COLORS } from "@/consts.ts";
+import type { ImageMetadata } from "astro";
+import witch from "@/assets/projects/game-project-empty-throne/deco/witch.png";
+import eelHero from "@/assets/stickers/eel-on-mask-hero.webp";
+import fractalShelter from "@/assets/stickers/fractal-shelter-girl.webp";
+import eelFish from "@/assets/stickers/eel-fish.webp";
+
+const t = useTranslations(Astro.currentLocale as Lang);
+
+const bg = COLORS.khakiMilan;
+const text = COLORS.black;
+
+/*
+ * 角色摆位：side 决定在大字左边还是右边；
+ * gap 是角色离画面中线的距离（vw，大字半宽之外再往外），height 是桌面端高度（px），
+ * lift 是离底边的高度（px），z 决定前后遮挡。手机端统一按比例缩小。
+ */
+type Character = {
+    src: ImageMetadata; alt: string; side: "left" | "right";
+    gap: number; height: number; lift?: number; z?: number; pixel?: boolean; flip?: boolean;
+};
+const characters: Character[] = [
+    { src: witch, alt: t({ en: "The Witch from Empty Throne", zh: "《空王座》女巫小姐", ja: "『空の玉座』の魔女", ko: "《빈 왕좌》의 마녀" }), side: "left", gap: 31, height: 380, pixel: true, z: 1 },
+    { src: eelHero, alt: t({ en: "The protagonist of Eel On Mask", zh: "《鳗！》主角", ja: "『Eel On Mask』の主人公", ko: "《Eel On Mask》의 주인공" }), side: "left", gap: 23, height: 300, z: 2 },
+    { src: fractalShelter, alt: t({ en: "A character from Fractal Shelter", zh: "《分形收容所》角色", ja: "『フラクタル・シェルター』のキャラクター", ko: "《프랙탈 셸터》 캐릭터" }), side: "right", gap: 23, height: 400, z: 1 },
+    { src: eelFish, alt: t({ en: "The eel from Eel On Mask", zh: "《鳗！》里的鳗鱼", ja: "『Eel On Mask』のウナギ", ko: "《Eel On Mask》의 장어" }), side: "right", gap: 21.5, height: 100, lift: 6, z: 2, flip: true },
+];
+---
+
+<section
+        id="portfolio-banner"
+        class="relative w-full overflow-hidden"
+        data-theme-bg={bg}
+        data-theme-text={text}
+        style={`background-color: ${bg}; color: ${text}; --theme-bg: ${bg}; --theme-text: ${text};`}
+>
+    <div class="relative mx-auto flex h-[360px] sm:h-[480px] lg:h-[640px] max-w-[1600px] items-center justify-center px-4">
+        <h2
+                class="banner-title relative z-10 font-black leading-none tracking-tight whitespace-nowrap select-none"
+                data-reveal="scale"
+                data-reveal-once
+        >
+            {t({ en: "Portfolio", zh: "作品集", ja: "作品集", ko: "포트폴리오" })}
+        </h2>
+
+        {characters.map((c, i) => (
+            <div
+                    class:list={["banner-char absolute pointer-events-none", c.side === "left" ? "left-side" : "right-side"]}
+                    style={`--char-h: ${c.height}; --gap: ${c.gap}vw; --lift: ${c.lift ?? 0}px; z-index: ${c.z ?? 1};`}
+                    data-reveal="up"
+                    data-reveal-delay={String(120 + i * 90)}
+            >
+                <img
+                        src={c.src.src}
+                        width={c.src.width}
+                        height={c.src.height}
+                        alt={c.alt}
+                        loading="lazy"
+                        draggable="false"
+                        class:list={["h-full w-auto max-w-none", c.pixel && "pixelated", c.flip && "flip"]}
+                />
+            </div>
+        ))}
+    </div>
+</section>
+
+<style>
+    .banner-title {
+        /* 字宽约占屏宽 43%，给两侧角色留位置 */
+        font-size: clamp(4rem, 14.5vw, 13rem);
+    }
+    html[lang="en"] .banner-title,
+    html[lang="ko"] .banner-title {
+        font-size: clamp(3rem, 10vw, 9.5rem);
+    }
+
+    .banner-char {
+        bottom: var(--lift);
+        /* 1440 宽的屏幕上是设定高度，更窄的屏幕按屏宽等比缩小 */
+        height: calc(var(--char-h) * min(1px, 0.0694vw));
+    }
+    /* 以画面中线为基准往两侧推：左侧角色的右边缘、右侧角色的左边缘离中线 --gap */
+    .banner-char.left-side { right: calc(50% + var(--gap)); }
+    .banner-char.right-side { left: calc(50% + var(--gap)); }
+
+    @media (max-width: 639px) {
+        .banner-char { height: calc(var(--char-h) * 0.09vw); }
+    }
+
+    .banner-char img.pixelated { image-rendering: pixelated; }
+    .banner-char img.flip { transform: scaleX(-1); }
+
+</style>
