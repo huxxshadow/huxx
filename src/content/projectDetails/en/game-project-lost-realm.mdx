@@ -2,7 +2,6 @@
 ---
 
 import { Image } from 'astro:assets';
-import img1 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm1.webp';
 import img2 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm2.png';
 import img3 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm3.png';
 import img4 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm4.webp';
@@ -53,11 +52,6 @@ Through rigorous logic control and animation event callbacks, the state machine 
 To break away from traditional linear combo mechanics, I designed a high-freedom "action editor" combat system. Players can collect cards representing different "basic actions," "attribute buffs," and "effect modifiers" during exploration, and freely equip them in attack slots.
 
 To present this complex system intuitively to players, I conducted in-depth UI/UX design. As shown in the combat UI interface, players can equip cards through intuitive drag-and-drop; when a card is placed in a slot, the "action preview box" at the top of the interface plays the complete combo animation and damage data for that combination in real time. This "what-you-see-is-what-you-get" immediate feedback design greatly lowers the player's learning cost and encourages players to strategically assemble specialized combat styles — such as "heavy strike + armor break" or "high-frequency light strike + lightning core" — targeted at different Boss weaknesses.
-
-<figure>
-    <Image src={img1} alt="Card-based action editor and combat UI design" width={1600} height={900} />
-    <figcaption>Action Editor UI: including card slots, real-time attribute panel, and the real-time action combo preview box at the top</figcaption>
-</figure>
 
 <figure>
     <video class="clip" src={uguiClip} poster={uguiClipPoster} width="1280" height="712" muted loop playsinline preload="none" data-autoplay aria-label="Combat UI demo"></video>

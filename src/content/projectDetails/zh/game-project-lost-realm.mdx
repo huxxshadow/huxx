@@ -2,7 +2,6 @@
 ---
 
 import { Image } from 'astro:assets';
-import img1 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm1.webp';
 import img2 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm2.png';
 import img3 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm3.png';
 import img4 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm4.webp';
@@ -52,11 +51,6 @@ import artClipPoster from '@/assets/projects/game-project-lost-realm/clips/art-p
 为了打破传统的线性连招机制，我设计了一套高自由度的“动作编辑器”战斗系统。玩家可以在探索中收集代表不同“基础动作”、“属性增益”和“特效修正”的卡牌，并将其自由装配在攻击槽位中。
 
 为了将这个复杂的系统直观地呈现给玩家，我进行了深度的 UI/UX 设计。正如以下展示的战斗 UI 界面，玩家可以通过直观的拖拽操作来装配卡牌；当卡牌被放入槽位时，界面顶部的“动作预览框”会实时播放该组合下的完整连招动画与伤害数据。这种“所见即所得”的即时反馈设计，极大地降低了玩家的学习成本，并鼓励玩家根据不同的 Boss 弱点，策略性地搭配出如“重击+破甲”或“高频轻击+雷电核心”等专属战斗流派。
-
-<figure>
-    <Image src={img1} alt="卡牌式动作编辑器与战斗UI设计" width={1600} height={900} />
-    <figcaption>动作编辑器 UI：包含卡牌插槽、属性实时面板与顶部的动作连招即时预览框</figcaption>
-</figure>
 
 <figure>
     <video class="clip" src={uguiClip} poster={uguiClipPoster} width="1280" height="712" muted loop playsinline preload="none" data-autoplay aria-label="战斗 UI 演示"></video>

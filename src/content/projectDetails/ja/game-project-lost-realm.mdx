@@ -2,7 +2,6 @@
 ---
 
 import { Image } from 'astro:assets';
-import img1 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm1.webp';
 import img2 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm2.png';
 import img3 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm3.png';
 import img4 from '@/assets/projects/game-project-lost-realm/game-project-lost-realm4.webp';
@@ -53,11 +52,6 @@ import artClipPoster from '@/assets/projects/game-project-lost-realm/clips/art-p
 従来の線形コンボメカニクスを打ち破るために、高自由度の「アクションエディター」戦闘システムを設計しました。プレイヤーは探索中に異なる「基本アクション」・「属性バフ」・「エフェクト修正」を表すカードを収集し、攻撃スロットに自由に装備できます。
 
 この複雑なシステムをプレイヤーに直感的に見せるために、深い UI/UX デザインを行いました。以下に示す戦闘 UI インターフェースのように、プレイヤーは直感的なドラッグ&ドロップ操作でカードを装備でき、カードがスロットに入れられると画面上部の「アクションプレビューボックス」がその組み合わせでの完全なコンボアニメーションとダメージデータをリアルタイムで再生します。この「見た目の通りに得られる」即時フィードバックデザインはプレイヤーの学習コストを大幅に下げ、異なるボスの弱点に応じて「ヘビーヒット+防御崩し」や「高頻度ライトヒット+雷コア」などの専用の戦闘スタイルを戦略的に組み立てることを促しています。
-
-<figure>
-    <Image src={img1} alt="カード式アクションエディターと戦闘UIデザイン" width={1600} height={900} />
-    <figcaption>アクションエディター UI：カードスロット・リアルタイム属性パネル・上部のアクションコンボリアルタイムプレビューボックスを含む</figcaption>
-</figure>
 
 <figure>
     <video class="clip" src={uguiClip} poster={uguiClipPoster} width="1280" height="712" muted loop playsinline preload="none" data-autoplay aria-label="戦闘 UI のデモ"></video>
