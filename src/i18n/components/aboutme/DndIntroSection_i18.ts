@@ -41,7 +41,10 @@ export const introLabels = {
             icon: "fa-tv",
             image: hobbyAnime,
             title: { en: "I'm an anime fan", zh: "我是个二次元", ja: "アニメオタクです", ko: "저는 오타쿠입니다" },
-            notes: [{ en: "Always watching something new", zh: "喜欢看动画", ja: "アニメを見るのが好き", ko: "애니메이션 보는 걸 좋아해요" }],
+            notes: [
+                { en: "Love watching anime", zh: "喜欢看动画", ja: "アニメを見るのが好き", ko: "애니메이션 보는 걸 좋아해요" },
+                { en: "Drawn to stream-of-consciousness direction", zh: "喜欢意识流演出风格", ja: "意識の流れ的な演出が好き", ko: "의식의 흐름 같은 연출을 좋아해요" },
+            ],
         },
         {
             icon: "fa-medal",
