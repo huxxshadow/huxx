@@ -44,7 +44,9 @@ const order = project.data.order;
 const heroImage = project.data.coverImage || project.data.backupCoverImage;
 const showDevCover = !heroImage && project.data.inDevelopment;
 // 分享卡片用封面（转成 1200 宽的 JPG，所有平台都认）；没有封面的项目用站点默认图
-const ogImage = heroImage ? (await getImage({ src: heroImage, width: 1200, format: "jpg", quality: 80 })).src : undefined;
+const ogImageResult = heroImage ? await getImage({ src: heroImage, width: 1200, format: "jpg", quality: 80 }) : undefined;
+const ogImage = ogImageResult?.src;
+const ogImageSize = ogImageResult ? [Number(ogImageResult.attributes.width), Number(ogImageResult.attributes.height)] as [number, number] : undefined;
 const projectLinks = project.data.links || [];
 // 专属皮肤：套皮的页面自己画底色/背景，这里就不再写内联 background-color
 const SKINS: Record<string, any> = {
@@ -81,7 +83,7 @@ if (detailEntry) {
 }
 ---
 
-<Base title={title} description={desc} image={ogImage}>
+<Base title={title} description={desc} image={ogImage} imageSize={ogImageSize}>
     {/* ================= HERO SECTION ================= */}
     {Skin && <Skin />}
     <header
