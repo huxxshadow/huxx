@@ -29,7 +29,7 @@ This is a solo R&D project at the intersection of **Technical Art, AI-assisted c
 
 ### Reconstructing editable 3D lighting from a 2D visual target
 
-The appearance of a complex scene emerges from multiple lights, emissive materials, visibility, specular response, and indirect illumination. An artist can quickly paint the desired mood in Photoshop, a generative AI tool, or a concept paint-over, yet it is difficult to infer which combination of 3D light parameters should reproduce that image.
+The appearance of a complex scene emerges from multiple lights, emissive materials, visibility, specular response, and indirect illumination, so dialling in a desired mood by adjusting lights one at a time and re-rendering in 3D is slow. The target look can be expressed as a 2D image instead (a generative AI result, a Photoshop edit, or a concept paint-over), yet it is difficult to infer which combination of 3D light parameters should reproduce that image.
 
 This tool reverses the interaction. The artist makes the visual decision first; the system then reconstructs the corresponding scene-level lighting changes. A target may be an AI repaint, a hand-authored lighting study, a concept paint-over, or a color grade. The output is not another post-processed image, but real Blender lights, emissive-material controls, and World parameters that remain editable, animatable, reusable, and verifiable from new viewpoints.
 
