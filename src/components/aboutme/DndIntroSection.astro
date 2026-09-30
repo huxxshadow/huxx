@@ -314,16 +314,6 @@ const t = useTranslations(locale);
     .hobbies .hobby-3 .hobby-note:first-child { rotate: 2deg; }
 
     /* 手机：三版都改成一列，保留各自的风格 */
-    /* 大屏：把 1440 宽时的版面（内容宽 1248px）整块等比放大，填满去掉左右留白后的宽度，最多 1.6 倍 */
-    @media (min-width: 1600px) {
-        .hobbies {
-            --z: min(1.6, calc((100vw - 192px) / 1248px));
-            width: 1248px;
-            margin-inline: auto;
-            zoom: var(--z);
-        }
-    }
-
     @media (max-width: 639px) {
         .hobbies .hobby { align-self: center; }
         .hobbies { --lift-up: 0rem; }
