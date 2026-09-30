@@ -1,6 +1,7 @@
 ﻿---
 import { COLORS } from "@/consts";
 import { Image } from "astro:assets";
+import photoGlacier from "@/assets/aboutme/photo-glacier.webp";
 import { useTranslations, type Lang } from "@/i18n";
 import { introLabels } from "@/i18n/components/aboutme/DndIntroSection_i18";
 
@@ -27,6 +28,11 @@ const t = useTranslations(locale);
 
             <!-- 问候语 -->
             <h3 class="text-center text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight">{t(introLabels.greeting)}</h3>
+
+            <!-- 本人照片：放在爱好列表上方，微微倾斜的相片 -->
+            <figure class="about-photo">
+                <Image src={photoGlacier} alt={t({ en: "Me lying on a glacier in Iceland", zh: "躺在冰川上的我", ja: "氷河に寝転ぶ私", ko: "빙하 위에 누운 저" })} widths={[480, 800, 1200]} sizes="(min-width: 1024px) 640px, 90vw" />
+            </figure>
 
             <!-- 爱好：海报式排版，左右交替、人物放大，每条下面一条圆角横线 -->
             <ul class="hobbies">
@@ -332,6 +338,23 @@ const t = useTranslations(locale);
         .hobbies .hobby-4 { flex-direction: column; text-align: center; }
         .hobbies .hobby-1 .hobby-text { margin-left: 0; padding-bottom: 0; }
         }
+
+    .about-photo {
+        align-self: center;
+        width: min(640px, 92%);
+        padding: 0.75rem 0.75rem 2.4rem;
+        background: #fffdf8;
+        border: 3px solid currentColor;
+        border-radius: 0.6rem;
+        box-shadow: 8px 8px 0 currentColor;
+        rotate: -1.5deg;
+    }
+    .about-photo :global(img) {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 0.3rem;
+    }
 
     .cta-box {
         box-shadow: 6px 6px 0px currentColor;
