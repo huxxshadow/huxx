@@ -233,7 +233,8 @@ const t = useTranslations(locale);
     .hobbies .hobby-4.has-image { rotate: 0deg; align-items: flex-end; }
     .hobbies .hobby-4.has-image .hobby-text { padding-bottom: 2rem; }
     .hobbies .hobby-5.has-image { align-items: flex-end; }
-    .hobbies .hobby-5.has-image .hobby-text { padding-bottom: 1.5rem; }
+    /* 击剑插画右下角是空的（剑在上方），文字往左收进这块空白 */
+    .hobbies .hobby-5.has-image .hobby-text { padding-bottom: 1.5rem; margin-left: clamp(-10rem, -9vw, -4rem); }
 
     /* 05 击剑：回到左边，斜放的深色方块徽章，和 03 呼应 */
     .hobbies .hobby-5 {
