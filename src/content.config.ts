@@ -27,6 +27,8 @@ const cardCollection = (path: string) => defineCollection({
         // 封面可缺省：新加入的条目在图片补齐前先渲染占位卡片
         image: image().optional(),
         favorite: z.boolean().default(false),
+        // 类型标签（key，显示文字在 GameJourneySection_i18.ts 的 journeyTagLabels 里），作品库按它筛选
+        tags: z.array(z.string()).default([]),
     }),
 });
 

@@ -14,6 +14,9 @@
       "ja": "子どもの頃の原点となった作品。",
       "ko": "어린 시절의 원점이 된 작품."
     },
+    "tags": [
+      "sandbox"
+    ],
     "image": "../assets/gameCard/Minecraft.webp",
     "favorite": true
   },
@@ -32,6 +35,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "strategy"
+    ],
     "image": "../assets/gameCard/RedAlert2.webp",
     "favorite": false
   },
@@ -50,6 +56,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action"
+    ],
     "image": "../assets/gameCard/Dynasty Warriors 6.webp",
     "favorite": false
   },
@@ -68,6 +77,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "strategy"
+    ],
     "image": "../assets/gameCard/Warcraft 3The Frozen Throne.webp",
     "favorite": false
   },
@@ -86,6 +98,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "shooter",
+      "multiplayer"
+    ],
     "image": "../assets/gameCard/Counter-Strike.webp",
     "favorite": false
   },
@@ -104,6 +120,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "adventure"
+    ],
     "image": "../assets/gameCard/Machinarium.webp",
     "favorite": false
   },
@@ -122,6 +141,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "rpg",
+      "openworld"
+    ],
     "image": "../assets/gameCard/The Elder Scrolls VSkyrim.webp",
     "favorite": false
   },
@@ -140,6 +163,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "multiplayer"
+    ],
     "image": "../assets/gameCard/legend of league.webp",
     "favorite": false
   },
@@ -158,6 +184,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "shooter",
+      "multiplayer"
+    ],
     "image": "../assets/gameCard/War trigger 2.webp",
     "favorite": false
   },
@@ -176,6 +206,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "rpg",
+      "adventure"
+    ],
     "image": "../assets/gameCard/evoland.webp",
     "favorite": false
   },
@@ -194,6 +228,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "rpg",
+      "multiplayer"
+    ],
     "image": "../assets/gameCard/MapleStory.webp",
     "favorite": false
   },
@@ -212,6 +250,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "shooter",
+      "platformer"
+    ],
     "image": "../assets/gameCard/Intrusion 2.webp",
     "favorite": false
   },
@@ -230,6 +273,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "platformer"
+    ],
     "image": "../assets/gameCard/super mario bros.webp",
     "favorite": false
   },
@@ -248,6 +294,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "platformer",
+      "metroidvania"
+    ],
     "image": "../assets/gameCard/Kirby & The Amazing Mirror.webp",
     "favorite": false
   },
@@ -266,6 +316,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "shooter",
+      "action"
+    ],
     "image": "../assets/gameCard/Metal Slug.webp",
     "favorite": false
   },
@@ -284,6 +338,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "openworld",
+      "action"
+    ],
     "image": "../assets/gameCard/Grand Theft Auto III.webp",
     "favorite": false
   },
@@ -302,6 +360,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "shooter",
+      "multiplayer"
+    ],
     "image": "../assets/gameCard/overwatch.webp",
     "favorite": false
   },
@@ -320,6 +382,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "card",
+      "multiplayer"
+    ],
     "image": "../assets/gameCard/Hearthstone.webp",
     "favorite": false
   },
@@ -338,6 +404,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "shooter",
+      "action",
+      "multiplayer"
+    ],
     "image": "../assets/gameCard/warframe.webp",
     "favorite": false
   },
@@ -356,6 +427,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "openworld",
+      "action"
+    ],
     "image": "../assets/gameCard/Grand Theft Auto V.webp",
     "favorite": false
   },
@@ -374,6 +449,9 @@
       "ja": "サンドボックスゲームの名作。",
       "ko": "샌드박스 게임의 명작."
     },
+    "tags": [
+      "sandbox"
+    ],
     "image": "../assets/gameCard/Terraria.webp",
     "favorite": true
   },
@@ -392,6 +470,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "strategy"
+    ],
     "image": "../assets/gameCard/Sid Meier's Civilization VI.webp",
     "favorite": false
   },
@@ -410,6 +491,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action"
+    ],
     "image": "../assets/gameCard/DYNASTY WARRIORS 8.webp",
     "favorite": false
   },
@@ -428,6 +512,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "sandbox",
+      "openworld"
+    ],
     "image": "../assets/gameCard/ARKSurvival Evolved.webp",
     "favorite": false
   },
@@ -446,6 +534,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "rpg",
+      "openworld"
+    ],
     "image": "../assets/gameCard/The Witcher 3 Wild Hunt.webp",
     "favorite": false
   },
@@ -464,6 +556,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "rpg",
+      "roguelike"
+    ],
     "image": "../assets/gameCard/Fantasy of Expedition.webp",
     "favorite": false
   },
@@ -482,6 +578,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "rpg",
+      "strategy"
+    ],
     "image": "../assets/gameCard/sands of salzaar.webp",
     "favorite": false
   },
@@ -500,6 +600,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "sandbox",
+      "openworld"
+    ],
     "image": "../assets/gameCard/No Man's Sky.webp",
     "favorite": false
   },
@@ -518,6 +622,9 @@
       "ja": "RTTを代表する作品であり、物語と美学表現はいずれもこのジャンルの中でも最上級の水準にある。",
       "ko": "RTT 장르를 대표하는 작품으로, 서사와 미학적 표현 모두 이 장르 최고 수준에 속한다."
     },
+    "tags": [
+      "tactics"
+    ],
     "image": "../assets/gameCard/Shadow TacticsBlades of the Shogun.webp",
     "favorite": true
   },
@@ -536,6 +643,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "rpg",
+      "roguelike"
+    ],
     "image": "../assets/gameCard/For the king.webp",
     "favorite": false
   },
@@ -554,6 +665,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "openworld"
+    ],
     "image": "../assets/gameCard/Middle-earth Shadow of War.webp",
     "favorite": false
   },
@@ -572,6 +687,9 @@
       "ja": "CRPGを代表する作品の一つであり、全体の完成度が非常に高く、目立った弱点がほとんどない。",
       "ko": "CRPG를 대표하는 작품 중 하나로, 전반적인 완성도가 매우 높고 뚜렷한 약점이 거의 없다."
     },
+    "tags": [
+      "crpg"
+    ],
     "image": "../assets/gameCard/Divinity Original Sin 2.webp",
     "favorite": true
   },
@@ -590,6 +708,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "strategy",
+      "casual"
+    ],
     "image": "../assets/gameCard/Bloons TD 6.webp",
     "favorite": false
   },
@@ -608,6 +730,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "adventure"
+    ],
     "image": "../assets/gameCard/Rise of the Tomb Raider.webp",
     "favorite": false
   },
@@ -626,6 +752,9 @@
       "ja": "稀有な“六角形型”の完成度を持つ作品で、人物描写、物語、美学、そしてゲームプレイのいずれも水準が高い。",
       "ko": "드문 ‘육각형형’ 완성도를 지닌 작품으로, 인물 묘사와 서사, 미학, 그리고 게임플레이까지 전반적으로 높은 수준을 보여준다."
     },
+    "tags": [
+      "shooter"
+    ],
     "image": "../assets/gameCard/BioShock Infinite.webp",
     "favorite": true
   },
@@ -644,6 +773,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "tactics"
+    ],
     "image": "../assets/gameCard/XCOM 2.webp",
     "favorite": false
   },
@@ -662,6 +794,9 @@
       "ja": "インタラクティブドラマの代表作であり、世界観設定とマルチラインの物語設計が際立っている。",
       "ko": "인터랙티브 드라마를 대표하는 작품으로, 세계관 설정과 멀티라인 서사 설계가 특히 돋보인다."
     },
+    "tags": [
+      "adventure"
+    ],
     "image": "../assets/gameCard/DetroitBecome Human.webp",
     "favorite": true
   },
@@ -680,6 +815,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "strategy"
+    ],
     "image": "../assets/gameCard/Total WarWarhammer II.webp",
     "favorite": false
   },
@@ -698,6 +836,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "roguelike",
+      "action"
+    ],
     "image": "../assets/gameCard/Hades.webp",
     "favorite": false
   },
@@ -716,6 +858,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "rpg",
+      "openworld"
+    ],
     "image": "../assets/gameCard/Final Fantasy XV.webp",
     "favorite": false
   },
@@ -734,6 +880,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "rpg"
+    ],
     "image": "../assets/gameCard/Dark Souls III.webp",
     "favorite": false
   },
@@ -752,6 +902,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "racing",
+      "openworld"
+    ],
     "image": "../assets/gameCard/Need for Speed Heat.webp",
     "favorite": false
   },
@@ -770,6 +924,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "tactics"
+    ],
     "image": "../assets/gameCard/Desperados III.webp",
     "favorite": false
   },
@@ -788,6 +945,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "shooter"
+    ],
     "image": "../assets/gameCard/Titanfall 2.webp",
     "favorite": false
   },
@@ -806,6 +966,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "roguelike",
+      "action"
+    ],
     "image": "../assets/gameCard/Lost Castle.webp",
     "favorite": false
   },
@@ -824,6 +988,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "roguelike",
+      "shooter"
+    ],
     "image": "../assets/gameCard/The Binding of IsaacRebirth.webp",
     "favorite": false
   },
@@ -842,6 +1010,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "adventure"
+    ],
     "image": "../assets/gameCard/Journey.webp",
     "favorite": false
   },
@@ -860,6 +1031,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "racing",
+      "openworld"
+    ],
     "image": "../assets/gameCard/Forza Horizon 5.webp",
     "favorite": false
   },
@@ -878,6 +1053,10 @@
       "ja": "前作の長所を受け継ぎつつ、ゲームプレイと音楽表現の両面でさらに発展させている。",
       "ko": "전작의 장점을 계승하면서도, 게임플레이와 음악 양면에서 한층 더 발전시켰다."
     },
+    "tags": [
+      "action",
+      "rpg"
+    ],
     "image": "../assets/gameCard/NieR Automata.webp",
     "favorite": true
   },
@@ -896,6 +1075,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "card",
+      "roguelike"
+    ],
     "image": "../assets/gameCard/Slay the Spire.webp",
     "favorite": false
   },
@@ -914,6 +1097,11 @@
       "ja": "比類なきオープンワールド",
       "ko": "비교할 수 없는 오픈 월드"
     },
+    "tags": [
+      "action",
+      "rpg",
+      "openworld"
+    ],
     "image": "../assets/gameCard/Elden Ring.webp",
     "favorite": false
   },
@@ -932,6 +1120,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "rpg"
+    ],
     "image": "../assets/gameCard/Final Fantasy VII.webp",
     "favorite": false
   },
@@ -950,6 +1141,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "platformer"
+    ],
     "image": "../assets/gameCard/Ghostrunner.webp",
     "favorite": false
   },
@@ -968,6 +1163,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "sim",
+      "strategy"
+    ],
     "image": "../assets/gameCard/Frostpunk.webp",
     "favorite": false
   },
@@ -986,6 +1185,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "rpg",
+      "shooter",
+      "openworld"
+    ],
     "image": "../assets/gameCard/Cyberpunk 2077.webp",
     "favorite": false
   },
@@ -1004,6 +1208,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "casual"
+    ],
     "image": "../assets/gameCard/Melvor Idle.webp",
     "favorite": false
   },
@@ -1022,6 +1229,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action"
+    ],
     "image": "../assets/gameCard/Mortal Kombat 11.webp",
     "favorite": false
   },
@@ -1040,6 +1250,9 @@
       "ja": "D&DスタイルのCRPGで、重厚なキャラクタービルドと高い戦術的奥行きが特徴。",
       "ko": "D&D 스타일의 CRPG로, 밀도 높은 캐릭터 빌드와 뛰어난 전술적 깊이가 돋보인다."
     },
+    "tags": [
+      "crpg"
+    ],
     "image": "../assets/gameCard/PathfinderWrath of the Righteous.webp",
     "favorite": true
   },
@@ -1058,6 +1271,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "rpg"
+    ],
     "image": "../assets/gameCard/Persona 5 Royal.webp",
     "favorite": false
   },
@@ -1076,6 +1292,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "vn"
+    ],
     "image": "../assets/gameCard/Tsuki ni Yorisou Otome no Sahou.webp",
     "favorite": false
   },
@@ -1094,6 +1313,10 @@
       "ja": "パルクールアクションの秀作、ミニマルな未来建築の美学と流麗なパルクール移動。",
       "ko": "파쿠르 플레이의 뛰어난 대표작, 미니멀한 미래 건축 미학과 유려한 파쿠르 이동."
     },
+    "tags": [
+      "action",
+      "platformer"
+    ],
     "image": "../assets/gameCard/Mirror's Edge Catalyst.webp",
     "favorite": true
   },
@@ -1112,6 +1335,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "shooter"
+    ],
     "image": "../assets/gameCard/Control.webp",
     "favorite": false
   },
@@ -1130,6 +1357,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "rpg"
+    ],
     "image": "../assets/gameCard/Octopath Traveler.webp",
     "favorite": false
   },
@@ -1148,6 +1378,9 @@
       "ja": "没入感のある中世的な空気感、映画的な演出、そして優れたアート表現が組み合わさり、強い没入感を生み出している。",
       "ko": "몰입감 있는 중세적 분위기와 영화적인 연출, 그리고 뛰어난 아트 표현이 어우러져 강한 몰입감을 만들어낸다."
     },
+    "tags": [
+      "adventure"
+    ],
     "image": "../assets/gameCard/A Plague Tale Innocence.webp",
     "favorite": true
   },
@@ -1166,6 +1399,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "rpg"
+    ],
     "image": "../assets/gameCard/ASTLIBRA.webp",
     "favorite": false
   },
@@ -1184,6 +1421,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "adventure"
+    ],
     "image": "../assets/gameCard/A Plague Tale Requiem.webp",
     "favorite": false
   },
@@ -1202,6 +1442,10 @@
       "ja": "独創性の高いゲームデザイン、映画的な演出、そして個性的な世界観設定が組み合わさり、強い作品性を備えたアクションアドベンチャーとして成立している。",
       "ko": "독창성이 뛰어난 게임플레이 설계와 영화적인 연출, 그리고 개성적인 세계관 설정이 결합되어 뚜렷한 작품성을 지닌 액션 어드벤처로 완성되었다."
     },
+    "tags": [
+      "adventure",
+      "openworld"
+    ],
     "image": "../assets/gameCard/Death Stranding.webp",
     "favorite": true
   },
@@ -1220,6 +1464,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action"
+    ],
     "image": "../assets/gameCard/Devil May Cry 5.webp",
     "favorite": false
   },
@@ -1238,6 +1485,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action"
+    ],
     "image": "../assets/gameCard/Guilty Gear Strive.webp",
     "favorite": false
   },
@@ -1256,6 +1506,9 @@
       "ja": "優れた戦略的奥行きと、高い非対称性によって形作られた各勢力の戦役メカニクスが特徴。",
       "ko": "뛰어난 전략적 깊이와 높은 비대칭 설계로 구축된 각 진영의 캠페인 메커니즘이 특징이다."
     },
+    "tags": [
+      "strategy"
+    ],
     "image": "../assets/gameCard/Total War Warhammer III.webp",
     "favorite": true
   },
@@ -1274,6 +1527,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "rpg",
+      "openworld"
+    ],
     "image": "../assets/gameCard/Horizon Zero Dawn.webp",
     "favorite": false
   },
@@ -1292,6 +1550,10 @@
       "ja": "強い没入感を生む雰囲気、独自性のある完成された世界観、そして周回を重ねることで深まる優れた物語が魅力。",
       "ko": "깊은 몰입감을 주는 분위기와 독창적이면서도 완성도 높은 세계관, 그리고 반복 플레이를 통해 더욱 깊어지는 뛰어난 서사가 돋보인다."
     },
+    "tags": [
+      "action",
+      "rpg"
+    ],
     "image": "../assets/gameCard/NieR Replicant ver.1.22474487139....webp",
     "favorite": true
   },
@@ -1310,6 +1572,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "rpg",
+      "roguelike"
+    ],
     "image": "../assets/gameCard/Darkest Dungeon.webp",
     "favorite": false
   },
@@ -1328,6 +1594,9 @@
       "ja": "メトロイドヴァニアを代表する作品の一つであり、精密な戦闘、鮮烈な美学、そして豊かに構築された世界観が強く印象に残る。",
       "ko": "메트로배니아를 대표하는 작품 중 하나로, 정교한 전투와 선명한 미학, 그리고 풍부하게 구축된 세계관이 특히 인상적이다."
     },
+    "tags": [
+      "metroidvania"
+    ],
     "image": "../assets/gameCard/Hollow Knight.webp",
     "favorite": true
   },
@@ -1346,6 +1615,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "adventure"
+    ],
     "image": "../assets/gameCard/God of War.webp",
     "favorite": false
   },
@@ -1364,6 +1637,10 @@
       "ja": "自分にとって本作は、オープンワールドの魅力を最も体現した作品の一つだ。没入感、ディテール、そして人物が牽引する物語、そのどれもが際立っている。",
       "ko": "내게 이 작품은 오픈월드의 매력을 가장 잘 보여주는 작품 중 하나다. 몰입감, 디테일, 그리고 인물이 이끄는 서사까지 모두 인상적이다."
     },
+    "tags": [
+      "openworld",
+      "action"
+    ],
     "image": "../assets/gameCard/Red Dead Redemption II.webp",
     "favorite": true
   },
@@ -1382,6 +1659,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "sim",
+      "strategy"
+    ],
     "image": "../assets/gameCard/Anno 1800.webp",
     "favorite": false
   },
@@ -1400,6 +1681,10 @@
       "ja": "サンドボックスゲームを代表する傑作の一つであり、尽きることのない創発的な物語、高い自由度、そして膨大なコミュニティコンテンツによって、ほとんど無限とも言える遊びの可能性を備えている。",
       "ko": "샌드박스 게임을 대표하는 걸작 중 하나로, 끝없이 만들어지는 창발적 서사와 높은 자유도, 그리고 방대한 커뮤니티 콘텐츠를 통해 거의 무한에 가까운 가능성을 보여준다."
     },
+    "tags": [
+      "sim",
+      "sandbox"
+    ],
     "image": "../assets/gameCard/RimWorld.webp",
     "favorite": true
   },
@@ -1418,6 +1703,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "strategy"
+    ],
     "image": "../assets/gameCard/Stellaris.webp",
     "favorite": false
   },
@@ -1436,6 +1724,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "casual"
+    ],
     "image": "../assets/gameCard/Tasty Planet.webp",
     "favorite": false
   },
@@ -1454,6 +1745,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "adventure"
+    ],
     "image": "../assets/gameCard/Life Is Strange.webp",
     "favorite": false
   },
@@ -1472,6 +1766,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "vn"
+    ],
     "image": "../assets/gameCard/Otome Riron to Sono Shuuhen -École de Paris-.webp",
     "favorite": false
   },
@@ -1490,6 +1787,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "strategy",
+      "casual"
+    ],
     "image": "../assets/gameCard/Thronefall.webp",
     "favorite": false
   },
@@ -1508,6 +1809,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "vn"
+    ],
     "image": "../assets/gameCard/Otome Domain.webp",
     "favorite": false
   },
@@ -1526,6 +1830,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "casual",
+      "adventure"
+    ],
     "image": "../assets/gameCard/Donut County.webp",
     "favorite": false
   },
@@ -1544,6 +1852,9 @@
       "ja": "現代CRPGの総合的な到達点の一つであり、没入感、演出、ビジュアルの完成度に優れている。",
       "ko": "현대 CRPG의 종합적 완성형에 가까운 작품으로, 몰입감과 연출, 비주얼 완성도가 강점이다."
     },
+    "tags": [
+      "crpg"
+    ],
     "image": "../assets/gameCard/Baldur's Gate III.webp",
     "favorite": true
   },
@@ -1562,6 +1873,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "platformer",
+      "multiplayer",
+      "casual"
+    ],
     "image": "../assets/gameCard/Ultimate Chicken Horse.webp",
     "favorite": false
   },
@@ -1580,6 +1896,9 @@
       "ja": "独特な文体と優れた演出、そして印象的な音楽が、本作ならではの強い個性を形作っている。",
       "ko": "독특한 문체와 뛰어난 연출, 인상적인 음악이 작품만의 강한 개성을 만들어낸다."
     },
+    "tags": [
+      "vn"
+    ],
     "image": "../assets/gameCard/Witch on the Holy Night.webp",
     "favorite": true
   },
@@ -1598,6 +1917,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "roguelike",
+      "shooter"
+    ],
     "image": "../assets/gameCard/Brotato.webp",
     "favorite": false
   },
@@ -1616,6 +1939,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "adventure"
+    ],
     "image": "../assets/gameCard/The Silent Age.webp",
     "favorite": false
   },
@@ -1634,6 +1960,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "sandbox",
+      "openworld",
+      "multiplayer"
+    ],
     "image": "../assets/gameCard/Palworld.webp",
     "favorite": false
   },
@@ -1652,6 +1983,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "strategy"
+    ],
     "image": "../assets/gameCard/Crusader Kings III.webp",
     "favorite": false
   },
@@ -1670,6 +2004,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "strategy"
+    ],
     "image": "../assets/gameCard/Age of Wonders 4.webp",
     "favorite": false
   },
@@ -1688,6 +2025,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "strategy",
+      "sim"
+    ],
     "image": "../assets/gameCard/Victoria 3.webp",
     "favorite": false
   },
@@ -1706,6 +2047,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "platformer",
+      "adventure"
+    ],
     "image": "../assets/gameCard/Unravel Two.webp",
     "favorite": false
   },
@@ -1724,6 +2069,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "strategy",
+      "casual"
+    ],
     "image": "../assets/gameCard/Kingdom Two Crowns.webp",
     "favorite": false
   },
@@ -1742,6 +2091,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "casual",
+      "adventure"
+    ],
     "image": "../assets/gameCard/Untitled Goose Game.webp",
     "favorite": false
   },
@@ -1760,6 +2113,9 @@
       "ja": "解答編として、張り詰めた演出、豊かな感情の回収、そして説得力のある主題の着地がとりわけ優れている。",
       "ko": "해답편으로서, 긴장감 있는 연출과 풍부한 감정의 회수, 그리고 설득력 있는 주제 의식의 마무리가 특히 인상적이다."
     },
+    "tags": [
+      "vn"
+    ],
     "image": "../assets/gameCard/Umineko When They Cry - Answer Arcs.webp",
     "favorite": true
   },
@@ -1778,6 +2134,9 @@
       "ja": "出題編として、幾重にも積み重なる物語運び、精緻な謎、そして張り詰めた空気感が際立っている。",
       "ko": "출제편으로서, 층층이 쌓아 올리는 서사와 정교한 수수께끼, 그리고 강한 압박감을 주는 분위기가 특히 뛰어나다."
     },
+    "tags": [
+      "vn"
+    ],
     "image": "../assets/gameCard/Umineko When They Cry - Question Arcs.webp",
     "favorite": true
   },
@@ -1796,6 +2155,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "tactics"
+    ],
     "image": "../assets/gameCard/Shadow Tactics Blades of the Shogun - Aiko's Choice.webp",
     "favorite": false
   },
@@ -1814,6 +2176,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "adventure",
+      "casual"
+    ],
     "image": "../assets/gameCard/World of Goo.webp",
     "favorite": false
   },
@@ -1832,6 +2198,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "platformer"
+    ],
     "image": "../assets/gameCard/Cuphead.webp",
     "favorite": false
   },
@@ -1850,6 +2220,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "casual"
+    ],
     "image": "../assets/gameCard/Cookie Clicker.webp",
     "favorite": false
   },
@@ -1868,6 +2241,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "rpg",
+      "roguelike"
+    ],
     "image": "../assets/gameCard/For The King II.webp",
     "favorite": false
   },
@@ -1886,6 +2263,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "casual"
+    ],
     "image": "../assets/gameCard/Rusty's Retirement.webp",
     "favorite": false
   },
@@ -1904,6 +2284,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "platformer",
+      "adventure"
+    ],
     "image": "../assets/gameCard/GRIS.webp",
     "favorite": false
   },
@@ -1922,6 +2306,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "strategy"
+    ],
     "image": "../assets/gameCard/Total War Three Kingdoms.webp",
     "favorite": false
   },
@@ -1940,6 +2327,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "platformer",
+      "adventure"
+    ],
     "image": "../assets/gameCard/Neva.webp",
     "favorite": false
   },
@@ -1958,6 +2349,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "adventure"
+    ],
     "image": "../assets/gameCard/Rusty Lake Roots.webp",
     "favorite": false
   },
@@ -1976,6 +2370,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "sim",
+      "adventure"
+    ],
     "image": "../assets/gameCard/Spiritfarer.webp",
     "favorite": false
   },
@@ -1994,6 +2392,10 @@
       "ja": "優れた美術表現とマップデザインによって、メトロイドヴァニアというジャンルを代表する傑作となっている。",
       "ko": "뛰어난 미학적 표현과 맵 디자인을 바탕으로, 메트로배니아 장르를 대표하는 걸작으로 평가받는다."
     },
+    "tags": [
+      "metroidvania",
+      "platformer"
+    ],
     "image": "../assets/gameCard/Ori and the Blind Forest.webp",
     "favorite": true
   },
@@ -2012,6 +2414,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "adventure",
+      "action",
+      "multiplayer"
+    ],
     "image": "../assets/gameCard/A Way Out.webp",
     "favorite": false
   },
@@ -2030,6 +2437,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "vn",
+      "adventure"
+    ],
     "image": "../assets/gameCard/Phoenix Wright Ace Attorney.webp",
     "favorite": false
   },
@@ -2048,6 +2459,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "strategy"
+    ],
     "image": "../assets/gameCard/They Are Billions.webp",
     "favorite": false
   },
@@ -2066,6 +2480,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action"
+    ],
     "image": "../assets/gameCard/Sifu.webp",
     "favorite": false
   },
@@ -2084,6 +2501,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "card",
+      "roguelike"
+    ],
     "image": "../assets/gameCard/Balatro.webp",
     "favorite": false
   },
@@ -2102,6 +2523,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "crpg",
+      "tactics"
+    ],
     "image": "../assets/gameCard/The Dungeon Of Naheulbeuk The Amulet Of Chaos.webp",
     "favorite": false
   },
@@ -2120,6 +2545,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "strategy"
+    ],
     "image": "../assets/gameCard/Diplomacy is Not an Option.webp",
     "favorite": false
   },
@@ -2138,6 +2566,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "tactics"
+    ],
     "image": "../assets/gameCard/Symphony of War The Nephilim Saga.webp",
     "favorite": false
   },
@@ -2156,6 +2587,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "sim",
+      "strategy"
+    ],
     "image": "../assets/gameCard/Frostpunk 2.webp",
     "favorite": false
   },
@@ -2174,6 +2609,10 @@
       "ja": "システムと物語が深く結びつき、独自性と完成度を兼ね備えた世界観を描き出している。",
       "ko": "시스템과 서사가 깊이 결합되어 독창적이고 완성도 높은 세계관을 보여준다."
     },
+    "tags": [
+      "sim",
+      "strategy"
+    ],
     "image": "../assets/gameCard/Lobotomy Corporation.webp",
     "favorite": true
   },
@@ -2192,6 +2631,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "rpg"
+    ],
     "image": "../assets/gameCard/Revue Starlight El Dorado.webp",
     "favorite": false
   },
@@ -2210,6 +2652,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "platformer",
+      "adventure",
+      "multiplayer"
+    ],
     "image": "../assets/gameCard/It Takes Two.webp",
     "favorite": false
   },
@@ -2228,6 +2675,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "vn"
+    ],
     "image": "../assets/gameCard/Tsuki ni Yorisou Otome no Sahou 2.webp",
     "favorite": false
   },
@@ -2246,6 +2696,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "card",
+      "strategy"
+    ],
     "image": "../assets/gameCard/Library Of Ruina.webp",
     "favorite": false
   },
@@ -2264,6 +2718,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "metroidvania",
+      "platformer"
+    ],
     "image": "../assets/gameCard/Ori and the Will of the Wisps.webp",
     "favorite": false
   },
@@ -2282,6 +2740,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "sim",
+      "strategy"
+    ],
     "image": "../assets/gameCard/Evil Genius 2.webp",
     "favorite": false
   },
@@ -2300,6 +2762,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "rpg"
+    ],
     "image": "../assets/gameCard/Sea of Stars.webp",
     "favorite": false
   },
@@ -2318,6 +2783,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "metroidvania",
+      "action"
+    ],
     "image": "../assets/gameCard/Bloodstained Ritual of the Night.webp",
     "favorite": false
   },
@@ -2336,6 +2805,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "rpg"
+    ],
     "image": "../assets/gameCard/Granblue Fantasy Relink.webp",
     "favorite": false
   },
@@ -2354,6 +2827,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "adventure"
+    ],
     "image": "../assets/gameCard/Manifold Garden.webp",
     "favorite": false
   },
@@ -2372,6 +2848,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "shooter",
+      "action"
+    ],
     "image": "../assets/gameCard/Atomic Heart.webp",
     "favorite": false
   },
@@ -2390,6 +2870,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action"
+    ],
     "image": "../assets/gameCard/DYNASTY WARRIORS ORIGINS.webp",
     "favorite": false
   },
@@ -2408,6 +2891,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "strategy",
+      "roguelike"
+    ],
     "image": "../assets/gameCard/9 Kings.webp",
     "favorite": false
   },
@@ -2426,6 +2913,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "sim",
+      "strategy"
+    ],
     "image": "../assets/gameCard/Anno 117 Pax Romana.webp",
     "favorite": false
   },
@@ -2444,6 +2935,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "card",
+      "roguelike"
+    ],
     "image": "../assets/gameCard/Chrono Ark.webp",
     "favorite": false
   },
@@ -2462,6 +2957,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "card",
+      "adventure"
+    ],
     "image": "../assets/gameCard/Cultist Simulator.webp",
     "favorite": false
   },
@@ -2480,6 +2979,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "tactics",
+      "rpg"
+    ],
     "image": "../assets/gameCard/Fire Emblem Three Houses.webp",
     "favorite": false
   },
@@ -2498,6 +3001,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "rpg"
+    ],
     "image": "../assets/gameCard/Limbus Company.webp",
     "favorite": false
   },
@@ -2516,6 +3022,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "roguelike",
+      "action",
+      "multiplayer"
+    ],
     "image": "../assets/gameCard/Rabbit and Steel.webp",
     "favorite": false
   },
@@ -2534,6 +3045,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "card",
+      "roguelike"
+    ],
     "image": "../assets/gameCard/Slay the Spire 2.webp",
     "favorite": false
   },
@@ -2552,6 +3067,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "tactics",
+      "rpg"
+    ],
     "image": "../assets/gameCard/Unicorn Overlord.webp",
     "favorite": false
   },
@@ -2570,6 +3089,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "adventure",
+      "strategy"
+    ],
     "image": "../assets/gameCard/13 Sentinels Aegis Rim.webp",
     "favorite": false
   },
@@ -2588,6 +3111,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "vn"
+    ],
     "image": "../assets/gameCard/Tsukihime Remake.webp",
     "favorite": false
   },
@@ -2606,6 +3132,9 @@
       "ja": "最も好きなキャラクター造形であり、最も好きなビジュアルノベルの一つ。",
       "ko": "가장 좋아하는 캐릭터 묘사이자, 가장 좋아하는 비주얼 노벨 중 하나."
     },
+    "tags": [
+      "vn"
+    ],
     "image": "../assets/gameCard/Tsukihime.webp",
     "favorite": true
   },
@@ -2624,6 +3153,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "crpg"
+    ],
     "image": "../assets/gameCard/Divinity Original Sin.webp",
     "favorite": false
   },
@@ -2642,6 +3174,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "card",
+      "sim"
+    ],
     "image": "../assets/gameCard/Stacklands.webp",
     "favorite": false
   },
@@ -2660,6 +3196,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "roguelike",
+      "tactics"
+    ],
     "image": "../assets/gameCard/Shogun Showdown.webp",
     "favorite": false
   },
@@ -2678,6 +3218,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "adventure"
+    ],
     "image": "../assets/gameCard/What Remains of Edith Finch.webp",
     "favorite": false
   },
@@ -2696,6 +3239,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "card",
+      "rpg"
+    ],
     "image": "../assets/gameCard/Thronebreaker The Witcher Tales.webp",
     "favorite": false
   },
@@ -2714,6 +3261,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "adventure"
+    ],
     "image": "../assets/gameCard/Cairn.webp",
     "favorite": false
   }

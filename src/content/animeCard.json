@@ -14,6 +14,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/Toriko.webp",
     "favorite": false
   },
@@ -32,6 +36,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/One Piece.webp",
     "favorite": false
   },
@@ -50,6 +58,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/Naruto.webp",
     "favorite": false
   },
@@ -68,6 +80,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "comedy",
+      "action"
+    ],
     "image": "../assets/animeCard/Beelzebub.webp",
     "favorite": false
   },
@@ -86,6 +102,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "comedy"
+    ],
     "image": "../assets/animeCard/Shugo Chara.webp",
     "favorite": false
   },
@@ -104,6 +124,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "isekai",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/That Time I Got Reincarnated as a Slime.webp",
     "favorite": false
   },
@@ -122,6 +146,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "isekai",
+      "fantasy",
+      "action"
+    ],
     "image": "../assets/animeCard/The Rising of the Shield Hero.webp",
     "favorite": false
   },
@@ -140,6 +169,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "isekai",
+      "comedy"
+    ],
     "image": "../assets/animeCard/Cautious Hero.webp",
     "favorite": false
   },
@@ -158,6 +191,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "romance"
+    ],
     "image": "../assets/animeCard/Fox Spirit Matchmaker.webp",
     "favorite": false
   },
@@ -176,6 +213,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "romance",
+      "comedy"
+    ],
     "image": "../assets/animeCard/The Quintessential Quintuplets.webp",
     "favorite": false
   },
@@ -194,6 +235,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "comedy",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/Welcome to Demon School! Iruma-kun.webp",
     "favorite": false
   },
@@ -212,6 +257,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "drama"
+    ],
     "image": "../assets/animeCard/Classroom of the Elite.webp",
     "favorite": false
   },
@@ -230,6 +278,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "comedy"
+    ],
     "image": "../assets/animeCard/Haven't You Heard I'm Sakamoto.webp",
     "favorite": false
   },
@@ -248,6 +299,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "mystery"
+    ],
     "image": "../assets/animeCard/Toilet-Bound Hanako-kun.webp",
     "favorite": false
   },
@@ -266,6 +321,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "daily"
+    ],
     "image": "../assets/animeCard/Asteroid in Love.webp",
     "favorite": false
   },
@@ -284,6 +342,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "music",
+      "comedy"
+    ],
     "image": "../assets/animeCard/If My Favorite Pop Idol Made It to the Budokan.webp",
     "favorite": false
   },
@@ -302,6 +364,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "scifi",
+      "action"
+    ],
     "image": "../assets/animeCard/Dr. STONE.webp",
     "favorite": false
   },
@@ -320,6 +386,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "mystery",
+      "scifi"
+    ],
     "image": "../assets/animeCard/ID INVADED.webp",
     "favorite": false
   },
@@ -338,6 +408,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "comedy"
+    ],
     "image": "../assets/animeCard/BOFURI.webp",
     "favorite": false
   },
@@ -356,6 +430,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "comedy"
+    ],
     "image": "../assets/animeCard/The Daily Life of the Immortal King.webp",
     "favorite": false
   },
@@ -374,6 +452,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "daily",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/Konohana Kitan.webp",
     "favorite": true
   },
@@ -392,6 +474,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "daily",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/Urara Meirochou.webp",
     "favorite": false
   },
@@ -410,6 +496,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "comedy",
+      "daily"
+    ],
     "image": "../assets/animeCard/The Demon Girl Next Door.webp",
     "favorite": false
   },
@@ -428,6 +518,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "daily"
+    ],
     "image": "../assets/animeCard/Comic Girls.webp",
     "favorite": false
   },
@@ -446,6 +539,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "daily"
+    ],
     "image": "../assets/animeCard/NEW GAME!.webp",
     "favorite": false
   },
@@ -464,6 +560,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "romance"
+    ],
     "image": "../assets/animeCard/Manaria Friends.webp",
     "favorite": false
   },
@@ -482,6 +582,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "romance",
+      "comedy"
+    ],
     "image": "../assets/animeCard/Kaguya-sama Love Is War.webp",
     "favorite": false
   },
@@ -500,6 +604,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/Blood Blockade Battlefront.webp",
     "favorite": true
   },
@@ -518,6 +626,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "romance",
+      "comedy"
+    ],
     "image": "../assets/animeCard/Love Chunibyo & Other Delusions.webp",
     "favorite": false
   },
@@ -536,6 +648,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "action"
+    ],
     "image": "../assets/animeCard/Tower of God.webp",
     "favorite": false
   },
@@ -554,6 +670,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "isekai",
+      "comedy",
+      "romance"
+    ],
     "image": "../assets/animeCard/My Next Life as a Villainess.webp",
     "favorite": false
   },
@@ -572,6 +693,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy"
+    ],
     "image": "../assets/animeCard/Bai Yao Pu.webp",
     "favorite": false
   },
@@ -590,6 +714,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "music"
+    ],
     "image": "../assets/animeCard/BanG Dream!.webp",
     "favorite": false
   },
@@ -608,6 +735,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "mystery"
+    ],
     "image": "../assets/animeCard/Hell Girl.webp",
     "favorite": false
   },
@@ -626,6 +756,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "music"
+    ],
     "image": "../assets/animeCard/22-7.webp",
     "favorite": false
   },
@@ -644,6 +777,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/Demon Slayer Kimetsu no Yaiba.webp",
     "favorite": false
   },
@@ -662,6 +799,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "mystery",
+      "action"
+    ],
     "image": "../assets/animeCard/Talentless Nana.webp",
     "favorite": false
   },
@@ -680,6 +821,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "comedy",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/Sleepy Princess in the Demon Castle.webp",
     "favorite": false
   },
@@ -698,6 +843,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "isekai",
+      "comedy"
+    ],
     "image": "../assets/animeCard/Kuma Kuma Kuma Bear.webp",
     "favorite": false
   },
@@ -716,6 +865,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy"
+    ],
     "image": "../assets/animeCard/Wandering Witch.webp",
     "favorite": false
   },
@@ -734,6 +886,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "music",
+      "drama"
+    ],
     "image": "../assets/animeCard/Sound! Euphonium.webp",
     "favorite": true
   },
@@ -752,6 +908,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "music",
+      "daily"
+    ],
     "image": "../assets/animeCard/K-On!.webp",
     "favorite": true
   },
@@ -770,6 +930,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/Jujutsu Kaisen.webp",
     "favorite": false
   },
@@ -788,6 +952,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "isekai",
+      "fantasy",
+      "drama"
+    ],
     "image": "../assets/animeCard/Re ZERO Starting Life in Another World.webp",
     "favorite": false
   },
@@ -806,6 +975,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "drama"
+    ],
     "image": "../assets/animeCard/Natsume's Book of Friends.webp",
     "favorite": false
   },
@@ -824,6 +997,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "isekai",
+      "daily"
+    ],
     "image": "../assets/animeCard/I've Been Killing Slimes for 300 Years.webp",
     "favorite": false
   },
@@ -842,6 +1019,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "isekai",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/So I'm a Spider So What.webp",
     "favorite": false
   },
@@ -860,6 +1041,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "isekai",
+      "comedy"
+    ],
     "image": "../assets/animeCard/I'm Not the Cult Leader.webp",
     "favorite": false
   },
@@ -878,6 +1063,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "isekai",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/Overlord.webp",
     "favorite": false
   },
@@ -896,6 +1085,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "drama",
+      "daily"
+    ],
     "image": "../assets/animeCard/Hanasaku Iroha.webp",
     "favorite": true
   },
@@ -914,6 +1107,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "romance",
+      "music",
+      "drama"
+    ],
     "image": "../assets/animeCard/White Album.webp",
     "favorite": false
   },
@@ -932,6 +1130,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "drama"
+    ],
     "image": "../assets/animeCard/Violet Evergarden.webp",
     "favorite": true
   },
@@ -950,6 +1151,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "comedy"
+    ],
     "image": "../assets/animeCard/Cells at Work!.webp",
     "favorite": false
   },
@@ -968,6 +1172,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "mystery",
+      "daily"
+    ],
     "image": "../assets/animeCard/School-Live!.webp",
     "favorite": false
   },
@@ -986,6 +1194,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "drama"
+    ],
     "image": "../assets/animeCard/A Place Further Than the Universe.webp",
     "favorite": true
   },
@@ -1004,6 +1215,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "scifi",
+      "music",
+      "action"
+    ],
     "image": "../assets/animeCard/Vivy Fluorite Eye's Song.webp",
     "favorite": false
   },
@@ -1022,6 +1238,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "action"
+    ],
     "image": "../assets/animeCard/Beyond the Boundary.webp",
     "favorite": false
   },
@@ -1040,6 +1260,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "scifi",
+      "daily"
+    ],
     "image": "../assets/animeCard/Girls' Last Tour.webp",
     "favorite": true
   },
@@ -1058,6 +1282,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "music",
+      "romance",
+      "drama"
+    ],
     "image": "../assets/animeCard/Your Lie in April.webp",
     "favorite": true
   },
@@ -1076,6 +1305,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "daily",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/Flying Witch.webp",
     "favorite": false
   },
@@ -1094,6 +1327,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "drama"
+    ],
     "image": "../assets/animeCard/Puella Magi Madoka Magica.webp",
     "favorite": true
   },
@@ -1112,6 +1349,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "daily"
+    ],
     "image": "../assets/animeCard/Tamako Market.webp",
     "favorite": false
   },
@@ -1130,6 +1370,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "romance",
+      "drama"
+    ],
     "image": "../assets/animeCard/The Garden of Words.webp",
     "favorite": false
   },
@@ -1148,6 +1393,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "comedy"
+    ],
     "image": "../assets/animeCard/Little Witch Academia.webp",
     "favorite": true
   },
@@ -1166,6 +1415,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "romance",
+      "drama"
+    ],
     "image": "../assets/animeCard/Clannad.webp",
     "favorite": false
   },
@@ -1184,6 +1437,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "drama"
+    ],
     "image": "../assets/animeCard/Magia Record.webp",
     "favorite": false
   },
@@ -1202,6 +1459,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "isekai",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/No Game No Life.webp",
     "favorite": false
   },
@@ -1220,6 +1481,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "mystery",
+      "daily"
+    ],
     "image": "../assets/animeCard/Hyouka.webp",
     "favorite": false
   },
@@ -1238,6 +1503,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "action"
+    ],
     "image": "../assets/animeCard/Fate kaleid liner Prisma Illya.webp",
     "favorite": false
   },
@@ -1256,6 +1525,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "romance",
+      "drama"
+    ],
     "image": "../assets/animeCard/Rascal Does Not Dream of Bunny Girl Senpai.webp",
     "favorite": false
   },
@@ -1274,6 +1547,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "comedy",
+      "daily"
+    ],
     "image": "../assets/animeCard/Himouto! Umaru-chan.webp",
     "favorite": false
   },
@@ -1292,6 +1569,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "comedy",
+      "daily"
+    ],
     "image": "../assets/animeCard/Wataten An Angel Flew Down to Me.webp",
     "favorite": false
   },
@@ -1310,6 +1591,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "comedy",
+      "daily"
+    ],
     "image": "../assets/animeCard/Chronicles of the Going Home Club.webp",
     "favorite": false
   },
@@ -1328,6 +1613,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "music"
+    ],
     "image": "../assets/animeCard/Love Live! Nijigasaki High School Idol Club.webp",
     "favorite": false
   },
@@ -1346,6 +1634,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "daily"
+    ],
     "image": "../assets/animeCard/Tamayura.webp",
     "favorite": false
   },
@@ -1364,6 +1655,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "romance",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/Into the Forest of Fireflies' Light.webp",
     "favorite": false
   },
@@ -1382,6 +1678,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "comedy",
+      "daily"
+    ],
     "image": "../assets/animeCard/Ms. Vampire Who Lives in My Neighborhood.webp",
     "favorite": false
   },
@@ -1400,6 +1700,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "drama",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/Wonder Egg Priority.webp",
     "favorite": false
   },
@@ -1418,6 +1722,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "music",
+      "drama"
+    ],
     "image": "../assets/animeCard/Revue Starlight.webp",
     "favorite": true
   },
@@ -1436,6 +1744,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "music"
+    ],
     "image": "../assets/animeCard/Love Live! Superstar!!.webp",
     "favorite": false
   },
@@ -1454,6 +1765,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "isekai",
+      "comedy"
+    ],
     "image": "../assets/animeCard/The Dungeon of Black Company.webp",
     "favorite": false
   },
@@ -1472,6 +1787,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "romance"
+    ],
     "image": "../assets/animeCard/Kase-san and Morning Glories.webp",
     "favorite": false
   },
@@ -1490,6 +1808,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "scifi"
+    ],
     "image": "../assets/animeCard/A Certain Scientific Railgun.webp",
     "favorite": false
   },
@@ -1508,6 +1830,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "action",
+      "drama"
+    ],
     "image": "../assets/animeCard/Yuki Yuna Is a Hero.webp",
     "favorite": false
   },
@@ -1526,6 +1853,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "drama",
+      "action"
+    ],
     "image": "../assets/animeCard/Angel Beats!.webp",
     "favorite": false
   },
@@ -1544,6 +1875,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "daily"
+    ],
     "image": "../assets/animeCard/Hinako Note.webp",
     "favorite": false
   },
@@ -1562,6 +1896,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "comedy"
+    ],
     "image": "../assets/animeCard/Kill la Kill.webp",
     "favorite": true
   },
@@ -1580,6 +1918,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "drama"
+    ],
     "image": "../assets/animeCard/To Your Eternity.webp",
     "favorite": false
   },
@@ -1598,6 +1940,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/Re Creators.webp",
     "favorite": false
   },
@@ -1616,6 +1962,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "isekai",
+      "action"
+    ],
     "image": "../assets/animeCard/The World's Finest Assassin.webp",
     "favorite": false
   },
@@ -1634,6 +1984,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "romance",
+      "comedy"
+    ],
     "image": "../assets/animeCard/My Senpai Is Annoying.webp",
     "favorite": false
   },
@@ -1652,6 +2006,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "comedy",
+      "daily"
+    ],
     "image": "../assets/animeCard/Nichijou.webp",
     "favorite": true
   },
@@ -1670,6 +2028,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "drama",
+      "scifi"
+    ],
     "image": "../assets/animeCard/Charlotte.webp",
     "favorite": false
   },
@@ -1688,6 +2050,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "daily"
+    ],
     "image": "../assets/animeCard/Hakumei and Mikochi.webp",
     "favorite": false
   },
@@ -1706,6 +2072,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "drama"
+    ],
     "image": "../assets/animeCard/Anohana.webp",
     "favorite": false
   },
@@ -1724,6 +2093,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "scifi",
+      "drama"
+    ],
     "image": "../assets/animeCard/Planetarian.webp",
     "favorite": false
   },
@@ -1742,6 +2115,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "comedy",
+      "fantasy",
+      "daily"
+    ],
     "image": "../assets/animeCard/Miss Kobayashi's Dragon Maid.webp",
     "favorite": false
   },
@@ -1760,6 +2138,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "romance",
+      "comedy"
+    ],
     "image": "../assets/animeCard/Oreimo.webp",
     "favorite": false
   },
@@ -1778,6 +2160,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "drama",
+      "romance"
+    ],
     "image": "../assets/animeCard/Air.webp",
     "favorite": true
   },
@@ -1796,6 +2182,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "drama"
+    ],
     "image": "../assets/animeCard/Ranking of Kings.webp",
     "favorite": false
   },
@@ -1814,6 +2204,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "isekai",
+      "daily"
+    ],
     "image": "../assets/animeCard/In the Land of Leadale.webp",
     "favorite": false
   },
@@ -1832,6 +2226,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "drama",
+      "music"
+    ],
     "image": "../assets/animeCard/The Anthem of the Heart.webp",
     "favorite": false
   },
@@ -1850,6 +2249,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "music",
+      "drama"
+    ],
     "image": "../assets/animeCard/Her Blue Sky.webp",
     "favorite": false
   },
@@ -1868,6 +2272,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "drama"
+    ],
     "image": "../assets/animeCard/Made in Abyss.webp",
     "favorite": true
   },
@@ -1886,6 +2294,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "isekai",
+      "action"
+    ],
     "image": "../assets/animeCard/The Executioner and Her Way of Life.webp",
     "favorite": false
   },
@@ -1904,6 +2316,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "comedy",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/The Little Demon Is Exposed.webp",
     "favorite": false
   },
@@ -1922,6 +2338,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "daily"
+    ],
     "image": "../assets/animeCard/Akebi's Sailor Uniform.webp",
     "favorite": false
   },
@@ -1940,6 +2359,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "drama",
+      "scifi"
+    ],
     "image": "../assets/animeCard/Kowarekake no Orgel.webp",
     "favorite": false
   },
@@ -1958,6 +2381,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "drama"
+    ],
     "image": "../assets/animeCard/Kino's Journey.webp",
     "favorite": false
   },
@@ -1976,6 +2403,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "drama"
+    ],
     "image": "../assets/animeCard/The Heike Story.webp",
     "favorite": true
   },
@@ -1994,6 +2424,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/JoJo's Bizarre Adventure.webp",
     "favorite": false
   },
@@ -2012,6 +2446,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "drama"
+    ],
     "image": "../assets/animeCard/March Comes in Like a Lion.webp",
     "favorite": false
   },
@@ -2030,6 +2467,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "scifi",
+      "action",
+      "drama"
+    ],
     "image": "../assets/animeCard/86 EIGHTY-SIX.webp",
     "favorite": false
   },
@@ -2048,6 +2490,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "mystery"
+    ],
     "image": "../assets/animeCard/Bakemonogatari.webp",
     "favorite": true
   },
@@ -2066,6 +2512,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "mystery"
+    ],
     "image": "../assets/animeCard/Nisemonogatari.webp",
     "favorite": false
   },
@@ -2084,6 +2534,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "mystery"
+    ],
     "image": "../assets/animeCard/Nekomonogatari Black.webp",
     "favorite": false
   },
@@ -2102,6 +2556,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "mystery"
+    ],
     "image": "../assets/animeCard/Kabukimonogatari.webp",
     "favorite": false
   },
@@ -2120,6 +2578,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "mystery"
+    ],
     "image": "../assets/animeCard/Otorimonogatari.webp",
     "favorite": false
   },
@@ -2138,6 +2600,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "mystery"
+    ],
     "image": "../assets/animeCard/Onimonogatari.webp",
     "favorite": false
   },
@@ -2156,6 +2622,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "mystery"
+    ],
     "image": "../assets/animeCard/Koimonogatari.webp",
     "favorite": false
   },
@@ -2174,6 +2644,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "mystery"
+    ],
     "image": "../assets/animeCard/Hanamonogatari.webp",
     "favorite": false
   },
@@ -2192,6 +2666,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "mystery"
+    ],
     "image": "../assets/animeCard/Tsukimonogatari.webp",
     "favorite": false
   },
@@ -2210,6 +2688,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "mystery"
+    ],
     "image": "../assets/animeCard/Koyomimonogatari.webp",
     "favorite": false
   },
@@ -2228,6 +2710,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "fantasy",
+      "action"
+    ],
     "image": "../assets/animeCard/Kizumonogatari.webp",
     "favorite": false
   },
@@ -2246,6 +2733,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "mystery"
+    ],
     "image": "../assets/animeCard/Owarimonogatari.webp",
     "favorite": false
   },
@@ -2264,6 +2755,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/Chainsaw Man.webp",
     "favorite": false
   },
@@ -2282,6 +2777,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "comedy",
+      "daily"
+    ],
     "image": "../assets/animeCard/Onimai I'm Now Your Sister.webp",
     "favorite": true
   },
@@ -2300,6 +2799,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "comedy"
+    ],
     "image": "../assets/animeCard/Endro~!.webp",
     "favorite": false
   },
@@ -2318,6 +2821,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "romance"
+    ],
     "image": "../assets/animeCard/Candy Boy.webp",
     "favorite": false
   },
@@ -2336,6 +2842,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "drama"
+    ],
     "image": "../assets/animeCard/Kakegurui.webp",
     "favorite": false
   },
@@ -2354,6 +2863,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "romance"
+    ],
     "image": "../assets/animeCard/Citrus.webp",
     "favorite": false
   },
@@ -2372,6 +2884,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "comedy",
+      "daily"
+    ],
     "image": "../assets/animeCard/YuruYuri.webp",
     "favorite": false
   },
@@ -2390,6 +2906,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "comedy",
+      "scifi"
+    ],
     "image": "../assets/animeCard/The Melancholy of Haruhi Suzumiya.webp",
     "favorite": true
   },
@@ -2408,6 +2928,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "music",
+      "daily"
+    ],
     "image": "../assets/animeCard/Tari Tari.webp",
     "favorite": false
   },
@@ -2426,6 +2950,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "romance",
+      "comedy"
+    ],
     "image": "../assets/animeCard/The Night Is Short Walk On Girl.webp",
     "favorite": false
   },
@@ -2444,6 +2973,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "comedy"
+    ],
     "image": "../assets/animeCard/The Melancholy of Haruhi-chan Suzumiya.webp",
     "favorite": false
   },
@@ -2462,6 +2994,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "sports",
+      "music"
+    ],
     "image": "../assets/animeCard/Uma Musume Pretty Derby.webp",
     "favorite": false
   },
@@ -2480,6 +3016,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "romance",
+      "comedy"
+    ],
     "image": "../assets/animeCard/The Disappearance of Nagato Yuki-chan.webp",
     "favorite": false
   },
@@ -2498,6 +3038,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "comedy"
+    ],
     "image": "../assets/animeCard/Nyoron Churuya-san.webp",
     "favorite": false
   },
@@ -2516,6 +3059,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "romance"
+    ],
     "image": "../assets/animeCard/Bloom Into You.webp",
     "favorite": false
   },
@@ -2534,6 +3080,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "drama"
+    ],
     "image": "../assets/animeCard/Millennium Actress.webp",
     "favorite": false
   },
@@ -2552,6 +3102,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "action"
+    ],
     "image": "../assets/animeCard/Feng Ling Yu Xiu.webp",
     "favorite": false
   },
@@ -2570,6 +3124,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "comedy"
+    ],
     "image": "../assets/animeCard/Delicious in Dungeon.webp",
     "favorite": false
   },
@@ -2588,6 +3146,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "scifi",
+      "drama"
+    ],
     "image": "../assets/animeCard/Sonny Boy.webp",
     "favorite": false
   },
@@ -2606,6 +3168,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "comedy"
+    ],
     "image": "../assets/animeCard/Mob Psycho 100.webp",
     "favorite": false
   },
@@ -2624,6 +3190,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "drama"
+    ],
     "image": "../assets/animeCard/Made in Abyss The Golden City of the Scorching Sun.webp",
     "favorite": false
   },
@@ -2642,6 +3212,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "mystery"
+    ],
     "image": "../assets/animeCard/The Mystic Archives of Dantalian.webp",
     "favorite": false
   },
@@ -2660,6 +3234,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "romance",
+      "drama"
+    ],
     "image": "../assets/animeCard/Josee the Tiger and the Fish.webp",
     "favorite": false
   },
@@ -2678,6 +3257,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "mystery"
+    ],
     "image": "../assets/animeCard/Boogiepop and Others.webp",
     "favorite": true
   },
@@ -2696,6 +3278,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "action",
+      "drama"
+    ],
     "image": "../assets/animeCard/Vinland Saga.webp",
     "favorite": false
   },
@@ -2714,6 +3300,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "music",
+      "drama"
+    ],
     "image": "../assets/animeCard/BanG Dream! It's MyGO!!!!!.webp",
     "favorite": false
   },
@@ -2732,6 +3322,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "romance",
+      "music",
+      "drama"
+    ],
     "image": "../assets/animeCard/White Album 2.webp",
     "favorite": false
   },
@@ -2750,6 +3345,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "music",
+      "comedy"
+    ],
     "image": "../assets/animeCard/Bocchi the Rock!.webp",
     "favorite": false
   },
@@ -2768,6 +3367,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "fantasy",
+      "action"
+    ],
     "image": "../assets/animeCard/The Boy and the Beast.webp",
     "favorite": false
   },
@@ -2786,6 +3390,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "scifi",
+      "mystery"
+    ],
     "image": "../assets/animeCard/Steins Gate.webp",
     "favorite": true
   },
@@ -2804,6 +3412,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "romance"
+    ],
     "image": "../assets/animeCard/The Ancient Magus' Bride.webp",
     "favorite": false
   },
@@ -2822,6 +3434,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "isekai",
+      "romance",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/The Magical Revolution of the Reincarnated Princess.webp",
     "favorite": false
   },
@@ -2840,6 +3457,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "drama"
+    ],
     "image": "../assets/animeCard/A Silent Voice.webp",
     "favorite": true
   },
@@ -2858,6 +3479,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "mystery"
+    ],
     "image": "../assets/animeCard/Death Note.webp",
     "favorite": false
   },
@@ -2876,6 +3500,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "drama",
+      "romance"
+    ],
     "image": "../assets/animeCard/I Want to Eat Your Pancreas.webp",
     "favorite": false
   },
@@ -2894,6 +3523,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "drama"
+    ],
     "image": "../assets/animeCard/Frieren Beyond Journey's End.webp",
     "favorite": true
   },
@@ -2912,6 +3545,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "comedy"
+    ],
     "image": "../assets/animeCard/Zootopia.webp",
     "favorite": false
   },
@@ -2930,6 +3567,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "drama"
+    ],
     "image": "../assets/animeCard/Pompo the Cinephile.webp",
     "favorite": false
   },
@@ -2948,6 +3589,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "romance"
+    ],
     "image": "../assets/animeCard/Adachi and Shimamura.webp",
     "favorite": true
   },
@@ -2966,6 +3610,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "music",
+      "scifi"
+    ],
     "image": "../assets/animeCard/Belle.webp",
     "favorite": false
   },
@@ -2984,6 +3633,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "scifi",
+      "romance"
+    ],
     "image": "../assets/animeCard/Hello World.webp",
     "favorite": false
   },
@@ -3002,6 +3656,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "romance",
+      "comedy"
+    ],
     "image": "../assets/animeCard/Sakura Trick.webp",
     "favorite": false
   },
@@ -3020,6 +3678,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "scifi",
+      "music"
+    ],
     "image": "../assets/animeCard/Sing a Bit of Harmony.webp",
     "favorite": false
   },
@@ -3038,6 +3701,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "romance",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/Weathering with You.webp",
     "favorite": true
   },
@@ -3056,6 +3724,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "romance",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/The Tunnel to Summer the Exit of Goodbyes.webp",
     "favorite": false
   },
@@ -3074,6 +3747,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "comedy",
+      "action"
+    ],
     "image": "../assets/animeCard/Spy x Family.webp",
     "favorite": false
   },
@@ -3092,6 +3769,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "drama",
+      "daily"
+    ],
     "image": "../assets/animeCard/The Aquatope on White Sand.webp",
     "favorite": false
   },
@@ -3110,6 +3791,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "music",
+      "drama"
+    ],
     "image": "../assets/animeCard/Carole & Tuesday.webp",
     "favorite": true
   },
@@ -3128,6 +3813,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "romance",
+      "comedy"
+    ],
     "image": "../assets/animeCard/There's No Freaking Way I'll Be Your Lover.webp",
     "favorite": false
   },
@@ -3146,6 +3835,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "scifi",
+      "music"
+    ],
     "image": "../assets/animeCard/Chou Kaguya-hime.webp",
     "favorite": true
   },
@@ -3164,6 +3858,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "music",
+      "drama"
+    ],
     "image": "../assets/animeCard/Liz and the Blue Bird.webp",
     "favorite": true
   },
@@ -3182,6 +3881,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "daily"
+    ],
     "image": "../assets/animeCard/Ruri Rocks.webp",
     "favorite": false
   },
@@ -3200,6 +3902,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "sports",
+      "drama"
+    ],
     "image": "../assets/animeCard/Medalist.webp",
     "favorite": true
   },
@@ -3218,6 +3924,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "sports",
+      "drama"
+    ],
     "image": "../assets/animeCard/Run with the Wind.webp",
     "favorite": false
   },
@@ -3236,6 +3946,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "scifi",
+      "mystery"
+    ],
     "image": "../assets/animeCard/Serial Experiments Lain.webp",
     "favorite": true
   },
@@ -3254,6 +3968,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "isekai",
+      "fantasy"
+    ],
     "image": "../assets/animeCard/Mushoku Tensei Jobless Reincarnation.webp",
     "favorite": false
   },
@@ -3272,6 +3990,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "romance",
+      "comedy"
+    ],
     "image": "../assets/animeCard/Too Many Losing Heroines.webp",
     "favorite": false
   },
@@ -3290,6 +4012,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "drama"
+    ],
     "image": "../assets/animeCard/Look Back.webp",
     "favorite": false
   },
@@ -3308,6 +4034,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "romance",
+      "comedy"
+    ],
     "image": "../assets/animeCard/Kamiina Botan.webp",
     "favorite": true
   },
@@ -3326,6 +4056,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "mystery"
+    ],
     "image": "../assets/animeCard/Gosick.webp",
     "favorite": false
   },
@@ -3344,6 +4077,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "sports",
+      "drama"
+    ],
     "image": "../assets/animeCard/Ping Pong the Animation.webp",
     "favorite": true
   },
@@ -3362,6 +4099,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "mystery",
+      "action"
+    ],
     "image": "../assets/animeCard/The Garden of Sinners.webp",
     "favorite": true
   },
@@ -3380,6 +4122,11 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "movie",
+      "fantasy",
+      "comedy"
+    ],
     "image": "../assets/animeCard/Doraemon Nobita's Art World Tales.webp",
     "favorite": false
   },
@@ -3398,6 +4145,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "drama",
+      "mystery"
+    ],
     "image": "../assets/animeCard/Mawaru Penguindrum.webp",
     "favorite": false
   },
@@ -3416,6 +4167,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "comedy",
+      "daily"
+    ],
     "image": "../assets/animeCard/CITY THE ANIMATION.webp",
     "favorite": false
   },
@@ -3434,6 +4189,9 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy"
+    ],
     "image": "../assets/animeCard/Witch Hat Atelier.webp",
     "favorite": false
   },
@@ -3452,6 +4210,10 @@
       "ja": "",
       "ko": ""
     },
+    "tags": [
+      "fantasy",
+      "romance"
+    ],
     "image": "../assets/animeCard/Goodbye Lara.webp",
     "favorite": false
   }

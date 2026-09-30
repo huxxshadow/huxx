@@ -44,6 +44,59 @@ export const journeyTitleParts = {
     } as Multilingual,
 };
 
+// 作品库的类型标签：key 与 gameCard.json / animeCard.json 里的 tags 对应
+export const journeyTagLabels = {
+    all: {
+        en: "All",
+        zh: "全部",
+        ja: "すべて",
+        ko: "전체",
+    } as Multilingual,
+
+    filterGroup: {
+        en: "Filter by genre",
+        zh: "按类型筛选",
+        ja: "ジャンルで絞り込む",
+        ko: "장르로 필터링",
+    } as Multilingual,
+
+    game: {
+        crpg: { en: "CRPG", zh: "CRPG", ja: "CRPG", ko: "CRPG" },
+        rpg: { en: "RPG", zh: "角色扮演", ja: "RPG", ko: "RPG" },
+        action: { en: "Action", zh: "动作", ja: "アクション", ko: "액션" },
+        shooter: { en: "Shooter", zh: "射击", ja: "シューター", ko: "슈팅" },
+        strategy: { en: "Strategy", zh: "策略", ja: "ストラテジー", ko: "전략" },
+        tactics: { en: "Tactics", zh: "战棋战术", ja: "タクティクス", ko: "전술" },
+        sim: { en: "Management", zh: "模拟经营", ja: "経営シミュレーション", ko: "경영 시뮬레이션" },
+        sandbox: { en: "Sandbox & Survival", zh: "沙盒生存", ja: "サンドボックス", ko: "샌드박스·생존" },
+        openworld: { en: "Open World", zh: "开放世界", ja: "オープンワールド", ko: "오픈 월드" },
+        metroidvania: { en: "Metroidvania", zh: "银河恶魔城", ja: "メトロイドヴァニア", ko: "메트로배니아" },
+        platformer: { en: "Platformer", zh: "平台跳跃", ja: "プラットフォーマー", ko: "플랫포머" },
+        roguelike: { en: "Roguelike", zh: "Roguelike", ja: "ローグライク", ko: "로그라이크" },
+        card: { en: "Card", zh: "卡牌", ja: "カード", ko: "카드" },
+        adventure: { en: "Adventure & Puzzle", zh: "冒险解谜", ja: "アドベンチャー・パズル", ko: "어드벤처·퍼즐" },
+        vn: { en: "Visual Novel", zh: "视觉小说", ja: "ノベルゲーム", ko: "비주얼 노벨" },
+        multiplayer: { en: "Multiplayer", zh: "多人联机", ja: "マルチプレイ", ko: "멀티플레이" },
+        casual: { en: "Casual & Idle", zh: "休闲放置", ja: "カジュアル・放置", ko: "캐주얼·방치형" },
+        racing: { en: "Racing", zh: "竞速", ja: "レース", ko: "레이싱" },
+    } as Record<string, Multilingual>,
+
+    anime: {
+        daily: { en: "Slice of Life", zh: "日常", ja: "日常", ko: "일상" },
+        comedy: { en: "Comedy", zh: "喜剧", ja: "コメディ", ko: "코미디" },
+        romance: { en: "Romance", zh: "恋爱", ja: "恋愛", ko: "로맨스" },
+        fantasy: { en: "Fantasy", zh: "奇幻", ja: "ファンタジー", ko: "판타지" },
+        isekai: { en: "Isekai", zh: "异世界", ja: "異世界", ko: "이세계" },
+        action: { en: "Action", zh: "战斗", ja: "バトル", ko: "액션" },
+        scifi: { en: "Sci-Fi", zh: "科幻", ja: "SF", ko: "SF" },
+        mystery: { en: "Mystery", zh: "悬疑", ja: "ミステリー", ko: "미스터리" },
+        drama: { en: "Drama", zh: "剧情", ja: "ドラマ", ko: "드라마" },
+        music: { en: "Music & Idol", zh: "音乐偶像", ja: "音楽・アイドル", ko: "음악·아이돌" },
+        sports: { en: "Sports", zh: "运动", ja: "スポーツ", ko: "스포츠" },
+        movie: { en: "Movie", zh: "剧场版", ja: "劇場版", ko: "극장판" },
+    } as Record<string, Multilingual>,
+};
+
 // 卡片大小滑块的读屏标签（游戏 / 动画两条旅程共用）
 export const sizeSliderLabels = {
     favorites: {

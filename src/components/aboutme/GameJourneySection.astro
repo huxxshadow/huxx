@@ -11,6 +11,7 @@ import {
     journeyTitleParts,
     playerProfileData,
     sizeSliderLabels,
+    journeyTagLabels,
     playStyleData,
 } from "@/i18n/components/aboutme/GameJourneySection_i18.ts";
 
@@ -38,6 +39,7 @@ const journeys = [
         favoritesHeader: gameJourneyLabels.allTimeFavoritesHeader,
         libraryHeader: gameJourneyLabels.gameLibraryHeader,
         favoriteTag: gameJourneyLabels.favoriteTag,
+        tagLabels: journeyTagLabels.game,
         profile: playerProfileData,
         style: playStyleData,
         items: byOrderDesc(games),
@@ -51,14 +53,25 @@ const journeys = [
         favoritesHeader: animeJourneyLabels.allTimeFavoritesHeader,
         libraryHeader: animeJourneyLabels.animeLibraryHeader,
         favoriteTag: animeJourneyLabels.favoriteTag,
+        tagLabels: journeyTagLabels.anime,
         profile: null,
         style: null,
         items: byOrderDesc(animes),
     },
-].map((journey) => ({
-    ...journey,
-    favorites: journey.items.filter((entry) => entry.data.favorite),
-}));
+].map((journey) => {
+    // 筛选按钮：只列出实际用到的标签，按作品数从多到少排
+    const counts = new Map<string, number>();
+    for (const entry of journey.items) for (const tag of entry.data.tags) counts.set(tag, (counts.get(tag) ?? 0) + 1);
+    const tags = [...counts.entries()]
+        .filter(([key]) => journey.tagLabels[key])
+        .sort((a, b) => b[1] - a[1])
+        .map(([key, count]) => ({ key, count, label: journey.tagLabels[key] }));
+    return {
+        ...journey,
+        tags,
+        favorites: journey.items.filter((entry) => entry.data.favorite),
+    };
+});
 
 const defaultJourney = "game";
 ---
@@ -232,7 +245,7 @@ const defaultJourney = "game";
             <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-8" data-reveal-children="up">
                 <h2 class="text-4xl sm:text-5xl font-black shrink-0" style={`color: ${COLORS.black};`}>
                     {t(journey.libraryHeader)}
-                    <span class="opacity-50">({journey.items.length})</span>
+                    <span class="opacity-50">(<span data-library-count>{journey.items.length}</span>)</span>
                 </h2>
                 <div class="hidden sm:block h-2 flex-grow" style={`background-color: ${COLORS.black};`}></div>
 
@@ -252,6 +265,18 @@ const defaultJourney = "game";
                 </div>
             </div>
 
+            <!-- 类型筛选：多选，显示命中任意一个已选标签的作品；什么都不选 = 全部 -->
+            <div class="library-filter flex gap-2 mb-8" role="group" aria-label={t(journeyTagLabels.filterGroup)} data-library-filter>
+                <button type="button" class="filter-chip" aria-pressed="true" data-filter-all>
+                    {t(journeyTagLabels.all)}
+                </button>
+                {journey.tags.map((tag) => (
+                    <button type="button" class="filter-chip" aria-pressed="false" data-filter-tag={tag.key}>
+                        {t(tag.label)}<span class="filter-count">{tag.count}</span>
+                    </button>
+                ))}
+            </div>
+
             <!-- Game Grid -->
             <div
                     class="library-grid grid gap-4 sm:gap-5 lg:gap-6"
@@ -268,6 +293,7 @@ const defaultJourney = "game";
                             <div
                                     class="game-journey-card group relative flex flex-col"
                                     data-favorite={data.favorite ? "true" : "false"}
+                                    data-tags={data.tags.join(" ")}
                             >
                                 {/* 非 favorite：不可见占位，在卡片边框外部 */}
                                 {!data.favorite && (
@@ -493,6 +519,51 @@ const defaultJourney = "game";
         }
     }
 
+    /* ---- 作品库类型筛选 ---- */
+    .library-filter { flex-wrap: wrap; }
+    .filter-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4em;
+        padding: 0.4rem 0.8rem;
+        border: 2px solid var(--color-black);
+        border-radius: 8px;
+        background: var(--color-white);
+        color: var(--color-black);
+        font-weight: 900;
+        font-size: 0.9rem;
+        line-height: 1.2;
+        white-space: nowrap;
+        cursor: pointer;
+        box-shadow: 3px 3px 0 var(--color-black);
+        transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out, background-color 0.12s, color 0.12s;
+    }
+    .filter-chip:hover { transform: translate(1px, 1px); box-shadow: 2px 2px 0 var(--color-black); }
+    .filter-chip:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--color-black); }
+    .filter-chip:focus-visible { outline: 3px solid var(--color-blue-dark); outline-offset: 2px; }
+    .filter-chip[aria-pressed="true"] {
+        background: var(--color-orange-dark);
+        color: var(--color-white);
+        transform: translate(3px, 3px);
+        box-shadow: 0 0 0 var(--color-black);
+    }
+    .filter-count {
+        font-size: 0.75em;
+        opacity: 0.6;
+    }
+    /* 手机：一行横向滑动，不占好几行 */
+    @media (max-width: 639px) {
+        .library-filter {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            margin-inline: -1rem;
+            padding: 0 1rem 6px;
+            scrollbar-width: none;
+        }
+        .library-filter::-webkit-scrollbar { display: none; }
+        .filter-chip { font-size: 0.85rem; padding: 0.35rem 0.7rem; }
+    }
+
     /* ---- Slider 样式 ---- */
     .card-slider {
         -webkit-appearance: none;
@@ -571,6 +642,41 @@ const defaultJourney = "game";
                     document.dispatchEvent(new CustomEvent('motion:relayout'));
                 });
             }
+        });
+
+        // ---- 作品库类型筛选（多选，命中任一已选标签即显示）----
+        panels.forEach((panel) => {
+            const bar = panel.querySelector<HTMLElement>("[data-library-filter]");
+            if (!bar) return;
+            const allBtn = bar.querySelector<HTMLButtonElement>("[data-filter-all]")!;
+            const tagBtns = Array.from(bar.querySelectorAll<HTMLButtonElement>("[data-filter-tag]"));
+            const cards = Array.from(panel.querySelectorAll<HTMLElement>(".library-grid > .game-journey-card"));
+            const countEl = panel.querySelector<HTMLElement>("[data-library-count]");
+            const total = cards.length;
+
+            const apply = () => {
+                const active = tagBtns.filter((b) => b.getAttribute("aria-pressed") === "true").map((b) => b.dataset.filterTag!);
+                allBtn.setAttribute("aria-pressed", String(active.length === 0));
+                let shown = 0;
+                cards.forEach((card) => {
+                    const tags = (card.dataset.tags || "").split(" ");
+                    const match = active.length === 0 || active.some((tag) => tags.includes(tag));
+                    card.hidden = !match;
+                    if (match) shown++;
+                });
+                if (countEl) countEl.textContent = active.length === 0 ? String(total) : `${shown} / ${total}`;
+                // 显隐改变了网格里的列序，入场动画要重算
+                document.dispatchEvent(new CustomEvent("motion:relayout"));
+            };
+
+            allBtn.addEventListener("click", () => {
+                tagBtns.forEach((b) => b.setAttribute("aria-pressed", "false"));
+                apply();
+            });
+            tagBtns.forEach((btn) => btn.addEventListener("click", () => {
+                btn.setAttribute("aria-pressed", String(btn.getAttribute("aria-pressed") !== "true"));
+                apply();
+            }));
         });
 
         // ---- 标题里的词：在游戏 / 动画两条旅程之间切换 ----
