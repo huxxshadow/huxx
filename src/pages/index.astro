@@ -9,7 +9,7 @@ import {
     DEFAULT_LOCALE,
     type Lang,
 } from "@/i18n";
-import { SITE_TITLE, SITE_DESCRIPTION, X_ACCOUNT } from "@/consts";
+import { SITE_TITLE, SITE_DESCRIPTION, X_ACCOUNT, OG_CARD } from "@/consts";
 
 const t = useTranslations(Astro.currentLocale as Lang);
 const langs = Object.keys(LOCALES);
@@ -47,7 +47,7 @@ const defaultLocale = DEFAULT_LOCALE;
     <meta property="og:title" content={t(SITE_TITLE)} />
     <meta property="og:site_name" content="huxx" />
     <meta property="og:description" content={t(SITE_DESCRIPTION)} />
-    <meta property="og:image" content={Astro.site + "og-card.png"} />
+    <meta property="og:image" content={new URL(OG_CARD, Astro.site).href} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:url" content={Astro.url} />

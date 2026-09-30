@@ -5,7 +5,7 @@ import Footer from "@/components/Footer.astro";
 // import LocaleHtmlHead from "@/components/i18n/LocaleHtmlHead.astro";
 // import LocaleSuggest from "@/components/i18n/LocaleSuggest.astro";
 import Header from "@/components/Header.astro";
-import { SITE_TITLE, SITE_DESCRIPTION, X_ACCOUNT } from "@/consts";
+import { SITE_TITLE, SITE_DESCRIPTION, X_ACCOUNT, OG_CARD } from "@/consts";
 import { useTranslations, LOCALES, getLocalePaths, type Lang } from "@/i18n";
 const t = useTranslations(Astro.currentLocale as Lang);
 import "@/styles/global.css";
@@ -20,7 +20,7 @@ import { pageShift } from "@/transitions";
 interface Props {
     title?: string;
     description?: string;
-    /** 分享卡片用的图（站内路径或绝对地址），不传就用 public/og-card.png */
+    /** 分享卡片用的图（站内路径或绝对地址），不传就用 consts.ts 里的 OG_CARD */
     image?: string;
     /** 分享图的像素尺寸 [宽, 高]；写上后 Facebook / Instagram 第一次抓取就能出图 */
     imageSize?: [number, number];
@@ -38,7 +38,7 @@ const locale = Astro.currentLocale as Lang;
 // 有页面标题时写成「页面 - huxx」，首页没有标题，直接用站点标题
 const localeTitle = title ? `${title} - huxx` : t(SITE_TITLE);
 const localeDescription = description || t(SITE_DESCRIPTION);
-const ogImage = new URL(image || "/og-card.png", Astro.site).href;
+const ogImage = new URL(image || OG_CARD, Astro.site).href;
 const [ogImageWidth, ogImageHeight] = image ? (imageSize ?? []) : [1200, 630];
 ---
 
