@@ -32,7 +32,11 @@ const t = useTranslations(locale);
             <!-- 爱好：海报式排版，左右交替、人物放大，每条下面一条圆角横线 -->
             <ul class="hobbies">
                 {introLabels.hobbies.map((h, i) => (
-                        <li class:list={["hobby", `hobby-${i + 1}`, { "has-image": !!h.image, "has-photo": !!h.photo }]}>
+                        <>
+                        <li
+                                class:list={["hobby", `hobby-${i + 1}`, i % 2 ? "side-right" : "side-left", { "has-image": !!h.image, "has-photo": !!h.photo }]}
+                                style={`grid-row: ${i + 1};`}
+                        >
                             <div class="hobby-media">
                                 {h.image ? (
                                         <Image src={h.image} alt="" widths={[320, 640]} sizes="(min-width: 1024px) 320px, 200px" class="hobby-img" />
@@ -48,12 +52,15 @@ const t = useTranslations(locale);
                                     {h.notes.map((n) => <p class="hobby-note">{t(n)}</p>)}
                                 </div>
                             </div>
-                            {h.photo && (
-                                    <figure class="hobby-photo">
-                                        <Image src={h.photo} alt="" widths={[480, 800]} sizes="380px" />
-                                    </figure>
-                            )}
                         </li>
+                        {h.photo && (
+                                <li class:list={["photo-cell", i % 2 ? "side-right" : "side-left"]} style={`grid-row: ${i + 1};`} aria-hidden="true">
+                                    <figure class="hobby-photo">
+                                        <Image src={h.photo} alt="" widths={[480, 800]} sizes="(min-width: 1024px) 400px, 90vw" />
+                                    </figure>
+                                </li>
+                        )}
+                        </>
                 ))}
             </ul>
 
@@ -160,7 +167,7 @@ const t = useTranslations(locale);
         max-width: 100%;
         justify-self: start;
     }
-    .hobbies .hobby:nth-child(even) { justify-self: end; }
+    .hobbies .hobby.side-right { justify-self: end; }
     .hobbies .hobby::after {
         content: "";
         position: absolute;
@@ -339,30 +346,40 @@ const t = useTranslations(locale);
         .hobbies .hobby-1 .hobby-text { margin-left: 0; padding-bottom: 0; }
         }
 
-    /* 标题上方的真实照片：小相片，米白相框 + 粗边框 + 硬阴影，歪着放 */
+    /*
+     * 真实照片：单独占一个格子，和这一条在同一行，放在整块区域的另一侧边上
+     *（靠左的条目 → 照片在最右边；靠右的条目 → 照片在最左边）。条目本身和下面的横线都不变。
+     */
+    .photo-cell {
+        display: flex;
+        align-items: center;
+        align-self: center;
+        pointer-events: none;
+    }
+    .photo-cell.side-left { grid-column: 9 / 13; justify-self: end; }
+    .photo-cell.side-right { grid-column: 1 / 5; justify-self: start; }
     .hobby-photo {
         display: block;
-        width: clamp(220px, 23vw, 340px);
-        margin-bottom: 1rem;
-        padding: 0.5rem 0.5rem 1.4rem;
+        width: clamp(260px, 28vw, 400px);
+        padding: 0.6rem 0.6rem 1.6rem;
         background: #fffdf8;
         border: 3px solid currentColor;
         border-radius: 0.5rem;
-        box-shadow: 6px 6px 0 currentColor;
-        rotate: -3deg;
+        box-shadow: 7px 7px 0 currentColor;
+        rotate: 3deg;
     }
-    .hobby:nth-child(even) .hobby-photo { rotate: 3deg; }
-    /* 带照片的条目文字更高，不再往上叠，免得照片压住上一条的文字 */
-    /* 照片放在这一条的另一侧（靠左的条目放在文字右边，靠右的放在文字左边），填掉那一侧的空白；
-       带照片的条目占满整行，标题可以换行 */
-    .hobbies .hobby.has-photo { grid-column: 1 / 13; align-items: center; gap: clamp(1rem, 2.5vw, 2.5rem); }
+    .photo-cell.side-right .hobby-photo { rotate: -3deg; }
+    /* 带照片的行：条目让出照片那几列；这一行和下一行都不往上叠，免得撞到照片 */
+    .hobbies .hobby.has-photo.side-left { grid-column: 1 / 9; }
+    .hobbies .hobby.has-photo.side-right { grid-column: 5 / 13; }
     .hobbies .hobby.has-photo .hobby-title { white-space: normal; }
-    .hobbies .hobby.has-photo .hobby-text { flex: 1 1 auto; min-width: 12rem; }
-    .hobbies .hobby.has-photo .hobby-photo { flex: none; margin-bottom: 0; align-self: center; }
-    /* 带照片的条目占满整行，不再往上叠，下一条也不叠上来 */
     .hobbies .hobby.has-photo,
-    .hobbies .hobby.has-photo + .hobby { margin-top: 1.5rem; }
+    .hobbies .photo-cell + .hobby { margin-top: 1.5rem; }
     .hobbies .hobby-1.has-photo { margin-top: 0; }
+    @media (max-width: 639px) {
+        .photo-cell { align-self: center; }
+        .hobby-photo { width: 85%; margin: -1.5rem auto 0; }
+    }
     /* 统一裁成 4:3，竖拍的照片也不会太高 */
     .hobby-photo :global(img) {
         display: block;
