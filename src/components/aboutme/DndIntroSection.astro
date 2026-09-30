@@ -45,7 +45,7 @@ const t = useTranslations(locale);
                             <div class="hobby-text">
                                 {h.photo && (
                                         <figure class="hobby-photo">
-                                            <Image src={h.photo} alt="" widths={[320, 640]} sizes="260px" />
+                                            <Image src={h.photo} alt="" widths={[480, 800]} sizes="380px" />
                                         </figure>
                                 )}
                                 <p class="hobby-title">{t(h.title)}</p>
@@ -342,7 +342,7 @@ const t = useTranslations(locale);
     /* 标题上方的真实照片：小相片，米白相框 + 粗边框 + 硬阴影，歪着放 */
     .hobby-photo {
         display: inline-block;
-        width: clamp(170px, 18vw, 260px);
+        width: clamp(240px, 26vw, 380px);
         margin-bottom: 1rem;
         padding: 0.5rem 0.5rem 1.4rem;
         background: #fffdf8;
