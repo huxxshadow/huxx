@@ -56,7 +56,7 @@ const t = useTranslations(locale);
                         {h.photo && (
                                 <li class:list={["photo-cell", i % 2 ? "side-right" : "side-left"]} style={`grid-row: ${i + 1};`} aria-hidden="true">
                                     <figure class="hobby-photo">
-                                        <Image src={h.photo} alt="" widths={[640, 1040]} sizes="(min-width: 1024px) 520px, 90vw" />
+                                        <Image src={h.photo} alt="" widths={[640, 1040]} sizes="(min-width: 1024px) 380px, 90vw" />
                                     </figure>
                                 </li>
                         )}
@@ -122,6 +122,10 @@ const t = useTranslations(locale);
         display: grid;
         grid-template-columns: repeat(12, minmax(0, 1fr));
         padding: 2rem 0 3rem;
+        /* 整块居中，最宽 1120px，大屏上不再铺到两边 */
+        width: 100%;
+        max-width: 1120px;
+        margin-inline: auto;
     }
     .hobbies .hobby {
         display: flex;
@@ -357,11 +361,12 @@ const t = useTranslations(locale);
         align-self: center;
         pointer-events: none;
     }
-    .photo-cell.side-left { grid-column: 8 / 13; justify-self: end; }
-    .photo-cell.side-right { grid-column: 1 / 6; justify-self: start; }
+    .photo-cell.side-left { grid-column: 9 / 13; justify-self: stretch; }
+    .photo-cell.side-right { grid-column: 1 / 5; justify-self: stretch; }
     .hobby-photo {
         display: block;
-        width: clamp(320px, 36vw, 520px);
+        /* 占满照片那四列（最宽 1120 时约 370px） */
+        width: 100%;
         padding: 0.6rem 0.6rem 1.6rem;
         background: #fffdf8;
         border: 3px solid currentColor;
@@ -371,17 +376,17 @@ const t = useTranslations(locale);
     }
     .photo-cell.side-right .hobby-photo { rotate: -3deg; }
     /* 带照片的行：条目让出照片那几列；这一行和下一行都不往上叠，免得撞到照片 */
-    .hobbies .hobby.has-photo.side-left { grid-column: 1 / 8; }
-    .hobbies .hobby.has-photo.side-right { grid-column: 6 / 13; }
+    .hobbies .hobby.has-photo.side-left { grid-column: 1 / 9; }
+    .hobbies .hobby.has-photo.side-right { grid-column: 5 / 13; }
     /* 带照片的行文字区变窄：标题稍小；中日韩标题不断行（英文可以换行） */
-    .hobbies .hobby.has-photo .hobby-title { white-space: normal; font-size: clamp(2.2rem, 4.2vw, 4rem); }
+    .hobbies .hobby.has-photo .hobby-title { white-space: normal; font-size: clamp(2rem, 3.6vw, 3.4rem); }
     html:is([lang="zh"], [lang="ja"], [lang="ko"]) .hobbies .hobby.has-photo .hobby-title { white-space: nowrap; }
     .hobbies .hobby.has-photo,
     .hobbies .photo-cell + .hobby { margin-top: 3.5rem; }
     .hobbies .hobby-1.has-photo,
     .hobbies .hobby-1 + .photo-cell { margin-top: 0; }
     /* 带照片的行里插画稍小，给照片腾位置；文字压在照片上层，万一挨到也不会被挡住 */
-    .hobbies .hobby.has-photo.has-image .hobby-media { height: clamp(14rem, 23vw, 22rem); }
+    .hobbies .hobby.has-photo.has-image .hobby-media { height: clamp(13rem, 20vw, 19rem); }
     .hobbies .hobby.has-photo { z-index: 2; }
     .photo-cell { position: relative; z-index: 1; }
     @media (max-width: 639px) {
