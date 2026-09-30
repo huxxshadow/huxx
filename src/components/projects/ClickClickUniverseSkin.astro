@@ -455,14 +455,14 @@ const assetVars = `:root{--ccu-world-lg:url("${worldLg.src}");--ccu-world-sm:url
     /* ========================================================= */
     /* 正文：游戏 UI 的白色圆角面板                                */
     /* ========================================================= */
-    main.skin-ccu {
+    section.skin-ccu {
         position: relative;
         background-color: transparent;
     }
 
     /* 纸面两侧的道具，只有视口比面板（80rem）宽出两条边时才放得下 */
-    main.skin-ccu::before,
-    main.skin-ccu::after {
+    section.skin-ccu::before,
+    section.skin-ccu::after {
         display: none;
         content: "";
         position: absolute;
@@ -475,7 +475,7 @@ const assetVars = `:root{--ccu-world-lg:url("${worldLg.src}");--ccu-world-sm:url
     }
 
     @media (min-width: 1680px) {
-        main.skin-ccu::before {
+        section.skin-ccu::before {
             display: block;
             top: 5rem;
             left: calc(50% - 40rem - 10rem);
@@ -484,7 +484,7 @@ const assetVars = `:root{--ccu-world-lg:url("${worldLg.src}");--ccu-world-sm:url
             background-image: var(--ccu-p-tree-little);
         }
 
-        main.skin-ccu::after {
+        section.skin-ccu::after {
             display: block;
             bottom: 7rem;
             right: calc(50% - 40rem - 9rem);

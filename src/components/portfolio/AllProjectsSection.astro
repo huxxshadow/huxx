@@ -46,10 +46,11 @@ const t = useTranslations(currentLang);
 
             {/* 卡片大小调节滑块 */}
             <div class="project-size-control flex items-center gap-2 sm:gap-3 shrink-0 bg-white px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl border-[3px] sm:border-4" style={`border-color: ${COLORS.black}; box-shadow: 3px 3px 0px ${COLORS.black};`}>
-                <i class="fa-solid fa-compress text-lg opacity-60"></i>
+                <i class="fa-solid fa-compress text-lg opacity-60" aria-hidden="true"></i>
                 <input
                         type="range"
                         id="project-card-size-slider"
+                        aria-label={t(allProjectsLabels.sizeSlider)}
                         min="200"
                         max="600"
                         value="400"
@@ -57,7 +58,7 @@ const t = useTranslations(currentLang);
                         class="w-20 sm:w-32 h-2 rounded-lg appearance-none cursor-pointer"
                         style={`background-color: ${COLORS.black};`}
                 />
-                <i class="fa-solid fa-expand text-xl opacity-60"></i>
+                <i class="fa-solid fa-expand text-xl opacity-60" aria-hidden="true"></i>
             </div>
         </div>
 

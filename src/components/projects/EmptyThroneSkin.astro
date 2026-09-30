@@ -199,7 +199,7 @@ const vars = [
     /* ========================================================= */
     /* 正文                                                       */
     /* ========================================================= */
-    main.skin-et {
+    section.skin-et {
         position: relative;
         /* 右下角那面大魔镜往外探出了一截，裁掉，不然整页能左右滑动 */
         overflow-x: clip;
@@ -217,7 +217,7 @@ const vars = [
     }
     /* 宽屏：从上往下「角色 → 场景 → 角色 → …」交替排，互不重叠：场景铺满宽度、四边淡出；角色左右轮换（原色、低透明度、烤好的阴影） */
     @media (min-width: 1280px) {
-        main.skin-et::before {
+        section.skin-et::before {
             content: "";
             position: absolute;
             inset: 0;
@@ -234,7 +234,7 @@ const vars = [
                     var(--et-bg-guard) left 0 top 96% / auto clamp(22rem, 30vw, 28rem) no-repeat;
         }
     }
-    main.skin-et::after {
+    section.skin-et::after {
         content: "";
         position: absolute;
         right: -3rem;

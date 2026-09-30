@@ -2,6 +2,14 @@
 import type { Multilingual } from "@/i18n";
 
 export const allProjectsLabels = {
+    // 卡片大小滑块的读屏标签
+    sizeSlider: {
+        en: "Project card size",
+        zh: "项目卡片大小",
+        ja: "プロジェクトカードのサイズ",
+        ko: "프로젝트 카드 크기",
+    } as Multilingual,
+
     sectionTitle: {
         en: "All Projects",
         zh: "所有项目",

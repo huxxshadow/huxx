@@ -10,6 +10,7 @@ import {
     gameJourneyLabels,
     journeyTitleParts,
     playerProfileData,
+    sizeSliderLabels,
     playStyleData,
 } from "@/i18n/components/aboutme/GameJourneySection_i18.ts";
 
@@ -159,16 +160,17 @@ const defaultJourney = "game";
 
                         <!-- Size Slider -->
                         <div class="journey-size-control flex items-center gap-3 shrink-0">
-                            <i class="fa-solid fa-compress text-base opacity-40"></i>
+                            <i class="fa-solid fa-compress text-base opacity-40" aria-hidden="true"></i>
                             <input
                                     type="range"
+                                    aria-label={t(sizeSliderLabels.favorites)}
                                     min="160"
                                     max="420"
                                     value="240"
                                     class="card-slider fav-size-slider"
                                     style={`--thumb-color: ${COLORS.orange.dark};`}
                             />
-                            <i class="fa-solid fa-expand text-base opacity-40"></i>
+                            <i class="fa-solid fa-expand text-base opacity-40" aria-hidden="true"></i>
                         </div>
                     </div>
 
@@ -236,16 +238,17 @@ const defaultJourney = "game";
 
                 <!-- Size Slider -->
                 <div class="journey-size-control flex items-center gap-3 shrink-0">
-                    <i class="fa-solid fa-compress text-base opacity-40"></i>
+                    <i class="fa-solid fa-compress text-base opacity-40" aria-hidden="true"></i>
                     <input
                             type="range"
+                            aria-label={t(sizeSliderLabels.library)}
                             min="100"
                             max="320"
                             value="180"
                             class="card-slider card-size-slider"
                             style={`--thumb-color: ${COLORS.orange.dark};`}
                     />
-                    <i class="fa-solid fa-expand text-base opacity-40"></i>
+                    <i class="fa-solid fa-expand text-base opacity-40" aria-hidden="true"></i>
                 </div>
             </div>
 

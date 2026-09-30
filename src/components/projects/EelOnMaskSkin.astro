@@ -121,7 +121,7 @@ const assetVars = `:root{--eel-desk-lg:url("${deskLg.src}");--eel-desk-sm:url("$
     /* HERO = CRT 显示器                                          */
     /* ========================================================= */
 
-    /* .skin-eel 就挂在 <header> / <main> 上 */
+    /* .skin-eel 就挂在 <header> / <section> 上 */
     header.skin-eel {
         background-color: transparent;
         border-color: transparent !important;
@@ -376,15 +376,15 @@ const assetVars = `:root{--eel-desk-lg:url("${deskLg.src}");--eel-desk-sm:url("$
     /* ========================================================= */
     /* 正文 = 贴在桌面上的奶油纸                                   */
     /* ========================================================= */
-    main.skin-eel {
+    section.skin-eel {
         position: relative;
         background-color: transparent;
     }
 
     /* 纸张两侧、贴在桌面上的鳗鱼。只有视口比纸张（80rem）宽出两条边时才放得下，
        否则它们会压到正文上 */
-    main.skin-eel::before,
-    main.skin-eel::after {
+    section.skin-eel::before,
+    section.skin-eel::after {
         display: none;
         content: "";
         position: absolute;
@@ -397,7 +397,7 @@ const assetVars = `:root{--eel-desk-lg:url("${deskLg.src}");--eel-desk-sm:url("$
     }
 
     @media (min-width: 1680px) {
-        main.skin-eel::before {
+        section.skin-eel::before {
             display: block;
             top: 4rem;
             left: calc(50% - 40rem - 11.5rem);
@@ -407,7 +407,7 @@ const assetVars = `:root{--eel-desk-lg:url("${deskLg.src}");--eel-desk-sm:url("$
             background-image: var(--eel-st-eel-dark);
         }
 
-        main.skin-eel::after {
+        section.skin-eel::after {
             display: block;
             bottom: 5rem;
             right: calc(50% - 40rem - 13rem);

@@ -44,6 +44,23 @@ export const journeyTitleParts = {
     } as Multilingual,
 };
 
+// 卡片大小滑块的读屏标签（游戏 / 动画两条旅程共用）
+export const sizeSliderLabels = {
+    favorites: {
+        en: "Favorite card size",
+        zh: "最爱卡片大小",
+        ja: "お気に入りカードのサイズ",
+        ko: "최애 카드 크기",
+    } as Multilingual,
+
+    library: {
+        en: "Library card size",
+        zh: "作品库卡片大小",
+        ja: "ライブラリカードのサイズ",
+        ko: "라이브러리 카드 크기",
+    } as Multilingual,
+};
+
 export const gameJourneyLabels = {
     playerProfileHeader: {
         en: "Player Profile",
