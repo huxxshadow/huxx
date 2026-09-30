@@ -7,35 +7,10 @@
 @import "@fontsource-variable/noto-sans-jp/wght.css";
 @import "@fontsource-variable/noto-sans-kr/wght.css";
 
-/* 中日韩页：只含站内用到的字的 Noto Sans SC / JP / KR（可变字重），每种一个文件、各页共用缓存；
-   原来按 unicode-range 切的 100 多片要下十几片，每到一片整页重排一次。
-   新加的字不在子集里时，会落到后面的 Noto Sans * Variable 分片上，不会缺字（重新生成见 scripts/cjk-subset.py） */
-@font-face {
-    font-family: 'Noto Sans SC Site';
-    font-style: normal;
-    font-display: swap;
-    font-weight: 100 900;
-    src: url('../fonts/noto-sans-sc-site.woff2') format('woff2-variations'), url('../fonts/noto-sans-sc-site.woff2') format('woff2');
-}
-@font-face {
-    font-family: 'Noto Sans JP Site';
-    font-style: normal;
-    font-display: swap;
-    font-weight: 100 900;
-    src: url('../fonts/noto-sans-jp-site.woff2') format('woff2-variations'), url('../fonts/noto-sans-jp-site.woff2') format('woff2');
-}
-@font-face {
-    font-family: 'Noto Sans KR Site';
-    font-style: normal;
-    font-display: swap;
-    font-weight: 100 900;
-    src: url('../fonts/noto-sans-kr-site.woff2') format('woff2-variations'), url('../fonts/noto-sans-kr-site.woff2') format('woff2');
-}
-
-
-
-
-
+/* 中日韩页：只含站内用到的字的 Noto Sans SC / JP / KR（可变字重），每种语言按页面拆成主文件 + 项目页专用字两个文件，
+   各页共用缓存；原来按 unicode-range 切的 100 多片要下十几片，每到一片整页重排一次。
+   @font-face 由 scripts/cjk-subset.py 生成。新加的字不在子集里时，会落到后面的 Noto Sans * Variable 分片上，不会缺字 */
+@import "./cjk-site-fonts.css";
 
 /* Roboto：每个字重两份——拉丁 + 希腊 + 箭头 / 数学 / 几何符号子集（常用，约 25K）和原来的完整文件（只在出现西里尔等其它字符时才下载） */
 /* roboto-100 - cyrillic_greek_latin_latin-ext_math_symbols */
