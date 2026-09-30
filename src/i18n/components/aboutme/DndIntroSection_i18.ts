@@ -51,7 +51,7 @@ export const introLabels = {
             icon: "fa-medal",
             image: hobbyRunning,
             photo: photoRunning,
-            title: { en: "I love long-distance running", zh: "喜欢长跑", ja: "長距離走が好き", ko: "장거리 달리기를 좋아해요" },
+            title: { en: "I love running", zh: "喜欢长跑", ja: "長距離走が好き", ko: "장거리 달리기를 좋아해요" },
             notes: [{
                 en: "Ran the Standard Chartered Hong Kong Half Marathon",
                 zh: "跑过香港渣打半马",
