@@ -54,7 +54,11 @@ const t = useTranslations(locale);
                             </div>
                         </li>
                         {h.photo && (
-                                <li class:list={["photo-cell", i % 2 ? "side-right" : "side-left"]} style={`grid-row: ${i + 1};`} aria-hidden="true">
+                                <li
+                                        class:list={["photo-cell", `photo-${i + 1}`, i % 2 ? "side-right" : "side-left"]}
+                                        style={`grid-row: ${i + 1};${h.theme ? ` --t-light: ${h.theme.light}; --t-dark: ${h.theme.dark};` : ""}`}
+                                        aria-hidden="true"
+                                >
                                     <figure class="hobby-photo">
                                         <Image src={h.photo} alt="" widths={[640, 1040]} sizes="(min-width: 1024px) 460px, 90vw" />
                                     </figure>
@@ -120,9 +124,83 @@ const t = useTranslations(locale);
         --shade: #4e4e4e;
         --ink: #1a1a1a;
     }
-    .hobby:hover {
+    /*
+     * 「选中」：鼠标放在某一条或它的照片上，这一整行一起变成主题色——
+     * 插画深色部分、标题、标签、横线、照片边框换色，背后浮出一块主题浅色底，整行微微浮起
+     */
+    .hobbies:has(.hobby-1:hover, .photo-1:hover) :is(.hobby-1, .photo-1),
+    .hobbies:has(.hobby-2:hover, .photo-2:hover) :is(.hobby-2, .photo-2),
+    .hobbies:has(.hobby-3:hover, .photo-3:hover) :is(.hobby-3, .photo-3),
+    .hobbies:has(.hobby-4:hover, .photo-4:hover) :is(.hobby-4, .photo-4),
+    .hobbies:has(.hobby-5:hover, .photo-5:hover) :is(.hobby-5, .photo-5),
+    .hobbies:has(.hobby-6:hover, .photo-6:hover) :is(.hobby-6, .photo-6) {
         --shade: var(--t-dark, #4e4e4e);
         --ink: color-mix(in srgb, var(--t-dark, #1a1a1a) 55%, #000);
+        --sel: 1;
+    }
+    .hobby,
+    .photo-cell { --sel: 0; }
+
+    /* 浅色底：比条目四周多出一圈，圆角，选中时淡入 */
+    .hobbies .hobby::before {
+        content: "";
+        position: absolute;
+        inset: -1.2rem -1.6rem -0.6rem;
+        z-index: 0;
+        border-radius: 1.6rem;
+        background: var(--t-light, transparent);
+        opacity: calc(var(--sel) * 0.75);
+        scale: calc(0.96 + var(--sel) * 0.04);
+        transition: opacity 0.3s ease, scale 0.3s ease;
+        pointer-events: none;
+    }
+    .hobbies .hobby > * { position: relative; z-index: 1; }
+
+    .hobbies .hobby,
+    .hobbies .photo-cell {
+        transition: translate 0.3s ease;
+        translate: 0 calc(var(--sel) * -4px);
+    }
+    .hobbies .hobby-title { transition: color 0.3s ease; }
+    .hobbies .hobby-note { transition: background-color 0.3s ease; }
+    .hobbies .hobby::after { transition: background-color 0.3s ease; }
+    .hobby-photo { transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+    .hobbies:has(.hobby-1:hover, .photo-1:hover) .hobby-1 .hobby-title,
+    .hobbies:has(.hobby-2:hover, .photo-2:hover) .hobby-2 .hobby-title,
+    .hobbies:has(.hobby-3:hover, .photo-3:hover) .hobby-3 .hobby-title,
+    .hobbies:has(.hobby-4:hover, .photo-4:hover) .hobby-4 .hobby-title,
+    .hobbies:has(.hobby-5:hover, .photo-5:hover) .hobby-5 .hobby-title,
+    .hobbies:has(.hobby-6:hover, .photo-6:hover) .hobby-6 .hobby-title {
+        color: var(--t-dark);
+    }
+    .hobbies:has(.hobby-1:hover, .photo-1:hover) .hobby-1 .hobby-note,
+    .hobbies:has(.hobby-2:hover, .photo-2:hover) .hobby-2 .hobby-note,
+    .hobbies:has(.hobby-3:hover, .photo-3:hover) .hobby-3 .hobby-note,
+    .hobbies:has(.hobby-4:hover, .photo-4:hover) .hobby-4 .hobby-note,
+    .hobbies:has(.hobby-5:hover, .photo-5:hover) .hobby-5 .hobby-note,
+    .hobbies:has(.hobby-6:hover, .photo-6:hover) .hobby-6 .hobby-note {
+        background: var(--t-dark);
+    }
+    .hobbies:has(.hobby-1:hover, .photo-1:hover) .hobby-1::after,
+    .hobbies:has(.hobby-2:hover, .photo-2:hover) .hobby-2::after,
+    .hobbies:has(.hobby-3:hover, .photo-3:hover) .hobby-3::after,
+    .hobbies:has(.hobby-4:hover, .photo-4:hover) .hobby-4::after,
+    .hobbies:has(.hobby-5:hover, .photo-5:hover) .hobby-5::after,
+    .hobbies:has(.hobby-6:hover, .photo-6:hover) .hobby-6::after {
+        background: var(--t-dark);
+    }
+    .hobbies:has(.hobby-1:hover, .photo-1:hover) .photo-1 .hobby-photo,
+    .hobbies:has(.hobby-2:hover, .photo-2:hover) .photo-2 .hobby-photo,
+    .hobbies:has(.hobby-3:hover, .photo-3:hover) .photo-3 .hobby-photo,
+    .hobbies:has(.hobby-4:hover, .photo-4:hover) .photo-4 .hobby-photo,
+    .hobbies:has(.hobby-5:hover, .photo-5:hover) .photo-5 .hobby-photo,
+    .hobbies:has(.hobby-6:hover, .photo-6:hover) .photo-6 .hobby-photo {
+        border-color: var(--t-dark);
+        box-shadow: 7px 7px 0 var(--t-dark);
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .hobbies .hobby,
+        .hobbies .photo-cell { translate: none; }
     }
     .hobby-img :global(path) { transition: fill 0.35s ease; }
     svg.hobby-img { display: block; overflow: visible; }
@@ -375,7 +453,6 @@ const t = useTranslations(locale);
         margin-top: 3.5rem;
         align-items: center;
         align-self: center;
-        pointer-events: none;
     }
     /* 照片朝文字那一侧留出间隔（网格没有列间距，照片又是歪着的），文字永远碰不到照片 */
     .photo-cell.side-left { grid-column: 9 / 13; justify-self: stretch; padding-left: clamp(1.5rem, 3vw, 2.5rem); }
