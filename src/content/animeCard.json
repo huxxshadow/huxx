@@ -3364,5 +3364,77 @@
     },
     "image": "../assets/animeCard/The Garden of Sinners.webp",
     "favorite": true
+  },
+  {
+    "id": "doraemon-nobitas-art-world-tales",
+    "order": 190,
+    "title": {
+      "en": "Doraemon the Movie: Nobita's Art World Tales",
+      "zh": "哆啦A梦：大雄的绘世界物语",
+      "ja": "映画ドラえもん のび太の絵世界物語",
+      "ko": "극장판 도라에몽: 진구의 그림 세계 이야기"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/animeCard/Doraemon Nobita's Art World Tales.webp",
+    "favorite": false
+  },
+  {
+    "id": "mawaru-penguindrum",
+    "order": 191,
+    "title": {
+      "en": "Mawaru Penguindrum",
+      "zh": "回转企鹅罐",
+      "ja": "輪るピングドラム",
+      "ko": "돌아가는 펭귄드럼"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/animeCard/Mawaru Penguindrum.webp",
+    "favorite": false
+  },
+  {
+    "id": "city-the-animation",
+    "order": 192,
+    "title": {
+      "en": "CITY THE ANIMATION",
+      "zh": "小城日常",
+      "ja": "CITY THE ANIMATION",
+      "ko": "CITY THE ANIMATION"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/animeCard/CITY THE ANIMATION.webp",
+    "favorite": false
+  },
+  {
+    "id": "witch-hat-atelier",
+    "order": 193,
+    "title": {
+      "en": "Witch Hat Atelier",
+      "zh": "尖帽子的魔法工坊",
+      "ja": "とんがり帽子のアトリエ",
+      "ko": "고깔모자의 아틀리에"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/animeCard/Witch Hat Atelier.webp",
+    "favorite": false
   }
 ]
