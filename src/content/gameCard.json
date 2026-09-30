@@ -2169,10 +2169,10 @@
       "ko": "로보토미 코퍼레이션"
     },
     "comment": {
-      "en": "Its mechanics and narrative are deeply intertwined, presenting a distinctive and fully realized world.",
-      "zh": "机制与叙事深度结合，呈现出独特而完整的世界观。",
-      "ja": "システムと物語が深く結びつき、独自性と完成度を兼ね備えた世界観を描き出している。",
-      "ko": "시스템과 서사가 깊이 결합되어 독창적이고 완성도 높은 세계관을 보여준다."
+      "en": "A distinctive and captivating world.",
+      "zh": "独特而富有魅力的世界观。",
+      "ja": "独特で魅力にあふれた世界観。",
+      "ko": "독특하고 매력적인 세계관."
     },
     "image": "../assets/gameCard/Lobotomy Corporation.webp",
     "favorite": true
