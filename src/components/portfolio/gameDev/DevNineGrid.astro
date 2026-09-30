@@ -8,6 +8,7 @@
 // 切换姿势：八张图身体完全重合，只有手臂不同，所以在一次 Q 弹的「压扁—弹起—回弹」里瞬间换图，不做淡入淡出
 import sprite from "@/assets/portfolio/mascot/sprite.webp";
 import { getRelativeLocaleUrl } from "astro:i18n";
+import { getImage } from "astro:assets";
 import { useTranslations, type Lang } from "@/i18n";
 import type { GameDevShowcase } from "./data";
 import WorkCover from "@/components/portfolio/gameDesign/WorkCover.astro";
@@ -26,6 +27,8 @@ const DIRS = ["up-left", "up", "up-right", "left", "right", "down-left", "down",
 const DEFAULT_POSE = "up";
 // 精灵图单帧尺寸（729 × 900）
 const FRAME_RATIO = `${sprite.width / DIRS.length} / ${sprite.height}`;
+// 原图 536K，按质量 80 重新编码约 394K（线稿看不出差别）；它在页面很靠下，等快滚到时才加载（见下面的脚本）
+const spriteImg = await getImage({ src: sprite, format: "webp", quality: 80 });
 
 const works = showcase.works.slice(0, 8);
 const cells = works.map((w, i) => ({ w, dir: DIRS[i] }));
@@ -38,7 +41,7 @@ const after = cells.slice(4);
             <!-- 中间：只有角色，透明底，无边框无文字 -->
             <div class="ng-center" aria-hidden="true">
                 <div class="ng-mascot">
-                    <div class="ng-sprite" data-sprite style={`background-image: url(${sprite.src}); aspect-ratio: ${FRAME_RATIO}; --frame: ${DIRS.indexOf(DEFAULT_POSE)};`}></div>
+                    <div class="ng-sprite" data-sprite data-sprite-src={spriteImg.src} style={`aspect-ratio: ${FRAME_RATIO}; --frame: ${DIRS.indexOf(DEFAULT_POSE)};`}></div>
                 </div>
             </div>
     ) : group.map(({ w, dir }) => (
@@ -76,6 +79,19 @@ const after = cells.slice(4);
             const DIRS = ["up-left", "up", "up-right", "left", "right", "down-left", "down", "down-right"];
             const spriteEl = root.querySelector<HTMLElement>("[data-sprite]");
             const mascot = root.querySelector<HTMLElement>(".ng-mascot");
+
+            // 精灵图离视口还有 1000px 时才挂上背景图，首屏不和上面的内容抢带宽
+            if (spriteEl?.dataset.spriteSrc) {
+                const load = () => { spriteEl.style.backgroundImage = `url(${spriteEl.dataset.spriteSrc})`; };
+                if ("IntersectionObserver" in window) {
+                    const io = new IntersectionObserver((entries) => {
+                        if (entries.some((e) => e.isIntersecting)) { load(); io.disconnect(); }
+                    }, { rootMargin: "1000px 0px" });
+                    io.observe(root);
+                } else {
+                    load();
+                }
+            }
             let current = "up";
             let swapTimer = 0;
             const swapTo = (dir: string) => {

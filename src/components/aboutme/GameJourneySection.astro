@@ -215,8 +215,8 @@ const defaultJourney = "game";
                                                             src={data.image}
                                                             alt={displayTitle}
                                                             class="absolute inset-0 w-full h-full object-cover"
-                                                            widths={[320, 480, 660]}
-                                                            sizes="(max-width: 639px) 50vw, 320px"
+                                                            widths={[320, 480, 540, 660]}
+                                                            sizes="(max-width: 639px) calc((100vw - 2.75rem) / 2), 320px"
                                                             loading="lazy"
                                                             decoding="async"
                                                             draggable="false"
@@ -334,7 +334,7 @@ const defaultJourney = "game";
                                                         alt={displayTitle}
                                                         class="absolute inset-0 w-full h-full object-cover"
                                                         widths={[240, 360, 540]}
-                                                        sizes="(max-width: 639px) 33vw, 240px"
+                                                        sizes="(max-width: 639px) calc((100vw - 3.2rem) / 3), 240px"
                                                         loading="lazy"
                                                         decoding="async"
                                                         draggable="false"
@@ -363,7 +363,8 @@ const defaultJourney = "game";
 </section>
 
 <style>
-    /* 手机：列宽固定（游戏库三列、最爱两列），不显示大小滑块 */
+    /* 手机：列宽固定（游戏库三列、最爱两列），不显示大小滑块。
+       封面 <Image> 的 sizes 按这里的列数和 gap 算（左右各 1rem 页边距），改列数 / 间距时一起改 */
     @media (max-width: 639px) {
         .library-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 0.75rem 0.6rem; }
         .favorites-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 0.9rem 0.75rem; }
