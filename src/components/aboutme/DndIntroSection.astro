@@ -43,16 +43,16 @@ const t = useTranslations(locale);
                                 )}
                             </div>
                             <div class="hobby-text">
-                                {h.photo && (
-                                        <figure class="hobby-photo">
-                                            <Image src={h.photo} alt="" widths={[480, 800]} sizes="380px" />
-                                        </figure>
-                                )}
                                 <p class="hobby-title">{t(h.title)}</p>
                                 <div class="hobby-notes">
                                     {h.notes.map((n) => <p class="hobby-note">{t(n)}</p>)}
                                 </div>
                             </div>
+                            {h.photo && (
+                                    <figure class="hobby-photo">
+                                        <Image src={h.photo} alt="" widths={[480, 800]} sizes="380px" />
+                                    </figure>
+                            )}
                         </li>
                 ))}
             </ul>
@@ -341,8 +341,8 @@ const t = useTranslations(locale);
 
     /* 标题上方的真实照片：小相片，米白相框 + 粗边框 + 硬阴影，歪着放 */
     .hobby-photo {
-        display: inline-block;
-        width: clamp(240px, 26vw, 380px);
+        display: block;
+        width: clamp(220px, 23vw, 340px);
         margin-bottom: 1rem;
         padding: 0.5rem 0.5rem 1.4rem;
         background: #fffdf8;
@@ -353,8 +353,15 @@ const t = useTranslations(locale);
     }
     .hobby:nth-child(even) .hobby-photo { rotate: 3deg; }
     /* 带照片的条目文字更高，不再往上叠，免得照片压住上一条的文字 */
+    /* 照片放在这一条的另一侧（靠左的条目放在文字右边，靠右的放在文字左边），填掉那一侧的空白；
+       带照片的条目占满整行，标题可以换行 */
+    .hobbies .hobby.has-photo { grid-column: 1 / 13; align-items: center; gap: clamp(1rem, 2.5vw, 2.5rem); }
+    .hobbies .hobby.has-photo .hobby-title { white-space: normal; }
+    .hobbies .hobby.has-photo .hobby-text { flex: 1 1 auto; min-width: 12rem; }
+    .hobbies .hobby.has-photo .hobby-photo { flex: none; margin-bottom: 0; align-self: center; }
+    /* 带照片的条目占满整行，不再往上叠，下一条也不叠上来 */
     .hobbies .hobby.has-photo,
-    .hobbies .hobby.has-photo + .hobby { margin-top: 2rem; }
+    .hobbies .hobby.has-photo + .hobby { margin-top: 1.5rem; }
     .hobbies .hobby-1.has-photo { margin-top: 0; }
     /* 统一裁成 4:3，竖拍的照片也不会太高 */
     .hobby-photo :global(img) {
