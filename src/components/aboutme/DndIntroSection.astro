@@ -7,6 +7,9 @@ import { introLabels } from "@/i18n/components/aboutme/DndIntroSection_i18";
 const locale = Astro.currentLocale as Lang || 'en';
 const t = useTranslations(locale);
 
+// 问候语里的名字不许断开（韩日文按词换行时会把 Jeffery / Hu 拆成两行）
+const NAME = "Jeffery Hu";
+const [greetBefore, greetAfter = ""] = t(introLabels.greeting).split(NAME);
 
 ---
 
@@ -26,7 +29,7 @@ const t = useTranslations(locale);
         >
 
             <!-- 问候语 -->
-            <h3 class="text-center text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight">{t(introLabels.greeting)}</h3>
+            <h3 class="text-center text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight break-keep">{greetBefore}<span class="whitespace-nowrap">{NAME}{greetAfter}</span></h3>
 
 
             <!-- 爱好：海报式排版，左右交替、人物放大，每条下面一条圆角横线 -->
