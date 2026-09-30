@@ -45,13 +45,6 @@ export const journeyTitleParts = {
 };
 
 export const gameJourneyLabels = {
-    marqueeBanner: {
-        en: "CRPG • RTS • RTT • ARPG • Action • FPS • TPS • MOBA • JRPG • SRPG • Strategy • TBS • 4X • Roguelike • Roguelite • Metroidvania • Survival • Sandbox • Open World • MMORPG • Idle • Card Game • Battle Royale •",
-        zh: "CRPG • RTS • RTT • ARPG • 动作 • FPS • TPS • MOBA • JRPG • 战棋 • 策略 • 回合制策略 • 4X • Roguelike • Roguelite • 银河恶魔城 • 生存 • 沙盒 • 开放世界 • MMORPG • 放置 • 卡牌 • 大逃杀 •",
-        ja: "CRPG • RTS • RTT • ARPG • アクション • FPS • TPS • MOBA • JRPG • シミュレーションRPG • ストラテジー • ターン制ストラテジー • 4X • Roguelike • Roguelite • メトロイドヴァニア • サバイバル • サンドボックス • オープンワールド • MMORPG • 放置 • カードゲーム • バトルロイヤル •",
-        ko: "CRPG • RTS • RTT • ARPG • 액션 • FPS • TPS • MOBA • JRPG • SRPG • 전략 • 턴제 전략 • 4X • Roguelike • Roguelite • 메트로배니아 • 서바이벌 • 샌드박스 • 오픈월드 • MMORPG • 방치형 • 카드게임 • 배틀로얄 •",
-    } as Multilingual,
-
     playerProfileHeader: {
         en: "Player Profile",
         zh: "玩家档案",

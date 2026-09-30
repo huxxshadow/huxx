@@ -29,7 +29,6 @@ const journeys = [
     {
         key: "game",
         word: journeyTitleParts.gameWord,
-        marquee: gameJourneyLabels.marqueeBanner,
         profileHeader: gameJourneyLabels.playerProfileHeader,
         styleHeader: gameJourneyLabels.playStyleHeader,
         favoritesHeader: gameJourneyLabels.allTimeFavoritesHeader,
@@ -42,8 +41,7 @@ const journeys = [
     {
         key: "anime",
         word: journeyTitleParts.animeWord,
-        // 动画旅程不要滚动类型条，也不要档案 / 偏好那两块介绍
-        marquee: null,
+        // 动画旅程不要档案 / 偏好那两块介绍
         profileHeader: null,
         styleHeader: null,
         favoritesHeader: animeJourneyLabels.allTimeFavoritesHeader,
@@ -112,27 +110,11 @@ const defaultJourney = "game";
     {journeys.map((journey) => (
     <div class="journey-panel" data-journey={journey.key} hidden={journey.key !== defaultJourney}>
 
-    {/* 2. 满宽街机风格滚动 Banner（只有游戏旅程有）*/}
-    {journey.marquee && (
-            <div
-                    class="relative w-full border-y-4 py-3 sm:py-4 flex overflow-hidden whitespace-nowrap mb-16 sm:mb-24"
-                    style={`border-color: ${COLORS.black}; background-color: ${COLORS.white};`}
-                    data-reveal="fade"
-            >
-                <div class="animate-marquee flex gap-8 text-xl sm:text-2xl font-black tracking-widest" style={`color: ${COLORS.black};`}>
-                    <span>{t(journey.marquee)}</span>
-                    <span>{t(journey.marquee)}</span>
-                    <span>{t(journey.marquee)}</span>
-                    <span>{t(journey.marquee)}</span>
-                </div>
-            </div>
-    )}
-
-    <div class:list={["mx-auto px-4 sm:px-6 lg:px-8", !journey.marquee && "pt-4 sm:pt-8"]}>
+    <div class="mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8">
 
         {/* 3. 关于我的游戏经历介绍 (双栏布局，只有游戏旅程有) */}
         {journey.profile && journey.style && (
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 mb-16 sm:mb-24" data-reveal-children="up" data-reveal-stagger="110">
+        <div class="grid grid-cols-1 gap-8 md:gap-10 mb-16 sm:mb-24" data-reveal-children="up" data-reveal-stagger="110">
 
             {/* 左侧：玩家档案 */}
             <div class="relative w-full border-4 p-6 sm:p-10 rounded-xl" style={`border-color: ${COLORS.black}; background-color: ${COLORS.white}; box-shadow: 10px 10px 0px ${COLORS.black};`}>
@@ -503,16 +485,6 @@ const defaultJourney = "game";
         .journey-word.is-switching .journey-word-text {
             animation: none;
         }
-    }
-
-    /* ---- 街机 Banner 跑马灯动画 ---- */
-    @keyframes marquee {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
-    }
-    .animate-marquee {
-        width: fit-content;
-        animation: marquee 30s linear infinite;
     }
 
     /* ---- Slider 样式 ---- */
