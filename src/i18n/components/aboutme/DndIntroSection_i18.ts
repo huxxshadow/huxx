@@ -6,6 +6,9 @@ import hobbyRunning from "@/assets/aboutme/hobby-running.webp";
 import hobbyCooking from "@/assets/aboutme/hobby-cooking.webp";
 import hobbyFencing from "@/assets/aboutme/hobby-fencing.webp";
 import hobbyMusic from "@/assets/aboutme/hobby-music.webp";
+import photoGlacier from "@/assets/aboutme/photo-glacier.webp";
+import photoAnime from "@/assets/aboutme/photo-anime.webp";
+import photoRunning from "@/assets/aboutme/photo-running.webp";
 
 // ============================================================
 //  Intro Section i18n Data
@@ -20,11 +23,13 @@ export const introLabels = {
     } as Multilingual,
 
     // 关于我：不写履历，只写几个爱好，每条一句话 + 若干小标签（notes，可以放多个）。
+    // 真实照片：photo 显示在这一条标题的上方，像一张歪着的相片
     // 加配图：在对应条目里写 image: 某张 import 进来的图片，卡片顶部就会显示这张图（没有配图时显示图标）
     hobbies: [
         {
             icon: "fa-gamepad",
             image: hobbyGames,
+            photo: photoGlacier,
             title: { en: "Video game enthusiast", zh: "电子游戏爱好者", ja: "ビデオゲーム愛好家", ko: "비디오 게임 애호가" },
             notes: [
                 { en: "5,000+ hours on Steam", zh: "Steam 时长 5000+ 小时", ja: "Steam 5000 時間以上", ko: "Steam 5,000시간 이상" },
@@ -34,6 +39,7 @@ export const introLabels = {
         {
             icon: "fa-tv",
             image: hobbyAnime,
+            photo: photoAnime,
             title: { en: "Anime at heart", zh: "资深二次元", ja: "根っからのアニメ好き", ko: "뼛속까지 애니 덕후" },
             notes: [
                 { en: "I watch all kinds of anime", zh: "喜欢看各类动画", ja: "いろんなジャンルのアニメを観る", ko: "다양한 장르의 애니를 즐겨 봐요" },
@@ -43,6 +49,7 @@ export const introLabels = {
         {
             icon: "fa-medal",
             image: hobbyRunning,
+            photo: photoRunning,
             title: { en: "I love long-distance running", zh: "喜欢长跑", ja: "長距離走が好き", ko: "장거리 달리기를 좋아해요" },
             notes: [{
                 en: "Ran the Standard Chartered Hong Kong Half Marathon",
@@ -76,7 +83,7 @@ export const introLabels = {
                 { en: "A little piano", zh: "也会一点钢琴", ja: "ピアノも少し", ko: "피아노도 조금" },
             ],
         },
-    ] as { icon: string; iconSvg?: string; title: Multilingual; notes: Multilingual[]; image?: ImageMetadata }[],
+    ] as { icon: string; iconSvg?: string; title: Multilingual; notes: Multilingual[]; image?: ImageMetadata; photo?: ImageMetadata }[],
 
     transition: {
         en: "Mundane resumes end here. Now then—roll the die!\n1d20... Natural 20! 'Identify' is a critical success. Character sheet revealed.",

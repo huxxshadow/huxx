@@ -1,7 +1,6 @@
 ﻿---
 import { COLORS } from "@/consts";
 import { Image } from "astro:assets";
-import photoGlacier from "@/assets/aboutme/photo-glacier.webp";
 import { useTranslations, type Lang } from "@/i18n";
 import { introLabels } from "@/i18n/components/aboutme/DndIntroSection_i18";
 
@@ -29,15 +28,11 @@ const t = useTranslations(locale);
             <!-- 问候语 -->
             <h3 class="text-center text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight">{t(introLabels.greeting)}</h3>
 
-            <!-- 本人照片：放在爱好列表上方，微微倾斜的相片 -->
-            <figure class="about-photo">
-                <Image src={photoGlacier} alt={t({ en: "Me lying on a glacier in Iceland", zh: "躺在冰川上的我", ja: "氷河に寝転ぶ私", ko: "빙하 위에 누운 저" })} widths={[480, 800, 1200]} sizes="(min-width: 1024px) 640px, 90vw" />
-            </figure>
 
             <!-- 爱好：海报式排版，左右交替、人物放大，每条下面一条圆角横线 -->
             <ul class="hobbies">
                 {introLabels.hobbies.map((h, i) => (
-                        <li class:list={["hobby", `hobby-${i + 1}`, { "has-image": !!h.image }]}>
+                        <li class:list={["hobby", `hobby-${i + 1}`, { "has-image": !!h.image, "has-photo": !!h.photo }]}>
                             <div class="hobby-media">
                                 {h.image ? (
                                         <Image src={h.image} alt="" widths={[320, 640]} sizes="(min-width: 1024px) 320px, 200px" class="hobby-img" />
@@ -48,6 +43,11 @@ const t = useTranslations(locale);
                                 )}
                             </div>
                             <div class="hobby-text">
+                                {h.photo && (
+                                        <figure class="hobby-photo">
+                                            <Image src={h.photo} alt="" widths={[320, 640]} sizes="260px" />
+                                        </figure>
+                                )}
                                 <p class="hobby-title">{t(h.title)}</p>
                                 <div class="hobby-notes">
                                     {h.notes.map((n) => <p class="hobby-note">{t(n)}</p>)}
@@ -339,21 +339,32 @@ const t = useTranslations(locale);
         .hobbies .hobby-1 .hobby-text { margin-left: 0; padding-bottom: 0; }
         }
 
-    .about-photo {
-        align-self: center;
-        width: min(640px, 92%);
-        padding: 0.75rem 0.75rem 2.4rem;
+    /* 标题上方的真实照片：小相片，米白相框 + 粗边框 + 硬阴影，歪着放 */
+    .hobby-photo {
+        display: inline-block;
+        width: clamp(170px, 18vw, 260px);
+        margin-bottom: 1rem;
+        padding: 0.5rem 0.5rem 1.4rem;
         background: #fffdf8;
         border: 3px solid currentColor;
-        border-radius: 0.6rem;
-        box-shadow: 8px 8px 0 currentColor;
-        rotate: -1.5deg;
+        border-radius: 0.5rem;
+        box-shadow: 6px 6px 0 currentColor;
+        rotate: -3deg;
     }
-    .about-photo :global(img) {
+    .hobby:nth-child(even) .hobby-photo { rotate: 3deg; }
+    /* 带照片的条目文字更高，不再往上叠，免得照片压住上一条的文字 */
+    .hobbies .hobby.has-photo,
+    .hobbies .hobby.has-photo + .hobby { margin-top: 2rem; }
+    .hobbies .hobby-1.has-photo { margin-top: 0; }
+    /* 统一裁成 4:3，竖拍的照片也不会太高 */
+    .hobby-photo :global(img) {
         display: block;
         width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        object-position: 50% 62%;
         height: auto;
-        border-radius: 0.3rem;
+        border-radius: 0.25rem;
     }
 
     .cta-box {
