@@ -23,6 +23,9 @@ const byOrderDesc = <T extends { data: { order: number } }>(entries: T[]) =>
 const currentLang = (Astro.currentLocale || "en") as Lang;
 const t = useTranslations(currentLang);
 
+// 档案 / 风格的段落一句一行：中日文按句末标点切，英韩文按句末标点后的空格切
+const sentences = (text: string) => text.split(/(?<=[。！？])|(?<=[.!?])\s+/).filter(Boolean);
+
 // 游戏 / 动画两条旅程结构完全一致，只是数据和文案不同，
 // 下面的模板对它们各渲染一份，由标题里的按钮切换显示。
 const journeys = [
@@ -124,8 +127,8 @@ const defaultJourney = "game";
                     {t(journey.profileHeader)}
                 </h2>
                 <div class="text-base sm:text-lg font-bold leading-relaxed space-y-4" style={`color: ${COLORS.black};`}>
-                    <p>{t(journey.profile.description1)}</p>
-                    <p class="opacity-80">{t(journey.profile.description2)}</p>
+                    <p>{sentences(t(journey.profile.description1)).map((line) => <span class="block">{line}</span>)}</p>
+                    <p class="opacity-80">{sentences(t(journey.profile.description2)).map((line) => <span class="block">{line}</span>)}</p>
                 </div>
             </div>
 
@@ -137,8 +140,8 @@ const defaultJourney = "game";
                     {t(journey.styleHeader)}
                 </h2>
                 <div class="text-base sm:text-lg font-bold leading-relaxed space-y-4 text-left md:text-right" style={`color: ${COLORS.black};`}>
-                    <p>{t(journey.style.description1)}</p>
-                    <p class="opacity-80">{t(journey.style.description2)}</p>
+                    <p>{sentences(t(journey.style.description1)).map((line) => <span class="block">{line}</span>)}</p>
+                    <p class="opacity-80">{sentences(t(journey.style.description2)).map((line) => <span class="block">{line}</span>)}</p>
                 </div>
             </div>
 
