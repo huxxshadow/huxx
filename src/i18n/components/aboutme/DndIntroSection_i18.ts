@@ -41,7 +41,7 @@ export const introLabels = {
             icon: "fa-tv",
             image: hobbyAnime,
             photo: photoAnime,
-            title: { en: "Anime at heart", zh: "资深二次元", ja: "根っからのアニメ好き", ko: "뼛속까지 애니 덕후" },
+            title: { en: "Anime enthusiast", zh: "资深二次元", ja: "根っからのアニメ好き", ko: "뼛속까지 애니 덕후" },
             notes: [
                 { en: "I watch all kinds of anime", zh: "喜欢看各类动画", ja: "いろんなジャンルのアニメを観る", ko: "다양한 장르의 애니를 즐겨 봐요" },
                 { en: "Soft spot for stream-of-consciousness direction", zh: "偏爱意识流演出", ja: "意識の流れ的な演出に弱い", ko: "의식의 흐름 연출을 특히 좋아해요" },

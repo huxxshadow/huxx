@@ -133,7 +133,7 @@ const t = useTranslations(locale);
         gap: 1.2rem;
     }
     .hobbies .hobby-media,
-    .hobbies .hobby-text { position: relative; z-index: 1; }
+    .hobbies .hobby-text { position: relative; z-index: 1; min-width: 0; }
     .hobbies .hobby-title {
         font-size: clamp(2.4rem, 5.4vw, 5rem);
         line-height: 1;
@@ -187,7 +187,7 @@ const t = useTranslations(locale);
     .hobbies .hobby-1 { grid-column: 1 / 10; }
     .hobbies .hobby-1 .hobby-media { height: clamp(18rem, 32vw, 30rem); }
     .hobbies .hobby-1 .hobby-img { height: 100%; }
-    .hobbies .hobby-1 .hobby-text { margin-left: -1.5rem; padding-bottom: 2.5rem; }
+    .hobbies .hobby-1 .hobby-text { padding-bottom: 2.5rem; }
     .hobbies .hobby-1 .hobby-note:first-child { rotate: -3deg; }
 
     /* 02 二次元：右边，往上咬进第一条的空白，大圆 + 右对齐，整体微微倾斜 */
@@ -231,9 +231,9 @@ const t = useTranslations(locale);
     .hobbies .hobby-4 .hobby-icon { font-size: clamp(3.2rem, 5vw, 4.6rem); }
     .hobbies .hobby-4 .hobby-note:first-child { rotate: -2deg; }
     .hobbies .hobby-4.has-image { rotate: 0deg; align-items: flex-end; }
-    .hobbies .hobby-4.has-image .hobby-text { margin-right: -1rem; padding-bottom: 2rem; }
+    .hobbies .hobby-4.has-image .hobby-text { padding-bottom: 2rem; }
     .hobbies .hobby-5.has-image { align-items: flex-end; }
-    .hobbies .hobby-5.has-image .hobby-text { margin-left: -2rem; padding-bottom: 1.5rem; }
+    .hobbies .hobby-5.has-image .hobby-text { padding-bottom: 1.5rem; }
 
     /* 05 击剑：回到左边，斜放的深色方块徽章，和 03 呼应 */
     .hobbies .hobby-5 {
@@ -277,7 +277,7 @@ const t = useTranslations(locale);
     .hobbies .hobby-6 .hobby-notes { justify-content: flex-end; }
     .hobbies .hobby-6 .hobby-note:first-child { rotate: 2deg; }
     .hobbies .hobby-6.has-image { rotate: 0deg; align-items: flex-end; }
-    .hobbies .hobby-6.has-image .hobby-text { margin-right: -1rem; padding-bottom: 2rem; }
+    .hobbies .hobby-6.has-image .hobby-text { padding-bottom: 2rem; }
 
     /* 有配图的条目：插画放大显示，不套圆形 / 方块框 */
     .hobbies .has-image .hobby-media {
@@ -307,8 +307,8 @@ const t = useTranslations(locale);
         rotate: 0deg;
         color: inherit;
     }
-    .hobbies .hobby-3.has-image .hobby-text { margin-left: -1rem; padding-bottom: 2rem; }
-    .hobbies .hobby-2.has-image .hobby-text { margin-right: -1.5rem; padding-bottom: 2rem; rotate: -2deg; }
+    .hobbies .hobby-3.has-image .hobby-text { padding-bottom: 2rem; }
+    .hobbies .hobby-2.has-image .hobby-text { padding-bottom: 2rem; rotate: -2deg; }
 
     /* 03 长跑：回到左侧但往里缩，方形徽章斜放 */
     .hobbies .hobby-3 {
@@ -361,8 +361,9 @@ const t = useTranslations(locale);
         align-self: center;
         pointer-events: none;
     }
-    .photo-cell.side-left { grid-column: 9 / 13; justify-self: stretch; }
-    .photo-cell.side-right { grid-column: 1 / 5; justify-self: stretch; }
+    /* 照片朝文字那一侧留出间隔（网格没有列间距，照片又是歪着的），文字永远碰不到照片 */
+    .photo-cell.side-left { grid-column: 9 / 13; justify-self: stretch; padding-left: clamp(1.5rem, 3vw, 2.5rem); }
+    .photo-cell.side-right { grid-column: 1 / 5; justify-self: stretch; padding-right: clamp(1.5rem, 3vw, 2.5rem); }
     .hobby-photo {
         display: block;
         /* 占满照片那四列（最宽 1120 时约 370px） */
@@ -387,7 +388,7 @@ const t = useTranslations(locale);
     .hobbies .hobby-1 + .photo-cell { margin-top: 0; }
     /* 带照片的行里插画稍小，给照片腾位置；文字压在照片上层，万一挨到也不会被挡住 */
     .hobbies .hobby.has-photo.has-image .hobby-media { height: clamp(13rem, 20vw, 19rem); }
-    .hobbies .hobby.has-photo { z-index: 2; }
+    .hobbies .hobby.has-photo { z-index: 2; min-width: 0; }
     .photo-cell { position: relative; z-index: 1; }
     @media (max-width: 639px) {
         .photo-cell { align-self: center; }
