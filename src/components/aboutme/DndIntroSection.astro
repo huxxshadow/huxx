@@ -56,7 +56,7 @@ const t = useTranslations(locale);
                         {h.photo && (
                                 <li class:list={["photo-cell", i % 2 ? "side-right" : "side-left"]} style={`grid-row: ${i + 1};`} aria-hidden="true">
                                     <figure class="hobby-photo">
-                                        <Image src={h.photo} alt="" widths={[640, 1040]} sizes="(min-width: 1024px) 380px, 90vw" />
+                                        <Image src={h.photo} alt="" widths={[640, 1040]} sizes="(min-width: 1024px) 460px, 90vw" />
                                     </figure>
                                 </li>
                         )}
@@ -122,9 +122,9 @@ const t = useTranslations(locale);
         display: grid;
         grid-template-columns: repeat(12, minmax(0, 1fr));
         padding: 2rem 0 3rem;
-        /* 整块居中，最宽 1120px，大屏上不再铺到两边 */
+        /* 整块居中，最宽 1360px，大屏上不再铺到两边 */
         width: 100%;
-        max-width: 1120px;
+        max-width: 1360px;
         margin-inline: auto;
     }
     .hobbies .hobby {
