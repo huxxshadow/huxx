@@ -5,7 +5,6 @@ import { Image } from 'astro:assets';
 import overview from '@/assets/projects/technical-project-blender-inverse-lighting/overview.jpg';
 import pipeline from '@/assets/projects/technical-project-blender-inverse-lighting/paired-pipeline-en.png';
 import architecture from '@/assets/projects/technical-project-blender-inverse-lighting/architecture-en.png';
-import gradient from '@/assets/projects/technical-project-blender-inverse-lighting/gradient-en.png';
 import controlled from '@/assets/projects/technical-project-blender-inverse-lighting/controlled-en.png';
 import dayNight from '@/assets/projects/technical-project-blender-inverse-lighting/day-night-en.png';
 import monsterBase from '@/assets/projects/technical-project-blender-inverse-lighting/monster-demo4-base.png';
@@ -95,16 +94,7 @@ Mitsuba로 Cycles 목표를 직접 맞추면 최적화기가 의도한 조명 �
 
 ## 미분 가능한 물리 최적화
 
-Mitsuba 3와 Dr.Jit은 선택한 장면 파라미터에 대해 패스 트레이싱 이미지를 미분합니다. 매 반복마다 3D 라이트, 가시성, 머티리얼 반응, 간접 조명을 다시 계산하므로 결과는 2D 필터가 아니라 실제 빛 전달에 의해 제한됩니다.
-
-세기와 색은 가시성을 바꾸지 않으므로 **PRB**를 사용합니다. 위치, 방향, 면광원의 크기는 그림자와 경계를 움직이기 때문에 가시성 경계항을 처리하는 **PRB Projective**로 자동 전환합니다.
-
-<figure>
-    <Image src={gradient} alt="PRB와 PRB Projective의 그래디언트 비교" width={2400} height={1450} />
-    <figcaption>제어 실험에서 Projective Sampling은 위치와 회전 그래디언트 신호를 각각 약 537배, 3500배 증가시켰다</figcaption>
-</figure>
-
-Projective 단계는 세기·색 최적화보다 약 25배 비싸므로 안정적인 세기와 색을 기본값으로 두고 위치·방향은 고급 옵션으로 제공합니다. 최적화는 약 1/4, 1/2, 전체 해상도로 진행하며 색상 L1, 엣지, 휘도 가중 색도, 파라미터 정규화를 결합합니다.
+최적화는 약 1/4, 1/2, 전체 해상도로 진행하며 색상 L1, 엣지, 휘도 가중 색도, 파라미터 정규화를 결합합니다.
 
 ---
 

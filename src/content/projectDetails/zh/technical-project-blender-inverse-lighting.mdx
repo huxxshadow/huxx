@@ -5,7 +5,6 @@ import { Image } from 'astro:assets';
 import overview from '@/assets/projects/technical-project-blender-inverse-lighting/overview.jpg';
 import pipeline from '@/assets/projects/technical-project-blender-inverse-lighting/paired-pipeline-zh.png';
 import architecture from '@/assets/projects/technical-project-blender-inverse-lighting/architecture-zh.png';
-import gradient from '@/assets/projects/technical-project-blender-inverse-lighting/gradient-zh.png';
 import controlled from '@/assets/projects/technical-project-blender-inverse-lighting/controlled-zh.png';
 import dayNight from '@/assets/projects/technical-project-blender-inverse-lighting/day-night-zh.png';
 import monsterBase from '@/assets/projects/technical-project-blender-inverse-lighting/monster-demo4-base.png';
@@ -100,19 +99,6 @@ import monsterResidual from '@/assets/projects/technical-project-blender-inverse
 ---
 
 ## 可微物理优化
-
-### 可微路径追踪，而不是二维图像滤镜
-
-Mitsuba 3 与 Dr.Jit 对路径追踪结果相对于场景参数求导。每次迭代都会重新计算三维光源、遮挡、材质响应与间接照明，因此结果受到真实光传输约束，而不是简单地把颜色覆盖在最终图像上。
-
-强度和颜色不会改变场景可见性，使用 **Path Replay Backpropagation（PRB）** 即可得到有效梯度。位置、朝向和面积尺寸会移动阴影与几何边界，普通 PRB 会遗漏可见性不连续产生的边界项，因此系统会自动切换到 **PRB Projective**。
-
-<figure>
-    <Image src={gradient} alt="PRB 与 PRB Projective 的灯光位置和旋转梯度对比" width={2400} height={1450} />
-    <figcaption>受控梯度测试：Projective Sampling 使位置与旋转梯度信号分别提高约 537 倍和 3500 倍</figcaption>
-</figure>
-
-Projective 积分器的单步计算约为强度与颜色优化的 25 倍，因此插件默认优先求解更稳定的强度与颜色，把位姿优化保留为显式高级选项。
 
 ### 多尺度目标函数
 

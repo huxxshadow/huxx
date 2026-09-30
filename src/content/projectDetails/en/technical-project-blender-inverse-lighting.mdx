@@ -5,7 +5,6 @@ import { Image } from 'astro:assets';
 import overview from '@/assets/projects/technical-project-blender-inverse-lighting/overview.jpg';
 import pipeline from '@/assets/projects/technical-project-blender-inverse-lighting/paired-pipeline-en.png';
 import architecture from '@/assets/projects/technical-project-blender-inverse-lighting/architecture-en.png';
-import gradient from '@/assets/projects/technical-project-blender-inverse-lighting/gradient-en.png';
 import controlled from '@/assets/projects/technical-project-blender-inverse-lighting/controlled-en.png';
 import dayNight from '@/assets/projects/technical-project-blender-inverse-lighting/day-night-en.png';
 import monsterBase from '@/assets/projects/technical-project-blender-inverse-lighting/monster-demo4-base.png';
@@ -100,19 +99,6 @@ Color also uses an unbounded exponential mapping. This avoids the saturation tha
 ---
 
 ## Differentiable Physical Optimization
-
-### Differentiable path tracing, not a 2D image filter
-
-Mitsuba 3 and Dr.Jit differentiate a path-traced image with respect to selected scene parameters. Every iteration re-evaluates 3D lights, visibility, material response, and indirect illumination. The result is constrained by physical light transport rather than painted directly onto the output image.
-
-Intensity and color do not change scene visibility, so **Path Replay Backpropagation (PRB)** provides useful gradients. Position, orientation, and area-light size move shadow and geometry boundaries; standard PRB misses the boundary terms introduced by those discontinuities, so the system automatically switches to **PRB Projective**.
-
-<figure>
-    <Image src={gradient} alt="Lighting position and rotation gradient comparison between PRB and PRB Projective" width={2400} height={1450} />
-    <figcaption>Controlled tests: projective sampling increases position and rotation gradient signals by approximately 537× and 3500×</figcaption>
-</figure>
-
-Each projective step costs roughly 25 times more than intensity or color optimization. The add-on therefore treats the more stable intensity-and-color solve as the default and exposes pose optimization as an explicit advanced option.
 
 ### Multi-scale objective
 

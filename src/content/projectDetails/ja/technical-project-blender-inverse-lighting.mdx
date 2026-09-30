@@ -5,7 +5,6 @@ import { Image } from 'astro:assets';
 import overview from '@/assets/projects/technical-project-blender-inverse-lighting/overview.jpg';
 import pipeline from '@/assets/projects/technical-project-blender-inverse-lighting/paired-pipeline-en.png';
 import architecture from '@/assets/projects/technical-project-blender-inverse-lighting/architecture-en.png';
-import gradient from '@/assets/projects/technical-project-blender-inverse-lighting/gradient-en.png';
 import controlled from '@/assets/projects/technical-project-blender-inverse-lighting/controlled-en.png';
 import dayNight from '@/assets/projects/technical-project-blender-inverse-lighting/day-night-en.png';
 import monsterBase from '@/assets/projects/technical-project-blender-inverse-lighting/monster-demo4-base.png';
@@ -94,15 +93,6 @@ MitsubaでCycles画像を直接フィットすると、最適化器は意図し�
 ---
 
 ## 微分可能な物理最適化
-
-Mitsuba 3とDr.Jitは、選択されたシーンパラメータに対してパストレーシング画像を微分します。各反復でライト、可視性、マテリアル応答、間接照明を再計算するため、結果は2Dフィルタではなく物理的な光輸送に制約されます。
-
-強度と色には **PRB** を使用します。位置、向き、面光源サイズは影や輪郭の可視性を変えるため、境界項を扱える **PRB Projective** へ自動的に切り替えます。
-
-<figure>
-    <Image src={gradient} alt="PRBとPRB Projectiveの勾配比較" width={2400} height={1450} />
-    <figcaption>制御実験では、Projective Samplingにより位置と回転の勾配信号が約537倍、3500倍に増加した</figcaption>
-</figure>
 
 最適化は約1/4、1/2、フル解像度の順に進みます。低解像度で全体の明暗と色を安定させ、高解像度で局所的な境界を調整します。目的関数は色L1、エッジ、輝度加重色度、パラメータ正則化を組み合わせています。
 
