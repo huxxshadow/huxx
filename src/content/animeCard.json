@@ -3436,5 +3436,23 @@
     },
     "image": "../assets/animeCard/Witch Hat Atelier.webp",
     "favorite": false
+  },
+  {
+    "id": "goodbye-lara",
+    "order": 194,
+    "title": {
+      "en": "Goodbye, Lara",
+      "zh": "再见菈菈",
+      "ja": "さよならララ",
+      "ko": "안녕, 라라"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/animeCard/Goodbye Lara.webp",
+    "favorite": false
   }
 ]
