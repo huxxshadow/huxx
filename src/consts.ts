@@ -10,7 +10,7 @@ export const SITE_TITLE: string | Multilingual = {
 
 // 默认分享卡片（public/og-card.png，1200×630）。Facebook / Instagram 按网址缓存图片，
 // 换了图就把 v 加 1，否则分享预览会一直是旧图
-export const OG_CARD = "/og-card.png?v=2";
+export const OG_CARD = "/og-card.png?v=3";
 
 export const SITE_DESCRIPTION: string | Multilingual = {
     en: "A portfolio of game design, game development, technical art, and full-stack projects by huxx.",
