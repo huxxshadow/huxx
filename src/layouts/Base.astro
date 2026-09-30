@@ -20,17 +20,22 @@ import { pageShift } from "@/transitions";
 interface Props {
     title?: string;
     description?: string;
+    /** 分享卡片用的图（站内路径或绝对地址），不传就用 public/ogp.png */
+    image?: string;
     frontmatter?: undefined;
 }
 
 const {
     title,
     description,
+    image,
 } = Astro.props.frontmatter || Astro.props;
 
 const locale = Astro.currentLocale as Lang;
-const localeTitle = title ? `${title} - ${t(SITE_TITLE)}` : t(SITE_TITLE);
+// 有页面标题时写成「页面 - huxx」，首页没有标题，直接用站点标题
+const localeTitle = title ? `${title} - huxx` : t(SITE_TITLE);
 const localeDescription = description || t(SITE_DESCRIPTION);
+const ogImage = new URL(image || "/ogp.png", Astro.site).href;
 ---
 
 
@@ -64,12 +69,12 @@ const localeDescription = description || t(SITE_DESCRIPTION);
     <!-- OGP -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={localeTitle} />
-    <meta property="og:site_name" content={localeTitle} />
+    <meta property="og:site_name" content="huxx" />
     <meta property="og:description" content={localeDescription} />
-    <meta property="og:image" content={Astro.site + "ogp.png"} />
+    <meta property="og:image" content={ogImage} />
     <meta property="og:url" content={Astro.url} />
     <meta property="og:locale" content={LOCALES[locale].lang || locale} />
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content={t(X_ACCOUNT)} />
     <ClientRouter />
     <script is:inline>

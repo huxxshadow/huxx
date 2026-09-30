@@ -6,6 +6,7 @@ import Avatar from "@/assets/avater.svg";
 import { COLORS } from "@/consts";
 
 import { indexTranslations } from "@/i18n/index_i18";
+import { pageDescriptions } from "@/i18n/pageMeta_i18";
 const locale = Astro.currentLocale as Lang;
 const t = useTranslations(locale);
 
@@ -37,7 +38,7 @@ const projectCount = (await getCollection("projects")).length;
 
 ---
 
-<Layout>
+<Layout description={t(pageDescriptions.home)}>
     <PongGame />
 
     <section
