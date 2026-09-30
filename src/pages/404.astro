@@ -1,0 +1,105 @@
+---
+// 404：GitHub Pages 对所有不存在的网址都返回 dist/404.html，所以这一页要对四种语言通用。
+// 语言在客户端判断（网址前缀 /zh/… > 手动选过的语言 > 浏览器偏好），只显示那一种的文案，
+// 「回到首页」也指向那个语言。不套 Base（导航会固定成默认语言），样式沿用站点的米色底 + 铆钉白卡片。
+import "@/styles/global.css";
+import Avatar from "@/assets/avater.svg";
+import { COLORS } from "@/consts";
+import { LOCALES, DEFAULT_LOCALE } from "@/i18n";
+
+const langs = Object.keys(LOCALES);
+const copy: Record<string, { title: string; body: string; home: string; portfolio: string }> = {
+    zh: { title: "页面不存在", body: "这个网址没有对应的页面，可能是链接写错了，或者页面已经搬走了。", home: "回到首页", portfolio: "看看作品集" },
+    en: { title: "Page not found", body: "There is nothing at this address. The link may be mistyped, or the page has moved.", home: "Back to home", portfolio: "See the portfolio" },
+    ja: { title: "ページが見つかりません", body: "このアドレスにはページがありません。リンクが間違っているか、ページが移動した可能性があります。", home: "ホームへ戻る", portfolio: "ポートフォリオを見る" },
+    ko: { title: "페이지를 찾을 수 없습니다", body: "이 주소에는 페이지가 없습니다. 링크가 잘못되었거나 페이지가 이동했을 수 있습니다.", home: "홈으로 돌아가기", portfolio: "포트폴리오 보기" },
+};
+const rivets = ["top-3 left-3", "top-3 right-3", "bottom-3 left-3", "bottom-3 right-3"];
+---
+
+<!doctype html>
+<html lang={DEFAULT_LOCALE} data-lang={DEFAULT_LOCALE}>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>404 - huxx</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script is:inline define:vars={{ langs, defaultLocale: DEFAULT_LOCALE }}>
+        // 在首帧之前定下语言：网址前缀 > 手动选过的语言 > 浏览器偏好 > 默认
+        (function () {
+            var seg = location.pathname.split("/")[1];
+            var lang = langs.indexOf(seg) >= 0 ? seg : null;
+            if (!lang) {
+                try {
+                    var stored = localStorage.getItem("selectedLang");
+                    if (stored && langs.indexOf(stored) >= 0) lang = stored;
+                } catch (e) { /* 隐私模式 */ }
+            }
+            if (!lang) {
+                var prefs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language];
+                for (var i = 0; i < prefs.length && !lang; i++) {
+                    var tag = (prefs[i] || "").toLowerCase();
+                    if (langs.indexOf(tag) >= 0) lang = tag;
+                    else if (langs.indexOf(tag.split("-")[0]) >= 0) lang = tag.split("-")[0];
+                }
+            }
+            lang = lang || defaultLocale;
+            document.documentElement.lang = lang;
+            document.documentElement.dataset.lang = lang;
+        })();
+    </script>
+</head>
+<body class="nf-body" style={`background-color: ${COLORS.khakiMilan}; color: ${COLORS.black};`}>
+    <main class="min-h-screen flex items-center justify-center px-4 py-16">
+        <div
+                class="nf-card relative w-full max-w-xl bg-white border-4 rounded-xl px-6 py-10 sm:px-12 sm:py-12 text-center"
+                style={`border-color: ${COLORS.black}; box-shadow: 10px 10px 0 ${COLORS.black};`}
+        >
+            {rivets.map((pos) => (
+                    <span class={`absolute ${pos} sm:${pos.replace(/3/g, "4")} w-3 h-3 sm:w-4 sm:h-4 rounded-full`} style={`background-color: ${COLORS.black};`} aria-hidden="true"></span>
+            ))}
+
+            <Avatar class="w-24 h-24 sm:w-28 sm:h-28 mx-auto" fill="currentColor" aria-hidden="true" />
+            <p class="text-7xl sm:text-8xl font-black leading-none tracking-tight mt-2">404</p>
+
+            {langs.map((lang) => (
+                    <div class="nf-copy" data-copy={lang}>
+                        <h1 class="text-2xl sm:text-3xl font-black mt-4">{copy[lang].title}</h1>
+                        <p class="text-base sm:text-lg font-bold opacity-75 mt-3 leading-relaxed">{copy[lang].body}</p>
+                        <div class="flex flex-wrap justify-center gap-4 mt-8">
+                            <a href={`/${lang}/`} class="nf-btn nf-btn-primary">{copy[lang].home}</a>
+                            <a href={`/${lang}/portfolio/`} class="nf-btn">{copy[lang].portfolio}</a>
+                        </div>
+                    </div>
+            ))}
+        </div>
+    </main>
+</body>
+</html>
+
+<style define:vars={{ black: COLORS.black, white: COLORS.white, orange: COLORS.orange.dark }}>
+    /* 只显示当前语言那一份文案（html[data-lang] 由 head 里的脚本在首帧前写好） */
+    .nf-copy { display: none; }
+    html[data-lang="zh"] .nf-copy[data-copy="zh"],
+    html[data-lang="en"] .nf-copy[data-copy="en"],
+    html[data-lang="ja"] .nf-copy[data-copy="ja"],
+    html[data-lang="ko"] .nf-copy[data-copy="ko"] { display: block; }
+
+    .nf-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.7rem 1.4rem;
+        border: 3px solid var(--black);
+        border-radius: 10px;
+        background: var(--white);
+        color: var(--black);
+        font-weight: 900;
+        box-shadow: 4px 4px 0 var(--black);
+        transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    }
+    .nf-btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--black); }
+    .nf-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--black); }
+    .nf-btn-primary { background: var(--orange); color: var(--white); }
+</style>

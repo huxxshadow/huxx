@@ -48,6 +48,8 @@ const ogImageResult = heroImage ? await getImage({ src: heroImage, width: 1200, 
 const ogImage = ogImageResult?.src;
 const ogImageSize = ogImageResult ? [Number(ogImageResult.attributes.width), Number(ogImageResult.attributes.height)] as [number, number] : undefined;
 const projectLinks = project.data.links || [];
+const BACK_LABELS: Record<string, string> = { zh: "返回", en: "Back", ja: "戻る", ko: "뒤로" };
+const backLabel = BACK_LABELS[currentLang] ?? BACK_LABELS.en;
 // 专属皮肤：套皮的页面自己画底色/背景，这里就不再写内联 background-color
 const SKINS: Record<string, any> = {
     eel: EelOnMaskSkin,
@@ -107,7 +109,7 @@ if (detailEntry) {
                     class="back-btn inline-flex items-center gap-2 font-black text-base lg:text-lg uppercase tracking-widest opacity-80 hover:opacity-100 transition-opacity cursor-pointer"
             >
                 <i class="fa-solid fa-arrow-left"></i>
-                {currentLang === 'zh' ? '返回' : 'Back'}
+                {backLabel}
             </a>
         </div>
 
