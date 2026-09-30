@@ -2183,6 +2183,7 @@
         "내러티브 게임"
       ]
     },
+    "coverImage": "src/assets/projects/game-project-follyblind-age/cover-4x3.webp",
     "inDevelopment": true,
     "colorText": "#2A2A2A",
     "colorBackground": "#F4F2EE"
