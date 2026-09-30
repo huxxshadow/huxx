@@ -2607,7 +2607,7 @@
       "ko": ""
     },
     "image": "../assets/gameCard/Tsukihime.webp",
-    "favorite": false
+    "favorite": true
   },
   {
     "id": "divinity-original-sin",
@@ -2679,6 +2679,42 @@
       "ko": ""
     },
     "image": "../assets/gameCard/What Remains of Edith Finch.webp",
+    "favorite": false
+  },
+  {
+    "id": "thronebreaker-the-witcher-tales",
+    "order": 150,
+    "title": {
+      "en": "Thronebreaker: The Witcher Tales",
+      "zh": "王权的陨落：巫师之昆特牌传说",
+      "ja": "Thronebreaker: The Witcher Tales",
+      "ko": "쓰론브레이커: 위쳐 테일즈"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/gameCard/Thronebreaker The Witcher Tales.webp",
+    "favorite": false
+  },
+  {
+    "id": "cairn",
+    "order": 151,
+    "title": {
+      "en": "Cairn",
+      "zh": "孤山独影",
+      "ja": "Cairn",
+      "ko": "케언"
+    },
+    "comment": {
+      "en": "",
+      "zh": "",
+      "ja": "",
+      "ko": ""
+    },
+    "image": "../assets/gameCard/Cairn.webp",
     "favorite": false
   }
 ]
