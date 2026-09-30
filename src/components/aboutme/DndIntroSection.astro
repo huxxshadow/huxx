@@ -113,7 +113,7 @@ const t = useTranslations(locale);
     .hobby-img { width: auto; object-fit: contain; }
     /*
      * 矢量插画：默认是原来的黑白灰，鼠标悬停这一条时换成它的主题色
-     *（白底 → 主题浅色，灰 → 主题深色，墨线 → 更深一点的主题色）
+     *（白色部分不变；灰 → 主题深色，墨线 → 更深一点的主题色）
      */
     .hobby {
         --paper: #ffffff;
@@ -121,7 +121,6 @@ const t = useTranslations(locale);
         --ink: #1a1a1a;
     }
     .hobby:hover {
-        --paper: var(--t-light, #ffffff);
         --shade: var(--t-dark, #4e4e4e);
         --ink: color-mix(in srgb, var(--t-dark, #1a1a1a) 55%, #000);
     }
