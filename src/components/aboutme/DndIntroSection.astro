@@ -35,11 +35,11 @@ const t = useTranslations(locale);
                         <>
                         <li
                                 class:list={["hobby", `hobby-${i + 1}`, i % 2 ? "side-right" : "side-left", { "has-image": !!h.image, "has-photo": !!h.photo }]}
-                                style={`grid-row: ${i + 1};`}
+                                style={`grid-row: ${i + 1};${h.theme ? ` --t-light: ${h.theme.light}; --t-dark: ${h.theme.dark};` : ""}`}
                         >
                             <div class="hobby-media">
                                 {h.image ? (
-                                        <Image src={h.image} alt="" widths={[320, 640]} sizes="(min-width: 1024px) 320px, 200px" class="hobby-img" />
+                                        <h.image class="hobby-img" aria-hidden="true" preserveAspectRatio="xMidYMax meet" />
                                 ) : h.iconSvg ? (
                                         <span class="hobby-icon hobby-svg" aria-hidden="true" set:html={h.iconSvg} />
                                 ) : (
@@ -111,6 +111,22 @@ const t = useTranslations(locale);
     .hobby-notes { display: flex; flex-direction: column; gap: 0.2rem; }
     .hobby-media { display: flex; align-items: center; justify-content: center; }
     .hobby-img { width: auto; object-fit: contain; }
+    /*
+     * 矢量插画：默认是原来的黑白灰，鼠标悬停这一条时换成它的主题色
+     *（白底 → 主题浅色，灰 → 主题深色，墨线 → 更深一点的主题色）
+     */
+    .hobby {
+        --paper: #ffffff;
+        --shade: #4e4e4e;
+        --ink: #1a1a1a;
+    }
+    .hobby:hover {
+        --paper: var(--t-light, #ffffff);
+        --shade: var(--t-dark, #4e4e4e);
+        --ink: color-mix(in srgb, var(--t-dark, #1a1a1a) 55%, #000);
+    }
+    .hobby-img :global(path) { transition: fill 0.35s ease; }
+    svg.hobby-img { display: block; overflow: visible; }
     .hobby-icon { opacity: 0.85; }
     /* 自绘 SVG 图标和字体图标一样大：1em 见方 */
     .hobby-svg { display: inline-flex; width: 1em; height: 1em; }

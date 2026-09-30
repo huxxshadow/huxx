@@ -1,11 +1,13 @@
 ﻿import type { Multilingual } from "@/i18n";
+import { COLORS } from "@/consts";
+import type { SvgComponent } from "astro/types";
 import type { ImageMetadata } from "astro";
-import hobbyGames from "@/assets/aboutme/hobby-games.webp";
-import hobbyAnime from "@/assets/aboutme/hobby-anime.webp";
-import hobbyRunning from "@/assets/aboutme/hobby-running.webp";
-import hobbyCooking from "@/assets/aboutme/hobby-cooking.webp";
-import hobbyFencing from "@/assets/aboutme/hobby-fencing.webp";
-import hobbyMusic from "@/assets/aboutme/hobby-music.webp";
+import hobbyGames from "@/assets/aboutme/hobby-games.svg";
+import hobbyAnime from "@/assets/aboutme/hobby-anime.svg";
+import hobbyRunning from "@/assets/aboutme/hobby-running.svg";
+import hobbyCooking from "@/assets/aboutme/hobby-cooking.svg";
+import hobbyFencing from "@/assets/aboutme/hobby-fencing.svg";
+import hobbyMusic from "@/assets/aboutme/hobby-music.svg";
 import photoGlacier from "@/assets/aboutme/photo-glacier.webp";
 import photoAnime from "@/assets/aboutme/photo-anime.webp";
 import photoRunning from "@/assets/aboutme/photo-running.webp";
@@ -25,11 +27,13 @@ export const introLabels = {
 
     // 关于我：不写履历，只写几个爱好，每条一句话 + 若干小标签（notes，可以放多个）。
     // 真实照片：photo 显示在这一条标题的上方，像一张歪着的相片
+    // 插画是三层矢量 SVG（白底 paper / 灰 shade / 墨线 ink，fill 用 CSS 变量），鼠标悬停时换成这一条的主题色 theme
     // 加配图：在对应条目里写 image: 某张 import 进来的图片，卡片顶部就会显示这张图（没有配图时显示图标）
     hobbies: [
         {
             icon: "fa-gamepad",
             image: hobbyGames,
+            theme: COLORS.blue,
             photo: photoGlacier,
             title: { en: "Video game enthusiast", zh: "电子游戏爱好者", ja: "ビデオゲーム愛好家", ko: "비디오 게임 애호가" },
             notes: [
@@ -40,6 +44,7 @@ export const introLabels = {
         {
             icon: "fa-tv",
             image: hobbyAnime,
+            theme: COLORS.purple,
             photo: photoAnime,
             title: { en: "Anime enthusiast", zh: "资深二次元", ja: "根っからのアニメ好き", ko: "뼛속까지 애니 덕후" },
             notes: [
@@ -50,6 +55,7 @@ export const introLabels = {
         {
             icon: "fa-medal",
             image: hobbyRunning,
+            theme: COLORS.green,
             photo: photoRunning,
             title: { en: "I love running", zh: "喜欢长跑", ja: "長距離走が好き", ko: "장거리 달리기를 좋아해요" },
             notes: [{
@@ -62,6 +68,7 @@ export const introLabels = {
         {
             icon: "fa-cake-candles",
             image: hobbyCooking,
+            theme: COLORS.orange,
             photo: photoCooking,
             title: { en: "I love cooking", zh: "喜欢烹饪", ja: "料理が好き", ko: "요리를 좋아해요" },
             notes: [
@@ -72,6 +79,7 @@ export const introLabels = {
             // Font Awesome 没有击剑图标，用 iconSvg 画两把交叉的花剑（有配图时不显示）
             icon: "",
             image: hobbyFencing,
+            theme: COLORS.red,
             iconSvg: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 52 L50 10"/><path d="M52 52 L14 10"/><path d="M6 46 q6 -2 10 4 q2 6 -4 8"/><path d="M58 46 q-6 -2 -10 4 q-2 6 4 8"/><circle cx="50" cy="10" r="2" fill="currentColor"/><circle cx="14" cy="10" r="2" fill="currentColor"/></svg>`,
             title: { en: "En garde!", zh: "会击剑", ja: "フェンシングもやります", ko: "펜싱도 해요" },
             notes: [{ en: "Foil fencer", zh: "主项花剑", ja: "種目はフルーレ", ko: "종목은 플뢰레" }],
@@ -79,13 +87,14 @@ export const introLabels = {
         {
             icon: "fa-music",
             image: hobbyMusic,
+            theme: COLORS.yellow,
             title: { en: "J-pop lover", zh: "J-pop 爱好者", ja: "J-POP 好き", ko: "J-pop 애호가" },
             notes: [
                 { en: "A little flute", zh: "会一点长笛", ja: "フルートを少し", ko: "플루트 조금" },
                 { en: "A little piano", zh: "也会一点钢琴", ja: "ピアノも少し", ko: "피아노도 조금" },
             ],
         },
-    ] as { icon: string; iconSvg?: string; title: Multilingual; notes: Multilingual[]; image?: ImageMetadata; photo?: ImageMetadata }[],
+    ] as { icon: string; iconSvg?: string; title: Multilingual; notes: Multilingual[]; image?: SvgComponent; theme?: { light: string; dark: string }; photo?: ImageMetadata }[],
 
     transition: {
         en: "Mundane resumes end here. Now then—roll the die!\n1d20... Natural 20! 'Identify' is a critical success. Character sheet revealed.",
