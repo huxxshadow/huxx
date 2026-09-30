@@ -9,6 +9,7 @@ import hobbyMusic from "@/assets/aboutme/hobby-music.webp";
 import photoGlacier from "@/assets/aboutme/photo-glacier.webp";
 import photoAnime from "@/assets/aboutme/photo-anime.webp";
 import photoRunning from "@/assets/aboutme/photo-running.webp";
+import photoCooking from "@/assets/aboutme/photo-cooking.webp";
 
 // ============================================================
 //  Intro Section i18n Data
@@ -61,6 +62,7 @@ export const introLabels = {
         {
             icon: "fa-cake-candles",
             image: hobbyCooking,
+            photo: photoCooking,
             title: { en: "I love cooking", zh: "喜欢烹饪", ja: "料理が好き", ko: "요리를 좋아해요" },
             notes: [
                 { en: "Best at desserts and Cantonese dishes", zh: "擅长做甜品和粤菜", ja: "得意はスイーツと広東料理", ko: "디저트와 광둥 요리가 특기" },
