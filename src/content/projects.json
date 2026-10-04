@@ -2437,6 +2437,23 @@
         "폴링 샌드"
       ]
     },
+    "links": [
+      {
+        "name": "itch.io",
+        "url": "https://huxxshadowhzygmailcom.itch.io/element-workshop",
+        "icon": "fa-brands fa-itch-io"
+      },
+      {
+        "name": "Bilibili",
+        "url": "https://www.bilibili.com/video/BV1E1Hr6uEJN/?share_source=copy_web&vd_source=2e0b37d0ccacd91ea3fca2b1dab708e8",
+        "icon": "fa-brands fa-bilibili"
+      },
+      {
+        "name": "Youtube",
+        "url": "https://youtu.be/kZeDMf1W8JQ?si=V72zYfEGYdqAbhvQ",
+        "icon": "fa-brands fa-youtube"
+      }
+    ],
     "coverImage": "src/assets/projects/technical-project-element-workshop/cover-4x3.png",
     "colorText": "orange",
     "colorBackground": "orange"
