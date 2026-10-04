@@ -68,6 +68,41 @@ A solo project: a falling-sand sandbox in which the simulation and the rendering
 
 ---
 
+## Light Transport
+
+Lighting is 2D global illumination with **Radiance Cascades**. Every cell can emit light (fire, lava, lamps, glowing matter) and every cell attenuates it with an RGB extinction, so light passing through green acid, blue water or red glass is tinted and casts coloured light onto the walls. Translucent materials such as ice, crystal and jelly scatter light inside their bodies (subsurface scattering), with a separate clear-coat layer for sharp highlights.
+
+On top of the global illumination, separate passes trace sun beams through windows, beams from hanging lamps and beams reflected by mirrors; bloom, automatic exposure, AgX tone mapping and a colour-grading LUT finish the image.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={flameLight} poster={flameLightPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="Flame as a light source"></video>
+        <figcaption>A flame lights the room around it</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={coldFlame} poster={coldFlamePoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="Cold flame"></video>
+        <figcaption>Cold flame</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={luminol} poster={luminolPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="Luminol"></video>
+        <figcaption>Luminol: cold light from a chemical reaction</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={stainedGlass} poster={stainedGlassPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="Light through stained glass"></video>
+        <figcaption>Sunlight through stained glass: the light takes on the colour of each pane</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={jellyLight} poster={jellyLightPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="Light scattering in jelly"></video>
+        <figcaption>Light scatters inside jelly</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={mirror} poster={mirrorPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="Mirror reflection"></video>
+        <figcaption>Mirrors reflect light beams</figcaption>
+    </figure>
+</div>
+
+---
+
 ## Simulation
 
 Each cell stores its material, temperature, lifetime and flags in one `rgba32ui` texel. Movement uses **Margolus 2 × 2 blocks**: the grid is split into blocks that never overlap, so every thread rearranges its own four cells without write conflicts. Eight sub-steps per tick alternate the block offset. Air is a material too, so sinking and floating follow the same density comparison for powders, liquids and gases.
@@ -130,39 +165,6 @@ Flammable materials ignite above their ignition temperature and spread fire to t
 </figure>
 
 ---
-
-## Light Transport
-
-Lighting is 2D global illumination with **Radiance Cascades**. Every cell can emit light (fire, lava, lamps, glowing matter) and every cell attenuates it with an RGB extinction, so light passing through green acid, blue water or red glass is tinted and casts coloured light onto the walls. Translucent materials such as ice, crystal and jelly scatter light inside their bodies (subsurface scattering), with a separate clear-coat layer for sharp highlights.
-
-On top of the global illumination, separate passes trace sun beams through windows, beams from hanging lamps and beams reflected by mirrors; bloom, automatic exposure, AgX tone mapping and a colour-grading LUT finish the image.
-
-<div class="image-grid-2">
-    <figure>
-        <video class="clip" src={flameLight} poster={flameLightPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="Flame as a light source"></video>
-        <figcaption>A flame lights the room around it</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={coldFlame} poster={coldFlamePoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="Cold flame"></video>
-        <figcaption>Cold flame</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={luminol} poster={luminolPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="Luminol"></video>
-        <figcaption>Luminol: cold light from a chemical reaction</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={stainedGlass} poster={stainedGlassPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="Light through stained glass"></video>
-        <figcaption>Sunlight through stained glass: the light takes on the colour of each pane</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={jellyLight} poster={jellyLightPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="Light scattering in jelly"></video>
-        <figcaption>Light scatters inside jelly</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={mirror} poster={mirrorPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="Mirror reflection"></video>
-        <figcaption>Mirrors reflect light beams</figcaption>
-    </figure>
-</div>
 
 ## 2.5D View
 

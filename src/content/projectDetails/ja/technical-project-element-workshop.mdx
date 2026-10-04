@@ -68,6 +68,41 @@ import mirrorPoster from '@/assets/projects/technical-project-element-workshop/c
 
 ---
 
+## ライティング
+
+ライティングは **Radiance Cascades** による 2D グローバルイルミネーションです。どのセルも光を放つことができ（火、溶岩、ランプ、発光する物質）、どのセルも RGB の 3 チャンネルで光を減衰させます。そのため緑の塩酸、青い水、赤いガラスを通った光は色づき、壁に色のついた光を落とします。氷、結晶、ゼリーのような半透明の物質では光が内部で散乱し（サブサーフェススキャタリング）、表面には鋭いハイライト用のクリアコート層があります。
+
+グローバルイルミネーションとは別に、窓から差し込む日光、吊りランプの光束、鏡で反射した光束をそれぞれのパスで追跡し、最後にブルーム、自動露出、AgX トーンマッピング、カラーグレーディング LUT で仕上げます。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={flameLight} poster={flameLightPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="光源としての炎"></video>
+        <figcaption>炎が周りの部屋を照らす</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={coldFlame} poster={coldFlamePoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="冷炎"></video>
+        <figcaption>冷炎</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={luminol} poster={luminolPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="ルミノール"></video>
+        <figcaption>ルミノール：化学反応による冷光</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={stainedGlass} poster={stainedGlassPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="ステンドグラスを通る光"></video>
+        <figcaption>ステンドグラスを通った日光が、それぞれのガラスの色に染まる</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={jellyLight} poster={jellyLightPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="ゼリー内の光の散乱"></video>
+        <figcaption>ゼリーの内部で光が散乱する</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={mirror} poster={mirrorPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="鏡の反射"></video>
+        <figcaption>鏡が光束を反射する</figcaption>
+    </figure>
+</div>
+
+---
+
 ## シミュレーション
 
 各セルは材質、温度、寿命、フラグを 1 つの `rgba32ui` テクセルに格納します。移動には **Margolus 2 × 2 ブロック** を使います。グリッドを重ならないブロックに分け、各スレッドが自分のブロックの 4 セルだけを並べ替えるので、書き込みの競合が起きません。1 tick に 8 回のサブステップがあり、ブロックの位置を交互にずらします。空気も物質の一つなので、粉体、液体、気体の浮き沈みは同じ密度比較で決まります。
@@ -130,39 +165,6 @@ import mirrorPoster from '@/assets/projects/technical-project-element-workshop/c
 </figure>
 
 ---
-
-## ライティング
-
-ライティングは **Radiance Cascades** による 2D グローバルイルミネーションです。どのセルも光を放つことができ（火、溶岩、ランプ、発光する物質）、どのセルも RGB の 3 チャンネルで光を減衰させます。そのため緑の塩酸、青い水、赤いガラスを通った光は色づき、壁に色のついた光を落とします。氷、結晶、ゼリーのような半透明の物質では光が内部で散乱し（サブサーフェススキャタリング）、表面には鋭いハイライト用のクリアコート層があります。
-
-グローバルイルミネーションとは別に、窓から差し込む日光、吊りランプの光束、鏡で反射した光束をそれぞれのパスで追跡し、最後にブルーム、自動露出、AgX トーンマッピング、カラーグレーディング LUT で仕上げます。
-
-<div class="image-grid-2">
-    <figure>
-        <video class="clip" src={flameLight} poster={flameLightPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="光源としての炎"></video>
-        <figcaption>炎が周りの部屋を照らす</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={coldFlame} poster={coldFlamePoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="冷炎"></video>
-        <figcaption>冷炎</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={luminol} poster={luminolPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="ルミノール"></video>
-        <figcaption>ルミノール：化学反応による冷光</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={stainedGlass} poster={stainedGlassPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="ステンドグラスを通る光"></video>
-        <figcaption>ステンドグラスを通った日光が、それぞれのガラスの色に染まる</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={jellyLight} poster={jellyLightPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="ゼリー内の光の散乱"></video>
-        <figcaption>ゼリーの内部で光が散乱する</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={mirror} poster={mirrorPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="鏡の反射"></video>
-        <figcaption>鏡が光束を反射する</figcaption>
-    </figure>
-</div>
 
 ## 2.5D ビュー
 

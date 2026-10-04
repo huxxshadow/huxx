@@ -68,6 +68,41 @@ import mirrorPoster from '@/assets/projects/technical-project-element-workshop/c
 
 ---
 
+## 光照
+
+光照是基于 **Radiance Cascades** 的 2D 全局光照。每一格都可以发光（火、熔岩、灯、发光物质），每一格也都按 RGB 三通道消光，所以光穿过绿色的盐酸、蓝色的水或红色的玻璃会被染色，在墙上投出彩色的光。冰、晶体、果冻这类半透明材质会让光在内部散射（次表面散射），表面另有一层清漆负责锐利的高光。
+
+在全局光照之外，还有独立的 pass 追踪穿过窗户的阳光、吊灯的光束和镜子反射的光束；最后经过泛光、自动曝光、AgX 色调映射和调色 LUT。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={flameLight} poster={flameLightPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="火焰光源"></video>
+        <figcaption>火焰照亮周围的房间</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={coldFlame} poster={coldFlamePoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="冷焰"></video>
+        <figcaption>冷焰</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={luminol} poster={luminolPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="鲁米诺"></video>
+        <figcaption>鲁米诺：化学反应产生的冷光</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={stainedGlass} poster={stainedGlassPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="阳光穿过彩色玻璃"></video>
+        <figcaption>阳光穿过彩色玻璃，被每块玻璃染上各自的颜色</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={jellyLight} poster={jellyLightPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="果冻散射光"></video>
+        <figcaption>光在果冻内部散射</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={mirror} poster={mirrorPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="镜子反射"></video>
+        <figcaption>镜子反射光束</figcaption>
+    </figure>
+</div>
+
+---
+
 ## 模拟
 
 每个元胞把材质、温度、寿命和标志位存在一个 `rgba32ui` 像素里。运动使用 **Margolus 2 × 2 块**：网格被分成互不重叠的块，每个线程只重排自己块内的四格，没有写冲突；每个 tick 有 8 个子步，交替偏移块的位置。空气也是一种材质，所以粉末、液体、气体的沉浮都由同一个密度比较决定。
@@ -130,39 +165,6 @@ import mirrorPoster from '@/assets/projects/technical-project-element-workshop/c
 </figure>
 
 ---
-
-## 光照
-
-光照是基于 **Radiance Cascades** 的 2D 全局光照。每一格都可以发光（火、熔岩、灯、发光物质），每一格也都按 RGB 三通道消光，所以光穿过绿色的盐酸、蓝色的水或红色的玻璃会被染色，在墙上投出彩色的光。冰、晶体、果冻这类半透明材质会让光在内部散射（次表面散射），表面另有一层清漆负责锐利的高光。
-
-在全局光照之外，还有独立的 pass 追踪穿过窗户的阳光、吊灯的光束和镜子反射的光束；最后经过泛光、自动曝光、AgX 色调映射和调色 LUT。
-
-<div class="image-grid-2">
-    <figure>
-        <video class="clip" src={flameLight} poster={flameLightPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="火焰光源"></video>
-        <figcaption>火焰照亮周围的房间</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={coldFlame} poster={coldFlamePoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="冷焰"></video>
-        <figcaption>冷焰</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={luminol} poster={luminolPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="鲁米诺"></video>
-        <figcaption>鲁米诺：化学反应产生的冷光</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={stainedGlass} poster={stainedGlassPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="阳光穿过彩色玻璃"></video>
-        <figcaption>阳光穿过彩色玻璃，被每块玻璃染上各自的颜色</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={jellyLight} poster={jellyLightPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="果冻散射光"></video>
-        <figcaption>光在果冻内部散射</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={mirror} poster={mirrorPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="镜子反射"></video>
-        <figcaption>镜子反射光束</figcaption>
-    </figure>
-</div>
 
 ## 2.5D 视图
 
