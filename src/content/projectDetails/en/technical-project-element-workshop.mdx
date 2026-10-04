@@ -35,8 +35,6 @@ import coldFlame from '@/assets/projects/technical-project-element-workshop/clip
 import coldFlamePoster from '@/assets/projects/technical-project-element-workshop/clips/cold-flame-poster.webp?url';
 import luminol from '@/assets/projects/technical-project-element-workshop/clips/luminol.mp4?url';
 import luminolPoster from '@/assets/projects/technical-project-element-workshop/clips/luminol-poster.webp?url';
-import plasmaTungsten from '@/assets/projects/technical-project-element-workshop/clips/plasma-tungsten.mp4?url';
-import plasmaTungstenPoster from '@/assets/projects/technical-project-element-workshop/clips/plasma-tungsten-poster.webp?url';
 import jellyLight from '@/assets/projects/technical-project-element-workshop/clips/jelly-light.mp4?url';
 import jellyLightPoster from '@/assets/projects/technical-project-element-workshop/clips/jelly-light-poster.webp?url';
 import mirror from '@/assets/projects/technical-project-element-workshop/clips/mirror.mp4?url';
@@ -59,11 +57,6 @@ import mirrorPoster from '@/assets/projects/technical-project-element-workshop/c
             allow="fullscreen; picture-in-picture"
     ></iframe>
 </div>
-
-<figure>
-    <video class="clip" src={stainedGlass} poster={stainedGlassPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="Light through stained glass"></video>
-    <figcaption>Sunlight through stained glass: the light takes on the colour of each pane</figcaption>
-</figure>
 
 ## My Role
 
@@ -158,8 +151,8 @@ On top of the global illumination, separate passes trace sun beams through windo
         <figcaption>Luminol: cold light from a chemical reaction</figcaption>
     </figure>
     <figure>
-        <video class="clip" src={plasmaTungsten} poster={plasmaTungstenPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="Plasma melting tungsten"></video>
-        <figcaption>Plasma melts tungsten</figcaption>
+        <video class="clip" src={stainedGlass} poster={stainedGlassPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="Light through stained glass"></video>
+        <figcaption>Sunlight through stained glass: the light takes on the colour of each pane</figcaption>
     </figure>
     <figure>
         <video class="clip" src={jellyLight} poster={jellyLightPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="Light scattering in jelly"></video>

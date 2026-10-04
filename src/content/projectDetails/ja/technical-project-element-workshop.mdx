@@ -35,8 +35,6 @@ import coldFlame from '@/assets/projects/technical-project-element-workshop/clip
 import coldFlamePoster from '@/assets/projects/technical-project-element-workshop/clips/cold-flame-poster.webp?url';
 import luminol from '@/assets/projects/technical-project-element-workshop/clips/luminol.mp4?url';
 import luminolPoster from '@/assets/projects/technical-project-element-workshop/clips/luminol-poster.webp?url';
-import plasmaTungsten from '@/assets/projects/technical-project-element-workshop/clips/plasma-tungsten.mp4?url';
-import plasmaTungstenPoster from '@/assets/projects/technical-project-element-workshop/clips/plasma-tungsten-poster.webp?url';
 import jellyLight from '@/assets/projects/technical-project-element-workshop/clips/jelly-light.mp4?url';
 import jellyLightPoster from '@/assets/projects/technical-project-element-workshop/clips/jelly-light-poster.webp?url';
 import mirror from '@/assets/projects/technical-project-element-workshop/clips/mirror.mp4?url';
@@ -59,11 +57,6 @@ import mirrorPoster from '@/assets/projects/technical-project-element-workshop/c
             allow="fullscreen; picture-in-picture"
     ></iframe>
 </div>
-
-<figure>
-    <video class="clip" src={stainedGlass} poster={stainedGlassPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="ステンドグラスを通る光"></video>
-    <figcaption>ステンドグラスを通った日光が、それぞれのガラスの色に染まる</figcaption>
-</figure>
 
 ## 担当
 
@@ -158,8 +151,8 @@ import mirrorPoster from '@/assets/projects/technical-project-element-workshop/c
         <figcaption>ルミノール：化学反応による冷光</figcaption>
     </figure>
     <figure>
-        <video class="clip" src={plasmaTungsten} poster={plasmaTungstenPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="プラズマがタングステンを溶かす"></video>
-        <figcaption>プラズマがタングステンを溶かす</figcaption>
+        <video class="clip" src={stainedGlass} poster={stainedGlassPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="ステンドグラスを通る光"></video>
+        <figcaption>ステンドグラスを通った日光が、それぞれのガラスの色に染まる</figcaption>
     </figure>
     <figure>
         <video class="clip" src={jellyLight} poster={jellyLightPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="ゼリー内の光の散乱"></video>
