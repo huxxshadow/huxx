@@ -170,58 +170,14 @@ Shapes stay two-dimensional; depth comes from lighting. The final image is compo
 
 ## Performance
 
-The frame budget is 16 ms (60 fps). The lighting effects went in one at a time and each one made the frame slower, so optimisation ran through the whole project instead of happening once at the end. The steps below are in the order they happened (RTX 5090, 512 × 288 world).
+The simulation is deterministic under a fixed frame rate, so an optimisation that keeps the result must reproduce the same frames exactly. A test script renders 9 scenes, times every pass and compares each screenshot byte for byte with the reference; an optimisation only stays if all of them are identical.
 
-### Step 1: See where every millisecond goes
+| Change | Idea |
+| --- | --- |
+| Sun-beam probe | A parallel probe finds where each sun ray first meets matter (`atomicMax` over ray segments), so the beam pass only traces that far |
+| Spectral beams | The 8 wavelength passes of lamp and sun beams (dispersion) run side by side in one dispatch, one workgroup layer each |
+| Liquid spreading | Row segments scanned in shared memory instead of cell-by-cell passes |
+| Pressure solve | All Jacobi iterations in one dispatch in shared memory instead of 20 dispatches |
+| Idle passes | The command pass is skipped on ticks without player input |
 
-First came an in-game performance panel (F3):
-
-- **Per-pass timings**: GPU milliseconds for every render pass, shown as bars.
-- **Cost heat map**: the 2.5D view shader counts its samples per pixel for the background, the air and the foreground, overlays them on the picture and converts them into milliseconds per material, so the most expensive material is visible at a glance.
-- **Per-effect cost**: each effect is briefly switched off in turn, and the on/off difference gives the GPU time it really costs.
-
-### Step 2: Move per-pixel work to world resolution
-
-The heat map showed the foreground volumetric fog as the most expensive part: it ray-marched with dithering on every pixel of the final picture. Fog and light shafts are smooth and do not need that resolution, so the fog is now precomputed into a texture at the 512 × 288 world resolution and sampled bilinearly when the picture is composited. Compositing dropped from about 1.0 ms to 0.13 ms, the light gallery from 1.88 ms to 0.93 ms per frame, and the dithering noise went away with it.
-
-### Step 3: Beams at half resolution
-
-Once reflected and refracted beams were in, they became the new largest cost. A beam deposits its energy into a buffer with atomic adds along its path, and contention on those atomic writes was the main expense:
-
-- the accumulation buffer went to half resolution;
-- a beam deposits every second step and no longer splits each deposit bilinearly over four cells, which leaves about 1/8 of the atomic writes;
-- the blur that follows is a 3 × 3 at half resolution.
-
-Optics bench 1.58 → 1.05 ms per frame, light gallery 1.29 → 0.94 ms, lab 1.08 → 0.86 ms. Lamp beams also got a cheap early test: probe 56 cells in a straight line first and skip the ray if nothing transparent or mirror-like lies ahead; split into wavelengths only on entering dispersive matter, and trace a single white ray otherwise.
-
-### Step 4: A regression test that guards the picture
-
-Sunlight wavefronts and 8-band spectral dispersion came next, and daytime scenes grew to 5.5–7.9 ms, with beams alone taking over 3.4 ms. Going further meant changing how the shaders execute, which must not break the picture.
-
-At a fixed frame rate the game is deterministic (the simulation's random numbers are seeded by the tick), so an optimisation that keeps the result has to reproduce the original picture exactly. `perf_check.py` renders 9 scenes (the maps with the heaviest lighting, a fire scene and the scripted demos) for 240 frames each at a fixed time step, averages the per-pass timings over the second half, and compares every screenshot **byte for byte** with a reference captured before the change. Any differing pixel is reported with the largest error; only changes that match everywhere are kept.
-
-### Step 5: Beams from serial to parallel
-
-The per-pass timings pointed at two serial chains:
-
-- **8 wavelengths one after another**: as soon as one ray in a group touched dispersive glass, the whole group traced all 8 wavelengths in sequence. Now each wavelength gets its own layer of workgroups (`gl_WorkGroupID.z`) and the 8 layers run side by side. Deposits are integer atomic adds, which do not depend on order, so the result is bit-identical.
-- **The sun probe was the longest serial chain of the frame**: each of the 640 sunlight rays was walked by one thread across about 600 cells to find the first matter that redirects light. The new `sun_probe.comp` cuts every ray into 32-step segments probed by one thread each; a hit is encoded as `0x7FFFFFFF − t` and `atomicMax` keeps the earliest one, which is exactly the answer of walking the ray from its start.
-
-| Scene | Before | After |
-| --- | --- | --- |
-| Stained-glass hall (cover) | 7.9 ms | 3.7 ms |
-| Optics bench | 7.2 ms | 3.4 ms |
-| Light gallery | 6.8 ms | 3.3 ms |
-| Lab | 5.4 ms | 3.1 ms |
-
-### Step 6: The simulation in shared memory
-
-- **Lateral liquid spread**: liquid moves while a row is being scanned, so the scan has to be serial. Each thread used to read and write the global image cell by cell. Now one workgroup handles each 64-cell row segment: its 64 threads load the segment and the cells supporting it from below into shared memory in parallel, one thread runs the same serial scan there, and the whole group writes it back. 0.18–0.25 ms → 0.05 ms.
-- **Pressure solve**: fluid pressure is solved with Jacobi iterations of a Poisson equation, which used to take one dispatch per iteration, 20 in all. The 128 × 72 pressure grid fits in one workgroup's shared memory, so a single 1024-thread workgroup now runs every iteration there with precomputed neighbour masks; the sums are taken in the same order, so the result is identical. 0.18 ms → 0.09 ms. Larger grids keep the old path.
-- **Idle pass**: on ticks without player input the command pass only copied the grid, so it is skipped.
-
-The simulation became twice as fast, again with byte-identical output.
-
-### Result
-
-In the heaviest scene at 1536 × 864, GPU time per frame went from **7.9 ms to 3.5 ms**, and the pictures of all 9 scenes are byte-identical to those before the optimisations.
+GPU time per frame went from **7.9 ms to 3.5 ms** on the heaviest scene at 1536 × 864, with identical output.
