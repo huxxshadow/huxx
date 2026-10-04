@@ -3,8 +3,6 @@
 
 import { Image } from 'astro:assets';
 import gameCover from '@/assets/projects/technical-project-element-workshop/cover-4x3.png';
-import webDesktop from '@/assets/projects/technical-project-element-workshop/web-desktop.png';
-import webPhone from '@/assets/projects/technical-project-element-workshop/web-phone.png';
 import stainedGlass from '@/assets/projects/technical-project-element-workshop/clips/stained-glass.mp4?url';
 import stainedGlassPoster from '@/assets/projects/technical-project-element-workshop/clips/stained-glass-poster.webp?url';
 import sandInWater from '@/assets/projects/technical-project-element-workshop/clips/sand-in-water.mp4?url';
@@ -183,29 +181,3 @@ import mirrorPoster from '@/assets/projects/technical-project-element-workshop/c
 | 空闲 pass | 没有玩家输入的 tick 跳过命令 pass |
 
 在最重的场景、1536 × 864 分辨率下，每帧 GPU 耗时从 **7.9 ms 降到 3.5 ms**，输出完全一致。
-
-## 网页版
-
-Godot 不能把 C# 项目导出到网页，网页渲染器也没有 compute shader，所以游戏被移植到 **TypeScript + WebGPU**。GLSL 仍是唯一的源码：构建时用 glslang 编译成 SPIR-V，再用 naga 翻译成 WGSL，并改写 WebGPU 不允许的部分：
-
-| 桌面版（Vulkan） | 网页版（WebGPU） |
-| --- | --- |
-| Push constant | 每次 dispatch 带动态偏移的 uniform buffer |
-| 组合图像采样器 | 分开的纹理和采样器绑定 |
-| 可读写的 `rgba32ui` 图像 | 一份只读副本加一个只写目标 |
-| barrier 之前的非一致控制流 | 重构 shader，让 barrier 保持一致（桌面输出不变） |
-
-物质、反应和地图都从 Godot 项目导出，两个版本共用同一份数据。网页版支持中英文切换、触屏操作（单指绘制，双指平移和缩放）、手机紧凑布局和自动画质。
-
-第一次打开曾经很慢：浏览器首次加载要编译所有 pipeline，而 D3D 的 shader 编译器会内联每一个函数调用，主视图 shader 因此膨胀到约 60,000 行。删掉一段死代码、让所有反射光线共用一次追踪调用之后，降到 16,000 行，首次加载从 **13.9 秒降到 3.2 秒**，桌面版画面一个像素都没变。
-
-<div class="image-grid-2">
-    <figure>
-        <Image src={webDesktop} alt="桌面浏览器中的网页版" widths={[640, 1280]} sizes="(min-width: 640px) 50vw, 100vw" />
-        <figcaption>桌面浏览器</figcaption>
-    </figure>
-    <figure>
-        <Image src={webPhone} alt="手机上的网页版" widths={[640, 1280]} sizes="(min-width: 640px) 50vw, 100vw" />
-        <figcaption>手机横屏</figcaption>
-    </figure>
-</div>

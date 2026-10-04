@@ -3,8 +3,6 @@
 
 import { Image } from 'astro:assets';
 import gameCover from '@/assets/projects/technical-project-element-workshop/cover-4x3.png';
-import webDesktop from '@/assets/projects/technical-project-element-workshop/web-desktop.png';
-import webPhone from '@/assets/projects/technical-project-element-workshop/web-phone.png';
 import stainedGlass from '@/assets/projects/technical-project-element-workshop/clips/stained-glass.mp4?url';
 import stainedGlassPoster from '@/assets/projects/technical-project-element-workshop/clips/stained-glass-poster.webp?url';
 import sandInWater from '@/assets/projects/technical-project-element-workshop/clips/sand-in-water.mp4?url';
@@ -183,29 +181,3 @@ import mirrorPoster from '@/assets/projects/technical-project-element-workshop/c
 | 空きパス | プレイヤー入力のない tick ではコマンドパスを省く |
 
 最も重いシーン、1536 × 864 で、1 フレームあたりの GPU 時間は **7.9 ms から 3.5 ms** になり、出力は完全に同じです。
-
-## Web 版
-
-Godot は C# プロジェクトを Web に書き出せず、Web 用レンダラーにはコンピュートシェーダーもありません。そこでゲームを **TypeScript + WebGPU** に移植しました。GLSL は唯一のソースのままです。ビルド時に glslang で SPIR-V にコンパイルし、naga で WGSL に変換して、WebGPU が許さない部分を書き換えます。
-
-| デスクトップ（Vulkan） | Web（WebGPU） |
-| --- | --- |
-| プッシュ定数 | dispatch ごとに動的オフセットを持つ uniform buffer |
-| 結合イメージサンプラー | テクスチャとサンプラーのバインディングに分割 |
-| 読み書き可能な `rgba32ui` イメージ | 読み取り用のコピーと書き込み専用のターゲット |
-| バリア前の非一様な制御フロー | バリアが一様になるようシェーダーを再構成（デスクトップの出力は不変） |
-
-物質、反応、マップは Godot プロジェクトから書き出し、両方のバージョンで同じデータを使います。ブラウザ版には中国語・英語の切り替え、タッチ操作（1 本指で描画、2 本指で移動とズーム）、スマートフォン向けのコンパクトなレイアウト、自動画質調整があります。
-
-初回の読み込みは遅いものでした。ブラウザは最初の読み込みですべてのパイプラインをコンパイルし、D3D のシェーダーコンパイラーはすべての関数呼び出しをインライン展開するため、メインのビューシェーダーが約 60,000 行に膨らんでいたのです。使われていない分岐を削除し、すべての反射レイを 1 回のトレース呼び出しにまとめることで 16,000 行になり、初回読み込みは **13.9 秒から 3.2 秒** に短縮しました。デスクトップの画面は 1 ピクセルも変わっていません。
-
-<div class="image-grid-2">
-    <figure>
-        <Image src={webDesktop} alt="デスクトップブラウザの Web 版" widths={[640, 1280]} sizes="(min-width: 640px) 50vw, 100vw" />
-        <figcaption>デスクトップブラウザ</figcaption>
-    </figure>
-    <figure>
-        <Image src={webPhone} alt="スマートフォンの Web 版" widths={[640, 1280]} sizes="(min-width: 640px) 50vw, 100vw" />
-        <figcaption>スマートフォン（横向き）</figcaption>
-    </figure>
-</div>

@@ -3,8 +3,6 @@
 
 import { Image } from 'astro:assets';
 import gameCover from '@/assets/projects/technical-project-element-workshop/cover-4x3.png';
-import webDesktop from '@/assets/projects/technical-project-element-workshop/web-desktop.png';
-import webPhone from '@/assets/projects/technical-project-element-workshop/web-phone.png';
 import stainedGlass from '@/assets/projects/technical-project-element-workshop/clips/stained-glass.mp4?url';
 import stainedGlassPoster from '@/assets/projects/technical-project-element-workshop/clips/stained-glass-poster.webp?url';
 import sandInWater from '@/assets/projects/technical-project-element-workshop/clips/sand-in-water.mp4?url';
@@ -183,29 +181,3 @@ The simulation is deterministic under a fixed frame rate, so an optimisation tha
 | Idle passes | The command pass is skipped on ticks without player input |
 
 GPU time per frame went from **7.9 ms to 3.5 ms** on the heaviest scene at 1536 × 864, with identical output.
-
-## Web Version
-
-Godot cannot export C# projects to the web, and its web renderer has no compute shaders, so the game was ported to **TypeScript + WebGPU**. The GLSL stays the single source: a build step compiles it to SPIR-V with glslang, translates it to WGSL with naga, and rewrites what WebGPU does not allow:
-
-| Desktop (Vulkan) | Web (WebGPU) |
-| --- | --- |
-| Push constants | A uniform buffer with a dynamic offset per dispatch |
-| Combined image samplers | Separate texture and sampler bindings |
-| Read-write `rgba32ui` images | A read copy plus a write-only target |
-| Non-uniform control flow before barriers | Shaders restructured so barriers stay uniform (desktop output unchanged) |
-
-Materials, reactions and maps are exported from the Godot project, so both versions share the same data. The browser build has a Chinese / English switch, touch controls (one finger paints, two fingers pan and zoom), a compact layout for phones and an automatic quality setting.
-
-The first visit was slow: browsers compile every pipeline on first load, and the D3D shader compiler inlines every function call, which expanded the main view shader to about 60,000 lines. Removing a dead branch and routing all reflection rays through a single trace call reduced it to 16,000 lines, and the first load from **13.9 s to 3.2 s**, without changing a pixel on desktop.
-
-<div class="image-grid-2">
-    <figure>
-        <Image src={webDesktop} alt="Web version in a desktop browser" widths={[640, 1280]} sizes="(min-width: 640px) 50vw, 100vw" />
-        <figcaption>Desktop browser</figcaption>
-    </figure>
-    <figure>
-        <Image src={webPhone} alt="Web version on a phone" widths={[640, 1280]} sizes="(min-width: 640px) 50vw, 100vw" />
-        <figcaption>Phone, landscape</figcaption>
-    </figure>
-</div>
