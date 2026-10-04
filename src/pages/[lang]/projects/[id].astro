@@ -528,6 +528,33 @@ if (detailEntry) {
         border: 0;
     }
 
+    /* ========================================= */
+    /* itch.io 卡片（固定 552×167，itch 不会自己换版式） */
+    /* 样式只放在 iframe 上：带皮肤的页面（.skin-eel）会整体覆盖 */
+    /* ========================================= */
+    :global(.project-prose .itch-embed) {
+        margin: 2.5rem 0;
+        max-width: 100%;
+    }
+
+    :global(.project-prose .itch-embed iframe) {
+        display: block;
+        width: 552px;
+        max-width: none;
+        height: 167px;
+        border: 3px solid var(--theme-text);
+        border-radius: 0.5rem;
+        box-shadow: 4px 4px 0px var(--theme-text);
+    }
+
+    /* 手机：整体按比例缩小，不横向溢出 */
+    @media (max-width: 639px) {
+        :global(.project-prose .itch-embed iframe) { zoom: 0.6; }
+    }
+    @media (max-width: 359px) {
+        :global(.project-prose .itch-embed iframe) { zoom: 0.5; }
+    }
+
     /* 引用 */
     :global(.project-prose blockquote) {
         border-left: 4px solid var(--theme-text);
