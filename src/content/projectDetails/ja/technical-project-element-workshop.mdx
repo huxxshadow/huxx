@@ -1,0 +1,213 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import webDesktop from '@/assets/projects/technical-project-element-workshop/web-desktop.png';
+import webPhone from '@/assets/projects/technical-project-element-workshop/web-phone.png';
+import stainedGlass from '@/assets/projects/technical-project-element-workshop/clips/stained-glass.mp4?url';
+import stainedGlassPoster from '@/assets/projects/technical-project-element-workshop/clips/stained-glass-poster.webp?url';
+import sandInWater from '@/assets/projects/technical-project-element-workshop/clips/sand-in-water.mp4?url';
+import sandInWaterPoster from '@/assets/projects/technical-project-element-workshop/clips/sand-in-water-poster.webp?url';
+import density from '@/assets/projects/technical-project-element-workshop/clips/density.mp4?url';
+import densityPoster from '@/assets/projects/technical-project-element-workshop/clips/density-poster.webp?url';
+import sodiumAcid from '@/assets/projects/technical-project-element-workshop/clips/sodium-acid.mp4?url';
+import sodiumAcidPoster from '@/assets/projects/technical-project-element-workshop/clips/sodium-acid-poster.webp?url';
+import thermite from '@/assets/projects/technical-project-element-workshop/clips/thermite.mp4?url';
+import thermitePoster from '@/assets/projects/technical-project-element-workshop/clips/thermite-poster.webp?url';
+import phase from '@/assets/projects/technical-project-element-workshop/clips/phase.mp4?url';
+import phasePoster from '@/assets/projects/technical-project-element-workshop/clips/phase-poster.webp?url';
+import cold from '@/assets/projects/technical-project-element-workshop/clips/cold.mp4?url';
+import coldPoster from '@/assets/projects/technical-project-element-workshop/clips/cold-poster.webp?url';
+import fireSpread from '@/assets/projects/technical-project-element-workshop/clips/fire-spread.mp4?url';
+import fireSpreadPoster from '@/assets/projects/technical-project-element-workshop/clips/fire-spread-poster.webp?url';
+import flameColours from '@/assets/projects/technical-project-element-workshop/clips/flame-colours.mp4?url';
+import flameColoursPoster from '@/assets/projects/technical-project-element-workshop/clips/flame-colours-poster.webp?url';
+import deflagration from '@/assets/projects/technical-project-element-workshop/clips/deflagration.mp4?url';
+import deflagrationPoster from '@/assets/projects/technical-project-element-workshop/clips/deflagration-poster.webp?url';
+import explosion from '@/assets/projects/technical-project-element-workshop/clips/explosion.mp4?url';
+import explosionPoster from '@/assets/projects/technical-project-element-workshop/clips/explosion-poster.webp?url';
+import volcano from '@/assets/projects/technical-project-element-workshop/clips/volcano.mp4?url';
+import volcanoPoster from '@/assets/projects/technical-project-element-workshop/clips/volcano-poster.webp?url';
+import flameLight from '@/assets/projects/technical-project-element-workshop/clips/flame-light.mp4?url';
+import flameLightPoster from '@/assets/projects/technical-project-element-workshop/clips/flame-light-poster.webp?url';
+import coldFlame from '@/assets/projects/technical-project-element-workshop/clips/cold-flame.mp4?url';
+import coldFlamePoster from '@/assets/projects/technical-project-element-workshop/clips/cold-flame-poster.webp?url';
+import luminol from '@/assets/projects/technical-project-element-workshop/clips/luminol.mp4?url';
+import luminolPoster from '@/assets/projects/technical-project-element-workshop/clips/luminol-poster.webp?url';
+import plasmaTungsten from '@/assets/projects/technical-project-element-workshop/clips/plasma-tungsten.mp4?url';
+import plasmaTungstenPoster from '@/assets/projects/technical-project-element-workshop/clips/plasma-tungsten-poster.webp?url';
+import jellyLight from '@/assets/projects/technical-project-element-workshop/clips/jelly-light.mp4?url';
+import jellyLightPoster from '@/assets/projects/technical-project-element-workshop/clips/jelly-light-poster.webp?url';
+import mirror from '@/assets/projects/technical-project-element-workshop/clips/mirror.mp4?url';
+import mirrorPoster from '@/assets/projects/technical-project-element-workshop/clips/mirror-poster.webp?url';
+
+<figure>
+    <video class="clip" src={stainedGlass} poster={stainedGlassPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="ステンドグラスを通る光"></video>
+    <figcaption>ステンドグラスを通った日光が、それぞれのガラスの色に染まる</figcaption>
+</figure>
+
+## 担当
+
+個人プロジェクトです。シミュレーションとレンダリングをすべて GPU で行うフォーリングサンド系サンドボックスで、世界は 512 × 288 のセルオートマトンです。各セルが砂の一粒、水の一滴、煙のひとすじ、あるいは固体の一部になります。
+
+- **シミュレーション**：セルの移動、44 種類の反応、熱伝導、潜熱を伴う相変化、流体と煙の場、剛体を GPU のコンピュートパスで実装しました。Godot の物理エンジンは使っていません。
+- **レンダリング**：Radiance Cascades による 2D グローバルイルミネーション、通過した物質の色に染まる光、サブサーフェススキャタリング、そしてライティングで平面の世界に奥行きを与える 2.5D ビュー。
+- **最適化**：1 フレームあたりの GPU 時間を 7.9 ms から 3.5 ms に短縮し、全フレームの出力をバイト単位で同一に保ちました。
+- **Web 版**：TypeScript と WebGPU に移植し、同じシェーダーソースを自動で変換しています。デスクトップとモバイルのブラウザで動き、中国語と英語に対応します。
+
+| 項目 | 数 |
+| --- | --- |
+| 物質 | 85 種類（粉体、液体、気体、固体、エネルギー） |
+| 反応 | 44 のペア反応ルール、ほかに燃焼と相変化 |
+| コンピュートシェーダー | 45 本（GLSL 約 5,100 行） |
+| 反応図鑑 | 100 項目、観察すると解放 |
+| スクリプトデモ | 16 本 |
+
+---
+
+## シミュレーション
+
+各セルは材質、温度、寿命、フラグを 1 つの `rgba32ui` テクセルに格納します。移動には **Margolus 2 × 2 ブロック** を使います。グリッドを重ならないブロックに分け、各スレッドが自分のブロックの 4 セルだけを並べ替えるので、書き込みの競合が起きません。1 tick に 8 回のサブステップがあり、ブロックの位置を交互にずらします。空気も物質の一つなので、粉体、液体、気体の浮き沈みは同じ密度比較で決まります。
+
+反応は反応物ペアの 256 × 256 ルックアップテーブル（確率と温度範囲つき）から引き、各ブロック内で隣り合うペアごとに評価します。熱はセル間で拡散し、相変化は潜熱を吸収または放出します。1/4 解像度の流体ソルバーが熱い空気の浮力と爆風を、1/2 解像度の媒質場が煙、蒸気、炎を扱います。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={sandInWater} poster={sandInWaterPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="水に沈む砂"></video>
+        <figcaption>砂が水に沈み、安息角で積もる</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={density} poster={densityPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="密度と浮力"></video>
+        <figcaption>液体が密度の順に層になる</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={sodiumAcid} poster={sodiumAcidPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="ナトリウムと塩酸"></video>
+        <figcaption>ナトリウムと塩酸：水素と塩が生じ、発熱する</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={thermite} poster={thermitePoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="硫黄とテルミット"></video>
+        <figcaption>硫黄は青い炎で燃え、テルミットは溶けた鉄を生む</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={phase} poster={phasePoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="状態変化"></video>
+        <figcaption>氷が溶け、水が沸騰して蒸気になる</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={cold} poster={coldPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="凍結"></video>
+        <figcaption>冷やすと水が凍る</figcaption>
+    </figure>
+</div>
+
+## 燃焼と爆発
+
+可燃物は発火点を超えると燃え、隣のセルに火を広げます。炎は媒質場に注入され、光りながら流体とともに上昇し、シーンを照らします。爆発は流体場に圧力を書き込み、爆風が粉体や液体、固定されていない物体を押し出します。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={fireSpread} poster={fireSpreadPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="延焼"></video>
+        <figcaption>木材に火が燃え広がる</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={flameColours} poster={flameColoursPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="炎の色"></video>
+        <figcaption>炎の色は燃料によって変わる</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={deflagration} poster={deflagrationPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="ガスの爆燃"></video>
+        <figcaption>可燃性ガスに引火する</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={explosion} poster={explosionPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="火薬と爆発"></video>
+        <figcaption>火薬が燃え、続いて爆薬が爆発する</figcaption>
+    </figure>
+</div>
+
+<figure>
+    <video class="clip" src={volcano} poster={volcanoPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="火山"></video>
+    <figcaption>火山：溶岩が海に流れ込み、冷えて岩になる</figcaption>
+</figure>
+
+---
+
+## ライティング
+
+ライティングは **Radiance Cascades** による 2D グローバルイルミネーションです。どのセルも光を放つことができ（火、溶岩、ランプ、発光する物質）、どのセルも RGB の 3 チャンネルで光を減衰させます。そのため緑の塩酸、青い水、赤いガラスを通った光は色づき、壁に色のついた光を落とします。氷、結晶、ゼリーのような半透明の物質では光が内部で散乱し（サブサーフェススキャタリング）、表面には鋭いハイライト用のクリアコート層があります。
+
+グローバルイルミネーションとは別に、窓から差し込む日光、吊りランプの光束、鏡で反射した光束をそれぞれのパスで追跡し、最後にブルーム、自動露出、AgX トーンマッピング、カラーグレーディング LUT で仕上げます。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={flameLight} poster={flameLightPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="光源としての炎"></video>
+        <figcaption>炎が周りの部屋を照らす</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={coldFlame} poster={coldFlamePoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="冷炎"></video>
+        <figcaption>冷炎</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={luminol} poster={luminolPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="ルミノール"></video>
+        <figcaption>ルミノール：化学反応による冷光</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={plasmaTungsten} poster={plasmaTungstenPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="プラズマがタングステンを溶かす"></video>
+        <figcaption>プラズマがタングステンを溶かす</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={jellyLight} poster={jellyLightPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="ゼリー内の光の散乱"></video>
+        <figcaption>ゼリーの内部で光が散乱する</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={mirror} poster={mirrorPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="鏡の反射"></video>
+        <figcaption>鏡が光束を反射する</figcaption>
+    </figure>
+</div>
+
+## 2.5D ビュー
+
+形は常に二次元のままで、奥行きはライティングだけで表現します。最終画像は 1 本のビューシェーダーが合成します。各ピクセルの視線は、数セルの厚みを持つ板として扱うプレイ層を通り、続いて窓、柱、岩壁からなる背景のレリーフを通ります。
+
+- **レリーフ法線**：輪郭が光の方へ傾いたり離れたりして、縁が浮き彫りのように光を受けます。
+- **界面**：水、ガラス、氷の表面で視線が屈折率に従って曲がり、フレネル反射はシーンへ追跡し直されます。
+- **背景**：レリーフは奥行きに応じてぼかした光で照らされ、前景の影、水の後ろのコースティクス、接触による遮蔽が入ります。
+- **空気感**：層の間の霞、空気遠近法、昼夜のサイクル、カメラ移動時のわずかな視差。
+
+---
+
+## パフォーマンス
+
+固定フレームレートではシミュレーションが決定的なので、結果を変えない最適化は同じフレームを正確に再現しなければなりません。テストスクリプトが 9 つのシーンを描画し、パスごとの時間を計測して、各スクリーンショットを参照画像とバイト単位で比較します。すべて一致した最適化だけを残しました。
+
+| 変更 | 考え方 |
+| --- | --- |
+| 日光プローブ | 各日光レイが最初に物質に当たる位置を並列に求め（区間ごとの `atomicMax`）、光束パスはそこまでだけを追跡する |
+| 分光光束 | ランプと日光の光束の 8 波長パス（分散）を 1 回の dispatch で並べて実行し、それぞれワークグループの 1 層を使う |
+| 液体の拡散 | セル単位の複数パスの代わりに、行の区間を共有メモリで走査する |
+| 圧力ソルバー | 20 回の dispatch の代わりに、すべての Jacobi 反復を 1 回の dispatch 内の共有メモリで行う |
+| 空きパス | プレイヤー入力のない tick ではコマンドパスを省く |
+
+最も重いシーン、1536 × 864 で、1 フレームあたりの GPU 時間は **7.9 ms から 3.5 ms** になり、出力は完全に同じです。
+
+## Web 版
+
+Godot は C# プロジェクトを Web に書き出せず、Web 用レンダラーにはコンピュートシェーダーもありません。そこでゲームを **TypeScript + WebGPU** に移植しました。GLSL は唯一のソースのままです。ビルド時に glslang で SPIR-V にコンパイルし、naga で WGSL に変換して、WebGPU が許さない部分を書き換えます。
+
+| デスクトップ（Vulkan） | Web（WebGPU） |
+| --- | --- |
+| プッシュ定数 | dispatch ごとに動的オフセットを持つ uniform buffer |
+| 結合イメージサンプラー | テクスチャとサンプラーのバインディングに分割 |
+| 読み書き可能な `rgba32ui` イメージ | 読み取り用のコピーと書き込み専用のターゲット |
+| バリア前の非一様な制御フロー | バリアが一様になるようシェーダーを再構成（デスクトップの出力は不変） |
+
+物質、反応、マップは Godot プロジェクトから書き出し、両方のバージョンで同じデータを使います。ブラウザ版には中国語・英語の切り替え、タッチ操作（1 本指で描画、2 本指で移動とズーム）、スマートフォン向けのコンパクトなレイアウト、自動画質調整があります。
+
+初回の読み込みは遅いものでした。ブラウザは最初の読み込みですべてのパイプラインをコンパイルし、D3D のシェーダーコンパイラーはすべての関数呼び出しをインライン展開するため、メインのビューシェーダーが約 60,000 行に膨らんでいたのです。使われていない分岐を削除し、すべての反射レイを 1 回のトレース呼び出しにまとめることで 16,000 行になり、初回読み込みは **13.9 秒から 3.2 秒** に短縮しました。デスクトップの画面は 1 ピクセルも変わっていません。
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={webDesktop} alt="デスクトップブラウザの Web 版" widths={[640, 1280]} sizes="(min-width: 640px) 50vw, 100vw" />
+        <figcaption>デスクトップブラウザ</figcaption>
+    </figure>
+    <figure>
+        <Image src={webPhone} alt="スマートフォンの Web 版" widths={[640, 1280]} sizes="(min-width: 640px) 50vw, 100vw" />
+        <figcaption>スマートフォン（横向き）</figcaption>
+    </figure>
+</div>

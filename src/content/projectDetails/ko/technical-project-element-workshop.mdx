@@ -1,0 +1,213 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import webDesktop from '@/assets/projects/technical-project-element-workshop/web-desktop.png';
+import webPhone from '@/assets/projects/technical-project-element-workshop/web-phone.png';
+import stainedGlass from '@/assets/projects/technical-project-element-workshop/clips/stained-glass.mp4?url';
+import stainedGlassPoster from '@/assets/projects/technical-project-element-workshop/clips/stained-glass-poster.webp?url';
+import sandInWater from '@/assets/projects/technical-project-element-workshop/clips/sand-in-water.mp4?url';
+import sandInWaterPoster from '@/assets/projects/technical-project-element-workshop/clips/sand-in-water-poster.webp?url';
+import density from '@/assets/projects/technical-project-element-workshop/clips/density.mp4?url';
+import densityPoster from '@/assets/projects/technical-project-element-workshop/clips/density-poster.webp?url';
+import sodiumAcid from '@/assets/projects/technical-project-element-workshop/clips/sodium-acid.mp4?url';
+import sodiumAcidPoster from '@/assets/projects/technical-project-element-workshop/clips/sodium-acid-poster.webp?url';
+import thermite from '@/assets/projects/technical-project-element-workshop/clips/thermite.mp4?url';
+import thermitePoster from '@/assets/projects/technical-project-element-workshop/clips/thermite-poster.webp?url';
+import phase from '@/assets/projects/technical-project-element-workshop/clips/phase.mp4?url';
+import phasePoster from '@/assets/projects/technical-project-element-workshop/clips/phase-poster.webp?url';
+import cold from '@/assets/projects/technical-project-element-workshop/clips/cold.mp4?url';
+import coldPoster from '@/assets/projects/technical-project-element-workshop/clips/cold-poster.webp?url';
+import fireSpread from '@/assets/projects/technical-project-element-workshop/clips/fire-spread.mp4?url';
+import fireSpreadPoster from '@/assets/projects/technical-project-element-workshop/clips/fire-spread-poster.webp?url';
+import flameColours from '@/assets/projects/technical-project-element-workshop/clips/flame-colours.mp4?url';
+import flameColoursPoster from '@/assets/projects/technical-project-element-workshop/clips/flame-colours-poster.webp?url';
+import deflagration from '@/assets/projects/technical-project-element-workshop/clips/deflagration.mp4?url';
+import deflagrationPoster from '@/assets/projects/technical-project-element-workshop/clips/deflagration-poster.webp?url';
+import explosion from '@/assets/projects/technical-project-element-workshop/clips/explosion.mp4?url';
+import explosionPoster from '@/assets/projects/technical-project-element-workshop/clips/explosion-poster.webp?url';
+import volcano from '@/assets/projects/technical-project-element-workshop/clips/volcano.mp4?url';
+import volcanoPoster from '@/assets/projects/technical-project-element-workshop/clips/volcano-poster.webp?url';
+import flameLight from '@/assets/projects/technical-project-element-workshop/clips/flame-light.mp4?url';
+import flameLightPoster from '@/assets/projects/technical-project-element-workshop/clips/flame-light-poster.webp?url';
+import coldFlame from '@/assets/projects/technical-project-element-workshop/clips/cold-flame.mp4?url';
+import coldFlamePoster from '@/assets/projects/technical-project-element-workshop/clips/cold-flame-poster.webp?url';
+import luminol from '@/assets/projects/technical-project-element-workshop/clips/luminol.mp4?url';
+import luminolPoster from '@/assets/projects/technical-project-element-workshop/clips/luminol-poster.webp?url';
+import plasmaTungsten from '@/assets/projects/technical-project-element-workshop/clips/plasma-tungsten.mp4?url';
+import plasmaTungstenPoster from '@/assets/projects/technical-project-element-workshop/clips/plasma-tungsten-poster.webp?url';
+import jellyLight from '@/assets/projects/technical-project-element-workshop/clips/jelly-light.mp4?url';
+import jellyLightPoster from '@/assets/projects/technical-project-element-workshop/clips/jelly-light-poster.webp?url';
+import mirror from '@/assets/projects/technical-project-element-workshop/clips/mirror.mp4?url';
+import mirrorPoster from '@/assets/projects/technical-project-element-workshop/clips/mirror-poster.webp?url';
+
+<figure>
+    <video class="clip" src={stainedGlass} poster={stainedGlassPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="스테인드글라스를 통과하는 빛"></video>
+    <figcaption>스테인드글라스를 통과한 햇빛이 유리마다 다른 색으로 물든다</figcaption>
+</figure>
+
+## 담당 역할
+
+개인 프로젝트입니다. 시뮬레이션과 렌더링을 모두 GPU에서 처리하는 폴링 샌드 샌드박스로, 세계는 512 × 288 셀룰러 오토마톤입니다. 각 셀은 모래 한 알, 물 한 방울, 연기 한 줄기 또는 고체의 일부가 됩니다.
+
+- **시뮬레이션**: 셀 이동, 44종의 반응, 열전도, 잠열을 동반한 상변화, 유체와 연기 필드, 강체를 GPU 컴퓨트 패스로 구현했습니다. Godot의 물리 엔진은 사용하지 않습니다.
+- **렌더링**: Radiance Cascades 기반 2D 글로벌 일루미네이션, 통과한 물질의 색으로 물드는 빛, 서브서피스 스캐터링, 그리고 조명으로 평면 세계에 깊이를 주는 2.5D 뷰.
+- **최적화**: 프레임당 GPU 시간을 7.9 ms에서 3.5 ms로 줄이면서 모든 프레임의 출력을 바이트 단위로 동일하게 유지했습니다.
+- **웹 버전**: TypeScript와 WebGPU로 이식했고, 같은 셰이더 소스를 자동으로 변환합니다. 데스크톱과 모바일 브라우저에서 동작하며 중국어와 영어를 지원합니다.
+
+| 항목 | 수 |
+| --- | --- |
+| 물질 | 85종 (분말, 액체, 기체, 고체, 에너지) |
+| 반응 | 44개의 쌍 반응 규칙, 그 밖에 연소와 상변화 |
+| 컴퓨트 셰이더 | 45개 (GLSL 약 5,100줄) |
+| 반응 도감 | 100개 항목, 관찰하면 해금 |
+| 스크립트 데모 | 16개 |
+
+---
+
+## 시뮬레이션
+
+각 셀은 재질, 온도, 수명, 플래그를 하나의 `rgba32ui` 텍셀에 저장합니다. 이동에는 **Margolus 2 × 2 블록**을 사용합니다. 격자를 겹치지 않는 블록으로 나누고 각 스레드가 자기 블록의 네 셀만 재배치하므로 쓰기 충돌이 없습니다. 틱마다 8번의 서브스텝이 있고 블록 위치를 번갈아 옮깁니다. 공기도 물질의 하나이므로 분말, 액체, 기체가 뜨고 가라앉는 것은 모두 같은 밀도 비교로 결정됩니다.
+
+반응은 반응물 쌍의 256 × 256 룩업 테이블(확률과 온도 범위 포함)에서 가져와 각 블록 안의 이웃한 쌍마다 평가합니다. 열은 셀 사이로 확산하고, 상변화는 잠열을 흡수하거나 방출합니다. 1/4 해상도의 유체 솔버가 뜨거운 공기의 부력과 폭풍을, 1/2 해상도의 매질 필드가 연기, 증기, 불꽃을 담당합니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={sandInWater} poster={sandInWaterPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="물에 가라앉는 모래"></video>
+        <figcaption>모래가 물에 가라앉아 안식각으로 쌓인다</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={density} poster={densityPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="밀도와 부력"></video>
+        <figcaption>액체가 밀도에 따라 층을 이룬다</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={sodiumAcid} poster={sodiumAcidPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="나트륨과 염산"></video>
+        <figcaption>나트륨과 염산: 수소와 소금이 생기고 열이 난다</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={thermite} poster={thermitePoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="황과 테르밋"></video>
+        <figcaption>황은 파란 불꽃으로 타고, 테르밋은 쇳물을 만든다</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={phase} poster={phasePoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="상태 변화"></video>
+        <figcaption>얼음이 녹고, 물이 끓어 증기가 된다</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={cold} poster={coldPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="동결"></video>
+        <figcaption>냉각하면 물이 언다</figcaption>
+    </figure>
+</div>
+
+## 연소와 폭발
+
+가연성 물질은 발화점을 넘으면 불이 붙고 이웃한 셀로 불을 옮깁니다. 불꽃은 매질 필드에 주입되어 빛을 내며 유체와 함께 올라가고 장면을 비춥니다. 폭발은 유체 필드에 압력을 기록하고, 폭풍이 분말과 액체, 고정되지 않은 물체를 밀어냅니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={fireSpread} poster={fireSpreadPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="불의 확산"></video>
+        <figcaption>나무에 불이 번진다</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={flameColours} poster={flameColoursPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="불꽃의 색"></video>
+        <figcaption>불꽃의 색은 연료에 따라 달라진다</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={deflagration} poster={deflagrationPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="가스 폭연"></video>
+        <figcaption>가연성 가스에 불이 붙는다</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={explosion} poster={explosionPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="화약과 폭발"></video>
+        <figcaption>화약이 타고, 이어서 폭약이 폭발한다</figcaption>
+    </figure>
+</div>
+
+<figure>
+    <video class="clip" src={volcano} poster={volcanoPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="화산"></video>
+    <figcaption>화산: 용암이 바다로 흘러들어 식어서 돌이 된다</figcaption>
+</figure>
+
+---
+
+## 조명
+
+조명은 **Radiance Cascades** 기반의 2D 글로벌 일루미네이션입니다. 모든 셀이 빛을 낼 수 있고(불, 용암, 램프, 발광 물질), 모든 셀이 RGB 3채널로 빛을 감쇠시킵니다. 그래서 초록색 염산, 파란 물, 빨간 유리를 통과한 빛은 색이 입혀져 벽에 색이 있는 빛을 드리웁니다. 얼음, 결정, 젤리 같은 반투명 물질에서는 빛이 내부에서 산란하고(서브서피스 스캐터링), 표면에는 날카로운 하이라이트를 위한 클리어코트 층이 따로 있습니다.
+
+글로벌 일루미네이션과 별도로 창으로 들어오는 햇빛, 매달린 램프의 광선, 거울에 반사된 광선을 각각의 패스로 추적하고, 마지막으로 블룸, 자동 노출, AgX 톤 매핑, 컬러 그레이딩 LUT로 마무리합니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={flameLight} poster={flameLightPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="광원으로서의 불꽃"></video>
+        <figcaption>불꽃이 주변 방을 비춘다</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={coldFlame} poster={coldFlamePoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="냉염"></video>
+        <figcaption>냉염</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={luminol} poster={luminolPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="루미놀"></video>
+        <figcaption>루미놀: 화학 반응으로 생기는 냉광</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={plasmaTungsten} poster={plasmaTungstenPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="플라즈마가 텅스텐을 녹임"></video>
+        <figcaption>플라즈마가 텅스텐을 녹인다</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={jellyLight} poster={jellyLightPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="젤리 속 빛의 산란"></video>
+        <figcaption>젤리 내부에서 빛이 산란한다</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={mirror} poster={mirrorPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="거울 반사"></video>
+        <figcaption>거울이 광선을 반사한다</figcaption>
+    </figure>
+</div>
+
+## 2.5D 뷰
+
+형태는 항상 2차원이고, 깊이는 조명만으로 표현합니다. 최종 이미지는 하나의 뷰 셰이더가 합성합니다. 각 픽셀의 시선은 몇 셀 두께의 판으로 취급하는 플레이 층을 지나고, 이어서 창문, 기둥, 암벽으로 이루어진 배경 릴리프를 지납니다.
+
+- **릴리프 법선**: 윤곽이 빛 쪽으로 기울거나 멀어져, 가장자리가 부조처럼 빛을 받습니다.
+- **경계면**: 물, 유리, 얼음의 표면에서 시선이 굴절률에 따라 꺾이고, 프레넬 반사는 장면으로 다시 추적됩니다.
+- **배경**: 릴리프는 깊이에 따라 흐려진 빛으로 조명되며, 전경의 그림자, 물 뒤의 커스틱, 접촉 차폐가 들어갑니다.
+- **공기감**: 층 사이의 안개, 대기 원근법, 낮과 밤의 순환, 카메라가 움직일 때의 약한 시차.
+
+---
+
+## 성능
+
+고정 프레임레이트에서는 시뮬레이션이 결정적이므로, 결과를 바꾸지 않는 최적화는 같은 프레임을 정확히 재현해야 합니다. 테스트 스크립트가 9개의 장면을 렌더링하고 패스별 시간을 측정한 뒤, 각 스크린샷을 기준 이미지와 바이트 단위로 비교합니다. 모두 일치한 최적화만 남겼습니다.
+
+| 변경 | 아이디어 |
+| --- | --- |
+| 햇빛 프로브 | 각 햇빛 광선이 처음 물질에 닿는 위치를 병렬로 찾고(구간별 `atomicMax`), 광선 패스는 거기까지만 추적한다 |
+| 분광 광선 | 램프와 햇빛 광선의 8개 파장 패스(분산)를 한 번의 dispatch에서 나란히 실행하고, 각각 워크그룹 한 층을 쓴다 |
+| 액체 확산 | 셀 단위의 여러 패스 대신 행 구간을 공유 메모리에서 스캔한다 |
+| 압력 솔버 | 20번의 dispatch 대신 모든 Jacobi 반복을 한 번의 dispatch 안에서 공유 메모리로 수행한다 |
+| 유휴 패스 | 플레이어 입력이 없는 틱에서는 명령 패스를 건너뛴다 |
+
+가장 무거운 장면, 1536 × 864에서 프레임당 GPU 시간이 **7.9 ms에서 3.5 ms**로 줄었고, 출력은 완전히 같습니다.
+
+## 웹 버전
+
+Godot은 C# 프로젝트를 웹으로 내보낼 수 없고, 웹용 렌더러에는 컴퓨트 셰이더도 없습니다. 그래서 게임을 **TypeScript + WebGPU**로 이식했습니다. GLSL은 여전히 유일한 소스입니다. 빌드 단계에서 glslang으로 SPIR-V로 컴파일하고, naga로 WGSL로 변환한 뒤, WebGPU가 허용하지 않는 부분을 다시 씁니다.
+
+| 데스크톱 (Vulkan) | 웹 (WebGPU) |
+| --- | --- |
+| 푸시 상수 | dispatch마다 동적 오프셋을 가진 uniform buffer |
+| 결합 이미지 샘플러 | 텍스처와 샘플러 바인딩으로 분리 |
+| 읽기·쓰기 `rgba32ui` 이미지 | 읽기용 복사본과 쓰기 전용 대상 |
+| 배리어 이전의 비균일 제어 흐름 | 배리어가 균일하도록 셰이더 재구성 (데스크톱 출력은 그대로) |
+
+물질, 반응, 맵은 Godot 프로젝트에서 내보내므로 두 버전이 같은 데이터를 씁니다. 브라우저 버전에는 중국어·영어 전환, 터치 조작(한 손가락으로 그리기, 두 손가락으로 이동과 확대), 휴대폰용 컴팩트 레이아웃, 자동 화질 조정이 있습니다.
+
+첫 방문은 느렸습니다. 브라우저는 처음 불러올 때 모든 파이프라인을 컴파일하는데, D3D 셰이더 컴파일러가 모든 함수 호출을 인라인으로 펼치기 때문에 메인 뷰 셰이더가 약 60,000줄로 불어났습니다. 쓰이지 않는 분기를 지우고 모든 반사 광선이 하나의 추적 호출을 거치게 하자 16,000줄이 되었고, 첫 로딩은 **13.9초에서 3.2초**로 줄었습니다. 데스크톱 화면은 한 픽셀도 바뀌지 않았습니다.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={webDesktop} alt="데스크톱 브라우저의 웹 버전" widths={[640, 1280]} sizes="(min-width: 640px) 50vw, 100vw" />
+        <figcaption>데스크톱 브라우저</figcaption>
+    </figure>
+    <figure>
+        <Image src={webPhone} alt="휴대폰의 웹 버전" widths={[640, 1280]} sizes="(min-width: 640px) 50vw, 100vw" />
+        <figcaption>휴대폰 가로 화면</figcaption>
+    </figure>
+</div>

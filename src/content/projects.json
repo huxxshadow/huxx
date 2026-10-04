@@ -2380,5 +2380,73 @@
         "icon": "fa-brands fa-youtube"
       }
     ]
+  },
+  {
+    "id": "technical-project-element-workshop",
+    "order": 32,
+    "category": "technical",
+    "title": {
+      "en": "Element Workshop: A Pixel-Art Physics & Chemistry Sandbox",
+      "zh": "元素工坊：像素风物理化学模拟沙盒",
+      "ja": "元素工房：ピクセルアートの物理・化学サンドボックス",
+      "ko": "원소 공방: 픽셀 아트 물리·화학 샌드박스"
+    },
+    "roles": {
+      "en": [
+        "Solo Developer",
+        "Graphics Programmer"
+      ],
+      "zh": [
+        "独立开发",
+        "图形程序"
+      ],
+      "ja": [
+        "個人開発",
+        "グラフィックスプログラマー"
+      ],
+      "ko": [
+        "1인 개발",
+        "그래픽스 프로그래머"
+      ]
+    },
+    "desc": {
+      "en": "A falling-sand sandbox where every pixel is simulated on the GPU: 85 materials, 44 reactions, heat, phase changes, fluids and rigid bodies, lit by 2D global illumination (Radiance Cascades) and a 2.5D relief view. Built in Godot 4.7 with 45 compute shaders, then ported to the browser with WebGPU from the same shader source.",
+      "zh": "一个每个像素都在 GPU 上模拟的落沙沙盒：85 种物质、44 种反应，包含热传导、相变、流体和刚体；光照使用 2D 全局光照（Radiance Cascades）和 2.5D 浮雕视图。用 Godot 4.7 和 45 个 compute shader 实现，之后用同一份 shader 源码移植到浏览器（WebGPU）。",
+      "ja": "すべてのピクセルを GPU でシミュレーションするフォーリングサンド系サンドボックスです。85 種類の物質、44 種類の反応、熱伝導、相変化、流体、剛体を扱い、ライティングには 2D グローバルイルミネーション（Radiance Cascades）と 2.5D のレリーフビューを使っています。Godot 4.7 と 45 本のコンピュートシェーダーで実装し、同じシェーダーソースから WebGPU でブラウザに移植しました。",
+      "ko": "모든 픽셀을 GPU에서 시뮬레이션하는 폴링 샌드 샌드박스입니다. 85종의 물질, 44종의 반응, 열전도, 상변화, 유체, 강체를 다루며, 조명은 2D 글로벌 일루미네이션(Radiance Cascades)과 2.5D 릴리프 뷰로 구현했습니다. Godot 4.7과 45개의 컴퓨트 셰이더로 만들었고, 같은 셰이더 소스에서 WebGPU로 브라우저에 이식했습니다."
+    },
+    "tags": {
+      "en": [
+        "GPU Compute",
+        "Real-time Rendering",
+        "Physics Simulation",
+        "Global Illumination",
+        "WebGPU"
+      ],
+      "zh": [
+        "GPU计算",
+        "实时渲染",
+        "物理模拟",
+        "全局光照",
+        "WebGPU"
+      ],
+      "ja": [
+        "GPUコンピュート",
+        "リアルタイムレンダリング",
+        "物理シミュレーション",
+        "グローバルイルミネーション",
+        "WebGPU"
+      ],
+      "ko": [
+        "GPU 컴퓨트",
+        "실시간 렌더링",
+        "물리 시뮬레이션",
+        "글로벌 일루미네이션",
+        "WebGPU"
+      ]
+    },
+    "coverImage": "src/assets/projects/technical-project-element-workshop/cover-4x3.png",
+    "colorText": "orange",
+    "colorBackground": "orange"
   }
 ]

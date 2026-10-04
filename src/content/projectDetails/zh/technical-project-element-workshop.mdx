@@ -1,0 +1,213 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import webDesktop from '@/assets/projects/technical-project-element-workshop/web-desktop.png';
+import webPhone from '@/assets/projects/technical-project-element-workshop/web-phone.png';
+import stainedGlass from '@/assets/projects/technical-project-element-workshop/clips/stained-glass.mp4?url';
+import stainedGlassPoster from '@/assets/projects/technical-project-element-workshop/clips/stained-glass-poster.webp?url';
+import sandInWater from '@/assets/projects/technical-project-element-workshop/clips/sand-in-water.mp4?url';
+import sandInWaterPoster from '@/assets/projects/technical-project-element-workshop/clips/sand-in-water-poster.webp?url';
+import density from '@/assets/projects/technical-project-element-workshop/clips/density.mp4?url';
+import densityPoster from '@/assets/projects/technical-project-element-workshop/clips/density-poster.webp?url';
+import sodiumAcid from '@/assets/projects/technical-project-element-workshop/clips/sodium-acid.mp4?url';
+import sodiumAcidPoster from '@/assets/projects/technical-project-element-workshop/clips/sodium-acid-poster.webp?url';
+import thermite from '@/assets/projects/technical-project-element-workshop/clips/thermite.mp4?url';
+import thermitePoster from '@/assets/projects/technical-project-element-workshop/clips/thermite-poster.webp?url';
+import phase from '@/assets/projects/technical-project-element-workshop/clips/phase.mp4?url';
+import phasePoster from '@/assets/projects/technical-project-element-workshop/clips/phase-poster.webp?url';
+import cold from '@/assets/projects/technical-project-element-workshop/clips/cold.mp4?url';
+import coldPoster from '@/assets/projects/technical-project-element-workshop/clips/cold-poster.webp?url';
+import fireSpread from '@/assets/projects/technical-project-element-workshop/clips/fire-spread.mp4?url';
+import fireSpreadPoster from '@/assets/projects/technical-project-element-workshop/clips/fire-spread-poster.webp?url';
+import flameColours from '@/assets/projects/technical-project-element-workshop/clips/flame-colours.mp4?url';
+import flameColoursPoster from '@/assets/projects/technical-project-element-workshop/clips/flame-colours-poster.webp?url';
+import deflagration from '@/assets/projects/technical-project-element-workshop/clips/deflagration.mp4?url';
+import deflagrationPoster from '@/assets/projects/technical-project-element-workshop/clips/deflagration-poster.webp?url';
+import explosion from '@/assets/projects/technical-project-element-workshop/clips/explosion.mp4?url';
+import explosionPoster from '@/assets/projects/technical-project-element-workshop/clips/explosion-poster.webp?url';
+import volcano from '@/assets/projects/technical-project-element-workshop/clips/volcano.mp4?url';
+import volcanoPoster from '@/assets/projects/technical-project-element-workshop/clips/volcano-poster.webp?url';
+import flameLight from '@/assets/projects/technical-project-element-workshop/clips/flame-light.mp4?url';
+import flameLightPoster from '@/assets/projects/technical-project-element-workshop/clips/flame-light-poster.webp?url';
+import coldFlame from '@/assets/projects/technical-project-element-workshop/clips/cold-flame.mp4?url';
+import coldFlamePoster from '@/assets/projects/technical-project-element-workshop/clips/cold-flame-poster.webp?url';
+import luminol from '@/assets/projects/technical-project-element-workshop/clips/luminol.mp4?url';
+import luminolPoster from '@/assets/projects/technical-project-element-workshop/clips/luminol-poster.webp?url';
+import plasmaTungsten from '@/assets/projects/technical-project-element-workshop/clips/plasma-tungsten.mp4?url';
+import plasmaTungstenPoster from '@/assets/projects/technical-project-element-workshop/clips/plasma-tungsten-poster.webp?url';
+import jellyLight from '@/assets/projects/technical-project-element-workshop/clips/jelly-light.mp4?url';
+import jellyLightPoster from '@/assets/projects/technical-project-element-workshop/clips/jelly-light-poster.webp?url';
+import mirror from '@/assets/projects/technical-project-element-workshop/clips/mirror.mp4?url';
+import mirrorPoster from '@/assets/projects/technical-project-element-workshop/clips/mirror-poster.webp?url';
+
+<figure>
+    <video class="clip" src={stainedGlass} poster={stainedGlassPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="阳光穿过彩色玻璃"></video>
+    <figcaption>阳光穿过彩色玻璃，被每块玻璃染上各自的颜色</figcaption>
+</figure>
+
+## 我的职责
+
+这是一个个人项目：一个模拟和渲染全部在 GPU 上运行的落沙沙盒。整个世界是 512 × 288 的元胞自动机，每一格都是一粒沙、一滴水、一缕烟或固体的一部分。
+
+- **模拟**：元胞运动、44 种反应、热传导、带潜热的相变、流体与烟雾场、刚体，全部是 GPU compute pass，不使用 Godot 自带的物理。
+- **渲染**：Radiance Cascades 2D 全局光照、被所穿过物质染色的光、次表面散射，以及用光影给平面世界带来纵深的 2.5D 视图。
+- **优化**：每帧 GPU 耗时从 7.9 ms 降到 3.5 ms，同时每一帧的输出逐字节不变。
+- **网页版**：把游戏移植到 TypeScript + WebGPU，shader 由同一份源码自动翻译；支持桌面和手机浏览器、中英文切换。
+
+| 项目 | 数量 |
+| --- | --- |
+| 物质 | 85 种（粉末、液体、气体、固体、能量） |
+| 反应 | 44 条双格反应规则，另有燃烧和相变 |
+| Compute shader | 45 个（约 5,100 行 GLSL） |
+| 反应图鉴 | 100 条，观察到后解锁 |
+| 脚本演示 | 16 个 |
+
+---
+
+## 模拟
+
+每个元胞把材质、温度、寿命和标志位存在一个 `rgba32ui` 像素里。运动使用 **Margolus 2 × 2 块**：网格被分成互不重叠的块，每个线程只重排自己块内的四格，没有写冲突；每个 tick 有 8 个子步，交替偏移块的位置。空气也是一种材质，所以粉末、液体、气体的沉浮都由同一个密度比较决定。
+
+反应来自一张 256 × 256 的反应物对查找表，带概率和温度区间，在每个块内对相邻格成对求值。热量在格子之间扩散，相变会吸收或释放潜热。1/4 分辨率的流体求解提供热空气浮力和爆炸冲击，1/2 分辨率的介质场承载烟、蒸汽和火焰。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={sandInWater} poster={sandInWaterPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="沙子沉入水中"></video>
+        <figcaption>沙子沉入水中，按休止角堆积</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={density} poster={densityPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="密度与浮力"></video>
+        <figcaption>液体按密度分层</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={sodiumAcid} poster={sodiumAcidPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="钠与盐酸"></video>
+        <figcaption>钠投入盐酸：生成氢气和盐，并放热</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={thermite} poster={thermitePoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="硫磺与铝热剂"></video>
+        <figcaption>硫磺燃烧发出蓝色火焰；铝热剂反应生成铁水</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={phase} poster={phasePoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="物态变化"></video>
+        <figcaption>冰融化，水沸腾成蒸汽</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={cold} poster={coldPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="低温"></video>
+        <figcaption>降温让水结成冰</figcaption>
+    </figure>
+</div>
+
+## 燃烧与爆炸
+
+可燃物超过燃点就会着火，并把火传给相邻的格子。火焰注入介质场，介质场会发光，随流体上升，并照亮场景。爆炸向流体场写入压力，冲击波会把粉末、液体和松散的物体推开。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={fireSpread} poster={fireSpreadPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="起火蔓延"></video>
+        <figcaption>火在木头上蔓延</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={flameColours} poster={flameColoursPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="火焰的颜色"></video>
+        <figcaption>火焰颜色取决于燃料</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={deflagration} poster={deflagrationPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="气体爆燃"></video>
+        <figcaption>可燃气体被点燃</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={explosion} poster={explosionPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="火药与爆炸"></video>
+        <figcaption>火药燃烧，随后炸药爆炸</figcaption>
+    </figure>
+</div>
+
+<figure>
+    <video class="clip" src={volcano} poster={volcanoPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="火山"></video>
+    <figcaption>火山：熔岩流入海中，冷却成石头</figcaption>
+</figure>
+
+---
+
+## 光照
+
+光照是基于 **Radiance Cascades** 的 2D 全局光照。每一格都可以发光（火、熔岩、灯、发光物质），每一格也都按 RGB 三通道消光，所以光穿过绿色的盐酸、蓝色的水或红色的玻璃会被染色，在墙上投出彩色的光。冰、晶体、果冻这类半透明材质会让光在内部散射（次表面散射），表面另有一层清漆负责锐利的高光。
+
+在全局光照之外，还有独立的 pass 追踪穿过窗户的阳光、吊灯的光束和镜子反射的光束；最后经过泛光、自动曝光、AgX 色调映射和调色 LUT。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={flameLight} poster={flameLightPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="火焰光源"></video>
+        <figcaption>火焰照亮周围的房间</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={coldFlame} poster={coldFlamePoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="冷焰"></video>
+        <figcaption>冷焰</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={luminol} poster={luminolPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="鲁米诺"></video>
+        <figcaption>鲁米诺：化学反应产生的冷光</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={plasmaTungsten} poster={plasmaTungstenPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="等离子熔化钨"></video>
+        <figcaption>等离子熔化钨</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={jellyLight} poster={jellyLightPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="果冻散射光"></video>
+        <figcaption>光在果冻内部散射</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={mirror} poster={mirrorPoster} width="1280" height="688" muted loop playsinline preload="none" data-autoplay aria-label="镜子反射"></video>
+        <figcaption>镜子反射光束</figcaption>
+    </figure>
+</div>
+
+## 2.5D 视图
+
+形体始终是二维的，纵深完全来自光影。最终画面由一个视图 shader 合成：每个像素的视线先穿过被当作几格厚的玩法层，再穿过由窗户、壁柱、岩壁组成的背景浮雕：
+
+- **浮雕法线**：物体轮廓朝向或背离光源，边缘像浮雕一样受光。
+- **界面**：视线在水、玻璃、冰的表面按折射率偏折；菲涅尔反射会再追踪回场景里。
+- **背景**：浮雕按深度读取模糊的光照，带前景投影、水后的焦散和接触阴影。
+- **空气感**：层间雾、空气透视、昼夜循环，镜头移动时有轻微视差。
+
+---
+
+## 性能
+
+在固定帧率下模拟是确定性的，所以一个不改变结果的优化必须精确复现同样的画面。测试脚本渲染 9 个场景，统计每个 pass 的耗时，并把每张截图和参考图逐字节比较；只有全部一致的优化才保留。
+
+| 改动 | 思路 |
+| --- | --- |
+| 阳光探测 | 并行探测每条阳光射线最先碰到物质的位置（分段 `atomicMax`），光束 pass 只追踪到那里 |
+| 分光光束 | 灯光和阳光光束的 8 个波长 pass（色散）在一次 dispatch 里并排运行，每个占一层工作组 |
+| 液体扩散 | 在共享内存里按行段扫描，代替逐格的多个 pass |
+| 压力求解 | 所有 Jacobi 迭代在一次 dispatch 内用共享内存完成，代替 20 次 dispatch |
+| 空闲 pass | 没有玩家输入的 tick 跳过命令 pass |
+
+在最重的场景、1536 × 864 分辨率下，每帧 GPU 耗时从 **7.9 ms 降到 3.5 ms**，输出完全一致。
+
+## 网页版
+
+Godot 不能把 C# 项目导出到网页，网页渲染器也没有 compute shader，所以游戏被移植到 **TypeScript + WebGPU**。GLSL 仍是唯一的源码：构建时用 glslang 编译成 SPIR-V，再用 naga 翻译成 WGSL，并改写 WebGPU 不允许的部分：
+
+| 桌面版（Vulkan） | 网页版（WebGPU） |
+| --- | --- |
+| Push constant | 每次 dispatch 带动态偏移的 uniform buffer |
+| 组合图像采样器 | 分开的纹理和采样器绑定 |
+| 可读写的 `rgba32ui` 图像 | 一份只读副本加一个只写目标 |
+| barrier 之前的非一致控制流 | 重构 shader，让 barrier 保持一致（桌面输出不变） |
+
+物质、反应和地图都从 Godot 项目导出，两个版本共用同一份数据。网页版支持中英文切换、触屏操作（单指绘制，双指平移和缩放）、手机紧凑布局和自动画质。
+
+第一次打开曾经很慢：浏览器首次加载要编译所有 pipeline，而 D3D 的 shader 编译器会内联每一个函数调用，主视图 shader 因此膨胀到约 60,000 行。删掉一段死代码、让所有反射光线共用一次追踪调用之后，降到 16,000 行，首次加载从 **13.9 秒降到 3.2 秒**，桌面版画面一个像素都没变。
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={webDesktop} alt="桌面浏览器中的网页版" widths={[640, 1280]} sizes="(min-width: 640px) 50vw, 100vw" />
+        <figcaption>桌面浏览器</figcaption>
+    </figure>
+    <figure>
+        <Image src={webPhone} alt="手机上的网页版" widths={[640, 1280]} sizes="(min-width: 640px) 50vw, 100vw" />
+        <figcaption>手机横屏</figcaption>
+    </figure>
+</div>
