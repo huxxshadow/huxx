@@ -2410,10 +2410,10 @@
       ]
     },
     "desc": {
-      "en": "A falling-sand sandbox where every pixel is simulated on the GPU: 85 materials, 44 reactions, heat, phase changes, fluids and rigid bodies, lit by 2D global illumination (Radiance Cascades) and a 2.5D relief view. Built in Godot 4.7 with 45 compute shaders, then ported to the browser with WebGPU from the same shader source.",
-      "zh": "一个每个像素都在 GPU 上模拟的落沙沙盒：85 种物质、44 种反应，包含热传导、相变、流体和刚体；光照使用 2D 全局光照（Radiance Cascades）和 2.5D 浮雕视图。用 Godot 4.7 和 45 个 compute shader 实现，之后用同一份 shader 源码移植到浏览器（WebGPU）。",
-      "ja": "すべてのピクセルを GPU でシミュレーションするフォーリングサンド系サンドボックスです。85 種類の物質、44 種類の反応、熱伝導、相変化、流体、剛体を扱い、ライティングには 2D グローバルイルミネーション（Radiance Cascades）と 2.5D のレリーフビューを使っています。Godot 4.7 と 45 本のコンピュートシェーダーで実装し、同じシェーダーソースから WebGPU でブラウザに移植しました。",
-      "ko": "모든 픽셀을 GPU에서 시뮬레이션하는 폴링 샌드 샌드박스입니다. 85종의 물질, 44종의 반응, 열전도, 상변화, 유체, 강체를 다루며, 조명은 2D 글로벌 일루미네이션(Radiance Cascades)과 2.5D 릴리프 뷰로 구현했습니다. Godot 4.7과 45개의 컴퓨트 셰이더로 만들었고, 같은 셰이더 소스에서 WebGPU로 브라우저에 이식했습니다."
+      "en": "A falling-sand sandbox where every pixel is simulated on the GPU: 85 materials, 44 reactions, heat, phase changes, fluids and rigid bodies. Lighting is a custom model built on Radiance Cascades 2D global illumination: every cell emits and absorbs light per RGB channel, so light passing through coloured liquids and glass is tinted, and transparent materials refract the view ray and add Fresnel reflections. Materials follow a layered model inspired by UE5 Substrate: specular, roughness, metalness and sparkle on the base surface, plus a subsurface scattering layer and a clear coat.",
+      "zh": "一个每个像素都在 GPU 上模拟的落沙沙盒：85 种物质、44 种反应，包含热传导、相变、流体和刚体。光照是在 Radiance Cascades 2D 全局光照上搭建的自定义模型：每一格都按 RGB 三通道发光和消光，光穿过有色液体和玻璃会被染色，透明材质还会按折射率偏折视线并产生菲涅尔反射。材质参考 UE5 Substrate 的分层模型：底层表面有镜面、粗糙度、金属度和闪烁参数，上面再叠加次表面散射层和清漆层。",
+      "ja": "すべてのピクセルを GPU でシミュレーションするフォーリングサンド系サンドボックスです。85 種類の物質、44 種類の反応、熱伝導、相変化、流体、剛体を扱います。ライティングは Radiance Cascades による 2D グローバルイルミネーションを土台にした独自モデルで、各セルが RGB チャンネルごとに発光・減衰するため、色の付いた液体やガラスを通った光はその色に染まり、透明な物質は屈折率に応じて視線を曲げ、フレネル反射を返します。マテリアルは UE5 Substrate を参考にしたレイヤー構造で、ベース面のスペキュラー、ラフネス、メタルネス、きらめきに、サブサーフェススキャッタリング層とクリアコート層を重ねています。",
+      "ko": "모든 픽셀을 GPU에서 시뮬레이션하는 폴링 샌드 샌드박스입니다. 85종의 물질, 44종의 반응, 열전도, 상변화, 유체, 강체를 다룹니다. 조명은 Radiance Cascades 2D 글로벌 일루미네이션 위에 만든 자체 모델로, 모든 셀이 RGB 채널별로 빛을 내고 흡수하기 때문에 색이 있는 액체나 유리를 통과한 빛은 그 색으로 물들고, 투명한 물질은 굴절률에 따라 시선을 꺾고 프레넬 반사를 더합니다. 머티리얼은 UE5 Substrate를 참고한 레이어 모델로, 베이스 표면의 스페큘러, 러프니스, 메탈니스, 반짝임 위에 서브서피스 스캐터링 층과 클리어 코트 층을 쌓았습니다."
     },
     "tags": {
       "en": [
