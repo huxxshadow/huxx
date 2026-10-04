@@ -2,6 +2,7 @@
 ---
 
 import { Image } from 'astro:assets';
+import gameCover from '@/assets/projects/technical-project-element-workshop/cover-4x3.png';
 import webDesktop from '@/assets/projects/technical-project-element-workshop/web-desktop.png';
 import webPhone from '@/assets/projects/technical-project-element-workshop/web-phone.png';
 import stainedGlass from '@/assets/projects/technical-project-element-workshop/clips/stained-glass.mp4?url';
@@ -41,16 +42,12 @@ import jellyLightPoster from '@/assets/projects/technical-project-element-worksh
 import mirror from '@/assets/projects/technical-project-element-workshop/clips/mirror.mp4?url';
 import mirrorPoster from '@/assets/projects/technical-project-element-workshop/clips/mirror-poster.webp?url';
 
-<div class="itch-embed">
-    <iframe
-            src="https://itch.io/embed/5098625?linkback=true&bg_color=fdcea4&fg_color=222222&link_color=f06e1c&border_color=222222"
-            title="Element Workshop on itch.io"
-            width="552"
-            height="167"
-            loading="lazy"
-    >
-        <a href="https://huxxshadowhzygmailcom.itch.io/element-workshop">Element Workshop on itch.io</a>
-    </iframe>
+<div class="video-embed game-embed" data-embed-src="https://itch.io/embed-upload/19552941?color=0b0c10" data-embed-title="Element Workshop">
+    <button type="button" class="game-embed-launch">
+        <Image src={gameCover} alt="" widths={[640, 1280]} sizes="(min-width: 1024px) 900px, 100vw" />
+        <span class="game-embed-play"><i class="fa-solid fa-play" aria-hidden="true"></i>Play in browser</span>
+        <span class="game-embed-note">Needs a WebGPU-capable browser. Loads on click.</span>
+    </button>
 </div>
 
 <div class="video-embed">
@@ -74,16 +71,7 @@ A solo project: a falling-sand sandbox in which the simulation and the rendering
 
 - **Simulation**: Cell movement, 44 reactions, heat transfer, phase changes with latent heat, fluid and smoke fields, and rigid bodies, as GPU compute passes. The game does not use Godot's physics.
 - **Rendering**: 2D global illumination with Radiance Cascades, light coloured by the matter it passes through, subsurface scattering, and a 2.5D view that gives the flat world depth through lighting.
-- **Optimisation**: Cut GPU time per frame from 7.9 ms to 3.5 ms while keeping every frame byte-identical.
-- **Web version**: Ported the game to TypeScript and WebGPU, translating the same shader source automatically; it runs on desktop and mobile browsers, in Chinese and English.
-
-| Item | Count |
-| --- | --- |
-| Materials | 85 (powders, liquids, gases, solids, energy) |
-| Reactions | 44 pair rules, plus combustion and phase changes |
-| Compute shaders | 45 (about 5,100 lines of GLSL) |
-| Reaction codex | 100 entries, unlocked by observing them |
-| Scripted demos | 16 |
+- **Optimisation**: Through extensive optimisation, cut GPU time per frame to 3.5 ms while keeping every frame byte-identical.
 
 ---
 

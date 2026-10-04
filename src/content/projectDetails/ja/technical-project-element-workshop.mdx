@@ -2,6 +2,7 @@
 ---
 
 import { Image } from 'astro:assets';
+import gameCover from '@/assets/projects/technical-project-element-workshop/cover-4x3.png';
 import webDesktop from '@/assets/projects/technical-project-element-workshop/web-desktop.png';
 import webPhone from '@/assets/projects/technical-project-element-workshop/web-phone.png';
 import stainedGlass from '@/assets/projects/technical-project-element-workshop/clips/stained-glass.mp4?url';
@@ -41,16 +42,12 @@ import jellyLightPoster from '@/assets/projects/technical-project-element-worksh
 import mirror from '@/assets/projects/technical-project-element-workshop/clips/mirror.mp4?url';
 import mirrorPoster from '@/assets/projects/technical-project-element-workshop/clips/mirror-poster.webp?url';
 
-<div class="itch-embed">
-    <iframe
-            src="https://itch.io/embed/5098625?linkback=true&bg_color=fdcea4&fg_color=222222&link_color=f06e1c&border_color=222222"
-            title="Element Workshop on itch.io"
-            width="552"
-            height="167"
-            loading="lazy"
-    >
-        <a href="https://huxxshadowhzygmailcom.itch.io/element-workshop">Element Workshop on itch.io</a>
-    </iframe>
+<div class="video-embed game-embed" data-embed-src="https://itch.io/embed-upload/19552941?color=0b0c10" data-embed-title="Element Workshop">
+    <button type="button" class="game-embed-launch">
+        <Image src={gameCover} alt="" widths={[640, 1280]} sizes="(min-width: 1024px) 900px, 100vw" />
+        <span class="game-embed-play"><i class="fa-solid fa-play" aria-hidden="true"></i>ブラウザでプレイ</span>
+        <span class="game-embed-note">WebGPU 対応ブラウザが必要です。クリックで読み込みます</span>
+    </button>
 </div>
 
 <div class="video-embed">
@@ -74,16 +71,7 @@ import mirrorPoster from '@/assets/projects/technical-project-element-workshop/c
 
 - **シミュレーション**：セルの移動、44 種類の反応、熱伝導、潜熱を伴う相変化、流体と煙の場、剛体を GPU のコンピュートパスで実装しました。Godot の物理エンジンは使っていません。
 - **レンダリング**：Radiance Cascades による 2D グローバルイルミネーション、通過した物質の色に染まる光、サブサーフェススキャタリング、そしてライティングで平面の世界に奥行きを与える 2.5D ビュー。
-- **最適化**：1 フレームあたりの GPU 時間を 7.9 ms から 3.5 ms に短縮し、全フレームの出力をバイト単位で同一に保ちました。
-- **Web 版**：TypeScript と WebGPU に移植し、同じシェーダーソースを自動で変換しています。デスクトップとモバイルのブラウザで動き、中国語と英語に対応します。
-
-| 項目 | 数 |
-| --- | --- |
-| 物質 | 85 種類（粉体、液体、気体、固体、エネルギー） |
-| 反応 | 44 のペア反応ルール、ほかに燃焼と相変化 |
-| コンピュートシェーダー | 45 本（GLSL 約 5,100 行） |
-| 反応図鑑 | 100 項目、観察すると解放 |
-| スクリプトデモ | 16 本 |
+- **最適化**：数多くの最適化によって、1 フレームあたりの GPU 時間を 3.5 ms に短縮し、全フレームの出力をバイト単位で同一に保ちました。
 
 ---
 

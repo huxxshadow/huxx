@@ -2,6 +2,7 @@
 ---
 
 import { Image } from 'astro:assets';
+import gameCover from '@/assets/projects/technical-project-element-workshop/cover-4x3.png';
 import webDesktop from '@/assets/projects/technical-project-element-workshop/web-desktop.png';
 import webPhone from '@/assets/projects/technical-project-element-workshop/web-phone.png';
 import stainedGlass from '@/assets/projects/technical-project-element-workshop/clips/stained-glass.mp4?url';
@@ -41,16 +42,12 @@ import jellyLightPoster from '@/assets/projects/technical-project-element-worksh
 import mirror from '@/assets/projects/technical-project-element-workshop/clips/mirror.mp4?url';
 import mirrorPoster from '@/assets/projects/technical-project-element-workshop/clips/mirror-poster.webp?url';
 
-<div class="itch-embed">
-    <iframe
-            src="https://itch.io/embed/5098625?linkback=true&bg_color=fdcea4&fg_color=222222&link_color=f06e1c&border_color=222222"
-            title="Element Workshop on itch.io"
-            width="552"
-            height="167"
-            loading="lazy"
-    >
-        <a href="https://huxxshadowhzygmailcom.itch.io/element-workshop">Element Workshop on itch.io</a>
-    </iframe>
+<div class="video-embed game-embed" data-embed-src="https://itch.io/embed-upload/19552941?color=0b0c10" data-embed-title="Element Workshop">
+    <button type="button" class="game-embed-launch">
+        <Image src={gameCover} alt="" widths={[640, 1280]} sizes="(min-width: 1024px) 900px, 100vw" />
+        <span class="game-embed-play"><i class="fa-solid fa-play" aria-hidden="true"></i>在浏览器中试玩</span>
+        <span class="game-embed-note">需要支持 WebGPU 的浏览器，点击后加载</span>
+    </button>
 </div>
 
 <div class="video-embed">
@@ -74,16 +71,7 @@ import mirrorPoster from '@/assets/projects/technical-project-element-workshop/c
 
 - **模拟**：元胞运动、44 种反应、热传导、带潜热的相变、流体与烟雾场、刚体，全部是 GPU compute pass，不使用 Godot 自带的物理。
 - **渲染**：Radiance Cascades 2D 全局光照、被所穿过物质染色的光、次表面散射，以及用光影给平面世界带来纵深的 2.5D 视图。
-- **优化**：每帧 GPU 耗时从 7.9 ms 降到 3.5 ms，同时每一帧的输出逐字节不变。
-- **网页版**：把游戏移植到 TypeScript + WebGPU，shader 由同一份源码自动翻译；支持桌面和手机浏览器、中英文切换。
-
-| 项目 | 数量 |
-| --- | --- |
-| 物质 | 85 种（粉末、液体、气体、固体、能量） |
-| 反应 | 44 条双格反应规则，另有燃烧和相变 |
-| Compute shader | 45 个（约 5,100 行 GLSL） |
-| 反应图鉴 | 100 条，观察到后解锁 |
-| 脚本演示 | 16 个 |
+- **优化**：通过大量优化，使每帧 GPU 耗时降到 3.5 ms，同时每一帧的输出逐字节不变。
 
 ---
 

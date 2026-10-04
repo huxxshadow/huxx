@@ -528,31 +528,80 @@ if (detailEntry) {
         border: 0;
     }
 
-    /* ========================================= */
-    /* itch.io 卡片（固定 552×167，itch 不会自己换版式） */
-    /* 样式只放在 iframe 上：带皮肤的页面（.skin-eel）会整体覆盖 */
-    /* ========================================= */
-    :global(.project-prose .itch-embed) {
-        margin: 2.5rem 0;
-        max-width: 100%;
+    /* 可在线游玩的 itch.io 网页游戏：按 itch 给的 640×380 比例 */
+    /* 默认只显示封面和按钮，点击后才创建 iframe（见页尾脚本） */
+    :global(.project-prose .video-embed.game-embed) {
+        aspect-ratio: 640 / 380;
+        background-color: #0b0c10;
     }
 
-    :global(.project-prose .itch-embed iframe) {
-        display: block;
-        width: 552px;
-        max-width: none;
-        height: 167px;
+    :global(.project-prose .game-embed-launch) {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        width: 100%;
+        height: 100%;
+        padding: 1rem;
+        border: 0;
+        background: none;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    :global(.project-prose .game-embed-launch img) {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        object-fit: cover;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        filter: brightness(0.55);
+        transition: filter 0.2s ease;
+    }
+
+    :global(.project-prose .game-embed-launch:hover img),
+    :global(.project-prose .game-embed-launch:focus-visible img) {
+        filter: brightness(0.7);
+    }
+
+    :global(.project-prose .game-embed-play) {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.7rem 1.4rem;
         border: 3px solid var(--theme-text);
         border-radius: 0.5rem;
+        background-color: var(--theme-bg);
+        color: var(--theme-text);
         box-shadow: 4px 4px 0px var(--theme-text);
+        font-size: 1.15rem;
+        font-weight: 700;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    /* 手机：整体按比例缩小，不横向溢出 */
-    @media (max-width: 639px) {
-        :global(.project-prose .itch-embed iframe) { zoom: 0.6; }
+    :global(.project-prose .game-embed-launch:hover .game-embed-play) {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0px var(--theme-text);
     }
-    @media (max-width: 359px) {
-        :global(.project-prose .itch-embed iframe) { zoom: 0.5; }
+
+    :global(.project-prose .game-embed-note) {
+        position: relative;
+        font-size: 0.85rem;
+        opacity: 0.85;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    }
+
+    @media (max-width: 639px) {
+        :global(.project-prose .game-embed-play) { font-size: 1rem; padding: 0.55rem 1.1rem; }
+        :global(.project-prose .game-embed-note) { font-size: 0.75rem; text-align: center; }
     }
 
     /* 引用 */
@@ -699,3 +748,19 @@ if (detailEntry) {
     }
 </style>
 
+<script>
+    // 可游玩的嵌入（.game-embed）：点击封面后才创建 iframe，打开页面时不加载游戏。
+    // 事件委托在 document 上，页面切换（ClientRouter）后依然有效，只需注册一次。
+    document.addEventListener('click', (e) => {
+        const btn = (e.target as Element | null)?.closest('.game-embed-launch');
+        const box = btn?.closest<HTMLElement>('.game-embed[data-embed-src]');
+        if (!btn || !box) return;
+        const iframe = document.createElement('iframe');
+        iframe.src = box.dataset.embedSrc!;
+        iframe.title = box.dataset.embedTitle || '';
+        iframe.allow = 'fullscreen; autoplay; gamepad; webgpu';
+        iframe.allowFullscreen = true;
+        btn.replaceWith(iframe);
+        iframe.focus();
+    });
+</script>
