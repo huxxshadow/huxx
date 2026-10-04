@@ -2393,20 +2393,20 @@
     },
     "roles": {
       "en": [
-        "Solo Developer",
-        "Graphics Programmer"
+        "Graphics Programmer",
+        "Technical Artist"
       ],
       "zh": [
-        "独立开发",
-        "图形程序"
+        "图形程序",
+        "技术美术"
       ],
       "ja": [
-        "個人開発",
-        "グラフィックスプログラマー"
+        "グラフィックスプログラマー",
+        "テクニカルアーティスト"
       ],
       "ko": [
-        "1인 개발",
-        "그래픽스 프로그래머"
+        "그래픽스 프로그래머",
+        "테크니컬 아티스트"
       ]
     },
     "desc": {
@@ -2417,32 +2417,24 @@
     },
     "tags": {
       "en": [
-        "GPU Compute",
-        "Real-time Rendering",
         "Physics Simulation",
-        "Global Illumination",
-        "WebGPU"
+        "Real-time Rendering",
+        "Falling Sand"
       ],
       "zh": [
-        "GPU计算",
-        "实时渲染",
         "物理模拟",
-        "全局光照",
-        "WebGPU"
+        "实时渲染",
+        "落沙模拟"
       ],
       "ja": [
-        "GPUコンピュート",
-        "リアルタイムレンダリング",
         "物理シミュレーション",
-        "グローバルイルミネーション",
-        "WebGPU"
+        "リアルタイムレンダリング",
+        "フォーリングサンド"
       ],
       "ko": [
-        "GPU 컴퓨트",
-        "실시간 렌더링",
         "물리 시뮬레이션",
-        "글로벌 일루미네이션",
-        "WebGPU"
+        "실시간 렌더링",
+        "폴링 샌드"
       ]
     },
     "coverImage": "src/assets/projects/technical-project-element-workshop/cover-4x3.png",
