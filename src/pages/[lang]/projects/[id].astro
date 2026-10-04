@@ -530,9 +530,10 @@ if (detailEntry) {
 
     /* 可在线游玩的 itch.io 网页游戏：按 itch 给的 640×380 比例 */
     /* 默认只显示封面和按钮，点击后才创建 iframe（见页尾脚本） */
+    /* 比例和底色随游戏不同：在嵌入上用 --embed-ratio / --embed-bg 覆盖 */
     :global(.project-prose .video-embed.game-embed) {
-        aspect-ratio: 640 / 380;
-        background-color: #0b0c10;
+        aspect-ratio: var(--embed-ratio, 640 / 380);
+        background-color: var(--embed-bg, #0b0c10);
     }
 
     :global(.project-prose .game-embed-launch) {
@@ -552,7 +553,7 @@ if (detailEntry) {
         cursor: pointer;
     }
 
-    :global(.project-prose .game-embed-launch img) {
+    :global(.project-prose .game-embed .game-embed-launch img) {
         position: absolute;
         inset: 0;
         width: 100%;
@@ -566,8 +567,8 @@ if (detailEntry) {
         transition: filter 0.2s ease;
     }
 
-    :global(.project-prose .game-embed-launch:hover img),
-    :global(.project-prose .game-embed-launch:focus-visible img) {
+    :global(.project-prose .game-embed .game-embed-launch:hover img),
+    :global(.project-prose .game-embed .game-embed-launch:focus-visible img) {
         filter: brightness(0.7);
     }
 

@@ -2,6 +2,7 @@
 ---
 
 import { Image } from 'astro:assets';
+import gameCover from '@/assets/projects/poster/EelOnMaskPoster.webp';
 import img1 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask1.webp';
 import img2 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask2.webp';
 import img3 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask3.webp';
@@ -16,7 +17,15 @@ import gifPlatformingPoster from '@/assets/projects/game-project-eel-on-mask/eel
 
 ## プレイする
 
-『Eel On Mask』は無料で遊べます。下のitch.ioカードにはGame Jam版のWindowsビルドがあり、整理後の正式版はSteamで公開しています。
+『Eel On Mask』は無料で遊べます。Game Jam版は下でそのままブラウザで遊べます。itch.ioカードにはWindowsビルドもあり、整理後の正式版はSteamで公開しています。
+
+<div class="video-embed game-embed" style={{"--embed-ratio": "980 / 640", "--embed-bg": "#406a69"}} data-embed-src="https://itch.io/embed-upload/16384269?color=406A69" data-embed-title="Eel On Mask">
+    <button type="button" class="game-embed-launch">
+        <Image src={gameCover} alt="" widths={[640, 1280]} sizes="(min-width: 1024px) 900px, 100vw" />
+        <span class="game-embed-play"><i class="fa-solid fa-play" aria-hidden="true"></i>ブラウザでプレイ</span>
+        <span class="game-embed-note">クリックで読み込みます</span>
+    </button>
+</div>
 
 <div class="itch-embed">
     <iframe

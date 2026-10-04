@@ -2,6 +2,7 @@
 ---
 
 import { Image } from 'astro:assets';
+import gameCover from '@/assets/projects/poster/EelOnMaskPoster.webp';
 import img1 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask1.webp';
 import img2 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask2.webp';
 import img3 from '@/assets/projects/game-project-eel-on-mask/game-project-eel-on-mask3.webp';
@@ -16,7 +17,15 @@ import gifPlatformingPoster from '@/assets/projects/game-project-eel-on-mask/eel
 
 ## 플레이하기
 
-Eel On Mask는 무료로 플레이할 수 있습니다. 아래 itch.io 카드에는 게임 잼 버전의 Windows 빌드가 있고, 다듬은 버전은 Steam에 출시되어 있습니다.
+Eel On Mask는 무료로 플레이할 수 있습니다. 게임 잼 버전은 아래에서 바로 브라우저로 플레이할 수 있고, itch.io 카드에는 Windows 빌드도 있으며, 다듬은 버전은 Steam에 출시되어 있습니다.
+
+<div class="video-embed game-embed" style={{"--embed-ratio": "980 / 640", "--embed-bg": "#406a69"}} data-embed-src="https://itch.io/embed-upload/16384269?color=406A69" data-embed-title="Eel On Mask">
+    <button type="button" class="game-embed-launch">
+        <Image src={gameCover} alt="" widths={[640, 1280]} sizes="(min-width: 1024px) 900px, 100vw" />
+        <span class="game-embed-play"><i class="fa-solid fa-play" aria-hidden="true"></i>브라우저에서 플레이</span>
+        <span class="game-embed-note">클릭하면 불러옵니다</span>
+    </button>
+</div>
 
 <div class="itch-embed">
     <iframe

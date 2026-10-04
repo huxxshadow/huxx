@@ -5,6 +5,8 @@ import type { Multilingual } from "@/i18n";
 
 export interface DevWork {
     projectId: string;
+    /** 九宫格卡片上的标题；不写时用项目全名（全名太长、会折行时才写） */
+    title?: Multilingual;
     context: Multilingual;
     role: Multilingual;
     /** 技术栈，不翻译 */
@@ -219,6 +221,25 @@ export const devWorks: DevWork[] = [
             ko: "AAA급 파쿠르 이동·카메라 시스템을 단독으로 구현(Motion Warping, 물리 연산, Locomotion, 복잡한 동적 카메라).",
         },
         systems: [],
+    },
+    {
+        projectId: "technical-project-element-workshop",
+        title: { en: "Element Workshop", zh: "元素工坊", ja: "元素工房", ko: "원소 공방" },
+        tags: { en: "Physics Simulation · Graphics Programmer · Technical Artist", zh: "物理模拟 · 图形程序 · 技术美术", ja: "物理シミュレーション · グラフィックスプログラマー · テクニカルアーティスト", ko: "물리 시뮬레이션 · 그래픽스 프로그래머 · 테크니컬 아티스트" },
+        context: { en: "Solo project", zh: "个人项目", ja: "個人プロジェクト", ko: "개인 프로젝트" },
+        role: solo,
+        stack: ["Godot", "C#", "GLSL"],
+        line: {
+            en: "Built a falling-sand physics and chemistry simulation on the GPU, with a custom Radiance Cascades lighting model and layered material rendering.",
+            zh: "在 GPU 上搭建落沙物理化学模拟，自定义 Radiance Cascades 光照模型与分层材质渲染。",
+            ja: "GPU 上でフォーリングサンドの物理・化学シミュレーションを構築し、Radiance Cascades による独自のライティングモデルとレイヤー構造のマテリアルを実装しました。",
+            ko: "GPU에서 폴링 샌드 물리·화학 시뮬레이션을 구축하고, Radiance Cascades 기반 자체 조명 모델과 레이어 머티리얼 렌더링을 구현했습니다.",
+        },
+        systems: [
+            { en: "GPU cellular automaton simulation", zh: "GPU 元胞自动机模拟", ja: "GPU セルオートマトンのシミュレーション", ko: "GPU 셀룰러 오토마타 시뮬레이션" },
+            { en: "Radiance Cascades 2D global illumination", zh: "Radiance Cascades 2D 全局光照", ja: "Radiance Cascades による 2D グローバルイルミネーション", ko: "Radiance Cascades 2D 글로벌 일루미네이션" },
+            { en: "Layered materials (subsurface scattering + clear coat)", zh: "分层材质（次表面散射 + 清漆）", ja: "レイヤー構造のマテリアル（サブサーフェス散乱 + クリアコート）", ko: "레이어 머티리얼(서브서피스 스캐터링 + 클리어 코트)" },
+        ],
     },
 ];
 
