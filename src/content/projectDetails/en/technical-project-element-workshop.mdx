@@ -170,14 +170,64 @@ Shapes stay two-dimensional; depth comes from lighting. The final image is compo
 
 ## Performance
 
-The simulation is deterministic under a fixed frame rate, so an optimisation that keeps the result must reproduce the same frames exactly. A test script renders 9 scenes, times every pass and compares each screenshot byte for byte with the reference; an optimisation only stays if all of them are identical.
+This round of optimisation had one hard rule: **not a single pixel may change**. The game is deterministic under a fixed frame rate (the simulation's random numbers are seeded by the tick), so an optimisation that keeps the look must reproduce every frame exactly.
 
-| Change | Idea |
-| --- | --- |
-| Sun-beam probe | A parallel probe finds where each sun ray first meets matter (`atomicMax` over ray segments), so the beam pass only traces that far |
-| Spectral beams | The 8 wavelength passes of lamp and sun beams (dispersion) run side by side in one dispatch, one workgroup layer each |
-| Liquid spreading | Row segments scanned in shared memory instead of cell-by-cell passes |
-| Pressure solve | All Jacobi iterations in one dispatch in shared memory instead of 20 dispatches |
-| Idle passes | The command pass is skipped on ticks without player input |
+- **Desktop**: `perf_check.py` renders 9 scenes for 240 frames each with a fixed time step and compares the last frame byte for byte with a reference captured before the change; any differing pixel is reported with the largest error.
+- **Web**: the web version shares the same shaders, so it got a deterministic test mode (fixed time step, frames counted only once the scene is loaded, stop after a set number of frames). 4 scenes run in headless Chrome and are compared byte for byte as well.
+- The project's 71 tests all pass.
 
-GPU time per frame went from **7.9 ms to 3.5 ms** on the heaviest scene at 1536 × 864, with identical output.
+Other engine editors were often open on the machine while timing, which made GPU times drift by ±0.3 ms. Outside load can only add time, so each section reports the minimum of 24 samples, and old and new versions were always measured back to back.
+
+### Finding the real bottleneck first
+
+The first few guesses were all disproved by measurement:
+
+- Reordering the Radiance Cascades threads so that neighbouring threads march the same direction made them 4× slower: in the upper cascades the probes are far apart, so the same direction from different probes samples far-apart points. The original grouping, neighbouring directions of one probe, was the coherent one.
+- Cutting the beam wavefronts' synchronisation from 3 barriers per step to 2 every 16 steps kept the output identical but barely changed the time, so synchronisation was not the bottleneck either.
+
+So the beam shaders were instrumented with `GL_EXT_shader_realtime_clock` to record how long each workgroup actually spends in each phase, which exposed the real problem. From then on, every change started with a measurement.
+
+### 1. Beams: long serial work side by side
+
+The instrumentation and per-section timing showed two things:
+
+- Godot's render graph runs dispatches strictly one after another; neighbouring dispatches never overlap, even with all timestamps removed.
+- The sunlight wavefronts are only 80 workgroups (10 groups of rays × 8 wavelengths), the lamp wavefronts a few dozen, and each is a chain of hundreds of serial ray steps. While they run, most of the RTX 5090's 170 SMs sit idle.
+
+The sunlight wavefronts, the lamp wavefronts and sunlight reflected by smooth surfaces now run in a single dispatch: a one-dimensional group index is split into three ranges, with the longest chains (sunlight) first so they start earliest. The three are independent and all deposit into the beam buffer with integer atomic adds, so the order does not matter and the image stays bit-identical. Total beam time in the light gallery (probes + three beam types) went from about 0.80 ms to 0.46 ms.
+
+### 2. Lamp probes: once per light
+
+The most striking number in the instrumentation was the lamp probe. Each 16 × 16-cell light first probes 256 directions to find which ones meet glass, water or mirrors, then concentrates its 64 rays on that arc. Lamps are dispatched in 8 layers, one per wavelength, and **every layer redid the same probe from scratch**, at up to 293 µs each. The same work was done 8 times, with over a hundred workgroups in the stained-glass hall repeating it while competing with the sunlight beams for the same SMs.
+
+The probe now runs once per light in the probe dispatch before the beams: one workgroup of 256 threads, one direction per thread (previously 64 threads probing 4 directions each in series), and the largest empty gap is computed once too. The result goes into a small buffer (flags, gap start and length per light) that all 8 wavelength layers read. Each direction's verdict is a boolean from the same code, and combining them with bitwise OR does not depend on order, so the result is bit-identical. The same dispatch also runs the sunlight probe (each sun ray cut into 32-step segments probed in parallel), so the two probes run side by side as well.
+
+Total beam time: light gallery 0.46 → 0.30 ms, energy and glow scene 0.47 → 0.29 ms, lab 0.34 → 0.24 ms.
+
+### 3. Global illumination: sample gloss only where there is gloss
+
+The 5 radiance cascades take about 40% of the frame. Experiments that dropped one texture at a time showed the cascade march is bound by texture reads: each step reads the light source and the extinction, and the three near cascades also read the glossy-reflection texture, which is full resolution and the most expensive of the three.
+
+- **Gloss occupancy**: gloss only appears on cells like metal or glaze, 1–10% of the image. The new `light_prep.comp` marks which 8 × 8-cell blocks contain gloss, grown by one block in every direction, as a 72-word bitmap. Each workgroup loads the bitmap into shared memory, and the march skips the gloss sample in blocks without gloss. The texture reads exactly zero there, so skipping it changes nothing. The same skip for light sources and extinction, and a single gloss test per ray instead of per sample, were tried as well and reverted: the test cost more than it saved.
+- **Workgroup shape**: the cascade textures store each probe as a tile of tile × tile directions. With 8 × 8 workgroups, one warp spanned 4 rows of the direction table, so its rays fanned out in 4 directions about 90° apart. With 32 × 2 workgroups a warp is exactly 32 neighbouring directions of one row: the samples stay close together and the texture cache hits more often. Every texel is computed exactly as before; only the assignment of texels to threads changed.
+
+The cascades in the stained-glass hall went from 1.21 ms to 1.06 ms in total.
+
+### 4. Daylight: one read per step
+
+The daylight pass walks back from every cell towards the sun for up to 360 steps, and each step read state, albedo, background opening and material from separate textures; at transparent matter it also checked the 3 × 3 neighbourhood, 27 reads at once. `light_prep.comp` now also packs this data into one 128-bit texel: albedo as half floats (it is half precision already, so packing it back gives the same bits), plus state, background kind, material and agitation. Each daylight step is one read, and the pass went from 0.24 ms to 0.17 ms in the stained-glass hall.
+
+The foreground haze's light lookups got the same treatment: samples landing on opaque cells used to read the light behind them only to throw it away; those reads are now skipped.
+
+### Results
+
+RTX 5090, world 512 × 288, internal height 864:
+
+| Scene | Before | After |
+| --- | --- | --- |
+| Stained-glass hall | 3.30 ms | 2.62 ms |
+| Light gallery | 2.79 ms | 2.18 ms |
+| Lab | 2.51 ms | 2.10 ms |
+| Cave | 1.61 ms | 1.48 ms |
+
+GPU time per frame dropped by about 8–22% across the 9 scenes, with desktop and web output byte-identical to before. The longest remaining piece is the sunlight wavefront, about 0.33 ms, because each ray's steps can only run in series.
