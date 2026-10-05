@@ -194,13 +194,13 @@ Daylight is traced from every cell back towards the sun for up to 360 steps, and
 
 ### Results
 
-RTX 5090, world 512 × 288, internal height 864, GPU time per frame:
+RTX 5090, world 512 × 288, internal height 864, GPU time per frame (in brackets: the frame rate that GPU time alone would allow):
 
 | Scene | Before | After |
 | --- | --- | --- |
-| Stained-glass hall | 3.30 ms | 2.62 ms |
-| Light gallery | 2.79 ms | 2.18 ms |
-| Lab | 2.51 ms | 2.10 ms |
-| Cave | 1.61 ms | 1.48 ms |
+| Stained-glass hall | 3.30 ms (≈&nbsp;303&nbsp;fps) | 2.62 ms (≈&nbsp;382&nbsp;fps) |
+| Light gallery | 2.79 ms (≈&nbsp;358&nbsp;fps) | 2.18 ms (≈&nbsp;459&nbsp;fps) |
+| Lab | 2.51 ms (≈&nbsp;398&nbsp;fps) | 2.10 ms (≈&nbsp;476&nbsp;fps) |
+| Cave | 1.61 ms (≈&nbsp;621&nbsp;fps) | 1.48 ms (≈&nbsp;676&nbsp;fps) |
 
 GPU frame time dropped by 8–22% across the 9 test scenes, with the image byte-identical to before.

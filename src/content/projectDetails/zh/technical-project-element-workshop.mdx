@@ -194,13 +194,13 @@ Godot 会把每次 GPU dispatch 依次执行，不会让相邻的 dispatch 重�
 
 ### 结果
 
-RTX 5090，世界 512 × 288，画面高 864，每帧 GPU 耗时：
+RTX 5090，世界 512 × 288，画面高 864，每帧 GPU 耗时（括号内是只按 GPU 耗时换算的帧率）：
 
 | 场景 | 优化前 | 优化后 |
 | --- | --- | --- |
-| 彩窗大厅 | 3.30 ms | 2.62 ms |
-| 光影展厅 | 2.79 ms | 2.18 ms |
-| 实验室 | 2.51 ms | 2.10 ms |
-| 洞穴 | 1.61 ms | 1.48 ms |
+| <span class="whitespace-nowrap">彩窗大厅</span> | 3.30 ms（≈&nbsp;303&nbsp;fps） | 2.62 ms（≈&nbsp;382&nbsp;fps） |
+| <span class="whitespace-nowrap">光影展厅</span> | 2.79 ms（≈&nbsp;358&nbsp;fps） | 2.18 ms（≈&nbsp;459&nbsp;fps） |
+| <span class="whitespace-nowrap">实验室</span> | 2.51 ms（≈&nbsp;398&nbsp;fps） | 2.10 ms（≈&nbsp;476&nbsp;fps） |
+| <span class="whitespace-nowrap">洞穴</span> | 1.61 ms（≈&nbsp;621&nbsp;fps） | 1.48 ms（≈&nbsp;676&nbsp;fps） |
 
 9 个测试场景的 GPU 帧时间降低了 8% – 22%，画面与优化前逐字节一致。
