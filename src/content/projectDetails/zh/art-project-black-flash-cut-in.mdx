@@ -26,7 +26,7 @@ import cutInP3 from '@/assets/projects/art-project-black-flash-cut-in/stills/cut
 
 ## 我的职责
 
-这是一个用一天时间在 Unreal Engine 5 中独立完成的 demo。角色模型与动画来自 Epic 的 Paragon 资产，在此之上的所有系统、Shader 与代码均由我完成：
+这是一个在 Unreal Engine 5 中独立完成的 demo。角色模型与动画来自 Epic 的 Paragon 资产，在此之上的所有系统、Shader 与代码均由我完成：
 
 * **演出系统**：搭建一个演出导演模块，把全屏效果叠加在战斗画面之上；全部按真实时间计时，因此它引发的慢动作不会拖慢效果本身。
 * **后处理 Shader**：用 HLSL 编写两个后处理材质——黑闪冲击帧与女神异闻录风格的技能特写——两者都从真实渲染画面生成，而不是叠加贴图或粒子。
@@ -89,11 +89,6 @@ import cutInP3 from '@/assets/projects/art-project-black-flash-cut-in/stills/cut
         <figcaption>女神异闻录 3 风格：蓝色色带、速度条纹</figcaption>
     </figure>
 </div>
-
-早期版本的问题出在镜头上：人物偶尔会出现在画面中很奇怪的位置。两处改动让构图变得确定：
-
-* **脸固定在屏幕上的某个位置**：不再瞄准一个偏移后的注视点，而是直接求解让脸恰好落在指定位置（右上三分点）的镜头旋转，不受距离、焦距和推镜影响。色带与招式名占据另一条对角线。
-* **镜头永远不被遮挡**：默认的机位在朝向敌人的一侧，所以切入前会对两侧做视线扫描，选择没有遮挡的一侧——假人永远不会挡在镜头和脸之间。
 
 <figure>
     <video class="clip" src={cutInClip} poster={cutInClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="女神异闻录 5 与 3 风格的技能特写"></video>

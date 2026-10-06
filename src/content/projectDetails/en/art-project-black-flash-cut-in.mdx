@@ -26,7 +26,7 @@ import cutInP3 from '@/assets/projects/art-project-black-flash-cut-in/stills/cut
 
 ## My Role
 
-A one-day solo demo in Unreal Engine 5. The characters and animations are Epic's Paragon assets; every system, shader and line of code on top of them is mine:
+A solo demo in Unreal Engine 5. The characters and animations are Epic's Paragon assets; every system, shader and line of code on top of them is mine:
 
 * **Presentation System**: A presentation director that layers full-screen effects over gameplay, timed in real seconds so the slow motion it causes never slows the effect itself.
 * **Post-Process Shaders**: Two post-process materials written as HLSL — the Black Flash impact frame and the Persona-style skill cut-in — both built from the real rendered image rather than overlaid sprites or particles.
@@ -89,11 +89,6 @@ Casting a skill hard-cuts to a telephoto close-up of the caster while the world 
         <figcaption>Persona 3 style: blue band, speed stripes</figcaption>
     </figure>
 </div>
-
-The camera was where the early versions broke: the character occasionally landed in strange places on screen. Two fixes made the framing deterministic:
-
-* **The face is pinned to a screen position**: Instead of aiming at an offset look-at point, the camera solves the rotation that puts the face exactly on a chosen point (the upper-right third), regardless of distance, lens or push-in. The band and the name take the opposite diagonal.
-* **The lens is never blocked**: The preferred camera side sits toward the opponent, so before cutting, both sides are swept for a clear line of sight and the free one is used — the dummy never ends up between the lens and the face.
 
 <figure>
     <video class="clip" src={cutInClip} poster={cutInClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Persona 5 and Persona 3 style cut-ins"></video>
