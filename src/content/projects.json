@@ -2523,6 +2523,18 @@
       ]
     },
     "coverImage": "src/assets/projects/poster/BlackFlashCutInPoster.webp",
+    "links": [
+      {
+        "name": "YouTube",
+        "url": "https://www.youtube.com/watch?v=XTniifi2xNE",
+        "icon": "fa-brands fa-youtube"
+      },
+      {
+        "name": "Bilibili",
+        "url": "https://www.bilibili.com/video/BV1CsHZ6oExE/?share_source=copy_web&vd_source=2e0b37d0ccacd91ea3fca2b1dab708e8",
+        "icon": "fa-brands fa-bilibili"
+      }
+    ],
     "colorText": "red",
     "colorBackground": "red"
   }

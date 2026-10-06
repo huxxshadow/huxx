@@ -2,8 +2,6 @@
 ---
 
 import { Image } from 'astro:assets';
-import comboClip from '@/assets/projects/art-project-black-flash-cut-in/clips/combo.mp4?url';
-import comboClipPoster from '@/assets/projects/art-project-black-flash-cut-in/clips/combo-poster.webp?url';
 import blackFlashSlowClip from '@/assets/projects/art-project-black-flash-cut-in/clips/blackflash-slow.mp4?url';
 import blackFlashSlowClipPoster from '@/assets/projects/art-project-black-flash-cut-in/clips/blackflash-slow-poster.webp?url';
 import cutInClip from '@/assets/projects/art-project-black-flash-cut-in/clips/cutin.mp4?url';
@@ -15,10 +13,16 @@ import drawing4 from '@/assets/projects/art-project-black-flash-cut-in/stills/dr
 import cutInP5 from '@/assets/projects/art-project-black-flash-cut-in/stills/cutin-p5.webp';
 import cutInP3 from '@/assets/projects/art-project-black-flash-cut-in/stills/cutin-p3.webp';
 
-<figure>
-    <video class="clip" src={comboClip} poster={comboClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Skill cut-in, combo and Black Flash"></video>
-    <figcaption>Shadowstrike: cut-in, combo, and two Black Flashes</figcaption>
-</figure>
+<div class="video-embed">
+    <iframe
+            src="https://www.youtube-nocookie.com/embed/XTniifi2xNE?rel=0"
+            title="Black Flash and skill cut-in demo"
+            loading="lazy"
+            allowfullscreen
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
+</div>
 
 ## My Role
 
