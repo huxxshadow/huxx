@@ -84,7 +84,20 @@ export const techArtWorks: TechArtWork[] = [
         tags: { en: "GLSL · Voxelization", zh: "GLSL · 体素化", ja: "GLSL · ボクセル化", ko: "GLSL · 복셀화" },
     },
 
-    // ---------- 美术（01 失落领域、02 鳗、03 Arcane Samurai、04 分形骷髅、05 点点宇宙、06 岛屿影视化）----------
+    // ---------- 美术（01 黑闪与技能特写、02 失落领域、03 鳗、04 Arcane Samurai、05 分形骷髅、06 点点宇宙、07 岛屿影视化）----------
+    {
+        projectId: "art-project-black-flash-cut-in",
+        side: "art",
+        // 完整标题在卡片宽度里会折行，这里用短的
+        title: { en: "Black Flash & Cut-In", zh: "黑闪与特写", ja: "黒閃とカットイン", ko: "흑섬과 컷인" },
+        caption: {
+            en: "Anime impact frames re-drawn from the real frame in post-process, plus Persona-style skill cut-ins in UE5.",
+            zh: "UE5 里用后处理把真实画面重绘成动漫冲击帧「黑闪」，以及女神异闻录风格的技能特写。",
+            ja: "UE5 で実際の画面をポストプロセスでアニメ調のインパクトフレーム「黒閃」に描き直し、ペルソナ風スキルカットインも実装。",
+            ko: "UE5에서 실제 화면을 포스트 프로세스로 애니메이션 임팩트 프레임 '흑섬'으로 다시 그리고, 페르소나 스타일 스킬 컷인을 구현했습니다.",
+        },
+        tags: { en: "UE5 · Post-Process · NPR", zh: "UE5 · 后处理 · NPR", ja: "UE5 · ポストプロセス · NPR", ko: "UE5 · 포스트 프로세스 · NPR" },
+    },
     {
         projectId: "game-project-lost-realm",
         side: "art",

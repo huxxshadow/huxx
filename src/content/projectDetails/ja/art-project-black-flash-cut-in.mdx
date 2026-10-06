@@ -1,0 +1,118 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import comboClip from '@/assets/projects/art-project-black-flash-cut-in/clips/combo.mp4?url';
+import comboClipPoster from '@/assets/projects/art-project-black-flash-cut-in/clips/combo-poster.webp?url';
+import blackFlashSlowClip from '@/assets/projects/art-project-black-flash-cut-in/clips/blackflash-slow.mp4?url';
+import blackFlashSlowClipPoster from '@/assets/projects/art-project-black-flash-cut-in/clips/blackflash-slow-poster.webp?url';
+import cutInClip from '@/assets/projects/art-project-black-flash-cut-in/clips/cutin.mp4?url';
+import cutInClipPoster from '@/assets/projects/art-project-black-flash-cut-in/clips/cutin-poster.webp?url';
+import drawing1 from '@/assets/projects/art-project-black-flash-cut-in/stills/drawing-1.webp';
+import drawing2 from '@/assets/projects/art-project-black-flash-cut-in/stills/drawing-2.webp';
+import drawing3 from '@/assets/projects/art-project-black-flash-cut-in/stills/drawing-3.webp';
+import drawing4 from '@/assets/projects/art-project-black-flash-cut-in/stills/drawing-4.webp';
+import cutInP5 from '@/assets/projects/art-project-black-flash-cut-in/stills/cutin-p5.webp';
+import cutInP3 from '@/assets/projects/art-project-black-flash-cut-in/stills/cutin-p3.webp';
+
+<figure>
+    <video class="clip" src={comboClip} poster={comboClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="スキルカットイン、コンボ、黒閃"></video>
+    <figcaption>Shadowstrike：カットイン、コンボ、そして2回の黒閃</figcaption>
+</figure>
+
+## 担当した役割
+
+Unreal Engine 5 で1日かけて一人で制作したデモです。キャラクターモデルとアニメーションは Epic の Paragon アセットを使用し、その上に載るシステム、シェーダー、コードはすべて自作です：
+
+* **演出システム**：戦闘画面の上にフルスクリーン効果を重ねる演出ディレクターを構築。すべて実時間で計時するため、演出が引き起こすスローモーションが演出自体を遅くすることはありません。
+* **ポストプロセスシェーダー**：黒閃のインパクトフレームとペルソナ風スキルカットインの2つのポストプロセスマテリアルを HLSL で記述。どちらもスプライトやパーティクルを重ねるのではなく、実際のレンダリング画像から生成しています。
+* **カメラ演出**：カットインのカメラが自ら構図を解き、遮蔽物を避け、「溜め→解放」のリズムに沿って動きます。
+* **打撃感とプランナー向けツール**：ヒットストップ、自分からは動かずリアクションだけを返すダミーの方向別被弾モーション、すべてのタイミングを編集可能なカーブや数値として公開し、各演出を即座に発動できるデバッグキーを用意しました。
+
+---
+
+## プロジェクト詳細
+
+目標は、テクニカルアートとバトルデザインのための小さく鋭いポートフォリオ作品です。フルの格闘ゲームではなく、1つの戦闘の演出をとことん突き詰めること。基準となったのは、『呪術廻戦』の**黒閃**のインパクトフレームと、『ペルソナ5』『ペルソナ3 リロード』のスキルカットインです。
+
+### 黒閃：実際の画面をポストプロセスする
+
+最初のバージョンは稲妻、衝撃波の円盤、パーティクルなどのエフェクトを自分で「描いて」いて、貼り付けたシールのように見えました。代わりに立てた原則は、**エフェクトを描くのではなく、フレームそのものを描き直す**こと。黒閃は1枚のフルスクリーンポストプロセスで、実際のフレームのシーンカラー、深度、カスタム深度を読み取り、白黒の「原画」に変換します。
+
+* **4枚の原画をハードカット**：0.2秒の間に4枚の異なる「原画」をハードカットで切り替え、それぞれを1拍ずつ止めます。アニメーターがインパクトフレームのタイミングを組むのと同じ考え方です。世界も同じ0.2秒だけ停止し、4枚すべてが同じ瞬間に留まります。
+* **キャラクターは常に読める**：黒閃中は攻撃側と被弾側がカスタム深度に書き込まれ、どの原画もキャラクターの位置を正確に把握します。キャラクターにはシャープな閾値と輪郭線だけを使いぼかしは一切かけず、背景は自由に流したり反転したり溶かしたりできます。
+* **ヒット地点からの集中線**：ヒット位置をスクリーン空間に投影し、細くシャープな集中線をそこから放射。下地に対して反転させるので、黒地でも白地でも読み取れます。
+* **どんなライティングでも成立**：閾値はフレーム全体の平均輝度に対する相対値なので、明るい空のショットでも暗いクローズアップでも同じ原画が成立します。
+* **原画ごとの構図**：各原画にわずかなズームと揺れを加え、手描きの原画ごとに構図が少しずつ違う感覚を再現しています。
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={drawing1} alt="原画1：ポジ" />
+        <figcaption>1 · ポジ：ハイコントラスト、輪郭線、集中線</figcaption>
+    </figure>
+    <figure>
+        <Image src={drawing2} alt="原画2：シルエットネガ" />
+        <figcaption>2 · シルエットネガ：キャラをシルエット化、密な集中線</figcaption>
+    </figure>
+    <figure>
+        <Image src={drawing3} alt="原画3：放射ブラー" />
+        <figcaption>3 · 放射ブラー：背景をヒット地点へ引き寄せる</figcaption>
+    </figure>
+    <figure>
+        <Image src={drawing4} alt="原画4：線画" />
+        <figcaption>4 · 線画：白地に画面自身の輪郭だけを残す</figcaption>
+    </figure>
+</div>
+
+<figure>
+    <video class="clip" src={blackFlashSlowClip} poster={blackFlashSlowClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="1/4速度の黒閃"></video>
+    <figcaption>1回の黒閃を1/4速度で</figcaption>
+</figure>
+
+画面全体を白黒の表現で統一するため、ヒットパーティクルはマテリアルの段階で彩度を落とし、色付きのパーティクルライトはオフにしました。
+
+### スキルカットイン：ペルソナ風クローズアップ
+
+スキルを発動すると、術者の望遠クローズアップにハードカットし、世界は5%の速度まで落ちます。カスタム深度に書き込むのは術者だけなので、シェーダーはキャラクターを切り抜き、3段階の階調と墨線に平坦化し、背後に斜めのカラーバンドを敷くことができます。ペルソナ5風は網点入りの赤いバンド、ペルソナ3風はスピードストライプ入りの青いバンドです。画面に出るのは技名だけで、バンドに沿って表示されます。
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={cutInP5} alt="ペルソナ5風カットイン" />
+        <figcaption>ペルソナ5風：赤いバンド、網点</figcaption>
+    </figure>
+    <figure>
+        <Image src={cutInP3} alt="ペルソナ3風カットイン" />
+        <figcaption>ペルソナ3風：青いバンド、スピードストライプ</figcaption>
+    </figure>
+</div>
+
+初期バージョンの問題はカメラにありました。キャラクターが画面上の妙な位置に映ることがあったのです。2つの修正で構図が確定的になりました：
+
+* **顔を画面上の決まった位置に固定**：オフセットした注視点を狙うのではなく、顔がちょうど指定した位置（右上の三分割点）に来るカメラの回転を直接解きます。距離、レンズ、プッシュインに左右されません。バンドと技名はもう一方の対角線を使います。
+* **レンズが遮られることはない**：デフォルトのカメラ位置は敵側にあるため、カットイン前に両側の視線をスイープし、遮蔽のない側を選びます。ダミーがレンズと顔の間に入ることはありません。
+
+<figure>
+    <video class="clip" src={cutInClip} poster={cutInClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="ペルソナ5風とペルソナ3風のカットイン"></video>
+    <figcaption>2種類のカットインを続けて再生</figcaption>
+</figure>
+
+### リズム：溜めてから解放する
+
+スライドイン・アウトするだけのカットインは平板に感じます。そこでタイミングを拍の構造に組み直しました：
+
+1. **カットイン**：バンドがわずかにオーバーシュートしながら叩き込まれ、カメラが素早く一段寄ります。
+2. **溜め**：カメラがじわじわと迫りながら揺れが強まり、技名は引き絞った弓のように少し後退します。
+3. **解放**：カメラが一気に寄り、揺れが止まり、軽いフラッシュが入り、バンドと技名が勢いよく飛び去ります。
+
+バンドの動き、技名の動き、カメラのプッシュ、カメラの揺れ――そのすべてがスキルデータ上のカーブで、プレイ前に詳細パネルで編集でき、スキルごとに独自のリズムを持たせられます。
+
+### 打撃感とツール
+
+* **リアクションだけを返すダミー**：トレーニングダミーは自分から動かず、吹き飛ばされることもありません。毎回のヒットで方向別の立ち被弾モーションを再生し、ヒットストップ、フラッシュ、ダメージ数字を伴うので、カメラと演出は常に安定した被写体を得られます。
+* **すべての数値を公開**：持続時間、停止時間、カーブ、カメラ距離、角度、レンズはシェーダーに埋め込まず、スキルや演出ディレクター側に置いています。
+* **素早いイテレーション**：数字キーで黒閃と各カットインを即座に発動でき、デバッグモードではすべてのヒットが黒閃になりクールダウンもなくなります。スローレビュー用のコンソール変数で演出全体をスローで確認できます。
+
+---
+
+> **アセットについて**
+> * **Paragon：Kallari と Crunch**：キャラクターモデル、アニメーション、パーティクルエフェクトは Epic Games が無料公開した Paragon アセットを使用しています。

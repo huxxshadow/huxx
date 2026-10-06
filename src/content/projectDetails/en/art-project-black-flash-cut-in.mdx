@@ -1,0 +1,118 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import comboClip from '@/assets/projects/art-project-black-flash-cut-in/clips/combo.mp4?url';
+import comboClipPoster from '@/assets/projects/art-project-black-flash-cut-in/clips/combo-poster.webp?url';
+import blackFlashSlowClip from '@/assets/projects/art-project-black-flash-cut-in/clips/blackflash-slow.mp4?url';
+import blackFlashSlowClipPoster from '@/assets/projects/art-project-black-flash-cut-in/clips/blackflash-slow-poster.webp?url';
+import cutInClip from '@/assets/projects/art-project-black-flash-cut-in/clips/cutin.mp4?url';
+import cutInClipPoster from '@/assets/projects/art-project-black-flash-cut-in/clips/cutin-poster.webp?url';
+import drawing1 from '@/assets/projects/art-project-black-flash-cut-in/stills/drawing-1.webp';
+import drawing2 from '@/assets/projects/art-project-black-flash-cut-in/stills/drawing-2.webp';
+import drawing3 from '@/assets/projects/art-project-black-flash-cut-in/stills/drawing-3.webp';
+import drawing4 from '@/assets/projects/art-project-black-flash-cut-in/stills/drawing-4.webp';
+import cutInP5 from '@/assets/projects/art-project-black-flash-cut-in/stills/cutin-p5.webp';
+import cutInP3 from '@/assets/projects/art-project-black-flash-cut-in/stills/cutin-p3.webp';
+
+<figure>
+    <video class="clip" src={comboClip} poster={comboClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Skill cut-in, combo and Black Flash"></video>
+    <figcaption>Shadowstrike: cut-in, combo, and two Black Flashes</figcaption>
+</figure>
+
+## My Role
+
+A one-day solo demo in Unreal Engine 5. The characters and animations are Epic's Paragon assets; every system, shader and line of code on top of them is mine:
+
+* **Presentation System**: A presentation director that layers full-screen effects over gameplay, timed in real seconds so the slow motion it causes never slows the effect itself.
+* **Post-Process Shaders**: Two post-process materials written as HLSL — the Black Flash impact frame and the Persona-style skill cut-in — both built from the real rendered image rather than overlaid sprites or particles.
+* **Camera Language**: A cut-in camera that solves its own framing, avoids occluders, and follows a charge-then-release rhythm.
+* **Combat Feel and Designer Tooling**: Hit stop, directional hit reactions on a dummy that only reacts and never moves on its own, every timing exposed as an editable curve or value, and debug keys to fire each effect instantly.
+
+---
+
+## Project Details
+
+The goal was a small, sharp portfolio piece for technical art and combat design: not a full fighting game, but one fight pushed as far as it will go on presentation. Two references set the bar — the **Black Flash** impact frames from *Jujutsu Kaisen*, and the skill cut-ins of *Persona 5* and *Persona 3 Reload*.
+
+### Black Flash: Post-Processing the Real Frame
+
+The first version drew its own effect — lightning, a shockwave disc, particles — and it read as a pasted-on decal. The rule that replaced it: **don't draw an effect, re-draw the frame.** The Black Flash is a single full-screen post-process that reads the scene color, depth and custom depth of the actual frame and turns it into black-and-white drawings.
+
+* **Four drawings, hard cuts**: In 0.2 seconds the screen cuts through four distinct "key drawings", each held for one beat, the way an animator would time an impact frame. The world freezes for exactly the same 0.2 seconds so all four drawings sit on the same moment.
+* **Characters stay readable**: The attacker and the victim are switched to custom depth for the flash, so every drawing knows exactly where the characters are. They get a sharp threshold and edge lines — never blur — while the background is free to smear, invert or dissolve.
+* **Speed lines from the hit point**: The impact location is projected to screen space, and thin, crisp speed lines radiate from it, inverted against the base so they read on both black and white.
+* **Works in any lighting**: Thresholds are relative to the frame's average brightness, so the same drawing holds up in a bright sky shot or a dark close-up.
+* **Composition per drawing**: Every drawing gets its own slight zoom and shake, like the framing shifting between hand-drawn frames.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={drawing1} alt="Drawing 1: positive" />
+        <figcaption>1 · Positive: high contrast, edge lines, speed lines</figcaption>
+    </figure>
+    <figure>
+        <Image src={drawing2} alt="Drawing 2: silhouette negative" />
+        <figcaption>2 · Silhouette negative: characters flattened, dense lines</figcaption>
+    </figure>
+    <figure>
+        <Image src={drawing3} alt="Drawing 3: radial smear" />
+        <figcaption>3 · Radial smear: background dragged toward the hit</figcaption>
+    </figure>
+    <figure>
+        <Image src={drawing4} alt="Drawing 4: line art" />
+        <figcaption>4 · Line art: only the frame's own edges on white</figcaption>
+    </figure>
+</div>
+
+<figure>
+    <video class="clip" src={blackFlashSlowClip} poster={blackFlashSlowClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Black Flash at quarter speed"></video>
+    <figcaption>One Black Flash at quarter speed</figcaption>
+</figure>
+
+To keep the whole screen in that black-and-white language, the hit particles were desaturated at the material level and their colored particle lights switched off.
+
+### Skill Cut-In: Persona-Style Close-Up
+
+Casting a skill hard-cuts to a telephoto close-up of the caster while the world drops to 5% speed. The caster alone writes custom depth, so the shader can cut them out, flatten them into three tone steps with ink outlines, and lay a diagonal color band behind them: red with halftone dots for the Persona 5 style, blue with speed stripes for Persona 3. Only the skill name appears, riding on the band.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={cutInP5} alt="Persona 5 style cut-in" />
+        <figcaption>Persona 5 style: red band, halftone dots</figcaption>
+    </figure>
+    <figure>
+        <Image src={cutInP3} alt="Persona 3 style cut-in" />
+        <figcaption>Persona 3 style: blue band, speed stripes</figcaption>
+    </figure>
+</div>
+
+The camera was where the early versions broke: the character occasionally landed in strange places on screen. Two fixes made the framing deterministic:
+
+* **The face is pinned to a screen position**: Instead of aiming at an offset look-at point, the camera solves the rotation that puts the face exactly on a chosen point (the upper-right third), regardless of distance, lens or push-in. The band and the name take the opposite diagonal.
+* **The lens is never blocked**: The preferred camera side sits toward the opponent, so before cutting, both sides are swept for a clear line of sight and the free one is used — the dummy never ends up between the lens and the face.
+
+<figure>
+    <video class="clip" src={cutInClip} poster={cutInClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Persona 5 and Persona 3 style cut-ins"></video>
+    <figcaption>Both cut-in styles back to back</figcaption>
+</figure>
+
+### Rhythm: Charge, Then Release
+
+A cut-in that only slides in and out feels flat. The timing was reshaped into a beat structure:
+
+1. **Cut in**: the band slams in with a slight overshoot and the camera makes a quick first push.
+2. **Charge**: the camera creeps closer while a tremble builds; the name pulls back a little, like a drawn bow.
+3. **Release**: the camera snaps in, the tremble stops, a light flash hits, and the band and name fly off.
+
+Every part of that — band motion, name motion, camera push and camera tremble — is a curve on the skill's data, editable in the Details panel before pressing Play, so each skill can have its own timing.
+
+### Combat Feel and Tooling
+
+* **A dummy that only reacts**: The training dummy never moves on its own and is never knocked away; every hit plays a directional standing hit reaction, with hit stop, a flash and damage numbers, so the camera and effects always have a stable subject.
+* **Every number exposed**: Durations, freeze time, curves, camera distance, angles and lens live on the skill or the director, not in the shader.
+* **Fast iteration**: Number keys fire the Black Flash and each cut-in style instantly, a debug mode makes every hit a Black Flash with no cooldowns, and a slow-review console variable plays the whole presentation in slow motion for review.
+
+---
+
+> **Asset Credits**
+> * **Paragon: Kallari and Crunch**: character models, animations and particle effects from Epic Games' free Paragon asset release.

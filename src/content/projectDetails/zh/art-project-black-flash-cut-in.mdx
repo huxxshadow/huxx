@@ -1,0 +1,118 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import comboClip from '@/assets/projects/art-project-black-flash-cut-in/clips/combo.mp4?url';
+import comboClipPoster from '@/assets/projects/art-project-black-flash-cut-in/clips/combo-poster.webp?url';
+import blackFlashSlowClip from '@/assets/projects/art-project-black-flash-cut-in/clips/blackflash-slow.mp4?url';
+import blackFlashSlowClipPoster from '@/assets/projects/art-project-black-flash-cut-in/clips/blackflash-slow-poster.webp?url';
+import cutInClip from '@/assets/projects/art-project-black-flash-cut-in/clips/cutin.mp4?url';
+import cutInClipPoster from '@/assets/projects/art-project-black-flash-cut-in/clips/cutin-poster.webp?url';
+import drawing1 from '@/assets/projects/art-project-black-flash-cut-in/stills/drawing-1.webp';
+import drawing2 from '@/assets/projects/art-project-black-flash-cut-in/stills/drawing-2.webp';
+import drawing3 from '@/assets/projects/art-project-black-flash-cut-in/stills/drawing-3.webp';
+import drawing4 from '@/assets/projects/art-project-black-flash-cut-in/stills/drawing-4.webp';
+import cutInP5 from '@/assets/projects/art-project-black-flash-cut-in/stills/cutin-p5.webp';
+import cutInP3 from '@/assets/projects/art-project-black-flash-cut-in/stills/cutin-p3.webp';
+
+<figure>
+    <video class="clip" src={comboClip} poster={comboClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="技能特写、连击与黑闪"></video>
+    <figcaption>Shadowstrike：技能特写、连击与两次黑闪</figcaption>
+</figure>
+
+## 我的职责
+
+这是一个用一天时间在 Unreal Engine 5 中独立完成的 demo。角色模型与动画来自 Epic 的 Paragon 资产，在此之上的所有系统、Shader 与代码均由我完成：
+
+* **演出系统**：搭建一个演出导演模块，把全屏效果叠加在战斗画面之上；全部按真实时间计时，因此它引发的慢动作不会拖慢效果本身。
+* **后处理 Shader**：用 HLSL 编写两个后处理材质——黑闪冲击帧与女神异闻录风格的技能特写——两者都从真实渲染画面生成，而不是叠加贴图或粒子。
+* **镜头语言**：特写镜头自行求解构图、自动避开遮挡，并遵循「蓄力—释放」的节奏。
+* **打击感与策划工具**：顿帧、只受击不乱动的训练假人方向性受击反应；所有时序都暴露为可编辑的曲线或数值，并提供一键触发各效果的调试按键。
+
+---
+
+## 项目细节
+
+这个项目的目标是一个小而精的技术美术与战斗策划作品：不是完整的格斗游戏，而是把一场战斗的演出做到极致。两个参考设定了标准——《咒术回战》中的**黑闪**冲击帧，以及《女神异闻录 5》与《女神异闻录 3 Reload》的技能切入特写。
+
+### 黑闪：对真实画面做后处理
+
+第一版是自己「画」特效——闪电、冲击波圆盘、粒子——看起来像贴上去的贴纸。取而代之的原则是：**不画特效，而是重画这一帧画面。** 黑闪是一个全屏后处理，读取真实画面的场景颜色、深度与自定义深度，把它变成黑白「原画」。
+
+* **四张原画，硬切**：0.2 秒内画面硬切过四张各不相同的「原画」，每张定格一拍，就像动画师给冲击帧排时间那样。世界同样冻结 0.2 秒，让四张原画都停在同一瞬间。
+* **角色始终可读**：黑闪期间攻击者与受击者写入自定义深度，每张原画都确切知道角色在哪里。角色只做锐利的阈值与描边、绝不模糊，而背景可以自由拖影、反色或溶解。
+* **速度线从受击点放射**：受击位置投影到屏幕空间，细而锐利的速度线从这里向外放射，并与底色反色，因此在黑底和白底上都清晰可见。
+* **适应任何光照**：阈值相对于整帧的平均亮度，同一张原画在明亮的天空镜头和昏暗的近景里都成立。
+* **每张原画有自己的构图**：每张都有轻微的推拉与抖动，模拟手绘原画之间构图的细微差别。
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={drawing1} alt="原画 1：正片" />
+        <figcaption>1 · 正片：高反差、边缘线、速度线</figcaption>
+    </figure>
+    <figure>
+        <Image src={drawing2} alt="原画 2：剪影负片" />
+        <figcaption>2 · 剪影负片：角色压成剪影、密集速度线</figcaption>
+    </figure>
+    <figure>
+        <Image src={drawing3} alt="原画 3：径向拖影" />
+        <figcaption>3 · 径向拖影：背景向受击点拖拽</figcaption>
+    </figure>
+    <figure>
+        <Image src={drawing4} alt="原画 4：线稿" />
+        <figcaption>4 · 线稿：白纸上只留画面自身的边缘</figcaption>
+    </figure>
+</div>
+
+<figure>
+    <video class="clip" src={blackFlashSlowClip} poster={blackFlashSlowClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="四分之一速度的黑闪"></video>
+    <figcaption>一次黑闪，四分之一速度</figcaption>
+</figure>
+
+为了让整个画面保持黑白的视觉语言，打击粒子在材质层面做了去色处理，并关闭了带颜色的粒子灯光。
+
+### 技能特写：女神异闻录风格的切入
+
+释放技能时画面硬切到施法者的长焦特写，世界降到 5% 的速度。只有施法者写入自定义深度，因此 Shader 可以把角色抠出来，压成三级色阶并加上墨线描边，再在背后铺上一条斜向色带：女神异闻录 5 风格是带网点的红色色带，女神异闻录 3 风格是带速度条纹的蓝色色带。画面上只出现招式名，贴着色带出现。
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={cutInP5} alt="女神异闻录 5 风格特写" />
+        <figcaption>女神异闻录 5 风格：红色色带、网点</figcaption>
+    </figure>
+    <figure>
+        <Image src={cutInP3} alt="女神异闻录 3 风格特写" />
+        <figcaption>女神异闻录 3 风格：蓝色色带、速度条纹</figcaption>
+    </figure>
+</div>
+
+早期版本的问题出在镜头上：人物偶尔会出现在画面中很奇怪的位置。两处改动让构图变得确定：
+
+* **脸固定在屏幕上的某个位置**：不再瞄准一个偏移后的注视点，而是直接求解让脸恰好落在指定位置（右上三分点）的镜头旋转，不受距离、焦距和推镜影响。色带与招式名占据另一条对角线。
+* **镜头永远不被遮挡**：默认的机位在朝向敌人的一侧，所以切入前会对两侧做视线扫描，选择没有遮挡的一侧——假人永远不会挡在镜头和脸之间。
+
+<figure>
+    <video class="clip" src={cutInClip} poster={cutInClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="女神异闻录 5 与 3 风格的技能特写"></video>
+    <figcaption>两种特写风格连续播放</figcaption>
+</figure>
+
+### 节奏：蓄力，然后释放
+
+只是滑进滑出的特写会显得很平。我把时序重新组织成节拍结构：
+
+1. **切入**：色带猛地砸进画面并略微过冲，镜头快速推近一小段。
+2. **蓄力**：镜头缓慢逼近，震动逐渐增强；招式名微微后撤，像拉开的弓。
+3. **释放**：镜头猛推，震动停止，画面轻微闪白，色带与招式名高速甩出。
+
+其中的每一部分——色带运动、招式名运动、镜头推进与镜头震动——都是技能数据上的一条曲线，在运行前就能在细节面板里编辑，每个技能都可以有自己的节奏。
+
+### 打击感与工具
+
+* **只受击的假人**：训练假人从不自己移动，也不会被击飞；每次命中都播放方向性的站立受击，配合顿帧、闪白与伤害数字，让镜头和特效始终有一个稳定的主体。
+* **所有数值都暴露出来**：时长、冻结时间、曲线、镜头距离、角度和焦距都放在技能或演出导演上，而不是写死在 Shader 里。
+* **快速迭代**：数字键一键触发黑闪和各风格特写；调试模式让每次命中都触发黑闪且没有冷却；慢放控制台变量可以把整段演出放慢检查。
+
+---
+
+> **资产说明**
+> * **Paragon：Kallari 与 Crunch**：角色模型、动画与粒子特效来自 Epic Games 免费开放的 Paragon 资产。
