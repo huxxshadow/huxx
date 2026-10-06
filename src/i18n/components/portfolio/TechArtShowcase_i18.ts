@@ -15,6 +15,18 @@ export interface TechArtWork {
 export const techArtWorks: TechArtWork[] = [
     // ---------- 技术 ----------
     {
+        projectId: "technical-project-element-workshop",
+        side: "tech",
+        title: { en: "Element Workshop", zh: "元素工坊", ja: "元素工房", ko: "원소 공방" },
+        caption: {
+            en: "A falling-sand physics and chemistry sandbox simulated on the GPU, lit by Radiance Cascades with layered materials.",
+            zh: "在 GPU 上逐像素模拟的落沙物理化学沙盒，Radiance Cascades 光照与分层材质渲染。",
+            ja: "GPU でピクセルごとにシミュレートするフォーリングサンドの物理・化学サンドボックス。Radiance Cascades のライティングとレイヤー構造のマテリアル。",
+            ko: "GPU에서 픽셀 단위로 시뮬레이션하는 폴링 샌드 물리·화학 샌드박스, Radiance Cascades 조명과 레이어 머티리얼 렌더링.",
+        },
+        tags: { en: "GLSL · Physics Simulation", zh: "GLSL · 物理模拟", ja: "GLSL · 物理シミュレーション", ko: "GLSL · 물리 시뮬레이션" },
+    },
+    {
         projectId: "technical-project-windy-grass",
         side: "tech",
         caption: {
@@ -72,24 +84,18 @@ export const techArtWorks: TechArtWork[] = [
         },
         tags: { en: "ComfyUI · WAN2.2", zh: "ComfyUI · WAN2.2", ja: "ComfyUI · WAN2.2", ko: "ComfyUI · WAN2.2" },
     },
-    {
-        projectId: "technical-project-lego-voxelizer",
-        side: "tech",
-        caption: {
-            en: "Adaptive surface sampling and flood fill turn any model into LEGO bricks, with cartoon, wireframe and retro shaders.",
-            zh: "自适应表面采样与洪水填充，把任意模型变成乐高积木，支持卡通、线框、复古等 Shader 风格。",
-            ja: "適応的な表面サンプリングと塗りつぶしで任意のモデルをレゴブロック化。トゥーン・ワイヤーフレーム・レトロのシェーダーに対応。",
-            ko: "적응형 표면 샘플링과 플러드 필로 어떤 모델이든 레고 블록으로 바꾸고, 카툰·와이어프레임·레트로 셰이더를 지원합니다.",
-        },
-        tags: { en: "GLSL · Voxelization", zh: "GLSL · 体素化", ja: "GLSL · ボクセル化", ko: "GLSL · 복셀화" },
-    },
 
-    // ---------- 美术（01 黑闪与技能特写、02 失落领域、03 鳗、04 Arcane Samurai、05 分形骷髅、06 点点宇宙、07 岛屿影视化）----------
+    // ---------- 美术（01 Arcane Samurai、02 横版格斗特写、03 分形骷髅、04 失落领域、05 鳗、06 岛屿影视化）----------
+    {
+        projectId: "game-project-arcane-samurai",
+        side: "art",
+        tags: { en: "2D Shader · NPR", zh: "2D Shader · NPR", ja: "2D シェーダー · NPR", ko: "2D 셰이더 · NPR" },
+    },
     {
         projectId: "art-project-black-flash-cut-in",
         side: "art",
-        // 完整标题在卡片宽度里会折行，这里用短的
-        title: { en: "Black Flash & Cut-In", zh: "黑闪与特写", ja: "黒閃とカットイン", ko: "흑섬과 컷인" },
+        // 日文全称在卡片里会被截断，这一栏用短的
+        title: { en: "Side-Scrolling Fighting Close-Up", zh: "横版格斗特写", ja: "格闘カットイン", ko: "횡스크롤 격투 클로즈업" },
         caption: {
             en: "Anime impact frames re-drawn from the real frame in post-process, plus Persona-style skill cut-ins in UE5.",
             zh: "UE5 里用后处理把真实画面重绘成动漫冲击帧「黑闪」，以及女神异闻录风格的技能特写。",
@@ -97,21 +103,6 @@ export const techArtWorks: TechArtWork[] = [
             ko: "UE5에서 실제 화면을 포스트 프로세스로 애니메이션 임팩트 프레임 '흑섬'으로 다시 그리고, 페르소나 스타일 스킬 컷인을 구현했습니다.",
         },
         tags: { en: "UE5 · Post-Process · NPR", zh: "UE5 · 后处理 · NPR", ja: "UE5 · ポストプロセス · NPR", ko: "UE5 · 포스트 프로세스 · NPR" },
-    },
-    {
-        projectId: "game-project-lost-realm",
-        side: "art",
-        tags: { en: "2D Shader · NPR", zh: "2D Shader · NPR", ja: "2D シェーダー · NPR", ko: "2D 셰이더 · NPR" },
-    },
-    {
-        projectId: "game-project-eel-on-mask",
-        side: "art",
-        tags: { en: "2D Shader · NPR", zh: "2D Shader · NPR", ja: "2D シェーダー · NPR", ko: "2D 셰이더 · NPR" },
-    },
-    {
-        projectId: "game-project-arcane-samurai",
-        side: "art",
-        tags: { en: "2D Shader · NPR", zh: "2D Shader · NPR", ja: "2D シェーダー · NPR", ko: "2D 셰이더 · NPR" },
     },
     {
         projectId: "art-project-fractal-skull",
@@ -125,9 +116,14 @@ export const techArtWorks: TechArtWork[] = [
         tags: { en: "Blender · Geometry Processing", zh: "Blender · 几何处理", ja: "Blender · ジオメトリ処理", ko: "Blender · 지오메트리 처리" },
     },
     {
-        projectId: "game-project-click-click-universe",
+        projectId: "game-project-lost-realm",
         side: "art",
-        tags: { en: "3D Cel Shader · NPR", zh: "3D Cel Shader · NPR", ja: "3D セルシェーダー · NPR", ko: "3D 셀 셰이더 · NPR" },
+        tags: { en: "2D Shader · NPR", zh: "2D Shader · NPR", ja: "2D シェーダー · NPR", ko: "2D 셰이더 · NPR" },
+    },
+    {
+        projectId: "game-project-eel-on-mask",
+        side: "art",
+        tags: { en: "2D Shader · NPR", zh: "2D Shader · NPR", ja: "2D シェーダー · NPR", ko: "2D 셰이더 · NPR" },
     },
     {
         projectId: "art-project-island-cinematic",
