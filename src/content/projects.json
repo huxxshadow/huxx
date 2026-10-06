@@ -2487,10 +2487,10 @@
       ]
     },
     "desc": {
-      "en": "An Unreal Engine 5 presentation demo built in C++ and HLSL. The Black Flash is an anime impact frame made purely by post-processing the real rendered image into four hard-cut black-and-white drawings in 0.2 seconds, with speed lines radiating from the hit point. The skill cut-in is a Persona 5 / Persona 3 style close-up: a hard cut to a telephoto camera that pins the face to a fixed spot on screen and avoids occluders, a toon-shaded and ink-outlined character, a diagonal color band, and a charge-then-release rhythm driven by designer-editable curves.",
-      "zh": "一个在 Unreal Engine 5 中以 C++ 与 HLSL 搭建的战斗演出 demo。「黑闪」是动漫式的冲击帧，完全由真实渲染画面的后处理生成——0.2 秒内硬切四张黑白「原画」，速度线从受击点放射。「技能特写」参考女神异闻录 5 / 3 的切入演出：硬切到长焦特写镜头，把脸固定在画面同一位置并自动避开遮挡，角色卡通化描边，斜向色带滑入，节奏由策划可在面板里编辑的曲线控制，呈现「蓄力—释放」的感觉。",
-      "ja": "Unreal Engine 5 上で C++ と HLSL で作った戦闘演出デモです。「黒閃」はアニメ的なインパクトフレームで、実際のレンダリング画像をポストプロセスだけで加工し、0.2秒の間に4枚の白黒「原画」をハードカットで切り替え、ヒット地点から集中線を放射します。「スキルカットイン」はペルソナ5／3風のクローズアップで、望遠カメラへのハードカット、顔を画面の決まった位置に固定し遮蔽物を自動回避するカメラ、トゥーン調の陰影と墨線、斜めのカラーバンド、そしてプランナーが編集できるカーブで制御する「溜め→解放」のリズムで構成されています。",
-      "ko": "Unreal Engine 5에서 C++와 HLSL로 만든 전투 연출 데모입니다. '흑섬'은 애니메이션식 임팩트 프레임으로, 실제 렌더링 화면을 포스트 프로세스만으로 가공해 0.2초 동안 네 장의 흑백 '원화'를 하드 컷으로 전환하고 타격 지점에서 집중선을 방사합니다. '스킬 컷인'은 페르소나 5/3 스타일의 클로즈업으로, 망원 카메라로의 하드 컷, 얼굴을 화면의 고정 위치에 두고 가림을 자동으로 피하는 카메라, 툰 셰이딩과 먹선, 사선 컬러 밴드, 그리고 기획자가 편집할 수 있는 커브로 제어하는 '모으기→해방' 리듬으로 구성됩니다."
+      "en": "A combat presentation demo built in Unreal Engine 5 with C++ and HLSL, recreating the Black Flash impact frames from Jujutsu Kaisen and the skill cut-ins from Persona 5 and Persona 3 Reload.",
+      "zh": "一个在 Unreal Engine 5 中以 C++ 与 HLSL 搭建的战斗演出 demo，参考《咒术回战》的「黑闪」冲击帧，以及《女神异闻录 5》《女神异闻录 3 Reload》的技能特写效果。",
+      "ja": "Unreal Engine 5 上で C++ と HLSL を使って作った戦闘演出デモです。『呪術廻戦』の「黒閃」のインパクトフレームと、『ペルソナ5』『ペルソナ3 リロード』のスキルカットインを参考にしています。",
+      "ko": "Unreal Engine 5에서 C++와 HLSL로 만든 전투 연출 데모로, 『주술회전』의 '흑섬' 임팩트 프레임과 『페르소나 5』『페르소나 3 리로드』의 스킬 컷인을 참고했습니다."
     },
     "tags": {
       "en": [
