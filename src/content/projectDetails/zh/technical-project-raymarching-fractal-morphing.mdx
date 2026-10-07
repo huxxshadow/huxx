@@ -1,7 +1,192 @@
-﻿---
+---
 ---
 
-## 我的职责
+import { Image } from 'astro:assets';
+import v1Poster from '@/assets/projects/poster/RayMarchingFractalMorphingPoster.webp';
+import modelBunny from '@/assets/projects/technical-project-raymarching-fractal-morphing/model-bunny.webp';
+import modelDragon from '@/assets/projects/technical-project-raymarching-fractal-morphing/model-dragon.webp';
+import modelTeapot from '@/assets/projects/technical-project-raymarching-fractal-morphing/model-teapot.webp';
+import modelMandelbulb from '@/assets/projects/technical-project-raymarching-fractal-morphing/model-mandelbulb.webp';
+import morphMid from '@/assets/projects/technical-project-raymarching-fractal-morphing/morph-mid.webp';
+import morphFull from '@/assets/projects/technical-project-raymarching-fractal-morphing/morph-full.webp';
+import materialJade from '@/assets/projects/technical-project-raymarching-fractal-morphing/material-jade.webp';
+import materialIridescent from '@/assets/projects/technical-project-raymarching-fractal-morphing/material-iridescent.webp';
+import materialLava from '@/assets/projects/technical-project-raymarching-fractal-morphing/material-lava.webp';
+import materialCeramic from '@/assets/projects/technical-project-raymarching-fractal-morphing/material-ceramic.webp';
+import exportRaymarch from '@/assets/projects/technical-project-raymarching-fractal-morphing/export-raymarch.webp';
+import exportMesh from '@/assets/projects/technical-project-raymarching-fractal-morphing/export-mesh.webp';
+import exportCycles from '@/assets/projects/technical-project-raymarching-fractal-morphing/export-cycles.webp';
+import orbitSuzanne from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/orbit-suzanne.mp4?url';
+import orbitSuzannePoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/orbit-suzanne-poster.webp?url';
+import orbitDragon from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/orbit-dragon.mp4?url';
+import orbitDragonPoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/orbit-dragon-poster.webp?url';
+import morphGrid from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/morph-grid.mp4?url';
+import morphGridPoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/morph-grid-poster.webp?url';
+import materialsGrid from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/materials-grid.mp4?url';
+import materialsGridPoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/materials-grid-poster.webp?url';
+import demoPresets from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/demo-presets.mp4?url';
+import demoPresetsPoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/demo-presets-poster.webp?url';
+import demoMaterials from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/demo-materials.mp4?url';
+import demoMaterialsPoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/demo-materials-poster.webp?url';
+
+<div class="video-embed">
+    <iframe
+            src="https://player.bilibili.com/player.html?bvid=BV1J2HC6jELX&autoplay=0&danmaku=0&high_quality=1"
+            title="分形表面融合DCC工具演示视频"
+            loading="lazy"
+            allowfullscreen
+            allow="fullscreen; picture-in-picture"
+    ></iframe>
+</div>
+
+## V2 · 分形表面融合DCC工具
+
+分形表面融合 DCC 工具把任意三维模型与分形几何融合，在浏览器中实时渲染细节可以无限展开的分形表面，并通过 GPU 几何处理导出可直接用于生产的高精度水密网格。这一版参考了 Blender 插件 Fractal Machine 的节点网络，用 Three.js 从零重写了分形场、融合方式、材质系统和网格导出，把"在 Blender 里慢慢烘焙"变成"在网页里实时调整、一键导出"。
+
+### 我的职责
+
+这是一个个人项目，从渲染到工具链都由我独立完成：
+
+- **分形场与融合**：实现 Mandelbulb 距离估计和 Blender 密度场两套分形场，在 GPU 上烘焙模型的有符号距离场，并设计外壳包裹、空间扭曲、SDF 混合、布尔运算、表面雕刻等融合方式。
+- **无限细节的实时渲染**：全屏光线步进着色器，静止时渐进超采样，配合软阴影、基于图像的环境光照和影棚地面，让分形细节在任意缩放下保持清晰。
+- **几何处理与导出**：分块 GPU 采样加跨块焊接的 Marching Cubes，把隐式分形表面转换成高精度水密网格，导出 GLB / PLY / STL，可直接进入 Blender 等 DCC 软件。
+- **材质与工具化**：复刻插件的分形着色，并扩展次表面散射、透射、清漆、薄膜虹彩和自发光；提供场景预设、参数文件、中英文界面，以及 4K 离线录制。
+
+### 分形与模型融合
+
+融合的核心是两个距离场的组合。导入的模型先在 GPU 上烘焙成三维有符号距离场（借助 three-mesh-bvh 做最近点查询，并用 7 条射线投票判断内外），分形则是一个由迭代公式定义的隐式场。
+
+默认的**外壳包裹**模式把分形空间"贴"到模型表面：对模型附近的每一点，沿从中心出发或沿表面法线的方向，把它映射到分形球的某一层壳上，于是分形花纹顺着模型轮廓生长出来。融合程度从 0 到 1 连续变化，中间状态既保留原模型的形体，又逐步长出分形细节。此外还支持复刻插件的空间扭曲、平滑 SDF 混合、交 / 差 / 并布尔运算和表面雕刻。
+
+<figure>
+    <video class="clip" src={morphGrid} poster={morphGridPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="四个模型的融合程度从 0 到 1"></video>
+    <figcaption>融合程度 0 → 1：猴头、斯坦福兔子、斯坦福龙、犹他茶壶</figcaption>
+</figure>
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={morphMid} alt="融合过程的中间状态" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>中间态：原模型轮廓仍在，分形开始浮现</figcaption>
+    </figure>
+    <figure>
+        <Image src={morphFull} alt="完全融合后的分形外壳" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>完全融合：分形外壳覆盖整个表面</figcaption>
+    </figure>
+</div>
+
+### 无限细节的实时渲染
+
+分形表面不是网格，而是一个可以在任意尺度上求值的数学函数，所以渲染直接在着色器里完成：一个全屏四边形为每个像素发射光线，用距离估计逐步逼近表面。Mandelbulb 使用解析的距离估计，镜头越近，细节越能继续展开；Blender 密度场模式则先烘焙进三维纹理，再用三次 B 样条插值采样，保证表面光滑连续、没有体素块感。
+
+相机静止时，渲染器用 Halton 序列对像素做亚像素抖动并逐帧累积，同时抖动面光源的位置，得到抗锯齿和柔和的软阴影；拖动时自动降低分辨率，保证交互流畅。光照包括主光、轮廓光、基于图像的环境反射和影棚地面。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={orbitSuzanne} poster={orbitSuzannePoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="分形外壳融合后的猴头模型环绕展示"></video>
+        <figcaption>猴头模型 × Mandelbulb 外壳，浏览器内实时光线步进渲染</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={orbitDragon} poster={orbitDragonPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="斯坦福龙分形外壳环绕展示"></video>
+        <figcaption>斯坦福龙 × Mandelbulb 外壳</figcaption>
+    </figure>
+</div>
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={modelBunny} alt="斯坦福兔子分形外壳" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>斯坦福兔子</figcaption>
+    </figure>
+    <figure>
+        <Image src={modelDragon} alt="斯坦福龙分形外壳" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>斯坦福龙</figcaption>
+    </figure>
+    <figure>
+        <Image src={modelTeapot} alt="犹他茶壶分形外壳" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>犹他茶壶</figcaption>
+    </figure>
+    <figure>
+        <Image src={modelMandelbulb} alt="纯 Mandelbulb 分形" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>纯 Mandelbulb 分形</figcaption>
+    </figure>
+</div>
+
+### 材质与光影
+
+材质系统先复刻了插件的分形着色：用分形迭代过程中的轨道信息计算 Color Map，再结合环境光遮蔽和凹凸，把主色、金属强调色和缝隙色分配到表面的不同层次上，形成插件标志性的灰金效果。
+
+在此基础上我加入了几层表面效果：次表面散射；沿折射方向在体内步进、按 Beer-Lambert 定律吸收的透射；清漆；薄膜干涉虹彩；以及沿缝隙或色带发光的自发光。这些层组合出玉石、虹彩甲壳、熔岩缝隙、陶瓷清漆、黑金、铬金、铜锈等预设，所有参数都可以实时调整。
+
+<figure>
+    <video class="clip" src={materialsGrid} poster={materialsGridPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="斯坦福龙的九种材质"></video>
+    <figcaption>同一条龙，九种材质预设</figcaption>
+</figure>
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={materialJade} alt="玉石材质" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>玉石：次表面散射</figcaption>
+    </figure>
+    <figure>
+        <Image src={materialLava} alt="熔岩缝隙材质" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>熔岩缝隙：沿缝隙自发光</figcaption>
+    </figure>
+    <figure>
+        <Image src={materialIridescent} alt="虹彩甲壳材质" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>虹彩甲壳：薄膜干涉</figcaption>
+    </figure>
+    <figure>
+        <Image src={materialCeramic} alt="陶瓷清漆材质" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>陶瓷清漆：清漆层高光</figcaption>
+    </figure>
+</div>
+
+### 几何处理与高精度导出
+
+实时预览之外，工具的另一半工作是把隐式的分形表面变成真正的几何体。导出时，计算域被切成 129³ 的块，在 GPU 上逐块采样距离场，只对包含表面的块运行 Marching Cubes，并在块与块之间焊接顶点，得到没有裂缝的水密网格。网格分辨率最高可到 2048³，足以保留肉眼可见的分形细节。
+
+法线和顶点颜色由同一套着色器在 GPU 上计算，因此导出结果与预览一致。导出时还可以沿等值面加厚表面、还原原模型尺寸，或把 GLB 按灰色主体和金色强调拆成两种材质，导入 Blender 后可直接用于渲染或 3D 打印。
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={exportRaymarch} alt="实时光线步进预览" widths={[640, 1200]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>实时光线步进预览</figcaption>
+    </figure>
+    <figure>
+        <Image src={exportMesh} alt="导出的高精度网格" widths={[640, 1200]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>同一视角下导出的高精度网格</figcaption>
+    </figure>
+</div>
+
+<figure>
+    <Image src={exportCycles} alt="导出网格在 Blender Cycles 中的渲染" widths={[560, 730]} sizes="(min-width: 640px) 560px, 100vw" style="width: 100%; max-width: 560px; height: auto;" />
+    <figcaption>导出的网格（768³）在 Blender Cycles 中渲染</figcaption>
+</figure>
+
+### 实机演示
+
+工具运行在浏览器里：右侧面板可以切换场景预设（模型 + 分形 + 融合参数）、拖入自己的 GLB / OBJ / STL / PLY 模型、保存和加载参数文件，并实时调整分形、融合与材质的每一个参数，界面支持中英文切换。展示视频也由工具自己录制：离线渲染器以固定分辨率逐帧累积采样，并根据物体的包围点求解相机距离，保证环绕拍摄时物体始终完整留在画面里。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={demoPresets} poster={demoPresetsPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="切换预设与调整参数"></video>
+        <figcaption>切换预设与调整融合参数</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={demoMaterials} poster={demoMaterialsPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="切换材质并近距离观察细节"></video>
+        <figcaption>切换材质，拉近观察分形细节</figcaption>
+    </figure>
+</div>
+
+---
+
+## V1 · 光线步进 Fractal Morphing
+
+<figure>
+    <Image src={v1Poster} alt="光线步进 Fractal Morphing V1" widths={[640, 1280]} sizes="(min-width: 1024px) 900px, 100vw" />
+    <figcaption>V1：基于 SDF 光线步进的模型与 Mandelbulb 形态混合</figcaption>
+</figure>
+
+### 我的职责
 
 在这个基于 WebGL 与 Three.js 的分形形变项目中，我主要负责了分形渲染算法设计、形态混合逻辑实现与整体可视化流程开发，主要职责包括：
 
@@ -10,8 +195,7 @@
 * **形态混合系统开发**：设计并实现传统 3D 模型与 Mandelbulb 分形之间的平滑 morphing 方案，在数学层面对不同 SDF 进行混合，生成连续的中间形态。
 * **交互与参数控制**：结合 Three.js 搭建交互式 Web 端展示环境，并支持分形迭代、形变强度、平滑度等参数调节，以提升可视化效果与实验性表现。
 
----
 
-## 项目细节
+### 项目细节
 
 本项目旨在探索传统三维模型与数学分形之间的连续形态过渡，并通过 Web 端交互式渲染展示这种几何表达方式的变化过程。在技术实现上，我采用基于 Signed Distance Function 的 Ray Marching 方法作为核心渲染手段，使系统能够直接对程序化定义的复杂几何进行实时求交与着色。项目中的分形部分基于 Mandelbulb 结构实现，其灵感来源于对 3D Mandelbrot 形式的探索：通过在三维球坐标中对点进行幂次旋转与迭代，可以生成具有丰富自相似细节的三维分形外形。为了实现模型与分形之间的平滑过渡，我将程序化模型 SDF 与 Mandelbulb 距离场在数学层面进行混合，并结合 smooth minimum 与线性插值构建连续的 morphing 过程，使中间状态既保留原始模型轮廓，又逐步呈现分形细节。整个项目展示了 WebGL、Three.js 与程序化几何技术在复杂视觉生成和交互式 3D 艺术表达中的应用潜力。

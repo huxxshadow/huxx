@@ -64,12 +64,12 @@ export const techArtWorks: TechArtWork[] = [
         projectId: "technical-project-raymarching-fractal-morphing",
         side: "tech",
         caption: {
-            en: "SDF ray marching blends 3D models with a Mandelbulb fractal in real time, right in the browser.",
-            zh: "基于 SDF 光线步进，在网页端把三维模型与 Mandelbulb 分形实时融合。",
-            ja: "SDF レイマーチングで、3D モデルと Mandelbulb フラクタルをブラウザ上でリアルタイムに融合。",
-            ko: "SDF 레이 마칭으로 3D 모델과 Mandelbulb 프랙탈을 브라우저에서 실시간으로 융합합니다.",
+            en: "Fuses 3D models with fractal geometry, renders infinite fractal detail live in the browser and exports watertight high-res meshes.",
+            zh: "把三维模型与分形几何融合，在网页端实时渲染无限细节的分形表面，并导出高精度水密网格。",
+            ja: "3D モデルとフラクタル幾何を融合し、無限のディテールをブラウザでリアルタイムに描画、高精度な水密メッシュとして書き出し。",
+            ko: "3D 모델과 프랙탈 기하를 융합해 무한한 디테일을 브라우저에서 실시간 렌더링하고, 고해상도 워터타이트 메시로 내보냅니다.",
         },
-        tags: { en: "Three.js · Computer Graphics", zh: "Three.js · 计算机图形学", ja: "Three.js · コンピュータグラフィックス", ko: "Three.js · 컴퓨터 그래픽스" },
+        tags: { en: "Three.js · Geometry Processing", zh: "Three.js · 几何处理", ja: "Three.js · ジオメトリ処理", ko: "Three.js · 지오메트리 처리" },
     },
     {
         projectId: "technical-project-comfyui-ai-eco-film",

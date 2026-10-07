@@ -1303,10 +1303,10 @@
     "order": 21,
     "category": "technical",
     "title": {
-      "en": "Ray Marching Fractal Morphing",
-      "zh": "光线步进 Fractal Morphing",
-      "ja": "レイマーチング・Fractal Morphing",
-      "ko": "레이 마칭 Fractal Morphing"
+      "en": "Fractal Surface Fusion DCC Tool",
+      "zh": "分形表面融合DCC工具",
+      "ja": "フラクタル表面融合DCCツール",
+      "ko": "프랙탈 표면 융합 DCC 툴"
     },
     "roles": {
       "en": [
@@ -1323,39 +1323,49 @@
       ]
     },
     "desc": {
-      "en": "Ray Marching Fractal Morphing is a technical graphics project that explores the real-time fusion of 3D models and Mandelbulb fractals in Three.js to enhance surface detail and visual complexity. Built on WebGL, the project uses signed distance functions (SDF) and ray marching to render both procedural geometry and fractal structures, then blends them mathematically to achieve smooth morphing transitions.",
-      "zh": "《光线步进 Fractal Morphing》是一个基于 Three.js 的技术图形项目，探索将三维模型与 Mandelbulb 分形在网页端进行实时融合，以增强模型表面细节与视觉层次。项目基于 WebGL，使用有符号距离场（SDF）与光线步进技术渲染程序化几何和分形结构，并在数学层面对二者进行混合，从而实现平滑的形态过渡效果。",
-      "ja": "『レイマーチング・Fractal Morphing』は、Three.jsを基盤に、3DモデルとMandelbulbフラクタルをWeb上でリアルタイムに融合させ、表面ディテールと視覚的な情報量を高めることを目指したテクニカルグラフィックスプロジェクトです。WebGL上で構築されており、符号付き距離関数（SDF）とレイマーチングを用いて、プロシージャルジオメトリとフラクタル構造を描画し、それらを数学的にブレンドすることで滑らかなモーフィング表現を実現しています。",
-      "ko": "『레이 마칭 Fractal Morphing』은 Three.js를 기반으로 3D 모델과 Mandelbulb 프랙탈을 웹 환경에서 실시간으로 융합하여, 표면 디테일과 시각적 밀도를 향상시키는 기술 그래픽스 프로젝트입니다. 이 프로젝트는 WebGL 위에서 구현되었으며, Signed Distance Function(SDF)과 레이 마칭 기법을 사용해 절차적 기하와 프랙탈 구조를 렌더링하고, 이를 수학적으로 블렌딩하여 부드러운 형태 전환을 구현합니다."
+      "en": "Fractal Surface Fusion DCC Tool fuses any 3D model with fractal geometry, renders fractal surfaces of infinite detail in real time in the browser, and uses GPU geometry processing to export high-resolution, watertight meshes ready for production. V2 rebuilds the Blender add-on Fractal Machine in Three.js, with Mandelbulb shell wrapping, a layered material system with subsurface scattering, transmission, clearcoat and iridescence, and Marching Cubes export up to 2048³ as GLB / PLY / STL.",
+      "zh": "《分形表面融合DCC工具》把任意三维模型与分形几何融合，在浏览器中实时渲染无限细节的分形表面，并通过 GPU 几何处理导出可直接用于生产的高精度水密网格。V2 版本用 Three.js 重写了 Blender 插件 Fractal Machine 的核心能力：Mandelbulb 外壳包裹融合、支持次表面散射 / 透射 / 清漆 / 虹彩的分层材质，以及最高 2048³ 的 Marching Cubes 网格导出（GLB / PLY / STL）。",
+      "ja": "『フラクタル表面融合DCCツール』は、任意の 3D モデルをフラクタル幾何と融合し、無限のディテールを持つフラクタル表面をブラウザ上でリアルタイムにレンダリングし、GPU によるジオメトリ処理で制作にそのまま使える高精度な水密メッシュを書き出すツールです。V2 では Blender アドオン Fractal Machine の中核機能を Three.js で再構築し、Mandelbulb シェルラップによる融合、サブサーフェススキャタリング・透過・クリアコート・虹彩を備えたレイヤードマテリアル、最大 2048³ の Marching Cubes メッシュ書き出し（GLB / PLY / STL）を実現しました。",
+      "ko": "『프랙탈 표면 융합 DCC 툴』은 임의의 3D 모델을 프랙탈 기하와 융합하고, 무한한 디테일의 프랙탈 표면을 브라우저에서 실시간으로 렌더링하며, GPU 지오메트리 처리로 바로 제작에 쓸 수 있는 고해상도 워터타이트 메시를 내보내는 툴입니다. V2에서는 Blender 애드온 Fractal Machine의 핵심 기능을 Three.js로 재구성해 Mandelbulb 셸 랩 융합, 서브서피스 스캐터링·투과·클리어코트·무지갯빛을 지원하는 레이어드 머티리얼, 최대 2048³ Marching Cubes 메시 내보내기(GLB / PLY / STL)를 구현했습니다."
     },
     "tags": {
       "en": [
-        "Mandelbulb",
-        "WebGL",
-        "Three.js",
-        "Real-time Rendering"
+        "Fractal",
+        "Ray Marching",
+        "Geometry Processing",
+        "Three.js"
       ],
       "zh": [
-        "曼德尔球",
-        "WebGL",
-        "Three.js",
-        "实时渲染"
+        "分形",
+        "光线步进",
+        "几何处理",
+        "Three.js"
       ],
       "ja": [
-        "Mandelbulb",
-        "WebGL",
-        "Three.js",
-        "リアルタイムレンダリング"
+        "フラクタル",
+        "レイマーチング",
+        "ジオメトリ処理",
+        "Three.js"
       ],
       "ko": [
-        "Mandelbulb",
-        "WebGL",
-        "Three.js",
-        "실시간 렌더링"
+        "프랙탈",
+        "레이 마칭",
+        "지오메트리 처리",
+        "Three.js"
       ]
     },
-    "coverImage": "src/assets/projects/poster/RayMarchingFractalMorphingPoster.webp",
+    "coverImage": "src/assets/projects/poster/FractalSurfaceDCCToolPoster.webp",
     "links": [
+      {
+        "name": "Bilibili",
+        "url": "https://www.bilibili.com/video/BV1J2HC6jELX/?share_source=copy_web&vd_source=2e0b37d0ccacd91ea3fca2b1dab708e8",
+        "icon": "fa-brands fa-bilibili"
+      },
+      {
+        "name": "Youtube",
+        "url": "https://youtu.be/-2TPDxAOyRM",
+        "icon": "fa-brands fa-youtube"
+      },
       {
         "name": "Report",
         "url": "https://drive.google.com/file/d/15BpKXsjMecNUbr-YDS4G3HqVUwzFIPnh/view",

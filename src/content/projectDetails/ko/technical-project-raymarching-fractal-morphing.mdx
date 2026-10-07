@@ -1,7 +1,192 @@
 ---
 ---
 
-## 담당 업무
+import { Image } from 'astro:assets';
+import v1Poster from '@/assets/projects/poster/RayMarchingFractalMorphingPoster.webp';
+import modelBunny from '@/assets/projects/technical-project-raymarching-fractal-morphing/model-bunny.webp';
+import modelDragon from '@/assets/projects/technical-project-raymarching-fractal-morphing/model-dragon.webp';
+import modelTeapot from '@/assets/projects/technical-project-raymarching-fractal-morphing/model-teapot.webp';
+import modelMandelbulb from '@/assets/projects/technical-project-raymarching-fractal-morphing/model-mandelbulb.webp';
+import morphMid from '@/assets/projects/technical-project-raymarching-fractal-morphing/morph-mid.webp';
+import morphFull from '@/assets/projects/technical-project-raymarching-fractal-morphing/morph-full.webp';
+import materialJade from '@/assets/projects/technical-project-raymarching-fractal-morphing/material-jade.webp';
+import materialIridescent from '@/assets/projects/technical-project-raymarching-fractal-morphing/material-iridescent.webp';
+import materialLava from '@/assets/projects/technical-project-raymarching-fractal-morphing/material-lava.webp';
+import materialCeramic from '@/assets/projects/technical-project-raymarching-fractal-morphing/material-ceramic.webp';
+import exportRaymarch from '@/assets/projects/technical-project-raymarching-fractal-morphing/export-raymarch.webp';
+import exportMesh from '@/assets/projects/technical-project-raymarching-fractal-morphing/export-mesh.webp';
+import exportCycles from '@/assets/projects/technical-project-raymarching-fractal-morphing/export-cycles.webp';
+import orbitSuzanne from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/orbit-suzanne.mp4?url';
+import orbitSuzannePoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/orbit-suzanne-poster.webp?url';
+import orbitDragon from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/orbit-dragon.mp4?url';
+import orbitDragonPoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/orbit-dragon-poster.webp?url';
+import morphGrid from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/morph-grid.mp4?url';
+import morphGridPoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/morph-grid-poster.webp?url';
+import materialsGrid from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/materials-grid.mp4?url';
+import materialsGridPoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/materials-grid-poster.webp?url';
+import demoPresets from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/demo-presets.mp4?url';
+import demoPresetsPoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/demo-presets-poster.webp?url';
+import demoMaterials from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/demo-materials.mp4?url';
+import demoMaterialsPoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/demo-materials-poster.webp?url';
+
+<div class="video-embed">
+    <iframe
+            src="https://www.youtube-nocookie.com/embed/-2TPDxAOyRM?rel=0"
+            title="프랙탈 표면 융합 DCC 툴 소개 영상"
+            loading="lazy"
+            allowfullscreen
+            allow="fullscreen; picture-in-picture"
+    ></iframe>
+</div>
+
+## V2 · 프랙탈 표면 융합 DCC 툴
+
+프랙탈 표면 융합 DCC 툴은 임의의 3D 모델을 프랙탈 기하와 융합하고, 디테일이 끝없이 펼쳐지는 프랙탈 표면을 브라우저에서 실시간으로 렌더링하며, GPU 지오메트리 처리를 통해 바로 제작에 쓸 수 있는 고해상도 워터타이트 메시로 내보냅니다. 이번 버전은 Blender 애드온 Fractal Machine의 노드 네트워크를 참고해 프랙탈 필드, 융합 방식, 머티리얼 시스템, 메시 내보내기를 Three.js로 처음부터 다시 만들었고, 'Blender에서 오래 베이크하던 작업'을 '브라우저에서 실시간으로 조정하고 클릭 한 번으로 내보내는' 워크플로로 바꿨습니다.
+
+### 담당 업무
+
+개인 프로젝트로, 렌더러부터 툴체인까지 모두 혼자 개발했습니다.
+
+- **프랙탈 필드와 융합**: Mandelbulb 거리 추정과 Blender 밀도 필드 두 가지 프랙탈 필드를 구현하고, 모델의 부호 있는 거리 필드를 GPU에서 베이크했습니다. 셸 랩, 공간 워프, SDF 블렌드, 불리언, 표면 카빙 등의 융합 방식을 설계했습니다.
+- **무한 디테일의 실시간 렌더링**: 풀스크린 레이마칭 셰이더, 정지 시 프로그레시브 슈퍼샘플링, 소프트 섀도, 이미지 기반 조명, 스튜디오 바닥으로 어떤 배율에서도 프랙탈 디테일을 선명하게 유지합니다.
+- **지오메트리 처리와 내보내기**: 블록 단위 GPU 샘플링과 블록 간 정점을 용접하는 Marching Cubes로 암시적 프랙탈 표면을 고해상도 워터타이트 메시로 변환하고, GLB / PLY / STL로 Blender 등 DCC 툴에 바로 넘깁니다.
+- **머티리얼과 툴화**: 애드온의 프랙탈 셰이딩을 재현하고 서브서피스 스캐터링, 투과, 클리어코트, 박막 간섭, 자체 발광을 추가했습니다. 씬 프리셋, 파라미터 파일, 중·영 UI, 4K 오프라인 녹화도 지원합니다.
+
+### 모델과 프랙탈의 융합
+
+융합의 핵심은 두 거리 필드의 조합입니다. 불러온 모델은 먼저 GPU에서 3D 부호 있는 거리 필드로 베이크되고(three-mesh-bvh로 최근접점을 구하고 7개 광선의 투표로 안팎을 판정), 프랙탈은 반복 공식으로 정의된 암시적 필드로 다룹니다.
+
+기본 **셸 랩** 모드는 프랙탈 공간을 모델 표면에 '입힙니다'. 모델 근처의 각 점을 중심에서 뻗는 방향이나 표면 법선 방향을 따라 프랙탈 구의 한 껍질에 매핑하므로, 프랙탈 무늬가 모델의 윤곽을 따라 자라납니다. 융합 정도는 0에서 1까지 연속적으로 변하며, 중간 상태에서는 원래 형태를 유지하면서 프랙탈 디테일이 점차 드러납니다. 이 밖에 애드온을 재현한 공간 워프, 부드러운 SDF 블렌드, 교집합 / 차집합 / 합집합 불리언, 표면 카빙도 지원합니다.
+
+<figure>
+    <video class="clip" src={morphGrid} poster={morphGridPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="네 모델의 융합 정도 0에서 1"></video>
+    <figcaption>융합 0 → 1: 수잔, 스탠퍼드 버니, 스탠퍼드 드래곤, 유타 티팟</figcaption>
+</figure>
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={morphMid} alt="융합 중간 상태" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>중간 상태: 원래 윤곽이 남아 있고 프랙탈이 드러나기 시작</figcaption>
+    </figure>
+    <figure>
+        <Image src={morphFull} alt="완전히 융합된 프랙탈 셸" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>완전 융합: 프랙탈 셸이 표면 전체를 덮음</figcaption>
+    </figure>
+</div>
+
+### 무한 디테일의 실시간 렌더링
+
+프랙탈 표면은 메시가 아니라 어떤 스케일에서도 계산할 수 있는 수학 함수이므로, 렌더링은 셰이더 안에서 직접 이루어집니다. 풀스크린 사각형이 픽셀마다 광선을 쏘고, 거리 추정으로 표면에 다가갑니다. Mandelbulb는 해석적 거리 추정을 사용하므로 카메라가 가까워질수록 디테일이 계속 펼쳐집니다. Blender 밀도 필드 모드는 3D 텍스처로 베이크한 뒤 트라이큐빅 B-스플라인 보간으로 샘플링해, 복셀 블록감 없이 매끄럽고 연속적인 표면을 유지합니다.
+
+카메라가 멈춰 있을 때는 Halton 수열로 픽셀을 서브픽셀 단위로 지터링하며 프레임을 누적하고, 면광원의 위치도 지터링해 안티에일리어싱과 부드러운 소프트 섀도를 얻습니다. 드래그 중에는 해상도를 자동으로 낮춰 조작을 부드럽게 유지합니다. 조명은 키 라이트, 림 라이트, 이미지 기반 환경 반사, 스튜디오 바닥으로 구성됩니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={orbitSuzanne} poster={orbitSuzannePoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="프랙탈 셸을 두른 수잔 오빗"></video>
+        <figcaption>수잔 × Mandelbulb 셸, 브라우저에서 실시간 레이마칭</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={orbitDragon} poster={orbitDragonPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="프랙탈 셸을 두른 스탠퍼드 드래곤 오빗"></video>
+        <figcaption>스탠퍼드 드래곤 × Mandelbulb 셸</figcaption>
+    </figure>
+</div>
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={modelBunny} alt="프랙탈 셸을 두른 스탠퍼드 버니" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>스탠퍼드 버니</figcaption>
+    </figure>
+    <figure>
+        <Image src={modelDragon} alt="프랙탈 셸을 두른 스탠퍼드 드래곤" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>스탠퍼드 드래곤</figcaption>
+    </figure>
+    <figure>
+        <Image src={modelTeapot} alt="프랙탈 셸을 두른 유타 티팟" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>유타 티팟</figcaption>
+    </figure>
+    <figure>
+        <Image src={modelMandelbulb} alt="순수 Mandelbulb 프랙탈" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>순수 Mandelbulb</figcaption>
+    </figure>
+</div>
+
+### 머티리얼과 라이팅
+
+머티리얼 시스템은 먼저 애드온의 프랙탈 셰이딩을 재현했습니다. 프랙탈 반복 중의 궤도 정보로 Color Map을 계산하고, 앰비언트 오클루전과 범프를 결합해 베이스 컬러, 메탈릭 강조색, 틈새 색을 표면의 각 층에 배분함으로써 애드온 특유의 그레이·골드 질감을 만듭니다.
+
+그 위에 여러 표면 레이어를 더했습니다. 서브서피스 스캐터링, 굴절 방향을 따라 내부를 마칭하며 Beer-Lambert 법칙으로 흡수하는 투과, 클리어코트, 박막 간섭에 의한 무지갯빛, 틈새나 색띠를 따라 빛나는 자체 발광입니다. 이를 조합해 비취, 무지갯빛 갑각, 용암 균열, 유약 도자기, 블랙 골드, 크롬과 골드, 녹청 등의 프리셋을 만들었고, 모든 파라미터를 실시간으로 조정할 수 있습니다.
+
+<figure>
+    <video class="clip" src={materialsGrid} poster={materialsGridPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="아홉 가지 머티리얼의 스탠퍼드 드래곤"></video>
+    <figcaption>같은 드래곤, 아홉 가지 머티리얼 프리셋</figcaption>
+</figure>
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={materialJade} alt="비취 머티리얼" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>비취: 서브서피스 스캐터링</figcaption>
+    </figure>
+    <figure>
+        <Image src={materialLava} alt="용암 균열 머티리얼" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>용암 균열: 틈새를 따라 자체 발광</figcaption>
+    </figure>
+    <figure>
+        <Image src={materialIridescent} alt="무지갯빛 갑각 머티리얼" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>무지갯빛 갑각: 박막 간섭</figcaption>
+    </figure>
+    <figure>
+        <Image src={materialCeramic} alt="유약 도자기 머티리얼" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>유약 도자기: 클리어코트 하이라이트</figcaption>
+    </figure>
+</div>
+
+### 지오메트리 처리와 고해상도 내보내기
+
+실시간 프리뷰와 함께 툴의 또 다른 축은 암시적 프랙탈 표면을 실제 지오메트리로 바꾸는 작업입니다. 내보낼 때 계산 영역을 129³ 블록으로 나누고, GPU에서 블록마다 거리 필드를 샘플링한 뒤 표면이 있는 블록에만 Marching Cubes를 적용합니다. 블록 경계에서는 정점을 용접해 틈 없는 워터타이트 메시를 얻습니다. 그리드는 최대 2048³까지 지원해 눈에 보이는 프랙탈 디테일을 충분히 보존합니다.
+
+법선과 정점 컬러는 같은 셰이더로 GPU에서 계산하므로 내보낸 결과가 프리뷰와 일치합니다. 등가면을 따라 표면에 두께를 주거나, 원본 모델 크기로 되돌리거나, GLB를 그레이 베이스와 골드 강조의 두 머티리얼로 나눌 수도 있어 Blender에 불러와 바로 렌더링이나 3D 프린팅에 쓸 수 있습니다.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={exportRaymarch} alt="실시간 레이마칭 프리뷰" widths={[640, 1200]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>실시간 레이마칭 프리뷰</figcaption>
+    </figure>
+    <figure>
+        <Image src={exportMesh} alt="내보낸 고해상도 메시" widths={[640, 1200]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>같은 시점에서 내보낸 고해상도 메시</figcaption>
+    </figure>
+</div>
+
+<figure>
+    <Image src={exportCycles} alt="내보낸 메시를 Blender Cycles로 렌더링" widths={[560, 730]} sizes="(min-width: 640px) 560px, 100vw" style="width: 100%; max-width: 560px; height: auto;" />
+    <figcaption>내보낸 메시(768³)를 Blender Cycles로 렌더링</figcaption>
+</figure>
+
+### 실제 시연
+
+툴은 브라우저에서 동작합니다. 사이드 패널에서 씬 프리셋(모델 + 프랙탈 + 융합 설정)을 바꾸고, 직접 만든 GLB / OBJ / STL / PLY 모델을 드래그 앤 드롭으로 불러오고, 파라미터 파일을 저장·불러오며, 프랙탈·융합·머티리얼의 모든 파라미터를 실시간으로 조정할 수 있습니다. UI는 중국어와 영어 전환을 지원합니다. 소개 영상도 툴이 직접 녹화했습니다. 오프라인 렌더러가 고정 해상도로 프레임마다 샘플을 누적하고, 물체의 바운딩 포인트로 카메라 거리를 계산해 오빗 중에도 물체가 항상 화면 안에 온전히 들어오도록 합니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={demoPresets} poster={demoPresetsPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="프리셋 전환과 파라미터 조정"></video>
+        <figcaption>프리셋 전환과 융합 파라미터 조정</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={demoMaterials} poster={demoMaterialsPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="머티리얼을 바꾸고 디테일을 가까이서 보기"></video>
+        <figcaption>머티리얼을 바꾸고 프랙탈 디테일을 가까이서 보기</figcaption>
+    </figure>
+</div>
+
+---
+
+## V1 · 레이 마칭 Fractal Morphing
+
+<figure>
+    <Image src={v1Poster} alt="레이 마칭 Fractal Morphing V1" widths={[640, 1280]} sizes="(min-width: 1024px) 900px, 100vw" />
+    <figcaption>V1: SDF 레이마칭으로 모델과 Mandelbulb를 모핑</figcaption>
+</figure>
+
+### 담당 업무
 
 WebGL과 Three.js를 활용한 이 프랙탈 모핑 프로젝트에서 프랙탈 렌더링 알고리즘 설계, 모핑 로직 구현, 전체 시각화 파이프라인 개발을 주로 담당했습니다. 주요 업무 내용은 다음과 같습니다.
 
@@ -10,8 +195,7 @@ WebGL과 Three.js를 활용한 이 프랙탈 모핑 프로젝트에서 프랙탈
 * **모핑 시스템 개발**: 전통적인 3D 모델과 Mandelbulb 프랙탈 사이의 부드러운 모핑 방식을 설계·구현하고, 수학적 레벨에서 서로 다른 SDF를 혼합하여 연속적인 중간 형태를 생성했습니다.
 * **인터랙션 및 파라미터 제어**: Three.js를 활용한 인터랙티브 웹 기반 전시 환경을 구축하고, 프랙탈 반복 횟수·변형 강도·부드러움 등의 파라미터 조정을 지원하여 시각화 품질과 실험적 표현력을 향상시켰습니다.
 
----
 
-## 프로젝트 상세
+### 프로젝트 상세
 
 본 프로젝트는 전통적인 3D 모델과 수학적 프랙탈 사이의 연속적인 형태 전환을 탐구하고, 웹 기반 인터랙티브 렌더링을 통해 이 기하학적 표현 방식의 변화 과정을 시각화하는 것을 목표로 합니다. 기술 구현에서는 Signed Distance Function 기반의 레이마칭 방식을 핵심 렌더링 수단으로 채택하여 프로그래밍 방식으로 정의된 복잡한 기하 구조의 실시간 교차 및 셰이딩을 가능하게 했습니다. 프랙탈 부분은 Mandelbulb 구조를 기반으로 구현했으며, 3D 만델브로트 집합의 3차원 구면 좌표에서 점에 거듭제곱 회전과 반복을 적용하여 풍부한 자기 유사적 세부 구조를 가진 3D 프랙탈 형태를 생성합니다. 모델과 프랙탈 사이의 부드러운 전환을 실현하기 위해 프로시저럴 모델의 SDF와 Mandelbulb 거리 필드를 수학적 레벨에서 혼합하고, smooth minimum과 선형 보간을 결합한 연속적인 모핑 프로세스를 구축했습니다. 중간 상태는 원본 모델의 실루엣을 유지하면서 점차 프랙탈 세부 구조를 드러냅니다. 본 프로젝트는 복잡한 시각 생성과 인터랙티브 3D 예술 표현에서 WebGL·Three.js·프로시저럴 지오메트리 기술의 응용 가능성을 보여줍니다.

@@ -1,7 +1,192 @@
 ---
 ---
 
-## My Role
+import { Image } from 'astro:assets';
+import v1Poster from '@/assets/projects/poster/RayMarchingFractalMorphingPoster.webp';
+import modelBunny from '@/assets/projects/technical-project-raymarching-fractal-morphing/model-bunny.webp';
+import modelDragon from '@/assets/projects/technical-project-raymarching-fractal-morphing/model-dragon.webp';
+import modelTeapot from '@/assets/projects/technical-project-raymarching-fractal-morphing/model-teapot.webp';
+import modelMandelbulb from '@/assets/projects/technical-project-raymarching-fractal-morphing/model-mandelbulb.webp';
+import morphMid from '@/assets/projects/technical-project-raymarching-fractal-morphing/morph-mid.webp';
+import morphFull from '@/assets/projects/technical-project-raymarching-fractal-morphing/morph-full.webp';
+import materialJade from '@/assets/projects/technical-project-raymarching-fractal-morphing/material-jade.webp';
+import materialIridescent from '@/assets/projects/technical-project-raymarching-fractal-morphing/material-iridescent.webp';
+import materialLava from '@/assets/projects/technical-project-raymarching-fractal-morphing/material-lava.webp';
+import materialCeramic from '@/assets/projects/technical-project-raymarching-fractal-morphing/material-ceramic.webp';
+import exportRaymarch from '@/assets/projects/technical-project-raymarching-fractal-morphing/export-raymarch.webp';
+import exportMesh from '@/assets/projects/technical-project-raymarching-fractal-morphing/export-mesh.webp';
+import exportCycles from '@/assets/projects/technical-project-raymarching-fractal-morphing/export-cycles.webp';
+import orbitSuzanne from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/orbit-suzanne.mp4?url';
+import orbitSuzannePoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/orbit-suzanne-poster.webp?url';
+import orbitDragon from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/orbit-dragon.mp4?url';
+import orbitDragonPoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/orbit-dragon-poster.webp?url';
+import morphGrid from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/morph-grid.mp4?url';
+import morphGridPoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/morph-grid-poster.webp?url';
+import materialsGrid from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/materials-grid.mp4?url';
+import materialsGridPoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/materials-grid-poster.webp?url';
+import demoPresets from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/demo-presets.mp4?url';
+import demoPresetsPoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/demo-presets-poster.webp?url';
+import demoMaterials from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/demo-materials.mp4?url';
+import demoMaterialsPoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/demo-materials-poster.webp?url';
+
+<div class="video-embed">
+    <iframe
+            src="https://www.youtube-nocookie.com/embed/-2TPDxAOyRM?rel=0"
+            title="Fractal Surface Fusion DCC Tool video"
+            loading="lazy"
+            allowfullscreen
+            allow="fullscreen; picture-in-picture"
+    ></iframe>
+</div>
+
+## V2 · Fractal Surface Fusion DCC Tool
+
+Fractal Surface Fusion DCC Tool fuses any 3D model with fractal geometry, renders fractal surfaces whose detail keeps unfolding without limit in real time in the browser, and uses GPU geometry processing to export high-resolution, watertight meshes ready for production. This version takes the node networks of the Blender add-on Fractal Machine as reference and rebuilds the fractal fields, fusion modes, material system and mesh export from scratch in Three.js, turning "bake slowly in Blender" into "tweak live in the browser, export in one click".
+
+### My Role
+
+A solo project: I built everything from the renderer to the tool chain.
+
+- **Fractal fields and fusion**: two fractal fields (a Mandelbulb distance estimator and the Blender density field), GPU baking of the model's signed distance field, and fusion modes including shell wrap, space warp, SDF blending, booleans and surface carving.
+- **Real-time rendering of infinite detail**: a full-screen ray-marching shader with progressive supersampling when idle, soft shadows, image-based lighting and a studio floor, keeping fractal detail crisp at any zoom.
+- **Geometry processing and export**: brick-wise GPU sampling and Marching Cubes with cross-brick welding turn the implicit fractal surface into a high-resolution watertight mesh, exported as GLB / PLY / STL straight into Blender and other DCC tools.
+- **Materials and tooling**: a recreation of the add-on's fractal shading, extended with subsurface scattering, transmission, clearcoat, thin-film iridescence and emission; scene presets, parameter files, a Chinese / English UI and 4K offline recording.
+
+### Fusing Models with Fractals
+
+Fusion comes down to combining two distance fields. An imported model is first baked on the GPU into a 3D signed distance field (closest-point queries via three-mesh-bvh, inside / outside decided by a 7-ray vote), while the fractal is an implicit field defined by an iterated formula.
+
+The default **shell wrap** mode "skins" the model with fractal space: every point near the model is mapped, along the direction from the centre or along the surface normal, onto a shell of the fractal ball, so the fractal pattern grows along the model's silhouette. The morph amount moves continuously from 0 to 1, and the in-between states keep the original form while fractal detail grows over it. Space warp (as in the add-on), smooth SDF blending, intersect / subtract / union and surface carving are also available.
+
+<figure>
+    <video class="clip" src={morphGrid} poster={morphGridPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Four models morphing from 0 to 1"></video>
+    <figcaption>Morph 0 → 1: Suzanne, Stanford Bunny, Stanford Dragon, Utah Teapot</figcaption>
+</figure>
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={morphMid} alt="Half-way through the morph" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>Half-way: the silhouette is still there, the fractal starts to emerge</figcaption>
+    </figure>
+    <figure>
+        <Image src={morphFull} alt="Fully morphed fractal shell" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>Fully morphed: the fractal shell covers the whole surface</figcaption>
+    </figure>
+</div>
+
+### Real-time Rendering of Infinite Detail
+
+A fractal surface is not a mesh but a mathematical function that can be evaluated at any scale, so it is rendered directly in a shader: a full-screen quad casts a ray per pixel and steps towards the surface with a distance estimate. The Mandelbulb uses an analytic distance estimator, so detail keeps unfolding as the camera moves closer; the Blender density-field mode is baked into a 3D texture and sampled with tricubic B-spline filtering, keeping the surface smooth and continuous with no voxel blockiness.
+
+While the camera is still, the renderer jitters each pixel on a Halton sequence and accumulates frame after frame, also jittering the area light, which gives anti-aliasing and soft shadows; while dragging, resolution drops automatically to stay interactive. Lighting combines a key light, a rim light, image-based reflections and a studio floor.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={orbitSuzanne} poster={orbitSuzannePoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Suzanne wrapped in a fractal shell, orbiting"></video>
+        <figcaption>Suzanne × Mandelbulb shell, ray marched in real time in the browser</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={orbitDragon} poster={orbitDragonPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Stanford Dragon with a fractal shell, orbiting"></video>
+        <figcaption>Stanford Dragon × Mandelbulb shell</figcaption>
+    </figure>
+</div>
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={modelBunny} alt="Stanford Bunny with a fractal shell" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>Stanford Bunny</figcaption>
+    </figure>
+    <figure>
+        <Image src={modelDragon} alt="Stanford Dragon with a fractal shell" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>Stanford Dragon</figcaption>
+    </figure>
+    <figure>
+        <Image src={modelTeapot} alt="Utah Teapot with a fractal shell" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>Utah Teapot</figcaption>
+    </figure>
+    <figure>
+        <Image src={modelMandelbulb} alt="Pure Mandelbulb fractal" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>Pure Mandelbulb</figcaption>
+    </figure>
+</div>
+
+### Materials and Lighting
+
+The material system starts by recreating the add-on's fractal shading: a Color Map computed from orbit information gathered during the fractal iteration, combined with ambient occlusion and bump, distributes a base colour, a metallic accent and a cavity colour across the layers of the surface, producing the add-on's signature gray-and-gold look.
+
+On top of that I added several surface layers: subsurface scattering; transmission that marches inside the volume along the refracted ray with Beer-Lambert absorption; clearcoat; thin-film iridescence; and emission along cavities or colour bands. Together they make presets such as jade, iridescent shell, lava cracks, glazed ceramic, black gold, chrome and gold and verdigris, all adjustable in real time.
+
+<figure>
+    <video class="clip" src={materialsGrid} poster={materialsGridPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="The Stanford Dragon in nine materials"></video>
+    <figcaption>One dragon, nine material presets</figcaption>
+</figure>
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={materialJade} alt="Jade material" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>Jade: subsurface scattering</figcaption>
+    </figure>
+    <figure>
+        <Image src={materialLava} alt="Lava cracks material" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>Lava cracks: emission along the cavities</figcaption>
+    </figure>
+    <figure>
+        <Image src={materialIridescent} alt="Iridescent shell material" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>Iridescent shell: thin-film interference</figcaption>
+    </figure>
+    <figure>
+        <Image src={materialCeramic} alt="Glazed ceramic material" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>Glazed ceramic: clearcoat highlights</figcaption>
+    </figure>
+</div>
+
+### Geometry Processing and High-res Export
+
+Beyond the live preview, the other half of the tool turns the implicit fractal surface into real geometry. On export the domain is split into 129³ bricks; the distance field is sampled brick by brick on the GPU, Marching Cubes runs only on bricks that contain surface, and vertices are welded across brick borders, giving a crack-free watertight mesh. Grids go up to 2048³, enough to keep the fractal detail you can see.
+
+Normals and vertex colours are computed on the GPU by the same shaders, so the export matches the preview. The surface can also be thickened along the iso-surface, scaled back to the original model's units, or split into a gray base and a gold accent material in the GLB, ready for rendering or 3D printing in Blender.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={exportRaymarch} alt="Real-time ray-marched preview" widths={[640, 1200]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>Real-time ray-marched preview</figcaption>
+    </figure>
+    <figure>
+        <Image src={exportMesh} alt="Exported high-res mesh" widths={[640, 1200]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>The exported high-res mesh, same view</figcaption>
+    </figure>
+</div>
+
+<figure>
+    <Image src={exportCycles} alt="Exported mesh rendered in Blender Cycles" widths={[560, 730]} sizes="(min-width: 640px) 560px, 100vw" style="width: 100%; max-width: 560px; height: auto;" />
+    <figcaption>Exported mesh (768³) rendered in Blender Cycles</figcaption>
+</figure>
+
+### Live Demo
+
+The tool runs in the browser: the side panel switches scene presets (model + fractal + fusion settings), takes your own GLB / OBJ / STL / PLY models by drag and drop, saves and loads parameter files, and exposes every fractal, fusion and material parameter live, with a Chinese / English UI. The showcase video was recorded by the tool itself: an offline renderer accumulates samples frame by frame at a fixed resolution and solves the camera distance from the object's bounding points so the object always stays fully in frame while orbiting.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={demoPresets} poster={demoPresetsPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Switching presets and tweaking parameters"></video>
+        <figcaption>Switching presets and tweaking fusion parameters</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={demoMaterials} poster={demoMaterialsPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Switching materials and zooming into the detail"></video>
+        <figcaption>Switching materials and zooming into the fractal detail</figcaption>
+    </figure>
+</div>
+
+---
+
+## V1 · Ray Marching Fractal Morphing
+
+<figure>
+    <Image src={v1Poster} alt="Ray Marching Fractal Morphing V1" widths={[640, 1280]} sizes="(min-width: 1024px) 900px, 100vw" />
+    <figcaption>V1: SDF ray marching that morphs models into a Mandelbulb</figcaption>
+</figure>
+
+### My Role
 
 In this fractal morphing project built with WebGL and Three.js, I was primarily responsible for fractal rendering algorithm design, morphing logic implementation, and the overall visualization pipeline. My main responsibilities included:
 
@@ -10,8 +195,7 @@ In this fractal morphing project built with WebGL and Three.js, I was primarily 
 * **Morphing System Development**: Designed and implemented a smooth morphing scheme between traditional 3D models and the Mandelbulb fractal, blending different SDFs at the mathematical level to generate continuous intermediate shapes.
 * **Interaction and Parameter Control**: Built an interactive web-based display environment with Three.js, with support for adjustable parameters including fractal iteration count, morph intensity, and smoothness to enhance visualization quality and experimental expressiveness.
 
----
 
-## Project Details
+### Project Details
 
 This project explores continuous shape transitions between traditional 3D models and mathematical fractals, showcasing this mode of geometric expression through interactive web-based rendering. For the technical implementation, I used a Ray Marching approach based on Signed Distance Functions as the core rendering method, enabling the system to directly intersect and shade complex programmatically defined geometry in real time. The fractal component is based on the Mandelbulb structure, inspired by an exploration of the 3D Mandelbrot form: by applying power-rotation and iteration to points in 3D spherical coordinates, a 3D fractal shape with rich self-similar detail can be generated. To achieve a smooth transition between the model and the fractal, I blended the procedural model's SDF with the Mandelbulb distance field at the mathematical level, constructing a continuous morphing process using smooth minimum and linear interpolation, so that intermediate states both preserve the original model's silhouette and progressively reveal fractal detail. The project demonstrates the application potential of WebGL, Three.js, and procedural geometry techniques in complex visual generation and interactive 3D artistic expression.

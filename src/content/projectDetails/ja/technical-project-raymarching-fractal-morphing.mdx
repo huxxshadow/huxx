@@ -1,7 +1,192 @@
 ---
 ---
 
-## 担当業務
+import { Image } from 'astro:assets';
+import v1Poster from '@/assets/projects/poster/RayMarchingFractalMorphingPoster.webp';
+import modelBunny from '@/assets/projects/technical-project-raymarching-fractal-morphing/model-bunny.webp';
+import modelDragon from '@/assets/projects/technical-project-raymarching-fractal-morphing/model-dragon.webp';
+import modelTeapot from '@/assets/projects/technical-project-raymarching-fractal-morphing/model-teapot.webp';
+import modelMandelbulb from '@/assets/projects/technical-project-raymarching-fractal-morphing/model-mandelbulb.webp';
+import morphMid from '@/assets/projects/technical-project-raymarching-fractal-morphing/morph-mid.webp';
+import morphFull from '@/assets/projects/technical-project-raymarching-fractal-morphing/morph-full.webp';
+import materialJade from '@/assets/projects/technical-project-raymarching-fractal-morphing/material-jade.webp';
+import materialIridescent from '@/assets/projects/technical-project-raymarching-fractal-morphing/material-iridescent.webp';
+import materialLava from '@/assets/projects/technical-project-raymarching-fractal-morphing/material-lava.webp';
+import materialCeramic from '@/assets/projects/technical-project-raymarching-fractal-morphing/material-ceramic.webp';
+import exportRaymarch from '@/assets/projects/technical-project-raymarching-fractal-morphing/export-raymarch.webp';
+import exportMesh from '@/assets/projects/technical-project-raymarching-fractal-morphing/export-mesh.webp';
+import exportCycles from '@/assets/projects/technical-project-raymarching-fractal-morphing/export-cycles.webp';
+import orbitSuzanne from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/orbit-suzanne.mp4?url';
+import orbitSuzannePoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/orbit-suzanne-poster.webp?url';
+import orbitDragon from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/orbit-dragon.mp4?url';
+import orbitDragonPoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/orbit-dragon-poster.webp?url';
+import morphGrid from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/morph-grid.mp4?url';
+import morphGridPoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/morph-grid-poster.webp?url';
+import materialsGrid from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/materials-grid.mp4?url';
+import materialsGridPoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/materials-grid-poster.webp?url';
+import demoPresets from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/demo-presets.mp4?url';
+import demoPresetsPoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/demo-presets-poster.webp?url';
+import demoMaterials from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/demo-materials.mp4?url';
+import demoMaterialsPoster from '@/assets/projects/technical-project-raymarching-fractal-morphing/clips/demo-materials-poster.webp?url';
+
+<div class="video-embed">
+    <iframe
+            src="https://www.youtube-nocookie.com/embed/-2TPDxAOyRM?rel=0"
+            title="フラクタル表面融合DCCツールの紹介動画"
+            loading="lazy"
+            allowfullscreen
+            allow="fullscreen; picture-in-picture"
+    ></iframe>
+</div>
+
+## V2 · フラクタル表面融合DCCツール
+
+フラクタル表面融合 DCC ツールは、任意の 3D モデルをフラクタル幾何と融合し、細部がどこまでも展開していくフラクタル表面をブラウザ上でリアルタイムにレンダリングします。さらに GPU によるジオメトリ処理で、そのまま制作に使える高精度な水密メッシュを書き出せます。このバージョンでは Blender アドオン Fractal Machine のノードネットワークを参考に、フラクタル場、融合方式、マテリアルシステム、メッシュ書き出しを Three.js でゼロから作り直し、「Blender でじっくりベイクする」作業を「ブラウザでリアルタイムに調整し、ワンクリックで書き出す」ワークフローに変えました。
+
+### 担当業務
+
+個人プロジェクトとして、レンダラーからツールチェーンまですべて一人で開発しました。
+
+- **フラクタル場と融合**：Mandelbulb の距離推定と Blender 密度場の 2 種類のフラクタル場を実装し、モデルの符号付き距離場を GPU でベイク。シェルラップ、空間ワープ、SDF ブレンド、ブーリアン、サーフェスカービングなどの融合方式を設計しました。
+- **無限ディテールのリアルタイムレンダリング**：フルスクリーンのレイマーチングシェーダー、静止時のプログレッシブスーパーサンプリング、ソフトシャドウ、イメージベースドライティング、スタジオ床面により、どの拡大率でもフラクタルの細部を鮮明に保ちます。
+- **ジオメトリ処理と書き出し**：ブロック単位の GPU サンプリングと、ブロック間で頂点を溶接する Marching Cubes により、陰関数で表されたフラクタル表面を高精度な水密メッシュに変換し、GLB / PLY / STL で Blender などの DCC ツールへ直接渡せます。
+- **マテリアルとツール化**：アドオンのフラクタルシェーディングを再現し、サブサーフェススキャタリング、透過、クリアコート、薄膜干渉、自己発光を追加。シーンプリセット、パラメータファイル、中英 UI、4K オフライン録画も用意しました。
+
+### モデルとフラクタルの融合
+
+融合の本質は 2 つの距離場の組み合わせです。読み込んだモデルはまず GPU 上で 3D の符号付き距離場にベイクされ（three-mesh-bvh で最近点を求め、7 本のレイの多数決で内外を判定）、フラクタルは反復式で定義された陰関数場として扱います。
+
+デフォルトの**シェルラップ**モードは、フラクタル空間をモデルの表面に「貼り付け」ます。モデル付近の各点を、中心からの方向または表面法線の方向に沿ってフラクタル球のいずれかの殻に写像することで、フラクタルの模様がモデルの輪郭に沿って成長します。融合度は 0 から 1 まで連続的に変化し、途中の状態では元の形を保ちながらフラクタルの細部が徐々に現れます。このほか、アドオンを再現した空間ワープ、スムーズな SDF ブレンド、交差 / 差 / 和のブーリアン、サーフェスカービングにも対応しています。
+
+<figure>
+    <video class="clip" src={morphGrid} poster={morphGridPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="4 つのモデルの融合度 0 から 1"></video>
+    <figcaption>融合度 0 → 1：スザンヌ、スタンフォードバニー、スタンフォードドラゴン、ユタ・ティーポット</figcaption>
+</figure>
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={morphMid} alt="融合途中の状態" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>途中：元の輪郭を残しつつ、フラクタルが現れ始める</figcaption>
+    </figure>
+    <figure>
+        <Image src={morphFull} alt="完全に融合したフラクタルシェル" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>完全融合：フラクタルシェルが表面全体を覆う</figcaption>
+    </figure>
+</div>
+
+### 無限ディテールのリアルタイムレンダリング
+
+フラクタル表面はメッシュではなく、任意のスケールで評価できる数式です。そのためレンダリングはシェーダー内で直接行います。フルスクリーンの四角形がピクセルごとにレイを飛ばし、距離推定を使って表面へ近づいていきます。Mandelbulb は解析的な距離推定を用いるため、カメラを寄せるほど細部が展開し続けます。Blender 密度場モードは 3D テクスチャにベイクしたうえでトライキュービック B スプライン補間でサンプリングし、ボクセルのブロック感のない滑らかで連続した表面を保ちます。
+
+カメラが静止している間は、Halton 列でピクセルをサブピクセル単位にジッターしながらフレームを蓄積し、面光源の位置もジッターすることで、アンチエイリアスと柔らかいソフトシャドウを得ます。ドラッグ中は自動的に解像度を下げて操作の滑らかさを保ちます。ライティングはキーライト、リムライト、イメージベースドの環境反射、スタジオ床面で構成しています。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={orbitSuzanne} poster={orbitSuzannePoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="フラクタルシェルをまとったスザンヌのオービット"></video>
+        <figcaption>スザンヌ × Mandelbulb シェル、ブラウザ上でリアルタイムにレイマーチング</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={orbitDragon} poster={orbitDragonPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="フラクタルシェルをまとったスタンフォードドラゴンのオービット"></video>
+        <figcaption>スタンフォードドラゴン × Mandelbulb シェル</figcaption>
+    </figure>
+</div>
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={modelBunny} alt="フラクタルシェルのスタンフォードバニー" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>スタンフォードバニー</figcaption>
+    </figure>
+    <figure>
+        <Image src={modelDragon} alt="フラクタルシェルのスタンフォードドラゴン" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>スタンフォードドラゴン</figcaption>
+    </figure>
+    <figure>
+        <Image src={modelTeapot} alt="フラクタルシェルのユタ・ティーポット" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>ユタ・ティーポット</figcaption>
+    </figure>
+    <figure>
+        <Image src={modelMandelbulb} alt="純粋な Mandelbulb フラクタル" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>純粋な Mandelbulb</figcaption>
+    </figure>
+</div>
+
+### マテリアルとライティング
+
+マテリアルシステムは、まずアドオンのフラクタルシェーディングの再現から始めました。フラクタル反復中の軌道情報から Color Map を計算し、アンビエントオクルージョンとバンプを組み合わせて、ベースカラー、メタリックのアクセントカラー、隙間の色を表面の各層に割り当てることで、アドオンを象徴するグレーとゴールドの質感を作ります。
+
+その上に複数の表面レイヤーを追加しました。サブサーフェススキャタリング、屈折方向に沿って内部をマーチングし Beer-Lambert 則で吸収する透過、クリアコート、薄膜干渉による虹彩、隙間や色帯に沿った自己発光です。これらを組み合わせて、翡翠、虹彩の甲殻、溶岩の亀裂、釉薬陶器、ブラックゴールド、クロームとゴールド、緑青などのプリセットを用意しており、すべてのパラメータをリアルタイムに調整できます。
+
+<figure>
+    <video class="clip" src={materialsGrid} poster={materialsGridPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="9 種類のマテリアルのスタンフォードドラゴン"></video>
+    <figcaption>同じドラゴン、9 種類のマテリアルプリセット</figcaption>
+</figure>
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={materialJade} alt="翡翠マテリアル" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>翡翠：サブサーフェススキャタリング</figcaption>
+    </figure>
+    <figure>
+        <Image src={materialLava} alt="溶岩の亀裂マテリアル" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>溶岩の亀裂：隙間に沿った自己発光</figcaption>
+    </figure>
+    <figure>
+        <Image src={materialIridescent} alt="虹彩の甲殻マテリアル" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>虹彩の甲殻：薄膜干渉</figcaption>
+    </figure>
+    <figure>
+        <Image src={materialCeramic} alt="釉薬陶器マテリアル" widths={[640, 1280]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>釉薬陶器：クリアコートのハイライト</figcaption>
+    </figure>
+</div>
+
+### ジオメトリ処理と高精度書き出し
+
+リアルタイムプレビューと並ぶもう一つの柱が、陰関数のフラクタル表面を実際のジオメトリに変換する処理です。書き出し時には計算領域を 129³ のブロックに分割し、GPU でブロックごとに距離場をサンプリングし、表面を含むブロックだけに Marching Cubes を適用します。ブロック境界では頂点を溶接するので、継ぎ目のない水密メッシュが得られます。グリッドは最大 2048³ まで対応し、目に見えるフラクタルの細部を十分に保持できます。
+
+法線と頂点カラーは同じシェーダーで GPU 上で計算するため、書き出し結果はプレビューと一致します。さらに等値面に沿った表面の厚み付け、元モデルの寸法への復元、GLB をグレーのベースとゴールドのアクセントの 2 マテリアルに分割する機能もあり、Blender に読み込んでそのままレンダリングや 3D プリントに使えます。
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={exportRaymarch} alt="リアルタイムのレイマーチングプレビュー" widths={[640, 1200]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>リアルタイムのレイマーチングプレビュー</figcaption>
+    </figure>
+    <figure>
+        <Image src={exportMesh} alt="書き出した高精度メッシュ" widths={[640, 1200]} sizes="(min-width: 640px) 450px, 100vw" />
+        <figcaption>同じ視点で書き出した高精度メッシュ</figcaption>
+    </figure>
+</div>
+
+<figure>
+    <Image src={exportCycles} alt="書き出したメッシュを Blender Cycles でレンダリング" widths={[560, 730]} sizes="(min-width: 640px) 560px, 100vw" style="width: 100%; max-width: 560px; height: auto;" />
+    <figcaption>書き出したメッシュ（768³）を Blender Cycles でレンダリング</figcaption>
+</figure>
+
+### 実機デモ
+
+ツールはブラウザで動作します。サイドパネルからシーンプリセット（モデル + フラクタル + 融合設定）の切り替え、自分の GLB / OBJ / STL / PLY モデルのドラッグ＆ドロップ読み込み、パラメータファイルの保存と読み込みができ、フラクタル・融合・マテリアルのすべてのパラメータをリアルタイムに調整できます。UI は中国語と英語の切り替えに対応しています。紹介動画もツール自身で録画しました。オフラインレンダラーが固定解像度でフレームごとにサンプルを蓄積し、物体のバウンディング点からカメラ距離を解くことで、オービット中も物体が常に画面内に収まるようにしています。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={demoPresets} poster={demoPresetsPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="プリセットの切り替えとパラメータ調整"></video>
+        <figcaption>プリセットの切り替えと融合パラメータの調整</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={demoMaterials} poster={demoMaterialsPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="マテリアルを切り替えて細部に寄る"></video>
+        <figcaption>マテリアルを切り替え、フラクタルの細部に寄る</figcaption>
+    </figure>
+</div>
+
+---
+
+## V1 · レイマーチング・Fractal Morphing
+
+<figure>
+    <Image src={v1Poster} alt="レイマーチング・Fractal Morphing V1" widths={[640, 1280]} sizes="(min-width: 1024px) 900px, 100vw" />
+    <figcaption>V1：SDF レイマーチングによるモデルと Mandelbulb のモーフィング</figcaption>
+</figure>
+
+### 担当業務
 
 WebGL と Three.js を用いたこのフラクタルモーフィングプロジェクトにおいて、フラクタルレンダリングアルゴリズムの設計、モーフィングロジックの実装、全体的な可視化パイプラインの開発を主に担当しました。主な業務内容は以下のとおりです。
 
@@ -10,8 +195,7 @@ WebGL と Three.js を用いたこのフラクタルモーフィングプロジ�
 * **モーフィングシステムの開発**：通常の3Dモデルと Mandelbulb フラクタル間のスムーズなモーフィング手法を設計・実装し、数学的レベルで異なる SDF を合成して連続的な中間形状を生成しました。
 * **インタラクションとパラメータ制御**：Three.js を用いたインタラクティブな Web 表示環境を構築し、フラクタルの反復回数・変形強度・スムーズさなどのパラメータ調整をサポートして可視化品質と実験的表現を向上させました。
 
----
 
-## プロジェクト詳細
+### プロジェクト詳細
 
 本プロジェクトは、従来の3Dモデルと数学的フラクタルの連続的な形状遷移を探求し、Web ベースのインタラクティブレンダリングによってこの幾何学的表現方式の変化プロセスを可視化することを目的としています。技術実装においては、Signed Distance Function に基づくレイマーチング手法をコアレンダリング手段として採用し、プログラム的に定義された複雑なジオメトリへのリアルタイム交差・シェーディングを可能にしました。フラクタル部分は Mandelbulb 構造に基づいて実装されており、3次元球面座標における点の冪乗回転と反復によって豊富な自己相似的細部を持つ三次元フラクタル形状を生成できます。モデルとフラクタルの間のスムーズな遷移を実現するため、プロシージャルモデルの SDF と Mandelbulb の距離場を数学的レベルで合成し、smooth minimum と線形補間を組み合わせた連続的なモーフィングプロセスを構築しました。中間状態は元のモデルの輪郭を保ちながら、徐々にフラクタルの細部を表現します。本プロジェクトは、WebGL・Three.js・プロシージャルジオメトリ技術の複雑な視覚生成とインタラクティブ3Dアート表現への応用可能性を示しています。
