@@ -1323,10 +1323,10 @@
       ]
     },
     "desc": {
-      "en": "Fractal Surface Fusion DCC Tool fuses any 3D model with fractal geometry, renders fractal surfaces of infinite detail in real time in the browser, and uses GPU geometry processing to export high-resolution, watertight meshes ready for production. V2 rebuilds the Blender add-on Fractal Machine in Three.js, with Mandelbulb shell wrapping, a layered material system with subsurface scattering, transmission, clearcoat and iridescence, and Marching Cubes export up to 2048³ as GLB / PLY / STL.",
-      "zh": "《分形表面融合DCC工具》把任意三维模型与分形几何融合，在浏览器中实时渲染无限细节的分形表面，并通过 GPU 几何处理导出可直接用于生产的高精度水密网格。V2 版本用 Three.js 重写了 Blender 插件 Fractal Machine 的核心能力：Mandelbulb 外壳包裹融合、支持次表面散射 / 透射 / 清漆 / 虹彩的分层材质，以及最高 2048³ 的 Marching Cubes 网格导出（GLB / PLY / STL）。",
-      "ja": "『フラクタル表面融合DCCツール』は、任意の 3D モデルをフラクタル幾何と融合し、無限のディテールを持つフラクタル表面をブラウザ上でリアルタイムにレンダリングし、GPU によるジオメトリ処理で制作にそのまま使える高精度な水密メッシュを書き出すツールです。V2 では Blender アドオン Fractal Machine の中核機能を Three.js で再構築し、Mandelbulb シェルラップによる融合、サブサーフェススキャタリング・透過・クリアコート・虹彩を備えたレイヤードマテリアル、最大 2048³ の Marching Cubes メッシュ書き出し（GLB / PLY / STL）を実現しました。",
-      "ko": "『프랙탈 표면 융합 DCC 툴』은 임의의 3D 모델을 프랙탈 기하와 융합하고, 무한한 디테일의 프랙탈 표면을 브라우저에서 실시간으로 렌더링하며, GPU 지오메트리 처리로 바로 제작에 쓸 수 있는 고해상도 워터타이트 메시를 내보내는 툴입니다. V2에서는 Blender 애드온 Fractal Machine의 핵심 기능을 Three.js로 재구성해 Mandelbulb 셸 랩 융합, 서브서피스 스캐터링·투과·클리어코트·무지갯빛을 지원하는 레이어드 머티리얼, 최대 2048³ Marching Cubes 메시 내보내기(GLB / PLY / STL)를 구현했습니다."
+      "en": "Fractal Surface Fusion DCC Tool fuses any 3D model with fractal geometry, renders fractal surfaces of infinite detail in real time in the browser, and uses GPU geometry processing to export high-resolution, watertight meshes ready for production. V2 is built in Three.js with Mandelbulb shell wrapping, a layered material system with subsurface scattering, transmission, clearcoat and iridescence, and Marching Cubes export up to 2048³ as GLB / PLY / STL.",
+      "zh": "《分形表面融合DCC工具》把任意三维模型与分形几何融合，在浏览器中实时渲染无限细节的分形表面，并通过 GPU 几何处理导出可直接用于生产的高精度水密网格。V2 版本基于 Three.js 构建，包含 Mandelbulb 外壳包裹融合、支持次表面散射 / 透射 / 清漆 / 虹彩的分层材质，以及最高 2048³ 的 Marching Cubes 网格导出（GLB / PLY / STL）。",
+      "ja": "『フラクタル表面融合DCCツール』は、任意の 3D モデルをフラクタル幾何と融合し、無限のディテールを持つフラクタル表面をブラウザ上でリアルタイムにレンダリングし、GPU によるジオメトリ処理で制作にそのまま使える高精度な水密メッシュを書き出すツールです。V2 は Three.js で構築し、Mandelbulb シェルラップによる融合、サブサーフェススキャタリング・透過・クリアコート・虹彩を備えたレイヤードマテリアル、最大 2048³ の Marching Cubes メッシュ書き出し（GLB / PLY / STL）を備えています。",
+      "ko": "『프랙탈 표면 융합 DCC 툴』은 임의의 3D 모델을 프랙탈 기하와 융합하고, 무한한 디테일의 프랙탈 표면을 브라우저에서 실시간으로 렌더링하며, GPU 지오메트리 처리로 바로 제작에 쓸 수 있는 고해상도 워터타이트 메시를 내보내는 툴입니다. V2는 Three.js로 구축했으며, Mandelbulb 셸 랩 융합, 서브서피스 스캐터링·투과·클리어코트·무지갯빛을 지원하는 레이어드 머티리얼, 최대 2048³ Marching Cubes 메시 내보내기(GLB / PLY / STL)를 갖추고 있습니다."
     },
     "tags": {
       "en": [

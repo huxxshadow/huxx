@@ -41,22 +41,22 @@ import demoMaterialsPoster from '@/assets/projects/technical-project-raymarching
 
 ## V2 · Fractal Surface Fusion DCC Tool
 
-Fractal Surface Fusion DCC Tool fuses any 3D model with fractal geometry, renders fractal surfaces whose detail keeps unfolding without limit in real time in the browser, and uses GPU geometry processing to export high-resolution, watertight meshes ready for production. This version takes the node networks of the Blender add-on Fractal Machine as reference and rebuilds the fractal fields, fusion modes, material system and mesh export from scratch in Three.js, turning "bake slowly in Blender" into "tweak live in the browser, export in one click".
+Fractal Surface Fusion DCC Tool fuses any 3D model with fractal geometry, renders fractal surfaces whose detail keeps unfolding without limit in real time in the browser, and uses GPU geometry processing to export high-resolution, watertight meshes ready for production. This version builds the fractal fields, fusion modes, material system and mesh export from scratch in Three.js, turning the slow fractal modelling and baking of traditional DCC software into "tweak live in the browser, export in one click".
 
 ### My Role
 
 A solo project: I built everything from the renderer to the tool chain.
 
-- **Fractal fields and fusion**: two fractal fields (a Mandelbulb distance estimator and the Blender density field), GPU baking of the model's signed distance field, and fusion modes including shell wrap, space warp, SDF blending, booleans and surface carving.
+- **Fractal fields and fusion**: two fractal fields (a Mandelbulb distance estimator and a voxel density field), GPU baking of the model's signed distance field, and fusion modes including shell wrap, space warp, SDF blending, booleans and surface carving.
 - **Real-time rendering of infinite detail**: a full-screen ray-marching shader with progressive supersampling when idle, soft shadows, image-based lighting and a studio floor, keeping fractal detail crisp at any zoom.
 - **Geometry processing and export**: brick-wise GPU sampling and Marching Cubes with cross-brick welding turn the implicit fractal surface into a high-resolution watertight mesh, exported as GLB / PLY / STL straight into Blender and other DCC tools.
-- **Materials and tooling**: a recreation of the add-on's fractal shading, extended with subsurface scattering, transmission, clearcoat, thin-film iridescence and emission; scene presets, parameter files, a Chinese / English UI and 4K offline recording.
+- **Materials and tooling**: fractal shading driven by the iteration data, extended with subsurface scattering, transmission, clearcoat, thin-film iridescence and emission; scene presets, parameter files, a Chinese / English UI and 4K offline recording.
 
 ### Fusing Models with Fractals
 
 Fusion comes down to combining two distance fields. An imported model is first baked on the GPU into a 3D signed distance field (closest-point queries via three-mesh-bvh, inside / outside decided by a 7-ray vote), while the fractal is an implicit field defined by an iterated formula.
 
-The default **shell wrap** mode "skins" the model with fractal space: every point near the model is mapped, along the direction from the centre or along the surface normal, onto a shell of the fractal ball, so the fractal pattern grows along the model's silhouette. The morph amount moves continuously from 0 to 1, and the in-between states keep the original form while fractal detail grows over it. Space warp (as in the add-on), smooth SDF blending, intersect / subtract / union and surface carving are also available.
+The default **shell wrap** mode "skins" the model with fractal space: every point near the model is mapped, along the direction from the centre or along the surface normal, onto a shell of the fractal ball, so the fractal pattern grows along the model's silhouette. The morph amount moves continuously from 0 to 1, and the in-between states keep the original form while fractal detail grows over it. Space warp, smooth SDF blending, intersect / subtract / union and surface carving are also available.
 
 <figure>
     <video class="clip" src={morphGrid} poster={morphGridPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Four models morphing from 0 to 1"></video>
@@ -76,7 +76,7 @@ The default **shell wrap** mode "skins" the model with fractal space: every poin
 
 ### Real-time Rendering of Infinite Detail
 
-A fractal surface is not a mesh but a mathematical function that can be evaluated at any scale, so it is rendered directly in a shader: a full-screen quad casts a ray per pixel and steps towards the surface with a distance estimate. The Mandelbulb uses an analytic distance estimator, so detail keeps unfolding as the camera moves closer; the Blender density-field mode is baked into a 3D texture and sampled with tricubic B-spline filtering, keeping the surface smooth and continuous with no voxel blockiness.
+A fractal surface is not a mesh but a mathematical function that can be evaluated at any scale, so it is rendered directly in a shader: a full-screen quad casts a ray per pixel and steps towards the surface with a distance estimate. The Mandelbulb uses an analytic distance estimator, so detail keeps unfolding as the camera moves closer; the voxel density-field mode is baked into a 3D texture and sampled with tricubic B-spline filtering, keeping the surface smooth and continuous with no voxel blockiness.
 
 While the camera is still, the renderer jitters each pixel on a Halton sequence and accumulates frame after frame, also jittering the area light, which gives anti-aliasing and soft shadows; while dragging, resolution drops automatically to stay interactive. Lighting combines a key light, a rim light, image-based reflections and a studio floor.
 
@@ -112,7 +112,7 @@ While the camera is still, the renderer jitters each pixel on a Halton sequence 
 
 ### Materials and Lighting
 
-The material system starts by recreating the add-on's fractal shading: a Color Map computed from orbit information gathered during the fractal iteration, combined with ambient occlusion and bump, distributes a base colour, a metallic accent and a cavity colour across the layers of the surface, producing the add-on's signature gray-and-gold look.
+The material system is built on fractal shading: a Color Map computed from orbit information gathered during the fractal iteration, combined with ambient occlusion and bump, distributes a base colour, a metallic accent and a cavity colour across the layers of the surface, producing an interlaced gray-and-gold look.
 
 On top of that I added several surface layers: subsurface scattering; transmission that marches inside the volume along the refracted ray with Beer-Lambert absorption; clearcoat; thin-film iridescence; and emission along cavities or colour bands. Together they make presets such as jade, iridescent shell, lava cracks, glazed ceramic, black gold, chrome and gold and verdigris, all adjustable in real time.
 
