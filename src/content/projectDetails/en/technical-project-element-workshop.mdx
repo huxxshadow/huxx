@@ -204,3 +204,44 @@ RTX 5090, world 512 × 288, internal height 864, GPU time per frame (in brackets
 | Cave | 1.61 ms (≈&nbsp;621&nbsp;fps) | 1.48 ms (≈&nbsp;676&nbsp;fps) |
 
 GPU frame time dropped by 8–22% across the 9 test scenes, with the image byte-identical to before.
+
+---
+
+## Multiplayer
+
+The web version lets up to 4 players share one world. The first version had the host push the world's changes to everyone else: a busy scene needed 1–3 MB/s of upload, and on a slow connection the delay reached 2.5 seconds. The rework had two goals: traffic that does not grow with how busy the world is, and a way in for every device, from a high-end desktop to a phone without WebGPU, each taking part in the way it can afford.
+
+| Device | How it plays | What travels |
+| --- | --- | --- |
+| Simulates smoothly | Simulates locally (lockstep) | Only the actions, about 1 KB/s |
+| Can't keep up with the simulation | Receives the world's changes | Changed chunks, adapted to the connection |
+| No WebGPU, or struggles even to render | Remote screen | Video, rendered by the device in the room with the most headroom |
+
+### Deterministic lockstep
+
+Every device runs the same simulation on its own GPU, and only the inputs go over the network. That requires different GPUs to compute the same bits, yet floating-point division and square root are not correctly rounded on GPUs, texture filtering precision is up to the hardware, and compilers may fuse multiplies and adds into one instruction. So the web version's heat conduction, fluid grid and wind compute in fixed-point integers, random tests compare integers directly, and explosions are gathered in raster order over a grid rather than in the order atomic writes land. The desktop version is untouched. Replaying the same recording on a discrete GPU (D3D12) and on SwiftShader, a CPU software renderer, every state hash compared matches.
+
+The host records every step it feeds its simulation: each tick's tool commands (random seeds included) and every frame of the rigid bodies. Rigid-body physics reads the world back from the GPU, with a delay that differs between machines, so bodies are computed on the host's CPU only and their results go out as inputs. A joining player first receives a full snapshot of the state (3.4 MB, about 620 KB compressed) and from then on only the actions. Every 60 ticks each device hashes its state and compares with the host; a mismatch asks for a new snapshot. Smoke and the charge of photoluminescent matter only affect the picture and depend on each machine's own lighting, so they are left out of the hash.
+
+| Sync | Host upload (busy scene) |
+| --- | --- |
+| Pushing world changes (old) | 1–3 MB/s |
+| Lockstep | about 1 KB/s |
+
+Even on a 60 KB/s connection, a player is in sync about 10 seconds after pressing Join and stays in sync from then on.
+
+### Receiving the world's changes
+
+A device that can't keep up with the simulation receives the host's world instead and still computes the lighting itself. The host's GPU compares every 16 × 16 chunk with what it last sent, reads back only the chunks that changed, and sends them compressed as the XOR with the previous version. Each update carries a capped number of chunks, those near a cursor first and the rest in rotation; when the channel backs up, a controller first sends fewer chunks per update, then sends updates less often (from 30 to 4 per second). On a 150 KB/s link, the delay from a host stroke to the player seeing it dropped from 2.5 seconds to 34–153 ms.
+
+### Remote screen
+
+For a device without WebGPU, or one that struggles even to render, another device in the room renders its view and sends it over WebRTC as video. Lighting is computed in world space and does not depend on the camera, so an extra view only runs the view stage (2.5D composition, depth of field, bloom, exposure, tone mapping) and reuses that frame's lighting. The video is at most 720 rows at 30 fps and prefers H.264, which phones decode in hardware and with less battery; when the network is tight it drops frames first and keeps the pixels sharp.
+
+The UI, the brush outline and the other players' cursors are drawn locally over the video, so the brush always follows the finger; strokes go to the host as usual. With the two devices connected through a TURN relay, the video holds 30 fps at 1.2–2.4 Mbit/s with a 40–65 ms round trip, and a host stroke appears on the remote screen after about 90–180 ms.
+
+### Adaptive assignment
+
+Every device keeps measuring its own GPU time per frame. A device above 33 ms when it joins starts on a remote screen, and a running device steps down as needed: lockstep more than 240 ticks behind for 2 seconds switches to receiving the world's changes, and a frame rate under 20 for 5 seconds switches to a remote screen.
+
+The host picks the rendering device for each remote screen from the loads the devices report and the views each already renders. When a device with less than 60% of the current load appears, the view moves to it; when the rendering device leaves or can't connect, another takes over, and the host is always the fallback. The rendering device and the remote screen connect directly (the signaling goes through the host), so the video never passes through the host.
