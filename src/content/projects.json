@@ -1365,11 +1365,6 @@
         "name": "Youtube",
         "url": "https://youtu.be/-2TPDxAOyRM",
         "icon": "fa-brands fa-youtube"
-      },
-      {
-        "name": "Report",
-        "url": "https://drive.google.com/file/d/15BpKXsjMecNUbr-YDS4G3HqVUwzFIPnh/view",
-        "icon": "fa-brands fa-google-drive"
       }
     ],
     "colorText": "green",
