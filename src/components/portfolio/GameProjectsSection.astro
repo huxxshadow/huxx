@@ -8,6 +8,7 @@ import type { Lang } from "@/i18n.ts";
 import { useTranslations } from "@/i18n.ts";
 import { gameProjectsLabels } from "@/i18n/components/portfolio/GameProjectsSection_i18.ts";
 import { getRelativeLocaleUrl } from 'astro:i18n';
+import { projectCover } from "@/projectCover";
 
 
 const allProjects = await getCollection("projects");
@@ -117,7 +118,7 @@ function getGridClasses(count: number): string {
                                                             style={`border-color: ${colors.text}; background-color: ${colors.bg};`}
                                                     >
                                                         {project.data.coverImage ? (
-                                                                <Image src={project.data.coverImage} alt={displayTitle} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async" />
+                                                                <Image src={projectCover(project.data, currentLang)!} alt={displayTitle} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async" />
                                                         ) : (
                                                                 <DevCover title={displayTitle} lang={currentLang} colorText={project.data.colorText} colorBackground={project.data.colorBackground} />
                                                         )}

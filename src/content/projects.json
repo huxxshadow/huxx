@@ -1354,7 +1354,10 @@
         "Three.js"
       ]
     },
-    "coverImage": "src/assets/projects/poster/FractalSurfaceDCCToolPoster.webp",
+    "coverImage": "src/assets/projects/poster/FractalSurfaceDCCToolCover_en.webp",
+    "coverImageByLang": {
+      "zh": "src/assets/projects/poster/FractalSurfaceDCCToolCover_zh.webp"
+    },
     "links": [
       {
         "name": "Bilibili",

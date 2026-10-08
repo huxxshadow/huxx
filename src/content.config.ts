@@ -49,6 +49,8 @@ const projects = defineCollection({
         // 个别项目页可以套一套专属皮肤（见 src/components/projects/），留空则用通用模板
         skin: z.string().optional(),
         coverImage: image().optional(),
+        // 封面上带文字时可以按语言换图（键为语言代码），没写的语言用 coverImage；取图统一走 src/projectCover.ts
+        coverImageByLang: z.object({ en: image(), zh: image(), ja: image(), ko: image() }).partial().optional(),
         backupCoverImage: image().optional(),
         // 还在开发、没有正式封面的项目：卡片和页头用按语言渲染的「开发中」占位封面（见 DevCover.astro）
         inDevelopment: z.boolean().optional(),

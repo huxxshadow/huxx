@@ -15,6 +15,7 @@ import WorkCover from "@/components/portfolio/gameDesign/WorkCover.astro";
 import mascot from "@/assets/portfolio/techArt/mascot-brush.svg";
 // 深黄 / 白两色互换的版本，只在底部反色条那一截露出来
 import mascotInverse from "@/assets/portfolio/techArt/mascot-brush-inverse.svg";
+import { projectCover } from "@/projectCover";
 
 const lang = (Astro.currentLocale as Lang) || "en";
 const t = useTranslations(lang);
@@ -32,7 +33,7 @@ const works = techArtWorks.flatMap((w) => {
         side: w.side,
         title: w.title ? t(w.title) : d.title[lang] || d.title.en || d.title.zh || w.projectId,
         tags: t(w.tags).split(/\s*·\s*/).filter(Boolean),
-        cover: d.coverImage || d.backupCoverImage,
+        cover: projectCover(d, lang),
         colorText: "yellow",
         colorBackground: "yellow",
         inDevelopment: !!d.inDevelopment,

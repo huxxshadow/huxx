@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import { useTranslations, type Lang } from "@/i18n";
 import { designPillars, designWorks, type DesignTier } from "@/i18n/components/portfolio/GameDesignShowcase_i18";
+import { projectCover } from "@/projectCover";
 
 // 每层里的展示顺序（同层内按分量排）
 const ORDER = [
@@ -42,7 +43,7 @@ export async function getGameDesignShowcase(lang: Lang) {
                 line: t(work.line),
                 highlights: (work.highlights ?? []).map((h) => t(h)),
                 caption: work.caption ? t(work.caption) : "",
-                cover: d.coverImage || d.backupCoverImage,
+                cover: projectCover(d, lang),
                 inDevelopment: !!d.inDevelopment,
                 colorText: d.colorText,
                 colorBackground: d.colorBackground,

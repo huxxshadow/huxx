@@ -7,6 +7,7 @@ import type { Lang } from "@/i18n.ts";
 import { useTranslations } from "@/i18n.ts";
 import { technicalProjectsLabels } from "@/i18n/components/portfolio/TechnicalProjectsSection_i18.ts";
 import {getRelativeLocaleUrl} from "astro:i18n";
+import { projectCover } from "@/projectCover";
 
 const allProjects = await getCollection("projects");
 // 只筛选 category 为 "technical" 的项目，并按 order 倒序排列
@@ -75,7 +76,7 @@ const defaultTheme = COLORS.blue;
                                         class="relative block w-full aspect-video border-b-2 overflow-hidden"
                                         style={`border-color: ${colors.text}; background-color: ${colors.bg};`}
                                 >
-                                    <Image src={project.data.coverImage} alt={displayTitle} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async" />
+                                    <Image src={projectCover(project.data, currentLang)!} alt={displayTitle} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async" />
                                 </a>
 
                                 {/* Card Content */}

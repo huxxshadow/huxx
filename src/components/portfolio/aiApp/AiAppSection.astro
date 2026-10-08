@@ -12,6 +12,7 @@ import { aiWorks, aiAppLabels as L } from "@/i18n/components/portfolio/AiAppShow
 import WorkCover from "@/components/portfolio/gameDesign/WorkCover.astro";
 import transformer from "@/assets/portfolio/ai/transformer-stack.webp";
 import mascot from "@/assets/portfolio/ai/mascot-sitting.webp";
+import { projectCover } from "@/projectCover";
 
 const lang = (Astro.currentLocale as Lang) || "en";
 const t = useTranslations(lang);
@@ -29,7 +30,7 @@ const works = aiWorks.flatMap((w) => {
         title: w.title ? t(w.title) : d.title[lang] || d.title.en || d.title.zh || w.projectId,
         caption: t(w.caption),
         tags: t(w.tags).split(/\s*·\s*/).filter(Boolean),
-        cover: d.coverImage || d.backupCoverImage,
+        cover: projectCover(d, lang),
         // 没有封面图的项目：用这一页的紫色做标题封面，而且它们都已完成，不显示「开发中」
         colorText: "purple",
         colorBackground: "purple",

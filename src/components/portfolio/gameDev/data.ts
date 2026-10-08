@@ -5,6 +5,7 @@ import { getCollection } from "astro:content";
 import { useTranslations, type Lang } from "@/i18n";
 import { devWorks } from "@/i18n/components/portfolio/GameDevShowcase_i18";
 import { designWorks } from "@/i18n/components/portfolio/GameDesignShowcase_i18";
+import { projectCover } from "@/projectCover";
 
 // 标签按「·」「/」拆开
 const splitTags = (...parts: string[]) => parts.flatMap((x) => x.split(/\s*[·/]\s*/)).filter(Boolean);
@@ -43,7 +44,7 @@ export async function getGameDevShowcase(lang: Lang) {
             line,
             tags,
             systems: work.systems.map((s) => t(s)),
-            cover: d.coverImage || d.backupCoverImage,
+            cover: projectCover(d, lang),
             inDevelopment: !!d.inDevelopment,
             colorText: d.colorText,
             colorBackground: d.colorBackground,
