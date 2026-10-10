@@ -145,7 +145,7 @@ export const devWorks: DevWork[] = [
     },
     {
         projectId: "game-project-floodsong",
-        context: { en: "USC AGP · 50+ people", zh: "USC AGP · 50+ 人", ja: "USC AGP · 50 人以上", ko: "USC AGP · 50명 이상" },
+        context: { en: "USC AGP · 30+ people", zh: "USC AGP · 30+ 人", ja: "USC AGP · 30 人以上", ko: "USC AGP · 30명 이상" },
         role: { en: "Technical Designer (3C)", zh: "技术策划（3C）", ja: "テクニカルデザイナー（3C）", ko: "테크니컬 디자이너(3C)" },
         stack: ["Unity", "C#", "HLSL"],
         line: {
