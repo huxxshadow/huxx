@@ -1,0 +1,128 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import crawlClip from '@/assets/projects/technical-project-pixel-snakes/clips/crawl.mp4?url';
+import crawlClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/crawl-poster.webp?url';
+import ledgesClip from '@/assets/projects/technical-project-pixel-snakes/clips/ledges.mp4?url';
+import ledgesClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/ledges-poster.webp?url';
+import climbClip from '@/assets/projects/technical-project-pixel-snakes/clips/climb.mp4?url';
+import climbClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/climb-poster.webp?url';
+import constrictClip from '@/assets/projects/technical-project-pixel-snakes/clips/constrict.mp4?url';
+import constrictClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/constrict-poster.webp?url';
+import coilStrikeClip from '@/assets/projects/technical-project-pixel-snakes/clips/coil-strike.mp4?url';
+import coilStrikeClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/coil-strike-poster.webp?url';
+import swarmClip from '@/assets/projects/technical-project-pixel-snakes/clips/swarm.mp4?url';
+import swarmClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/swarm-poster.webp?url';
+import swarm2Clip from '@/assets/projects/technical-project-pixel-snakes/clips/swarm2.mp4?url';
+import swarm2ClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/swarm2-poster.webp?url';
+
+<div class="video-embed">
+    <iframe
+            src="https://www.youtube-nocookie.com/embed/U6Pr14AKlcY?rel=0"
+            title="ピクセルスネーク デモ動画"
+            loading="lazy"
+            allowfullscreen
+            allow="fullscreen; picture-in-picture"
+    ></iframe>
+</div>
+
+## 担当した役割
+
+Unity でプロシージャルなヘビのアニメーションシステムをゼロから作った個人プロジェクトで、すべて一人で担当しました。
+
+* **モーションと物理のアーキテクチャ**：「運動学的な意図＋物理ボディ」の二層構成を設計し、XPBD ストランドソルバー、地形に沿う経路生成、這行・登攀・巻き付き・攻撃の各動作を実装。
+* **衝突システム**：エンジンの物理は使わず、地形・段差・丸太・ポール・ソフトボディの獲物を扱う符号付き距離場ワールドを自作。
+* **群れとパフォーマンス**：ヘビの群れのための空間ハッシュと重なり順のルールを実装。ソルバーを Burst 関数に書き直してマルチスレッドで並列化し、80 匹をリアルタイムで同時表示。
+* **レンダリングとツール**：プロシージャルな分節メッシュ、トゥーンシェーディング、エッジ処理付きのピクセルアートパイプライン、再現可能なオフライン録画と、カクつきを検出するツール。
+
+---
+
+## プロジェクト詳細
+
+『ピクセルスネーク』が答えようとしたのは、**プロシージャルなヘビを、キーフレームアニメーションのように思い通りに動かしつつ、本物の重さを感じさせるにはどうすればいいか**という問いです。
+
+よくある「先頭追従」方式は、各節を頭の軌跡に沿って並べるだけなので、制御しやすい反面、重さがありません。純粋な物理駆動はその逆で、リアルでも狙った演技をさせるのが難しい。このプロジェクトでは二つを重ねました。モーション層が「どこへ行きたいか」を決め、物理層が「体がどうついていくか」を決めます。
+
+### 運動学的な意図を追従する物理ボディ
+
+頭はスクリプト経路を正確にたどります。経路は段差や丸太を越えながら地形に沿って自動生成され、うねりも経路そのものに織り込まれています。体の目標姿勢は頭の軌跡に沿って弧長ぴったりに並べられ、それを **XPBD ストランド**が追従します。
+
+* **形状拘束**：各関節の、左右の隣接点の中点からのずれ（離散ラプラシアン）を目標に合わせます。曲率がしっかり保たれ、S 字やとぐろが物理で伸ばされません。
+* **追従拘束**：首から尾へ向かって徐々に柔らかくなる減衰ばね。剛性は固有振動数で指定するため、フレームレートに依存しません。その結果、体はしなり、遅れてついてきて、支えのない所では垂れ下がります。
+* **伸びない体**：節の長さを双方向に反復して保ち、1 フレームを 4 サブステップで解きます。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={crawlClip} poster={crawlClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="地形の這行"></video>
+        <figcaption>地形に適応する這行</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={ledgesClip} poster={ledgesClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="段差の乗り越え"></video>
+        <figcaption>段差越え：縁では体が橋のように渡る</figcaption>
+    </figure>
+</div>
+
+### 衝突：自作の距離場ワールド
+
+障害物はすべて解析的な符号付き距離場（ボックス・球・円柱・カプセル・高さ場）で、同じデータを通常のコードと Burst ソルバーの両方で使います。安定させるための工夫は次の通りです。
+
+* **楕円断面のクリアランス**：床からは半分の高さ、壁からは半分の幅だけ離し、体の長さ方向には幅を持たせません。
+* **複数接触の同時投影**：サブステップごとに、最寄りの形状だけでなく近くのすべての形状に投影します。そうしないと、丸太と床の隙間に挟まった体が二つの面に交互に押されて震えます。
+* **非弾性接触**：解いた後、接触法線方向の離れる速度を制限し、押し出された体が跳ね返らないようにします。
+* **ねじれの制限**：離散平行移動で隣り合う節の純粋なねじれを測り、6° 以内に制限します。
+
+<figure>
+    <video class="clip" src={climbClip} poster={climbClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="ポールの螺旋登攀"></video>
+    <figcaption>ポール登攀：螺旋状の巻き付きとグリップ剛性</figcaption>
+</figure>
+
+### 巻き付きとソフトボディの獲物
+
+獲物は体積を保つ準静的なソフトボディで、表面のばね・全体の体積拘束・形状記憶で構成されています。とぐろが締まると、肉が輪と輪の間から盛り上がります。カクつきを防ぐため、接触は肉を常に入ってきた側へ押し戻し、1 フレームあたりの移動量にも上限を設けています。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={constrictClip} poster={constrictClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="巻き付いて締め付ける"></video>
+        <figcaption>巻き付き：数回に分けて締め付ける</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={coilStrikeClip} poster={coilStrikeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="とぐろからの攻撃"></video>
+        <figcaption>とぐろと攻撃：前半身を S 字に構える</figcaption>
+    </figure>
+</div>
+
+### ヘビの巣：群れとパフォーマンス
+
+ヘビ同士は平面の空間ハッシュで互いの体を探します。誰が上に乗るかは厳密な全順序で決めるため、三匹が互いに乗り上げて無限に積み重なる循環は構造的に起こりません。接触形状はなめらかな山形で、持ち上がりも臨界減衰ばねで移行するので、下に別のヘビが滑り込んでも一瞬で跳ね上がることはありません。
+
+パフォーマンス面では、物理ソルバーは各ヘビ自身の配列を直接扱う Burst コンパイルの純関数です。ワールドは毎フレーム一度だけ読み取り専用のスナップショットを取り、群れはワーカースレッド上でロックなしに並列で進みます。メッシュは Burst ジョブで生成し、色は変わったときだけ転送します。17 匹のシミュレーションは 4.4 ms から 1.2 ms になり、80 匹を同時にリアルタイムで動かせます。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={swarmClip} poster={swarmClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="ヘビの巣"></video>
+        <figcaption>ヘビの巣：群れの衝突と循環しない重なり</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={swarm2Clip} poster={swarm2ClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="80 匹の同時表示"></video>
+        <figcaption>80 匹同時表示：Burst とマルチスレッドの並列シミュレーション</figcaption>
+    </figure>
+</div>
+
+### ピクセルアートレンダリング
+
+カメラは正射影でテクセルグリッドにスナップし、残ったサブテクセル分のずれは拡大後の画像に適用します。そのため静止物はちらつかず、カメラはなめらかに動けます。低解像度のフルスクリーンパスがエッジを描きます。輪郭は深度の二階差分から検出し（斜めに見た床をエッジと誤判定しない）、鋭い凸の稜線には法線の変化からハイライトを加えます。
+
+### 安定性：「たまにピクッとする」をデータにする
+
+仕上げで最も難しかったのは、たまに起きるカクつきでした。全関節の加速度の急変をオフラインで1フレームずつ走査する検出ツールを作り、パイプラインの段階ごとに原因を絞り込みました。その結果、衝突補正が1フレームで一気に効いていたこと、隙間に挟まった体を二つの面が交互に押していたこと、ショット開始時に尾が丸太に引っかかっていたこと、配置の丸め誤差が体に沿って累積していたことなど、一連の実際の原因を突き止めて修正しました。
+
+### 参考文献
+
+* Macklin, Müller, Chentanez — *XPBD: Position-Based Simulation of Compliant Constrained Dynamics*（2016）
+* Macklin et al. — *Small Steps in Physics Simulation*（2019）
+* Müller, Kim, Chentanez — *Fast Simulation of Inextensible Hair and Fur*（2012）
+* Sorkine et al. — *Laplacian Surface Editing*（2004）
+* Bergou et al. — *Discrete Elastic Rods*（2008）
+* Teschner et al. — *Optimized Spatial Hashing for Collision Detection of Deformable Objects*（2003）
+* Hart — *Sphere Tracing*（1996）

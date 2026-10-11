@@ -1,0 +1,128 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import crawlClip from '@/assets/projects/technical-project-pixel-snakes/clips/crawl.mp4?url';
+import crawlClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/crawl-poster.webp?url';
+import ledgesClip from '@/assets/projects/technical-project-pixel-snakes/clips/ledges.mp4?url';
+import ledgesClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/ledges-poster.webp?url';
+import climbClip from '@/assets/projects/technical-project-pixel-snakes/clips/climb.mp4?url';
+import climbClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/climb-poster.webp?url';
+import constrictClip from '@/assets/projects/technical-project-pixel-snakes/clips/constrict.mp4?url';
+import constrictClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/constrict-poster.webp?url';
+import coilStrikeClip from '@/assets/projects/technical-project-pixel-snakes/clips/coil-strike.mp4?url';
+import coilStrikeClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/coil-strike-poster.webp?url';
+import swarmClip from '@/assets/projects/technical-project-pixel-snakes/clips/swarm.mp4?url';
+import swarmClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/swarm-poster.webp?url';
+import swarm2Clip from '@/assets/projects/technical-project-pixel-snakes/clips/swarm2.mp4?url';
+import swarm2ClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/swarm2-poster.webp?url';
+
+<div class="video-embed">
+    <iframe
+            src="https://www.youtube-nocookie.com/embed/U6Pr14AKlcY?rel=0"
+            title="픽셀 스네이크 데모 영상"
+            loading="lazy"
+            allowfullscreen
+            allow="fullscreen; picture-in-picture"
+    ></iframe>
+</div>
+
+## 담당 역할
+
+Unity에서 절차적 뱀 애니메이션 시스템을 처음부터 만든 개인 프로젝트로, 모든 작업을 혼자 담당했습니다.
+
+* **모션과 물리 아키텍처**: '운동학적 의도 + 물리 몸체'의 이중 구조를 설계하고, XPBD 스트랜드 솔버, 지형에 맞춘 경로 생성, 기어가기·등반·휘감기·공격 동작을 구현했습니다.
+* **충돌 시스템**: 엔진 물리를 쓰지 않고 지형, 턱, 통나무, 기둥, 소프트바디 먹잇감을 다루는 부호 거리장 월드를 직접 만들었습니다.
+* **군집과 성능**: 뱀 무리를 위한 공간 해싱과 겹침 순서 규칙을 구현하고, 솔버를 Burst 함수로 다시 작성해 멀티스레드로 병렬화하여 80마리를 실시간으로 동시에 표시합니다.
+* **렌더링과 도구**: 절차적 분절 메시, 툰 셰이딩, 엣지 처리가 들어간 픽셀 아트 파이프라인, 재현 가능한 오프라인 녹화와 끊김 감지 도구를 만들었습니다.
+
+---
+
+## 프로젝트 상세
+
+『픽셀 스네이크』가 답하려 한 질문은 **절차적인 뱀을 키프레임 애니메이션처럼 원하는 대로 움직이게 하면서도, 진짜 무게감을 느끼게 하려면 어떻게 해야 하는가**였습니다.
+
+흔히 쓰는 '선두 추종' 방식은 각 마디를 머리의 궤적을 따라 늘어놓기만 해서, 제어하기는 쉽지만 무게감이 없습니다. 순수한 물리 구동은 그 반대로, 사실적이지만 원하는 연기를 시키기 어렵습니다. 이 프로젝트는 둘을 겹쳤습니다. 모션 층이 '어디로 가고 싶은가'를 정하고, 물리 층이 '몸이 어떻게 따라가는가'를 정합니다.
+
+### 운동학적 의도를 추적하는 물리 몸체
+
+머리는 스크립트 경로를 정확히 따라갑니다. 경로는 턱과 통나무를 넘으며 지형에 맞춰 자동으로 생성되고, 구불거림도 경로 자체에 엮여 있습니다. 몸의 목표 자세는 머리의 궤적을 따라 호 길이에 정확히 맞춰 배치되고, 이를 **XPBD 스트랜드**가 추적합니다.
+
+* **형상 구속**: 각 관절이 양옆 이웃의 중점에서 벗어난 정도(이산 라플라시안)를 목표에 맞춥니다. 곡률이 단단히 유지되어 S자와 똬리가 물리에 의해 펴지지 않습니다.
+* **추적 구속**: 목에서 꼬리로 갈수록 부드러워지는 감쇠 스프링으로, 강성은 고유 진동수로 지정해 프레임 레이트와 무관합니다. 그 결과 몸이 휘청이고, 뒤늦게 따라오며, 받침이 없는 곳에서는 처집니다.
+* **늘어나지 않는 몸**: 마디 길이를 양방향으로 반복해 유지하고, 한 프레임을 4개의 서브스텝으로 풉니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={crawlClip} poster={crawlClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="지형 기어가기"></video>
+        <figcaption>지형에 적응하는 기어가기</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={ledgesClip} poster={ledgesClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="턱 넘기"></video>
+        <figcaption>턱 넘기: 모서리에서 몸이 다리처럼 건너감</figcaption>
+    </figure>
+</div>
+
+### 충돌: 직접 만든 거리장 월드
+
+장애물은 모두 해석적인 부호 거리장(박스, 구, 원기둥, 캡슐, 높이장)이며, 같은 데이터를 일반 코드와 Burst 솔버가 함께 사용합니다. 안정성을 위한 장치는 다음과 같습니다.
+
+* **타원 단면 간격**: 바닥에서는 높이의 절반, 벽에서는 폭의 절반만큼 떨어지고, 몸의 길이 방향으로는 폭을 두지 않습니다.
+* **다중 접촉 동시 투영**: 서브스텝마다 가장 가까운 형상만이 아니라 주변의 모든 형상에 투영합니다. 그렇지 않으면 통나무와 바닥 사이에 낀 몸이 두 면에 번갈아 밀려 떨립니다.
+* **비탄성 접촉**: 푼 뒤 접촉 법선 방향으로 멀어지는 속도를 제한해, 밀려난 몸이 튕기지 않게 합니다.
+* **비틀림 제한**: 이산 평행 이동으로 이웃한 마디 사이의 순수한 비틀림을 측정해 6° 이내로 제한합니다.
+
+<figure>
+    <video class="clip" src={climbClip} poster={climbClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="기둥 나선 등반"></video>
+    <figcaption>기둥 등반: 나선형 휘감기와 그립 강성</figcaption>
+</figure>
+
+### 휘감기와 소프트바디 먹잇감
+
+먹잇감은 부피를 보존하는 준정적 소프트바디로, 표면 스프링, 전체 부피 구속, 형상 기억으로 이루어져 있습니다. 똬리가 조여지면 살이 고리와 고리 사이로 부풀어 오릅니다. 끊김을 막기 위해 접촉은 살을 항상 들어온 쪽으로 밀어내고, 한 프레임당 이동량에도 상한을 두었습니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={constrictClip} poster={constrictClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="휘감아 조이기"></video>
+        <figcaption>휘감아 조이기: 여러 번에 나눠 조임</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={coilStrikeClip} poster={coilStrikeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="똬리 틀고 공격"></video>
+        <figcaption>똬리와 공격: 앞몸을 S자로 들어 올려 자세를 잡음</figcaption>
+    </figure>
+</div>
+
+### 뱀 구덩이: 군집과 성능
+
+뱀들은 평면 공간 해시로 서로의 몸을 찾습니다. 누가 위에 올라탈지는 엄격한 전순서로 정하기 때문에, 세 마리가 서로 타고 넘으며 끝없이 쌓이는 순환이 구조적으로 생기지 않습니다. 접촉 형태는 부드러운 둔덕 모양이고, 들어 올림도 임계 감쇠 스프링으로 전환되므로 다른 뱀이 밑으로 미끄러져 들어와도 한 프레임에 튀어 오르지 않습니다.
+
+성능 면에서 물리 솔버는 각 뱀의 배열을 직접 다루는 Burst 컴파일 순수 함수입니다. 월드는 매 프레임 한 번만 읽기 전용 스냅샷을 만들고, 무리는 워커 스레드에서 락 없이 병렬로 진행됩니다. 메시는 Burst 잡으로 생성하고, 색상은 바뀔 때만 전송합니다. 17마리의 시뮬레이션이 4.4 ms에서 1.2 ms로 줄었고, 80마리를 실시간으로 동시에 움직일 수 있습니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={swarmClip} poster={swarmClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="뱀 구덩이"></video>
+        <figcaption>뱀 구덩이: 군집 충돌과 순환 없는 겹침</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={swarm2Clip} poster={swarm2ClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="80마리 동시 표시"></video>
+        <figcaption>80마리 동시 표시: Burst와 멀티스레드 병렬 시뮬레이션</figcaption>
+    </figure>
+</div>
+
+### 픽셀 아트 렌더링
+
+카메라는 직교 투영이며 텍셀 그리드에 스냅하고, 남은 서브텍셀만큼의 오프셋은 확대된 이미지에 적용합니다. 그래서 정지한 물체는 깜빡이지 않으면서도 카메라는 부드럽게 움직입니다. 저해상도 전체 화면 패스가 엣지를 그립니다. 윤곽선은 깊이의 이계 차분으로 찾고(비스듬히 본 바닥을 엣지로 오인하지 않음), 날카로운 볼록 모서리에는 법선 변화로 하이라이트를 더합니다.
+
+### 안정성: '가끔 움찔하는 것'을 데이터로
+
+마무리에서 가장 어려웠던 것은 가끔 생기는 끊김이었습니다. 모든 관절의 가속도 급변을 오프라인에서 프레임 단위로 훑는 감지 도구를 만들고, 파이프라인 단계별로 원인을 좁혀 나갔습니다. 그 결과 충돌 보정이 한 프레임에 한꺼번에 적용되던 문제, 틈에 낀 몸을 두 면이 번갈아 밀던 문제, 샷 시작 시 꼬리가 통나무에 걸려 있던 문제, 배치 반올림 오차가 몸을 따라 누적되던 문제 등 일련의 실제 원인을 찾아 고쳤습니다.
+
+### 참고 문헌
+
+* Macklin, Müller, Chentanez — *XPBD: Position-Based Simulation of Compliant Constrained Dynamics* (2016)
+* Macklin et al. — *Small Steps in Physics Simulation* (2019)
+* Müller, Kim, Chentanez — *Fast Simulation of Inextensible Hair and Fur* (2012)
+* Sorkine et al. — *Laplacian Surface Editing* (2004)
+* Bergou et al. — *Discrete Elastic Rods* (2008)
+* Teschner et al. — *Optimized Spatial Hashing for Collision Detection of Deformable Objects* (2003)
+* Hart — *Sphere Tracing* (1996)

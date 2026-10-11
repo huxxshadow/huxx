@@ -1,0 +1,128 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import crawlClip from '@/assets/projects/technical-project-pixel-snakes/clips/crawl.mp4?url';
+import crawlClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/crawl-poster.webp?url';
+import ledgesClip from '@/assets/projects/technical-project-pixel-snakes/clips/ledges.mp4?url';
+import ledgesClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/ledges-poster.webp?url';
+import climbClip from '@/assets/projects/technical-project-pixel-snakes/clips/climb.mp4?url';
+import climbClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/climb-poster.webp?url';
+import constrictClip from '@/assets/projects/technical-project-pixel-snakes/clips/constrict.mp4?url';
+import constrictClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/constrict-poster.webp?url';
+import coilStrikeClip from '@/assets/projects/technical-project-pixel-snakes/clips/coil-strike.mp4?url';
+import coilStrikeClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/coil-strike-poster.webp?url';
+import swarmClip from '@/assets/projects/technical-project-pixel-snakes/clips/swarm.mp4?url';
+import swarmClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/swarm-poster.webp?url';
+import swarm2Clip from '@/assets/projects/technical-project-pixel-snakes/clips/swarm2.mp4?url';
+import swarm2ClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/swarm2-poster.webp?url';
+
+<div class="video-embed">
+    <iframe
+            src="https://player.bilibili.com/player.html?bvid=BV1qhpj6iEp1&autoplay=0&danmaku=0&high_quality=1"
+            title="像素蛇演示视频"
+            loading="lazy"
+            allowfullscreen
+            allow="fullscreen; picture-in-picture"
+    ></iframe>
+</div>
+
+## 我的职责
+
+个人项目，在 Unity 里从零搭建一套程序化蛇动画系统，全部由我独立完成：
+
+* **运动与物理架构**：设计"运动学意图 + 物理身体"的双层结构，实现 XPBD 质点链求解器、贴合地形的路线生成，以及爬行、攀柱、缠绕、出击等动作。
+* **碰撞系统**：不依赖引擎物理，自研基于有向距离场的碰撞世界，覆盖地形、台阶、圆木、柱子与软体猎物。
+* **群体与性能**：实现蛇群的空间哈希与层叠规则，把求解器改写成 Burst 函数并多线程并行，让 80 条蛇同屏实时运行。
+* **渲染与工具**：程序化分节网格、卡通着色、像素风管线与边缘后处理，以及可复现的离线录制和抽搐检测工具。
+
+---
+
+## 项目细节
+
+《像素蛇》想回答一个问题：**怎样让程序化的蛇既像关键帧动画一样可控，又有真实的重量感？**
+
+常见的"跟随领头"做法让每一节身体沿头部轨迹排开，好控制但很轻飘；纯物理驱动则相反，真实却很难演出指定动作。这个项目把两者叠在一起：动作层决定"蛇想去哪"，物理层决定"身体怎么跟上"。
+
+### 运动学意图驱动的物理身体
+
+头部沿脚本路线精确行进，路线会自动贴合地形，翻台阶、跨圆木，蜿蜒直接编进路线里。身体的目标姿态沿头部轨迹按弧长精确排布，再交给一条 **XPBD 质点链**去追踪：
+
+* **形状约束**：每个关节相对左右邻居的偏移（离散拉普拉斯）去匹配目标，曲率被刚性保持，S 形与盘圈不会被物理拉直。
+* **追踪约束**：一组从颈部到尾部逐渐变软的阻尼弹簧，刚度用自然频率参数化，与帧率无关。于是身体会甩尾、跟随、在悬空处下垂。
+* **不可伸长**：段长约束双向迭代，每帧四个子步。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={crawlClip} poster={crawlClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="地形爬行"></video>
+        <figcaption>地形自适应爬行</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={ledgesClip} poster={ledgesClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="台阶翻越"></video>
+        <figcaption>台阶翻越：身体在边缘处桥接而过</figcaption>
+    </figure>
+</div>
+
+### 碰撞：自研距离场世界
+
+场景里的障碍都是解析的有向距离场（盒、球、圆柱、胶囊与高度场），同一份数据同时给普通代码和 Burst 求解器使用。几个让它"稳"下来的细节：
+
+* **椭圆截面的间隙**：身体贴地按半高、贴墙按半宽计算，沿身体方向不计宽度。
+* **多接触同时投影**：每个子步对所有相邻形状都做投影，不只看最近的一个，否则夹在圆木与地面之间的身体会被两面轮流推、来回抖。
+* **非弹性接触**：求解后限制沿接触法线的分离速度，被推出的身体不会反弹。
+* **扭转限制**：用离散平行传输测出相邻节之间的纯扭转，并限制在 6° 以内。
+
+<figure>
+    <video class="clip" src={climbClip} poster={climbClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="螺旋攀柱"></video>
+    <figcaption>螺旋攀柱：缠绕路径与抓握刚度</figcaption>
+</figure>
+
+### 缠绕与软体猎物
+
+猎物是一个保体积的准静态软体：表面弹簧、全局体积约束和形状记忆。线圈收紧时，肉会从圈与圈之间鼓出来。为了不"抽一下"，接触总是把肉推回它进入前所在的一侧，每帧位移也设了上限。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={constrictClip} poster={constrictClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="缠绕勒紧"></video>
+        <figcaption>缠绕勒紧：分几次收紧</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={coilStrikeClip} poster={coilStrikeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="盘蛇出击"></video>
+        <figcaption>盘蛇出击：前身抬成 S 形蓄势</figcaption>
+    </figure>
+</div>
+
+### 蛇窟：群体与性能
+
+多条蛇之间用平面空间哈希查询邻近身体。谁压在谁上面由一个严格的全序决定，从结构上排除三条蛇互相无限往上叠的循环。接触形状是平滑的鼓包，抬升也用临界阻尼弹簧过渡，别的蛇滑到身下时不会一帧弹起。
+
+性能上，物理求解器是 Burst 编译的纯函数，直接操作每条蛇自己的数组。世界状态每帧做一次只读快照，蛇群在工作线程上无锁并行步进；网格也由 Burst 作业生成，颜色只在改动时上传。17 条蛇的模拟从 4.4 ms 降到 1.2 ms，80 条蛇可以同屏实时运行。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={swarmClip} poster={swarmClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="蛇窟"></video>
+        <figcaption>蛇窟：群体碰撞与无环层叠</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={swarm2Clip} poster={swarm2ClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="80 条蛇同屏"></video>
+        <figcaption>80 条同屏：Burst 与多线程并行模拟</figcaption>
+    </figure>
+</div>
+
+### 像素渲染
+
+相机是正交投影并吸附到像素网格，剩下的亚像素偏移加在放大后的画面上，所以静物不闪、镜头仍能平滑移动。一个低分辨率的全屏后处理负责描边：用深度的二阶差分找轮廓（斜看的地面不会被误判成边），用法线变化给锐利的棱角加高光。
+
+### 稳定性：把"偶尔抽一下"变成数据
+
+调到最后，最难的是那种偶尔出现的抽动。我写了一个检测工具，离线逐帧扫描每个关节的加速度突变，再按管线阶段逐一排查。用它定位并修掉了一系列真实原因，比如碰撞修正在一帧内生效、夹缝里两个面轮流推、尾巴初始姿态卡在圆木上、定位精度的锯齿沿身体累积等。
+
+### 参考
+
+* Macklin, Müller, Chentanez — *XPBD: Position-Based Simulation of Compliant Constrained Dynamics*（2016）
+* Macklin et al. — *Small Steps in Physics Simulation*（2019）
+* Müller, Kim, Chentanez — *Fast Simulation of Inextensible Hair and Fur*（2012）
+* Sorkine et al. — *Laplacian Surface Editing*（2004）
+* Bergou et al. — *Discrete Elastic Rods*（2008）
+* Teschner et al. — *Optimized Spatial Hashing for Collision Detection of Deformable Objects*（2003）
+* Hart — *Sphere Tracing*（1996）

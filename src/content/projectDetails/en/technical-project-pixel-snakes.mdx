@@ -1,0 +1,128 @@
+---
+---
+
+import { Image } from 'astro:assets';
+import crawlClip from '@/assets/projects/technical-project-pixel-snakes/clips/crawl.mp4?url';
+import crawlClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/crawl-poster.webp?url';
+import ledgesClip from '@/assets/projects/technical-project-pixel-snakes/clips/ledges.mp4?url';
+import ledgesClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/ledges-poster.webp?url';
+import climbClip from '@/assets/projects/technical-project-pixel-snakes/clips/climb.mp4?url';
+import climbClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/climb-poster.webp?url';
+import constrictClip from '@/assets/projects/technical-project-pixel-snakes/clips/constrict.mp4?url';
+import constrictClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/constrict-poster.webp?url';
+import coilStrikeClip from '@/assets/projects/technical-project-pixel-snakes/clips/coil-strike.mp4?url';
+import coilStrikeClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/coil-strike-poster.webp?url';
+import swarmClip from '@/assets/projects/technical-project-pixel-snakes/clips/swarm.mp4?url';
+import swarmClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/swarm-poster.webp?url';
+import swarm2Clip from '@/assets/projects/technical-project-pixel-snakes/clips/swarm2.mp4?url';
+import swarm2ClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/swarm2-poster.webp?url';
+
+<div class="video-embed">
+    <iframe
+            src="https://www.youtube-nocookie.com/embed/U6Pr14AKlcY?rel=0"
+            title="Pixel Snakes video"
+            loading="lazy"
+            allowfullscreen
+            allow="fullscreen; picture-in-picture"
+    ></iframe>
+</div>
+
+## My Role
+
+A solo project: a procedural snake animation system built from scratch in Unity.
+
+* **Motion and physics architecture**: a two-layer design of kinematic intent plus a physical body, with an XPBD strand solver, terrain-draped path generation, and crawling, climbing, constricting and striking.
+* **Collision**: no engine physics. A custom signed-distance-field world covers terrain, ledges, logs, poles and the soft-body prey.
+* **Crowds and performance**: spatial hashing and stacking rules for snake crowds, with the solver rewritten as a Burst function and stepped in parallel across threads, so 80 snakes run in real time.
+* **Rendering and tools**: a procedural segmented mesh, cel shading, a pixel-art pipeline with an edge pass, a reproducible offline recorder and a twitch-detection tool.
+
+---
+
+## Project Details
+
+Pixel Snakes set out to answer one question: **how do you make a procedural snake as controllable as keyframed animation, yet still feel genuinely heavy?**
+
+The usual "follow the leader" approach lays every segment along the head's trail. It is easy to control but weightless. Pure physics is the opposite: believable, but hard to direct. This project stacks the two. The motion layer decides where the snake wants to go, and the physics layer decides how the body follows.
+
+### A Physical Body Tracking Kinematic Intent
+
+The head follows a scripted path exactly. Paths drape themselves over the terrain, over ledges and logs, and the undulation is woven into the path itself. The body's target pose is laid along the head's trail at exact arc lengths, then tracked by an **XPBD strand**:
+
+* **Shape constraint**: each joint's offset from the midpoint of its neighbours (the discrete Laplacian) matches the target's, so curvature is held stiffly and S-curves and coils are never pulled straight.
+* **Tracking constraint**: damped springs that soften from neck to tail, parameterised by natural frequency so stiffness is independent of frame rate. The body swings, follows through, and sags where it is unsupported.
+* **Inextensibility**: segment lengths are enforced in both directions, with four substeps per frame.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={crawlClip} poster={crawlClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Crawling over terrain"></video>
+        <figcaption>Terrain-adaptive crawl</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={ledgesClip} poster={ledgesClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Ledge traversal"></video>
+        <figcaption>Ledge traversal: the body bridges over each lip</figcaption>
+    </figure>
+</div>
+
+### Collision: A Custom Distance-Field World
+
+Every obstacle is an analytic signed distance field (box, sphere, cylinder, capsule and height field), and the same data serves both regular code and the Burst solver. A few details keep it stable:
+
+* **Elliptical clearance**: the body keeps its half height from floors and its half width from walls, with no width along its own length.
+* **Simultaneous multi-contact**: every substep projects against every nearby shape, not just the nearest. Otherwise a body wedged where a log meets the floor gets pushed back and forth between the two.
+* **Inelastic contacts**: after the solve, the separating velocity along each contact normal is clamped, so a body pushed out of a surface never bounces.
+* **Twist limit**: discrete parallel transport measures the pure twist between neighbouring segments and caps it at 6°.
+
+<figure>
+    <video class="clip" src={climbClip} poster={climbClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Climbing a pole"></video>
+    <figcaption>Pole climbing: a helical wrap with grip stiffness</figcaption>
+</figure>
+
+### Constriction and Soft-Body Prey
+
+The prey is a quasi-static, volume-preserving soft body: surface springs, a global volume constraint and shape memory. As the coils tighten, the flesh bulges out between them. To avoid sudden pops, contacts always push flesh back out on the side it came from, and each point's movement per frame is capped.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={constrictClip} poster={constrictClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Constriction"></video>
+        <figcaption>Constriction, tightening in steps</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={coilStrikeClip} poster={coilStrikeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Coil and strike"></video>
+        <figcaption>Coil & strike: the front body raised into a cocked S</figcaption>
+    </figure>
+</div>
+
+### The Snake Pit: Crowds and Performance
+
+Snakes find each other's bodies through a planar spatial hash. A strict total order decides who rides over whom, which rules out three snakes climbing over one another forever. The contact shape is a smooth bump and the lift eases in with a critically damped spring, so a body never jumps up the moment another slides underneath.
+
+For performance, the physics solver is a Burst-compiled pure function working directly on each snake's own arrays. The world is snapshotted read-only once per frame, and the crowd steps lock-free in parallel on worker threads. Meshes are built by Burst jobs, and colours are uploaded only when they change. Stepping 17 snakes went from 4.4 ms to 1.2 ms, and 80 snakes run on screen in real time.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={swarmClip} poster={swarmClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Snake pit"></video>
+        <figcaption>Snake pit: crowd collision with acyclic stacking</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={swarm2Clip} poster={swarm2ClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="80 snakes on screen"></video>
+        <figcaption>80 snakes on screen: Burst and multithreaded simulation</figcaption>
+    </figure>
+</div>
+
+### Pixel-Art Rendering
+
+The camera is orthographic and snapped to the texel grid, with the leftover sub-texel offset applied to the upscaled image, so static geometry never shimmers while the camera still glides. A low-resolution full-screen pass draws the edges: silhouettes come from the second difference of depth (so a floor seen at a grazing angle is not mistaken for an edge), and sharp convex creases get a highlight from the change in normals.
+
+### Stability: Turning "Occasional Twitches" into Data
+
+The hardest part to polish was the occasional twitch. I wrote a detector that scans every joint offline, frame by frame, for sudden spikes in acceleration, then narrowed each one down stage by stage through the pipeline. It found a series of real causes: collision corrections that kicked in within a single frame, two surfaces taking turns pushing a body wedged between them, a tail laid down against a log at the start of a shot, and placement rounding that compounded along the body.
+
+### References
+
+* Macklin, Müller, Chentanez — *XPBD: Position-Based Simulation of Compliant Constrained Dynamics* (2016)
+* Macklin et al. — *Small Steps in Physics Simulation* (2019)
+* Müller, Kim, Chentanez — *Fast Simulation of Inextensible Hair and Fur* (2012)
+* Sorkine et al. — *Laplacian Surface Editing* (2004)
+* Bergou et al. — *Discrete Elastic Rods* (2008)
+* Teschner et al. — *Optimized Spatial Hashing for Collision Detection of Deformable Objects* (2003)
+* Hart — *Sphere Tracing* (1996)
