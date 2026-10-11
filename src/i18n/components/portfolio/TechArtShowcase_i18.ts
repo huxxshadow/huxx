@@ -27,6 +27,17 @@ export const techArtWorks: TechArtWork[] = [
         tags: { en: "GLSL · Physics Simulation", zh: "GLSL · 物理模拟", ja: "GLSL · 物理シミュレーション", ko: "GLSL · 물리 시뮬레이션" },
     },
     {
+        projectId: "technical-project-pixel-snakes",
+        side: "tech",
+        caption: {
+            en: "Procedural snakes in Unity: an XPBD physics body tracking scripted motion, SDF collision, soft-body constriction, 80 on screen.",
+            zh: "Unity 程序化蛇：XPBD 物理身体追踪脚本动作，距离场碰撞、软体缠绕，80 条同屏。",
+            ja: "Unity のプロシージャルなヘビ：スクリプトの動きを追う XPBD 物理ボディ、距離場衝突、ソフトボディへの巻き付き、80 匹同時表示。",
+            ko: "Unity 절차적 뱀: 스크립트 동작을 추적하는 XPBD 물리 몸체, 거리장 충돌, 소프트바디 휘감기, 80마리 동시 표시.",
+        },
+        tags: { en: "Unity · Procedural Animation", zh: "Unity · 程序化动画", ja: "Unity · プロシージャルアニメーション", ko: "Unity · 절차적 애니메이션" },
+    },
+    {
         projectId: "technical-project-windy-grass",
         side: "tech",
         caption: {
@@ -70,19 +81,6 @@ export const techArtWorks: TechArtWork[] = [
             ko: "3D 모델과 프랙탈 기하를 융합해 무한한 디테일을 브라우저에서 실시간 렌더링하고, 고해상도 워터타이트 메시로 내보냅니다.",
         },
         tags: { en: "Three.js · Geometry Processing", zh: "Three.js · 几何处理", ja: "Three.js · ジオメトリ処理", ko: "Three.js · 지오메트리 처리" },
-    },
-    {
-        projectId: "technical-project-comfyui-ai-eco-film",
-        side: "tech",
-        // 标题、说明和 Part 4 一致
-        title: { en: "ComfyUI AI Video Workflow", zh: "ComfyUI AI视频工作流", ja: "ComfyUI AI 動画ワークフロー", ko: "ComfyUI AI 영상 워크플로" },
-        caption: {
-            en: "Storyboard generation, first-and-last-frame video synthesis, upscaling, frame interpolation and AI voice.",
-            zh: "分镜生成、首尾帧视频合成、超分、插帧与 AI 配音。",
-            ja: "絵コンテ生成、始点・終点フレームからの動画合成、超解像、フレーム補間、AI 音声。",
-            ko: "콘티 생성, 첫·끝 프레임 영상 합성, 업스케일, 프레임 보간, AI 음성.",
-        },
-        tags: { en: "ComfyUI · WAN2.2", zh: "ComfyUI · WAN2.2", ja: "ComfyUI · WAN2.2", ko: "ComfyUI · WAN2.2" },
     },
 
     // ---------- 美术（01 Arcane Samurai、02 横版格斗特写、03 分形骷髅、04 失落领域、05 鳗、06 岛屿影视化）----------
