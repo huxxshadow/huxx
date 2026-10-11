@@ -2551,10 +2551,10 @@
     "order": 38,
     "category": "technical",
     "title": {
-      "en": "Pixel Snakes",
-      "zh": "像素蛇",
-      "ja": "ピクセルスネーク",
-      "ko": "픽셀 스네이크"
+      "en": "Procedural Animation | Snake",
+      "zh": "程序化动画 | 蛇",
+      "ja": "プロシージャルアニメーション | ヘビ",
+      "ko": "절차적 애니메이션 | 뱀"
     },
     "roles": {
       "en": [
