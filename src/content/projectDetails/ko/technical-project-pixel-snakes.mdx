@@ -10,8 +10,6 @@ import climbClip from '@/assets/projects/technical-project-pixel-snakes/clips/cl
 import climbClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/climb-poster.webp?url';
 import constrictClip from '@/assets/projects/technical-project-pixel-snakes/clips/constrict.mp4?url';
 import constrictClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/constrict-poster.webp?url';
-import coilStrikeClip from '@/assets/projects/technical-project-pixel-snakes/clips/coil-strike.mp4?url';
-import coilStrikeClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/coil-strike-poster.webp?url';
 import swarmClip from '@/assets/projects/technical-project-pixel-snakes/clips/swarm.mp4?url';
 import swarmClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/swarm-poster.webp?url';
 import swarm2Clip from '@/assets/projects/technical-project-pixel-snakes/clips/swarm2.mp4?url';
@@ -81,16 +79,10 @@ Unity에서 절차적 뱀 애니메이션 시스템을 처음부터 만든 개�
 
 먹잇감은 부피를 보존하는 준정적 소프트바디로, 표면 스프링, 전체 부피 구속, 형상 기억으로 이루어져 있습니다. 똬리가 조여지면 살이 고리와 고리 사이로 부풀어 오릅니다. 끊김을 막기 위해 접촉은 살을 항상 들어온 쪽으로 밀어내고, 한 프레임당 이동량에도 상한을 두었습니다.
 
-<div class="image-grid-2">
-    <figure>
-        <video class="clip" src={constrictClip} poster={constrictClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="휘감아 조이기"></video>
-        <figcaption>휘감아 조이기: 여러 번에 나눠 조임</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={coilStrikeClip} poster={coilStrikeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="똬리 틀고 공격"></video>
-        <figcaption>똬리와 공격: 앞몸을 S자로 들어 올려 자세를 잡음</figcaption>
-    </figure>
-</div>
+<figure>
+    <video class="clip" src={constrictClip} poster={constrictClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="휘감아 조이기"></video>
+    <figcaption>휘감아 조이기: 여러 번에 나눠 조임</figcaption>
+</figure>
 
 ### 뱀 구덩이: 군집과 성능
 

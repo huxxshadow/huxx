@@ -10,8 +10,6 @@ import climbClip from '@/assets/projects/technical-project-pixel-snakes/clips/cl
 import climbClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/climb-poster.webp?url';
 import constrictClip from '@/assets/projects/technical-project-pixel-snakes/clips/constrict.mp4?url';
 import constrictClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/constrict-poster.webp?url';
-import coilStrikeClip from '@/assets/projects/technical-project-pixel-snakes/clips/coil-strike.mp4?url';
-import coilStrikeClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/coil-strike-poster.webp?url';
 import swarmClip from '@/assets/projects/technical-project-pixel-snakes/clips/swarm.mp4?url';
 import swarmClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/swarm-poster.webp?url';
 import swarm2Clip from '@/assets/projects/technical-project-pixel-snakes/clips/swarm2.mp4?url';
@@ -81,16 +79,10 @@ Every obstacle is an analytic signed distance field (box, sphere, cylinder, caps
 
 The prey is a quasi-static, volume-preserving soft body: surface springs, a global volume constraint and shape memory. As the coils tighten, the flesh bulges out between them. To avoid sudden pops, contacts always push flesh back out on the side it came from, and each point's movement per frame is capped.
 
-<div class="image-grid-2">
-    <figure>
-        <video class="clip" src={constrictClip} poster={constrictClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Constriction"></video>
-        <figcaption>Constriction, tightening in steps</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={coilStrikeClip} poster={coilStrikeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Coil and strike"></video>
-        <figcaption>Coil & strike: the front body raised into a cocked S</figcaption>
-    </figure>
-</div>
+<figure>
+    <video class="clip" src={constrictClip} poster={constrictClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Constriction"></video>
+    <figcaption>Constriction, tightening in steps</figcaption>
+</figure>
 
 ### The Snake Pit: Crowds and Performance
 

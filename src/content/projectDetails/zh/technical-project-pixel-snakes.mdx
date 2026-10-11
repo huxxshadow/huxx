@@ -10,8 +10,6 @@ import climbClip from '@/assets/projects/technical-project-pixel-snakes/clips/cl
 import climbClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/climb-poster.webp?url';
 import constrictClip from '@/assets/projects/technical-project-pixel-snakes/clips/constrict.mp4?url';
 import constrictClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/constrict-poster.webp?url';
-import coilStrikeClip from '@/assets/projects/technical-project-pixel-snakes/clips/coil-strike.mp4?url';
-import coilStrikeClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/coil-strike-poster.webp?url';
 import swarmClip from '@/assets/projects/technical-project-pixel-snakes/clips/swarm.mp4?url';
 import swarmClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/swarm-poster.webp?url';
 import swarm2Clip from '@/assets/projects/technical-project-pixel-snakes/clips/swarm2.mp4?url';
@@ -81,16 +79,10 @@ import swarm2ClipPoster from '@/assets/projects/technical-project-pixel-snakes/c
 
 猎物是一个保体积的准静态软体：表面弹簧、全局体积约束和形状记忆。线圈收紧时，肉会从圈与圈之间鼓出来。为了不"抽一下"，接触总是把肉推回它进入前所在的一侧，每帧位移也设了上限。
 
-<div class="image-grid-2">
-    <figure>
-        <video class="clip" src={constrictClip} poster={constrictClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="缠绕勒紧"></video>
-        <figcaption>缠绕勒紧：分几次收紧</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={coilStrikeClip} poster={coilStrikeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="盘蛇出击"></video>
-        <figcaption>盘蛇出击：前身抬成 S 形蓄势</figcaption>
-    </figure>
-</div>
+<figure>
+    <video class="clip" src={constrictClip} poster={constrictClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="缠绕勒紧"></video>
+    <figcaption>缠绕勒紧：分几次收紧</figcaption>
+</figure>
 
 ### 蛇窟：群体与性能
 
