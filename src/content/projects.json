@@ -2584,30 +2584,26 @@
       "en": [
         "Unity",
         "Procedural Animation",
-        "XPBD",
-        "Burst / Multithreading",
-        "Pixel Art Rendering"
+        "Physics Simulation",
+        "Kinematics"
       ],
       "zh": [
         "Unity",
         "程序化动画",
-        "XPBD 物理",
-        "Burst / 多线程",
-        "像素渲染"
+        "物理模拟",
+        "运动学"
       ],
       "ja": [
         "Unity",
         "プロシージャルアニメーション",
-        "XPBD",
-        "Burst / マルチスレッド",
-        "ピクセルアートレンダリング"
+        "物理シミュレーション",
+        "運動学"
       ],
       "ko": [
         "Unity",
         "절차적 애니메이션",
-        "XPBD",
-        "Burst / 멀티스레딩",
-        "픽셀 아트 렌더링"
+        "물리 시뮬레이션",
+        "운동학"
       ]
     },
     "coverImage": "src/assets/projects/poster/PixelSnakesPoster.webp",
