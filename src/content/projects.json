@@ -2575,10 +2575,10 @@
       ]
     },
     "desc": {
-      "en": "A procedural snake animation system built in Unity. Motion is authored as kinematic intent (scripted paths draped over terrain), and the body is an XPBD physics strand that tracks it: exact control at the head, weight and follow-through along the body. It crawls over rough ground and ledges, climbs poles, constricts a volume-preserving soft-body prey, coils and strikes, and fills a snake pit with 80 snakes that ride over one another, with collision against a custom signed-distance-field world, Burst-compiled solvers and multithreaded crowd stepping, presented through a pixel-art rendering pipeline.",
-      "zh": "一个在 Unity 里实现的程序化蛇动画系统。动作以运动学意图来编排（贴合地形的脚本路线），身体则是一条追踪这份意图的 XPBD 物理质点链：头部控制精确，身体有重量与惯性。蛇可以在起伏地形上爬行、翻越台阶、螺旋攀柱、缠绕并勒紧保体积的软体猎物、盘起出击，还能让 80 条蛇在蛇窟里互相翻越堆叠。碰撞基于自研的有向距离场世界，求解器由 Burst 编译、群体模拟多线程并行，最终通过像素风渲染管线呈现。",
-      "ja": "Unity で実装したプロシージャルなヘビのアニメーションシステムです。動きは運動学的な意図（地形に沿わせたスクリプト経路）として組み立て、体はその意図を追従する XPBD の物理ストランドとして動きます。頭は正確に制御しつつ、胴体には重さと慣性が残ります。起伏のある地形の這行、段差の乗り越え、ポールの螺旋登攀、体積を保つソフトボディの獲物への巻き付きと締め付け、とぐろからの攻撃、そして 80 匹が互いに乗り越え重なり合うヘビの巣まで。衝突は自作の符号付き距離場ワールドで処理し、ソルバーは Burst でコンパイル、群れのシミュレーションはマルチスレッドで並列化し、ピクセルアートのレンダリングパイプラインで表現しています。",
-      "ko": "Unity로 구현한 절차적 뱀 애니메이션 시스템입니다. 동작은 운동학적 의도(지형에 맞춘 스크립트 경로)로 연출하고, 몸은 그 의도를 추적하는 XPBD 물리 스트랜드로 움직입니다. 머리는 정확하게 제어되면서도 몸통에는 무게감과 관성이 남습니다. 울퉁불퉁한 지형 기어가기, 턱 넘기, 기둥 나선 등반, 부피를 보존하는 소프트바디 먹잇감 휘감아 조이기, 똬리 틀고 공격하기, 그리고 80마리가 서로 타고 넘으며 쌓이는 뱀 구덩이까지 구현했습니다. 충돌은 직접 만든 부호 거리장 월드로 처리하고, 솔버는 Burst로 컴파일하며 군집 시뮬레이션은 멀티스레드로 병렬화했고, 픽셀 아트 렌더링 파이프라인으로 표현했습니다."
+      "en": "Procedural animated snakes in Unity. Scripted motion drives an XPBD physics body, so the head stays precisely controlled while the body carries weight and follow-through. On top of custom SDF collision, the snakes crawl over terrain and ledges, climb poles, constrict volume-preserving soft-body prey and strike, and 80 of them pile up on screen at once thanks to Burst-compiled solvers and multithreading, all rendered through a pixel-art pipeline.",
+      "zh": "在 Unity 里实现的程序化蛇动画。脚本化的运动意图驱动一条 XPBD 物理身体：头部控制精确，身体保留重量与惯性。基于自研的距离场碰撞，蛇可以爬过地形与台阶、螺旋攀柱、缠绕并勒紧保体积的软体猎物、盘起出击；借助 Burst 编译的求解器与多线程，80 条蛇可以同屏互相翻越堆叠，最终通过像素风管线呈现。",
+      "ja": "Unity で作ったプロシージャルなヘビのアニメーション。スクリプト化された動きが XPBD の物理ボディを駆動し、頭は正確に制御しつつ、胴体には重さと慣性が残ります。自作の距離場衝突の上で、ヘビは地形や段差を這い、ポールを登り、体積を保つソフトボディの獲物に巻き付いて締め上げ、とぐろから攻撃します。Burst でコンパイルしたソルバーとマルチスレッドにより、80 匹が同時に画面上で重なり合い、すべてピクセルアートのパイプラインで描画されます。",
+      "ko": "Unity로 만든 절차적 뱀 애니메이션. 스크립트로 짠 동작이 XPBD 물리 몸체를 구동해, 머리는 정확하게 제어되면서도 몸통에는 무게감과 관성이 남습니다. 직접 만든 거리장 충돌 위에서 뱀은 지형과 턱을 기어오르고, 기둥을 오르며, 부피를 보존하는 소프트바디 먹잇감을 휘감아 조이고, 똬리를 틀어 공격합니다. Burst로 컴파일한 솔버와 멀티스레딩 덕분에 80마리가 한 화면에서 동시에 겹쳐 쌓이며, 모두 픽셀 아트 파이프라인으로 렌더링됩니다."
     },
     "tags": {
       "en": [
