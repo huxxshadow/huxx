@@ -1,0 +1,126 @@
+---
+---
+
+import stepsClip from '@/assets/projects/technical-project-procedural-spider/clips/steps-rubble.mp4?url';
+import stepsClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/steps-rubble-poster.webp?url';
+import pillarClip from '@/assets/projects/technical-project-procedural-spider/clips/pillar.mp4?url';
+import pillarClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/pillar-poster.webp?url';
+import wallClip from '@/assets/projects/technical-project-procedural-spider/clips/wall-ceiling.mp4?url';
+import wallClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/wall-ceiling-poster.webp?url';
+import lineClip from '@/assets/projects/technical-project-procedural-spider/clips/bridge-line.mp4?url';
+import lineClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/bridge-line-poster.webp?url';
+import crossClip from '@/assets/projects/technical-project-procedural-spider/clips/bridge-cross.mp4?url';
+import crossClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/bridge-cross-poster.webp?url';
+import webClip from '@/assets/projects/technical-project-procedural-spider/clips/web-walk.mp4?url';
+import webClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/web-walk-poster.webp?url';
+import reinforceClip from '@/assets/projects/technical-project-procedural-spider/clips/bridge-reinforce.mp4?url';
+import reinforceClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/bridge-reinforce-poster.webp?url';
+
+## 担当した役割
+
+Unity でプロシージャルなクモとその糸をゼロから作った個人プロジェクトです。
+
+* **多脚の移動システム**：4 節の脚の解析的 IK、検証付きの足場探索、地面での 4 脚交互の歩容と糸の上での波状の歩容を実装し、床・壁・天井をどの向きでも歩けるようにしました。
+* **衝突**：自作の符号付き距離場ワールドの上で、脚とシーン、脚と自分の体、体とシーンの衝突を扱い、すべて位置の射影で解決しています。
+* **糸の物理**：Burst でコンパイルした XPBD ソルバー、突風の風場、クモの体と糸の連成、そして「物理の背骨 1 本を何本もの描画用の糸として見せる」見た目のシステム。
+* **デバッグツール**：ショットを決定的にリプレイし、毎フレーム計測してイベントシートを自動生成する SimScope を自作しました。
+
+---
+
+## プロジェクト詳細
+
+このプロジェクトの最初のきっかけは、**8 本脚のクモを、プロシージャルアニメーションだけで、どんな面の上でも、自分で出した糸の上でさえ、本物のように歩かせられるか**という問いでした。
+
+クモの体は運動学的に動きます。面に沿ったルートをたどり、脚はどこに着くか、いつ上げるか、どう曲げるかをアルゴリズムが決めます。本当に物理シミュレーションしているのは糸だけです。難しいのは両者の境目で、脚は揺れて沈む糸をつかみ、糸はクモの体に押しのけられます。
+
+### 8 本の脚：IK、足場、歩容
+
+脚は 4 節です。基節は足の方向へ向き、跗節は足にどちらから降りるかをルールで選び、その間の腿節と脛節を解析的な 2 ボーン IK（余弦定理）で解き、膝の向きをポールベクトルで制御します。
+
+* **足場の探索**：一歩を踏み終えたときの体の姿勢を予測し、最寄りの面・真下・扇形のレイの 3 種類の候補を一つずつ検証します。届くか、間に何か挟まっていないか、自分の体を貫かないか、自分の側にあるかを確かめ、静止位置からの近さで採点します。
+* **4 脚交互の歩容**：2 組の脚が交互に踏み出します。足が遅れすぎたとき、脚が伸びすぎたとき、足が体の下に入り込んだときは順番を待たずに踏み出しますが、隣の脚が着地するまでは待ちます。
+* **スイングの弧**：足を上げるときに 2 次ベジェ曲線を計画し、脚自身の側へふくらませます。別の面へ踏み出すときは 2 面の法線の二等分線に沿って頂点を外へ出し、角を突き抜けずに回り込みます。
+* **膝が反転しない**：望む膝の向きがふさがれているときは、「股関節から足首」の軸のまわりで最も近い空きを探し、前のフレームとの連続性を優先して、膝が左右に反転しないようにします。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={stepsClip} poster={stepsClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="段差・瓦礫・斜面"></video>
+        <figcaption>段差・瓦礫・斜面</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={pillarClip} poster={pillarClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="柱をらせん状に登る"></video>
+        <figcaption>柱をらせん状に登る</figcaption>
+    </figure>
+</div>
+
+### どの向きの面でも：衝突
+
+ルートは距離場の面の上でなめらかに生成され、床から壁へ、さらに天井へと続きます。体の向きは「2 本の車軸」のモデルで、ルート上の前後 2 点から決めるので、角に近づいたところで先に体を傾けて入っていきます。衝突はすべて位置の射影で解決します。
+
+* **体とシーン**：頭・顔・腰の 3 つの球をシーンから剛体的に押し出し、平行移動だけで回転はさせません。腹部が壁に触れそうなときは曲げる角度を変えて避けます。
+* **脚とシーン、脚と体**：IK の後、膝と足首を体の楕円体とシーンから反復的に押し出します。糸にぶら下がっているときは、跗節が体を貫かずに脚自身の側から回り込みます。
+
+<figure>
+    <video class="clip" src={wallClip} poster={wallClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="壁を登り、天井を逆さに歩く"></video>
+    <figcaption>壁を登り、天井を逆さに歩く</figcaption>
+</figure>
+
+### 糸：XPBD と突風
+
+糸は粒子と距離拘束の鎖で、**XPBD** で解きます。1 フレームに 12 サブステップ、コンプライアンスで伸びを決め、時間刻みに依存しません。ソルバーは Burst でコンパイルし、橋 1 本の計算は 1 ミリ秒未満です。糸は摩擦付きで距離場と衝突するので、角にかかった糸は滑らずに引っかかります。
+
+糸を出すとき、糸は空気抵抗に運ばれながら重力で垂れ下がります。風場は空間を漂い時間とともに変わるなめらかなノイズなので、糸は突風の中でうねり、震えます。自由端が向こう岸の上向きの面に触れるとそこにくっつき、クモが糸を張って自分の側の端を地面に貼り付けます。
+
+<figure>
+    <video class="clip" src={lineClip} poster={lineClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="橋糸を出す"></video>
+    <figcaption>糸を出す：突風に流れ、向こう岸に引っかかり、張られる</figcaption>
+</figure>
+
+### 自分の糸の上を歩く
+
+糸の上のつかみ点は「どの束の、どの糸の、どこまで」で表します。足は常に糸と一緒に動き、体重を分けて糸にかけるので、クモが通るところで糸がたわみます。左の脚は左側の糸、右の脚は右側の糸をつかみます。
+
+* **波状の歩容**：糸の上と網の上では、進んだ距離で進む時計を使い、片側 4 本の脚がそれぞれ周期の 4 分の 1 を受け持ち、左右は半周期ずらします。そのため片側では常に 3 本の足が糸をつかんでいます。後ろの脚は前の脚が離したばかりのつかみ点に踏み込み、前脚は少し先の糸を軽くたたいてから戻ってつかみます。
+* **双方向の連成**：クモの頭と腹部を動く楕円体として糸のソルバーに渡すので、糸は体に押しのけられます。足は「つかみ点の位置＋速度×時間刻み」、つまり糸がこのステップの後に来る位置に置き、糸の更新後にぴったり合わせるので、足が糸より 1 フレーム遅れることはありません。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={crossClip} poster={crossClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="糸の下にぶら下がって渡る"></video>
+        <figcaption>糸の下にぶら下がって橋を渡る</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={webClip} poster={webClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="完成した網の上を歩く"></video>
+        <figcaption>完成した円網の上を歩く</figcaption>
+    </figure>
+</div>
+
+### 背骨 1 本、糸は何本も
+
+本物の橋糸は細い糸の束で、アンカーでは扇形に広がり、中ほどでは寄り集まっています。ここでは糸の束ごとに物理の背骨を 1 本だけシミュレーションし、描画のときに 2〜8 本の細い糸をプロシージャルに生成します。少数のガイドヘアをシミュレーションして多数の描画用ヘアを補間する、リアルタイムの髪と同じ考え方です。
+
+* **平行移動フレーム**：糸を背骨のまわりに並べるには、ねじれない座標系が必要です。フレネ枠は直線部分で定義されず、糸がくるくる回ってしまいます。
+* **張力で寄り集まる**：張ると糸は寄り集まり、緩むと広がります。アンカーではジグザグの付着盤の上に着き、捕獲らせんには粘球が並びます。
+* **ピクセル単位で設計**：寸法はすべてピクセルアートの 1 テクセル（約 4 mm）単位で決めているので、中ほどは 1 本の線に、アンカーは扇形の束に見えます。
+
+往復して橋を補強するときは、毎回引いていく牽引糸そのものも 3 本の糸の束で、橋の両端のアンカーは往復のたびに増えていきます。
+
+<figure>
+    <video class="clip" src={reinforceClip} poster={reinforceClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="往復して橋を補強する"></video>
+    <figcaption>往復して補強：物理の背骨 1 本を何本もの糸として描画</figcaption>
+</figure>
+
+### SimScope：物理の問題をデータにする
+
+クモの問題はほとんどが一瞬のものです。あるフレームで膝が反転する、ある足が壁を突き抜ける。そこでデバッグツール SimScope を作りました。ショットを決定的にリプレイして、すべての関節、却下された足場候補とその理由、糸の伸びと貫通、つかみ点の誤差を毎フレーム記録します。しきい値を超えるとイベントを立て、複数の視点（距離場の断面、軌跡、前後のフレームの残像、糸に沿った視点、指標の推移）でイベントシートを描きます。脚の壁抜け、膝の反転、糸が鞭のようにしなる問題、足が糸より 1 フレーム遅れる問題は、どれもこれで突き止めて直しました。
+
+### 参考文献
+
+* Macklin, Müller, Chentanez — *XPBD: Position-Based Simulation of Compliant Constrained Dynamics*（2016）
+* Müller et al. — *Position Based Dynamics*（2007）
+* Macklin et al. — *Unified Particle Physics for Real-Time Applications*（2014）
+* Wang et al. — *Computation of Rotation Minimizing Frames*（2008）
+* Yuksel, Tariq — *Advanced Techniques in Real-time Hair Rendering and Simulation*（SIGGRAPH Course, 2010）
+* Hecker et al. — *Real-time Motion Retargeting to Highly Varied User-Created Morphologies*（2008）
+* Wilson — *Insect Walking*（1966）
+* Eberhard — *How orb-weavers find and grasp silk lines*（Journal of Arachnology, 2017）
+* Cho et al. — *Spiders use multiple silk threads for ballooning*（PLOS Biology, 2018）

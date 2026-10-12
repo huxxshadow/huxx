@@ -1,0 +1,126 @@
+---
+---
+
+import stepsClip from '@/assets/projects/technical-project-procedural-spider/clips/steps-rubble.mp4?url';
+import stepsClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/steps-rubble-poster.webp?url';
+import pillarClip from '@/assets/projects/technical-project-procedural-spider/clips/pillar.mp4?url';
+import pillarClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/pillar-poster.webp?url';
+import wallClip from '@/assets/projects/technical-project-procedural-spider/clips/wall-ceiling.mp4?url';
+import wallClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/wall-ceiling-poster.webp?url';
+import lineClip from '@/assets/projects/technical-project-procedural-spider/clips/bridge-line.mp4?url';
+import lineClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/bridge-line-poster.webp?url';
+import crossClip from '@/assets/projects/technical-project-procedural-spider/clips/bridge-cross.mp4?url';
+import crossClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/bridge-cross-poster.webp?url';
+import webClip from '@/assets/projects/technical-project-procedural-spider/clips/web-walk.mp4?url';
+import webClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/web-walk-poster.webp?url';
+import reinforceClip from '@/assets/projects/technical-project-procedural-spider/clips/bridge-reinforce.mp4?url';
+import reinforceClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/bridge-reinforce-poster.webp?url';
+
+## 담당 역할
+
+Unity에서 절차적 거미와 그 거미줄을 처음부터 만든 개인 프로젝트입니다.
+
+* **다리 많은 이동 시스템**: 네 마디 다리의 해석적 IK, 검증을 거치는 발 디딤 위치 탐색, 지면에서의 4족 교대 보행과 줄 위에서의 파동 보행을 구현해, 바닥·벽·천장을 어떤 방향으로든 걸을 수 있게 했습니다.
+* **충돌**: 직접 만든 부호 거리장 월드 위에서 다리와 장면, 다리와 자기 몸, 몸과 장면의 충돌을 다루며, 모두 위치 투영으로 해결합니다.
+* **거미줄 물리**: Burst로 컴파일한 XPBD 솔버, 돌풍 바람장, 거미 몸과 줄의 결합, 그리고 '물리 척추 하나를 여러 가닥의 렌더링 실로 보여 주는' 외형 시스템을 만들었습니다.
+* **디버깅 도구**: 샷을 결정적으로 리플레이하고 매 프레임 측정해 이벤트 시트를 자동으로 만드는 SimScope를 직접 만들었습니다.
+
+---
+
+## 프로젝트 상세
+
+이 프로젝트의 처음 영감은 **다리 여덟 개인 거미를 절차적 애니메이션만으로, 어떤 표면 위에서든, 심지어 자기가 뽑아낸 줄 위에서도 진짜처럼 걷게 할 수 있을까**라는 질문에서 왔습니다.
+
+거미의 몸은 운동학적으로 움직입니다. 표면을 따라 깔린 경로를 따라가고, 다리가 어디에 닿을지, 언제 들지, 어떻게 굽힐지는 알고리즘이 정합니다. 진짜로 물리 시뮬레이션하는 것은 거미줄뿐입니다. 어려운 부분은 둘이 만나는 곳으로, 다리는 흔들리고 처지는 줄을 잡고, 줄은 거미의 몸에 밀려납니다.
+
+### 여덟 개의 다리: IK, 발 디딤, 보행
+
+다리는 네 마디입니다. 기절은 발 쪽으로 돌고, 부절은 발 위로 어느 방향에서 내려올지를 규칙으로 고르며, 그 사이의 퇴절과 경절은 해석적인 투 본 IK(코사인 법칙)로 풀고, 무릎 방향은 폴 벡터로 제어합니다.
+
+* **발 디딤 탐색**: 한 걸음을 다 디뎠을 때의 몸 자세를 예측한 뒤, 가장 가까운 표면·바로 아래·부채꼴 레이의 세 종류 후보를 하나씩 검증합니다. 닿는지, 사이에 막는 것이 없는지, 자기 몸을 뚫지 않는지, 자기 쪽에 있는지를 확인하고 정지 위치와의 거리로 점수를 매깁니다.
+* **4족 교대 보행**: 다리 두 조가 번갈아 내딛습니다. 발이 너무 뒤처지거나, 다리가 너무 늘어나거나, 발이 몸 아래로 들어가면 차례를 기다리지 않고 내딛지만, 이웃 다리가 디딜 때까지는 기다립니다.
+* **스윙 궤적**: 발을 들 때 2차 베지어 곡선을 계획하고 다리 자기 쪽으로 볼록하게 만듭니다. 다른 면으로 넘어갈 때는 두 면 법선의 이등분선을 따라 꼭짓점을 밖으로 빼서, 모서리를 뚫지 않고 돌아갑니다.
+* **뒤집히지 않는 무릎**: 원하는 무릎 방향이 막히면 '엉덩이에서 발목' 축을 중심으로 가장 가까운 빈 방향을 찾고, 이전 프레임과의 연속성을 우선해 무릎이 좌우로 뒤집히지 않게 합니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={stepsClip} poster={stepsClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="계단, 돌무더기, 경사로"></video>
+        <figcaption>계단, 돌무더기, 경사로</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={pillarClip} poster={pillarClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="기둥을 나선으로 오르기"></video>
+        <figcaption>기둥을 나선으로 오르기</figcaption>
+    </figure>
+</div>
+
+### 어떤 방향의 표면이든: 충돌
+
+경로는 거리장 표면 위에서 부드럽게 만들어지며, 바닥에서 벽으로, 다시 천장으로 이어집니다. 몸의 방향은 '두 개의 차축' 모델로, 경로의 앞뒤 두 점으로 정하기 때문에 모서리에 다가가면 미리 몸을 기울여 들어갑니다. 충돌은 모두 위치 투영으로 해결합니다.
+
+* **몸과 장면**: 머리·얼굴·허리의 세 구를 장면 밖으로 강체처럼 밀어내며, 평행 이동만 하고 회전은 하지 않습니다. 배가 벽에 닿을 것 같으면 굽히는 각도를 바꿔 피합니다.
+* **다리와 장면, 다리와 몸**: IK 후에 무릎과 발목을 몸의 타원체와 장면 밖으로 반복해서 밀어냅니다. 줄에 매달려 있을 때는 부절이 몸을 뚫지 않고 다리 자기 쪽에서 돌아 들어갑니다.
+
+<figure>
+    <video class="clip" src={wallClip} poster={wallClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="벽을 오르고 천장에 거꾸로 매달리기"></video>
+    <figcaption>벽을 오르고 천장에 거꾸로 매달리기</figcaption>
+</figure>
+
+### 거미줄: XPBD와 돌풍
+
+줄은 입자와 거리 제약으로 이루어진 사슬이고 **XPBD**로 풉니다. 프레임마다 12번의 서브스텝을 돌고, 컴플라이언스로 늘어나는 정도를 정해 시간 간격과 무관합니다. 솔버는 Burst로 컴파일되어 다리 하나 전체를 1밀리초도 안 되는 시간에 풉니다. 줄은 마찰을 포함해 거리장과 충돌하므로, 모서리에 걸친 줄은 미끄러지지 않고 걸려 있습니다.
+
+줄을 내보낼 때 줄은 공기 저항에 실려 가면서 중력으로 처집니다. 바람장은 공간을 떠다니며 시간에 따라 바뀌는 부드러운 노이즈라서, 줄이 돌풍 속에서 구불구불 흔들립니다. 자유 끝이 건너편의 위를 향한 면에 닿으면 붙고, 거미가 줄을 팽팽하게 당긴 뒤 자기 쪽 끝을 땅에 붙입니다.
+
+<figure>
+    <video class="clip" src={lineClip} poster={lineClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="다리 줄 내보내기"></video>
+    <figcaption>줄 내보내기: 돌풍에 흘러가 건너편에 걸리고 당겨짐</figcaption>
+</figure>
+
+### 자기 줄 위를 걷기
+
+줄 위의 잡는 점은 '몇 번째 다발의, 몇 번째 가닥의, 줄을 따라 얼마만큼'으로 나타냅니다. 발은 항상 줄과 함께 움직이고 몸무게를 나눠 줄에 실으므로, 거미가 지나가는 곳에서 줄이 처집니다. 왼쪽 다리는 왼쪽 가닥을, 오른쪽 다리는 오른쪽 가닥을 잡습니다.
+
+* **파동 보행**: 줄과 그물 위에서는 나아간 거리로 가는 시계를 써서, 한쪽 네 다리가 각각 주기의 4분의 1을 맡고 좌우는 반 주기씩 어긋나게 합니다. 그래서 한쪽에는 항상 세 발이 줄을 잡고 있습니다. 뒷다리는 앞다리가 방금 놓은 잡는 점으로 들어가고, 앞다리는 조금 앞의 줄을 살짝 두드린 뒤 미끄러져 돌아와 잡습니다.
+* **양방향 결합**: 거미의 머리와 배를 움직이는 타원체로 줄 솔버에 넘기므로, 줄이 몸에 밀려납니다. 발은 '잡는 점 위치 + 속도 × 시간 간격', 즉 줄이 이번 스텝 뒤에 있을 위치에 두고, 줄을 갱신한 뒤 정확히 맞추기 때문에 발이 줄보다 한 프레임 늦는 일이 없습니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={crossClip} poster={crossClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="줄 아래에 매달려 건너기"></video>
+        <figcaption>줄 아래에 매달려 다리 건너기</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={webClip} poster={webClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="완성된 그물 위를 걷기"></video>
+        <figcaption>완성된 둥근 그물 위를 걷기</figcaption>
+    </figure>
+</div>
+
+### 척추 하나, 가닥은 여럿
+
+진짜 다리 줄은 가는 실의 다발로, 앵커에서는 부채꼴로 퍼지고 가운데에서는 모여 있습니다. 여기서는 줄 다발마다 물리 척추 하나만 시뮬레이션하고, 그릴 때 2~8가닥의 가는 실을 절차적으로 만듭니다. 소수의 가이드 헤어를 시뮬레이션하고 많은 렌더링 헤어를 보간하는 실시간 머리카락과 같은 생각입니다.
+
+* **평행 이동 프레임**: 실을 척추 둘레에 배치하려면 비틀리지 않는 좌표계가 필요합니다. 프레네 틀은 직선 구간에서 정의되지 않아 실이 빙빙 돌게 됩니다.
+* **장력에 따라 모임**: 팽팽하면 실이 모이고, 느슨하면 퍼집니다. 앵커에서는 지그재그 부착판 위에 놓이고, 포획 나선에는 끈끈이 방울이 맺혀 있습니다.
+* **픽셀 단위 설계**: 모든 크기를 픽셀 아트 대상의 한 텍셀(약 4mm) 단위로 정해, 가운데는 한 줄로, 앵커는 부채꼴 다발로 보입니다.
+
+오가며 다리를 보강할 때는 매번 끌고 가는 견인사 자체도 세 가닥의 다발이고, 다리 양 끝의 앵커는 오갈 때마다 늘어납니다.
+
+<figure>
+    <video class="clip" src={reinforceClip} poster={reinforceClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="오가며 다리 보강하기"></video>
+    <figcaption>오가며 보강: 물리 척추 하나를 여러 가닥으로 렌더링</figcaption>
+</figure>
+
+### SimScope: 물리 문제를 데이터로
+
+거미의 문제는 대부분 순간적입니다. 어떤 프레임에서 무릎이 뒤집히고, 어떤 발이 벽을 뚫습니다. 그래서 디버깅 도구 SimScope를 만들었습니다. 샷을 결정적으로 리플레이하며 모든 관절, 거부된 발 디딤 후보와 그 이유, 줄의 늘어남과 관통, 잡는 점 오차를 매 프레임 기록합니다. 임계값을 넘으면 이벤트를 만들고, 여러 시점(거리장 단면, 궤적, 앞뒤 프레임의 잔상, 줄을 따라 본 시점, 지표 그래프)으로 이벤트 시트를 그립니다. 다리가 벽을 뚫는 문제, 무릎 뒤집힘, 줄이 채찍처럼 튀는 문제, 발이 줄보다 한 프레임 늦는 문제를 모두 이것으로 찾아 고쳤습니다.
+
+### 참고 문헌
+
+* Macklin, Müller, Chentanez — *XPBD: Position-Based Simulation of Compliant Constrained Dynamics* (2016)
+* Müller et al. — *Position Based Dynamics* (2007)
+* Macklin et al. — *Unified Particle Physics for Real-Time Applications* (2014)
+* Wang et al. — *Computation of Rotation Minimizing Frames* (2008)
+* Yuksel, Tariq — *Advanced Techniques in Real-time Hair Rendering and Simulation* (SIGGRAPH Course, 2010)
+* Hecker et al. — *Real-time Motion Retargeting to Highly Varied User-Created Morphologies* (2008)
+* Wilson — *Insect Walking* (1966)
+* Eberhard — *How orb-weavers find and grasp silk lines* (Journal of Arachnology, 2017)
+* Cho et al. — *Spiders use multiple silk threads for ballooning* (PLOS Biology, 2018)

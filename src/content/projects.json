@@ -2621,5 +2621,69 @@
     ],
     "colorText": "green",
     "colorBackground": "green"
+  },
+  {
+    "id": "technical-project-procedural-spider",
+    "order": 39,
+    "category": "technical",
+    "title": {
+      "en": "Procedural Animation | Spider",
+      "zh": "程序化动画 | 蜘蛛",
+      "ja": "プロシージャルアニメーション | クモ",
+      "ko": "절차적 애니메이션 | 거미"
+    },
+    "roles": {
+      "en": [
+        "Technical Artist",
+        "Animation Programmer"
+      ],
+      "zh": [
+        "技术美术",
+        "动画程序"
+      ],
+      "ja": [
+        "テクニカルアーティスト",
+        "アニメーションプログラマー"
+      ],
+      "ko": [
+        "테크니컬 아티스트",
+        "애니메이션 프로그래머"
+      ]
+    },
+    "desc": {
+      "en": "A procedural spider in Unity. Eight four-segment legs are driven by analytic IK; every foothold is searched and checked against a custom SDF world, so the spider walks steps, rubble, walls, ceilings and pillars at any orientation. Its silk is a Burst-compiled XPBD simulation: a line drifts out on a gusty breeze, catches on the far side and is drawn taut; the spider crosses hanging beneath it in a metachronal wave gait, reinforces the bridge strand by strand, and walks a finished orb web. Each bundle simulates a single spine and is rendered as many fine strands. Everything is checked with SimScope, a deterministic-replay debugging tool built for the project.",
+      "zh": "在 Unity 里实现的程序化蜘蛛。八条四节腿由解析 IK 驱动，每一个落脚点都在自研的距离场世界里搜索并验证，蜘蛛可以以任意朝向走过台阶、碎石、墙面、天花板与圆柱。蛛丝是 Burst 编译的 XPBD 模拟：丝线在阵风中飘出，挂住对岸后被收紧；蜘蛛倒挂在丝下以波浪步态过桥、往返加固，或在织好的圆网上行走。每束丝只模拟一根脊线，再渲染成多股细丝。全部由为项目自研的确定性回放调试工具 SimScope 验证。",
+      "ja": "Unity で作ったプロシージャルなクモ。4 節の脚 8 本を解析的 IK で動かし、足場はすべて自作の距離場ワールドの中で探索・検証するので、段差、瓦礫、壁、天井、柱をどの向きでも歩けます。糸は Burst でコンパイルした XPBD シミュレーションです。糸は突風に乗って流れ出し、向こう岸に引っかかると張られます。クモは糸の下にぶら下がってメタクロナル波の歩容で橋を渡り、往復して橋を補強し、完成した円網の上を歩きます。糸の束ごとに背骨 1 本だけをシミュレーションし、何本もの細い糸として描画します。すべてプロジェクト用に作った決定的リプレイのデバッグツール SimScope で検証しています。",
+      "ko": "Unity로 만든 절차적 거미. 네 마디 다리 8개를 해석적 IK로 움직이고, 모든 발 디딤 위치를 직접 만든 거리장 월드 안에서 탐색·검증해, 거미가 계단, 돌무더기, 벽, 천장, 기둥을 어떤 방향으로든 걸어갑니다. 거미줄은 Burst로 컴파일한 XPBD 시뮬레이션입니다. 줄은 돌풍을 타고 흘러나가 건너편에 걸리면 팽팽하게 당겨지고, 거미는 줄 아래에 매달린 채 메타크로날 파동 보행으로 다리를 건너고, 오가며 다리를 보강하고, 완성된 둥근 그물 위를 걷습니다. 줄 다발마다 척추 하나만 시뮬레이션하고 여러 가닥의 가는 실로 렌더링합니다. 모든 것은 프로젝트를 위해 만든 결정적 리플레이 디버깅 도구 SimScope로 검증했습니다."
+    },
+    "tags": {
+      "en": [
+        "Unity",
+        "Procedural Animation",
+        "Physics Simulation",
+        "Kinematics"
+      ],
+      "zh": [
+        "Unity",
+        "程序化动画",
+        "物理模拟",
+        "运动学"
+      ],
+      "ja": [
+        "Unity",
+        "プロシージャルアニメーション",
+        "物理シミュレーション",
+        "運動学"
+      ],
+      "ko": [
+        "Unity",
+        "절차적 애니메이션",
+        "물리 시뮬레이션",
+        "운동학"
+      ]
+    },
+    "coverImage": "src/assets/projects/poster/ProceduralSpiderPoster.webp",
+    "colorText": "blue",
+    "colorBackground": "blue"
   }
 ]

@@ -1,0 +1,126 @@
+---
+---
+
+import stepsClip from '@/assets/projects/technical-project-procedural-spider/clips/steps-rubble.mp4?url';
+import stepsClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/steps-rubble-poster.webp?url';
+import pillarClip from '@/assets/projects/technical-project-procedural-spider/clips/pillar.mp4?url';
+import pillarClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/pillar-poster.webp?url';
+import wallClip from '@/assets/projects/technical-project-procedural-spider/clips/wall-ceiling.mp4?url';
+import wallClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/wall-ceiling-poster.webp?url';
+import lineClip from '@/assets/projects/technical-project-procedural-spider/clips/bridge-line.mp4?url';
+import lineClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/bridge-line-poster.webp?url';
+import crossClip from '@/assets/projects/technical-project-procedural-spider/clips/bridge-cross.mp4?url';
+import crossClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/bridge-cross-poster.webp?url';
+import webClip from '@/assets/projects/technical-project-procedural-spider/clips/web-walk.mp4?url';
+import webClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/web-walk-poster.webp?url';
+import reinforceClip from '@/assets/projects/technical-project-procedural-spider/clips/bridge-reinforce.mp4?url';
+import reinforceClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/bridge-reinforce-poster.webp?url';
+
+## My Role
+
+A personal project: a procedural spider, and its silk, built from scratch in Unity.
+
+* **Multi-legged locomotion**: analytic IK for four-segment legs, a validated foothold search, an alternating tetrapod gait on surfaces and a wave gait on silk, so the spider walks floors, walls and ceilings at any orientation.
+* **Collision**: built on my own signed-distance-field world, covering legs against the scene, legs against the spider's own body and the body against the scene, all resolved by position projection.
+* **Silk physics**: a Burst-compiled XPBD solver, a gusty wind field, coupling between the spider's body and the silk, and a look system that wears one simulated spine as many rendered strands.
+* **Debugging tool**: SimScope, which replays a shot deterministically, measures every frame and draws event sheets automatically.
+
+---
+
+## Project Details
+
+The project was first inspired by one question: **can an eight-legged spider walk like a real one on any surface, even on the silk it spins itself, driven purely by procedural animation?**
+
+The spider's body is kinematic: it follows a route draped over the surfaces, and the legs decide where to land, when to lift and how to bend. Only the silk is truly simulated. The hard part is where the two meet: feet hold silk that sways and sags, and the silk is pushed aside by the spider's body.
+
+### Eight Legs: IK, Footholds and Gait
+
+Each leg has four segments. The coxa turns toward the foot, the tarsus picks the direction it comes down onto the foot from, and the femur and tibia between them are solved as an analytic two-bone IK (law of cosines), with a pole vector for the knee:
+
+* **Foothold search**: predict the body's pose when the step lands, then weigh candidates from three sources (nearest surface, straight down, a fan of rays), each checked for reach, for anything solid in the way, for passing through the spider's own body and for being on its own side, and scored by distance from the resting spot.
+* **Alternating tetrapod gait**: two groups of legs take turns; a foot left too far behind, a leg stretched too long or a foot tucked under the body steps out of turn, once its neighbours stand.
+* **Swing arcs**: each step is planned as a quadratic Bézier, bowed out to the leg's own side; stepping onto another face, its apex goes out along the bisector of the two faces, so the foot travels round the corner instead of through it.
+* **Knees that never flip**: when the knee's preferred direction is blocked, the nearest clear direction is searched round the hip-to-ankle axis, favouring the previous frame's, so the knee never swings across.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={stepsClip} poster={stepsClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Steps, rubble and a ramp"></video>
+        <figcaption>Steps, rubble and a ramp</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={pillarClip} poster={pillarClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Spiralling up a pillar"></video>
+        <figcaption>Spiralling up a pillar</figcaption>
+    </figure>
+</div>
+
+### Surfaces at Any Orientation, and Collision
+
+Routes are generated smoothly over the distance-field surfaces, from the floor up a wall and onto a ceiling. The body is oriented like a vehicle on two axles, from a point of the route behind and one ahead, so it pitches into a corner as it reaches it. All collision is resolved by position projection:
+
+* **Body against the scene**: three spheres for the head, face and waist are projected rigidly out of the scene, translating without rotating; the abdomen bends away when it would touch a wall.
+* **Legs against the scene and the body**: after IK, knees and ankles are pushed iteratively out of the body's ellipsoids and the scene; hanging from a line, the tarsus comes round from the leg's own side instead of through the body.
+
+<figure>
+    <video class="clip" src={wallClip} poster={wallClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Up the wall and across the ceiling"></video>
+    <figcaption>Up the wall and across the ceiling</figcaption>
+</figure>
+
+### Silk: XPBD and Gusts
+
+A line is a chain of particles and distance constraints solved with **XPBD**: 12 substeps a frame, with compliance setting the stretch independently of the time step. The solver is Burst-compiled; a whole bridge takes a fraction of a millisecond. Silk collides with the distance field with friction, so a line over an edge stays put.
+
+When the spider lets a line out, air drag carries it while gravity makes it droop. The wind field is smooth noise drifting through space and time, so the line meanders and flutters in the gusts. When its free end touches an upward-facing surface on the far side, it sticks; the spider reels it taut and glues its own end down.
+
+<figure>
+    <video class="clip" src={lineClip} poster={lineClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Letting a bridge line out"></video>
+    <figcaption>A line drifting out on the breeze, catching, drawn taut</figcaption>
+</figure>
+
+### Walking on Its Own Silk
+
+Every hold on silk is a bundle, a strand and a distance along it. A foot moves with the silk and loads it with a share of the spider's weight, so the line sags where the spider walks. Left legs take the left strands, right legs the right ones.
+
+* **Wave gait**: on silk and on the web, a clock driven by the distance walked gives each of a side's four legs a quarter of the cycle, with the two sides half a cycle apart, so three feet always hold on each side. Hind legs step into the holds the front legs have just let go of; front legs tap the strand a little further on before sliding back to take hold.
+* **Two-way coupling**: the spider's head and abdomen are passed to the silk solver as moving ellipsoids, so the body pushes silk aside. Feet are placed where their point of silk will be after the silk's step (its position plus velocity times the time step) and made exact after it, so a foot never trails the silk by a frame.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={crossClip} poster={crossClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Crossing hanging beneath the line"></video>
+        <figcaption>Crossing, hanging beneath the line</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={webClip} poster={webClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Walking a finished web"></video>
+        <figcaption>Walking a finished orb web</figcaption>
+    </figure>
+</div>
+
+### One Spine, Many Strands
+
+A real bridge line is a bundle of fine strands, fanned out at the anchors and drawn together in the middle. Here each bundle simulates a single physical spine, and two to eight strands are generated around it when it is drawn, the same idea as real-time hair, where a few guide hairs are simulated and many render hairs interpolated:
+
+* **Parallel-transport frames**: strands need a frame along the spine that does not twist. The Frenet frame is undefined on a straight segment and would spin the strands around.
+* **Drawn in by tension**: taut, the strands close up; slack, they spread. At the anchors they land on a zigzag attachment disc, and the capture spiral is beaded with glue.
+* **Designed in texels**: every size is set in texels of the pixel-art target (about 4 mm), so the middle reads as one line and an anchor as a fan of strands.
+
+Reinforcing the bridge, every crossing trails a dragline that is itself a bundle of three strands, and the anchors at both ends grow with each pass.
+
+<figure>
+    <video class="clip" src={reinforceClip} poster={reinforceClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Reinforcing the bridge"></video>
+    <figcaption>Reinforcing the bridge: one simulated spine worn as many strands</figcaption>
+</figure>
+
+### SimScope: Turning Physics Bugs into Data
+
+A spider's problems are mostly momentary: a knee flips over for one frame, a foot goes through a wall. So I wrote SimScope, a debugging tool that replays a shot deterministically and records every frame: every joint, every rejected foothold candidate and why, silk stretch and penetration, grip errors. Past a threshold it raises an event and draws a sheet for it from several views (a slice of the distance field, trails, ghosts of the frames around it, a view along the silk, and the metrics over time). Legs through walls, flipping knees, silk cracking like a whip and feet trailing the silk by a frame were all found and fixed with it.
+
+### References
+
+* Macklin, Müller, Chentanez — *XPBD: Position-Based Simulation of Compliant Constrained Dynamics* (2016)
+* Müller et al. — *Position Based Dynamics* (2007)
+* Macklin et al. — *Unified Particle Physics for Real-Time Applications* (2014)
+* Wang et al. — *Computation of Rotation Minimizing Frames* (2008)
+* Yuksel, Tariq — *Advanced Techniques in Real-time Hair Rendering and Simulation* (SIGGRAPH Course, 2010)
+* Hecker et al. — *Real-time Motion Retargeting to Highly Varied User-Created Morphologies* (2008)
+* Wilson — *Insect Walking* (1966)
+* Eberhard — *How orb-weavers find and grasp silk lines* (Journal of Arachnology, 2017)
+* Cho et al. — *Spiders use multiple silk threads for ballooning* (PLOS Biology, 2018)

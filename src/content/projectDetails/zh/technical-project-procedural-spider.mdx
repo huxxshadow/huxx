@@ -1,0 +1,126 @@
+---
+---
+
+import stepsClip from '@/assets/projects/technical-project-procedural-spider/clips/steps-rubble.mp4?url';
+import stepsClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/steps-rubble-poster.webp?url';
+import pillarClip from '@/assets/projects/technical-project-procedural-spider/clips/pillar.mp4?url';
+import pillarClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/pillar-poster.webp?url';
+import wallClip from '@/assets/projects/technical-project-procedural-spider/clips/wall-ceiling.mp4?url';
+import wallClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/wall-ceiling-poster.webp?url';
+import lineClip from '@/assets/projects/technical-project-procedural-spider/clips/bridge-line.mp4?url';
+import lineClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/bridge-line-poster.webp?url';
+import crossClip from '@/assets/projects/technical-project-procedural-spider/clips/bridge-cross.mp4?url';
+import crossClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/bridge-cross-poster.webp?url';
+import webClip from '@/assets/projects/technical-project-procedural-spider/clips/web-walk.mp4?url';
+import webClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/web-walk-poster.webp?url';
+import reinforceClip from '@/assets/projects/technical-project-procedural-spider/clips/bridge-reinforce.mp4?url';
+import reinforceClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/bridge-reinforce-poster.webp?url';
+
+## 我的职责
+
+个人项目，在 Unity 里从零搭建一只程序化的蜘蛛，以及它的蛛丝：
+
+* **多足运动系统**：四节腿的解析 IK、带验证的落脚点搜索、地面上的四足交替步态与丝上的波浪步态，蜘蛛可以以任意朝向走过地面、墙面与天花板。
+* **碰撞**：复用自研的距离场世界，处理腿与场景、腿与自身身体、身体与场景之间的碰撞，全部以位置投影的方式解决。
+* **蛛丝物理**：Burst 编译的 XPBD 求解器、阵风风场、蜘蛛身体与丝的耦合，以及"一根物理脊线、多股渲染细丝"的外观系统。
+* **调试工具**：自研 SimScope，确定性回放镜头，逐帧测量并自动生成事件图。
+
+---
+
+## 项目细节
+
+项目一开始的灵感来源于一个问题：**一只八条腿的蜘蛛，能不能完全靠程序化动画，在任意表面、甚至在它自己吐出的丝上，走得像真的一样？**
+
+蜘蛛的身体是运动学驱动的：沿着一条贴合表面的路线前进，腿由算法决定落在哪、何时抬起、怎样弯曲。只有蛛丝是真正的物理模拟。难点在于两者的交界：腿踩在会晃动、会下沉的丝上，丝又被蜘蛛的身体推开。
+
+### 八条腿：IK、落脚点与步态
+
+每条腿四节。基节转向脚的方向，跗节按规则选择从哪个方向落到脚上，中间的腿节与胫节用解析的两骨 IK（余弦定理）求解，膝盖朝向用一个 pole 向量控制：
+
+* **落脚点搜索**：先预测迈完这一步时身体的位姿，再在最近表面、正下方、扇形射线三类候选里逐个验证：够不够得着、中间有没有东西挡住、会不会穿过自己的身体、是不是在自己这一侧，最后按离静止位的远近打分。
+* **四足交替步态**：两组腿轮流迈步，脚落后太多、腿被拉得太长或者被身体压到下面时会提前抢步，抢步要等相邻的腿站稳。
+* **迈步弧线**：抬脚时规划一条二次贝塞尔曲线，向腿自己那一侧外弓，跨面时沿两面法线的角平分线绕过棱角，而不是穿过去。
+* **膝盖不翻转**：想要的膝盖方向被挡住时，绕"髋到踝"的轴寻找最近的空位，并偏好和上一帧连续，避免膝盖左右翻转。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={stepsClip} poster={stepsClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="台阶、碎石与斜坡"></video>
+        <figcaption>台阶、碎石与斜坡</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={pillarClip} poster={pillarClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="螺旋爬柱"></video>
+        <figcaption>螺旋爬柱</figcaption>
+    </figure>
+</div>
+
+### 任意朝向的表面与碰撞
+
+路线在距离场表面上平滑生成，可以从地面上墙、再到天花板。身体朝向用"双车轴"模型：取路线上一前一后两个点定向，所以身体会在接近转角时就提前俯仰进去。碰撞全部用位置投影解决：
+
+* **身体与场景**：头、脸、腰三个球对场景做刚性投影，只平移不旋转；腹部碰到墙面时会自动调整弯曲角度避开。
+* **腿与场景、腿与身体**：IK 求解之后，膝盖与脚踝被迭代推出身体椭球与场景；跗节在线上倒挂时从腿自己那一侧绕过去，而不是穿过身体。
+
+<figure>
+    <video class="clip" src={wallClip} poster={wallClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="爬墙与倒挂"></video>
+    <figcaption>爬墙与倒挂天花板</figcaption>
+</figure>
+
+### 蛛丝：XPBD 与阵风
+
+丝是粒子与距离约束组成的链，用 **XPBD** 求解：每帧 12 个子步，柔度控制弹性，与时间步长无关；求解器用 Burst 编译，整座桥的求解在零点几毫秒。丝与距离场碰撞并带摩擦，所以搭在棱角上能挂住不滑。
+
+放丝时，丝从吐丝口飘出，由空气阻力带着走，同时受重力下垂。风场是随空间漂移、随时间变化的平滑噪声，所以丝会在阵风里蜿蜒抖动；自由端碰到对岸朝上的表面时粘住，蜘蛛再把它收紧、把自己这一端粘到地面上。
+
+<figure>
+    <video class="clip" src={lineClip} poster={lineClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="放丝搭桥"></video>
+    <figcaption>放丝：在阵风中飘出、挂住对岸、收紧</figcaption>
+</figure>
+
+### 在自己的丝上行走
+
+丝上的每一个握点都是"第几束、第几股、沿丝多远"，脚始终跟着丝移动，并把体重分摊到丝上，丝会在蜘蛛走过时下垂。左腿抓左侧的股，右腿抓右侧的股。
+
+* **波浪步态**：在丝上和网上改用由行进距离驱动的时钟，每侧四条腿各占四分之一周期，左右错开半个周期，所以每侧始终有三只脚抓着丝；后腿踩进前腿刚松开的握点，前腿先在前方轻点一下再滑回抓住。
+* **双向耦合**：蜘蛛的头和腹部作为移动的椭球传给丝的求解器，丝会被身体推开；脚按"握点位置 + 速度 × 时间步"放在丝这一步之后的位置，丝更新完再精确贴合，所以脚不会落后丝一帧。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={crossClip} poster={crossClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="倒挂过桥"></video>
+        <figcaption>倒挂在丝下过桥</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={webClip} poster={webClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="在网上行走"></video>
+        <figcaption>在织好的网上行走</figcaption>
+    </figure>
+</div>
+
+### 一根脊线，多股细丝
+
+真实的桥丝是一缕细丝，锚点处扇形散开、中段并拢。这里每一束丝只模拟一根物理脊线，渲染时再程序化生成 2 到 8 股细丝，和实时毛发"模拟少量导向发、插值出大量渲染发"是同一思路：
+
+* **平行传输标架**：细丝绕脊线分布需要一个不扭转的坐标系，Frenet 标架在直线段上没有定义，会让细丝乱转。
+* **按张力收拢**：绷紧时细丝并拢，松弛时散开；锚点处落在一块之字形的附着盘上，捕虫螺旋上缀着胶珠。
+* **按像素设计**：所有尺寸以像素风目标的一个像素格（约 4 毫米）为单位，中段读作一根线，锚点处读作一缕扇形。
+
+往返加固时，每趟拖出的拖丝本身也是一束三股的丝，桥两端的锚点处越积越多。
+
+<figure>
+    <video class="clip" src={reinforceClip} poster={reinforceClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="往返加固"></video>
+    <figcaption>往返加固：一根物理脊线渲染多股细丝</figcaption>
+</figure>
+
+### SimScope：把物理问题变成数据
+
+蜘蛛的问题大多是瞬间的：某一帧膝盖翻过去了，某只脚踩穿了墙。为此我写了一个调试工具 SimScope：确定性地重放镜头，逐帧记录每个关节、每个被拒绝的落脚候选与原因、丝的拉伸与穿透、握点误差，超过阈值自动生成事件，并为每个事件画出多视角的事件图（距离场切片、轨迹、前后残影、沿丝视角与指标曲线）。腿穿墙、膝盖翻转、丝像鞭子一样甩出、脚落后丝一帧等问题，都是用它定位并修掉的。
+
+### 参考
+
+* Macklin, Müller, Chentanez — *XPBD: Position-Based Simulation of Compliant Constrained Dynamics*（2016）
+* Müller et al. — *Position Based Dynamics*（2007）
+* Macklin et al. — *Unified Particle Physics for Real-Time Applications*（2014）
+* Wang et al. — *Computation of Rotation Minimizing Frames*（2008）
+* Yuksel, Tariq — *Advanced Techniques in Real-time Hair Rendering and Simulation*（SIGGRAPH Course, 2010）
+* Hecker et al. — *Real-time Motion Retargeting to Highly Varied User-Created Morphologies*（2008）
+* Wilson — *Insect Walking*（1966）
+* Eberhard — *How orb-weavers find and grasp silk lines*（Journal of Arachnology, 2017）
+* Cho et al. — *Spiders use multiple silk threads for ballooning*（PLOS Biology, 2018）
