@@ -79,10 +79,16 @@ import reinforceClipPoster from '@/assets/projects/technical-project-procedural-
 
 放丝时，丝从吐丝口飘出，由空气阻力带着走，同时受重力下垂。风场是随空间漂移、随时间变化的平滑噪声，所以丝会在阵风里蜿蜒抖动；自由端碰到对岸朝上的表面时粘住，蜘蛛再把它收紧、把自己这一端粘到地面上。
 
-<figure>
-    <video class="clip" src={lineClip} poster={lineClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="放丝搭桥"></video>
-    <figcaption>放丝：在阵风中飘出、挂住对岸、收紧</figcaption>
-</figure>
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={lineClip} poster={lineClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="放丝搭桥"></video>
+        <figcaption>放丝：在阵风中飘出、挂住对岸、收紧</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={reinforceClip} poster={reinforceClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="往返加固"></video>
+        <figcaption>往返加固：一根物理脊线渲染多股细丝</figcaption>
+    </figure>
+</div>
 
 ### 在自己的丝上行走
 
@@ -101,21 +107,6 @@ import reinforceClipPoster from '@/assets/projects/technical-project-procedural-
         <figcaption>在织好的网上行走</figcaption>
     </figure>
 </div>
-
-### 一根脊线，多股细丝
-
-真实的桥丝是一缕细丝，锚点处扇形散开、中段并拢。这里每一束丝只模拟一根物理脊线，渲染时再程序化生成 2 到 8 股细丝，和实时毛发"模拟少量导向发、插值出大量渲染发"是同一思路：
-
-* **平行传输标架**：细丝绕脊线分布需要一个不扭转的坐标系，Frenet 标架在直线段上没有定义，会让细丝乱转。
-* **按张力收拢**：绷紧时细丝并拢，松弛时散开；锚点处落在一块之字形的附着盘上，捕虫螺旋上缀着胶珠。
-* **按像素设计**：所有尺寸以像素风目标的一个像素格（约 4 毫米）为单位，中段读作一根线，锚点处读作一缕扇形。
-
-往返加固时，每趟拖出的拖丝本身也是一束三股的丝，桥两端的锚点处越积越多。
-
-<figure>
-    <video class="clip" src={reinforceClip} poster={reinforceClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="往返加固"></video>
-    <figcaption>往返加固：一根物理脊线渲染多股细丝</figcaption>
-</figure>
 
 ### SimScope：把物理问题变成数据
 

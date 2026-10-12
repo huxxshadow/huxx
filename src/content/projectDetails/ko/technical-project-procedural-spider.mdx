@@ -79,10 +79,16 @@ Unity에서 절차적 거미와 그 거미줄을 처음부터 만든 개인 프�
 
 줄을 내보낼 때 줄은 공기 저항에 실려 가면서 중력으로 처집니다. 바람장은 공간을 떠다니며 시간에 따라 바뀌는 부드러운 노이즈라서, 줄이 돌풍 속에서 구불구불 흔들립니다. 자유 끝이 건너편의 위를 향한 면에 닿으면 붙고, 거미가 줄을 팽팽하게 당긴 뒤 자기 쪽 끝을 땅에 붙입니다.
 
-<figure>
-    <video class="clip" src={lineClip} poster={lineClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="다리 줄 내보내기"></video>
-    <figcaption>줄 내보내기: 돌풍에 흘러가 건너편에 걸리고 당겨짐</figcaption>
-</figure>
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={lineClip} poster={lineClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="다리 줄 내보내기"></video>
+        <figcaption>줄 내보내기: 돌풍에 흘러가 건너편에 걸리고 당겨짐</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={reinforceClip} poster={reinforceClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="오가며 다리 보강하기"></video>
+        <figcaption>오가며 보강: 물리 척추 하나를 여러 가닥으로 렌더링</figcaption>
+    </figure>
+</div>
 
 ### 자기 줄 위를 걷기
 
@@ -101,21 +107,6 @@ Unity에서 절차적 거미와 그 거미줄을 처음부터 만든 개인 프�
         <figcaption>완성된 둥근 그물 위를 걷기</figcaption>
     </figure>
 </div>
-
-### 척추 하나, 가닥은 여럿
-
-진짜 다리 줄은 가는 실의 다발로, 앵커에서는 부채꼴로 퍼지고 가운데에서는 모여 있습니다. 여기서는 줄 다발마다 물리 척추 하나만 시뮬레이션하고, 그릴 때 2~8가닥의 가는 실을 절차적으로 만듭니다. 소수의 가이드 헤어를 시뮬레이션하고 많은 렌더링 헤어를 보간하는 실시간 머리카락과 같은 생각입니다.
-
-* **평행 이동 프레임**: 실을 척추 둘레에 배치하려면 비틀리지 않는 좌표계가 필요합니다. 프레네 틀은 직선 구간에서 정의되지 않아 실이 빙빙 돌게 됩니다.
-* **장력에 따라 모임**: 팽팽하면 실이 모이고, 느슨하면 퍼집니다. 앵커에서는 지그재그 부착판 위에 놓이고, 포획 나선에는 끈끈이 방울이 맺혀 있습니다.
-* **픽셀 단위 설계**: 모든 크기를 픽셀 아트 대상의 한 텍셀(약 4mm) 단위로 정해, 가운데는 한 줄로, 앵커는 부채꼴 다발로 보입니다.
-
-오가며 다리를 보강할 때는 매번 끌고 가는 견인사 자체도 세 가닥의 다발이고, 다리 양 끝의 앵커는 오갈 때마다 늘어납니다.
-
-<figure>
-    <video class="clip" src={reinforceClip} poster={reinforceClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="오가며 다리 보강하기"></video>
-    <figcaption>오가며 보강: 물리 척추 하나를 여러 가닥으로 렌더링</figcaption>
-</figure>
 
 ### SimScope: 물리 문제를 데이터로
 

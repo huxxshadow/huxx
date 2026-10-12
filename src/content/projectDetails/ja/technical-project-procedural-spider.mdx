@@ -79,10 +79,16 @@ Unity でプロシージャルなクモとその糸をゼロから作った個�
 
 糸を出すとき、糸は空気抵抗に運ばれながら重力で垂れ下がります。風場は空間を漂い時間とともに変わるなめらかなノイズなので、糸は突風の中でうねり、震えます。自由端が向こう岸の上向きの面に触れるとそこにくっつき、クモが糸を張って自分の側の端を地面に貼り付けます。
 
-<figure>
-    <video class="clip" src={lineClip} poster={lineClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="橋糸を出す"></video>
-    <figcaption>糸を出す：突風に流れ、向こう岸に引っかかり、張られる</figcaption>
-</figure>
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={lineClip} poster={lineClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="橋糸を出す"></video>
+        <figcaption>糸を出す：突風に流れ、向こう岸に引っかかり、張られる</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={reinforceClip} poster={reinforceClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="往復して橋を補強する"></video>
+        <figcaption>往復して補強：物理の背骨 1 本を何本もの糸として描画</figcaption>
+    </figure>
+</div>
 
 ### 自分の糸の上を歩く
 
@@ -101,21 +107,6 @@ Unity でプロシージャルなクモとその糸をゼロから作った個�
         <figcaption>完成した円網の上を歩く</figcaption>
     </figure>
 </div>
-
-### 背骨 1 本、糸は何本も
-
-本物の橋糸は細い糸の束で、アンカーでは扇形に広がり、中ほどでは寄り集まっています。ここでは糸の束ごとに物理の背骨を 1 本だけシミュレーションし、描画のときに 2〜8 本の細い糸をプロシージャルに生成します。少数のガイドヘアをシミュレーションして多数の描画用ヘアを補間する、リアルタイムの髪と同じ考え方です。
-
-* **平行移動フレーム**：糸を背骨のまわりに並べるには、ねじれない座標系が必要です。フレネ枠は直線部分で定義されず、糸がくるくる回ってしまいます。
-* **張力で寄り集まる**：張ると糸は寄り集まり、緩むと広がります。アンカーではジグザグの付着盤の上に着き、捕獲らせんには粘球が並びます。
-* **ピクセル単位で設計**：寸法はすべてピクセルアートの 1 テクセル（約 4 mm）単位で決めているので、中ほどは 1 本の線に、アンカーは扇形の束に見えます。
-
-往復して橋を補強するときは、毎回引いていく牽引糸そのものも 3 本の糸の束で、橋の両端のアンカーは往復のたびに増えていきます。
-
-<figure>
-    <video class="clip" src={reinforceClip} poster={reinforceClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="往復して橋を補強する"></video>
-    <figcaption>往復して補強：物理の背骨 1 本を何本もの糸として描画</figcaption>
-</figure>
 
 ### SimScope：物理の問題をデータにする
 

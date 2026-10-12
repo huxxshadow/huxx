@@ -79,10 +79,16 @@ A line is a chain of particles and distance constraints solved with **XPBD**: 12
 
 When the spider lets a line out, air drag carries it while gravity makes it droop. The wind field is smooth noise drifting through space and time, so the line meanders and flutters in the gusts. When its free end touches an upward-facing surface on the far side, it sticks; the spider reels it taut and glues its own end down.
 
-<figure>
-    <video class="clip" src={lineClip} poster={lineClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Letting a bridge line out"></video>
-    <figcaption>A line drifting out on the breeze, catching, drawn taut</figcaption>
-</figure>
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={lineClip} poster={lineClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Letting a bridge line out"></video>
+        <figcaption>A line drifting out on the breeze, catching, drawn taut</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={reinforceClip} poster={reinforceClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Reinforcing the bridge"></video>
+        <figcaption>Reinforcing the bridge: one simulated spine worn as many strands</figcaption>
+    </figure>
+</div>
 
 ### Walking on Its Own Silk
 
@@ -101,21 +107,6 @@ Every hold on silk is a bundle, a strand and a distance along it. A foot moves w
         <figcaption>Walking a finished orb web</figcaption>
     </figure>
 </div>
-
-### One Spine, Many Strands
-
-A real bridge line is a bundle of fine strands, fanned out at the anchors and drawn together in the middle. Here each bundle simulates a single physical spine, and two to eight strands are generated around it when it is drawn, the same idea as real-time hair, where a few guide hairs are simulated and many render hairs interpolated:
-
-* **Parallel-transport frames**: strands need a frame along the spine that does not twist. The Frenet frame is undefined on a straight segment and would spin the strands around.
-* **Drawn in by tension**: taut, the strands close up; slack, they spread. At the anchors they land on a zigzag attachment disc, and the capture spiral is beaded with glue.
-* **Designed in texels**: every size is set in texels of the pixel-art target (about 4 mm), so the middle reads as one line and an anchor as a fan of strands.
-
-Reinforcing the bridge, every crossing trails a dragline that is itself a bundle of three strands, and the anchors at both ends grow with each pass.
-
-<figure>
-    <video class="clip" src={reinforceClip} poster={reinforceClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Reinforcing the bridge"></video>
-    <figcaption>Reinforcing the bridge: one simulated spine worn as many strands</figcaption>
-</figure>
 
 ### SimScope: Turning Physics Bugs into Data
 
