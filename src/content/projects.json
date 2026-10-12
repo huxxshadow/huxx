@@ -2683,6 +2683,18 @@
       ]
     },
     "coverImage": "src/assets/projects/poster/ProceduralSpiderPoster.webp",
+    "links": [
+      {
+        "name": "YouTube",
+        "url": "https://youtu.be/Z9JKvQrEcEE",
+        "icon": "fa-brands fa-youtube"
+      },
+      {
+        "name": "Bilibili",
+        "url": "https://www.bilibili.com/video/BV1bhpQ6pEpn/",
+        "icon": "fa-brands fa-bilibili"
+      }
+    ],
     "colorText": "blue",
     "colorBackground": "blue"
   }
