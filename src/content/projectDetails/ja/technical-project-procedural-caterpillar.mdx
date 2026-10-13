@@ -1,0 +1,130 @@
+---
+---
+
+import obstacleClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/obstacle.mp4?url';
+import obstacleClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/obstacle-poster.webp?url';
+import poleClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/pole.mp4?url';
+import poleClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/pole-poster.webp?url';
+import wallClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/wall-ceiling.mp4?url';
+import wallClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/wall-ceiling-poster.webp?url';
+import frictionClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/friction.mp4?url';
+import frictionClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/friction-poster.webp?url';
+import crawlClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/crawl.mp4?url';
+import crawlClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/crawl-poster.webp?url';
+import standClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/stand.mp4?url';
+import standClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/stand-poster.webp?url';
+import turnClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/turn.mp4?url';
+import turnClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/turn-poster.webp?url';
+import slopeClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/slope.mp4?url';
+import slopeClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/slope-poster.webp?url';
+
+## 担当
+
+個人プロジェクト。Unity でプロシージャルなイモムシをゼロから作りました。
+
+* **ソフトボディ物理**：Burst でコンパイルした XPBD ソルバー。体節間の軸方向・曲げ拘束、片側曲げ拘束、異方性のクーロン摩擦、腹脚のかぎ爪による把持。
+* **筋肉のリズム**：「縮める・押し出す・休む」の這い歩き、体に沿って後ろへ伝わる旋回、立ち上がって見回す姿勢レイヤー。
+* **あらゆる面を這う**：どの向きの面の上でも、同じリズムで体を経路に沿って置き、段差、丸太、壁、天井、柱を越えます。
+* **頭のアニメーションと操作**：バネで動くプロシージャルな頭。マウス、キーボード、ショットのスクリプト入力で共通のコントローラーを使い、障害物に当たると物理の這い歩きと面に沿った這い歩きを自動で切り替えます。
+* **デバッグツール**：SimScope に、体節の浮きと頭の急な回転の検出を追加。
+
+---
+
+## プロジェクトの詳細
+
+イモムシには骨格がなく、IK で解く脚の関節もありません。体液で満たされた柔らかい管で、筋肉を縮め、腹脚でつかみながら少しずつ進みます。そのため平地ではアニメーションを再生せず、筋肉に目標を与えるだけで、体が実際にどう動くかは物理ソルバーが決めます。
+
+### 1 拍：縮める・押し出す・休む
+
+体は 15 個の粒子（頭と 14 の体節）でできていて、隣り合う粒子の間に軸方向の拘束、各関節に曲げ拘束があり、すべて **XPBD** で解きます。コンプライアンスが柔らかさを決め、タイムステップに依存しません。1 拍は 3 つに分かれます。
+
+* **縮める**：前端がつかんだまま、尾が離れて引き寄せられ、体の後ろ半分が持ち上がります。
+* **押し出す**：アーチが平らになりながら前へ移り、後端がつかみ、頭と前部が離れて前へ押し出されます。
+* **休む**：体が平らになり、すべての体節がつかみます。
+
+筋肉が変えるのは各区間の静止長とアーチの高さだけです。実際に前へ進めるかどうかは地面次第です。
+
+<figure>
+    <video class="clip" src={crawlClip} poster={crawlClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="摩擦で這う"></video>
+    <figcaption>縮める・押し出す・休む。後半のオレンジは今つかんでいる体節</figcaption>
+</figure>
+
+### 進む力は摩擦から
+
+地面は異方性のクーロン摩擦で、前・後ろ・横それぞれに静止摩擦と動摩擦の係数があり、後ろへは滑りにくくなっています。つかんでいる体節が面に触れると、腹脚のかぎ爪が引っかかり、一定の力までその場に固定します。
+
+同じ筋肉、同じリズムを 3 種類の地面で動かします。普通の床では前へ這い、氷の上（摩擦は 30 分の 1、前後とも同じように滑る）ではうねるだけでほとんど進まず、摩擦がまったくないとその場でもがくだけで重心はまったく動きません。外から押すものが何もないからです。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={frictionClip} poster={frictionClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="摩擦の比較"></video>
+        <figcaption>手前：普通の床 · 中：氷 · 奥：摩擦なし</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={slopeClip} poster={slopeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="坂を登る"></video>
+        <figcaption>16° の坂を登る。止まっても静止摩擦とかぎ爪で滑り落ちない</figcaption>
+    </figure>
+</div>
+
+### 立ち上がりと旋回
+
+立ち上がりには**片側曲げ拘束**を使います。前部の関節は一方向にだけ拘束され、後ろの体の座標系で測るので、筋肉で前部を立てても、見回すときに倒れません。後部はかぎ爪で地面に固定され、支点になります。何かを見るときは、持ち上げた前部全体がそちらを向きます。
+
+旋回は「頭に従う」方式です。頭が通った各位置で求められた曲がりを記録し、各関節がそこに来たときに同じ曲がりを取るので、曲がりが 1 拍ずつ体に沿って後ろへ伝わります。つかんでいる体節はその場に残り、離れた体節が引き回されます。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={standClip} poster={standClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="立ち上がって見回す"></video>
+        <figcaption>立ち上がって見回す</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={turnClip} poster={turnClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="旋回"></video>
+        <figcaption>旋回：曲がりが体に沿って後ろへ伝わる</figcaption>
+    </figure>
+</div>
+
+### あらゆる面を這う
+
+壁、天井、柱の上では、純粋な物理だけでソフトボディを確実に面に沿わせるのは難しく、浮いたり角で引っかかったりします。そこで平地を離れると、面に沿った這い歩きに切り替えます。まず面から体の厚みの半分だけ離れた経路を面に沿って作り（クモと共通：凹んだ角は空中を通して切り、出っ張った角は丸め、法線は角で徐々に向きを変えます）、同じリズムで体をその上に置きます。
+
+* 縮めるときは頭側がつかんだまま、体を頭から後ろへ置き、押し出すときは尾側がつかんだまま、体を尾から前へ置きます。
+* 経路上の隣り合う体節の間隔は、体節の長さからアーチが占める分を引いた長さです。アーチが上がると縮み、平らになると伸びます。これが 1 拍の歩幅です。
+* つかんでいる体節はその場に留まり、かぎ爪が徐々に離れるにつれて置き直されるので、移り変わりは滑らかで飛びがありません。
+
+どの体節も経路の上に、リズムが持ち上げる高さで置かれるので、浮くことも面にめり込むこともありません。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={obstacleClip} poster={obstacleClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="段差と丸太を越える"></video>
+        <figcaption>段差と丸太を越える</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={poleClip} poster={poleClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="らせんで柱を登る"></video>
+        <figcaption>40° のらせんで柱を登る</figcaption>
+    </figure>
+</div>
+
+<figure>
+    <video class="clip" src={wallClip} poster={wallClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="壁を登り天井を這う"></video>
+    <figcaption>90° の壁を登り、天井に逆さまにぶら下がって這う</figcaption>
+</figure>
+
+### プロシージャルな頭
+
+頭はヨーとピッチの減衰不足のバネにぶら下がっていて、少し遅れ、少し行き過ぎ、毎秒 240° より速くは回りません。進む経路の少し先を見つめ、リズムに合わせて縮めるときはうつむき、押し出すときは顔を上げて先導します。這っている間は 1 拍ごとに左右を探り、止まるとノイズでゆっくり辺りを見回します。体から頭に渡す向きにも速度制限をかけているので、体が揺れても頭が急に回ることはありません。
+
+### 操作：4 層の構造
+
+ヘビと同じ構造です。コントローラーがマウスとキーボード（またはショットのスクリプト入力）を読み、体には「どこへ行くか、立つか、何を見るか」という意図だけを伝え、それ以外はすべて体が決めます。カメラは体の前部の注視点を追います。テストショットは入力を送るだけで専用の動きを書かないので、ショットでできることはプレイヤーにもできます。段差、丸太、壁、柱に当たると、体が自分で面に沿って目標へ向かう経路を作り、面に沿った這い歩きに切り替えます。体全体が同じ高さの平地に戻ると、物理に戻します。
+
+### SimScope
+
+クモのために書いた SimScope に、2 つの検出を追加しました。リズムで持ち上げる高さより面から離れた体節（浮き）と、1 フレームでの頭の回転が大きすぎる場合（急な回転）です。障害物を越えるときの浮き、頭が垂直になったときの 180° の反転、拍ごとにつかみを離すときの頭の揺れは、すべてこれで見つけて直しました。
+
+### 参考文献
+
+* Macklin, Müller, Chentanez — *XPBD: Position-Based Simulation of Compliant Constrained Dynamics*（2016）
+* Müller et al. — *Position Based Dynamics*（2007）
+* van Griethuijsen, Trimmer — *Locomotion in caterpillars*（Biological Reviews, 2014）
+* Simon et al. — *Visceral-locomotory pistoning in crawling caterpillars*（Current Biology, 2010）
+* Trimmer, Lin — *Bone-free: soft mechanics for adaptive locomotion*（Integrative and Comparative Biology, 2014）

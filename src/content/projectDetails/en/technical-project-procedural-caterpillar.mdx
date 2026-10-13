@@ -1,0 +1,130 @@
+---
+---
+
+import obstacleClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/obstacle.mp4?url';
+import obstacleClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/obstacle-poster.webp?url';
+import poleClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/pole.mp4?url';
+import poleClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/pole-poster.webp?url';
+import wallClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/wall-ceiling.mp4?url';
+import wallClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/wall-ceiling-poster.webp?url';
+import frictionClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/friction.mp4?url';
+import frictionClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/friction-poster.webp?url';
+import crawlClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/crawl.mp4?url';
+import crawlClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/crawl-poster.webp?url';
+import standClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/stand.mp4?url';
+import standClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/stand-poster.webp?url';
+import turnClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/turn.mp4?url';
+import turnClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/turn-poster.webp?url';
+import slopeClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/slope.mp4?url';
+import slopeClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/slope-poster.webp?url';
+
+## My Role
+
+A personal project: a procedural caterpillar built from scratch in Unity.
+
+* **Soft-body physics**: a Burst-compiled XPBD solver with axial and bending constraints between segments, one-sided bending constraints, anisotropic Coulomb friction, and the grip of the prolegs' crochets.
+* **Muscle rhythm**: a gather, reach and rest crawling stroke, turns that pass back along the body, and a posture layer for rearing up to look around.
+* **Crawling over any surface**: the same rhythm lays the body along a path over surfaces of any orientation, over steps, logs, walls, ceilings and poles.
+* **Head animation and control**: a spring-driven procedural head, and one controller shared by mouse, keyboard and scripted shots that switches between physical crawling and surface crawling when something is in the way.
+* **Debugging tool**: SimScope, extended with checks for floating segments and sudden head turns.
+
+---
+
+## Project Details
+
+A caterpillar has no skeleton and no leg joints to solve with IK: it is a fluid-filled tube that inches forward by contracting its muscles and gripping with its prolegs. So on level ground this caterpillar plays no animation. It only sets targets for its muscles, and the physics solver decides how the body actually moves.
+
+### One Beat: Gather, Reach, Rest
+
+The body is 15 particles (the head and 14 segments), with an axial constraint between neighbours and a bending constraint at every joint, all solved with **XPBD**: compliance sets how soft each one is, independent of the time step. Each beat of the stroke has three parts:
+
+* **Gather**: the front grips, the tail lets go and is drawn up, and the back half arches.
+* **Reach**: the arch runs forward as it flattens, the back grips, and the head and front let go and are pushed ahead.
+* **Rest**: the body lies flat and every segment grips.
+
+The muscles only change each link's rest length and each joint's arch height. Whether the body actually gets anywhere is up to the ground.
+
+<figure>
+    <video class="clip" src={crawlClip} poster={crawlClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Crawling by friction"></video>
+    <figcaption>Gather, reach, rest; in the second half, orange marks the segments gripping right now</figcaption>
+</figure>
+
+### Friction Moves It
+
+The ground has anisotropic Coulomb friction, with static and kinetic coefficients for forward, backward and sideways motion, and sliding backward is harder. As soon as a gripping segment touches a surface, the crochets on its prolegs hook in and hold it in place up to a limit.
+
+The same muscles and the same rhythm run on three grounds. On the floor it crawls. On ice (a thirtieth of the friction, as slippery forward as back) it heaves and slips, getting almost nowhere. With no friction it writhes on the spot and its centre of mass does not move at all, because nothing outside it pushes.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={frictionClip} poster={frictionClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Friction comparison"></video>
+        <figcaption>Near: floor · middle: ice · far: no friction</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={slopeClip} poster={slopeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Up a slope"></video>
+        <figcaption>Up a 16° slope; stopped, static friction and the crochets hold it there</figcaption>
+    </figure>
+</div>
+
+### Rearing Up and Turning
+
+Standing uses **one-sided bending constraints**: the front joints are constrained in one direction only and measured in the frame of the body behind them, so the muscles can raise the front without it toppling as it turns to look around. The crochets pin the back to the ground as the pivot. To look at something, the whole raised front turns toward it.
+
+Turning follows the head: the bend the head was asked for is remembered at every point it passes, and each joint takes that same bend when it gets there, so a turn passes back along the body beat by beat. Gripping segments stay where they are while released ones are drawn round.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={standClip} poster={standClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Rearing up to look around"></video>
+        <figcaption>Rearing up to look around</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={turnClip} poster={turnClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Turning"></video>
+        <figcaption>Turning: the bend passes back along the body</figcaption>
+    </figure>
+</div>
+
+### Crawling Over Any Surface
+
+On walls, ceilings and poles, pure physics struggles to keep a soft body reliably on the surface: segments float off and the body jams in corners. So off level ground the caterpillar switches to surface crawling. First a path is built along the surfaces, held half a body's thickness off them (shared with the spider: concave corners are cut through, convex ones rounded, and the normal turns gradually through every corner). Then the same rhythm lays the body along it:
+
+* While gathering, the head end holds and the body is laid out backward from it; while reaching, the tail end holds and the body is laid out forward.
+* Along the path, two neighbouring segments are a link's length apart minus what the arch takes up, shorter as the arch rises and longer as it flattens. That difference is the stride.
+* Gripping segments stay where they are, and a segment is laid out more as its crochets gradually let go, so there are no jumps.
+
+Every segment sits on the path at the height the rhythm lifts it to, so none of the body ever floats or sinks into a surface.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={obstacleClip} poster={obstacleClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Over a step and a log"></video>
+        <figcaption>Over a step and a log</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={poleClip} poster={poleClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Spiralling up a pole"></video>
+        <figcaption>Spiralling up a pole at 40°</figcaption>
+    </figure>
+</div>
+
+<figure>
+    <video class="clip" src={wallClip} poster={wallClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Up the wall and along the ceiling"></video>
+    <figcaption>Up a 90° wall, then upside down along the ceiling</figcaption>
+</figure>
+
+### A Procedural Head
+
+The head hangs on an underdamped spring in yaw and pitch, so it lags and overshoots a little, and it never turns faster than 240° per second. It looks at a point further along its way. With the rhythm, it tucks while the body gathers and lifts to lead the reach. It swings from side to side once a beat as it feels its way, and at rest it slowly looks around on noise. The body's frame for the head is rate-limited too, so a jolt of the body never snaps the head round.
+
+### Player Control: Four Layers
+
+It uses the snake's structure. A controller reads the mouse and keyboard (or a shot's scripted input) and only asks the body where to go, whether to stand and what to look at. The body decides everything else. The camera follows a focus point on the front of the body. Test shots only send input and never script special moves, so whatever a shot shows, a player can do. When a step, log, wall or pole is in its way, the body lays its own path over the surfaces toward the goal and switches to surface crawling. Once the whole body lies on one level again, it hands back to physics.
+
+### SimScope
+
+The SimScope tool written for the spider gained two checks: segments further off the surface than the rhythm lifts them (floating), and the head turning too far in one frame (snapping). Floating while climbing over obstacles, a 180° head flip when the head stood vertical, and a head jolt every beat as the grip released were all found and fixed with it.
+
+### References
+
+* Macklin, Müller, Chentanez — *XPBD: Position-Based Simulation of Compliant Constrained Dynamics* (2016)
+* Müller et al. — *Position Based Dynamics* (2007)
+* van Griethuijsen, Trimmer — *Locomotion in caterpillars* (Biological Reviews, 2014)
+* Simon et al. — *Visceral-locomotory pistoning in crawling caterpillars* (Current Biology, 2010)
+* Trimmer, Lin — *Bone-free: soft mechanics for adaptive locomotion* (Integrative and Comparative Biology, 2014)

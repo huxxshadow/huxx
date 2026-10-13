@@ -1,0 +1,130 @@
+---
+---
+
+import obstacleClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/obstacle.mp4?url';
+import obstacleClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/obstacle-poster.webp?url';
+import poleClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/pole.mp4?url';
+import poleClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/pole-poster.webp?url';
+import wallClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/wall-ceiling.mp4?url';
+import wallClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/wall-ceiling-poster.webp?url';
+import frictionClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/friction.mp4?url';
+import frictionClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/friction-poster.webp?url';
+import crawlClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/crawl.mp4?url';
+import crawlClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/crawl-poster.webp?url';
+import standClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/stand.mp4?url';
+import standClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/stand-poster.webp?url';
+import turnClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/turn.mp4?url';
+import turnClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/turn-poster.webp?url';
+import slopeClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/slope.mp4?url';
+import slopeClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/slope-poster.webp?url';
+
+## 我的职责
+
+个人项目，在 Unity 里从零搭建一只程序化的绿毛虫：
+
+* **软体物理**：Burst 编译的 XPBD 求解器，体节之间的轴向与弯曲约束、单侧弯曲约束，以及各向异性的库仑摩擦与腹足趾钩的抓地。
+* **肌肉节律**："收拢、前推、停顿"的爬行步律，转向时弯曲沿身体向后传递，以及站起来张望的姿态层。
+* **贴面爬行**：在任意朝向的表面路径上，用同一套节律铺放身体，爬过台阶、圆木、墙面、天花板与圆柱。
+* **头部动画与操控**：弹簧驱动的头部程序化动画；鼠标、键盘与镜头脚本共用的控制器，遇到障碍时在物理爬行与贴面爬行之间自动切换。
+* **调试工具**：沿用 SimScope，新增体节悬空与头部突转的检测。
+
+---
+
+## 项目细节
+
+毛毛虫没有骨骼，也没有可以套 IK 的腿关节：它是一段充满液体的软管，靠肌肉收缩和腹足抓地一节一节往前挪。所以这只绿毛虫在平地上不播放动画，只给肌肉下达目标，身体实际怎么动由物理求解器决定。
+
+### 一拍：收拢、前推、停顿
+
+身体由 15 个粒子组成（头加 14 个体节），相邻粒子之间有轴向约束，每个关节有弯曲约束，都用 **XPBD** 求解：柔度决定软硬，与时间步长无关。步律的每一拍分三段：
+
+* **收拢**：前端抓地不动，尾部松开被拉上来，身体后半段拱起。
+* **前推**：拱起向前传并逐渐放平，后端抓地，头和前段松开、被推向前方。
+* **停顿**：身体放平，所有体节抓地。
+
+肌肉只改变每一段的静止长度和拱起高度，身体能不能真的前进，取决于地面。
+
+<figure>
+    <video class="clip" src={crawlClip} poster={crawlClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="靠摩擦爬行"></video>
+    <figcaption>收拢、前推、停顿；后半段橙色是此刻抓地的体节</figcaption>
+</figure>
+
+### 推进来自摩擦
+
+地面是各向异性的库仑摩擦：向前、向后、侧向各有静摩擦与动摩擦系数，向后更难滑动。抓地的体节一接触表面，腹足的趾钩就钩住，在一定拉力以内把它钉在原地。
+
+同一套肌肉、同一个节律放在三种地面上：正常地面上它向前爬；冰面上（摩擦只有三十分之一，前后一样滑）它原地起伏，几乎前进不了；完全没有摩擦时它只能原地蠕动，质心一点也不动，因为没有任何外力推它。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={frictionClip} poster={frictionClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="摩擦对比"></video>
+        <figcaption>近：正常地面 · 中：冰面 · 远：无摩擦</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={slopeClip} poster={slopeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="爬坡"></video>
+        <figcaption>爬 16° 坡，停下时静摩擦与趾钩让它不下滑</figcaption>
+    </figure>
+</div>
+
+### 站起来与转向
+
+站立用**单侧弯曲约束**：前段关节的弯曲只在一个方向上受约束，并在身后那段身体的坐标系里度量，所以肌肉能把前段立起来，转头张望时也不会被带翻；后段由趾钩钉住地面作为支点。张望时，抬起的前段整体转向目标。
+
+转向用"跟随头部"：记录头部在每个位置被要求的弯曲，每个关节走到那里时取同样的弯曲，所以转弯沿身体一拍一拍向后传。抓地的体节留在原地，松开的体节被拉过去。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={standClip} poster={standClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="站起来张望"></video>
+        <figcaption>站起来张望</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={turnClip} poster={turnClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="转向"></video>
+        <figcaption>转向：弯曲沿身体向后传</figcaption>
+    </figure>
+</div>
+
+### 任意表面上的爬行
+
+在墙面、天花板和圆柱上，纯物理很难让软体可靠地贴住，悬空和卡在转角都很明显。所以离开平地时改用贴面爬行：先沿表面生成一条与表面保持半个身体厚度的路径（与蜘蛛共用：凹角切过、凸角圆滑，法线在转角处逐渐转过去），再用同一套节律把身体铺在路径上：
+
+* 收拢时头端抓住不动，身体从头往后铺；前推时尾端抓住不动，身体从尾往前铺。
+* 相邻两节在路径上的距离等于体节长度减去拱起占掉的部分：拱起时缩短，放平时伸长，这就是一拍的步幅。
+* 正在抓地的体节保持原位，松开的程度跟着趾钩逐渐松开而增加，所以过渡平滑、没有跳变。
+
+每一节都在路径上，并按节律的高度离开表面，所以不会悬空，也不会穿进表面。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={obstacleClip} poster={obstacleClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="翻越台阶和圆木"></video>
+        <figcaption>翻越台阶和圆木</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={poleClip} poster={poleClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="螺旋爬圆柱"></video>
+        <figcaption>40° 螺旋爬上圆柱</figcaption>
+    </figure>
+</div>
+
+<figure>
+    <video class="clip" src={wallClip} poster={wallClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="爬墙与倒挂天花板"></video>
+    <figcaption>爬上 90° 墙面，再倒挂在天花板上</figcaption>
+</figure>
+
+### 头部的程序化动画
+
+头挂在一个欠阻尼的弹簧上（偏航与俯仰），会滞后、轻微过冲，最大转速限制在每秒 240°。它看向前方路径上的一点；随节律在收拢时低头、前推时抬头领路；爬行时每拍左右探路一次；停下来时用噪声缓慢地东张西望。身体传给头的朝向也经过限速，身体的抖动不会让头突然转向。
+
+### 可操控：四层结构
+
+沿用蛇的结构：控制器读取鼠标和键盘（或者镜头的脚本输入），只向身体发出"去哪、站不站、看哪里"的意图，其余全部由身体决定；相机跟随身体前部的焦点；测试镜头只送输入、不写专用动作，所以镜头里能做到的，玩家也能做到。碰到台阶、圆木、墙或柱子时，身体自动沿表面朝目标铺路，切换到贴面爬行；整条身体回到同一高度的平地后，再交还给物理。
+
+### SimScope
+
+沿用为蜘蛛写的 SimScope，新增两项检测：体节离开表面超过节律抬起的高度（悬空），以及头部每帧转角过大（突转）。翻越障碍时的悬空、头部竖直时的 180° 翻转、每拍抓点释放时头部的抖动，都是用它找到并修掉的。
+
+### 参考
+
+* Macklin, Müller, Chentanez — *XPBD: Position-Based Simulation of Compliant Constrained Dynamics*（2016）
+* Müller et al. — *Position Based Dynamics*（2007）
+* van Griethuijsen, Trimmer — *Locomotion in caterpillars*（Biological Reviews, 2014）
+* Simon et al. — *Visceral-locomotory pistoning in crawling caterpillars*（Current Biology, 2010）
+* Trimmer, Lin — *Bone-free: soft mechanics for adaptive locomotion*（Integrative and Comparative Biology, 2014）
