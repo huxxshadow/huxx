@@ -2727,10 +2727,10 @@
       ]
     },
     "desc": {
-      "en": "A procedural caterpillar in Unity. Its body is a Burst-compiled XPBD soft body that crawls by a muscle rhythm of gather, reach and rest, moved forward only by Coulomb friction and the grip of its crochets. On any surface the same rhythm lays the body along a path, so it climbs steps, logs, walls, ceilings and poles with every segment on the surface. A spring-driven head gives it life, a player can drive it directly, and it is all rendered through a pixel-art pipeline.",
-      "zh": "在 Unity 里实现的程序化绿毛虫。身体是 Burst 编译的 XPBD 软体，按“收拢、前推、停顿”的肌肉节律发力，推它前进的只有库仑摩擦与腹足趾钩的抓力。在任意表面上，同一套节律把身体沿路径铺开，所以它能爬过台阶、圆木、墙面、天花板与圆柱，每一节都贴着身下的表面。头部有弹簧驱动的动画，玩家也能直接操控它，最终通过像素风管线呈现。",
-      "ja": "Unity で作ったプロシージャルなイモムシ。体は Burst でコンパイルした XPBD のソフトボディで、「縮める・押し出す・休む」の筋肉のリズムで動き、前へ進めるのはクーロン摩擦と腹脚のかぎ爪の把持だけです。どんな面の上でも同じリズムで体を経路に沿って置くので、段差、丸太、壁、天井、柱を、どの体節も面に触れたまま越えていきます。頭はバネで生き生きと動き、プレイヤーが直接操作することもでき、すべてピクセルアートのパイプラインで描画されます。",
-      "ko": "Unity로 만든 절차적 애벌레. 몸은 Burst로 컴파일한 XPBD 소프트 바디로, '모으기, 밀기, 쉬기'의 근육 리듬으로 움직이며, 앞으로 나아가게 하는 것은 쿨롱 마찰과 배다리 갈고리의 붙잡는 힘뿐입니다. 어떤 표면 위에서도 같은 리듬으로 몸을 경로에 따라 놓으므로, 계단, 통나무, 벽, 천장, 기둥을 모든 체절이 표면에 닿은 채로 넘어갑니다. 머리는 스프링으로 생동감 있게 움직이고, 플레이어가 직접 조작할 수도 있으며, 모두 픽셀 아트 파이프라인으로 렌더링됩니다."
+      "en": "A procedural caterpillar in Unity. Its body is a Burst-compiled XPBD soft body that crawls by a muscle rhythm of gather, reach and rest, moved forward only by Coulomb friction and the grip of its crochets. Off level ground it switches to surface-constrained crawling: the same gait rhythm lays the segments along SDF-derived surface paths, carrying it over steps, logs, vertical walls, ceilings and poles at any orientation with no floating or interpenetration. An underdamped spring drives secondary motion on the head, an intent-based controller makes it fully playable, and everything is rendered through a pixel-art pipeline.",
+      "zh": "在 Unity 里实现的程序化绿毛虫。身体是 Burst 编译的 XPBD 软体，按“收拢、前推、停顿”的肌肉节律发力，推它前进的只有库仑摩擦与腹足趾钩的抓力。离开平地时切换为表面约束的爬行：沿基于距离场生成的表面路径，以同一步态节律铺放体节，可在任意朝向上越过台阶、圆木、垂直墙面、天花板与圆柱，体节与表面之间无悬空、无穿透。头部由欠阻尼弹簧驱动次级动画，配合基于意图的控制器实现玩家实时操控，最终通过像素风渲染管线呈现。",
+      "ja": "Unity で作ったプロシージャルなイモムシ。体は Burst でコンパイルした XPBD のソフトボディで、「縮める・押し出す・休む」の筋肉のリズムで動き、前へ進めるのはクーロン摩擦と腹脚のかぎ爪の把持だけです。平地を離れると面拘束の這い歩きに切り替わり、距離場から生成した表面経路に沿って同じ歩容リズムで体節を配置するので、段差、丸太、垂直の壁、天井、柱をどの向きでも、浮きも貫通もなく越えます。頭は減衰不足のバネによる二次モーションで動き、意図ベースのコントローラーでプレイヤーがリアルタイムに操作でき、すべてピクセルアートのレンダリングパイプラインで描画されます。",
+      "ko": "Unity로 만든 절차적 애벌레. 몸은 Burst로 컴파일한 XPBD 소프트 바디로, '모으기, 밀기, 쉬기'의 근육 리듬으로 움직이며, 앞으로 나아가게 하는 것은 쿨롱 마찰과 배다리 갈고리의 붙잡는 힘뿐입니다. 평지를 벗어나면 표면 구속 기어가기로 전환해, 거리장에서 생성한 표면 경로를 따라 같은 보행 리듬으로 체절을 배치하므로, 계단, 통나무, 수직 벽, 천장, 기둥을 어떤 방향으로든 뜨거나 관통하지 않고 넘습니다. 머리는 감쇠가 부족한 스프링이 2차 모션을 만들고, 의도 기반 컨트롤러로 플레이어가 실시간으로 조작할 수 있으며, 모두 픽셀 아트 렌더링 파이프라인으로 렌더링됩니다."
     },
     "tags": {
       "en": [
