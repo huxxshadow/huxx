@@ -123,14 +123,6 @@ Every segment sits on the path at the height the rhythm lifts it to, so none of 
 
 The head hangs on an underdamped spring in yaw and pitch, so it lags and overshoots a little, and it never turns faster than 240° per second. It looks at a point further along its way. With the rhythm, it tucks while the body gathers and lifts to lead the reach. It swings from side to side once a beat as it feels its way, and at rest it slowly looks around on noise. The body's frame for the head is rate-limited too, so a jolt of the body never snaps the head round.
 
-### Player Control: Four Layers
-
-It uses the snake's structure. A controller reads the mouse and keyboard (or a shot's scripted input) and only asks the body where to go, whether to stand and what to look at. The body decides everything else. The camera follows a focus point on the front of the body. Test shots only send input and never script special moves, so whatever a shot shows, a player can do. When a step, log, wall or pole is in its way, the body lays its own path over the surfaces toward the goal and switches to surface crawling. Once the whole body lies on one level again, it hands back to physics.
-
-### SimScope
-
-The SimScope tool written for the spider gained two checks: segments further off the surface than the rhythm lifts them (floating), and the head turning too far in one frame (snapping). Floating while climbing over obstacles, a 180° head flip when the head stood vertical, and a head jolt every beat as the grip released were all found and fixed with it.
-
 ### References
 
 * Macklin, Müller, Chentanez — *XPBD: Position-Based Simulation of Compliant Constrained Dynamics* (2016)
