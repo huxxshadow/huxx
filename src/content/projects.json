@@ -2773,5 +2773,69 @@
     ],
     "colorText": "#3F7D1C",
     "colorBackground": "#E3F4C2"
+  },
+  {
+    "id": "technical-project-procedural-slime",
+    "order": 41,
+    "category": "technical",
+    "title": {
+      "en": "Procedural Animation | Slime",
+      "zh": "程序化动画 | 史莱姆",
+      "ja": "プロシージャルアニメーション | スライム",
+      "ko": "절차적 애니메이션 | 슬라임"
+    },
+    "roles": {
+      "en": [
+        "Technical Artist",
+        "Animation Programmer"
+      ],
+      "zh": [
+        "技术美术",
+        "动画程序"
+      ],
+      "ja": [
+        "テクニカルアーティスト",
+        "アニメーションプログラマー"
+      ],
+      "ko": [
+        "테크니컬 아티스트",
+        "애니메이션 프로그래머"
+      ]
+    },
+    "desc": {
+      "en": "A cartoon slime in Unity, built visuals-first with physics in support. Its body is a few lobes with volume, and its skin is a smooth union of their distance fields, meshed with surface nets on a grid in its rest space and clipped against the world's distance field. One rule covers squeezing through slits, splitting, merging and being crushed: each lobe takes the room it has while the total volume is conserved. Squash and stretch, sway and facial expressions run on underdamped springs, and an intent-based controller makes it fully playable.",
+      "zh": "在 Unity 里实现的卡通史莱姆，以视觉效果为主、物理为辅。身体由几个带体积的叶瓣组成，皮肤是各叶瓣距离场的平滑并集，在静止空间的网格上用 Surface Nets 生成，并按世界距离场裁切贴合。钻缝、分裂、合并与被压扁共用同一条规则：每个叶瓣占据它所在的空间，总体积守恒。挤压与拉伸、摆动和表情由欠阻尼弹簧驱动，配合基于意图的控制器实现玩家实时操控。",
+      "ja": "Unity で作ったカートゥーン調のスライム。見た目を優先し、物理は補助に使っています。体は体積を持つ数個のローブでできていて、皮膚は各ローブの距離場のスムーズな和集合です。静止空間のグリッド上で Surface Nets によりメッシュ化し、ワールドの距離場で切り取って接地させます。隙間の通り抜け、分裂、合体、押しつぶしは同じ規則で扱います。各ローブは置かれた空間を占め、総体積は保存されます。スクワッシュ＆ストレッチ、揺れ、表情は減衰不足のバネで動き、意図ベースのコントローラーでプレイヤーがリアルタイムに操作できます。",
+      "ko": "Unity로 만든 카툰 스타일 슬라임. 시각 효과를 우선하고 물리는 보조로 사용했습니다. 몸은 부피를 가진 몇 개의 로브로 이루어지고, 피부는 각 로브 거리장의 부드러운 합집합입니다. 정지 공간의 격자에서 Surface Nets로 메시를 만들고, 월드 거리장으로 잘라 접촉면에 맞춥니다. 틈새 통과, 분열, 합체, 눌림은 같은 규칙으로 처리합니다. 각 로브는 자신이 있는 공간을 차지하고 전체 부피는 보존됩니다. 스쿼시 앤 스트레치, 흔들림, 표정은 감쇠가 부족한 스프링으로 움직이며, 의도 기반 컨트롤러로 플레이어가 실시간으로 조작할 수 있습니다."
+    },
+    "tags": {
+      "en": [
+        "Unity",
+        "Procedural Animation",
+        "Signed Distance Fields",
+        "Stylized Animation"
+      ],
+      "zh": [
+        "Unity",
+        "程序化动画",
+        "距离场",
+        "风格化动画"
+      ],
+      "ja": [
+        "Unity",
+        "プロシージャルアニメーション",
+        "距離場",
+        "スタイライズドアニメーション"
+      ],
+      "ko": [
+        "Unity",
+        "절차적 애니메이션",
+        "거리장",
+        "스타일라이즈드 애니메이션"
+      ]
+    },
+    "coverImage": "src/assets/projects/poster/ProceduralSlimePoster.webp",
+    "colorText": "#1F5FA6",
+    "colorBackground": "#DCEEFF"
   }
 ]

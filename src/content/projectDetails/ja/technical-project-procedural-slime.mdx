@@ -1,0 +1,123 @@
+---
+---
+
+import slitClip from '@/assets/projects/technical-project-procedural-slime/clips/slit.mp4?url';
+import slitClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/slit-poster.webp?url';
+import jumpClip from '@/assets/projects/technical-project-procedural-slime/clips/jump.mp4?url';
+import jumpClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/jump-poster.webp?url';
+import splitClip from '@/assets/projects/technical-project-procedural-slime/clips/split-merge.mp4?url';
+import splitClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/split-merge-poster.webp?url';
+import crushClip from '@/assets/projects/technical-project-procedural-slime/clips/crush.mp4?url';
+import crushClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/crush-poster.webp?url';
+import dropClip from '@/assets/projects/technical-project-procedural-slime/clips/drop.mp4?url';
+import dropClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/drop-poster.webp?url';
+import oozeClip from '@/assets/projects/technical-project-procedural-slime/clips/ooze.mp4?url';
+import oozeClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/ooze-poster.webp?url';
+
+## 担当
+
+個人プロジェクト。Unity で操作できるカートゥーン調のスライムをゼロから実装しました。
+
+* **体と皮膚**：体積を持つ数個のローブでできた体。各ローブの距離場のスムーズな和集合。静止空間のグリッド上で Surface Nets により皮膚を生成し、ワールドの距離場で切り取ります。
+* **一つの変形規則**：隙間の通り抜け、分裂、合体、押しつぶしは同じ規則を共有します。各ローブは置かれた空間を占め、総体積は保存されます。
+* **二次モーションと表情**：スクワッシュ＆ストレッチ、せん断の揺れ、リンギングはすべて減衰不足のバネで動き、表情パラメーターはバネで補間します。
+* **操作と検証**：プロジェクト内の他のキャラクターと共通の意図ベースのコントローラーとショットスクリプト。決定論的リプレイ、数値トレース、フレームごとのちらつき計測で検証しました。
+
+---
+
+## プロジェクト詳細
+
+最初のバージョンは粒子ソフトボディ（PBF 流体、MPM、XPBD シェイプマッチング）でした。分裂、合体、隙間の通り抜けにはそれぞれ追加の状態切り替えが必要で、切り替えの瞬間に形が跳び、場面ごとに挙動も揃いませんでした。最終版は見た目を優先します。体が持つ自由度は少数（足の位置、速度、体積）だけで、形はアニメーションの規則が決め、物理は重力、地面、衝突、ジャンプだけを担当します。
+
+### 体：ローブとスムーズな和集合
+
+各ローブは体積に応じてスケールする gumdrop 型の距離場です。底は平らで上半分は楕円体、半径は体積の立方根に比例します。ローブ同士は smooth-min で合成します。2 匹のスライムは「リンク」で一枚の皮膚を共有し、リンクには二つのパラメーターがあります。
+
+* **ブレンド**：2 匹の間の smooth-min のブレンド半径。
+* **ブリッジ**：2 匹の中心を結ぶ、中央が最も細いカプセル。
+
+分裂も合体もこの二つのパラメーターが時間とともに変わるだけなので、皮膚は常に一つの連続した距離場です。
+
+### 皮膚：静止空間のグリッド
+
+距離場は体の静止空間のグリッドでサンプリングします。グリッドは体と一緒に移動するので、移動中に面が体の上を滑りません。スクワッシュや揺れなどの変形は生成後の頂点にかけます。
+
+* **ワールドへの密着**：ワールドの距離場と smooth-max で切り取り、接触部分を平らにします。皮膚は接触面と 2–6 mm の隙間を保ち、壁や床とのデプスファイティングを避けます。切り取った体積は全体のスケールで補います。
+* **ちらつきの除去**：グリッドを鉛直軸まわりに 22.5° 回し、鉛直方向に半セルずらします。これで軸に揃った壁や床がグリッド点の一列全体を同時にまたぐことがなくなります。頂点法線は周囲の面の面積加重平均を取り、四角形はすべて同じ対角線で三角形に分割します。
+
+### スクワッシュ、ストレッチ、揺れ
+
+スクワッシュは対数ひずみ *s* にかかる減衰不足のバネです（2.8 Hz、減衰比 0.12）。三軸のスケールは (e^(−s/2), e^s, e^(−s/2)) で、体積は変わりません。
+
+* **着地**：鉛直速度の急変がバネに衝撃を与えます。
+* **空中**：伸びる方向が鉛直から速度方向へ向きます。
+* **ジャンプ**：着地点と踏み切りの高さから水平方向の初速を求めます。溜めでつぶれ、離地でバネに逆向きの衝撃を与えます。
+* **揺れ**：水平加速度がせん断バネ（2.2 Hz）を動かし、高い部分ほど大きくずれます。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={dropClip} poster={dropClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="落下"></video>
+        <figcaption>落下：着地でつぶれ、約 3 周期跳ね返る</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={jumpClip} poster={jumpClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="溜めロングジャンプ"></video>
+        <figcaption>溜めロングジャンプ：着地点が初速を決め、空中では速度方向に伸びる</figcaption>
+    </figure>
+</div>
+
+### 隙間の通り抜け
+
+体が壁を押しているとき、壁に沿って体より狭い開口を探し、進行方向に沿って隙間の入口、長さ、幅を測ります。その後は一つのパラメーター、すでに隙間に入った体積 *X* だけで全体が決まります。
+
+* 後ろの球の体積は V − X で、縮みながら入口へ移動します。
+* 隙間の中は角の丸い箱で、幅は隙間の幅、高さは立った高さの 0.8、長さは収める体積で決まります。
+* 出口の球の体積は max(0, X − 隙間の容量) です。
+
+進む速さは入力に従い、逆に入力すると戻ります。すべて通り抜けると、出口の球が体全体になります。通り抜けの間はグリッドをワールド座標に固定するので、壁が皮膚を切る位置は体が動いても変わりません。
+
+<figure>
+    <video class="clip" src={slitClip} poster={slitClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="隙間の通り抜け"></video>
+    <figcaption>隙間の通り抜け：球、隙間の中の角丸の箱、出口の球。総体積は変わらない</figcaption>
+</figure>
+
+### 分裂と合体
+
+* **分裂**（F キー）：まず縮んで溜め、体積が半分ずつの二つのローブになって左右に押し出されます。ブレンドは 0.35 s で 1 から 0 へ下がり、ブリッジは 0.7 s で細くなって切れます。
+* **合体**：皮膚が触れると、ブレンドとブリッジが 0.3 s で立ち上がり、続いて小さい方の体積が 0.35 s で大きい方へ移り、一度リンギングします。
+
+分裂直後、まだ融け合っている間は顔を一つだけ表示し、ブレンドが下がると二つの顔に分かれます。
+
+<figure>
+    <video class="clip" src={splitClip} poster={splitClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="分裂と合体"></video>
+    <figcaption>分裂して離れ、ぶつかり直して一つに戻る</figcaption>
+</figure>
+
+### 押しつぶし
+
+毎ステップ頭上の空きを測ります。スクワッシュは空きに対応する対数ひずみを超えられず、最低で立った高さの 18% です。水平方向には体積を保つように広がります。
+
+* **押されている間**：体の下へ伸びる充填体を加え、床の距離場で切り取って床の隙間を埋めます。
+* **離されたあと**：スクワッシュはまず毎秒 2.4 の速さで戻り、半分の高さでスクワッシュのバネに引き継ぎ、一度衝撃を与えます。
+
+<figure>
+    <video class="clip" src={crushClip} poster={crushClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="押しつぶし"></video>
+    <figcaption>押しつぶし：リブの間の隙間を埋め、離されると跳ね返る</figcaption>
+</figure>
+
+### 移動と表情
+
+移動は足元の推進力で動きます。体の底は局所的な地面の高さマップに沿って段差や縁に合わせます。壁にぶつかると壁の法線方向につぶれ、斜面や角を押すと横へ滑ってよけます。
+
+表情は三つの連続パラメーター（目の開き、口角の曲がり、口の開き）でできていて、それぞれ臨界減衰のバネで補間します。状態（空中、着地、溜め、押されている、隙間の中、合体）にはヒステリシスがあり、境界で行ったり来たりしません。
+
+<figure>
+    <video class="clip" src={oozeClip} poster={oozeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="這い進み"></video>
+    <figcaption>這い進み：動き出す前の予備のつぶれ、加速と減速でのせん断の揺れ</figcaption>
+</figure>
+
+### 参考文献
+
+* Gibson — *Constrained Elastic Surface Nets*（1998）
+* Inigo Quilez — *Smooth minimum*、*Distance functions*（iquilezles.org）
+* Thomas, Johnston — *The Illusion of Life: Disney Animation*（1981）
+* Macklin, Müller, Chentanez — *XPBD: Position-Based Simulation of Compliant Constrained Dynamics*（2016）

@@ -1,0 +1,123 @@
+---
+---
+
+import slitClip from '@/assets/projects/technical-project-procedural-slime/clips/slit.mp4?url';
+import slitClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/slit-poster.webp?url';
+import jumpClip from '@/assets/projects/technical-project-procedural-slime/clips/jump.mp4?url';
+import jumpClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/jump-poster.webp?url';
+import splitClip from '@/assets/projects/technical-project-procedural-slime/clips/split-merge.mp4?url';
+import splitClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/split-merge-poster.webp?url';
+import crushClip from '@/assets/projects/technical-project-procedural-slime/clips/crush.mp4?url';
+import crushClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/crush-poster.webp?url';
+import dropClip from '@/assets/projects/technical-project-procedural-slime/clips/drop.mp4?url';
+import dropClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/drop-poster.webp?url';
+import oozeClip from '@/assets/projects/technical-project-procedural-slime/clips/ooze.mp4?url';
+import oozeClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/ooze-poster.webp?url';
+
+## 我的职责
+
+个人项目，在 Unity 里从零实现一只可操控的卡通史莱姆：
+
+* **身体与皮肤**：由几个带体积的叶瓣组成的身体；各叶瓣距离场的平滑并集；在静止空间网格上用 Surface Nets 生成皮肤，并按世界距离场裁切。
+* **统一的形变规则**：钻缝、分裂、合并和被压扁共用一条规则：每个叶瓣占据它所在的空间，总体积守恒。
+* **次级动画与表情**：挤压与拉伸、剪切摆动、振铃都由欠阻尼弹簧驱动；表情参数用弹簧插值。
+* **操控与验证**：与项目里其他角色共用的意图控制器和镜头脚本；用确定性回放、数值追踪和逐帧闪烁统计做验证。
+
+---
+
+## 项目细节
+
+最初的版本用粒子软体实现（PBF 流体、MPM、XPBD 形状匹配）。分裂、合并和钻缝都需要额外的状态切换，切换瞬间形状会跳变，不同场景下的表现也不一致。最终版本改为以视觉为主：身体只保留少量自由度（脚的位置、速度、体积），形状由动画规则决定；物理只负责重力、地面、碰撞和起跳。
+
+### 身体：叶瓣与平滑并集
+
+每个叶瓣是一个按体积缩放的 gumdrop 距离场：底部平，上半部分是椭球，半径与体积的立方根成正比。多个叶瓣用 smooth-min 合并。两只史莱姆通过“连接”共享一张皮肤，连接有两个参数：
+
+* **融合权重**：两只之间 smooth-min 的混合半径；
+* **桥接体**：一段中间最细的胶囊体，连接两者的中心。
+
+分裂、合并都只是这两个参数随时间变化，皮肤始终是一个连续的距离场。
+
+### 皮肤：静止空间网格
+
+距离场在身体静止空间的网格上采样，网格随身体平移，所以移动时面片不会在身体上滑动。挤压、摆动等形变作用在生成后的顶点上。
+
+* **贴合世界**：与世界距离场做 smooth-max 裁切，接触处被压平；皮肤与接触面保持 2–6 mm 间隙，避免与墙面、地面的深度冲突。被裁掉的体积通过整体缩放补回。
+* **消除闪烁**：网格绕竖直轴旋转 22.5°，并在竖直方向偏移半格，避免与坐标轴对齐的墙面或地面同时跨过一整排网格点；顶点法线取周围面的面积加权平均，每个四边形固定沿同一条对角线三角化。
+
+### 挤压、拉伸与摆动
+
+挤压用一个作用在对数应变 *s* 上的欠阻尼弹簧（2.8 Hz，阻尼比 0.12），三个轴的缩放为 (e^(−s/2), e^s, e^(−s/2))，体积不变。
+
+* **落地**：竖直速度的突变给弹簧一个冲量。
+* **空中**：拉伸方向从竖直逐渐转向速度方向。
+* **起跳**：由落点和起跳高度反解抛物线的水平初速度；蓄力时压扁，离地时给弹簧一个反向冲量。
+* **摆动**：水平加速度驱动一个剪切弹簧（2.2 Hz），越高的部分偏移越大。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={dropClip} poster={dropClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="落下"></video>
+        <figcaption>落下：落地压扁后回弹约三个周期</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={jumpClip} poster={jumpClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="蓄力远跳"></video>
+        <figcaption>蓄力远跳：落点决定初速度，空中沿速度方向拉伸</figcaption>
+    </figure>
+</div>
+
+### 钻缝
+
+身体推着墙时，沿墙面扫描比身体窄的开口，再沿行进方向测出缝的入口、长度和宽度。之后整个过程只由一个参数决定，即已经进入缝的体积 *X*：
+
+* 后面的球体积为 V − X，逐渐缩小并移向缝口；
+* 缝中是一个圆角盒，宽度为缝宽，高度为站立高度的 0.8，长度由它容纳的体积决定；
+* 出口的球体积为 max(0, X − 缝容量)。
+
+推进速度跟随输入，反向输入时会退回。全部通过后，出口的球就是完整的身体。钻缝期间网格固定在世界坐标上，墙面裁切的位置不会随身体移动而变化。
+
+<figure>
+    <video class="clip" src={slitClip} poster={slitClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="钻过窄缝"></video>
+    <figcaption>钻过窄缝：球、缝中圆角盒、出口球，总体积不变</figcaption>
+</figure>
+
+### 分裂与合并
+
+* **分裂**（F 键）：先压缩蓄力，再变成两个体积各半的叶瓣并向两侧推开；融合权重在 0.35 s 内从 1 降到 0，桥接体在 0.7 s 内变细并断开。
+* **合并**：两只的皮肤接触后，融合权重和桥接体在 0.3 s 内建立，随后较小一只的体积在 0.35 s 内转入较大一只，并触发一次振铃。
+
+刚分裂、两只还融在一起时只显示一张脸，融合权重降低后两张脸再分开。
+
+<figure>
+    <video class="clip" src={splitClip} poster={splitClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="分裂与合并"></video>
+    <figcaption>分裂后走开，再撞回去合并</figcaption>
+</figure>
+
+### 被压扁
+
+每一步测量头顶的净空，挤压量不能超过净空对应的对数应变，最低为站立高度的 18%，水平方向按体积守恒展开。
+
+* **受压时**：身体下方加入一个向下延伸的填充体，由地面的距离场裁切，填满地面上的缝隙。
+* **松开后**：挤压量先按每秒 2.4 的速率回升；回到一半高度时交给挤压弹簧，并施加一次冲量。
+
+<figure>
+    <video class="clip" src={crushClip} poster={crushClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="被压扁"></video>
+    <figcaption>被压扁：填满棱条之间的缝隙，松开后回弹</figcaption>
+</figure>
+
+### 移动与表情
+
+移动由脚下的推力驱动，身体底部按一张局部地面高度图贴合台阶和边缘；撞墙时沿墙面法线压扁，推着斜面或尖角时沿其侧向滑开。
+
+表情由三个连续参数组成：眼睛开合、嘴角弧度、张口程度，各自由临界阻尼弹簧插值；状态（空中、落地、蓄力、受压、钻缝、合并）带滞回，避免在边界处来回切换。
+
+<figure>
+    <video class="clip" src={oozeClip} poster={oozeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="蠕行"></video>
+    <figcaption>蠕行：起步前的预备压缩，加速和减速时的剪切摆动</figcaption>
+</figure>
+
+### 参考
+
+* Gibson — *Constrained Elastic Surface Nets*（1998）
+* Inigo Quilez — *Smooth minimum*、*Distance functions*（iquilezles.org）
+* Thomas, Johnston — *The Illusion of Life: Disney Animation*（1981）
+* Macklin, Müller, Chentanez — *XPBD: Position-Based Simulation of Compliant Constrained Dynamics*（2016）

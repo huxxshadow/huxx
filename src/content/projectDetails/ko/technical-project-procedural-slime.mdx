@@ -1,0 +1,123 @@
+---
+---
+
+import slitClip from '@/assets/projects/technical-project-procedural-slime/clips/slit.mp4?url';
+import slitClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/slit-poster.webp?url';
+import jumpClip from '@/assets/projects/technical-project-procedural-slime/clips/jump.mp4?url';
+import jumpClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/jump-poster.webp?url';
+import splitClip from '@/assets/projects/technical-project-procedural-slime/clips/split-merge.mp4?url';
+import splitClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/split-merge-poster.webp?url';
+import crushClip from '@/assets/projects/technical-project-procedural-slime/clips/crush.mp4?url';
+import crushClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/crush-poster.webp?url';
+import dropClip from '@/assets/projects/technical-project-procedural-slime/clips/drop.mp4?url';
+import dropClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/drop-poster.webp?url';
+import oozeClip from '@/assets/projects/technical-project-procedural-slime/clips/ooze.mp4?url';
+import oozeClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/ooze-poster.webp?url';
+
+## 담당 역할
+
+개인 프로젝트로, Unity에서 조작 가능한 카툰 스타일 슬라임을 처음부터 구현했습니다.
+
+* **몸과 피부**: 부피를 가진 몇 개의 로브로 이루어진 몸, 각 로브 거리장의 부드러운 합집합. 정지 공간 격자에서 Surface Nets로 피부를 생성하고 월드 거리장으로 잘라냅니다.
+* **하나의 변형 규칙**: 틈새 통과, 분열, 합체, 눌림이 같은 규칙을 공유합니다. 각 로브는 자신이 있는 공간을 차지하고 전체 부피는 보존됩니다.
+* **2차 모션과 표정**: 스쿼시 앤 스트레치, 전단 흔들림, 링잉은 모두 감쇠가 부족한 스프링으로 움직이고, 표정 파라미터는 스프링으로 보간합니다.
+* **조작과 검증**: 프로젝트의 다른 캐릭터와 공유하는 의도 기반 컨트롤러와 샷 스크립트. 결정론적 리플레이, 수치 추적, 프레임별 깜빡임 측정으로 검증했습니다.
+
+---
+
+## 프로젝트 상세
+
+처음 버전은 입자 소프트 바디(PBF 유체, MPM, XPBD 형상 매칭)였습니다. 분열, 합체, 틈새 통과마다 추가 상태 전환이 필요했고, 전환 순간 형태가 튀었으며 상황마다 동작도 일관되지 않았습니다. 최종 버전은 시각 효과를 우선합니다. 몸은 적은 자유도(발의 위치, 속도, 부피)만 가지며, 형태는 애니메이션 규칙이 정하고 물리는 중력, 지면, 충돌, 점프만 담당합니다.
+
+### 몸: 로브와 부드러운 합집합
+
+각 로브는 부피에 따라 스케일되는 gumdrop 형태의 거리장입니다. 바닥은 평평하고 윗부분은 타원체이며, 반지름은 부피의 세제곱근에 비례합니다. 로브들은 smooth-min으로 합칩니다. 두 슬라임은 '링크'로 하나의 피부를 공유하며, 링크에는 두 개의 파라미터가 있습니다.
+
+* **블렌드**: 두 슬라임 사이 smooth-min의 블렌드 반경.
+* **브리지**: 두 중심을 잇는, 가운데가 가장 가는 캡슐.
+
+분열과 합체는 이 두 파라미터가 시간에 따라 바뀌는 것뿐이어서, 피부는 항상 하나의 연속된 거리장입니다.
+
+### 피부: 정지 공간 격자
+
+거리장은 몸의 정지 공간 격자에서 샘플링합니다. 격자가 몸과 함께 이동하므로 움직이는 동안 면이 몸 위를 미끄러지지 않습니다. 스쿼시나 흔들림 같은 변형은 생성된 정점에 적용합니다.
+
+* **월드에 맞추기**: 월드 거리장과 smooth-max로 잘라 접촉 부분을 평평하게 만듭니다. 피부는 접촉면과 2–6 mm 간격을 유지해 벽, 바닥과의 깊이 충돌을 피하고, 잘려 나간 부피는 전체 스케일로 보충합니다.
+* **깜빡임 제거**: 격자를 수직축 기준으로 22.5° 돌리고 수직 방향으로 반 칸 어긋나게 해, 축에 정렬된 벽이나 바닥이 격자점 한 줄 전체를 동시에 지나지 않게 합니다. 정점 법선은 주변 면의 면적 가중 평균을 쓰고, 모든 사각형은 같은 대각선으로 삼각형을 나눕니다.
+
+### 스쿼시, 스트레치, 흔들림
+
+스쿼시는 로그 변형률 *s*에 걸린 감쇠가 부족한 스프링입니다(2.8 Hz, 감쇠비 0.12). 세 축의 스케일은 (e^(−s/2), e^s, e^(−s/2))로 부피가 변하지 않습니다.
+
+* **착지**: 수직 속도의 급변이 스프링에 충격을 줍니다.
+* **공중**: 늘어나는 방향이 수직에서 속도 방향으로 돌아갑니다.
+* **점프**: 착지점과 도약 높이로 수평 초기 속도를 구합니다. 차지하는 동안 눌리고, 이륙할 때 스프링에 반대 방향 충격을 줍니다.
+* **흔들림**: 수평 가속도가 전단 스프링(2.2 Hz)을 움직이며, 높은 부분일수록 더 크게 밀립니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={dropClip} poster={dropClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="낙하"></video>
+        <figcaption>낙하: 착지하며 눌린 뒤 약 세 주기 반동</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={jumpClip} poster={jumpClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="차지 멀리뛰기"></video>
+        <figcaption>차지 멀리뛰기: 착지점이 초기 속도를 정하고, 공중에서는 속도 방향으로 늘어남</figcaption>
+    </figure>
+</div>
+
+### 틈새 통과
+
+몸이 벽을 밀고 있을 때 벽을 따라 몸보다 좁은 틈을 찾고, 진행 방향을 따라 틈의 입구, 길이, 폭을 잽니다. 이후에는 하나의 파라미터, 이미 틈에 들어간 부피 *X*만으로 전체 과정이 정해집니다.
+
+* 뒤쪽 공의 부피는 V − X로, 줄어들면서 입구로 이동합니다.
+* 틈 안은 모서리가 둥근 상자로, 폭은 틈의 폭, 높이는 서 있는 높이의 0.8, 길이는 담은 부피로 정해집니다.
+* 출구 쪽 공의 부피는 max(0, X − 틈의 용량)입니다.
+
+나아가는 속도는 입력을 따르고, 반대로 입력하면 물러납니다. 모두 통과하면 출구 쪽 공이 몸 전체가 됩니다. 통과하는 동안 격자를 월드 좌표에 고정해, 벽이 피부를 자르는 위치가 몸이 움직여도 바뀌지 않습니다.
+
+<figure>
+    <video class="clip" src={slitClip} poster={slitClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="틈새 통과"></video>
+    <figcaption>틈새 통과: 공, 틈 안의 둥근 상자, 출구 쪽 공. 전체 부피는 그대로</figcaption>
+</figure>
+
+### 분열과 합체
+
+* **분열**(F 키): 먼저 압축해 차지한 뒤, 부피가 절반씩인 두 로브가 되어 양옆으로 밀려납니다. 블렌드는 0.35 s 동안 1에서 0으로 내려가고, 브리지는 0.7 s 동안 가늘어지다 끊어집니다.
+* **합체**: 피부가 닿으면 블렌드와 브리지가 0.3 s 동안 생기고, 이어서 작은 쪽의 부피가 0.35 s 동안 큰 쪽으로 옮겨 가며 한 번 링잉합니다.
+
+분열 직후 아직 붙어 있는 동안에는 얼굴을 하나만 보여 주고, 블렌드가 내려가면 두 얼굴로 나뉩니다.
+
+<figure>
+    <video class="clip" src={splitClip} poster={splitClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="분열과 합체"></video>
+    <figcaption>분열해 떨어졌다가 다시 부딪쳐 하나로 합쳐짐</figcaption>
+</figure>
+
+### 눌림
+
+매 스텝 머리 위 여유 공간을 잽니다. 스쿼시는 그 공간에 해당하는 로그 변형률을 넘을 수 없고, 최저 서 있는 높이의 18%까지입니다. 수평 방향으로는 부피를 유지하도록 퍼집니다.
+
+* **눌리는 동안**: 몸 아래로 뻗는 채움 형상을 더하고, 바닥의 거리장으로 잘라 바닥 틈을 메웁니다.
+* **놓인 뒤**: 스쿼시는 먼저 초당 2.4의 속도로 회복하고, 절반 높이에서 스쿼시 스프링에 넘겨 한 번 충격을 줍니다.
+
+<figure>
+    <video class="clip" src={crushClip} poster={crushClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="눌림"></video>
+    <figcaption>눌림: 리브 사이 틈을 메우고, 놓이면 튀어 오름</figcaption>
+</figure>
+
+### 이동과 표정
+
+이동은 발밑의 추진력으로 움직입니다. 몸의 바닥은 국소 지면 높이 맵을 따라 계단과 가장자리에 맞춥니다. 벽에 부딪히면 벽의 법선 방향으로 눌리고, 경사면이나 모서리를 밀면 옆으로 미끄러져 비켜 갑니다.
+
+표정은 세 개의 연속 파라미터(눈 뜬 정도, 입꼬리 곡률, 입 벌림)로 이루어지며, 각각 임계 감쇠 스프링으로 보간합니다. 상태(공중, 착지, 차지, 눌림, 틈 안, 합체)에는 히스테리시스가 있어 경계에서 왔다 갔다 하지 않습니다.
+
+<figure>
+    <video class="clip" src={oozeClip} poster={oozeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="기어가기"></video>
+    <figcaption>기어가기: 출발 전의 예비 압축, 가속과 감속 때의 전단 흔들림</figcaption>
+</figure>
+
+### 참고 자료
+
+* Gibson — *Constrained Elastic Surface Nets* (1998)
+* Inigo Quilez — *Smooth minimum*, *Distance functions* (iquilezles.org)
+* Thomas, Johnston — *The Illusion of Life: Disney Animation* (1981)
+* Macklin, Müller, Chentanez — *XPBD: Position-Based Simulation of Compliant Constrained Dynamics* (2016)

@@ -1,0 +1,123 @@
+---
+---
+
+import slitClip from '@/assets/projects/technical-project-procedural-slime/clips/slit.mp4?url';
+import slitClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/slit-poster.webp?url';
+import jumpClip from '@/assets/projects/technical-project-procedural-slime/clips/jump.mp4?url';
+import jumpClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/jump-poster.webp?url';
+import splitClip from '@/assets/projects/technical-project-procedural-slime/clips/split-merge.mp4?url';
+import splitClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/split-merge-poster.webp?url';
+import crushClip from '@/assets/projects/technical-project-procedural-slime/clips/crush.mp4?url';
+import crushClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/crush-poster.webp?url';
+import dropClip from '@/assets/projects/technical-project-procedural-slime/clips/drop.mp4?url';
+import dropClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/drop-poster.webp?url';
+import oozeClip from '@/assets/projects/technical-project-procedural-slime/clips/ooze.mp4?url';
+import oozeClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/ooze-poster.webp?url';
+
+## My Role
+
+A personal project: a playable cartoon slime built from scratch in Unity.
+
+* **Body and skin**: a body made of a few lobes with volume; a smooth union of their distance fields; a skin meshed with surface nets on a grid in its rest space and clipped against the world's distance field.
+* **One deformation rule**: squeezing through slits, splitting, merging and being crushed share one rule: each lobe takes the room it has, and the total volume is conserved.
+* **Secondary motion and expressions**: squash and stretch, shear sway and ringing all run on underdamped springs; expression parameters are interpolated by springs.
+* **Control and verification**: the intent-based controller and shot scripts shared with the project's other characters; verified with deterministic replay, numeric traces and a frame-by-frame flicker count.
+
+---
+
+## Project Details
+
+The first versions were particle soft bodies (PBF fluid, MPM, XPBD shape matching). Splitting, merging and squeezing through slits each needed extra states, the shape jumped whenever one switched on or off, and the slime behaved differently from one situation to the next. The final version puts the visuals first: the body keeps only a few degrees of freedom (where its foot is, its velocity, its volume), animation rules decide its shape, and physics only handles gravity, the ground, collisions and jumps.
+
+### Body: Lobes and a Smooth Union
+
+Each lobe is a gumdrop distance field scaled by its volume: flat underneath, an ellipsoid above, its radius proportional to the cube root of its volume. Lobes are combined with a smooth minimum. Two slimes share one skin through a link, which has two parameters:
+
+* **Blend**: the blending radius of the smooth minimum between the two;
+* **Bridge**: a capsule between their middles, thinnest halfway.
+
+Splitting and merging are just these two parameters changing over time, so the skin is always one continuous distance field.
+
+### Skin: A Grid in the Rest Space
+
+The field is sampled on a grid in the body's rest space. The grid moves with the body, so its faces do not slide across it as it moves. Deformations such as squash and sway are applied to the meshed vertices.
+
+* **Fitting the world**: a smooth maximum against the world's distance field flattens the skin where it touches something. The skin keeps a 2–6 mm gap from what it touches to avoid depth fighting with walls and the floor, and the volume cut away is made up by scaling the whole body.
+* **No flicker**: the grid is turned 22.5° about the vertical and offset half a cell vertically, so a wall or floor aligned with the axes never crosses a whole row of grid points at once. Vertex normals are the area-weighted mean of the faces around them, and every quad is split along the same diagonal.
+
+### Squash, Stretch and Sway
+
+Squash is an underdamped spring on the log strain *s* (2.8 Hz, damping ratio 0.12); the three axes scale by (e^(−s/2), e^s, e^(−s/2)), which keeps the volume.
+
+* **Landing**: the sudden change in vertical velocity kicks the spring.
+* **In the air**: the stretch axis turns from vertical toward the velocity.
+* **Jumping**: the horizontal launch velocity is solved from the landing point and the take-off height; charging squashes it, and leaving the ground kicks the spring the other way.
+* **Sway**: horizontal acceleration drives a shear spring (2.2 Hz); higher parts are carried farther.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={dropClip} poster={dropClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Drop"></video>
+        <figcaption>Drop: flattened on landing, then about three cycles of rebound</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={jumpClip} poster={jumpClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Charged long jump"></video>
+        <figcaption>Charged long jump: the landing point sets the launch velocity; stretched along the velocity in the air</figcaption>
+    </figure>
+</div>
+
+### Through a Slit
+
+While the body pushes on a wall, it scans along the wall for an opening narrower than itself, then measures the slit's mouth, length and width along its way. From then on a single parameter drives the whole pass, the volume *X* that has gone in:
+
+* the ball behind holds V − X, shrinking and moving up to the mouth;
+* in the slit is a rounded box as wide as the slit, 0.8 of the standing height tall, as long as the volume it holds;
+* the ball out the far side holds max(0, X − the slit's capacity).
+
+It moves as fast as it is pushed and backs out when pulled back. Once all of it is through, the ball on the far side is the whole body. During the pass the grid is fixed to the world, so where the walls cut the skin stays put.
+
+<figure>
+    <video class="clip" src={slitClip} poster={slitClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Through a slit"></video>
+    <figcaption>Through a slit: ball, rounded box in the slit, ball out the far side; the total volume is unchanged</figcaption>
+</figure>
+
+### Splitting and Merging
+
+* **Splitting** (F): it compresses first, then becomes two lobes of half the volume each, pushed apart; the blend falls from 1 to 0 over 0.35 s and the bridge thins and breaks over 0.7 s.
+* **Merging**: once their skins touch, the blend and the bridge build up over 0.3 s, then the smaller one's volume moves into the larger over 0.35 s, and the result rings once.
+
+Right after a split, while the two are still blended, only one face is shown; the two faces separate as the blend falls.
+
+<figure>
+    <video class="clip" src={splitClip} poster={splitClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Splitting and merging"></video>
+    <figcaption>Split, move away, then run back into one</figcaption>
+</figure>
+
+### Crushed
+
+Each step measures the headroom above it. The squash may not exceed the log strain that headroom allows, down to 18% of the standing height, and the body spreads horizontally to keep its volume.
+
+* **While pressed**: a fill extends down below the body, clipped by the floor's distance field, so it fills the gaps in the floor.
+* **When released**: the squash first recovers at 2.4 per second; at half height the squash spring takes over and gets one kick.
+
+<figure>
+    <video class="clip" src={crushClip} poster={crushClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Crushed"></video>
+    <figcaption>Crushed: the gaps between the ridges are filled; released, it springs back</figcaption>
+</figure>
+
+### Movement and Expressions
+
+Movement is driven by a push at its foot. Its bottom follows a local height map of the ground over steps and edges. Running into a wall flattens it along the wall's normal, and pushing on a slanted face or a corner slides it off sideways.
+
+The face has three continuous parameters: eye openness, mouth curve and mouth opening, each interpolated by a critically damped spring. Its states (airborne, landed, charging, pressed, in a slit, merging) have hysteresis, so they do not flip back and forth at their boundaries.
+
+<figure>
+    <video class="clip" src={oozeClip} poster={oozeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Oozing"></video>
+    <figcaption>Oozing: an anticipation squash before it sets off, shear sway as it speeds up and slows down</figcaption>
+</figure>
+
+### References
+
+* Gibson — *Constrained Elastic Surface Nets* (1998)
+* Inigo Quilez — *Smooth minimum*, *Distance functions* (iquilezles.org)
+* Thomas, Johnston — *The Illusion of Life: Disney Animation* (1981)
+* Macklin, Müller, Chentanez — *XPBD: Position-Based Simulation of Compliant Constrained Dynamics* (2016)
