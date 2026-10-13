@@ -2759,6 +2759,18 @@
       ]
     },
     "coverImage": "src/assets/projects/poster/ProceduralCaterpillarPoster.webp",
+    "links": [
+      {
+        "name": "YouTube",
+        "url": "https://youtu.be/i7f45BGnNYM",
+        "icon": "fa-brands fa-youtube"
+      },
+      {
+        "name": "Bilibili",
+        "url": "https://www.bilibili.com/video/BV1nFpf6oEGd/",
+        "icon": "fa-brands fa-bilibili"
+      }
+    ],
     "colorText": "#3F7D1C",
     "colorBackground": "#E3F4C2"
   }
