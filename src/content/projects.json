@@ -2837,5 +2837,69 @@
     "coverImage": "src/assets/projects/poster/ProceduralSlimePoster.webp",
     "colorText": "#1F5FA6",
     "colorBackground": "#DCEEFF"
+  },
+  {
+    "id": "technical-project-procedural-fish",
+    "order": 42,
+    "category": "technical",
+    "title": {
+      "en": "Procedural Animation | Leaping Fish",
+      "zh": "程序化动画 | 弹跳鱼",
+      "ja": "プロシージャルアニメーション | 跳ねる魚",
+      "ko": "절차적 애니메이션 | 점프하는 물고기"
+    },
+    "roles": {
+      "en": [
+        "Technical Artist",
+        "Animation Programmer"
+      ],
+      "zh": [
+        "技术美术",
+        "动画程序"
+      ],
+      "ja": [
+        "テクニカルアーティスト",
+        "アニメーションプログラマー"
+      ],
+      "ko": [
+        "테크니컬 아티스트",
+        "애니메이션 프로그래머"
+      ]
+    },
+    "desc": {
+      "en": "A swordfish stranded on land in Unity, leaping by tail flips the way stranded fish do. Its body is a Burst-compiled XPBD chain of rigid segments with paired muscles modelled as springs (force–length and force–velocity), touching the world's distance field with Coulomb friction. It coils on its side and strikes the ground with its tail; while it pushes, the ground's reaction is aimed so it lands where it was asked, the lift left to the muscles and angular momentum conserved in flight. A visual layer adds bulging flesh, fins with volume and gasping gills, and an intent-based controller makes it fully playable.",
+      "zh": "在 Unity 里实现的一条搁浅在陆地上的剑鱼，像真正搁浅的鱼那样用尾翻跳移动。身体是 Burst 编译的 XPBD 刚体链，每个关节一对拮抗肌，建模为带力–长度、力–速度特性的弹簧，与世界距离场接触并带库仑摩擦。它侧躺着盘起身体，用尾巴砸地起跳；推地期间对地面反力做瞄准，让它落到指定的位置，高度交给肌肉，飞行中角动量守恒。视觉层加上鼓胀的肉、有厚度的鳍和喘气的鳃，配合基于意图的控制器实现玩家实时操控。",
+      "ja": "Unity で作った、陸に打ち上げられたカジキ。本物の打ち上げられた魚のように、テールフリップで跳ねて移動します。体は Burst でコンパイルした XPBD の剛体チェーンで、各関節の一対の拮抗筋を力–長さ・力–速度の特性を持つバネとしてモデル化し、ワールドの距離場とクーロン摩擦で接触します。横向きに体を巻き、尾で地面を打って跳びます。押し出しの間は地面反力に狙いを付けて指定した場所に着地させ、高さは筋肉に任せ、空中では角運動量が保存されます。ビジュアルレイヤーで膨らむ肉、厚みのあるヒレ、あえぐエラを加え、意図ベースのコントローラーでプレイヤーがリアルタイムに操作できます。",
+      "ko": "Unity로 만든, 물 밖에 나온 황새치. 실제로 물 밖에 나온 물고기처럼 테일 플립으로 튀어 오르며 움직입니다. 몸은 Burst로 컴파일한 XPBD 강체 체인이고, 관절마다 한 쌍의 길항근을 힘–길이, 힘–속도 특성을 가진 스프링으로 모델링했으며, 월드 거리장과 쿨롱 마찰로 접촉합니다. 옆으로 누워 몸을 감고 꼬리로 땅을 쳐서 뜁니다. 밀어내는 동안 지면 반력을 조준해 지정한 곳에 착지하게 하고, 높이는 근육에 맡기며, 공중에서는 각운동량이 보존됩니다. 비주얼 레이어로 부푸는 살, 두께 있는 지느러미, 헐떡이는 아가미를 더하고, 의도 기반 컨트롤러로 플레이어가 실시간으로 조작할 수 있습니다."
+    },
+    "tags": {
+      "en": [
+        "Unity",
+        "Procedural Animation",
+        "Physics Simulation",
+        "XPBD"
+      ],
+      "zh": [
+        "Unity",
+        "程序化动画",
+        "物理模拟",
+        "XPBD"
+      ],
+      "ja": [
+        "Unity",
+        "プロシージャルアニメーション",
+        "物理シミュレーション",
+        "XPBD"
+      ],
+      "ko": [
+        "Unity",
+        "절차적 애니메이션",
+        "물리 시뮬레이션",
+        "XPBD"
+      ]
+    },
+    "coverImage": "src/assets/projects/poster/ProceduralFishPoster.webp",
+    "colorText": "#0E5E6F",
+    "colorBackground": "#D4F1F4"
   }
 ]

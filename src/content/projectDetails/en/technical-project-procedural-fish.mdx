@@ -1,0 +1,106 @@
+---
+---
+
+import jumpClip from '@/assets/projects/technical-project-procedural-fish/clips/jump.mp4?url';
+import jumpClipPoster from '@/assets/projects/technical-project-procedural-fish/clips/jump-poster.webp?url';
+import leapClip from '@/assets/projects/technical-project-procedural-fish/clips/leap.mp4?url';
+import leapClipPoster from '@/assets/projects/technical-project-procedural-fish/clips/leap-poster.webp?url';
+import turnClip from '@/assets/projects/technical-project-procedural-fish/clips/turn.mp4?url';
+import turnClipPoster from '@/assets/projects/technical-project-procedural-fish/clips/turn-poster.webp?url';
+import ledgeClip from '@/assets/projects/technical-project-procedural-fish/clips/ledge.mp4?url';
+import ledgeClipPoster from '@/assets/projects/technical-project-procedural-fish/clips/ledge-poster.webp?url';
+import hopsClip from '@/assets/projects/technical-project-procedural-fish/clips/hops.mp4?url';
+import hopsClipPoster from '@/assets/projects/technical-project-procedural-fish/clips/hops-poster.webp?url';
+
+## My Role
+
+A personal project: a playable swordfish leaping about on land, built from scratch in Unity:
+
+* **Body**: a Burst-compiled XPBD chain of rigid segments, each one's mass and moment of inertia integrated from the body's profile; contact against the world's distance field with Coulomb friction.
+* **Muscles**: a pair of antagonist muscles at every joint, modelled as springs with force–length and force–velocity behaviour, combined with the spine's spring into one compliant angular constraint.
+* **Leaping and control**: modelled on the tail-flip jumps of real stranded fish; leaping at any point, hopping round to face it, righting itself, fatigue, runs of leaps and idle twitches.
+* **Visual layer**: bulging and squashing flesh, fins with volume that follow the body, gasping, flaring gill covers and gaze.
+* **Control and verification**: an intent-based controller (click where to leap); deterministic replay, frame-by-frame baselines and numeric probes.
+
+---
+
+## Project Details
+
+Small fish stranded on land get about by the tail-flip jump: lying on their side they curl into a C, then straighten hard the other way, pressing the tail onto the ground to throw the body off it at about 45°. A swordfish's front is too heavy for it to roll its weight over its tail at rest, so this one coils with its head up, resting on its middle; the push's wave of muscle runs from the tail to the head, so the tail strikes first and the front unfolds in the air.
+
+### Body: An XPBD Chain of Rigid Segments
+
+* **Segments**: 12 of them, each one's mass and moment of inertia integrated over elliptical sections, heavy at the head and light at the tail. Joints hold together at the spine; side-to-side bending is limited and sprung by the spine, bending up and down and twisting are held stiff.
+* **Solving**: 24 substeps a frame with one pass of the constraints each (the small-step XPBD of Müller et al., 2020).
+* **Contact**: two rings of points round every segment, plus the tip of the bill and the tail's lobes. A point inside the world is pushed out along the distance field's normal; static friction undoes its slide, kinetic friction is an impulse capped at what stops it, and hard landings bounce a little. The tail fin's edge grips twice as hard.
+* **In the air**: only the muscles and gravity act. Muscle torques come in equal and opposite pairs, so angular momentum is conserved.
+
+### Muscles as Springs
+
+* Each side's muscle is a spring pulling toward its own reach angle, its stiffness the activation × the strongest torque ÷ the reach × a force–velocity factor (Hill's curve); past its reach it pulls no more.
+* The two muscles and the spine's spring make one compliant angular constraint: rest angle (k<sub>right</sub> − k<sub>left</sub>)·reach ÷ K, compliance 1 ÷ (K·h²). A joint's damping is 0.6 of that spring's critical damping.
+* The first version applied explicit torques: a very light tail segment under cartoon torques did hundreds of joules of work in a frame and blew up. As springs the muscles stay stable at any stiffness.
+
+### The Tail-Flip
+
+* **Coiling**: feed-forward activation (what holds the asked bend) plus a slow integral that makes up for the sag under gravity; once it is 85% of the way and nearly still, it pushes.
+* **Pushing**: a wave of the other side's muscles from the tail to the head, each joint's activation taken up over 0.04 s; once a joint is through its mark it lets go and both sides tense, braking the swing.
+* The muscles give 70–90% of the takeoff's vertical speed.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={jumpClip} poster={jumpClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Tail-flip leap"></video>
+        <figcaption>Tail-flip: coiled head up, the tail strikes first, the front unfolds in the air</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={leapClip} poster={leapClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="From behind"></video>
+        <figcaption>From behind: on its side all the way, landing a little nose down</figcaption>
+    </figure>
+</div>
+
+### An Aimed Ground Reaction
+
+Lying on its side, the fish can only bend in the vertical plane: its muscles cannot push it along the ground. So while it pushes, in every substep that its body presses the ground, the ground's reaction is aimed:
+
+* **Where it lands**: from the vertical speed its muscles actually give, the flight time to the target's height; the distance left over the ground divided by it gives the speed it needs along the ground. The muscles decide how high it goes, and it still lands on the mark: from rest, within 0.05–0.2 m. Vertically it is only trimmed.
+* **How it turns**: the body's angular velocity from its full inertia tensor, set to what brings it down lying flat and a little nose down, its roll and yaw cancelled.
+* Once it is off the ground nothing more is done: the flight is all physics.
+
+### Turning, Righting, Fatigue and Runs of Leaps
+
+* **Turning**: a target more than 30° off the line of its body (head first or tail first) and it hops on the spot first; the push sets a spin about the vertical, it turns 75% of the way in the air and its slide on landing turns it the rest.
+* **Righting**: lying upright or on its back for more than 0.5 s, it hops and rolls about its length back onto its side.
+* **Fatigue**: the muscles' work wears it out, and it recovers over about 5 s; the more tired, the slower the coil and the shorter the leap, and when spent it lies and gets its breath back first.
+* **Runs of leaps**: targets asked for while it leaps wait their turn. At rest it now and then flicks its tail, shivers or flops.
+
+<figure>
+    <video class="clip" src={turnClip} poster={turnClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Hop round, then leap"></video>
+    <figcaption>Hop round, then leap: a target off to its side</figcaption>
+</figure>
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={ledgeClip} poster={ledgeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Up onto things"></video>
+        <figcaption>Up onto things: a steeper launch for a higher target</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={hopsClip} poster={hopsClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="A run of leaps"></video>
+        <figcaption>A run of leaps asked all at once, tiring as it goes</figcaption>
+    </figure>
+</div>
+
+### Visual Layer
+
+The visual state is stepped with the simulation and only read by the skin, so every frame is deterministic.
+
+* **Flesh**: by the bending strain the inner flank bulges and the outer one thins, more on the side whose muscle pulls, with a little wobble; striking the ground it squashes flat and springs back.
+* **Fins**: thin solids with raised dark rays and a membrane shading from dark at the root to light at the edge. The tail's rays fan out from a fleshy root, and each lobe's leading edge, its stoutest outer ray, curves into a sickle. The tail fin trails its sweep and the back's fin folds down in flight; lying still, the fins ease onto the ground rather than snapping.
+* **Face**: it gasps, faster when tired; its gill covers swing out over the gill cavity; its eyes look where it means to leap.
+
+### References
+
+* Gibb, Ashley-Ross, Hsieh — *Thrash, flip, or jump: the behavioral and functional continuum of terrestrial locomotion in teleost fishes* (2013)
+* Ashley-Ross, Perlman, Gibb, Long — *Jumping sans legs: does elastic energy storage by the vertebral column power terrestrial jumps in bony fishes?* (2014)
+* Müller, Macklin, Chentanez, Jeschke, Kim — *Detailed Rigid Body Simulation with Extended Position Based Dynamics* (2020)
+* Macklin, Müller, Chentanez — *XPBD: Position-Based Simulation of Compliant Constrained Dynamics* (2016)
+* Hill — *The heat of shortening and the dynamic constants of muscle* (1938)

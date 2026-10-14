@@ -1,0 +1,106 @@
+---
+---
+
+import jumpClip from '@/assets/projects/technical-project-procedural-fish/clips/jump.mp4?url';
+import jumpClipPoster from '@/assets/projects/technical-project-procedural-fish/clips/jump-poster.webp?url';
+import leapClip from '@/assets/projects/technical-project-procedural-fish/clips/leap.mp4?url';
+import leapClipPoster from '@/assets/projects/technical-project-procedural-fish/clips/leap-poster.webp?url';
+import turnClip from '@/assets/projects/technical-project-procedural-fish/clips/turn.mp4?url';
+import turnClipPoster from '@/assets/projects/technical-project-procedural-fish/clips/turn-poster.webp?url';
+import ledgeClip from '@/assets/projects/technical-project-procedural-fish/clips/ledge.mp4?url';
+import ledgeClipPoster from '@/assets/projects/technical-project-procedural-fish/clips/ledge-poster.webp?url';
+import hopsClip from '@/assets/projects/technical-project-procedural-fish/clips/hops.mp4?url';
+import hopsClipPoster from '@/assets/projects/technical-project-procedural-fish/clips/hops-poster.webp?url';
+
+## 我的职责
+
+个人项目，在 Unity 里从零实现一条在陆地上弹跳、可操控的剑鱼：
+
+* **身体**：Burst 编译的 XPBD 刚体链，每节的质量和转动惯量由身体剖面积分；与世界距离场接触，带库仑摩擦。
+* **肌肉**：每个关节一对拮抗肌，建模为带力–长度、力–速度特性的弹簧，与脊柱弹簧合成一个柔顺角约束。
+* **跳跃与控制**：参考真鱼在陆地上的尾翻跳；跳向任意一点、扭身转向、翻正、疲劳、连跳和静息小动作。
+* **视觉层**：肉的鼓胀与压扁，有厚度的鳍与跟随，喘气、鳃盖开合和眼神。
+* **操控与验证**：基于意图的控制器（点哪跳哪）；确定性回放、逐帧基准和数值探针。
+
+---
+
+## 项目细节
+
+搁浅的小鱼会用“尾翻跳”在地上移动：侧躺着卷成 C 形，再反向猛地甩直，尾柄压地把身体弹起，起飞角约 45°。剑鱼前段太重，静止时重心滚不到尾柄上方，所以这里改为“抬头盘起、靠中段撑地”；推进的肌肉波从尾往头走，尾巴先砸地，前段在空中展开。
+
+### 身体：XPBD 刚体链
+
+* **刚体节段**：12 节，每节用椭圆截面积分出质量和转动惯量，头重尾轻。关节在脊柱处附着，侧向弯曲受角度限制并有脊柱弹簧，上下弯和扭转保持刚性。
+* **求解**：每帧 24 个子步，每个子步只过一轮约束（Müller 2020 的小步长 XPBD）。
+* **接触**：每节两圈采样点，加上喙尖和尾鳍各叶；穿入时沿距离场法线推出，静摩擦撤销切向滑移，动摩擦按冲量限制，硬落地时少量反弹。尾鳍边缘的摩擦系数加倍。
+* **空中**：离地后只有肌肉和重力，肌肉力矩成对出现，角动量守恒。
+
+### 肌肉：弹簧形式
+
+* 每侧肌肉是朝自身“可达角”拉的弹簧，刚度 = 激活 × 最大力矩 ÷ 可达角 × 力–速度系数（Hill 曲线），越过可达角就不再出力。
+* 两侧肌肉和脊柱弹簧合成一个柔顺角约束：静止角为 (k右 − k左)·可达角 ÷ K，柔度为 1 ÷ (K·h²)；关节阻尼取这个弹簧临界阻尼的 0.6。
+* 最早用显式力矩：很轻的尾节加上卡通化的力矩，一帧就做功几百焦耳，直接发散。改成弹簧形式后，在任意刚度下都保持稳定。
+
+### 尾翻跳
+
+* **蓄力**：前馈激活（保持目标弯曲所需的激活量）加上缓慢的积分项，补足重力造成的下沉；卷到要求的 85% 且基本静止时开始推进。
+* **推进**：对侧肌肉一道从尾到头的波，每个关节的激活在 0.04 s 内渐入；关节甩过目标角后放开，两侧同时收紧，刹住摆动。
+* 竖直起跳速度的 70–90% 来自肌肉。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={jumpClip} poster={jumpClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="尾翻跳"></video>
+        <figcaption>尾翻跳：抬头盘起，尾巴先砸地，前段在空中展开</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={leapClip} poster={leapClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="斜后方视角"></video>
+        <figcaption>斜后方视角：空中始终侧躺，以略低头的姿态落地</figcaption>
+    </figure>
+</div>
+
+### 瞄准的地面反力
+
+鱼侧躺时，肌肉只能在竖直面里弯曲，推不出水平速度。所以在推地期间、身体压着地面的每个子步里，对地面反力做“瞄准”：
+
+* **落点**：按肌肉实际给出的竖直速度算出到目标高度的飞行时间，用剩余的水平距离除以它，得到需要的水平速度。高度由肌肉决定，落点仍然准确：从静止起跳，误差 0.05–0.2 m。竖直方向只做小幅修正。
+* **转速**：用全身的惯性张量求出当前角速度，把它设成“落地时平躺、略低头”所需的值，滚转和偏航归零。
+* 离地后不再干预，飞行完全是物理的。
+
+### 转身、翻正、疲劳与连跳
+
+* **转身**：目标偏离身体方向（头或尾）超过 30° 时，先原地小跳；推地时设定绕竖直轴的转速，空中转 75%，落地的滑转补足剩下的部分。
+* **翻正**：正立或背朝下躺超过 0.5 s，就小跳一下，绕长轴滚回侧卧。
+* **疲劳**：肌肉做功累积疲劳，约 5 s 恢复；越累蓄力越慢、跳得越近，累极了先躺着喘口气。
+* **连跳**：跳的过程中再下的指令会排队，落地后接着跳。静息时偶尔甩尾、抖动或扑腾。
+
+<figure>
+    <video class="clip" src={turnClip} poster={turnClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="转身再跳"></video>
+    <figcaption>转身再跳：目标在正侧方，先扭身小跳，再跳过去</figcaption>
+</figure>
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={ledgeClip} poster={ledgeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="跳上台阶"></video>
+        <figcaption>跳上台阶：目标高时抬高仰角</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={hopsClip} poster={hopsClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="连跳"></video>
+        <figcaption>连跳：一次给出的多个目标依次跳，越跳越累</figcaption>
+    </figure>
+</div>
+
+### 视觉层
+
+视觉状态都在模拟步里推进，皮肤只读取，结果逐帧确定。
+
+* **肉**：按弯曲应变，凹侧鼓起、凸侧变薄，发力的一侧更鼓，并带一点颤动；砸地时压扁再回弹。
+* **鳍**：有厚度的实体，凸起的深色鳍条，鳍膜从根部的深色渐变到边缘的浅色。尾鳍的鳍条从肉质鳍根放射出去，两叶的前缘是最粗的外侧鳍条，弯成镰刀形。尾鳍随甩尾滞后弯折，背鳍在空中收拢；静止时鳍随时间渐渐摊在地上，不会突然跳变。
+* **脸**：嘴一张一合地喘气，越累越急；鳃盖向外掀开，露出鳃腔；眼睛看向要跳去的方向。
+
+### 参考
+
+* Gibb, Ashley-Ross, Hsieh — *Thrash, flip, or jump: the behavioral and functional continuum of terrestrial locomotion in teleost fishes*（2013）
+* Ashley-Ross, Perlman, Gibb, Long — *Jumping sans legs: does elastic energy storage by the vertebral column power terrestrial jumps in bony fishes?*（2014）
+* Müller, Macklin, Chentanez, Jeschke, Kim — *Detailed Rigid Body Simulation with Extended Position Based Dynamics*（2020）
+* Macklin, Müller, Chentanez — *XPBD: Position-Based Simulation of Compliant Constrained Dynamics*（2016）
+* Hill — *The heat of shortening and the dynamic constants of muscle*（1938）

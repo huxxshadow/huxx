@@ -1,0 +1,106 @@
+---
+---
+
+import jumpClip from '@/assets/projects/technical-project-procedural-fish/clips/jump.mp4?url';
+import jumpClipPoster from '@/assets/projects/technical-project-procedural-fish/clips/jump-poster.webp?url';
+import leapClip from '@/assets/projects/technical-project-procedural-fish/clips/leap.mp4?url';
+import leapClipPoster from '@/assets/projects/technical-project-procedural-fish/clips/leap-poster.webp?url';
+import turnClip from '@/assets/projects/technical-project-procedural-fish/clips/turn.mp4?url';
+import turnClipPoster from '@/assets/projects/technical-project-procedural-fish/clips/turn-poster.webp?url';
+import ledgeClip from '@/assets/projects/technical-project-procedural-fish/clips/ledge.mp4?url';
+import ledgeClipPoster from '@/assets/projects/technical-project-procedural-fish/clips/ledge-poster.webp?url';
+import hopsClip from '@/assets/projects/technical-project-procedural-fish/clips/hops.mp4?url';
+import hopsClipPoster from '@/assets/projects/technical-project-procedural-fish/clips/hops-poster.webp?url';
+
+## 担当
+
+個人プロジェクト。陸の上で跳ね回る、操作できるカジキを Unity でゼロから作りました：
+
+* **体**：Burst でコンパイルした XPBD の剛体チェーン。各節の質量と慣性モーメントは体の断面から積分。ワールドの距離場との接触とクーロン摩擦。
+* **筋肉**：各関節に一対の拮抗筋。力–長さ・力–速度の特性を持つバネとしてモデル化し、背骨のバネと合わせて一つのコンプライアントな角度拘束にしています。
+* **ジャンプと操作**：陸に打ち上げられた魚のテールフリップジャンプを参考に、任意の地点へのジャンプ、向き直り、起き直り、疲労、連続ジャンプ、待機中の小さな動き。
+* **ビジュアルレイヤー**：肉の膨らみと潰れ、厚みのあるヒレとその追従、あえぎ、エラぶたの開閉、視線。
+* **操作と検証**：意図ベースのコントローラー（クリックした所へ跳ぶ）。決定論的リプレイ、フレームごとのベースライン、数値プローブ。
+
+---
+
+## プロジェクト詳細
+
+陸に打ち上げられた小魚は「テールフリップジャンプ」で移動します。横向きに寝て C 字に体を曲げ、反対側へ一気に伸ばし、尾柄で地面を押して体を約 45° で跳ね上げます。カジキは体の前半が重すぎて、静止状態では重心を尾柄の上まで転がせません。そこで頭を上げてとぐろを巻き、体の中ほどで地面に乗る形にしました。押し出しの筋肉の波は尾から頭へ進むので、尾が先に地面を打ち、前半は空中で伸びます。
+
+### 体：XPBD の剛体チェーン
+
+* **剛体の節**：12 節。各節の質量と慣性モーメントは楕円断面から積分し、頭が重く尾が軽くなります。関節は背骨の位置でつながり、左右の曲げは角度制限と背骨のバネを持ち、上下の曲げとねじれは剛に保ちます。
+* **解法**：1 フレームに 24 サブステップ、各サブステップで拘束を 1 回だけ解きます（Müller ら 2020 の小ステップ XPBD）。
+* **接触**：各節の周りに 2 周のサンプル点、さらにくちばしの先と尾ビレの各葉。めり込んだ点は距離場の法線に沿って押し出し、静止摩擦は接線方向の滑りを打ち消し、動摩擦は止まるまでの量を上限とする力積で与え、強い着地では少しだけ跳ね返ります。尾ビレの縁の摩擦係数は 2 倍です。
+* **空中**：働くのは筋肉と重力だけです。筋肉のトルクは常に大きさが等しく向きが逆の対で働くので、角運動量は保存されます。
+
+### バネとしての筋肉
+
+* 各側の筋肉は、自分の「到達角」に向かって引くバネです。剛性は 活性 × 最大トルク ÷ 到達角 × 力–速度係数（Hill の曲線）で、到達角を越えると力を出しません。
+* 両側の筋肉と背骨のバネで一つのコンプライアントな角度拘束を作ります。静止角は (k<sub>右</sub> − k<sub>左</sub>)·到達角 ÷ K、コンプライアンスは 1 ÷ (K·h²)。関節の減衰はこのバネの臨界減衰の 0.6 倍です。
+* 最初は陽的なトルクで動かしていました。とても軽い尾の節にカートゥーン的なトルクをかけると、1 フレームで数百ジュールの仕事をして発散しました。バネの形にしてからは、どんな剛性でも安定しています。
+
+### テールフリップ
+
+* **溜め**：目標の曲げを保つのに必要な活性をフィードフォワードで与え、重力による垂れはゆっくりした積分項で補います。求めた曲げの 85% に達してほぼ静止したら押し出します。
+* **押し出し**：反対側の筋肉の波が尾から頭へ進み、各関節の活性は 0.04 s かけて立ち上がります。関節が目標角を越えると力を抜き、両側を同時に締めて振りを止めます。
+* 離陸の鉛直速度の 70–90% は筋肉が生み出しています。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={jumpClip} poster={jumpClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="テールフリップ"></video>
+        <figcaption>テールフリップ：頭を上げてとぐろを巻き、尾が先に地面を打ち、前半は空中で伸びる</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={leapClip} poster={leapClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="斜め後ろから"></video>
+        <figcaption>斜め後ろから：空中でもずっと横向きのまま、少し頭を下げて着地</figcaption>
+    </figure>
+</div>
+
+### 狙いを付けた地面反力
+
+横向きに寝た魚は鉛直面の中でしか体を曲げられず、筋肉だけでは水平に進めません。そこで押し出しの間、体が地面を押している各サブステップで、地面反力に「狙い」を付けます：
+
+* **着地点**：筋肉が実際に出した鉛直速度から目標の高さまでの飛行時間を求め、残りの水平距離をそれで割って必要な水平速度を出します。どれだけ高く跳ぶかは筋肉が決め、それでも狙った所に着地します。静止状態からの誤差は 0.05–0.2 m です。鉛直方向は小さく補正するだけです。
+* **回転**：体全体の慣性テンソルから角速度を求め、「頭を少し下げて平らに着地する」回転に合わせ、ロールとヨーは打ち消します。
+* 地面を離れたら何もしません。飛行はすべて物理です。
+
+### 向き直り、起き直り、疲労、連続ジャンプ
+
+* **向き直り**：目標が体の向き（頭側か尾側）から 30° 以上ずれていると、まずその場で小さく跳びます。押し出しで鉛直軸まわりの回転を与え、空中で 75% 回り、着地の滑りで残りを回ります。
+* **起き直り**：直立や仰向けのまま 0.5 s 以上たつと、小さく跳んで長軸まわりに転がり、横向きに戻ります。
+* **疲労**：筋肉の仕事で疲れがたまり、約 5 s で回復します。疲れるほど溜めが遅く、跳ぶ距離が短くなり、限界まで疲れると先に寝て息を整えます。
+* **連続ジャンプ**：跳んでいる間に出した目標は順番待ちになります。待機中はときどき尾をはじいたり、震えたり、跳ねたりします。
+
+<figure>
+    <video class="clip" src={turnClip} poster={turnClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="向き直ってから跳ぶ"></video>
+    <figcaption>向き直ってから跳ぶ：真横の目標に、まず小さく跳んで体を回す</figcaption>
+</figure>
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={ledgeClip} poster={ledgeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="段の上へ"></video>
+        <figcaption>段の上へ：目標が高いと打ち出し角を上げる</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={hopsClip} poster={hopsClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="連続ジャンプ"></video>
+        <figcaption>連続ジャンプ：一度に出した目標を順に跳び、だんだん疲れる</figcaption>
+    </figure>
+</div>
+
+### ビジュアルレイヤー
+
+見た目の状態はシミュレーションのステップの中で進め、皮膚は読むだけなので、どのフレームも決定論的です。
+
+* **肉**：曲げのひずみに応じて内側が膨らみ外側が薄くなり、力を入れている側はより膨らみ、少し揺れます。地面を打つと潰れて跳ね返ります。
+* **ヒレ**：厚みのある立体で、盛り上がった暗い鰭条と、付け根の暗い色から縁の明るい色へ変わる鰭膜。尾ビレの鰭条は肉厚の付け根から放射状に広がり、両葉の前縁は最も太い外側の鰭条で、鎌の形に曲がります。尾ビレは尾の振りに遅れて曲がり、背ビレは空中でたたまれます。静止すると、ヒレは急に変わらず、時間をかけて地面に伏せます。
+* **顔**：口を開け閉めしてあえぎ、疲れるほど速くなります。エラぶたが外へ開いてエラ腔が見え、目は跳ぶ先を見ます。
+
+### 参考文献
+
+* Gibb, Ashley-Ross, Hsieh — *Thrash, flip, or jump: the behavioral and functional continuum of terrestrial locomotion in teleost fishes*（2013）
+* Ashley-Ross, Perlman, Gibb, Long — *Jumping sans legs: does elastic energy storage by the vertebral column power terrestrial jumps in bony fishes?*（2014）
+* Müller, Macklin, Chentanez, Jeschke, Kim — *Detailed Rigid Body Simulation with Extended Position Based Dynamics*（2020）
+* Macklin, Müller, Chentanez — *XPBD: Position-Based Simulation of Compliant Constrained Dynamics*（2016）
+* Hill — *The heat of shortening and the dynamic constants of muscle*（1938）
