@@ -18,9 +18,9 @@ import coinClipPoster from '@/assets/projects/technical-project-procedural-frog/
 
 A personal project: a playable, cartoonishly exaggerated frog, built from scratch in Unity:
 
-* **Body**: four legs from key-pose blending and analytic IK, a trunk that stretches, pitches, yaws and rolls; general rules in the pose keep knees, elbows, shoulders and hips out of the ground.
-* **Hopping**: crouch, push, flight and landing, the arc solved back from where it lands, the launch angle adapted to the drop and the arc sampled for clearance; landings caught by springs that carry the momentum.
-* **Crawling and turning**: a lateral-sequence gait, footholds found by raycasts, the trunk fitted to the ground under its four feet; turning on the spot with the same steps, not by hopping.
+* **Body**: four legs from key-pose blending and analytic IK, a trunk that stretches, pitches, yaws and rolls; general rules in the pose keep the joints out of the ground.
+* **Hopping**: the arc solved back from the landing point, the launch angle adapted to the drop and the arc sampled for clearance; landings caught by springs that carry the momentum.
+* **Crawling and turning**: a lateral-sequence gait, footholds found by raycasts, the trunk fitted to the ground; turning on the spot with the same steps, not by hopping.
 * **Tongue and props**: a Verlet-rope tongue with predictive aim that catches a fly; a coin that is a real rigid body, swallowed and spat out again.
 * **Visual layer and verification**: squash and stretch, belly, throat, blinking and eyes pressed in, muscles bulging; an intent-based controller (click where to hop); deterministic replay, frame-by-frame baselines and numeric probes.
 
@@ -28,20 +28,20 @@ A personal project: a playable, cartoonishly exaggerated frog, built from scratc
 
 ## Project Details
 
-The timing comes from real frogs: the jump is a catapult — crouching stretches the tendons first, then the hips, knees and ankles straighten in turn all at once; in the air the hind legs trail straight and the front legs reach forward; it lands on its front legs, the body pitching down over them and the eyes pulled into the head; the tongue shoots out in about 70 ms, sticks and comes back. On top of that, cartoon exaggeration: deeper squash, bouncier recoil, muscles that visibly take the load.
+The timing comes from real frogs: the jump is a catapult — crouching loads the tendons, then the hips, knees and ankles straighten in turn all at once; in the air the hind legs trail and the front legs reach forward; it lands on its front legs, the body pitching down and the eyes pulled into the head; the tongue flicks out, sticks and comes back in an instant. On top of that, cartoon exaggeration: deeper squash, bouncier recoil, muscles that visibly take the load.
 
 ### Body: Key Poses and Analytic IK
 
-* **Poses as data**: a key pose is the trunk (position, pitch, stretch) plus one end target for each front and hind leg (position, knee or elbow direction, foot direction), given for the right side and mirrored for the left. Seven poses — sit, crouch, launch, air, touchdown, absorb, walk — blend directly, and each leg can also be given its own foothold and ground height.
-* **Legs**: the front legs have two segments (shoulder–elbow–wrist), the hind legs three (hip–knee–ankle–toe root), the ankle placed from the toe root and the foot's direction; all analytic two-bone IK, drawn back along the line to the hip when out of reach.
-* **Rules in the pose**: a knee or elbow about to go into the ground is turned round the circle about the hip–ankle line to the nearest point clear of it (analytic, continuous, never jumping); shoulders and hips never go into the ground — the whole trunk is lifted instead; a planted hand out of reach pulls the trunk back toward it.
-* **Which way the knee points**: turning, a hind foot can end up in any direction from the body, so any fixed bending direction will at some point line up with the leg and flip. Instead it starts from where the knee was last frame and turns at most 0.1 rad about the leg each frame, so it is always continuous.
+* **Poses as data**: a key pose is the trunk plus an end target for each leg (position, knee or elbow direction, foot direction), mirrored left to right; poses blend directly, and each leg can also take its own foothold and ground height.
+* **Legs**: two segments in front, three behind, all analytic IK, drawn back toward the hip when out of reach.
+* **Rules in the pose**: a knee or elbow about to go into the ground turns round the circle about the hip–ankle line to the nearest point clear of it, continuously; a shoulder or hip in the ground lifts the whole trunk; a planted hand out of reach pulls the trunk back toward it.
+* **Which way the knee points**: when turning, any fixed bending direction will at some point line up with the leg and flip, so the knee starts from where it was last frame and turns only a small step each frame — always continuous.
 
 ### Hopping: The Arc Solved Back, Momentum on Landing
 
-* **Crouch and push**: 0.26 s crouching, a 0.12 s hold, a 0.12 s push; the trunk follows a cubic Hermite curve from rest to the take-off velocity, continuous at take-off, the hind toe roots pinned to the ground throughout.
-* **In the air**: the trunk follows an analytic parabola, its take-off velocity and flight time solved from the landing point so the front paws land right on the target. The launch angle grows with the target's height (15° a metre); before take-off the ground is sampled along the arc and the trunk must clear everything under it by 15 cm, or the arc steepens by 4° at a time, up to 72°.
-* **Landing**: the front paws pin, and the trunk hangs on a spring to the pose (4.5 Hz, damping 0.2), carrying 75% of its landing velocity: it surges past the hands, sinks, its head presses to the ground, then it springs back up to sit. Pitch has a spring of its own that the surge keeps pitching forward, and speed beyond the arms' reach turns into rotation. The hind legs tuck back under it along a quadratic Bézier arc, stepping down into the sitting pose from above.
+* **Crouch and push**: crouch, hold, burst; the trunk follows a Hermite curve up to the take-off velocity, the hind feet pinned without sliding.
+* **In the air**: the trunk follows an analytic parabola, its take-off velocity solved from the landing point so the front paws land right on the target; the higher the target the steeper the launch, and the ground is sampled along the arc before take-off, steepening it further where there is no room.
+* **Landing**: the front paws pin and the trunk hangs on a spring to the pose, carrying its momentum past the hands, sinking until its head presses the ground, then springing back up to sit; pitch has a spring of its own that the surge keeps tipping forward. The hind legs tuck back under it along a Bézier arc.
 
 <div class="image-grid-2">
     <figure>
@@ -56,9 +56,9 @@ The timing comes from real frogs: the jump is a catapult — crouching stretches
 
 ### Crawling and Turning on the Spot
 
-* **Gait**: the frog's lateral-sequence gait (left hind → left front → right hind → right front, a quarter cycle apart), 0.72 s a cycle. Each foot steps to where the body will be when the step ends, raycast down to the real ground; a swinging foot lifts quickly and sets down gently.
-* **Trunk**: its height follows the ground under the four feet, its pitch and roll fitted to the slope front to back and side to side; its speed pulses with each push of the hind legs, and its weight shifts onto the planted side while a foot is up.
-* **Turning**: when the goal is more than 25° off, it steps round on the spot first, then walks; stopping, it takes a few more steps until all four feet are back in the sitting pose (within 2 mm). The feet never slide.
+* **Gait**: the frog's lateral-sequence gait (left hind → left front → right hind → right front). Each foot steps to where the body will be when the step ends, raycast down to the real ground; feet lift quickly and set down gently.
+* **Trunk**: its height and tilt fitted to the ground under the four feet; its speed pulses with each push of the hind legs, and its weight shifts onto the planted side while a foot is up.
+* **Turning**: well off its goal, it steps round on the spot first, then walks; stopping, it takes a few more steps until all four feet are exactly back in the sitting pose. The feet never slide.
 
 <div class="image-grid-2">
     <figure>
@@ -71,18 +71,12 @@ The timing comes from real frogs: the jump is a catapult — crouching stretches
     </figure>
 </div>
 
-### Tongue: A Verlet Rope
+### Tongue and Coin
 
-* **The rope**: 20 points, 16 passes of length constraints a substep, under gravity, its root fixed at the front of the jaw; the tip's mass includes whatever is stuck to it, so something heavy bows the rope.
-* **Sequence**: aim (mouth opening, head turning toward the target) → shoot (along an arc in 0.08 s, aimed where the prey will be when the tongue arrives — the fly's path is deterministic) → stick → reel in.
-* **Collision**: every point but the root and the tip is kept above the ground and outside the coin, pushed again after the coin moves, so the tongue never passes through the coin or the ground.
-* **Swallowing**: swallowing a fly, it presses its eyes down into its head to push the food, and its throat bulges.
-
-### Coin: Rigid-Body Dynamics
-
-* **Rigid body**: a disc with mass and an inertia tensor; stuck to the tongue tip it is held by a soft position constraint (PBD, correcting both position and orientation), so it swings and spins; the stuck face turns a little toward the tongue every substep, so it never flips over onto it.
-* **Swallow and spit**: drawn to the mouth, it goes in, the throat swells into a big lump and holds it a while; then the head tips back and flicks forward, and the coin flies out tilted, rolling forward.
-* **Contact**: 32 points round its rim meet the ground with impulses (restitution and friction), with rolling resistance; at rest it sleeps, and can be caught again.
+* **Tongue**: a Verlet rope under gravity, its root fixed at the front of the jaw; the tip's mass includes whatever is stuck to it, so something heavy bows the rope. Aiming, the mouth opens and the head turns; it shoots at where the prey will be when the tongue arrives.
+* **Collision**: the tongue stays above the ground and outside the coin, pushed again after the coin moves, so nothing passes through.
+* **Coin**: a rigid disc with mass and an inertia tensor; on the tongue it is held by a soft position constraint (PBD), so it swings and spins, its stuck face always turned toward the tongue. On the ground: impulse contacts (restitution and friction) with rolling resistance, sleeping once still.
+* **Swallowing**: swallowing a fly, it presses its eyes down into its head to push the food; with the coin in its mouth the throat swells into a big lump, then the head tips back and flicks forward to spit it out.
 
 <div class="image-grid-2">
     <figure>
@@ -97,11 +91,11 @@ The timing comes from real frogs: the jump is a catapult — crouching stretches
 
 ### Visual Layer
 
-The visual state all advances in the simulation step and the skin only reads it, so every frame is deterministic; each quantity is checked for frame-to-frame jumps.
+The visual state all advances in the simulation step and the skin only reads it, so every frame is deterministic.
 
-* **Squash and stretch**: stretched when fast, squashed on landing by how hard it lands (up to 26%), an underdamped spring letting it wobble a few times.
-* **Flesh**: the belly sags and sways with the trunk's vertical acceleration; how much more the front legs fold than when sitting is their load, bulging the upper arms and forearms and pushing the elbows out; when the trunk stops short, the flesh on the back carries on forward and springs back.
-* **Face**: the throat pumps air (faster and deeper after a hop), a blink every 2–5 s, eyes pulled in and squinting on landing, eyes on the landing point while crouching, glancing about while sitting.
+* **Squash and stretch**: stretched when fast, squashed by the impact on landing, an underdamped spring letting it wobble.
+* **Flesh**: the belly sags and sways with the trunk's acceleration; the harder the front legs are loaded, the more the arms bulge and the elbows push out; when the trunk stops short, the flesh on the back carries on and springs back.
+* **Face**: a pumping throat, blinks, eyes pulled in and squinting on landing, eyes on the landing point while crouching.
 
 ### References
 
