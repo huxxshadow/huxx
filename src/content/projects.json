@@ -2901,5 +2901,69 @@
     "coverImage": "src/assets/projects/poster/ProceduralFishPoster.webp",
     "colorText": "#0E5E6F",
     "colorBackground": "#D4F1F4"
+  },
+  {
+    "id": "technical-project-procedural-frog",
+    "order": 43,
+    "category": "technical",
+    "title": {
+      "en": "Procedural Animation | Frog",
+      "zh": "程序化动画 | 青蛙",
+      "ja": "プロシージャルアニメーション | カエル",
+      "ko": "절차적 애니메이션 | 개구리"
+    },
+    "roles": {
+      "en": [
+        "Technical Artist",
+        "Animation Programmer"
+      ],
+      "zh": [
+        "技术美术",
+        "动画程序"
+      ],
+      "ja": [
+        "テクニカルアーティスト",
+        "アニメーションプログラマー"
+      ],
+      "ko": [
+        "테크니컬 아티스트",
+        "애니메이션 프로그래머"
+      ]
+    },
+    "desc": {
+      "en": "A playable, cartoonishly exaggerated frog in Unity, its timing taken from real frogs. Its four legs come from key-pose blending and analytic IK, with general rules that keep knees, elbows, shoulders and hips out of the ground. It hops on an analytic arc solved back from where it lands, the launch angle adapted to the drop and the arc sampled for clearance, and lands with its momentum caught by springs; it crawls with a lateral-sequence gait on raycast footholds and turns on the spot with the same steps. A Verlet-rope tongue with predictive aim catches a fly, and a rigid-body coin is swallowed and spat out again. A visual layer adds squash and stretch, a swaying belly, a pumping throat and muscles that bulge under load, and an intent-based controller makes it fully playable.",
+      "zh": "在 Unity 里实现的一只卡通夸张风格、可操控的青蛙，动作节奏取自真青蛙。四条腿由关键姿态混合 + 解析 IK 驱动，姿态层的通用规则保证膝肘、肩髋不进地。跳跃走解析抛物线，由落点反解起跳速度，起跳角随落差自适应并沿弹道采样避障，落地用弹簧承接惯性；爬行用对侧序步态和射线落脚，转身用同一套迈步。Verlet 绳索舌头预测瞄准粘住苍蝇，刚体金币被吞进嘴里再吐出来。视觉层加上挤压拉伸、晃动的肚皮、鼓动的喉囊和受力鼓起的肌肉，配合基于意图的控制器实现玩家实时操控。",
+      "ja": "Unity で作った、カートゥーン風に誇張した操作できるカエル。動きのタイミングは本物のカエルから取っています。四本の脚はキーポーズのブレンドと解析 IK で動き、ポーズ層の汎用ルールで膝・肘・肩・股関節が地面にめり込みません。ジャンプは着地点から逆算した解析的な放物線で、踏み切り角は高低差に合わせ、弾道に沿って障害物をサンプリングし、着地の慣性はバネで受け止めます。這い歩きはラテラルシーケンス歩容とレイキャストの足場で、方向転換も同じ足運びで行います。Verlet ロープの舌が動きを予測してハエを捕まえ、剛体のコインを飲み込んでから吐き出します。ビジュアルレイヤーでスクワッシュ＆ストレッチ、揺れるお腹、膨らむ喉袋、負荷で膨らむ筋肉を加え、意図ベースのコントローラーでプレイヤーがリアルタイムに操作できます。",
+      "ko": "Unity로 만든, 카툰풍으로 과장한 조작 가능한 개구리. 동작 타이밍은 실제 개구리에서 가져왔습니다. 네 다리는 키 포즈 블렌딩과 해석적 IK로 움직이고, 포즈 레이어의 범용 규칙으로 무릎·팔꿈치·어깨·엉덩이가 땅에 박히지 않습니다. 점프는 착지점에서 역산한 해석적 포물선을 따르며, 도약 각도는 높이 차에 맞추고 탄도를 따라 장애물을 샘플링하며, 착지 관성은 스프링으로 받습니다. 기어가기는 측방 순서 보행과 레이캐스트 발판으로, 방향 전환도 같은 발걸음으로 합니다. Verlet 로프 혀가 움직임을 예측해 파리를 잡고, 강체 동전을 삼켰다가 다시 뱉어 냅니다. 비주얼 레이어로 스쿼시 앤 스트레치, 흔들리는 배, 부푸는 목주머니, 하중에 부푸는 근육을 더하고, 의도 기반 컨트롤러로 플레이어가 실시간으로 조작할 수 있습니다."
+    },
+    "tags": {
+      "en": [
+        "Unity",
+        "Procedural Animation",
+        "Inverse Kinematics",
+        "Physics Simulation"
+      ],
+      "zh": [
+        "Unity",
+        "程序化动画",
+        "反向动力学",
+        "物理模拟"
+      ],
+      "ja": [
+        "Unity",
+        "プロシージャルアニメーション",
+        "インバースキネマティクス",
+        "物理シミュレーション"
+      ],
+      "ko": [
+        "Unity",
+        "절차적 애니메이션",
+        "역운동학",
+        "물리 시뮬레이션"
+      ]
+    },
+    "coverImage": "src/assets/projects/poster/ProceduralFrogPoster.webp",
+    "colorText": "#A3271B",
+    "colorBackground": "#FDE3DC"
   }
 ]
