@@ -1,6 +1,7 @@
 ---
 ---
 
+import 'katex/dist/katex.min.css';
 import obstacleClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/obstacle.mp4?url';
 import obstacleClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/obstacle-poster.webp?url';
 import poleClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/pole.mp4?url';
@@ -64,6 +65,19 @@ import slopeClipPoster from '@/assets/projects/technical-project-procedural-cate
 
 同じ筋肉、同じリズムを 3 種類の地面で動かします。普通の床では前へ這い、氷の上（摩擦は 30 分の 1、前後とも同じように滑る）ではうねるだけでほとんど進まず、摩擦がまったくないとその場でもがくだけで重心はまったく動きません。外から押すものが何もないからです。
 
+$$
+\begin{gathered}
+e = \sqrt{\left(\frac{\Delta x_\parallel}{\mu_\parallel\, d_n + c}\right)^{2} + \left(\frac{\Delta x_\perp}{\mu_\perp\, d_n + c}\right)^{2}} \\[6pt]
+\Delta\mathbf x_t \leftarrow
+\begin{cases}
+\mathbf 0, & e_s \le 1 \\
+\Delta\mathbf x_t\left(1 - \min\left(1,\, 1/e_k\right)\right), & e_s > 1
+\end{cases}
+\end{gathered}
+$$
+
+位置ベースの異方性クーロン摩擦です：$\Delta x_\parallel$、$\Delta x_\perp$ はこのサブステップでの体に沿った滑りと横方向の滑り、$d_n$ は面から押し出された距離（荷重）、$\mu_\parallel$ は滑る向きで前向きか後ろ向きの係数、$c$ は腹脚の鉤の保持力。$e_s$ は静止摩擦係数で、楕円錐の内側ならまったく動かず、$e_k$ は動摩擦係数で滑りを削ります。
+
 <div class="image-grid-2">
     <figure>
         <video class="clip" src={frictionClip} poster={frictionClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="摩擦の比較"></video>
@@ -121,6 +135,15 @@ import slopeClipPoster from '@/assets/projects/technical-project-procedural-cate
 ### プロシージャルな頭
 
 頭はヨーとピッチの減衰不足のバネにぶら下がっていて、少し遅れ、少し行き過ぎ、毎秒 240° より速くは回りません。進む経路の少し先を見つめ、リズムに合わせて縮めるときはうつむき、押し出すときは顔を上げて先導します。這っている間は 1 拍ごとに左右を探り、止まるとノイズでゆっくり辺りを見回します。体から頭に渡す向きにも速度制限をかけているので、体が揺れても頭が急に回ることはありません。
+
+$$
+\begin{gathered}
+\ddot{\boldsymbol\theta} = \omega^2\left(\boldsymbol\theta^{*} - \boldsymbol\theta\right) - 2\zeta\omega\,\dot{\boldsymbol\theta} \\[6pt]
+\lVert\dot{\boldsymbol\theta}\rVert \le \dot\theta_{\max}
+\end{gathered}
+$$
+
+$\boldsymbol\theta$ は頭のヨーとピッチ、$\boldsymbol\theta^{*}$ は見たい方向、$\omega$ は固有角振動数。$\zeta < 1$ の減衰不足なので遅れて少し行き過ぎます。回転速度には上限があります。
 
 ### 参考文献
 

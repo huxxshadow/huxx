@@ -1,6 +1,7 @@
 ---
 ---
 
+import 'katex/dist/katex.min.css';
 import slitClip from '@/assets/projects/technical-project-procedural-slime/clips/slit.mp4?url';
 import slitClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/slit-poster.webp?url';
 import jumpClip from '@/assets/projects/technical-project-procedural-slime/clips/jump.mp4?url';
@@ -38,6 +39,16 @@ Each lobe is a gumdrop distance field scaled by its volume: flat underneath, an 
 
 Splitting and merging are just these two parameters changing over time, so the skin is always one continuous distance field.
 
+$$
+\begin{gathered}
+\operatorname{smin}(a, b;\, k) = \min(a, b) - \frac{k}{4}\,h^2 \\[6pt]
+h = \frac{\max\left(k - |a - b|,\; 0\right)}{k} \\[6pt]
+r \propto V^{1/3}
+\end{gathered}
+$$
+
+$a$ and $b$ are two lobes' distances, $k$ the blend radius (the fusion weight is what moves it); $r$ is a lobe's radius and $V$ its volume.
+
 ### Skin: A Grid in the Rest Space
 
 The field is sampled on a grid in the body's rest space. The grid moves with the body, so its faces do not slide across it as it moves. Deformations such as squash and sway are applied to the meshed vertices.
@@ -47,7 +58,16 @@ The field is sampled on a grid in the body's rest space. The grid moves with the
 
 ### Squash, Stretch and Sway
 
-Squash is an underdamped spring on the log strain *s* (2.8 Hz, damping ratio 0.12); the three axes scale by (e^(−s/2), e^s, e^(−s/2)), which keeps the volume.
+Squash is an underdamped spring on the log strain $s$ (2.8 Hz, damping ratio 0.12), the three axes scaled by $\mathbf S$:
+
+$$
+\begin{gathered}
+\mathbf S = \operatorname{diag}\left(e^{-s/2},\; e^{s},\; e^{-s/2}\right) \\[6pt]
+\ddot s = -\omega^2 s - 2\zeta\omega\,\dot s
+\end{gathered}
+$$
+
+$\det\mathbf S = 1$, so the volume is kept; $\omega$ is the natural frequency and $\zeta$ the damping ratio.
 
 * **Landing**: the sudden change in vertical velocity kicks the spring.
 * **In the air**: the stretch axis turns from vertical toward the velocity.
@@ -67,11 +87,11 @@ Squash is an underdamped spring on the log strain *s* (2.8 Hz, damping ratio 0.1
 
 ### Through a Slit
 
-While the body pushes on a wall, it scans along the wall for an opening narrower than itself, then measures the slit's mouth, length and width along its way. From then on a single parameter drives the whole pass, the volume *X* that has gone in:
+While the body pushes on a wall, it scans along the wall for an opening narrower than itself, then measures the slit's mouth, length and width along its way. From then on a single parameter drives the whole pass, the volume $X$ that has gone in:
 
-* the ball behind holds V − X, shrinking and moving up to the mouth;
+* the ball behind holds $V - X$, shrinking and moving up to the mouth;
 * in the slit is a rounded box as wide as the slit, 0.8 of the standing height tall, as long as the volume it holds;
-* the ball out the far side holds max(0, X − the slit's capacity).
+* the ball out the far side holds $\max(0,\, X - C)$, $C$ being the slit's capacity.
 
 It moves as fast as it is pushed and backs out when pulled back. Once all of it is through, the ball on the far side is the whole body. During the pass the grid is fixed to the world, so where the walls cut the skin stays put.
 

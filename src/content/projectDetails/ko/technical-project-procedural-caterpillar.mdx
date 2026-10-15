@@ -1,6 +1,7 @@
 ---
 ---
 
+import 'katex/dist/katex.min.css';
 import obstacleClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/obstacle.mp4?url';
 import obstacleClipPoster from '@/assets/projects/technical-project-procedural-caterpillar/clips/obstacle-poster.webp?url';
 import poleClip from '@/assets/projects/technical-project-procedural-caterpillar/clips/pole.mp4?url';
@@ -64,6 +65,19 @@ import slopeClipPoster from '@/assets/projects/technical-project-procedural-cate
 
 같은 근육, 같은 리듬을 세 가지 땅에서 움직입니다. 보통 바닥에서는 앞으로 기어가고, 얼음 위(마찰은 30분의 1, 앞뒤가 똑같이 미끄러움)에서는 꿈틀대기만 할 뿐 거의 나아가지 못하며, 마찰이 전혀 없으면 제자리에서 몸부림칠 뿐 무게중심은 전혀 움직이지 않습니다. 밖에서 미는 것이 아무것도 없기 때문입니다.
 
+$$
+\begin{gathered}
+e = \sqrt{\left(\frac{\Delta x_\parallel}{\mu_\parallel\, d_n + c}\right)^{2} + \left(\frac{\Delta x_\perp}{\mu_\perp\, d_n + c}\right)^{2}} \\[6pt]
+\Delta\mathbf x_t \leftarrow
+\begin{cases}
+\mathbf 0, & e_s \le 1 \\
+\Delta\mathbf x_t\left(1 - \min\left(1,\, 1/e_k\right)\right), & e_s > 1
+\end{cases}
+\end{gathered}
+$$
+
+위치 기반의 이방성 쿨롱 마찰입니다: $\Delta x_\parallel$, $\Delta x_\perp$는 이번 서브스텝에서 몸을 따른 미끄러짐과 옆 방향 미끄러짐, $d_n$은 표면에서 밀려난 거리(하중), $\mu_\parallel$은 미끄러지는 방향에 따라 앞쪽 또는 뒤쪽 계수, $c$는 배다리 갈고리의 붙잡는 힘입니다. $e_s$는 정지 마찰 계수로 타원 원뿔 안이면 전혀 움직이지 않고, $e_k$는 운동 마찰 계수로 미끄러짐을 줄입니다.
+
 <div class="image-grid-2">
     <figure>
         <video class="clip" src={frictionClip} poster={frictionClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="마찰 비교"></video>
@@ -121,6 +135,15 @@ import slopeClipPoster from '@/assets/projects/technical-project-procedural-cate
 ### 절차적 머리
 
 머리는 요와 피치의 감쇠가 부족한 스프링에 매달려 있어, 조금 늦게 따라오고 조금 지나치며, 초당 240°보다 빠르게 돌지 않습니다. 가는 경로의 조금 앞을 바라보고, 리듬에 맞춰 모을 때는 고개를 숙이고 밀 때는 고개를 들어 앞장섭니다. 기어가는 동안에는 박자마다 좌우를 더듬고, 멈추면 노이즈로 천천히 주위를 둘러봅니다. 몸이 머리에 넘기는 방향에도 속도 제한을 두어, 몸이 흔들려도 머리가 갑자기 돌지 않습니다.
+
+$$
+\begin{gathered}
+\ddot{\boldsymbol\theta} = \omega^2\left(\boldsymbol\theta^{*} - \boldsymbol\theta\right) - 2\zeta\omega\,\dot{\boldsymbol\theta} \\[6pt]
+\lVert\dot{\boldsymbol\theta}\rVert \le \dot\theta_{\max}
+\end{gathered}
+$$
+
+$\boldsymbol\theta$는 머리의 요와 피치, $\boldsymbol\theta^{*}$는 보고 싶은 방향, $\omega$는 고유 각진동수이며 $\zeta < 1$로 감쇠가 부족해 늦게 따라가고 살짝 지나칩니다. 회전 속도에는 상한이 있습니다.
 
 ### 참고 문헌
 

@@ -1,6 +1,7 @@
 ---
 ---
 
+import 'katex/dist/katex.min.css';
 import jumpClip from '@/assets/projects/technical-project-procedural-fish/clips/jump.mp4?url';
 import jumpClipPoster from '@/assets/projects/technical-project-procedural-fish/clips/jump-poster.webp?url';
 import leapClip from '@/assets/projects/technical-project-procedural-fish/clips/leap.mp4?url';
@@ -37,9 +38,19 @@ import hopsClipPoster from '@/assets/projects/technical-project-procedural-fish/
 
 ### 肌肉：弹簧形式
 
-* 每侧肌肉是朝自身“可达角”拉的弹簧，刚度 = 激活 × 最大力矩 ÷ 可达角 × 力–速度系数（Hill 曲线），越过可达角就不再出力。
-* 两侧肌肉和脊柱弹簧合成一个柔顺角约束：静止角为 (k右 − k左)·可达角 ÷ K，柔度为 1 ÷ (K·h²)；关节阻尼按这个弹簧的临界阻尼来取。
+* 每侧肌肉是朝自身“可达角”拉的弹簧，刚度随激活和 Hill 的力–速度曲线变化，越过可达角就不再出力。
+* 两侧肌肉和脊柱弹簧合成一个柔顺角约束，关节阻尼按这个弹簧的临界阻尼来取。
 * 最早用显式力矩：很轻的尾节加上卡通化的力矩，一帧里做功过大，直接发散。改成弹簧形式后，在任意刚度下都保持稳定。
+
+$$
+\begin{gathered}
+k_{L,R} = a_{L,R}\,\frac{\tau_{\max}}{\theta_r}\,f_v(\dot\theta) \\[6pt]
+\theta_0 = \frac{(k_R - k_L)\,\theta_r}{K} \\[6pt]
+\tilde\alpha = \frac{1}{K\,h^2}
+\end{gathered}
+$$
+
+$a$ 为激活，$\tau_{\max}$ 为最大力矩，$\theta_r$ 为可达角，$f_v$ 为力–速度系数，$K = k_L + k_R + k_s$ 为两侧肌肉与脊柱弹簧的总刚度，$h$ 为子步长；$\theta_0$、$\tilde\alpha$ 是合成约束的静止角和柔度。
 
 ### 尾翻跳
 
@@ -65,6 +76,15 @@ import hopsClipPoster from '@/assets/projects/technical-project-procedural-fish/
 * **落点**：按肌肉实际给出的竖直速度算出到目标高度的飞行时间，用剩余的水平距离除以它，得到需要的水平速度。高度由肌肉决定，落点仍然准确；竖直方向只做小幅修正。
 * **转速**：用全身的惯性张量求出当前角速度，把它设成“落地时平躺、略低头”所需的值，滚转和偏航归零。
 * 离地后不再干预，飞行完全是物理的。
+
+$$
+\begin{gathered}
+T = \frac{v_y + \sqrt{v_y^2 - 2g\,\Delta y}}{g} \\[6pt]
+\mathbf v_h = \frac{\mathbf d_h}{T}
+\end{gathered}
+$$
+
+$v_y$ 为肌肉实际给出的竖直速度，$\Delta y$ 为目标高出的高度，$\mathbf d_h$ 为剩下的水平距离，$T$ 为飞行时间。
 
 ### 转身、翻正、疲劳与连跳
 

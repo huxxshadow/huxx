@@ -1,6 +1,7 @@
 ---
 ---
 
+import 'katex/dist/katex.min.css';
 import slitClip from '@/assets/projects/technical-project-procedural-slime/clips/slit.mp4?url';
 import slitClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/slit-poster.webp?url';
 import jumpClip from '@/assets/projects/technical-project-procedural-slime/clips/jump.mp4?url';
@@ -38,6 +39,16 @@ import oozeClipPoster from '@/assets/projects/technical-project-procedural-slime
 
 分裂も合体もこの二つのパラメーターが時間とともに変わるだけなので、皮膚は常に一つの連続した距離場です。
 
+$$
+\begin{gathered}
+\operatorname{smin}(a, b;\, k) = \min(a, b) - \frac{k}{4}\,h^2 \\[6pt]
+h = \frac{\max\left(k - |a - b|,\; 0\right)}{k} \\[6pt]
+r \propto V^{1/3}
+\end{gathered}
+$$
+
+$a$、$b$ は二つのローブの距離、$k$ はブレンド半径（融合ウェイトはこれを動かします）。$r$ はローブの半径、$V$ はその体積です。
+
 ### 皮膚：静止空間のグリッド
 
 距離場は体の静止空間のグリッドでサンプリングします。グリッドは体と一緒に移動するので、移動中に面が体の上を滑りません。スクワッシュや揺れなどの変形は生成後の頂点にかけます。
@@ -47,7 +58,16 @@ import oozeClipPoster from '@/assets/projects/technical-project-procedural-slime
 
 ### スクワッシュ、ストレッチ、揺れ
 
-スクワッシュは対数ひずみ *s* にかかる減衰不足のバネです（2.8 Hz、減衰比 0.12）。三軸のスケールは (e^(−s/2), e^s, e^(−s/2)) で、体積は変わりません。
+スクワッシュは対数ひずみ $s$ にかかる減衰不足のバネです（2.8 Hz、減衰比 0.12）。三軸は $\mathbf S$ でスケールします：
+
+$$
+\begin{gathered}
+\mathbf S = \operatorname{diag}\left(e^{-s/2},\; e^{s},\; e^{-s/2}\right) \\[6pt]
+\ddot s = -\omega^2 s - 2\zeta\omega\,\dot s
+\end{gathered}
+$$
+
+$\det\mathbf S = 1$ なので体積は変わりません。$\omega$ は固有角振動数、$\zeta$ は減衰比です。
 
 * **着地**：鉛直速度の急変がバネに衝撃を与えます。
 * **空中**：伸びる方向が鉛直から速度方向へ向きます。
@@ -67,11 +87,11 @@ import oozeClipPoster from '@/assets/projects/technical-project-procedural-slime
 
 ### 隙間の通り抜け
 
-体が壁を押しているとき、壁に沿って体より狭い開口を探し、進行方向に沿って隙間の入口、長さ、幅を測ります。その後は一つのパラメーター、すでに隙間に入った体積 *X* だけで全体が決まります。
+体が壁を押しているとき、壁に沿って体より狭い開口を探し、進行方向に沿って隙間の入口、長さ、幅を測ります。その後は一つのパラメーター、すでに隙間に入った体積 $X$ だけで全体が決まります。
 
-* 後ろの球の体積は V − X で、縮みながら入口へ移動します。
+* 後ろの球の体積は $V - X$ で、縮みながら入口へ移動します。
 * 隙間の中は角の丸い箱で、幅は隙間の幅、高さは立った高さの 0.8、長さは収める体積で決まります。
-* 出口の球の体積は max(0, X − 隙間の容量) です。
+* 出口の球の体積は $\max(0,\, X - C)$ です（$C$ は隙間の容量）。
 
 進む速さは入力に従い、逆に入力すると戻ります。すべて通り抜けると、出口の球が体全体になります。通り抜けの間はグリッドをワールド座標に固定するので、壁が皮膚を切る位置は体が動いても変わりません。
 

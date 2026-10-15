@@ -1,6 +1,7 @@
 ---
 ---
 
+import 'katex/dist/katex.min.css';
 import hopClip from '@/assets/projects/technical-project-procedural-frog/clips/hop.mp4?url';
 import hopClipPoster from '@/assets/projects/technical-project-procedural-frog/clips/hop-poster.webp?url';
 import angleClip from '@/assets/projects/technical-project-procedural-frog/clips/angle.mp4?url';
@@ -43,6 +44,17 @@ import coinClipPoster from '@/assets/projects/technical-project-procedural-frog/
 * **空中**：胴体は解析的な放物線を描き、着地点から離陸速度を逆算して、前足がちょうど目標に着きます。目標が高いほど踏み切りを急にし、離陸前に弾道に沿って地面をサンプリングし、余裕がなければさらに急にします。
 * **着地**：前足を固定し、胴体はポーズにつながるバネにぶら下がり、慣性で手を越えて前に出て、頭が地面に付くまで沈んでから跳ね返って座り直します。ピッチには別のバネがあり、前への勢いでさらに前のめりに。後ろ脚はベジェの弧で体の下に戻ります。
 
+$$
+\begin{gathered}
+T = \sqrt{\frac{2\,(d\tan\theta - \Delta y)}{g}} \\[6pt]
+\mathbf v_h = \frac{\mathbf d}{T} \\[6pt]
+v_y = \frac{\Delta y + \tfrac12 g T^2}{T} \\[6pt]
+\ddot{\mathbf x} = \omega^2\left(\mathbf x_{\text{pose}} - \mathbf x\right) - 2\zeta\omega\,\dot{\mathbf x}
+\end{gathered}
+$$
+
+最初の三式は着地点から踏み切りを逆算します：$\mathbf d$ は水平方向の変位（長さ $d$）、$\Delta y$ は高低差、$\theta$ は踏み切り角、$g$ は重力、$T$ は飛行時間。最後の式は着地時に胴体をポーズにつなぐバネで、$\omega$ は固有角振動数、$\zeta$ は減衰比。減衰を弱くして、行き過ぎてから戻るようにしています。
+
 <div class="image-grid-2">
     <figure>
         <video class="clip" src={hopClip} poster={hopClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="ジャンプ"></video>
@@ -77,6 +89,17 @@ import coinClipPoster from '@/assets/projects/technical-project-procedural-frog/
 * **衝突**：舌は常に地面より上、コインの外に保ち、コインが動いた後にもう一度押し出すので、めり込みません。
 * **コイン**：質量と慣性テンソルを持つ剛体の円盤。舌先では弾性のある位置拘束（PBD）で保持するので揺れて回り、くっついた面は常に舌の方を向きます。地面とは力積による接触（反発と摩擦）と転がり抵抗、止まるとスリープします。
 * **飲み込み**：ハエを飲み込むときは目を頭に押し込んで食べ物を押します。コインを含むと喉が大きく膨らみ、頭を後ろに反らしてから前へ振って吐き出します。
+
+$$
+\begin{gathered}
+\mathbf x_i \leftarrow \mathbf x_i + (1 - c)\left(\mathbf x_i - \mathbf x_i^{\text{prev}}\right) + \mathbf g\,h^2 \\[6pt]
+\Delta\mathbf x_i = \frac{w_i}{w_i + w_{i+1}}\left(\lVert\mathbf r\rVert - \ell\right)\hat{\mathbf r} \\[6pt]
+\Delta\mathbf x_{i+1} = -\frac{w_{i+1}}{w_i + w_{i+1}}\left(\lVert\mathbf r\rVert - \ell\right)\hat{\mathbf r} \\[6pt]
+\mathbf r = \mathbf x_{i+1} - \mathbf x_i
+\end{gathered}
+$$
+
+最初の式は減衰 $c$ 付きの Verlet 積分、残りの式は隣り合う点の長さ拘束です（$\ell$ は一区間の長さ）。$w$ は質量の逆数で、根元は 0（あごに固定）、舌先は何かがくっつくと小さくなるので、重い獲物はロープをたわませます。
 
 <div class="image-grid-2">
     <figure>

@@ -1,6 +1,7 @@
 ---
 ---
 
+import 'katex/dist/katex.min.css';
 import hopClip from '@/assets/projects/technical-project-procedural-frog/clips/hop.mp4?url';
 import hopClipPoster from '@/assets/projects/technical-project-procedural-frog/clips/hop-poster.webp?url';
 import angleClip from '@/assets/projects/technical-project-procedural-frog/clips/angle.mp4?url';
@@ -43,6 +44,17 @@ The timing comes from real frogs: the jump is a catapult — crouching loads the
 * **In the air**: the trunk follows an analytic parabola, its take-off velocity solved from the landing point so the front paws land right on the target; the higher the target the steeper the launch, and the ground is sampled along the arc before take-off, steepening it further where there is no room.
 * **Landing**: the front paws pin and the trunk hangs on a spring to the pose, carrying its momentum past the hands, sinking until its head presses the ground, then springing back up to sit; pitch has a spring of its own that the surge keeps tipping forward. The hind legs tuck back under it along a Bézier arc.
 
+$$
+\begin{gathered}
+T = \sqrt{\frac{2\,(d\tan\theta - \Delta y)}{g}} \\[6pt]
+\mathbf v_h = \frac{\mathbf d}{T} \\[6pt]
+v_y = \frac{\Delta y + \tfrac12 g T^2}{T} \\[6pt]
+\ddot{\mathbf x} = \omega^2\left(\mathbf x_{\text{pose}} - \mathbf x\right) - 2\zeta\omega\,\dot{\mathbf x}
+\end{gathered}
+$$
+
+The first three solve the launch back from the landing point: $\mathbf d$ the displacement over the ground (of length $d$), $\Delta y$ the difference in height, $\theta$ the launch angle, $g$ gravity, $T$ the flight time. The last is the spring the trunk hangs on to its pose as it lands: $\omega$ the natural frequency, $\zeta$ the damping ratio, underdamped so it overshoots and springs back.
+
 <div class="image-grid-2">
     <figure>
         <video class="clip" src={hopClip} poster={hopClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Hop"></video>
@@ -77,6 +89,17 @@ The timing comes from real frogs: the jump is a catapult — crouching loads the
 * **Collision**: the tongue stays above the ground and outside the coin, pushed again after the coin moves, so nothing passes through.
 * **Coin**: a rigid disc with mass and an inertia tensor; on the tongue it is held by a soft position constraint (PBD), so it swings and spins, its stuck face always turned toward the tongue. On the ground: impulse contacts (restitution and friction) with rolling resistance, sleeping once still.
 * **Swallowing**: swallowing a fly, it presses its eyes down into its head to push the food; with the coin in its mouth the throat swells into a big lump, then the head tips back and flicks forward to spit it out.
+
+$$
+\begin{gathered}
+\mathbf x_i \leftarrow \mathbf x_i + (1 - c)\left(\mathbf x_i - \mathbf x_i^{\text{prev}}\right) + \mathbf g\,h^2 \\[6pt]
+\Delta\mathbf x_i = \frac{w_i}{w_i + w_{i+1}}\left(\lVert\mathbf r\rVert - \ell\right)\hat{\mathbf r} \\[6pt]
+\Delta\mathbf x_{i+1} = -\frac{w_{i+1}}{w_i + w_{i+1}}\left(\lVert\mathbf r\rVert - \ell\right)\hat{\mathbf r} \\[6pt]
+\mathbf r = \mathbf x_{i+1} - \mathbf x_i
+\end{gathered}
+$$
+
+The first is Verlet integration with a damping $c$, the rest the length constraint between neighbouring points ($\ell$ a segment's length). $w$ is the inverse mass: 0 at the root (fixed to the jaw), smaller at the tip with something stuck to it, so heavy prey bows the rope.
 
 <div class="image-grid-2">
     <figure>

@@ -1,6 +1,7 @@
 ---
 ---
 
+import 'katex/dist/katex.min.css';
 import jumpClip from '@/assets/projects/technical-project-procedural-fish/clips/jump.mp4?url';
 import jumpClipPoster from '@/assets/projects/technical-project-procedural-fish/clips/jump-poster.webp?url';
 import leapClip from '@/assets/projects/technical-project-procedural-fish/clips/leap.mp4?url';
@@ -37,9 +38,19 @@ import hopsClipPoster from '@/assets/projects/technical-project-procedural-fish/
 
 ### バネとしての筋肉
 
-* 各側の筋肉は、自分の「到達角」に向かって引くバネです。剛性は 活性 × 最大トルク ÷ 到達角 × 力–速度係数（Hill の曲線）で、到達角を越えると力を出しません。
-* 両側の筋肉と背骨のバネで一つのコンプライアントな角度拘束を作ります。静止角は (k<sub>右</sub> − k<sub>左</sub>)·到達角 ÷ K、コンプライアンスは 1 ÷ (K·h²)。関節の減衰はこのバネの臨界減衰から決めます。
+* 各側の筋肉は自身の「到達角」へ引くバネで、剛性は活性と Hill の力–速度曲線で変わり、到達角を越えると力を出しません。
+* 両側の筋肉と背骨のバネで一つのコンプライアントな角度拘束を作り、関節の減衰はこのバネの臨界減衰から決めます。
 * 最初は陽的なトルクで動かしていました。とても軽い尾の節にカートゥーン的なトルクをかけると、1 フレームで過大な仕事をして発散しました。バネの形にしてからは、どんな剛性でも安定しています。
+
+$$
+\begin{gathered}
+k_{L,R} = a_{L,R}\,\frac{\tau_{\max}}{\theta_r}\,f_v(\dot\theta) \\[6pt]
+\theta_0 = \frac{(k_R - k_L)\,\theta_r}{K} \\[6pt]
+\tilde\alpha = \frac{1}{K\,h^2}
+\end{gathered}
+$$
+
+$a$ は活性、$\tau_{\max}$ は最大トルク、$\theta_r$ は到達角、$f_v$ は力–速度係数、$K = k_L + k_R + k_s$ は両側の筋肉と背骨のバネを合わせた剛性、$h$ はサブステップ長。$\theta_0$ と $\tilde\alpha$ は合成した拘束の静止角とコンプライアンスです。
 
 ### テールフリップ
 
@@ -65,6 +76,15 @@ import hopsClipPoster from '@/assets/projects/technical-project-procedural-fish/
 * **着地点**：筋肉が実際に出した鉛直速度から目標の高さまでの飛行時間を求め、残りの水平距離をそれで割って必要な水平速度を出します。どれだけ高く跳ぶかは筋肉が決め、それでも狙った所に着地します。鉛直方向は小さく補正するだけです。
 * **回転**：体全体の慣性テンソルから角速度を求め、「頭を少し下げて平らに着地する」回転に合わせ、ロールとヨーは打ち消します。
 * 地面を離れたら何もしません。飛行はすべて物理です。
+
+$$
+\begin{gathered}
+T = \frac{v_y + \sqrt{v_y^2 - 2g\,\Delta y}}{g} \\[6pt]
+\mathbf v_h = \frac{\mathbf d_h}{T}
+\end{gathered}
+$$
+
+$v_y$ は筋肉が実際に出した鉛直速度、$\Delta y$ は目標の高さ、$\mathbf d_h$ は残りの水平距離、$T$ は飛行時間です。
 
 ### 向き直り、起き直り、疲労、連続ジャンプ
 

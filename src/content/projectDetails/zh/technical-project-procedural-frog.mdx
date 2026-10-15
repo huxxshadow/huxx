@@ -1,6 +1,7 @@
 ---
 ---
 
+import 'katex/dist/katex.min.css';
 import hopClip from '@/assets/projects/technical-project-procedural-frog/clips/hop.mp4?url';
 import hopClipPoster from '@/assets/projects/technical-project-procedural-frog/clips/hop-poster.webp?url';
 import angleClip from '@/assets/projects/technical-project-procedural-frog/clips/angle.mp4?url';
@@ -43,6 +44,17 @@ import coinClipPoster from '@/assets/projects/technical-project-procedural-frog/
 * **空中**：躯干走解析抛物线，由落点反解起飞速度，前爪正好落在目标处；目标越高起跳越陡，起跳前沿弹道采样地面，留不出空间就再陡一些。
 * **落地**：前爪钉住，躯干挂在姿态的弹簧上，带着惯性冲过双手、下沉、头压到地面，再弹回坐起；俯仰另有弹簧，前冲让它继续往前栽。后腿沿贝塞尔弧线收回身下。
 
+$$
+\begin{gathered}
+T = \sqrt{\frac{2\,(d\tan\theta - \Delta y)}{g}} \\[6pt]
+\mathbf v_h = \frac{\mathbf d}{T} \\[6pt]
+v_y = \frac{\Delta y + \tfrac12 g T^2}{T} \\[6pt]
+\ddot{\mathbf x} = \omega^2\left(\mathbf x_{\text{pose}} - \mathbf x\right) - 2\zeta\omega\,\dot{\mathbf x}
+\end{gathered}
+$$
+
+前三式由落点反解起跳：$\mathbf d$ 为水平位移（长度 $d$），$\Delta y$ 为高度差，$\theta$ 为起跳角，$g$ 为重力，$T$ 为飞行时间。最后一式是落地时躯干挂在姿态上的弹簧：$\omega$ 为固有角频率，$\zeta$ 为阻尼比，取欠阻尼，让它冲过头再弹回。
+
 <div class="image-grid-2">
     <figure>
         <video class="clip" src={hopClip} poster={hopClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="跳"></video>
@@ -77,6 +89,17 @@ import coinClipPoster from '@/assets/projects/technical-project-procedural-frog/
 * **碰撞**：舌头始终在地面以上、在金币外面，金币移动后再推一次，不穿插。
 * **金币**：有质量和惯性张量的刚体圆片；粘在舌尖时用带弹性的位置约束（PBD），会摆、会转，粘住的那一面始终朝着舌头。落地用冲量接触（弹性、摩擦）加滚动阻力，停稳后休眠。
 * **吞咽**：苍蝇吞下去时眼睛压进头里推食物；金币进嘴后喉咙鼓起一个大包，头后仰再往前一甩，把它吐出去。
+
+$$
+\begin{gathered}
+\mathbf x_i \leftarrow \mathbf x_i + (1 - c)\left(\mathbf x_i - \mathbf x_i^{\text{prev}}\right) + \mathbf g\,h^2 \\[6pt]
+\Delta\mathbf x_i = \frac{w_i}{w_i + w_{i+1}}\left(\lVert\mathbf r\rVert - \ell\right)\hat{\mathbf r} \\[6pt]
+\Delta\mathbf x_{i+1} = -\frac{w_{i+1}}{w_i + w_{i+1}}\left(\lVert\mathbf r\rVert - \ell\right)\hat{\mathbf r} \\[6pt]
+\mathbf r = \mathbf x_{i+1} - \mathbf x_i
+\end{gathered}
+$$
+
+第一式是带阻尼 $c$ 的 Verlet 积分，后三式是相邻两点的长度约束（$\ell$ 为每段的长度）。$w$ 是质量的倒数：舌根为 0（固定在下巴上），舌尖粘着东西时变小，所以重的猎物会把绳子坠弯。
 
 <div class="image-grid-2">
     <figure>

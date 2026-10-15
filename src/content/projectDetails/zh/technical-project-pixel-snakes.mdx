@@ -1,6 +1,7 @@
 ---
 ---
 
+import 'katex/dist/katex.min.css';
 import { Image } from 'astro:assets';
 import crawlClip from '@/assets/projects/technical-project-pixel-snakes/clips/crawl.mp4?url';
 import crawlClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/crawl-poster.webp?url';
@@ -49,6 +50,17 @@ import swarm2ClipPoster from '@/assets/projects/technical-project-pixel-snakes/c
 * **形状约束**：每个关节相对左右邻居的偏移（离散拉普拉斯）去匹配目标，曲率被刚性保持，S 形与盘圈不会被物理拉直。
 * **追踪约束**：一组从颈部到尾部逐渐变软的阻尼弹簧，刚度用自然频率参数化，与帧率无关。于是身体会甩尾、跟随、在悬空处下垂。
 * **不可伸长**：段长约束双向迭代，每帧四个子步。
+
+$$
+\begin{gathered}
+\Delta\lambda = \frac{-C(\mathbf x) - \tilde\alpha\,\lambda}{\nabla C\,\mathbf M^{-1}\nabla C^{\top} + \tilde\alpha} \\[6pt]
+\tilde\alpha = \frac{\alpha}{h^2} \\[6pt]
+C_i^{\text{shape}} = \mathbf x_i - \tfrac12\left(\mathbf x_{i-1} + \mathbf x_{i+1}\right) - \boldsymbol\delta_i^{*} \\[6pt]
+\tilde\alpha_i^{\text{track}} = \frac{1}{(2\pi f_i)^2\,h^2}
+\end{gathered}
+$$
+
+前两式是每个约束的 XPBD 更新（$\alpha$ 为柔度，$h$ 为子步长）。形状约束让每个关节相对左右邻居均值的偏移（离散拉普拉斯）等于目标姿态的 $\boldsymbol\delta_i^{*}$；追踪弹簧的柔度由自然频率 $f_i$ 给出，从颈部到尾部逐渐变小，所以和帧率无关。
 
 <div class="image-grid-2">
     <figure>

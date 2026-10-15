@@ -1,6 +1,7 @@
 ---
 ---
 
+import 'katex/dist/katex.min.css';
 import slitClip from '@/assets/projects/technical-project-procedural-slime/clips/slit.mp4?url';
 import slitClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/slit-poster.webp?url';
 import jumpClip from '@/assets/projects/technical-project-procedural-slime/clips/jump.mp4?url';
@@ -38,6 +39,16 @@ import oozeClipPoster from '@/assets/projects/technical-project-procedural-slime
 
 분열과 합체는 이 두 파라미터가 시간에 따라 바뀌는 것뿐이어서, 피부는 항상 하나의 연속된 거리장입니다.
 
+$$
+\begin{gathered}
+\operatorname{smin}(a, b;\, k) = \min(a, b) - \frac{k}{4}\,h^2 \\[6pt]
+h = \frac{\max\left(k - |a - b|,\; 0\right)}{k} \\[6pt]
+r \propto V^{1/3}
+\end{gathered}
+$$
+
+$a$, $b$는 두 로브의 거리, $k$는 블렌드 반지름(융합 가중치가 이것을 조절합니다)이고, $r$은 로브의 반지름, $V$는 그 부피입니다.
+
 ### 피부: 정지 공간 격자
 
 거리장은 몸의 정지 공간 격자에서 샘플링합니다. 격자가 몸과 함께 이동하므로 움직이는 동안 면이 몸 위를 미끄러지지 않습니다. 스쿼시나 흔들림 같은 변형은 생성된 정점에 적용합니다.
@@ -47,7 +58,16 @@ import oozeClipPoster from '@/assets/projects/technical-project-procedural-slime
 
 ### 스쿼시, 스트레치, 흔들림
 
-스쿼시는 로그 변형률 *s*에 걸린 감쇠가 부족한 스프링입니다(2.8 Hz, 감쇠비 0.12). 세 축의 스케일은 (e^(−s/2), e^s, e^(−s/2))로 부피가 변하지 않습니다.
+스쿼시는 로그 변형률 $s$에 걸린 감쇠가 부족한 스프링입니다(2.8 Hz, 감쇠비 0.12). 세 축은 $\mathbf S$로 스케일됩니다:
+
+$$
+\begin{gathered}
+\mathbf S = \operatorname{diag}\left(e^{-s/2},\; e^{s},\; e^{-s/2}\right) \\[6pt]
+\ddot s = -\omega^2 s - 2\zeta\omega\,\dot s
+\end{gathered}
+$$
+
+$\det\mathbf S = 1$이므로 부피가 변하지 않습니다. $\omega$는 고유 각진동수, $\zeta$는 감쇠비입니다.
 
 * **착지**: 수직 속도의 급변이 스프링에 충격을 줍니다.
 * **공중**: 늘어나는 방향이 수직에서 속도 방향으로 돌아갑니다.
@@ -67,11 +87,11 @@ import oozeClipPoster from '@/assets/projects/technical-project-procedural-slime
 
 ### 틈새 통과
 
-몸이 벽을 밀고 있을 때 벽을 따라 몸보다 좁은 틈을 찾고, 진행 방향을 따라 틈의 입구, 길이, 폭을 잽니다. 이후에는 하나의 파라미터, 이미 틈에 들어간 부피 *X*만으로 전체 과정이 정해집니다.
+몸이 벽을 밀고 있을 때 벽을 따라 몸보다 좁은 틈을 찾고, 진행 방향을 따라 틈의 입구, 길이, 폭을 잽니다. 이후에는 하나의 파라미터, 이미 틈에 들어간 부피 $X$만으로 전체 과정이 정해집니다.
 
-* 뒤쪽 공의 부피는 V − X로, 줄어들면서 입구로 이동합니다.
+* 뒤쪽 공의 부피는 $V - X$로, 줄어들면서 입구로 이동합니다.
 * 틈 안은 모서리가 둥근 상자로, 폭은 틈의 폭, 높이는 서 있는 높이의 0.8, 길이는 담은 부피로 정해집니다.
-* 출구 쪽 공의 부피는 max(0, X − 틈의 용량)입니다.
+* 출구 쪽 공의 부피는 $\max(0,\, X - C)$입니다($C$는 틈의 용량).
 
 나아가는 속도는 입력을 따르고, 반대로 입력하면 물러납니다. 모두 통과하면 출구 쪽 공이 몸 전체가 됩니다. 통과하는 동안 격자를 월드 좌표에 고정해, 벽이 피부를 자르는 위치가 몸이 움직여도 바뀌지 않습니다.
 

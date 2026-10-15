@@ -606,6 +606,35 @@ if (detailEntry) {
         :global(.project-prose .game-embed-note) { font-size: 0.75rem; text-align: center; }
     }
 
+    /* 公式（KaTeX）：单独一块，和图片、视频同一套描边与偏移阴影 */
+    :global(.project-prose .katex-display) {
+        margin: 1.75rem 0;
+        padding: 1.1rem 1.25rem;
+        border: 3px solid var(--theme-text);
+        box-shadow: 4px 4px 0px var(--theme-text);
+        border-radius: 0.75rem;
+        color: var(--theme-text);
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+    :global(.project-prose .katex) {
+        font-size: 1.12em;
+    }
+    @media (max-width: 639px) {
+        :global(.project-prose .katex-display) {
+            padding: 0.9rem 0.75rem;
+        }
+        :global(.project-prose .katex) {
+            font-size: 0.95em;
+        }
+    }
+    /* 公式下面的符号说明 */
+    :global(.project-prose .katex-display + p),
+    :global(.project-prose p.formula-note) {
+        font-size: 0.95rem;
+        opacity: 0.8;
+    }
+
     /* 引用 */
     :global(.project-prose blockquote) {
         border-left: 4px solid var(--theme-text);

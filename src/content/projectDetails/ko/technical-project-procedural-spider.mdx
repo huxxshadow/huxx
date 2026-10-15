@@ -1,6 +1,7 @@
 ---
 ---
 
+import 'katex/dist/katex.min.css';
 import stepsClip from '@/assets/projects/technical-project-procedural-spider/clips/steps-rubble.mp4?url';
 import stepsClipPoster from '@/assets/projects/technical-project-procedural-spider/clips/steps-rubble-poster.webp?url';
 import pillarClip from '@/assets/projects/technical-project-procedural-spider/clips/pillar.mp4?url';
@@ -50,6 +51,15 @@ Unity에서 절차적 거미와 그 거미줄을 처음부터 만든 개인 프�
 * **스윙 궤적**: 발을 들 때 2차 베지어 곡선을 계획하고 다리 자기 쪽으로 볼록하게 만듭니다. 다른 면으로 넘어갈 때는 두 면 법선의 이등분선을 따라 꼭짓점을 밖으로 빼서, 모서리를 뚫지 않고 돌아갑니다.
 * **뒤집히지 않는 무릎**: 원하는 무릎 방향이 막히면 '엉덩이에서 발목' 축을 중심으로 가장 가까운 빈 방향을 찾고, 이전 프레임과의 연속성을 우선해 무릎이 좌우로 뒤집히지 않게 합니다.
 
+$$
+\begin{gathered}
+\cos\theta_{\text{knee}} = \frac{a^2 + b^2 - d^2}{2ab} \\[6pt]
+\mathbf B(t) = (1-t)^2\,\mathbf P_0 + 2t(1-t)\,\mathbf P_1 + t^2\,\mathbf P_2
+\end{gathered}
+$$
+
+첫 번째 식은 2본 IK의 코사인 법칙입니다: $a$, $b$는 넓적다리마디와 종아리마디의 길이, $d$는 넓적다리마디 뿌리에서 발목마디까지의 거리입니다. 두 번째 식은 걸음의 호로, $\mathbf P_0$는 발을 든 점, $\mathbf P_2$는 발 디딤점, 제어점 $\mathbf P_1$은 다리 자신의 쪽으로 바깥으로 휩니다.
+
 <div class="image-grid-2">
     <figure>
         <video class="clip" src={stepsClip} poster={stepsClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="계단, 돌무더기, 경사로"></video>
@@ -96,6 +106,16 @@ Unity에서 절차적 거미와 그 거미줄을 처음부터 만든 개인 프�
 
 * **파동 보행**: 줄과 그물 위에서는 나아간 거리로 가는 시계를 써서, 한쪽 네 다리가 각각 주기의 4분의 1을 맡고 좌우는 반 주기씩 어긋나게 합니다. 그래서 한쪽에는 항상 세 발이 줄을 잡고 있습니다. 뒷다리는 앞다리가 방금 놓은 잡는 점으로 들어가고, 앞다리는 조금 앞의 줄을 살짝 두드린 뒤 미끄러져 돌아와 잡습니다.
 * **양방향 결합**: 거미의 머리와 배를 움직이는 타원체로 줄 솔버에 넘기므로, 줄이 몸에 밀려납니다. 발은 '잡는 점 위치 + 속도 × 시간 간격', 즉 줄이 이번 스텝 뒤에 있을 위치에 두고, 줄을 갱신한 뒤 정확히 맞추기 때문에 발이 줄보다 한 프레임 늦는 일이 없습니다.
+
+$$
+\begin{gathered}
+\phi = \frac{s}{L} \\[6pt]
+\phi_{k,\sigma} = \frac{k}{4} + \frac{\sigma}{2} \\[6pt]
+\mathbf x_{\text{foot}} = \mathbf x_{\text{grip}} + \mathbf v_{\text{grip}}\,h
+\end{gathered}
+$$
+
+파동 보행의 시계 $\phi$는 이동 거리 $s$로 진행합니다($L$은 한 주기의 거리). 각 쪽의 $k$번째 다리($k = 0..3$, 앞에서 뒤로, $\sigma$는 왼쪽 0, 오른쪽 1)는 $\phi$가 $\phi_{k,\sigma}$를 지날 때 내딛습니다. 발은 이번 스텝 뒤의 잡는 점 위치에 두고, 줄이 갱신된 뒤 정확히 맞춥니다.
 
 <div class="image-grid-2">
     <figure>

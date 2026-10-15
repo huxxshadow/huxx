@@ -5,6 +5,8 @@ import { DEFAULT_LOCALE_SETTING, LOCALES_SETTING } from './src/locales';
 import sitemap from '@astrojs/sitemap';
 
 import mdx from '@astrojs/mdx';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 export default defineConfig({
   site: 'https://huxx.me',
@@ -33,6 +35,10 @@ export default defineConfig({
           )
       ),
     },
-  }), mdx()],
+  }), mdx({
+    // 公式：$...$ / $$...$$ 在构建时由 KaTeX 渲染成静态 HTML；用到公式的 MDX 自己 import KaTeX 的 CSS
+    remarkPlugins: [remarkMath],
+    rehypePlugins: [rehypeKatex],
+  })],
 
 });

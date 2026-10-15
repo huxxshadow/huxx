@@ -1,6 +1,7 @@
 ---
 ---
 
+import 'katex/dist/katex.min.css';
 import slitClip from '@/assets/projects/technical-project-procedural-slime/clips/slit.mp4?url';
 import slitClipPoster from '@/assets/projects/technical-project-procedural-slime/clips/slit-poster.webp?url';
 import jumpClip from '@/assets/projects/technical-project-procedural-slime/clips/jump.mp4?url';
@@ -38,6 +39,16 @@ import oozeClipPoster from '@/assets/projects/technical-project-procedural-slime
 
 分裂、合并都只是这两个参数随时间变化，皮肤始终是一个连续的距离场。
 
+$$
+\begin{gathered}
+\operatorname{smin}(a, b;\, k) = \min(a, b) - \frac{k}{4}\,h^2 \\[6pt]
+h = \frac{\max\left(k - |a - b|,\; 0\right)}{k} \\[6pt]
+r \propto V^{1/3}
+\end{gathered}
+$$
+
+$a$、$b$ 为两个叶瓣的距离，$k$ 为混合半径（融合权重调的就是它）；$r$ 为叶瓣半径，$V$ 为它的体积。
+
 ### 皮肤：静止空间网格
 
 距离场在身体静止空间的网格上采样，网格随身体平移，所以移动时面片不会在身体上滑动。挤压、摆动等形变作用在生成后的顶点上。
@@ -47,7 +58,16 @@ import oozeClipPoster from '@/assets/projects/technical-project-procedural-slime
 
 ### 挤压、拉伸与摆动
 
-挤压用一个作用在对数应变 *s* 上的欠阻尼弹簧（2.8 Hz，阻尼比 0.12），三个轴的缩放为 (e^(−s/2), e^s, e^(−s/2))，体积不变。
+挤压用一个作用在对数应变 $s$ 上的欠阻尼弹簧（2.8 Hz，阻尼比 0.12），三个轴按 $\mathbf S$ 缩放：
+
+$$
+\begin{gathered}
+\mathbf S = \operatorname{diag}\left(e^{-s/2},\; e^{s},\; e^{-s/2}\right) \\[6pt]
+\ddot s = -\omega^2 s - 2\zeta\omega\,\dot s
+\end{gathered}
+$$
+
+$\det\mathbf S = 1$，所以体积不变；$\omega$ 为固有角频率，$\zeta$ 为阻尼比。
 
 * **落地**：竖直速度的突变给弹簧一个冲量。
 * **空中**：拉伸方向从竖直逐渐转向速度方向。
@@ -67,11 +87,11 @@ import oozeClipPoster from '@/assets/projects/technical-project-procedural-slime
 
 ### 钻缝
 
-身体推着墙时，沿墙面扫描比身体窄的开口，再沿行进方向测出缝的入口、长度和宽度。之后整个过程只由一个参数决定，即已经进入缝的体积 *X*：
+身体推着墙时，沿墙面扫描比身体窄的开口，再沿行进方向测出缝的入口、长度和宽度。之后整个过程只由一个参数决定，即已经进入缝的体积 $X$：
 
-* 后面的球体积为 V − X，逐渐缩小并移向缝口；
+* 后面的球体积为 $V - X$，逐渐缩小并移向缝口；
 * 缝中是一个圆角盒，宽度为缝宽，高度为站立高度的 0.8，长度由它容纳的体积决定；
-* 出口的球体积为 max(0, X − 缝容量)。
+* 出口的球体积为 $\max(0,\, X - C)$，$C$ 为缝的容量。
 
 推进速度跟随输入，反向输入时会退回。全部通过后，出口的球就是完整的身体。钻缝期间网格固定在世界坐标上，墙面裁切的位置不会随身体移动而变化。
 

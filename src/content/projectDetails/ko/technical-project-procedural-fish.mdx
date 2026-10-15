@@ -1,6 +1,7 @@
 ---
 ---
 
+import 'katex/dist/katex.min.css';
 import jumpClip from '@/assets/projects/technical-project-procedural-fish/clips/jump.mp4?url';
 import jumpClipPoster from '@/assets/projects/technical-project-procedural-fish/clips/jump-poster.webp?url';
 import leapClip from '@/assets/projects/technical-project-procedural-fish/clips/leap.mp4?url';
@@ -37,9 +38,19 @@ import hopsClipPoster from '@/assets/projects/technical-project-procedural-fish/
 
 ### 스프링으로서의 근육
 
-* 각 쪽 근육은 자신의 '도달각'을 향해 당기는 스프링입니다. 강성은 활성 × 최대 토크 ÷ 도달각 × 힘–속도 계수(Hill 곡선)이고, 도달각을 넘으면 힘을 내지 않습니다.
-* 양쪽 근육과 척추 스프링으로 하나의 순응 각도 구속을 만듭니다. 정지 각은 (k<sub>오른쪽</sub> − k<sub>왼쪽</sub>)·도달각 ÷ K, 컴플라이언스는 1 ÷ (K·h²). 관절 감쇠는 이 스프링의 임계 감쇠에서 정합니다.
+* 각 쪽 근육은 자신의 '도달각'으로 당기는 스프링으로, 강성은 활성과 Hill의 힘–속도 곡선에 따라 변하고, 도달각을 넘으면 더 이상 힘을 내지 않습니다.
+* 양쪽 근육과 척추 스프링으로 하나의 순응 각도 구속을 만들고, 관절 감쇠는 이 스프링의 임계 감쇠에서 정합니다.
 * 처음에는 명시적 토크로 움직였습니다. 아주 가벼운 꼬리 마디에 카툰식 토크를 걸면 한 프레임에 지나치게 큰 일을 하며 발산했습니다. 스프링 형태로 바꾼 뒤에는 어떤 강성에서도 안정적입니다.
+
+$$
+\begin{gathered}
+k_{L,R} = a_{L,R}\,\frac{\tau_{\max}}{\theta_r}\,f_v(\dot\theta) \\[6pt]
+\theta_0 = \frac{(k_R - k_L)\,\theta_r}{K} \\[6pt]
+\tilde\alpha = \frac{1}{K\,h^2}
+\end{gathered}
+$$
+
+$a$는 활성, $\tau_{\max}$는 최대 토크, $\theta_r$는 도달각, $f_v$는 힘–속도 계수, $K = k_L + k_R + k_s$는 양쪽 근육과 척추 스프링을 합친 강성, $h$는 서브스텝 길이입니다. $\theta_0$와 $\tilde\alpha$는 합친 구속의 정지 각과 컴플라이언스입니다.
 
 ### 테일 플립
 
@@ -65,6 +76,15 @@ import hopsClipPoster from '@/assets/projects/technical-project-procedural-fish/
 * **착지점**: 근육이 실제로 낸 수직 속도로 목표 높이까지의 비행 시간을 구하고, 남은 수평 거리를 그것으로 나눠 필요한 수평 속도를 얻습니다. 얼마나 높이 뛸지는 근육이 정하고, 그래도 목표 지점에 착지합니다. 수직 방향은 작게 보정만 합니다.
 * **회전**: 몸 전체의 관성 텐서로 각속도를 구해 '머리를 조금 숙이고 평평하게 착지하는' 회전으로 맞추고, 롤과 요는 없앱니다.
 * 땅을 떠난 뒤에는 아무것도 하지 않습니다. 비행은 전부 물리입니다.
+
+$$
+\begin{gathered}
+T = \frac{v_y + \sqrt{v_y^2 - 2g\,\Delta y}}{g} \\[6pt]
+\mathbf v_h = \frac{\mathbf d_h}{T}
+\end{gathered}
+$$
+
+$v_y$는 근육이 실제로 낸 수직 속도, $\Delta y$는 목표가 더 높은 만큼의 높이, $\mathbf d_h$는 남은 수평 거리, $T$는 비행 시간입니다.
 
 ### 방향 전환, 바로 눕기, 피로, 연속 점프
 

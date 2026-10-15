@@ -1,6 +1,7 @@
 ---
 ---
 
+import 'katex/dist/katex.min.css';
 import { Image } from 'astro:assets';
 import crawlClip from '@/assets/projects/technical-project-pixel-snakes/clips/crawl.mp4?url';
 import crawlClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/crawl-poster.webp?url';
@@ -49,6 +50,17 @@ Unity에서 절차적 뱀 애니메이션 시스템을 처음부터 만든 개�
 * **형상 구속**: 각 관절이 양옆 이웃의 중점에서 벗어난 정도(이산 라플라시안)를 목표에 맞춥니다. 곡률이 단단히 유지되어 S자와 똬리가 물리에 의해 펴지지 않습니다.
 * **추적 구속**: 목에서 꼬리로 갈수록 부드러워지는 감쇠 스프링으로, 강성은 고유 진동수로 지정해 프레임 레이트와 무관합니다. 그 결과 몸이 휘청이고, 뒤늦게 따라오며, 받침이 없는 곳에서는 처집니다.
 * **늘어나지 않는 몸**: 마디 길이를 양방향으로 반복해 유지하고, 한 프레임을 4개의 서브스텝으로 풉니다.
+
+$$
+\begin{gathered}
+\Delta\lambda = \frac{-C(\mathbf x) - \tilde\alpha\,\lambda}{\nabla C\,\mathbf M^{-1}\nabla C^{\top} + \tilde\alpha} \\[6pt]
+\tilde\alpha = \frac{\alpha}{h^2} \\[6pt]
+C_i^{\text{shape}} = \mathbf x_i - \tfrac12\left(\mathbf x_{i-1} + \mathbf x_{i+1}\right) - \boldsymbol\delta_i^{*} \\[6pt]
+\tilde\alpha_i^{\text{track}} = \frac{1}{(2\pi f_i)^2\,h^2}
+\end{gathered}
+$$
+
+처음 두 식은 각 구속의 XPBD 갱신입니다($\alpha$는 컴플라이언스, $h$는 서브스텝 길이). 형태 구속은 각 관절이 양옆 이웃의 평균에서 벗어난 정도(이산 라플라시안)를 목표 자세의 $\boldsymbol\delta_i^{*}$에 맞춥니다. 추적 스프링의 컴플라이언스는 고유 진동수 $f_i$로 정해지고 목에서 꼬리로 갈수록 작아지므로, 프레임레이트와 무관합니다.
 
 <div class="image-grid-2">
     <figure>

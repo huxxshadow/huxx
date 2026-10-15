@@ -1,6 +1,7 @@
 ---
 ---
 
+import 'katex/dist/katex.min.css';
 import jumpClip from '@/assets/projects/technical-project-procedural-fish/clips/jump.mp4?url';
 import jumpClipPoster from '@/assets/projects/technical-project-procedural-fish/clips/jump-poster.webp?url';
 import leapClip from '@/assets/projects/technical-project-procedural-fish/clips/leap.mp4?url';
@@ -37,9 +38,19 @@ Small fish stranded on land get about by the tail-flip jump: lying on their side
 
 ### Muscles as Springs
 
-* Each side's muscle is a spring pulling toward its own reach angle, its stiffness the activation × the strongest torque ÷ the reach × a force–velocity factor (Hill's curve); past its reach it pulls no more.
-* The two muscles and the spine's spring make one compliant angular constraint: rest angle (k<sub>right</sub> − k<sub>left</sub>)·reach ÷ K, compliance 1 ÷ (K·h²). A joint's damping is taken from that spring's critical damping.
+* Each side's muscle is a spring pulling toward its own reach angle, its stiffness set by the activation and Hill's force–velocity curve; past its reach it pulls no more.
+* The two muscles and the spine's spring make one compliant angular constraint; a joint's damping is taken from that spring's critical damping.
 * The first version applied explicit torques: a very light tail segment under cartoon torques did far too much work in a frame and blew up. As springs the muscles stay stable at any stiffness.
+
+$$
+\begin{gathered}
+k_{L,R} = a_{L,R}\,\frac{\tau_{\max}}{\theta_r}\,f_v(\dot\theta) \\[6pt]
+\theta_0 = \frac{(k_R - k_L)\,\theta_r}{K} \\[6pt]
+\tilde\alpha = \frac{1}{K\,h^2}
+\end{gathered}
+$$
+
+$a$ is the activation, $\tau_{\max}$ the strongest torque, $\theta_r$ the reach, $f_v$ the force–velocity factor, $K = k_L + k_R + k_s$ the stiffness of both muscles and the spine together, and $h$ the substep; $\theta_0$ and $\tilde\alpha$ are the combined constraint's rest angle and compliance.
 
 ### The Tail-Flip
 
@@ -65,6 +76,15 @@ Lying on its side, the fish can only bend in the vertical plane: its muscles can
 * **Where it lands**: from the vertical speed its muscles actually give, the flight time to the target's height; the distance left over the ground divided by it gives the speed it needs along the ground. The muscles decide how high it goes, and it still lands on the mark; vertically it is only trimmed.
 * **How it turns**: the body's angular velocity from its full inertia tensor, set to what brings it down lying flat and a little nose down, its roll and yaw cancelled.
 * Once it is off the ground nothing more is done: the flight is all physics.
+
+$$
+\begin{gathered}
+T = \frac{v_y + \sqrt{v_y^2 - 2g\,\Delta y}}{g} \\[6pt]
+\mathbf v_h = \frac{\mathbf d_h}{T}
+\end{gathered}
+$$
+
+$v_y$ is the vertical speed the muscles actually give, $\Delta y$ how much higher the target is, $\mathbf d_h$ the distance left over the ground, and $T$ the flight time.
 
 ### Turning, Righting, Fatigue and Runs of Leaps
 

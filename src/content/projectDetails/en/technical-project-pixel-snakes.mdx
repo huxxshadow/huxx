@@ -1,6 +1,7 @@
 ---
 ---
 
+import 'katex/dist/katex.min.css';
 import { Image } from 'astro:assets';
 import crawlClip from '@/assets/projects/technical-project-pixel-snakes/clips/crawl.mp4?url';
 import crawlClipPoster from '@/assets/projects/technical-project-pixel-snakes/clips/crawl-poster.webp?url';
@@ -49,6 +50,17 @@ The head follows a scripted path exactly. Paths drape themselves over the terrai
 * **Shape constraint**: each joint's offset from the midpoint of its neighbours (the discrete Laplacian) matches the target's, so curvature is held stiffly and S-curves and coils are never pulled straight.
 * **Tracking constraint**: damped springs that soften from neck to tail, parameterised by natural frequency so stiffness is independent of frame rate. The body swings, follows through, and sags where it is unsupported.
 * **Inextensibility**: segment lengths are enforced in both directions, with four substeps per frame.
+
+$$
+\begin{gathered}
+\Delta\lambda = \frac{-C(\mathbf x) - \tilde\alpha\,\lambda}{\nabla C\,\mathbf M^{-1}\nabla C^{\top} + \tilde\alpha} \\[6pt]
+\tilde\alpha = \frac{\alpha}{h^2} \\[6pt]
+C_i^{\text{shape}} = \mathbf x_i - \tfrac12\left(\mathbf x_{i-1} + \mathbf x_{i+1}\right) - \boldsymbol\delta_i^{*} \\[6pt]
+\tilde\alpha_i^{\text{track}} = \frac{1}{(2\pi f_i)^2\,h^2}
+\end{gathered}
+$$
+
+The first two are the XPBD update for every constraint ($\alpha$ the compliance, $h$ the substep). The shape constraint matches each joint's offset from its neighbours' mean (a discrete Laplacian) to the target pose's $\boldsymbol\delta_i^{*}$; the tracking spring's compliance comes from its natural frequency $f_i$, falling from the neck to the tail, so it is the same at any frame rate.
 
 <div class="image-grid-2">
     <figure>
