@@ -43,11 +43,11 @@ import hopsClipPoster from '@/assets/projects/technical-project-procedural-fish/
 * 最早用显式力矩：很轻的尾节加上卡通化的力矩，一帧里做功过大，直接发散。改成弹簧形式后，在任意刚度下都保持稳定。
 
 $$
-\begin{gathered}
-k_{L,R} = a_{L,R}\,\frac{\tau_{\max}}{\theta_r}\,f_v(\dot\theta) \\[6pt]
-\theta_0 = \frac{(k_R - k_L)\,\theta_r}{K} \\[6pt]
+k_{L,R} = a_{L,R}\,\frac{\tau_{\max}}{\theta_r}\,f_v(\dot\theta)
+
+\theta_0 = \frac{(k_R - k_L)\,\theta_r}{K}
+
 \tilde\alpha = \frac{1}{K\,h^2}
-\end{gathered}
 $$
 
 $a$ 为激活，$\tau_{\max}$ 为最大力矩，$\theta_r$ 为可达角，$f_v$ 为力–速度系数，$K = k_L + k_R + k_s$ 为两侧肌肉与脊柱弹簧的总刚度，$h$ 为子步长；$\theta_0$、$\tilde\alpha$ 是合成约束的静止角和柔度。
@@ -78,10 +78,9 @@ $a$ 为激活，$\tau_{\max}$ 为最大力矩，$\theta_r$ 为可达角，$f_v$ 
 * 离地后不再干预，飞行完全是物理的。
 
 $$
-\begin{gathered}
-T = \frac{v_y + \sqrt{v_y^2 - 2g\,\Delta y}}{g} \\[6pt]
+T = \frac{v_y + \sqrt{v_y^2 - 2g\,\Delta y}}{g}
+
 \mathbf v_h = \frac{\mathbf d_h}{T}
-\end{gathered}
 $$
 
 $v_y$ 为肌肉实际给出的竖直速度，$\Delta y$ 为目标高出的高度，$\mathbf d_h$ 为剩下的水平距离，$T$ 为飞行时间。

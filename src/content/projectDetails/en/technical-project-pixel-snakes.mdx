@@ -52,12 +52,15 @@ The head follows a scripted path exactly. Paths drape themselves over the terrai
 * **Inextensibility**: segment lengths are enforced in both directions, with four substeps per frame.
 
 $$
-\begin{gathered}
-\Delta\lambda = \frac{-C(\mathbf x) - \tilde\alpha\,\lambda}{\nabla C\,\mathbf M^{-1}\nabla C^{\top} + \tilde\alpha} \\[6pt]
-\tilde\alpha = \frac{\alpha}{h^2} \\[6pt]
-C_i^{\text{shape}} = \mathbf x_i - \tfrac12\left(\mathbf x_{i-1} + \mathbf x_{i+1}\right) - \boldsymbol\delta_i^{*} \\[6pt]
+\Delta\lambda = \frac{-C(\mathbf x) - \tilde\alpha\,\lambda}{\nabla C\,\mathbf M^{-1}\nabla C^{\top} + \tilde\alpha}
+
+\tilde\alpha = \frac{\alpha}{h^2}
+$$
+
+$$
+C_i^{\text{shape}} = \mathbf x_i - \tfrac12\left(\mathbf x_{i-1} + \mathbf x_{i+1}\right) - \boldsymbol\delta_i^{*}
+
 \tilde\alpha_i^{\text{track}} = \frac{1}{(2\pi f_i)^2\,h^2}
-\end{gathered}
 $$
 
 The first two are the XPBD update for every constraint ($\alpha$ the compliance, $h$ the substep). The shape constraint matches each joint's offset from its neighbours' mean (a discrete Laplacian) to the target pose's $\boldsymbol\delta_i^{*}$; the tracking spring's compliance comes from its natural frequency $f_i$, falling from the neck to the tail, so it is the same at any frame rate.

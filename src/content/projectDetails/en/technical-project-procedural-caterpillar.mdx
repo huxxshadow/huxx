@@ -66,14 +66,13 @@ The ground has anisotropic Coulomb friction, with static and kinetic coefficient
 The same muscles and the same rhythm run on three grounds. On the floor it crawls. On ice (a thirtieth of the friction, as slippery forward as back) it heaves and slips, getting almost nowhere. With no friction it writhes on the spot and its centre of mass does not move at all, because nothing outside it pushes.
 
 $$
-\begin{gathered}
-e = \sqrt{\left(\frac{\Delta x_\parallel}{\mu_\parallel\, d_n + c}\right)^{2} + \left(\frac{\Delta x_\perp}{\mu_\perp\, d_n + c}\right)^{2}} \\[6pt]
+e = \sqrt{\left(\frac{\Delta x_\parallel}{\mu_\parallel\, d_n + c}\right)^{2} + \left(\frac{\Delta x_\perp}{\mu_\perp\, d_n + c}\right)^{2}}
+
 \Delta\mathbf x_t \leftarrow
 \begin{cases}
 \mathbf 0, & e_s \le 1 \\
 \Delta\mathbf x_t\left(1 - \min\left(1,\, 1/e_k\right)\right), & e_s > 1
 \end{cases}
-\end{gathered}
 $$
 
 Anisotropic Coulomb friction in position form: $\Delta x_\parallel$ and $\Delta x_\perp$ the slide along and across the body this substep, $d_n$ the push out of the surface (the load), $\mu_\parallel$ the forward or the backward coefficient by which way it slides, and $c$ the crochets' hold. $e_s$ takes the static coefficients — inside the elliptical cone it does not move at all; $e_k$ the kinetic ones, cutting the slide back.
@@ -137,10 +136,9 @@ Every segment sits on the path at the height the rhythm lifts it to, so none of 
 The head hangs on an underdamped spring in yaw and pitch, so it lags and overshoots a little, and it never turns faster than 240° per second. It looks at a point further along its way. With the rhythm, it tucks while the body gathers and lifts to lead the reach. It swings from side to side once a beat as it feels its way, and at rest it slowly looks around on noise. The body's frame for the head is rate-limited too, so a jolt of the body never snaps the head round.
 
 $$
-\begin{gathered}
-\ddot{\boldsymbol\theta} = \omega^2\left(\boldsymbol\theta^{*} - \boldsymbol\theta\right) - 2\zeta\omega\,\dot{\boldsymbol\theta} \\[6pt]
+\ddot{\boldsymbol\theta} = \omega^2\left(\boldsymbol\theta^{*} - \boldsymbol\theta\right) - 2\zeta\omega\,\dot{\boldsymbol\theta}
+
 \lVert\dot{\boldsymbol\theta}\rVert \le \dot\theta_{\max}
-\end{gathered}
 $$
 
 $\boldsymbol\theta$ is the head's yaw and pitch, $\boldsymbol\theta^{*}$ where it wants to look, $\omega$ the natural frequency and $\zeta < 1$ underdamped, so it lags and overshoots a little; its turning speed is capped.

@@ -52,12 +52,15 @@ Unity でプロシージャルなヘビのアニメーションシステムを�
 * **伸びない体**：節の長さを双方向に反復して保ち、1 フレームを 4 サブステップで解きます。
 
 $$
-\begin{gathered}
-\Delta\lambda = \frac{-C(\mathbf x) - \tilde\alpha\,\lambda}{\nabla C\,\mathbf M^{-1}\nabla C^{\top} + \tilde\alpha} \\[6pt]
-\tilde\alpha = \frac{\alpha}{h^2} \\[6pt]
-C_i^{\text{shape}} = \mathbf x_i - \tfrac12\left(\mathbf x_{i-1} + \mathbf x_{i+1}\right) - \boldsymbol\delta_i^{*} \\[6pt]
+\Delta\lambda = \frac{-C(\mathbf x) - \tilde\alpha\,\lambda}{\nabla C\,\mathbf M^{-1}\nabla C^{\top} + \tilde\alpha}
+
+\tilde\alpha = \frac{\alpha}{h^2}
+$$
+
+$$
+C_i^{\text{shape}} = \mathbf x_i - \tfrac12\left(\mathbf x_{i-1} + \mathbf x_{i+1}\right) - \boldsymbol\delta_i^{*}
+
 \tilde\alpha_i^{\text{track}} = \frac{1}{(2\pi f_i)^2\,h^2}
-\end{gathered}
 $$
 
 最初の二式は各拘束の XPBD の更新です（$\alpha$ はコンプライアンス、$h$ はサブステップ長）。形状拘束は各関節の両隣の平均からのずれ（離散ラプラシアン）を目標姿勢の $\boldsymbol\delta_i^{*}$ に合わせます。追従バネのコンプライアンスは固有振動数 $f_i$ から決まり、首から尾へ小さくなるので、フレームレートに依存しません。

@@ -7,6 +7,7 @@ import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import rehypeFormulaRows from './src/lib/rehype-formula-rows.mjs';
 
 export default defineConfig({
   site: 'https://huxx.me',
@@ -38,7 +39,8 @@ export default defineConfig({
   }), mdx({
     // 公式：$...$ / $$...$$ 在构建时由 KaTeX 渲染成静态 HTML；用到公式的 MDX 自己 import KaTeX 的 CSS
     remarkPlugins: [remarkMath],
-    rehypePlugins: [rehypeKatex],
+    // （一个 $$ 块里空行隔开的几条公式排成一行，放不下自动换行）
+    rehypePlugins: [rehypeFormulaRows, rehypeKatex],
   })],
 
 });

@@ -52,12 +52,15 @@ Unity에서 절차적 뱀 애니메이션 시스템을 처음부터 만든 개�
 * **늘어나지 않는 몸**: 마디 길이를 양방향으로 반복해 유지하고, 한 프레임을 4개의 서브스텝으로 풉니다.
 
 $$
-\begin{gathered}
-\Delta\lambda = \frac{-C(\mathbf x) - \tilde\alpha\,\lambda}{\nabla C\,\mathbf M^{-1}\nabla C^{\top} + \tilde\alpha} \\[6pt]
-\tilde\alpha = \frac{\alpha}{h^2} \\[6pt]
-C_i^{\text{shape}} = \mathbf x_i - \tfrac12\left(\mathbf x_{i-1} + \mathbf x_{i+1}\right) - \boldsymbol\delta_i^{*} \\[6pt]
+\Delta\lambda = \frac{-C(\mathbf x) - \tilde\alpha\,\lambda}{\nabla C\,\mathbf M^{-1}\nabla C^{\top} + \tilde\alpha}
+
+\tilde\alpha = \frac{\alpha}{h^2}
+$$
+
+$$
+C_i^{\text{shape}} = \mathbf x_i - \tfrac12\left(\mathbf x_{i-1} + \mathbf x_{i+1}\right) - \boldsymbol\delta_i^{*}
+
 \tilde\alpha_i^{\text{track}} = \frac{1}{(2\pi f_i)^2\,h^2}
-\end{gathered}
 $$
 
 처음 두 식은 각 구속의 XPBD 갱신입니다($\alpha$는 컴플라이언스, $h$는 서브스텝 길이). 형태 구속은 각 관절이 양옆 이웃의 평균에서 벗어난 정도(이산 라플라시안)를 목표 자세의 $\boldsymbol\delta_i^{*}$에 맞춥니다. 추적 스프링의 컴플라이언스는 고유 진동수 $f_i$로 정해지고 목에서 꼬리로 갈수록 작아지므로, 프레임레이트와 무관합니다.

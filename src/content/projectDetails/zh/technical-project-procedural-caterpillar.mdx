@@ -66,14 +66,13 @@ import slopeClipPoster from '@/assets/projects/technical-project-procedural-cate
 同一套肌肉、同一个节律放在三种地面上：正常地面上它向前爬；冰面上（摩擦只有三十分之一，前后一样滑）它原地起伏，几乎前进不了；完全没有摩擦时它只能原地蠕动，质心一点也不动，因为没有任何外力推它。
 
 $$
-\begin{gathered}
-e = \sqrt{\left(\frac{\Delta x_\parallel}{\mu_\parallel\, d_n + c}\right)^{2} + \left(\frac{\Delta x_\perp}{\mu_\perp\, d_n + c}\right)^{2}} \\[6pt]
+e = \sqrt{\left(\frac{\Delta x_\parallel}{\mu_\parallel\, d_n + c}\right)^{2} + \left(\frac{\Delta x_\perp}{\mu_\perp\, d_n + c}\right)^{2}}
+
 \Delta\mathbf x_t \leftarrow
 \begin{cases}
 \mathbf 0, & e_s \le 1 \\
 \Delta\mathbf x_t\left(1 - \min\left(1,\, 1/e_k\right)\right), & e_s > 1
 \end{cases}
-\end{gathered}
 $$
 
 位置形式的各向异性库仑摩擦：$\Delta x_\parallel$、$\Delta x_\perp$ 为这一子步沿身体和横向的滑移，$d_n$ 为被推出表面的距离（即载荷），$\mu_\parallel$ 按滑移方向取向前或向后的系数，$c$ 为趾钩的抓力。$e_s$ 用静摩擦系数，在椭圆锥以内就完全不动；$e_k$ 用动摩擦系数，削减滑移。
@@ -137,10 +136,9 @@ $$
 头挂在一个欠阻尼的弹簧上（偏航与俯仰），会滞后、轻微过冲，最大转速限制在每秒 240°。它看向前方路径上的一点；随节律在收拢时低头、前推时抬头领路；爬行时每拍左右探路一次；停下来时用噪声缓慢地东张西望。身体传给头的朝向也经过限速，身体的抖动不会让头突然转向。
 
 $$
-\begin{gathered}
-\ddot{\boldsymbol\theta} = \omega^2\left(\boldsymbol\theta^{*} - \boldsymbol\theta\right) - 2\zeta\omega\,\dot{\boldsymbol\theta} \\[6pt]
+\ddot{\boldsymbol\theta} = \omega^2\left(\boldsymbol\theta^{*} - \boldsymbol\theta\right) - 2\zeta\omega\,\dot{\boldsymbol\theta}
+
 \lVert\dot{\boldsymbol\theta}\rVert \le \dot\theta_{\max}
-\end{gathered}
 $$
 
 $\boldsymbol\theta$ 为头的偏航和俯仰，$\boldsymbol\theta^{*}$ 为想看的方向，$\omega$ 为固有角频率，$\zeta < 1$ 欠阻尼，所以会滞后、轻微过冲；转速再加上限。

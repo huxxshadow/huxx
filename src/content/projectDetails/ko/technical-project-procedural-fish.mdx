@@ -43,11 +43,11 @@ import hopsClipPoster from '@/assets/projects/technical-project-procedural-fish/
 * 처음에는 명시적 토크로 움직였습니다. 아주 가벼운 꼬리 마디에 카툰식 토크를 걸면 한 프레임에 지나치게 큰 일을 하며 발산했습니다. 스프링 형태로 바꾼 뒤에는 어떤 강성에서도 안정적입니다.
 
 $$
-\begin{gathered}
-k_{L,R} = a_{L,R}\,\frac{\tau_{\max}}{\theta_r}\,f_v(\dot\theta) \\[6pt]
-\theta_0 = \frac{(k_R - k_L)\,\theta_r}{K} \\[6pt]
+k_{L,R} = a_{L,R}\,\frac{\tau_{\max}}{\theta_r}\,f_v(\dot\theta)
+
+\theta_0 = \frac{(k_R - k_L)\,\theta_r}{K}
+
 \tilde\alpha = \frac{1}{K\,h^2}
-\end{gathered}
 $$
 
 $a$는 활성, $\tau_{\max}$는 최대 토크, $\theta_r$는 도달각, $f_v$는 힘–속도 계수, $K = k_L + k_R + k_s$는 양쪽 근육과 척추 스프링을 합친 강성, $h$는 서브스텝 길이입니다. $\theta_0$와 $\tilde\alpha$는 합친 구속의 정지 각과 컴플라이언스입니다.
@@ -78,10 +78,9 @@ $a$는 활성, $\tau_{\max}$는 최대 토크, $\theta_r$는 도달각, $f_v$는
 * 땅을 떠난 뒤에는 아무것도 하지 않습니다. 비행은 전부 물리입니다.
 
 $$
-\begin{gathered}
-T = \frac{v_y + \sqrt{v_y^2 - 2g\,\Delta y}}{g} \\[6pt]
+T = \frac{v_y + \sqrt{v_y^2 - 2g\,\Delta y}}{g}
+
 \mathbf v_h = \frac{\mathbf d_h}{T}
-\end{gathered}
 $$
 
 $v_y$는 근육이 실제로 낸 수직 속도, $\Delta y$는 목표가 더 높은 만큼의 높이, $\mathbf d_h$는 남은 수평 거리, $T$는 비행 시간입니다.

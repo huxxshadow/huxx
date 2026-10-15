@@ -606,31 +606,31 @@ if (detailEntry) {
         :global(.project-prose .game-embed-note) { font-size: 0.75rem; text-align: center; }
     }
 
-    /* 公式（KaTeX）：单独一块，和图片、视频同一套描边与偏移阴影 */
-    :global(.project-prose .katex-display) {
-        margin: 1.75rem 0;
-        padding: 1.1rem 1.25rem;
-        border: 3px solid var(--theme-text);
-        box-shadow: 4px 4px 0px var(--theme-text);
-        border-radius: 0.75rem;
+    /* 公式（KaTeX）：一组公式一行，宽度放得下就并排，放不下逐条换行，每行居中；不加框 */
+    :global(.project-prose .formula-row) {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: baseline;
+        column-gap: 3rem;
+        row-gap: 0.75rem;
+        margin: 1.75rem 0 1.25rem;
         color: var(--theme-text);
-        overflow-x: auto;
-        overflow-y: hidden;
+    }
+    :global(.project-prose .formula-row .katex-display) {
+        margin: 0;
+        max-width: 100%;
     }
     :global(.project-prose .katex) {
         font-size: 1.12em;
     }
     @media (max-width: 639px) {
-        :global(.project-prose .katex-display) {
-            padding: 0.9rem 0.75rem;
-        }
         :global(.project-prose .katex) {
             font-size: 0.95em;
         }
     }
-    /* 公式下面的符号说明 */
-    :global(.project-prose .katex-display + p),
-    :global(.project-prose p.formula-note) {
+    /* 公式后面的符号说明 */
+    :global(.project-prose .formula-row + p) {
         font-size: 0.95rem;
         opacity: 0.8;
     }

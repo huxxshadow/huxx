@@ -45,12 +45,15 @@ The timing comes from real frogs: the jump is a catapult — crouching loads the
 * **Landing**: the front paws pin and the trunk hangs on a spring to the pose, carrying its momentum past the hands, sinking until its head presses the ground, then springing back up to sit; pitch has a spring of its own that the surge keeps tipping forward. The hind legs tuck back under it along a Bézier arc.
 
 $$
-\begin{gathered}
-T = \sqrt{\frac{2\,(d\tan\theta - \Delta y)}{g}} \\[6pt]
-\mathbf v_h = \frac{\mathbf d}{T} \\[6pt]
-v_y = \frac{\Delta y + \tfrac12 g T^2}{T} \\[6pt]
+T = \sqrt{\frac{2\,(d\tan\theta - \Delta y)}{g}}
+
+\mathbf v_h = \frac{\mathbf d}{T}
+
+v_y = \frac{\Delta y + \tfrac12 g T^2}{T}
+$$
+
+$$
 \ddot{\mathbf x} = \omega^2\left(\mathbf x_{\text{pose}} - \mathbf x\right) - 2\zeta\omega\,\dot{\mathbf x}
-\end{gathered}
 $$
 
 The first three solve the launch back from the landing point: $\mathbf d$ the displacement over the ground (of length $d$), $\Delta y$ the difference in height, $\theta$ the launch angle, $g$ gravity, $T$ the flight time. The last is the spring the trunk hangs on to its pose as it lands: $\omega$ the natural frequency, $\zeta$ the damping ratio, underdamped so it overshoots and springs back.
@@ -91,12 +94,15 @@ The first three solve the launch back from the landing point: $\mathbf d$ the di
 * **Swallowing**: swallowing a fly, it presses its eyes down into its head to push the food; with the coin in its mouth the throat swells into a big lump, then the head tips back and flicks forward to spit it out.
 
 $$
-\begin{gathered}
-\mathbf x_i \leftarrow \mathbf x_i + (1 - c)\left(\mathbf x_i - \mathbf x_i^{\text{prev}}\right) + \mathbf g\,h^2 \\[6pt]
-\Delta\mathbf x_i = \frac{w_i}{w_i + w_{i+1}}\left(\lVert\mathbf r\rVert - \ell\right)\hat{\mathbf r} \\[6pt]
-\Delta\mathbf x_{i+1} = -\frac{w_{i+1}}{w_i + w_{i+1}}\left(\lVert\mathbf r\rVert - \ell\right)\hat{\mathbf r} \\[6pt]
+\mathbf x_i \leftarrow \mathbf x_i + (1 - c)\left(\mathbf x_i - \mathbf x_i^{\text{prev}}\right) + \mathbf g\,h^2
+$$
+
+$$
+\Delta\mathbf x_i = \frac{w_i}{w_i + w_{i+1}}\left(\lVert\mathbf r\rVert - \ell\right)\hat{\mathbf r}
+
+\Delta\mathbf x_{i+1} = -\frac{w_{i+1}}{w_i + w_{i+1}}\left(\lVert\mathbf r\rVert - \ell\right)\hat{\mathbf r}
+
 \mathbf r = \mathbf x_{i+1} - \mathbf x_i
-\end{gathered}
 $$
 
 The first is Verlet integration with a damping $c$, the rest the length constraint between neighbouring points ($\ell$ a segment's length). $w$ is the inverse mass: 0 at the root (fixed to the jaw), smaller at the tip with something stuck to it, so heavy prey bows the rope.

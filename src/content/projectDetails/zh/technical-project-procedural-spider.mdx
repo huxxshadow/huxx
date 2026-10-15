@@ -52,10 +52,9 @@ import reinforceClipPoster from '@/assets/projects/technical-project-procedural-
 * **膝盖不翻转**：想要的膝盖方向被挡住时，绕"髋到踝"的轴寻找最近的空位，并偏好和上一帧连续，避免膝盖左右翻转。
 
 $$
-\begin{gathered}
-\cos\theta_{\text{knee}} = \frac{a^2 + b^2 - d^2}{2ab} \\[6pt]
+\cos\theta_{\text{knee}} = \frac{a^2 + b^2 - d^2}{2ab}
+
 \mathbf B(t) = (1-t)^2\,\mathbf P_0 + 2t(1-t)\,\mathbf P_1 + t^2\,\mathbf P_2
-\end{gathered}
 $$
 
 第一式是两骨 IK 的余弦定理：$a$、$b$ 为腿节和胫节的长度，$d$ 为腿节根部到跗节的距离。第二式是迈步弧线：$\mathbf P_0$ 为抬脚处，$\mathbf P_2$ 为落脚点，控制点 $\mathbf P_1$ 向腿自己那一侧外弓。
@@ -108,11 +107,11 @@ $$
 * **双向耦合**：蜘蛛的头和腹部作为移动的椭球传给丝的求解器，丝会被身体推开；脚按"握点位置 + 速度 × 时间步"放在丝这一步之后的位置，丝更新完再精确贴合，所以脚不会落后丝一帧。
 
 $$
-\begin{gathered}
-\phi = \frac{s}{L} \\[6pt]
-\phi_{k,\sigma} = \frac{k}{4} + \frac{\sigma}{2} \\[6pt]
+\phi = \frac{s}{L}
+
+\phi_{k,\sigma} = \frac{k}{4} + \frac{\sigma}{2}
+
 \mathbf x_{\text{foot}} = \mathbf x_{\text{grip}} + \mathbf v_{\text{grip}}\,h
-\end{gathered}
 $$
 
 波浪步态的时钟 $\phi$ 由行进距离 $s$ 驱动（$L$ 为一个周期走的距离）；一侧第 $k$ 条腿（$k = 0..3$，从前到后；$\sigma$ 左为 0、右为 1）在 $\phi$ 越过 $\phi_{k,\sigma}$ 时迈步。脚放在握点这一步之后的位置，丝更新完再精确贴合。

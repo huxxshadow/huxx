@@ -52,10 +52,9 @@ Each leg has four segments. The coxa turns toward the foot, the tarsus picks the
 * **Knees that never flip**: when the knee's preferred direction is blocked, the nearest clear direction is searched round the hip-to-ankle axis, favouring the previous frame's, so the knee never swings across.
 
 $$
-\begin{gathered}
-\cos\theta_{\text{knee}} = \frac{a^2 + b^2 - d^2}{2ab} \\[6pt]
+\cos\theta_{\text{knee}} = \frac{a^2 + b^2 - d^2}{2ab}
+
 \mathbf B(t) = (1-t)^2\,\mathbf P_0 + 2t(1-t)\,\mathbf P_1 + t^2\,\mathbf P_2
-\end{gathered}
 $$
 
 First, the law of cosines of the two-bone IK: $a$ and $b$ the femur's and tibia's lengths, $d$ the distance from the femur's root to the tarsus. Second, the step's arc: $\mathbf P_0$ where the foot lifts, $\mathbf P_2$ the foothold, the control point $\mathbf P_1$ bowed out to the leg's own side.
@@ -108,11 +107,11 @@ Every hold on silk is a bundle, a strand and a distance along it. A foot moves w
 * **Two-way coupling**: the spider's head and abdomen are passed to the silk solver as moving ellipsoids, so the body pushes silk aside. Feet are placed where their point of silk will be after the silk's step (its position plus velocity times the time step) and made exact after it, so a foot never trails the silk by a frame.
 
 $$
-\begin{gathered}
-\phi = \frac{s}{L} \\[6pt]
-\phi_{k,\sigma} = \frac{k}{4} + \frac{\sigma}{2} \\[6pt]
+\phi = \frac{s}{L}
+
+\phi_{k,\sigma} = \frac{k}{4} + \frac{\sigma}{2}
+
 \mathbf x_{\text{foot}} = \mathbf x_{\text{grip}} + \mathbf v_{\text{grip}}\,h
-\end{gathered}
 $$
 
 The wave gait's clock $\phi$ runs with the distance walked $s$ ($L$ a cycle's length); leg $k$ of a side ($k = 0..3$, front to back; $\sigma$ 0 for left, 1 for right) steps when $\phi$ passes $\phi_{k,\sigma}$. A foot is placed where its grip will be after this step, and fitted exactly once the silk has moved.

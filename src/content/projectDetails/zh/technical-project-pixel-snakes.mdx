@@ -52,12 +52,15 @@ import swarm2ClipPoster from '@/assets/projects/technical-project-pixel-snakes/c
 * **不可伸长**：段长约束双向迭代，每帧四个子步。
 
 $$
-\begin{gathered}
-\Delta\lambda = \frac{-C(\mathbf x) - \tilde\alpha\,\lambda}{\nabla C\,\mathbf M^{-1}\nabla C^{\top} + \tilde\alpha} \\[6pt]
-\tilde\alpha = \frac{\alpha}{h^2} \\[6pt]
-C_i^{\text{shape}} = \mathbf x_i - \tfrac12\left(\mathbf x_{i-1} + \mathbf x_{i+1}\right) - \boldsymbol\delta_i^{*} \\[6pt]
+\Delta\lambda = \frac{-C(\mathbf x) - \tilde\alpha\,\lambda}{\nabla C\,\mathbf M^{-1}\nabla C^{\top} + \tilde\alpha}
+
+\tilde\alpha = \frac{\alpha}{h^2}
+$$
+
+$$
+C_i^{\text{shape}} = \mathbf x_i - \tfrac12\left(\mathbf x_{i-1} + \mathbf x_{i+1}\right) - \boldsymbol\delta_i^{*}
+
 \tilde\alpha_i^{\text{track}} = \frac{1}{(2\pi f_i)^2\,h^2}
-\end{gathered}
 $$
 
 前两式是每个约束的 XPBD 更新（$\alpha$ 为柔度，$h$ 为子步长）。形状约束让每个关节相对左右邻居均值的偏移（离散拉普拉斯）等于目标姿态的 $\boldsymbol\delta_i^{*}$；追踪弹簧的柔度由自然频率 $f_i$ 给出，从颈部到尾部逐渐变小，所以和帧率无关。

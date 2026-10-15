@@ -43,11 +43,11 @@ import hopsClipPoster from '@/assets/projects/technical-project-procedural-fish/
 * 最初は陽的なトルクで動かしていました。とても軽い尾の節にカートゥーン的なトルクをかけると、1 フレームで過大な仕事をして発散しました。バネの形にしてからは、どんな剛性でも安定しています。
 
 $$
-\begin{gathered}
-k_{L,R} = a_{L,R}\,\frac{\tau_{\max}}{\theta_r}\,f_v(\dot\theta) \\[6pt]
-\theta_0 = \frac{(k_R - k_L)\,\theta_r}{K} \\[6pt]
+k_{L,R} = a_{L,R}\,\frac{\tau_{\max}}{\theta_r}\,f_v(\dot\theta)
+
+\theta_0 = \frac{(k_R - k_L)\,\theta_r}{K}
+
 \tilde\alpha = \frac{1}{K\,h^2}
-\end{gathered}
 $$
 
 $a$ は活性、$\tau_{\max}$ は最大トルク、$\theta_r$ は到達角、$f_v$ は力–速度係数、$K = k_L + k_R + k_s$ は両側の筋肉と背骨のバネを合わせた剛性、$h$ はサブステップ長。$\theta_0$ と $\tilde\alpha$ は合成した拘束の静止角とコンプライアンスです。
@@ -78,10 +78,9 @@ $a$ は活性、$\tau_{\max}$ は最大トルク、$\theta_r$ は到達角、$f_
 * 地面を離れたら何もしません。飛行はすべて物理です。
 
 $$
-\begin{gathered}
-T = \frac{v_y + \sqrt{v_y^2 - 2g\,\Delta y}}{g} \\[6pt]
+T = \frac{v_y + \sqrt{v_y^2 - 2g\,\Delta y}}{g}
+
 \mathbf v_h = \frac{\mathbf d_h}{T}
-\end{gathered}
 $$
 
 $v_y$ は筋肉が実際に出した鉛直速度、$\Delta y$ は目標の高さ、$\mathbf d_h$ は残りの水平距離、$T$ は飛行時間です。

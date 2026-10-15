@@ -43,11 +43,11 @@ Small fish stranded on land get about by the tail-flip jump: lying on their side
 * The first version applied explicit torques: a very light tail segment under cartoon torques did far too much work in a frame and blew up. As springs the muscles stay stable at any stiffness.
 
 $$
-\begin{gathered}
-k_{L,R} = a_{L,R}\,\frac{\tau_{\max}}{\theta_r}\,f_v(\dot\theta) \\[6pt]
-\theta_0 = \frac{(k_R - k_L)\,\theta_r}{K} \\[6pt]
+k_{L,R} = a_{L,R}\,\frac{\tau_{\max}}{\theta_r}\,f_v(\dot\theta)
+
+\theta_0 = \frac{(k_R - k_L)\,\theta_r}{K}
+
 \tilde\alpha = \frac{1}{K\,h^2}
-\end{gathered}
 $$
 
 $a$ is the activation, $\tau_{\max}$ the strongest torque, $\theta_r$ the reach, $f_v$ the force–velocity factor, $K = k_L + k_R + k_s$ the stiffness of both muscles and the spine together, and $h$ the substep; $\theta_0$ and $\tilde\alpha$ are the combined constraint's rest angle and compliance.
@@ -78,10 +78,9 @@ Lying on its side, the fish can only bend in the vertical plane: its muscles can
 * Once it is off the ground nothing more is done: the flight is all physics.
 
 $$
-\begin{gathered}
-T = \frac{v_y + \sqrt{v_y^2 - 2g\,\Delta y}}{g} \\[6pt]
+T = \frac{v_y + \sqrt{v_y^2 - 2g\,\Delta y}}{g}
+
 \mathbf v_h = \frac{\mathbf d_h}{T}
-\end{gathered}
 $$
 
 $v_y$ is the vertical speed the muscles actually give, $\Delta y$ how much higher the target is, $\mathbf d_h$ the distance left over the ground, and $T$ the flight time.
