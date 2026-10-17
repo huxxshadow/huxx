@@ -1,0 +1,166 @@
+---
+---
+
+import 'katex/dist/katex.min.css';
+import reachClip from '@/assets/projects/technical-project-procedural-octopus/clips/reach.mp4?url';
+import reachClipPoster from '@/assets/projects/technical-project-procedural-octopus/clips/reach-poster.webp?url';
+import rocksClip from '@/assets/projects/technical-project-procedural-octopus/clips/rocks.mp4?url';
+import rocksClipPoster from '@/assets/projects/technical-project-procedural-octopus/clips/rocks-poster.webp?url';
+import poleClip from '@/assets/projects/technical-project-procedural-octopus/clips/pole.mp4?url';
+import poleClipPoster from '@/assets/projects/technical-project-procedural-octopus/clips/pole-poster.webp?url';
+import barClip from '@/assets/projects/technical-project-procedural-octopus/clips/bar.mp4?url';
+import barClipPoster from '@/assets/projects/technical-project-procedural-octopus/clips/bar-poster.webp?url';
+import hugClip from '@/assets/projects/technical-project-procedural-octopus/clips/hug.mp4?url';
+import hugClipPoster from '@/assets/projects/technical-project-procedural-octopus/clips/hug-poster.webp?url';
+import flagClip from '@/assets/projects/technical-project-procedural-octopus/clips/flag.mp4?url';
+import flagClipPoster from '@/assets/projects/technical-project-procedural-octopus/clips/flag-poster.webp?url';
+import cupClip from '@/assets/projects/technical-project-procedural-octopus/clips/cup.mp4?url';
+import cupClipPoster from '@/assets/projects/technical-project-procedural-octopus/clips/cup-poster.webp?url';
+import flagsClip from '@/assets/projects/technical-project-procedural-octopus/clips/flags.mp4?url';
+import flagsClipPoster from '@/assets/projects/technical-project-procedural-octopus/clips/flags-poster.webp?url';
+import sleepClip from '@/assets/projects/technical-project-procedural-octopus/clips/sleep.mp4?url';
+import sleepClipPoster from '@/assets/projects/technical-project-procedural-octopus/clips/sleep-poster.webp?url';
+
+## 担当
+
+個人プロジェクト。Unity でゼロから作った陸上を動き回るタコで、8 本の腕はすべてプロシージャルに生成し、キーフレームは使っていません：
+
+* **腕**：各腕は曲率場で、腕に沿って区間ごとに積分して形を得ます。長さは常に一定で、折れることはありません。腕を伸ばす動きは、腕の付け根から先端へ伝わる屈曲波です。
+* **移動**：地形サンプリングによる足場と、リズムのない牽引歩容で、吸着した腕が体を引きずります。円柱面の展開マッピングでらせん状に柱を登り、減衰振り子として鉄棒にぶら下がって揺れます。
+* **巻き付きとつかみ**：らせん状の巻き付き曲線で柱、軟体、物に巻き付きます。つかむ点は腕に沿ってスライドし、取っ手をくぐります。物には重さがあり、バネにぶら下がって垂れます。
+* **小道具**：面ごとの風圧を受ける Verlet 布の旗。巻き付かれた軟体は角の丸い溝でへこみ、押しのけられた体積が腕と腕の間から膨らみます。
+* **衝突と皮膚**：毎フレーム、腕を地面・小道具・体の外へ射影します。色素胞モデルが層ごとに体色を動かし、ピクセルのパレットに量子化します。決定論的リプレイと数値プローブで検証しています。
+
+---
+
+## プロジェクト詳細
+
+動きは本物のタコの研究に基づいています。腕の体に近い部分は主に伸び縮みし、先の部分は主に曲がります。這い歩きには決まったリズムがなく、吸着した腕が伸び縮みして体を押し引きします。腕を伸ばすときは屈曲点が付け根から先端へ進み、その後ろの腕がまっすぐになります。水の外には浮力がないので、テンポを遅くし、体は地面に低く、外套膜は後ろに引きずります。見た目が第一で、なめらかで連続した動きを優先し、物理は補助に留めています。
+
+### 腕：曲率場
+
+* **形は解くのではなく書く**：腕は付け根と各関節の曲率（フレームの 3 軸まわりの 1 m あたりの回転）で定義され、付け根から先端へ積分します。各区間は短い円弧です。そのため腕の長さは常に区間の合計と等しく、折れることがなく、フレームが勝手にねじれることもありません。背側は上、吸盤は下を向き続けます。
+* **動きは曲率で足し合わせる**：静止ポーズ + 先端の巻き + 先の部分のゆっくりした波 + 探索のスイープ + 伸ばす動き。二つの形のブレンドは曲率をブレンドし、位置は決してブレンドしません。
+* **腕を伸ばす**：まず腕を背中の上に巻き、付け根を目標へ向けてから、屈曲点を付け根から先端へ、遅く・速く・遅く走らせます。屈曲点の後ろの腕はまっすぐ細くなります。
+* **体積一定**：引き伸ばされた腕は細くなり、縮むと太くなります。
+
+$$
+\mathbf q_{j+1} = \mathbf q_j \exp\!\left(\tfrac{\ell}{2}\,\boldsymbol\kappa_j\right)
+
+\mathbf x_{j+1} = \mathbf x_j + \ell\,\mathbf q_j\hat{\mathbf z}
+$$
+
+$$
+r = \frac{r_0}{\sqrt{\lambda}}
+$$
+
+最初の二式は腕に沿った積分です。$\mathbf q_j$ は第 $j$ 区間のフレーム（クォータニオン）、$\boldsymbol\kappa_j$ はその関節の曲率ベクトル、$\ell$ は区間の長さ、$\hat{\mathbf z}$ はフレームの接線方向です。最後の式は体積一定の換算で、$\lambda$ は伸長比、$r_0$ は静止時の半径です。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={reachClip} poster={reachClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="腕を伸ばす"></video>
+        <figcaption>腕を伸ばす：屈曲点が付け根から先端へ伝わる</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={rocksClip} poster={rocksClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="岩場を越える"></video>
+        <figcaption>岩場を越える：地形サンプリングの足場、牽引歩容</figcaption>
+    </figure>
+</div>
+
+### 這い歩き：牽引歩容
+
+* **足場**：各腕は体のまわりの自分の扇形の範囲で地形をサンプリングし、足場を表面に射影します。付け根から足場までの曲線は Hermite 曲線で、伸びには上限があり、腕がゴムのように引き伸ばされることはありません。
+* **牽引**：体は経路に沿って滑るのではなく、吸着した腕に一回ずつ引きずられます。腕が張り、体が少し後ろへ縮み、腕が縮むのに合わせて前へ突進します。
+* **リズムなし**：決まった歩調はなく、いちばん負担の大きい腕から踏み出します。隣り合う腕が同時に離れることはなく、常に何本かの腕が地面をつかんでいます。
+* **体の姿勢**：高さと傾きは足場に当てはめた表面の法線に従い、岩や段差に体全体がなじみます。
+
+### 登る：円柱面の展開
+
+* **展開マッピング**：柱の表面を平面に展開し、口のまわりでの腕の角度が柱のまわりでの位置に対応するようにします。その平面で足場を計画し、柱へ巻き戻します。
+* **らせんの経路**：体はらせんに沿って登り、足場は体が柱を回る角速度に合わせて先回りして置きます。前の腕は上で探ってつかみ、後ろの腕は下で支えます。
+* **巻き付く向き**：各腕は柱に近づいてきた側から巻き始めるので、柱の裏で交差しません。柱の上端は限界で、それを越える腕はありません。
+* **鉄棒**：4 本の腕がまず棒に巻き付き、体が台を離れて振り子として下で揺れます。棒をつかむ腕が増えるほど減衰が強くなり、揺れが収まるにつれて残りの腕が一本ずつつかまります。
+
+$$
+\theta_a = \theta_b + \Theta\tanh\!\left(\frac{k\,\varphi_a}{\Theta}\right) + \omega\,\tau
+$$
+
+$$
+\ddot\phi = -\frac{g'}{L}\sin\phi - c(n)\,\dot\phi
+$$
+
+一つ目は展開マッピングです。$\varphi_a$ は腕 $a$ の口のまわりの角度、$\theta_b$ は柱のまわりでの体の角度、$\Theta$ は腕が回り込める最大角度、$\omega\tau$ は角速度 $\omega$ による先回りの量です。二つ目は鉄棒の減衰振り子で、$\phi$ は振れ角、$L$ は振り子の長さ、$g'$ は見た目のために軽くした重力、$c(n)$ は棒をつかむ腕の数 $n$ とともに大きくなります。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={poleClip} poster={poleClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="らせん状に柱を登る"></video>
+        <figcaption>らせん状に柱を登る：円柱面の展開マッピング、角速度で先回りする足場</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={barClip} poster={barClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="鉄棒で揺れる"></video>
+        <figcaption>鉄棒で揺れる：4 本の腕で棒をつかむ減衰振り子</figcaption>
+    </figure>
+</div>
+
+### 巻き付きとつかみ
+
+* **らせんの巻き付き**：つかむ点から先の腕は、つかむ軸のまわりのらせんに沿って巻き付きます。巻き付きは接触点から先端へ伸び、離すときは先端から戻ります。
+* **軟体**：柱にいちばん近い 3 本の腕だけが巻き付き、それぞれ自分の付け根の側、別々の高さから巻き始め、何回かに分けて締めます。柱は角の丸い溝でへこみ、押しのけられた体積が腕と腕の間から膨らみます。
+* **スライドするつかみ点**：つかむ点は腕の一区間に固定せず、腕に沿ってスライドします。取っ手をくぐるときは先端近くの細い部分が先に通り、それから腕全体で締めます。
+* **重さ**：巻き付くまでは持ち上げません。持ち上げた物はバネにぶら下がり、質量に応じて垂れて跳ね返ります。重い物ほど腕が力を入れます。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={hugClip} poster={hugClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="軟体に巻き付く"></video>
+        <figcaption>軟体に巻き付く：3 本の腕の層状の巻き付き、角の丸い溝とすき間の膨らみ</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={cupClip} poster={cupClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="ティーカップを持ち上げる"></video>
+        <figcaption>ティーカップを持ち上げる：つかむ点が取っ手をくぐり、巻き付いてから持ち上げる</figcaption>
+    </figure>
+</div>
+
+### 布の旗
+
+* **Verlet 布**：粒子の格子に構造・せん断・曲げの距離拘束をかけて反復で解きます。フレーム時間に合わせてサブステップを調整し、リアルタイムでも固まりません。
+* **風**：各面は法線方向の相対風速に応じて力を受け、乱流の突風を重ねます。旗竿は腕にぶら下がっているので、振ると布があおられます。
+* **複数の旗**：6 本の腕がそれぞれ旗を持ち、拍に合わせて振ります。布はそれぞれ独立に解いています。
+
+$$
+\mathbf F = k\,A\,(\mathbf w\cdot\hat{\mathbf n})\,\lvert\mathbf w\cdot\hat{\mathbf n}\rvert\,\hat{\mathbf n}
+
+\mathbf w = \mathbf u_{\text{wind}} - \mathbf v
+$$
+
+$\hat{\mathbf n}$ は面の法線、$A$ は面積、$\mathbf v$ は面の速度、$\mathbf w$ は相対風速、$k$ は空気の密度と抗力係数の積です。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={flagClip} poster={flagClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="旗を振る"></video>
+        <figcaption>旗を振る：Verlet 布、面ごとの風圧</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={flagsClip} poster={flagsClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="6 本の腕で旗を振る"></video>
+        <figcaption>6 本の腕で旗を振る：複数の布のリアルタイム計算、拍で駆動</figcaption>
+    </figure>
+</div>
+
+### 衝突と皮膚
+
+* **衝突射影**：毎フレームの最後に、腕のノードを地面・岩・柱の外へ射影します。つかんでいる小道具には最後にもう一度厳密な射影をかけ、腕が小道具を突き抜けないようにします。腕どうし、腕と体の間は描かれた太さで間隔を保ちます。
+* **体色**：色素胞モデルが層ごとに動きます。濃淡、まだら、体の上を流れる暗い雲、乳頭突起の立ち上がりと平滑化を、それぞれ別々に緩やかに変化させ、最後にピクセルのパレットへ量子化します。
+* **睡眠**：静かな睡眠では白くなり、目を閉じ、呼吸がゆっくりになります。活動的な睡眠では模様が素早く点滅し、乳頭突起が立ち、腕と目がぴくぴく動きます。
+
+<figure>
+    <video class="clip" src={sleepClip} poster={sleepClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="活動的な睡眠の体色変化"></video>
+    <figcaption>活動的な睡眠の体色変化：色素胞モデル、層状の体色</figcaption>
+</figure>
+
+### 参考文献
+
+* Levy, Hochner — *Embodied organization of Octopus vulgaris morphology, vision, and locomotion*（2017）
+* Kennedy et al. — *Octopus arms exhibit exceptional flexibility*（2020）
+* Yekutieli et al. — *Dynamic model of the octopus arm*（2005）
+* Huffard — *Locomotion by Abdopus aculeatus*（2006）
+* Medeiros et al. — *Cyclic alternation of quiet and active sleep states in the octopus*（2021）
+* Jakobsen — *Advanced Character Physics*（2001）

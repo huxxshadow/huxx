@@ -1,0 +1,166 @@
+---
+---
+
+import 'katex/dist/katex.min.css';
+import reachClip from '@/assets/projects/technical-project-procedural-octopus/clips/reach.mp4?url';
+import reachClipPoster from '@/assets/projects/technical-project-procedural-octopus/clips/reach-poster.webp?url';
+import rocksClip from '@/assets/projects/technical-project-procedural-octopus/clips/rocks.mp4?url';
+import rocksClipPoster from '@/assets/projects/technical-project-procedural-octopus/clips/rocks-poster.webp?url';
+import poleClip from '@/assets/projects/technical-project-procedural-octopus/clips/pole.mp4?url';
+import poleClipPoster from '@/assets/projects/technical-project-procedural-octopus/clips/pole-poster.webp?url';
+import barClip from '@/assets/projects/technical-project-procedural-octopus/clips/bar.mp4?url';
+import barClipPoster from '@/assets/projects/technical-project-procedural-octopus/clips/bar-poster.webp?url';
+import hugClip from '@/assets/projects/technical-project-procedural-octopus/clips/hug.mp4?url';
+import hugClipPoster from '@/assets/projects/technical-project-procedural-octopus/clips/hug-poster.webp?url';
+import flagClip from '@/assets/projects/technical-project-procedural-octopus/clips/flag.mp4?url';
+import flagClipPoster from '@/assets/projects/technical-project-procedural-octopus/clips/flag-poster.webp?url';
+import cupClip from '@/assets/projects/technical-project-procedural-octopus/clips/cup.mp4?url';
+import cupClipPoster from '@/assets/projects/technical-project-procedural-octopus/clips/cup-poster.webp?url';
+import flagsClip from '@/assets/projects/technical-project-procedural-octopus/clips/flags.mp4?url';
+import flagsClipPoster from '@/assets/projects/technical-project-procedural-octopus/clips/flags-poster.webp?url';
+import sleepClip from '@/assets/projects/technical-project-procedural-octopus/clips/sleep.mp4?url';
+import sleepClipPoster from '@/assets/projects/technical-project-procedural-octopus/clips/sleep-poster.webp?url';
+
+## 我的职责
+
+个人项目，在 Unity 里从零实现一只在陆地上活动的章鱼，八条腕全部由程序生成，没有关键帧：
+
+* **腕**：每条腕是一条曲率场，沿腕逐段积分得到形状，长度恒定、不会折断；伸腕是一道从腕根传到腕尖的弯折波。
+* **移动**：地形采样落点，牵引式无节律步态，身体由抓地的腕拖动；沿柱面展开映射螺旋爬柱，阻尼单摆挂杠摆荡。
+* **缠绕与抓握**：螺旋缠绕曲线绕住柱子、软体和物体；抓点沿腕滑动穿过把手；物体有重量，挂在弹簧上下坠。
+* **道具**：Verlet 布料旗子带逐面片风压；被缠住的软体按圆角压痕凹陷，挤开的体积从腕间鼓出。
+* **碰撞与皮肤**：每帧把腕投影出地面、道具和身体；色素细胞模型分层驱动体色，量化到像素调色板；确定性回放和数值探针验证。
+
+---
+
+## 项目细节
+
+动作依据取自真章鱼的研究：近体的一段多伸缩、远端多弯曲；爬行没有固定节律，靠吸住的腕伸长、缩短推拉身体；伸腕时一个弯折点从腕根走到腕尖，后面的腕段随之伸直。离水的章鱼没有浮力，所以节奏放慢，身体贴地、外套膜拖在后面。风格上优先保证画面好看、动作连贯，物理只做辅助。
+
+### 腕：曲率场
+
+* **形状是写出来的，不是解出来的**：每条腕由腕根位置和每个关节的曲率（绕标架三个轴的转角每米）定义，从根到尖逐段积分，每段是一小段圆弧。所以腕的长度永远等于各段之和，不会打折，标架也不会凭空扭转——背侧朝上、吸盘朝下。
+* **动作叠加在曲率上**：静息姿态 + 腕尖卷曲 + 远端缓慢的波 + 探索时的扫动 + 伸腕。两个形状之间的混合混的是曲率，从不混位置。
+* **伸腕**：先把腕卷到背上、腕根转向目标，再让弯折点从根走到尖，速度先慢后快再慢；弯折点后面的腕段伸直变细。
+* **等体积**：腕被拉长时按体积不变变细，缩短时变粗。
+
+$$
+\mathbf q_{j+1} = \mathbf q_j \exp\!\left(\tfrac{\ell}{2}\,\boldsymbol\kappa_j\right)
+
+\mathbf x_{j+1} = \mathbf x_j + \ell\,\mathbf q_j\hat{\mathbf z}
+$$
+
+$$
+r = \frac{r_0}{\sqrt{\lambda}}
+$$
+
+前两式是沿腕的积分：$\mathbf q_j$ 为第 $j$ 段的标架（四元数），$\boldsymbol\kappa_j$ 为该关节的曲率向量，$\ell$ 为段长，$\hat{\mathbf z}$ 为标架的切线方向。最后一式是等体积换算：$\lambda$ 为伸长比，$r_0$ 为静息半径。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={reachClip} poster={reachClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="伸腕"></video>
+        <figcaption>伸腕：弯折点从腕根传到腕尖</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={rocksClip} poster={rocksClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="翻越乱石"></video>
+        <figcaption>翻越乱石：地形采样落点，牵引式步态</figcaption>
+    </figure>
+</div>
+
+### 爬行：牵引式步态
+
+* **落点**：每条腕在自己所在的方位扇区里采样地形找落点，投影到表面；腕根到落点的曲线用 Hermite 曲线，伸长有上限，不会被硬拉成橡皮筋。
+* **牵引**：身体不是沿路径滑过去的，而是由抓地的腕一下一下拖动：腕先绷紧、身体略向后收，再随腕的缩短向前一冲。
+* **无节律**：不设固定步频，最吃力的腕先迈步；相邻的腕不同时离地，至少几条腕始终抓着地。
+* **身体姿态**：高度和倾斜跟随落点拟合出的表面法线，过石块、上台阶时整体贴合地形。
+
+### 攀爬：柱面展开映射
+
+* **展开映射**：把圆柱面展开成平面，每条腕在口周的角度就对应它在柱面上的周向位置，在展开平面里规划落点，再卷回柱面。
+* **螺旋路径**：身体沿螺旋线上行；落点按身体绕柱的角速度提前布置，前腕在上方探抓，后腕在下方托住。
+* **缠绕方向**：每条腕从它接近柱子的方向开始缠，不会绕到柱子背面交叉；柱顶是上限，腕不会抓到柱子外面。
+* **单杠**：四条腕先缠住杠，身体离开平台后作为单摆荡下；抓杠的腕越多阻尼越大，摆动逐渐停下，其余的腕再依次接上。
+
+$$
+\theta_a = \theta_b + \Theta\tanh\!\left(\frac{k\,\varphi_a}{\Theta}\right) + \omega\,\tau
+$$
+
+$$
+\ddot\phi = -\frac{g'}{L}\sin\phi - c(n)\,\dot\phi
+$$
+
+第一式是柱面展开映射：$\varphi_a$ 为第 $a$ 条腕在口周的角度，$\theta_b$ 为身体在柱上的周向角，$\Theta$ 限制腕能绕过的最大角度，$\omega\tau$ 为按绕柱角速度 $\omega$ 提前的量。第二式是挂杠的阻尼单摆：$\phi$ 为摆角，$L$ 为摆长，$g'$ 为视觉上调轻的重力，$c(n)$ 随抓杠的腕数 $n$ 增大。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={poleClip} poster={poleClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="螺旋爬柱"></video>
+        <figcaption>螺旋爬柱：柱面展开映射，按角速度提前落点</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={barClip} poster={barClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="单杠摆荡"></video>
+        <figcaption>单杠摆荡：四腕缠杠，阻尼单摆</figcaption>
+    </figure>
+</div>
+
+### 缠绕与抓握
+
+* **螺旋缠绕**：腕在抓点之后沿绕抓握轴的螺旋线缠上去；缠绕从接触点向腕尖生长，松开时从腕尖退回。
+* **软体**：只用离柱最近的三条腕，各在自己腕根一侧、不同高度起绕，分几次收紧；柱子按圆角压痕凹陷，被挤开的体积从腕与腕之间鼓出。
+* **抓点滑移**：抓点不固定在腕的某一节，而是沿腕滑动：穿把手时用靠近腕尖的细段带头穿过去，再整段缠紧。
+* **重量**：缠紧之前不承重；提起后物体挂在弹簧上，按质量下垂、回弹，越重腕越吃力。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={hugClip} poster={hugClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="缠绕软体"></video>
+        <figcaption>缠绕软体：三腕分层缠绕，圆角压痕与缝隙外鼓</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={cupClip} poster={cupClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="端茶杯"></video>
+        <figcaption>端茶杯：抓点沿腕滑动穿过把手，缠紧后才提起</figcaption>
+    </figure>
+</div>
+
+### 布料旗子
+
+* **Verlet 布料**：质点网格，结构、剪切、弯曲三类距离约束迭代求解，按帧长自适应子步，实时运行不僵住。
+* **风**：每个面片按法向上的相对风速受力，叠加湍流阵风；旗杆挂在腕上，挥舞时布料被甩动。
+* **多面旗**：六条腕各举一面旗，按节拍挥舞，每面布料独立解算。
+
+$$
+\mathbf F = k\,A\,(\mathbf w\cdot\hat{\mathbf n})\,\lvert\mathbf w\cdot\hat{\mathbf n}\rvert\,\hat{\mathbf n}
+
+\mathbf w = \mathbf u_{\text{wind}} - \mathbf v
+$$
+
+$\hat{\mathbf n}$ 为面片法线，$A$ 为面积，$\mathbf v$ 为面片速度，$\mathbf w$ 为相对风速，$k$ 为空气密度与阻力系数之积。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={flagClip} poster={flagClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="挥旗"></video>
+        <figcaption>挥旗：Verlet 布料，逐面片风压</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={flagsClip} poster={flagsClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="六腕挥旗"></video>
+        <figcaption>六腕挥旗：多面布料实时解算，节拍驱动</figcaption>
+    </figure>
+</div>
+
+### 碰撞与皮肤
+
+* **碰撞投影**：每帧最后把腕的节点投影出地面、石块、柱子；抓着的道具最后再严格投影一次，腕不穿道具。腕与腕之间、腕与身体之间按画出来的粗细保持间距。
+* **体色**：色素细胞模型分层驱动——深浅、斑驳、掠过身体的暗云、乳突的竖起与平复，各自缓动，最后量化到像素调色板。
+* **睡眠**：安静睡眠时变白、闭眼、呼吸变慢；活跃睡眠时体色图案快速闪变，乳突竖起，腕和眼睛抽动。
+
+<figure>
+    <video class="clip" src={sleepClip} poster={sleepClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="活跃睡眠变色"></video>
+    <figcaption>活跃睡眠变色：色素细胞模型，分层体色</figcaption>
+</figure>
+
+### 参考
+
+* Levy, Hochner — *Embodied organization of Octopus vulgaris morphology, vision, and locomotion*（2017）
+* Kennedy et al. — *Octopus arms exhibit exceptional flexibility*（2020）
+* Yekutieli et al. — *Dynamic model of the octopus arm*（2005）
+* Huffard — *Locomotion by Abdopus aculeatus*（2006）
+* Medeiros et al. — *Cyclic alternation of quiet and active sleep states in the octopus*（2021）
+* Jakobsen — *Advanced Character Physics*（2001）

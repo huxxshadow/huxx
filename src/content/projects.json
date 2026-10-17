@@ -2965,5 +2965,69 @@
     "coverImage": "src/assets/projects/poster/ProceduralFrogPoster.webp",
     "colorText": "#A3271B",
     "colorBackground": "#FDE3DC"
+  },
+  {
+    "id": "technical-project-procedural-octopus",
+    "order": 44,
+    "category": "technical",
+    "title": {
+      "en": "Procedural Animation | Octopus",
+      "zh": "程序化动画 | 章鱼",
+      "ja": "プロシージャルアニメーション | タコ",
+      "ko": "절차적 애니메이션 | 문어"
+    },
+    "roles": {
+      "en": [
+        "Technical Artist",
+        "Animation Programmer"
+      ],
+      "zh": [
+        "技术美术",
+        "动画程序"
+      ],
+      "ja": [
+        "テクニカルアーティスト",
+        "アニメーションプログラマー"
+      ],
+      "ko": [
+        "테크니컬 아티스트",
+        "애니메이션 프로그래머"
+      ]
+    },
+    "desc": {
+      "en": "An octopus on land in Unity, all eight arms procedural with no keyframes. Each arm is a curvature field integrated along its length, so it never kinks and keeps its length; a reach is a bend wave running from root to tip. It crawls on terrain-sampled footholds with an arrhythmic haul gait, climbs a pole in a spiral planned on the unrolled cylinder, and swings from a bar as a damped pendulum. Helical wraps take hold of poles, a soft column and props — the grip slides along the arm to thread a cup's handle, and held things sag by their weight. Verlet cloth flags take per-facet wind, the soft column dents and bulges between the coils, the arms are projected out of the world every frame, and a layered chromatophore model drives its colour and active sleep.",
+      "zh": "在 Unity 里实现的一只陆地章鱼，八条腕全部程序化生成，没有关键帧。每条腕是一条沿腕积分的曲率场，长度恒定、不会折断；伸腕是一道从腕根传到腕尖的弯折波。它用地形采样落点和无节律的牵引式步态爬行，沿柱面展开映射螺旋爬柱，以阻尼单摆挂杠摆荡。螺旋缠绕曲线抓住柱子、软体和物体——抓点沿腕滑动穿过茶杯把手，被抓的物体按重量下坠。Verlet 布料旗子带逐面片风压，软体在腕间凹陷鼓出，腕每帧投影出场景，色素细胞模型分层驱动体色与活跃睡眠。",
+      "ja": "Unity で作った陸上のタコで、8 本の腕はすべてプロシージャル、キーフレームはありません。各腕は腕に沿って積分する曲率場なので、長さが一定で折れません。腕を伸ばす動きは付け根から先端へ走る屈曲波です。地形サンプリングの足場とリズムのない牽引歩容で這い、円柱面の展開マッピングでらせん状に柱を登り、減衰振り子として鉄棒で揺れます。らせん状の巻き付きで柱、軟体、物をつかみ、つかむ点が腕に沿ってスライドしてティーカップの取っ手をくぐり、持った物は重さで垂れます。Verlet 布の旗は面ごとに風を受け、軟体は腕の間でへこんで膨らみ、腕は毎フレーム場面の外へ射影され、色素胞モデルが体色と活動的な睡眠を層ごとに動かします。",
+      "ko": "Unity로 만든 육지 문어로, 여덟 팔은 모두 절차적이며 키프레임은 없습니다. 각 팔은 팔을 따라 적분하는 곡률장이라 길이가 일정하고 꺾이지 않습니다. 팔 뻗기는 뿌리에서 끝으로 달리는 굽힘 파동입니다. 지형 샘플링 발판과 리듬 없는 견인식 보행으로 기고, 원기둥 면 전개 매핑으로 나선형으로 기둥을 오르며, 감쇠 진자로 철봉에서 흔들립니다. 나선형 감기로 기둥, 연체, 물체를 잡고, 잡는 점이 팔을 따라 미끄러져 찻잔 손잡이를 통과하며, 잡은 물체는 무게로 처집니다. Verlet 천 깃발은 면마다 바람을 받고, 연체는 팔 사이에서 눌리고 부풀며, 팔은 매 프레임 장면 밖으로 투영되고, 색소포 모델이 체색과 활동 수면을 층별로 움직입니다."
+    },
+    "tags": {
+      "en": [
+        "Unity",
+        "Procedural Animation",
+        "Cloth Simulation",
+        "Physics Simulation"
+      ],
+      "zh": [
+        "Unity",
+        "程序化动画",
+        "布料模拟",
+        "物理模拟"
+      ],
+      "ja": [
+        "Unity",
+        "プロシージャルアニメーション",
+        "布シミュレーション",
+        "物理シミュレーション"
+      ],
+      "ko": [
+        "Unity",
+        "절차적 애니메이션",
+        "천 시뮬레이션",
+        "물리 시뮬레이션"
+      ]
+    },
+    "coverImage": "src/assets/projects/poster/ProceduralOctopusPoster.webp",
+    "colorText": "#9A2E1E",
+    "colorBackground": "#FBE6DE"
   }
 ]
