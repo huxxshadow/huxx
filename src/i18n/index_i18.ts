@@ -46,10 +46,10 @@ export const indexTranslations: Record<string, Multilingual> = {
         ko: "또한 **게임 개발, 전투 기획, AI 애플리케이션 개발** 분야에서 상업 프로젝트 경험이 있으며, 홍콩의 게임 회사와 **Tencent의 TiMi Studio**, **NetEase 기술 센터**의 관련 프로젝트에 참여했습니다.",
     },
     experience3: {
-        en: "I graduated with **First Class Honours** in Computer Science from **Hong Kong Baptist University**, earning a Bachelor of Science degree. I have a solid foundation in computer science, spanning software engineering, AI and machine learning, computer graphics, and data analysis.",
-        zh: "我以**一等荣誉**毕业于**香港浸会大学计算机科学专业**，并取得理学士学位。我具备扎实的计算机科学基础，专业方向涵盖软件工程、人工智能与机器学习、计算机图形学及数据分析。",
-        ja: "**香港浸会大学**のコンピューターサイエンス専攻を**一級優等（First Class Honours）**で卒業し、理学士号を取得しました。ソフトウェア工学、AI・機械学習、コンピュータグラフィックス、データ分析にわたる確かなコンピューターサイエンスの基礎を備えています。",
-        ko: "**홍콩침례대학교** 컴퓨터과학 전공을 **1등급 우등(First Class Honours)**으로 졸업하고 이학사 학위를 취득했습니다. 소프트웨어 공학, AI 및 머신러닝, 컴퓨터 그래픽스, 데이터 분석을 아우르는 탄탄한 컴퓨터과학 기초를 갖추고 있습니다.",
+        en: "I graduated with **First Class Honours** (Scholastic Award, top 2% of the major) in Computer Science from **Hong Kong Baptist University**, earning a Bachelor of Science degree. I have a solid foundation in computer science, spanning software engineering, AI and machine learning, computer graphics, and data analysis.",
+        zh: "我以**一等荣誉**（Scholastic Award 专业前2%）毕业于**香港浸会大学计算机科学专业**，并取得理学士学位。我具备扎实的计算机科学基础，专业方向涵盖软件工程、人工智能与机器学习、计算机图形学及数据分析。",
+        ja: "**香港浸会大学**のコンピューターサイエンス専攻を**一級優等（First Class Honours）**（Scholastic Award、専攻上位2%）で卒業し、理学士号を取得しました。ソフトウェア工学、AI・機械学習、コンピュータグラフィックス、データ分析にわたる確かなコンピューターサイエンスの基礎を備えています。",
+        ko: "**홍콩침례대학교** 컴퓨터과학 전공을 **1등급 우등(First Class Honours)**(Scholastic Award, 전공 상위 2%)으로 졸업하고 이학사 학위를 취득했습니다. 소프트웨어 공학, AI 및 머신러닝, 컴퓨터 그래픽스, 데이터 분석을 아우르는 탄탄한 컴퓨터과학 기초를 갖추고 있습니다.",
     },
     experience3Sub: {
         en: "In my sophomore year, I founded an AI start-up team and went on to win the **overall championship of AI OpenCup**, Hong Kong’s regional AI application development competition. I later served as technical lead at the **University of Oxford**’s AI & Machine Learning Summer Programme, taking my team to the **top spot** on its Kaggle competition leaderboard.",
