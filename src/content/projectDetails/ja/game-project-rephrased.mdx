@@ -3,6 +3,34 @@ import imgOverview from '@/assets/projects/game-project-rephrased/game-project-r
 import imgConceptCanyon from '@/assets/projects/game-project-rephrased/game-project-rephrased_ConceptCanyon.webp';
 import imgConceptPillars from '@/assets/projects/game-project-rephrased/game-project-rephrased_ConceptPillars.webp';
 import imgConceptPlateau from '@/assets/projects/game-project-rephrased/game-project-rephrased_ConceptPlateau.webp';
+import imgIcePlates from '@/assets/projects/game-project-rephrased/game-project-rephrased_IcePlates.webp';
+import imgIceCloseup from '@/assets/projects/game-project-rephrased/game-project-rephrased_IceCloseup.webp';
+import imgCameraZoneBounds from '@/assets/projects/game-project-rephrased/game-project-rephrased_CameraZoneBounds.webp';
+import imgCameraZoneParameters from '@/assets/projects/game-project-rephrased/game-project-rephrased_CameraZoneParameters.webp';
+import waterOverviewClip from '@/assets/projects/game-project-rephrased/clips/water-overview.mp4?url';
+import waterOverviewClipPoster from '@/assets/projects/game-project-rephrased/clips/water-overview-poster.webp?url';
+import riverClip from '@/assets/projects/game-project-rephrased/clips/river.mp4?url';
+import riverClipPoster from '@/assets/projects/game-project-rephrased/clips/river-poster.webp?url';
+import waterfallClip from '@/assets/projects/game-project-rephrased/clips/waterfall.mp4?url';
+import waterfallClipPoster from '@/assets/projects/game-project-rephrased/clips/waterfall-poster.webp?url';
+import impactFoamClip from '@/assets/projects/game-project-rephrased/clips/impact-foam.mp4?url';
+import impactFoamClipPoster from '@/assets/projects/game-project-rephrased/clips/impact-foam-poster.webp?url';
+import lakeFloatersClip from '@/assets/projects/game-project-rephrased/clips/lake-floaters.mp4?url';
+import lakeFloatersClipPoster from '@/assets/projects/game-project-rephrased/clips/lake-floaters-poster.webp?url';
+import waterfallObstacleClip from '@/assets/projects/game-project-rephrased/clips/waterfall-obstacle.mp4?url';
+import waterfallObstacleClipPoster from '@/assets/projects/game-project-rephrased/clips/waterfall-obstacle-poster.webp?url';
+import waterfallFrontClip from '@/assets/projects/game-project-rephrased/clips/waterfall-front.mp4?url';
+import waterfallFrontClipPoster from '@/assets/projects/game-project-rephrased/clips/waterfall-front-poster.webp?url';
+import iceFreezeClip from '@/assets/projects/game-project-rephrased/clips/ice-freeze.mp4?url';
+import iceFreezeClipPoster from '@/assets/projects/game-project-rephrased/clips/ice-freeze-poster.webp?url';
+import iceThawClip from '@/assets/projects/game-project-rephrased/clips/ice-thaw.mp4?url';
+import iceThawClipPoster from '@/assets/projects/game-project-rephrased/clips/ice-thaw-poster.webp?url';
+import iceCloseupClip from '@/assets/projects/game-project-rephrased/clips/ice-closeup.mp4?url';
+import iceCloseupClipPoster from '@/assets/projects/game-project-rephrased/clips/ice-closeup-poster.webp?url';
+import iceWaterfallClip from '@/assets/projects/game-project-rephrased/clips/ice-waterfall.mp4?url';
+import iceWaterfallClipPoster from '@/assets/projects/game-project-rephrased/clips/ice-waterfall-poster.webp?url';
+import orbitalClip from '@/assets/projects/game-project-rephrased/clips/orbital.mp4?url';
+import orbitalClipPoster from '@/assets/projects/game-project-rephrased/clips/orbital-poster.webp?url';
 
 ## ゲーム紹介
 
@@ -23,10 +51,136 @@ import imgConceptPlateau from '@/assets/projects/game-project-rephrased/game-pro
 
 ## 担当業務
 
-チームでは3C方面のエンジニアリングを担当し、主にUnreal Engine 5上でC++によるカメラゾーン（Camera Zone）のブレンドシステムを実装しました：
+チームではエンジニアとテクニカルアーティストを務め、C++・HLSL・Niagara を使って Unreal Engine 5 で以下を実装しました：
 
-* **カメラゾーンの重み付きブレンド**：レベル内の各カメラゾーンは、プレイヤーがどれだけ深く入っているかに応じて重みを持ちます。優先度の高いゾーンから取り分を確保し、同じ優先度では重みで配分し、追従カメラは残りだけを受け持ちます。二つのゾーンの遷移帯が重なる場所では、カメラがハードカットも追従カメラへの戻りもなく一方のゾーンから他方へ直接移り、位置・向き・画角・アスペクト比がすべて重みに応じて連続的にブレンドされます。
-* **遷移帯とカメラの飛びの修正**：ゾーンの発動を外側へ広がる遷移帯方式に変更し、遷移帯に入るとフェードが始まり、ゾーンの中心で完全に切り替わり、出るときは対称にフェードアウトするようにしました。あわせて、レターボックスが1フレームで突然現れる、上からゾーンに入るとハードカットになる、最後のゾーンを出るときの引き継ぎで飛ぶ、スケールしたゾーンで計算がずれる、といった一連のカメラの飛びを修正しました。
-* **プランナー向けカメラチュートリアル**：カメラゾーンの使い方をまとめたドキュメントを書き、エディタでの配置、調整すべきパラメータ、2種類のフェードモード、トラブルシューティング表を示して、プランナーが自分でレベルのカメラを組めるようにしました。
+* **スタイライズド水システム**：スプラインで描く川・湖・滝。メッシュはプロシージャル生成で、共通の HLSL 水マテリアル、トゥーン調の泡としぶきのエフェクトを備えます。滝は障害物ボリュームで分流でき、見た目のプリセットも切り替えられます。
+* **プロシージャルな氷**：本物の Voronoi 氷板ジオメトリでできた氷が、任意の起点からリアルタイムに凍り、また水面へ溶けて戻ります。コントロールボリュームで成長の仕方・見た目・氷板の割れ方を変えられます。
+* **ルーンオービタル**：プレイヤーが描いたルーンが体の周りを回るキューブになり、収納・選択・装備・弾き出しができます。各フライトに個別の軌道とエフェクトがあります。
+* **修復エフェクト**：パズルオブジェクトが修復されると、破片が軌跡を残して元の位置へ戻り、元通りになった瞬間に光がひと筋走ります。
+* **カメラゾーンのブレンド**：複数のカメラゾーンを重みで連続的にブレンドし、一連のカメラの飛びを修正。デザイナー向けのカメラチュートリアルも書きました。
+* **環境の統合**：オーバーワールドの地形をストアの草原アセットパック（ランドスケープマテリアル、RVT、フォリッジ）に載せ替え、必要なエンジンの描画設定を調整しました。
+
+---
+
+## プロジェクト詳細
+
+### スタイライズド水システム
+
+水はすべてスプラインから生成し、手作業のモデリングはありません。スプラインに沿って断面を作り、水面・両岸・深さ・両端のふたを持つ閉じた水メッシュにします。急な区間は自動的に滝になります。頂点カラーに岸からの距離と傾きを記録し、マテリアルはそれをもとに流速・泡・色を決めます。
+
+<figure>
+    <video class="clip" src={waterOverviewClip} poster={waterOverviewClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="滝と湖の全景"></video>
+    <figcaption>滝・湖・浮かぶ丸太：すべてスプラインから生成し、一つの水マテリアルを共有</figcaption>
+</figure>
+
+* **川と滝**：断面は台形で、幅・深さ・ポイントごとのスケールを調整できます。断面はスプラインに沿って平行移動するので、垂直な落差でも水平を保ちます。水面は Perlin ノイズで揺れ、急な水ほど荒れます。端は開けておくこともでき、環状の川も継ぎ目なくつながります。
+* **HLSL 水マテリアル**：すべての水体で一つのシェーダーを使います。実際の水深に応じたトゥーンの色帯で、浅瀬は透け、深みは不透明。流れの筋は流れに沿って伸び、岸辺や急流で密になります。接触泡、岸の泡、川底のコースティクス、フレネルによる空の反射、わずかな屈折も備えます。
+* **障害物と着水**：滝は障害物ボリュームで分流できます（前に広がる、横に広がる、すり抜ける）。障害物の形は SDF で表し、互いになめらかにつながります。着水点には Niagara でトゥーン調の泡のかたまりとしぶきを出します。
+* **浮遊物と濡れ**：フローターコンポーネントで丸太が流れに乗って漂い、航跡を残します。水辺の地面はデカールで濡れます。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={riverClip} poster={riverClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="川"></video>
+        <figcaption>川：流れの筋が流れに沿って伸び、岸辺に泡が集まる</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={waterfallClip} poster={waterfallClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="滝の水幕"></video>
+        <figcaption>滝：川が崖を越えると自動的に水幕になる</figcaption>
+    </figure>
+</div>
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={impactFoamClip} poster={impactFoamClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="着水の泡"></video>
+        <figcaption>着水点：トゥーン調の泡のかたまり、しぶき、衝撃の泡</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={lakeFloatersClip} poster={lakeFloatersClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="湖に浮かぶ丸太"></video>
+        <figcaption>湖：丸太が水に乗って漂い、岩の周りに接触泡</figcaption>
+    </figure>
+</div>
+
+見た目はレベルごとに切り替えられます。プリセット用のアクターが水エフェクト設定を複数（Toon / Soft / Anime / Semi）持ち、各水体の設定の下に重ねます。エディタではボタン一つで切り替えられ、ランタイムからも呼べます。『Sea of Thieves』などのセミスタイライズドな水を調べたうえで、トゥーンのベースは残し、スタイライズの度合いが下がるにつれてハイライトと泡だけを柔らかくしました。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={waterfallObstacleClip} poster={waterfallObstacleClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="障害物で分かれる滝"></video>
+        <figcaption>障害物ボリューム：岩が水幕を分ける</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={waterfallFrontClip} poster={waterfallFrontClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="滝の正面"></video>
+        <figcaption>滝の正面：逆光の水幕と滝つぼのしぶき</figcaption>
+    </figure>
+</div>
+
+### プロシージャルな氷
+
+氷はテクスチャではなく本物のジオメトリです。水面に置いたボックスボリュームが重なる湖や川を自動で見つけ、水面の範囲内を重み付き Voronoi で氷板に切り分け、氷板の間のすき間を新しい氷で埋め、縁に丸いベベルを付けます。氷面ごとに専用のマテリアルインスタンスを持ち、透明度・透明感・厚みを個別に調整できます。
+
+<figure>
+    <video class="clip" src={iceFreezeClip} poster={iceFreezeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="凍っていく湖"></video>
+    <figcaption>凍結：氷板が中心から一枚ずつ広がり、薄い氷から徐々に厚くなる</figcaption>
+</figure>
+
+* **リアルタイムの凍結と融解**：凍結アニメーションはすべてシェーダー内で動き、メッシュは作り直しません。凍結の起点と成長パスからの Dijkstra 距離を到達時間フィールドとして焼き込み、各頂点は凍結前線の位置から氷の年齢を求めます。まだ届いていない部分は勾配に沿って水中へ沈みます。前線には反り上がった縁、ファセットのきらめき、エッジの光があり、氷が育つにつれてすき間が閉じます。溶けるときは氷が濡れ、氷板が離れて沈みます。完全に凍ったときだけ上を歩けます。
+* **氷の質感**：スクリーンスペース屈折で氷の下の湖底がくっきり見えます。ひびは氷板のすき間から下へ伸び（焼き込んだすき間の距離フィールドを使用）、内部には気泡・乳白色のもや・霜があり、深くなるほど薄れます。
+* **コントロールボリューム**：ボックスかスプラインの帯で範囲を囲み、三つのグループの設定を上書きします。成長（速度・遅延・凍らせない・誘導方向）、見た目（色味・透明度・透明感・気泡・ひび・霜・濡れ）、氷板（細かい氷板・高さ・圧力尾根・すき間の幅）。縁は減衰距離でなめらかに切り替わります。
+* **パフォーマンス**：氷板はジオメトリが変わったときだけ作り直し、アニメーションはマテリアルのパラメータを更新するだけなので、凍結も融解もリアルタイムで動きます。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={iceCloseupClip} poster={iceCloseupClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="氷板のクローズアップ"></video>
+        <figcaption>クローズアップ：ベベル、すき間、氷の下のひび</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={iceThawClip} poster={iceThawClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="溶けていく氷"></video>
+        <figcaption>融解：氷板が濡れ、離れて水面へ戻る</figcaption>
+    </figure>
+</div>
+
+<div class="image-grid-2">
+    <Image src={imgIcePlates} alt="低いアングルから見た氷板と丸太" />
+    <Image src={imgIceCloseup} alt="上から見た氷板と氷の下の湖底" />
+</div>
+
+<figure>
+    <video class="clip" src={iceWaterfallClip} poster={iceWaterfallClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="滝の下の凍った湖"></video>
+    <figcaption>滝の下の凍った湖：氷は湖のスプラインの内側の水面だけを覆う</figcaption>
+</figure>
+
+### ルーンオービタル
+
+プレイヤーが描いたルーンはすぐには発動せず、体の周りの軌道に収納され（最大三つ）、あとで選んで使います：
+
+* **状態モデル**：収納、満杯なら最も古いものと入れ替え、重複は拒否。Q でオービタルを開き、数字キーで選択、決定で装備、Esc でキャンセル。しばらく操作がなければ自動で閉じます。
+* **フライト**：ルーンのキューブは体からベジェ曲線の弧を描いて傾いた楕円軌道へ飛び、時間差・イージング・スケール・回転が付きます。形成・展開・回収・装備・解放・発射・帰還のそれぞれに個別のフライト設定があり、開始・軌跡・終了の Niagara エフェクトスロットを持ちます。
+* **装備と弾き出し**：装備したルーンはプレイヤーの横に浮かび、移動には付いてきますが向きは変えません。F で目標へ弾き出すと、命中時に効果を発揮します。オービタルを再び開くと、元のスロットへ飛んで戻ります。
+* **テスト**：状態モデルとフライトのロジックは自動テストでカバーしています。
+
+<figure>
+    <video class="clip" src={orbitalClip} poster={orbitalClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="ルーンオービタル"></video>
+    <figcaption>ルーンオービタルの初期プロトタイプ：キューブが体から飛び出して軌道に乗る</figcaption>
+</figure>
+
+### 修復エフェクト
+
+パズルオブジェクト（ランプや扉など）がルーンで修復されると、各破片は戻る道筋に軌跡を残します。元通りになると、見えているすべてのメッシュに光が一秒間走ります。細い暖色の帯と白い芯の線に、ピクセル単位の法線によるフレネルのリムライトを重ねたものです。そのためにパズルの基底クラスに汎用の「演出終了」イベントを追加し、エフェクトのコードが個別のパズルに依存しないようにしました。
+
+### カメラゾーンのブレンド
+
+レベル内の各カメラゾーンは、プレイヤーがどれだけ深く入っているかで重みを得ます。優先度の高いゾーンが先に取り分を取り、同じ優先度のゾーンは重みで分け合い、追従カメラは残りだけを受け持ちます。二つのゾーンの遷移帯が重なる場所では、カメラはハードカットも追従カメラへの戻りもなく、一方のゾーンからもう一方へ直接移ります。位置・向き・視野角・アスペクト比はすべて重みで連続的にブレンドされます。
+
+<div class="image-grid-2">
+    <Image src={imgCameraZoneBounds} alt="カメラゾーンのコアボリュームと外側の遷移帯" />
+    <Image src={imgCameraZoneParameters} alt="詳細パネルのカメラゾーンのパラメータ" />
+</div>
+
+* **遷移帯**：ゾーンのトリガーを外側へ広がる遷移帯に変更。遷移帯に入るとブレンドが始まり、コアに達すると完全に切り替わり、出るときは対称にフェードアウトします。
+* **カメラの飛びの修正**：画面のちらつきの本当の原因はレターボックスでした。アスペクト比の制限はオン／オフの切り替えなので、黒帯が一フレームで現れていたのです。ブレンド中は制限をオンのままにし、アスペクト比をビューポート本来の比率からなめらかに変えることで、黒帯が幅ゼロから伸びるようにしました。ほかに、上からゾーンに入ったときのハードカット、最後のゾーンを出るときの引き継ぎの飛び、スケールしたゾーンでの計算の誤りも直しました。
+* **カメラチュートリアル**：デザイナー向けにカメラゾーンの使い方を書きました。ゾーンの置き方、調整するパラメータ、二つのフェードモード、トラブルシューティング表をまとめ、デザイナーが自分でレベルのカメラを組めるようにしました。
+
+### 環境の統合
+
+オーバーワールドのレベルの地形をストアの草原環境パックに載せ替えました。パックのランドスケープマテリアルとレイヤー情報、RVT ボリュームとグローバル設定を入れ、フォリッジを配置。パックの要件に合わせて Shadow Maps に切り替え、仮想テクスチャプールのサイズも調整しました。
 
 <p class="wip-note">開発中<span class="wip-dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span></p>

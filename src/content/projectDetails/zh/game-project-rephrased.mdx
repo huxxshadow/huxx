@@ -3,6 +3,34 @@ import imgOverview from '@/assets/projects/game-project-rephrased/game-project-r
 import imgConceptCanyon from '@/assets/projects/game-project-rephrased/game-project-rephrased_ConceptCanyon.webp';
 import imgConceptPillars from '@/assets/projects/game-project-rephrased/game-project-rephrased_ConceptPillars.webp';
 import imgConceptPlateau from '@/assets/projects/game-project-rephrased/game-project-rephrased_ConceptPlateau.webp';
+import imgIcePlates from '@/assets/projects/game-project-rephrased/game-project-rephrased_IcePlates.webp';
+import imgIceCloseup from '@/assets/projects/game-project-rephrased/game-project-rephrased_IceCloseup.webp';
+import imgCameraZoneBounds from '@/assets/projects/game-project-rephrased/game-project-rephrased_CameraZoneBounds.webp';
+import imgCameraZoneParameters from '@/assets/projects/game-project-rephrased/game-project-rephrased_CameraZoneParameters.webp';
+import waterOverviewClip from '@/assets/projects/game-project-rephrased/clips/water-overview.mp4?url';
+import waterOverviewClipPoster from '@/assets/projects/game-project-rephrased/clips/water-overview-poster.webp?url';
+import riverClip from '@/assets/projects/game-project-rephrased/clips/river.mp4?url';
+import riverClipPoster from '@/assets/projects/game-project-rephrased/clips/river-poster.webp?url';
+import waterfallClip from '@/assets/projects/game-project-rephrased/clips/waterfall.mp4?url';
+import waterfallClipPoster from '@/assets/projects/game-project-rephrased/clips/waterfall-poster.webp?url';
+import impactFoamClip from '@/assets/projects/game-project-rephrased/clips/impact-foam.mp4?url';
+import impactFoamClipPoster from '@/assets/projects/game-project-rephrased/clips/impact-foam-poster.webp?url';
+import lakeFloatersClip from '@/assets/projects/game-project-rephrased/clips/lake-floaters.mp4?url';
+import lakeFloatersClipPoster from '@/assets/projects/game-project-rephrased/clips/lake-floaters-poster.webp?url';
+import waterfallObstacleClip from '@/assets/projects/game-project-rephrased/clips/waterfall-obstacle.mp4?url';
+import waterfallObstacleClipPoster from '@/assets/projects/game-project-rephrased/clips/waterfall-obstacle-poster.webp?url';
+import waterfallFrontClip from '@/assets/projects/game-project-rephrased/clips/waterfall-front.mp4?url';
+import waterfallFrontClipPoster from '@/assets/projects/game-project-rephrased/clips/waterfall-front-poster.webp?url';
+import iceFreezeClip from '@/assets/projects/game-project-rephrased/clips/ice-freeze.mp4?url';
+import iceFreezeClipPoster from '@/assets/projects/game-project-rephrased/clips/ice-freeze-poster.webp?url';
+import iceThawClip from '@/assets/projects/game-project-rephrased/clips/ice-thaw.mp4?url';
+import iceThawClipPoster from '@/assets/projects/game-project-rephrased/clips/ice-thaw-poster.webp?url';
+import iceCloseupClip from '@/assets/projects/game-project-rephrased/clips/ice-closeup.mp4?url';
+import iceCloseupClipPoster from '@/assets/projects/game-project-rephrased/clips/ice-closeup-poster.webp?url';
+import iceWaterfallClip from '@/assets/projects/game-project-rephrased/clips/ice-waterfall.mp4?url';
+import iceWaterfallClipPoster from '@/assets/projects/game-project-rephrased/clips/ice-waterfall-poster.webp?url';
+import orbitalClip from '@/assets/projects/game-project-rephrased/clips/orbital.mp4?url';
+import orbitalClipPoster from '@/assets/projects/game-project-rephrased/clips/orbital-poster.webp?url';
 
 ## 游戏简介
 
@@ -23,10 +51,136 @@ import imgConceptPlateau from '@/assets/projects/game-project-rephrased/game-pro
 
 ## 我的职责
 
-我在团队中负责 3C 方向的工程工作，主要是用 C++ 在 Unreal Engine 5 中实现相机区域（Camera Zone）的混合系统：
+我在团队中担任工程师和技术美术，用 C++、HLSL 和 Niagara 在 Unreal Engine 5 中实现了以下功能：
 
-* **相机区域的权重混合**：关卡中的每个相机区域按玩家进入的深度获得权重，高优先级区域先分走份额，同优先级按权重分配，跟随相机只拿剩下的部分。两个区域的过渡带重叠时，镜头直接从一个区域过渡到另一个，不会硬切，也不会中途掉回跟随相机；位置、朝向、视野和画幅比例都按权重连续混合。
-* **过渡带与镜头跳变修复**：把区域的触发方式改为向外延伸的过渡带，进入过渡带即开始渐入、到达区域核心时完全切换、离开时对称淡出；并修复了一系列镜头跳变，包括画幅黑边在一帧内突然出现、从上方进入区域时硬切、离开最后一个区域时的交接跳变，以及区域被缩放后的计算错误。
-* **面向策划的相机教程**：编写相机区域的使用文档，说明如何在编辑器中摆放区域、调整参数、选择两种渐入模式，并附排查表，让策划可以自行搭建关卡镜头。
+* **风格化水体系统**：样条驱动的河流、湖泊和瀑布，网格程序化生成；共用一套 HLSL 水体材质，配卡通泡沫和水雾特效；瀑布可被障碍体积分流，并提供多套画风预设。
+* **程序化冰面**：冰面由真实的 Voronoi 冰板几何构成，能从任意起点实时冻结、再融化回水面；配套的控制体积可以改变生长路径、外观和冰板切法。
+* **符文轨道**：玩家画出的符文变成环绕身体的方块，可以收纳、选择、装备和弹射，每段飞行都有独立的轨迹和特效。
+* **修复特效**：谜题物件被修复时，碎片带拖尾飞回原位，物件拼合完整时扫过一道光。
+* **相机区域混合**：多个相机区域按权重连续混合，修复了一系列镜头跳变，并为策划编写了相机教程。
+* **环境整合**：把主世界地形接入商店草甸地形包（地形材质、RVT、植被），并调整对应的引擎渲染设置。
+
+---
+
+## 项目细节
+
+### 风格化水体系统
+
+整套水体都由样条生成，不依赖手工建模：沿样条逐段生成截面，得到一个封闭的水体网格，有水面、两岸、深度和两端封口；陡峭的水段自动变成瀑布。顶点颜色记录离岸远近和坡度，材质据此决定流速、泡沫和颜色。
+
+<figure>
+    <video class="clip" src={waterOverviewClip} poster={waterOverviewClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="瀑布与湖泊全景"></video>
+    <figcaption>瀑布、湖泊和漂浮物：全部由样条生成，共用一套水体材质</figcaption>
+</figure>
+
+* **河流与瀑布**：截面是梯形，可调宽度、深度和每个控制点的缩放；截面沿样条平行移动，垂直落差时依然保持水平。水面带 Perlin 起伏，陡水段更湍急；两端可以开口，环形河流的接缝也处理平滑。
+* **HLSL 水体材质**：所有水体共用一个着色器。按真实水深分出卡通色带，浅处透明、深处不透明；流动条纹沿水流方向拉伸，在岸边和陡坡处更密；有接触泡沫、岸线泡沫、河床焦散、菲涅尔天空反射和轻微折射。
+* **障碍与冲击**：瀑布可以被障碍体积分流（向前铺开、向两侧散开或直接穿过），障碍形状用 SDF 描述并相互融合；落水处有卡通泡沫团和水雾的 Niagara 特效。
+* **漂浮物与湿润**：漂浮组件让原木随水流漂动，留下尾迹；靠近水面的地表通过贴花变湿。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={riverClip} poster={riverClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="河流"></video>
+        <figcaption>河流：流动条纹沿水流拉伸，岸边泡沫更密</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={waterfallClip} poster={waterfallClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="瀑布水帘"></video>
+        <figcaption>瀑布：河流越过崖边自动变成水帘</figcaption>
+    </figure>
+</div>
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={impactFoamClip} poster={impactFoamClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="落水泡沫"></video>
+        <figcaption>落水处：卡通泡沫团、水雾和冲击泡沫</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={lakeFloatersClip} poster={lakeFloatersClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="湖面漂浮物"></video>
+        <figcaption>湖面：原木随水漂动，岩石周围有接触泡沫</figcaption>
+    </figure>
+</div>
+
+画风可以在关卡中切换：一个预设 Actor 保存多套水体效果参数（Toon / Soft / Anime / Semi），叠在每个水体自己的设置之下，编辑器里点按钮即可切换，运行时也能调用。调研了《盗贼之海》等半风格化水体做法后，我最终保留了卡通底色，只让高光和泡沫随风格化程度逐渐变柔和。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={waterfallObstacleClip} poster={waterfallObstacleClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="瀑布障碍分流"></video>
+        <figcaption>障碍体积：岩石把水帘分开</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={waterfallFrontClip} poster={waterfallFrontClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="瀑布正面"></video>
+        <figcaption>瀑布正面：背光水帘和底部水雾</figcaption>
+    </figure>
+</div>
+
+### 程序化冰面
+
+冰面是真正的几何体，不是贴图：一个盒体积放在水面上，会自动找到它覆盖的湖泊和河流，在水面范围内用加权 Voronoi 切出冰板，冰板之间的缝隙填上新冰，边缘做圆角倒角。每块冰面拥有自己的材质实例，单独调节透明度、清晰度和厚度。
+
+<figure>
+    <video class="clip" src={iceFreezeClip} poster={iceFreezeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="湖面冻结"></video>
+    <figcaption>冻结：冰从中心逐块长出，先是一层薄冰，再慢慢变厚</figcaption>
+</figure>
+
+* **实时冻结与融化**：冻结动画完全在着色器中完成，不重建网格。预先烘焙一张到达时间场（以冻结起点和生长路径为源点的 Dijkstra 距离），每个顶点按冻结前沿的位置算出冰龄；还没冻到的部分沿梯度退回水下。前沿有翘起的冰唇、晶面闪光和边缘辉光，缝隙随冰的生长逐渐合拢。融化时冰面变湿、冰板分开并下沉。只有完全冻结后冰面才能行走。
+* **冰的质感**：屏幕空间折射让冰下的湖底清晰可见；裂纹从冰板缝隙向下延伸（基于烘焙的缝隙距离场），冰内还有气泡、乳白云层和霜，冰板越往下越淡。
+* **控制体积**：用盒体或样条带圈出一块区域，覆盖三组参数——生长（速度、延迟、禁止结冰、引导方向）、外观（色调、透明度、清晰度、气泡、裂纹、霜、湿润）和冰板（更碎的冰板、高度、挤压冰脊、缝隙宽度），边缘按衰减距离平滑过渡。
+* **性能**：只有几何变化时才重建冰板，动画只更新材质参数，冻结和融化都能实时运行。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={iceCloseupClip} poster={iceCloseupClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="冰板特写"></video>
+        <figcaption>冰板特写：倒角、缝隙和冰下的裂纹</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={iceThawClip} poster={iceThawClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="冰面融化"></video>
+        <figcaption>融化：冰板变湿、分开，再退回水面</figcaption>
+    </figure>
+</div>
+
+<div class="image-grid-2">
+    <Image src={imgIcePlates} alt="低机位下的冰板与原木" />
+    <Image src={imgIceCloseup} alt="俯视冰板与冰下的湖底" />
+</div>
+
+<figure>
+    <video class="clip" src={iceWaterfallClip} poster={iceWaterfallClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="瀑布下的冰湖"></video>
+    <figcaption>瀑布下的冰湖：冰面只覆盖湖泊样条内的水面</figcaption>
+</figure>
+
+### 符文轨道
+
+玩家画出的符文不会马上生效，而是收纳进一个环绕身体的轨道（最多三个），之后再挑选使用：
+
+* **状态模型**：收纳、满了替换最旧的、拒绝重复；Q 打开轨道，数字键选择，确认后装备，Esc 取消，一段时间不操作自动收起。
+* **飞行轨迹**：符文方块沿贝塞尔弧线从身体飞上倾斜的椭圆轨道，带错峰、缓动、缩放和自旋。形成、展开、收回、装备、释放、弹射和归位各有一段独立设置的飞行，每段都有起点、拖尾和终点的 Niagara 特效槽。
+* **装备与弹射**：装备的符文悬停在玩家身侧，跟随移动但不跟着转身；按 F 把它弹向目标，命中后对目标生效。再次打开轨道时，它会飞回自己原来的槽位。
+* **测试**：状态模型和飞行逻辑都有自动化测试覆盖。
+
+<figure>
+    <video class="clip" src={orbitalClip} poster={orbitalClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="符文轨道"></video>
+    <figcaption>符文轨道早期原型：方块从身体飞出，进入环绕轨道</figcaption>
+</figure>
+
+### 修复特效
+
+谜题物件（比如灯和门）被符文修复时，每块碎片沿飞回的路径带上拖尾；物件完整后，所有可见网格上扫过一道闪光：一条窄的暖色光带加一条白色核心线，再叠一层逐像素法线的菲涅尔轮廓光，持续一秒。为此我在谜题基类上加了一个通用的“表现结束”事件，让特效代码不依赖具体的谜题。
+
+### 相机区域混合
+
+关卡里的每个相机区域按玩家进入的深度获得权重。高优先级区域先分走份额，同优先级的区域按权重分配，跟随相机只拿剩下的部分。两个区域的过渡带重叠时，镜头直接从一个区域过渡到另一个，不会硬切，也不会中途掉回跟随相机；位置、朝向、视野和画幅比例都按权重连续混合。
+
+<div class="image-grid-2">
+    <Image src={imgCameraZoneBounds} alt="相机区域的核心体积与外圈过渡带" />
+    <Image src={imgCameraZoneParameters} alt="相机区域在细节面板中的参数" />
+</div>
+
+* **过渡带**：区域的触发方式改为向外延伸的过渡带，进入过渡带即开始渐入，到达区域核心时完全切换，离开时对称淡出。
+* **镜头跳变修复**：画面闪烁的真正原因是画幅黑边——限制画幅比例是一个开关，切换时黑边会在一帧内出现。改为在混合期间一直开启限制，并让画幅比例从视口本身的比例平滑过渡，黑边就从零宽度慢慢长出来。此外还修复了从上方进入区域时的硬切、离开最后一个区域时的交接跳变，以及区域被缩放后的计算错误。
+* **相机教程**：为策划写了相机区域的使用文档，说明如何摆放区域、调整参数、选择两种渐入模式，并附排查表，让策划可以自己搭建关卡镜头。
+
+### 环境整合
+
+把主世界关卡的地形接入商店的草甸环境包：换上包里的地形材质和图层信息，加入 RVT 体积和全局设置，刷上植被；按包的要求改用 Shadow Maps，并调整虚拟纹理池大小。
 
 <p class="wip-note">正在开发中<span class="wip-dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span></p>

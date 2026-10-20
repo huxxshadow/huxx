@@ -3,6 +3,34 @@ import imgOverview from '@/assets/projects/game-project-rephrased/game-project-r
 import imgConceptCanyon from '@/assets/projects/game-project-rephrased/game-project-rephrased_ConceptCanyon.webp';
 import imgConceptPillars from '@/assets/projects/game-project-rephrased/game-project-rephrased_ConceptPillars.webp';
 import imgConceptPlateau from '@/assets/projects/game-project-rephrased/game-project-rephrased_ConceptPlateau.webp';
+import imgIcePlates from '@/assets/projects/game-project-rephrased/game-project-rephrased_IcePlates.webp';
+import imgIceCloseup from '@/assets/projects/game-project-rephrased/game-project-rephrased_IceCloseup.webp';
+import imgCameraZoneBounds from '@/assets/projects/game-project-rephrased/game-project-rephrased_CameraZoneBounds.webp';
+import imgCameraZoneParameters from '@/assets/projects/game-project-rephrased/game-project-rephrased_CameraZoneParameters.webp';
+import waterOverviewClip from '@/assets/projects/game-project-rephrased/clips/water-overview.mp4?url';
+import waterOverviewClipPoster from '@/assets/projects/game-project-rephrased/clips/water-overview-poster.webp?url';
+import riverClip from '@/assets/projects/game-project-rephrased/clips/river.mp4?url';
+import riverClipPoster from '@/assets/projects/game-project-rephrased/clips/river-poster.webp?url';
+import waterfallClip from '@/assets/projects/game-project-rephrased/clips/waterfall.mp4?url';
+import waterfallClipPoster from '@/assets/projects/game-project-rephrased/clips/waterfall-poster.webp?url';
+import impactFoamClip from '@/assets/projects/game-project-rephrased/clips/impact-foam.mp4?url';
+import impactFoamClipPoster from '@/assets/projects/game-project-rephrased/clips/impact-foam-poster.webp?url';
+import lakeFloatersClip from '@/assets/projects/game-project-rephrased/clips/lake-floaters.mp4?url';
+import lakeFloatersClipPoster from '@/assets/projects/game-project-rephrased/clips/lake-floaters-poster.webp?url';
+import waterfallObstacleClip from '@/assets/projects/game-project-rephrased/clips/waterfall-obstacle.mp4?url';
+import waterfallObstacleClipPoster from '@/assets/projects/game-project-rephrased/clips/waterfall-obstacle-poster.webp?url';
+import waterfallFrontClip from '@/assets/projects/game-project-rephrased/clips/waterfall-front.mp4?url';
+import waterfallFrontClipPoster from '@/assets/projects/game-project-rephrased/clips/waterfall-front-poster.webp?url';
+import iceFreezeClip from '@/assets/projects/game-project-rephrased/clips/ice-freeze.mp4?url';
+import iceFreezeClipPoster from '@/assets/projects/game-project-rephrased/clips/ice-freeze-poster.webp?url';
+import iceThawClip from '@/assets/projects/game-project-rephrased/clips/ice-thaw.mp4?url';
+import iceThawClipPoster from '@/assets/projects/game-project-rephrased/clips/ice-thaw-poster.webp?url';
+import iceCloseupClip from '@/assets/projects/game-project-rephrased/clips/ice-closeup.mp4?url';
+import iceCloseupClipPoster from '@/assets/projects/game-project-rephrased/clips/ice-closeup-poster.webp?url';
+import iceWaterfallClip from '@/assets/projects/game-project-rephrased/clips/ice-waterfall.mp4?url';
+import iceWaterfallClipPoster from '@/assets/projects/game-project-rephrased/clips/ice-waterfall-poster.webp?url';
+import orbitalClip from '@/assets/projects/game-project-rephrased/clips/orbital.mp4?url';
+import orbitalClipPoster from '@/assets/projects/game-project-rephrased/clips/orbital-poster.webp?url';
 
 ## 게임 소개
 
@@ -23,10 +51,136 @@ import imgConceptPlateau from '@/assets/projects/game-project-rephrased/game-pro
 
 ## 담당 업무
 
-팀에서 3C 분야의 엔지니어링을 맡아, 주로 Unreal Engine 5에서 C++로 카메라 존(Camera Zone) 블렌딩 시스템을 구현했습니다:
+팀에서 엔지니어와 테크니컬 아티스트를 맡아 C++, HLSL, Niagara로 Unreal Engine 5에서 다음 기능을 구현했습니다:
 
-* **카메라 존 가중치 블렌딩**: 레벨의 각 카메라 존은 플레이어가 얼마나 깊이 들어와 있는지에 따라 가중치를 가집니다. 우선순위가 높은 존이 먼저 몫을 가져가고, 같은 우선순위끼리는 가중치로 나누며, 추적 카메라는 남은 몫만 받습니다. 두 존의 전환 대역이 겹치는 곳에서는 하드 컷이나 추적 카메라로 되돌아가는 일 없이 한 존에서 다른 존으로 바로 넘어가며, 위치·회전·시야각·화면비가 모두 가중치에 따라 연속적으로 블렌딩됩니다.
-* **전환 대역과 카메라 튐 수정**: 존의 발동 방식을 바깥으로 확장되는 전환 대역으로 바꿔, 전환 대역에 들어서면 페이드가 시작되고 존 중심에서 완전히 전환되며 나갈 때는 대칭으로 페이드아웃되게 했습니다. 아울러 레터박스가 한 프레임 만에 갑자기 나타나는 문제, 위에서 존에 들어올 때의 하드 컷, 마지막 존을 벗어날 때의 전환 튐, 크기를 조정한 존에서의 계산 오류 등 일련의 카메라 튐을 수정했습니다.
-* **기획자용 카메라 튜토리얼**: 카메라 존 사용 문서를 작성해 에디터에서의 배치, 조정할 파라미터, 두 가지 페이드 모드, 문제 해결 표를 정리함으로써 기획자가 직접 레벨 카메라를 구성할 수 있게 했습니다.
+* **스타일라이즈드 물 시스템**: 스플라인으로 그리는 강, 호수, 폭포. 메시는 절차적으로 생성하고, 공용 HLSL 물 머티리얼과 툰 스타일 거품·물안개 이펙트를 갖췄습니다. 폭포는 장애물 볼륨으로 갈라지며, 룩 프리셋도 전환할 수 있습니다.
+* **절차적 얼음**: 실제 Voronoi 얼음판 지오메트리로 만든 얼음이 어느 지점에서든 실시간으로 얼고, 다시 물로 녹아 돌아갑니다. 컨트롤 볼륨으로 자라는 방식, 외형, 얼음판 분할을 바꿀 수 있습니다.
+* **룬 오비탈**: 플레이어가 그린 룬이 몸 주위를 도는 큐브가 되어 보관, 선택, 장착, 발사할 수 있습니다. 비행마다 고유한 궤적과 이펙트가 있습니다.
+* **수리 이펙트**: 퍼즐 오브젝트가 수리되면 조각들이 궤적을 남기며 제자리로 돌아오고, 온전해지는 순간 빛이 한 번 훑고 지나갑니다.
+* **카메라 존 블렌딩**: 여러 카메라 존을 가중치로 연속 블렌딩하고, 일련의 카메라 튐 현상을 고쳤으며, 디자이너용 카메라 튜토리얼을 작성했습니다.
+* **환경 통합**: 오버월드 지형을 스토어 초원 에셋 팩(랜드스케이프 머티리얼, RVT, 폴리지)으로 옮기고 필요한 엔진 렌더링 설정을 맞췄습니다.
+
+---
+
+## 프로젝트 상세
+
+### 스타일라이즈드 물 시스템
+
+물은 모두 스플라인에서 생성되며 손으로 모델링하지 않습니다. 스플라인을 따라 단면을 만들어 수면, 양쪽 둑, 깊이, 양끝 마개를 가진 닫힌 물 메시를 얻고, 가파른 구간은 자동으로 폭포가 됩니다. 버텍스 컬러에 둑까지의 거리와 경사를 기록하고, 머티리얼은 이를 바탕으로 유속, 거품, 색을 정합니다.
+
+<figure>
+    <video class="clip" src={waterOverviewClip} poster={waterOverviewClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="폭포와 호수 전경"></video>
+    <figcaption>폭포, 호수, 떠다니는 통나무: 모두 스플라인에서 생성되고 하나의 물 머티리얼을 공유</figcaption>
+</figure>
+
+* **강과 폭포**: 단면은 사다리꼴이며 폭, 깊이, 포인트별 스케일을 조절할 수 있습니다. 단면이 스플라인을 따라 평행 이동하므로 수직 낙차에서도 수평을 유지합니다. 수면은 Perlin 노이즈로 일렁이고 가파른 물일수록 거세집니다. 끝을 열어 둘 수 있고, 고리 모양 강도 이음매 없이 이어집니다.
+* **HLSL 물 머티리얼**: 모든 물에 하나의 셰이더를 씁니다. 실제 수심에 따른 툰 색 띠로 얕은 곳은 비치고 깊은 곳은 불투명합니다. 흐름 줄무늬는 물길을 따라 늘어나고 둑과 급류에서 더 촘촘해집니다. 접촉 거품, 물가 거품, 강바닥 커스틱, 프레넬 하늘 반사, 약한 굴절도 있습니다.
+* **장애물과 낙수**: 폭포는 장애물 볼륨으로 갈라집니다(앞으로 퍼짐, 옆으로 퍼짐, 통과). 장애물 모양은 서로 부드럽게 섞이는 SDF로 표현하고, 물이 떨어지는 곳에는 Niagara로 툰 스타일 거품 덩어리와 물안개를 냅니다.
+* **부유물과 젖음**: 플로터 컴포넌트로 통나무가 물살을 타고 떠다니며 항적을 남기고, 물가 지면은 데칼로 젖어 보입니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={riverClip} poster={riverClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="강"></video>
+        <figcaption>강: 흐름 줄무늬가 물길을 따라 늘어나고 둑에 거품이 모임</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={waterfallClip} poster={waterfallClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="폭포 물막"></video>
+        <figcaption>폭포: 강이 절벽을 넘으면 자동으로 물막이 됨</figcaption>
+    </figure>
+</div>
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={impactFoamClip} poster={impactFoamClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="낙수 거품"></video>
+        <figcaption>낙수 지점: 툰 스타일 거품 덩어리, 물안개, 충격 거품</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={lakeFloatersClip} poster={lakeFloatersClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="호수 위 통나무"></video>
+        <figcaption>호수: 통나무가 물을 타고 떠다니고 바위 둘레에 접촉 거품</figcaption>
+    </figure>
+</div>
+
+룩은 레벨마다 바꿀 수 있습니다. 프리셋 액터가 여러 벌의 물 이펙트 설정(Toon / Soft / Anime / Semi)을 담아 각 물의 자체 설정 아래에 겹치며, 에디터에서 버튼 하나로 전환하고 런타임에서도 호출할 수 있습니다. 《Sea of Thieves》 같은 세미 스타일라이즈드 물을 조사한 뒤, 툰 베이스는 유지하고 스타일화 정도가 낮아질수록 하이라이트와 거품만 부드러워지게 했습니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={waterfallObstacleClip} poster={waterfallObstacleClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="장애물로 갈라지는 폭포"></video>
+        <figcaption>장애물 볼륨: 바위가 물막을 가름</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={waterfallFrontClip} poster={waterfallFrontClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="폭포 정면"></video>
+        <figcaption>폭포 정면: 역광 물막과 아래쪽 물안개</figcaption>
+    </figure>
+</div>
+
+### 절차적 얼음
+
+얼음은 텍스처가 아니라 실제 지오메트리입니다. 수면 위에 놓은 박스 볼륨이 겹치는 호수와 강을 자동으로 찾아, 수면 범위 안을 가중 Voronoi로 얼음판으로 자르고, 판 사이 틈을 새 얼음으로 채우고, 가장자리에 둥근 베벨을 넣습니다. 얼음마다 전용 머티리얼 인스턴스를 가져 투명도, 맑기, 두께를 따로 조절합니다.
+
+<figure>
+    <video class="clip" src={iceFreezeClip} poster={iceFreezeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="얼어붙는 호수"></video>
+    <figcaption>결빙: 얼음판이 중심에서 한 장씩 자라나며, 얇은 얼음에서 점점 두꺼워짐</figcaption>
+</figure>
+
+* **실시간 결빙과 해빙**: 결빙 애니메이션은 모두 셰이더에서 처리하며 메시를 다시 만들지 않습니다. 결빙 시작점과 성장 경로로부터의 Dijkstra 거리를 도달 시간 필드로 구워 두고, 각 버텍스는 결빙 전선의 위치로 얼음 나이를 구합니다. 아직 닿지 않은 부분은 기울기를 따라 물속으로 가라앉습니다. 전선에는 들린 테두리, 면 반짝임, 가장자리 빛이 있고, 얼음이 자라며 틈이 닫힙니다. 녹을 때는 얼음이 젖고 판이 벌어지며 가라앉습니다. 완전히 얼었을 때만 위를 걸을 수 있습니다.
+* **얼음 질감**: 스크린 스페이스 굴절로 얼음 아래 호수 바닥이 또렷이 보입니다. 균열은 얼음판 틈에서 아래로 뻗고(구워 둔 틈 거리 필드 사용), 안에는 기포, 우윳빛 안개, 서리가 있으며 깊을수록 옅어집니다.
+* **컨트롤 볼륨**: 박스나 스플라인 띠로 영역을 지정해 세 그룹의 설정을 덮어씁니다. 성장(속도, 지연, 얼지 않음, 유도 방향), 외형(색조, 투명도, 맑기, 기포, 균열, 서리, 젖음), 얼음판(더 잘게 쪼갠 판, 높이, 압력 능선, 틈 폭). 가장자리는 감쇠 거리에 걸쳐 부드럽게 바뀝니다.
+* **성능**: 얼음판은 지오메트리가 바뀔 때만 다시 만들고, 애니메이션은 머티리얼 파라미터만 갱신하므로 결빙과 해빙 모두 실시간으로 돌아갑니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={iceCloseupClip} poster={iceCloseupClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="얼음판 클로즈업"></video>
+        <figcaption>클로즈업: 베벨, 틈, 얼음 아래 균열</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={iceThawClip} poster={iceThawClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="녹는 얼음"></video>
+        <figcaption>해빙: 얼음판이 젖고 벌어지며 물로 돌아감</figcaption>
+    </figure>
+</div>
+
+<div class="image-grid-2">
+    <Image src={imgIcePlates} alt="낮은 각도에서 본 얼음판과 통나무" />
+    <Image src={imgIceCloseup} alt="위에서 본 얼음판과 얼음 아래 호수 바닥" />
+</div>
+
+<figure>
+    <video class="clip" src={iceWaterfallClip} poster={iceWaterfallClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="폭포 아래 얼어붙은 호수"></video>
+    <figcaption>폭포 아래 얼어붙은 호수: 얼음은 호수 스플라인 안쪽 수면만 덮음</figcaption>
+</figure>
+
+### 룬 오비탈
+
+플레이어가 그린 룬은 바로 발동하지 않고 몸 주위 궤도에 보관되며(최대 세 개), 나중에 골라 씁니다:
+
+* **상태 모델**: 보관, 가득 차면 가장 오래된 것과 교체, 중복은 거부. Q로 오비탈을 열고 숫자 키로 선택, 확인하면 장착, Esc로 취소하며 한동안 조작이 없으면 자동으로 닫힙니다.
+* **비행**: 룬 큐브는 몸에서 베지어 호를 그리며 기울어진 타원 궤도로 날아가며, 시차, 이징, 스케일, 회전이 붙습니다. 형성, 전개, 회수, 장착, 해제, 발사, 복귀마다 따로 설정하는 비행이 있고, 각각 시작·궤적·끝 Niagara 이펙트 슬롯을 가집니다.
+* **장착과 발사**: 장착한 룬은 플레이어 옆에 떠서 이동은 따라오지만 방향은 따라 돌지 않습니다. F로 목표를 향해 튕기면 명중 시 효과가 발동합니다. 오비탈을 다시 열면 원래 슬롯으로 날아 돌아갑니다.
+* **테스트**: 상태 모델과 비행 로직은 자동화 테스트로 검증합니다.
+
+<figure>
+    <video class="clip" src={orbitalClip} poster={orbitalClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="룬 오비탈"></video>
+    <figcaption>룬 오비탈 초기 프로토타입: 큐브가 몸에서 날아올라 궤도에 오름</figcaption>
+</figure>
+
+### 수리 이펙트
+
+퍼즐 오브젝트(램프나 문 등)가 룬으로 수리되면 조각마다 돌아오는 길에 궤적을 남기고, 온전해지면 보이는 모든 메시 위로 1초 동안 빛이 훑고 지나갑니다. 좁은 난색 띠와 흰 중심선에 픽셀 단위 노멀 기반 프레넬 림을 겹친 것입니다. 이를 위해 퍼즐 기반 클래스에 범용 '연출 종료' 이벤트를 추가해, 이펙트 코드가 특정 퍼즐에 의존하지 않게 했습니다.
+
+### 카메라 존 블렌딩
+
+레벨의 각 카메라 존은 플레이어가 얼마나 깊이 들어왔는지에 따라 가중치를 얻습니다. 우선순위가 높은 존이 먼저 몫을 가져가고, 같은 우선순위는 가중치로 나누며, 추적 카메라는 남은 몫만 받습니다. 두 존의 전환 띠가 겹치는 곳에서는 하드 컷도 추적 카메라로 되돌아가는 일도 없이 한 존에서 다른 존으로 바로 넘어갑니다. 위치, 방향, 시야각, 화면비가 모두 가중치로 연속 블렌딩됩니다.
+
+<div class="image-grid-2">
+    <Image src={imgCameraZoneBounds} alt="카메라 존의 코어 볼륨과 바깥쪽 전환 띠" />
+    <Image src={imgCameraZoneParameters} alt="디테일 패널의 카메라 존 파라미터" />
+</div>
+
+* **전환 띠**: 존의 트리거를 바깥으로 뻗는 전환 띠로 바꿨습니다. 띠에 들어서면 블렌딩이 시작되고, 코어에 닿으면 완전히 전환되며, 나갈 때는 대칭으로 페이드아웃됩니다.
+* **카메라 튐 수정**: 화면 깜빡임의 진짜 원인은 레터박스였습니다. 화면비 제한은 켜고 끄는 스위치라 검은 띠가 한 프레임 만에 나타났던 것입니다. 블렌딩 동안 제한을 켜 둔 채 화면비를 뷰포트 자체의 비율에서 부드럽게 바꾸게 해, 검은 띠가 폭 0에서 자라나도록 했습니다. 그 밖에 위에서 존에 들어올 때의 하드 컷, 마지막 존을 나갈 때의 인계 튐, 스케일된 존의 계산 오류도 고쳤습니다.
+* **카메라 튜토리얼**: 디자이너용 카메라 존 문서를 작성했습니다. 존 배치, 조절할 파라미터, 두 가지 페이드 모드, 문제 해결 표를 담아 디자이너가 직접 레벨 카메라를 만들 수 있게 했습니다.
+
+### 환경 통합
+
+오버월드 레벨의 지형을 스토어 초원 환경 팩으로 옮겼습니다. 팩의 랜드스케이프 머티리얼과 레이어 정보, RVT 볼륨과 글로벌 설정을 넣고 폴리지를 칠했으며, 팩 요구에 맞춰 Shadow Maps로 바꾸고 가상 텍스처 풀 크기를 조정했습니다.
 
 <p class="wip-note">개발 중<span class="wip-dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span></p>

@@ -3,6 +3,34 @@ import imgOverview from '@/assets/projects/game-project-rephrased/game-project-r
 import imgConceptCanyon from '@/assets/projects/game-project-rephrased/game-project-rephrased_ConceptCanyon.webp';
 import imgConceptPillars from '@/assets/projects/game-project-rephrased/game-project-rephrased_ConceptPillars.webp';
 import imgConceptPlateau from '@/assets/projects/game-project-rephrased/game-project-rephrased_ConceptPlateau.webp';
+import imgIcePlates from '@/assets/projects/game-project-rephrased/game-project-rephrased_IcePlates.webp';
+import imgIceCloseup from '@/assets/projects/game-project-rephrased/game-project-rephrased_IceCloseup.webp';
+import imgCameraZoneBounds from '@/assets/projects/game-project-rephrased/game-project-rephrased_CameraZoneBounds.webp';
+import imgCameraZoneParameters from '@/assets/projects/game-project-rephrased/game-project-rephrased_CameraZoneParameters.webp';
+import waterOverviewClip from '@/assets/projects/game-project-rephrased/clips/water-overview.mp4?url';
+import waterOverviewClipPoster from '@/assets/projects/game-project-rephrased/clips/water-overview-poster.webp?url';
+import riverClip from '@/assets/projects/game-project-rephrased/clips/river.mp4?url';
+import riverClipPoster from '@/assets/projects/game-project-rephrased/clips/river-poster.webp?url';
+import waterfallClip from '@/assets/projects/game-project-rephrased/clips/waterfall.mp4?url';
+import waterfallClipPoster from '@/assets/projects/game-project-rephrased/clips/waterfall-poster.webp?url';
+import impactFoamClip from '@/assets/projects/game-project-rephrased/clips/impact-foam.mp4?url';
+import impactFoamClipPoster from '@/assets/projects/game-project-rephrased/clips/impact-foam-poster.webp?url';
+import lakeFloatersClip from '@/assets/projects/game-project-rephrased/clips/lake-floaters.mp4?url';
+import lakeFloatersClipPoster from '@/assets/projects/game-project-rephrased/clips/lake-floaters-poster.webp?url';
+import waterfallObstacleClip from '@/assets/projects/game-project-rephrased/clips/waterfall-obstacle.mp4?url';
+import waterfallObstacleClipPoster from '@/assets/projects/game-project-rephrased/clips/waterfall-obstacle-poster.webp?url';
+import waterfallFrontClip from '@/assets/projects/game-project-rephrased/clips/waterfall-front.mp4?url';
+import waterfallFrontClipPoster from '@/assets/projects/game-project-rephrased/clips/waterfall-front-poster.webp?url';
+import iceFreezeClip from '@/assets/projects/game-project-rephrased/clips/ice-freeze.mp4?url';
+import iceFreezeClipPoster from '@/assets/projects/game-project-rephrased/clips/ice-freeze-poster.webp?url';
+import iceThawClip from '@/assets/projects/game-project-rephrased/clips/ice-thaw.mp4?url';
+import iceThawClipPoster from '@/assets/projects/game-project-rephrased/clips/ice-thaw-poster.webp?url';
+import iceCloseupClip from '@/assets/projects/game-project-rephrased/clips/ice-closeup.mp4?url';
+import iceCloseupClipPoster from '@/assets/projects/game-project-rephrased/clips/ice-closeup-poster.webp?url';
+import iceWaterfallClip from '@/assets/projects/game-project-rephrased/clips/ice-waterfall.mp4?url';
+import iceWaterfallClipPoster from '@/assets/projects/game-project-rephrased/clips/ice-waterfall-poster.webp?url';
+import orbitalClip from '@/assets/projects/game-project-rephrased/clips/orbital.mp4?url';
+import orbitalClipPoster from '@/assets/projects/game-project-rephrased/clips/orbital-poster.webp?url';
 
 ## About the Game
 
@@ -23,10 +51,136 @@ import imgConceptPlateau from '@/assets/projects/game-project-rephrased/game-pro
 
 ## My Role
 
-On the team I own engineering work on the 3C side, mainly implementing the camera zone blending system in C++ in Unreal Engine 5:
+On the team I work as an engineer and technical artist, building the following in Unreal Engine 5 with C++, HLSL and Niagara:
 
-* **Weighted camera zone blending**: Each camera zone in a level gets a weight from how deep the player is inside it. Higher-priority zones claim their share first, equal priorities split theirs by weight, and the follow camera only gets what is left. Where two zones' transition bands overlap, the camera crosses straight from one zone to the other, with no hard cut and no dip back through the follow camera; location, rotation, field of view and aspect ratio all blend continuously by weight.
-* **Transition bands and camera-jump fixes**: Zones now trigger through an outward transition band — the blend starts at the band's outer edge, completes at the zone core, and fades out symmetrically on exit. I also fixed a run of camera jumps: letterbox bars appearing in a single frame, hard cuts when entering a zone from above, handoff jumps when leaving the last zone, and wrong results on scaled zones.
-* **Camera tutorial for designers**: Wrote the camera zone guide — how to place zones in the editor, which parameters to tune, the two fade modes, and a troubleshooting table — so designers can build level cameras on their own.
+* **Stylized water system**: spline-driven rivers, lakes and waterfalls with procedurally generated meshes, one shared HLSL water material, toon foam and mist effects, waterfalls that obstacle volumes can split, and switchable look presets.
+* **Procedural ice**: ice built from real Voronoi plate geometry that freezes in real time from any starting point and thaws back to water; control volumes reshape its growth, look and plate cuts.
+* **Rune orbital**: runes the player draws become cubes orbiting the body, which can be stored, selected, equipped and flicked, each flight with its own path and effects.
+* **Repair effects**: when a puzzle object is repaired, its pieces fly home with trails and a light sweep crosses it once it is whole.
+* **Camera zone blending**: camera zones blend continuously by weight; fixed a run of camera jumps and wrote the camera tutorial for designers.
+* **Environment integration**: moved the overworld terrain onto a store meadow pack (landscape material, RVT, foliage) and set the engine rendering settings it needs.
+
+---
+
+## Project Details
+
+### Stylized Water System
+
+All the water is generated from splines, with no hand modelling: cross-sections are built along the spline into a closed water mesh with a surface, banks, depth and end caps, and steep stretches turn into waterfalls on their own. Vertex colours record distance from the bank and steepness, which the material uses for flow speed, foam and colour.
+
+<figure>
+    <video class="clip" src={waterOverviewClip} poster={waterOverviewClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Waterfall and lake overview"></video>
+    <figcaption>Waterfall, lake and floating logs: all generated from splines, sharing one water material</figcaption>
+</figure>
+
+* **Rivers and waterfalls**: trapezoid cross-sections with adjustable width, depth and per-point scale; sections are parallel-transported along the spline, so vertical drops stay level. The surface undulates with Perlin noise and churns more on steep water; ends can be left open, and ring rivers close without a seam.
+* **HLSL water material**: one shader for every water body. Toon colour bands follow the real water depth, see-through in the shallows and opaque in the deep; flow streaks stretch along the current and get denser at the banks and on steep water; contact foam, shoreline foam, bed caustics, fresnel sky reflection and slight refraction.
+* **Obstacles and impact**: waterfalls can be split by obstacle volumes (spread forward, spread sideways or pass through), with obstacle shapes described as blended SDFs; where the water lands, Niagara effects add toon foam clumps and mist.
+* **Floaters and wetness**: a floater component lets logs drift with the current and leave wakes; ground near the water turns wet through decals.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={riverClip} poster={riverClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="River"></video>
+        <figcaption>River: flow streaks stretch along the current, foam gathers at the banks</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={waterfallClip} poster={waterfallClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Waterfall sheet"></video>
+        <figcaption>Waterfall: the river turns into a sheet as it goes over the edge</figcaption>
+    </figure>
+</div>
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={impactFoamClip} poster={impactFoamClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Impact foam"></video>
+        <figcaption>Impact: toon foam clumps, mist and impact foam</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={lakeFloatersClip} poster={lakeFloatersClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Floating logs on the lake"></video>
+        <figcaption>Lake: logs drift with the water, contact foam rings the rocks</figcaption>
+    </figure>
+</div>
+
+The look can be switched per level: a preset actor holds several sets of water effect settings (Toon / Soft / Anime / Semi), layered under each water body's own settings, switched with a button in the editor or called at runtime. After researching semi-stylized water such as *Sea of Thieves*, I kept a toon base and only let highlights and foam soften as the stylization amount goes down.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={waterfallObstacleClip} poster={waterfallObstacleClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Waterfall split by an obstacle"></video>
+        <figcaption>Obstacle volume: a rock splits the waterfall</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={waterfallFrontClip} poster={waterfallFrontClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Waterfall front"></video>
+        <figcaption>Waterfall front: back-lit sheet and mist at the base</figcaption>
+    </figure>
+</div>
+
+### Procedural Ice
+
+The ice is real geometry, not a texture: a box volume placed over the water finds the lakes and rivers it overlaps and cuts ice plates inside the water area with a weighted (power) Voronoi diagram, fills the gaps between them with new ice, and rounds the edges with bevels. Every ice sheet owns its material instance, so transparency, clarity and thickness are set per sheet.
+
+<figure>
+    <video class="clip" src={iceFreezeClip} poster={iceFreezeClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Lake freezing"></video>
+    <figcaption>Freezing: plates grow out from the centre one by one, first as a thin skin, then thickening</figcaption>
+</figure>
+
+* **Real-time freeze and thaw**: the freeze animation runs entirely in the shader, with no mesh rebuild. A baked arrival field (Dijkstra distance from the freeze origins and growth path) gives each vertex its ice age from the position of the freeze front; ice not yet reached sinks back below the water along the gradient. The front has a raised lip, facet glints and an edge glow, and the gaps close as the ice grows. When it thaws, the ice turns wet and the plates part and sink. The ice is walkable only when fully frozen.
+* **Ice look**: screen-space refraction keeps the lake bed sharp under the ice; fractures run down from the plate cracks (from a baked gap distance field), with bubbles, milky veils and frost inside, and the plates fade with depth.
+* **Control volumes**: a box or spline band marks an area and overrides three groups of settings — growth (speed, delay, no ice, steering), look (tint, transparency, clarity, bubbles, fractures, frost, wetness) and plates (smaller plates, height, pressure ridges, gap width) — blending in over a falloff at the edge.
+* **Performance**: plates rebuild only when the geometry changes; the animation only updates material parameters, so freezing and thawing run in real time.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={iceCloseupClip} poster={iceCloseupClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Ice plate close-up"></video>
+        <figcaption>Close-up: bevels, gaps and fractures under the ice</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={iceThawClip} poster={iceThawClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Ice thawing"></video>
+        <figcaption>Thawing: plates turn wet, part and sink back into the water</figcaption>
+    </figure>
+</div>
+
+<div class="image-grid-2">
+    <Image src={imgIcePlates} alt="Ice plates and a log from a low angle" />
+    <Image src={imgIceCloseup} alt="Ice plates from above with the lake bed below" />
+</div>
+
+<figure>
+    <video class="clip" src={iceWaterfallClip} poster={iceWaterfallClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Frozen lake below the waterfall"></video>
+    <figcaption>The frozen lake below the waterfall: ice only covers the water inside the lake spline</figcaption>
+</figure>
+
+### Rune Orbital
+
+A rune the player draws does not fire right away; it is stored on an orbit around the body (up to three) to be picked later:
+
+* **State model**: store, replace the oldest when full, reject duplicates; Q opens the orbital, number keys select, confirming equips, Escape cancels, and it closes itself after a period of inactivity.
+* **Flights**: rune cubes fly from the body along Bezier arcs onto a tilted elliptical orbit, with stagger, easing, scale and spin. Form, deploy, recall, equip, release, launch and return each have their own flight settings, each with start, trail and end Niagara effect slots.
+* **Equip and flick**: an equipped rune floats beside the player, following them without turning with them; F flicks it at a target, where it takes effect on impact. Opening the orbital again flies it back to its own slot.
+* **Tests**: the state model and flight logic are covered by automation tests.
+
+<figure>
+    <video class="clip" src={orbitalClip} poster={orbitalClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Rune orbital"></video>
+    <figcaption>An early rune orbital prototype: cubes fly out of the body onto the orbit</figcaption>
+</figure>
+
+### Repair Effects
+
+When a puzzle object (a lamp or a door, say) is repaired by a rune, each piece leaves a trail as it flies back; once the object is whole, a flash sweeps across every visible mesh — a narrow warm band with a white core line, over a per-pixel-normal fresnel rim — for one second. For this I added a generic "presentation finished" event to the puzzle base class, so the effect code does not depend on any specific puzzle.
+
+### Camera Zone Blending
+
+Each camera zone in a level gets a weight from how deep the player is inside it. Higher-priority zones claim their share first, zones of equal priority split theirs by weight, and the follow camera only gets what is left. Where two zones' transition bands overlap, the camera crosses straight from one zone to the other, with no hard cut and no dip back through the follow camera; location, rotation, field of view and aspect ratio all blend continuously by weight.
+
+<div class="image-grid-2">
+    <Image src={imgCameraZoneBounds} alt="A camera zone's core volume and outer transition band" />
+    <Image src={imgCameraZoneParameters} alt="Camera zone parameters in the Details panel" />
+</div>
+
+* **Transition bands**: zones now trigger through an outward transition band — the blend starts at the band's outer edge, completes at the zone core, and fades out symmetrically on exit.
+* **Camera-jump fixes**: the flicker turned out to be the letterbox — constraining the aspect ratio is an on/off switch, so the bars appeared in a single frame. The constraint now stays on through the blend while the aspect ratio eases out from the viewport's own ratio, so the bars grow from zero width. Also fixed hard cuts when entering a zone from above, the handoff jump when leaving the last zone, and wrong results on scaled zones.
+* **Camera tutorial**: wrote the camera zone guide for designers — how to place zones, which parameters to tune, the two fade modes, and a troubleshooting table — so they can build level cameras on their own.
+
+### Environment Integration
+
+Moved the overworld level's terrain onto a store meadow environment pack: the pack's landscape material and layer info, RVT volumes and global settings, and painted foliage; switched to Shadow Maps and resized the virtual texture pool as the pack requires.
 
 <p class="wip-note">In development<span class="wip-dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span></p>
