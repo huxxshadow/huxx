@@ -1,0 +1,155 @@
+---
+---
+
+import 'katex/dist/katex.min.css';
+import walkClip from '@/assets/projects/technical-project-procedural-crab/clips/walk.mp4?url';
+import walkClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/walk-poster.webp?url';
+import pacesClip from '@/assets/projects/technical-project-procedural-crab/clips/paces.mp4?url';
+import pacesClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/paces-poster.webp?url';
+import climbClip from '@/assets/projects/technical-project-procedural-crab/clips/climb.mp4?url';
+import climbClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/climb-poster.webp?url';
+import idleClip from '@/assets/projects/technical-project-procedural-crab/clips/idle.mp4?url';
+import idleClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/idle-poster.webp?url';
+import pickClip from '@/assets/projects/technical-project-procedural-crab/clips/pick.mp4?url';
+import pickClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/pick-poster.webp?url';
+import menaceClip from '@/assets/projects/technical-project-procedural-crab/clips/menace.mp4?url';
+import menaceClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/menace-poster.webp?url';
+import drumsClip from '@/assets/projects/technical-project-procedural-crab/clips/drums.mp4?url';
+import drumsClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/drums-poster.webp?url';
+import demoClip from '@/assets/projects/technical-project-procedural-crab/clips/demo.mp4?url';
+import demoClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/demo-poster.webp?url';
+
+## 担当
+
+個人プロジェクト。Unity で作ったカニで、歩き、登り、物を扱い、曲に合わせてドラムを叩きます。動きはすべてプロシージャルでキーフレームは使わず、音もすべてその場で生成しています：
+
+* **移動**：交互四脚歩容による横歩きで、忍び足から全力疾走まで 4 段階の速さがあります。体がどこにいるかを予測して足を置き、石の上に踏み上がり、甲羅を足に合わせます。
+* **体と顔**：二次のバネで重さ、予備動作、オーバーシュートを表現します。目は世界の中から見る対象を選び、驚くと眼窩に折りたたまれます。触角、口器、層状の待機動作もあります。
+* **はさみ**：まず引いてから弧を描いて伸ばす動き、小道具を保持するつかみ、攻撃へとエスカレートする威嚇。
+* **ドラム**：曲の MIDI から譜面を作り、2 本のはさみと 2 本の足向けに組み直します。各打撃は命中フレームから逆算し、前後の打撃によって形を決めます。はさみはグリップを支点にスティックより先に動き、スティックは打撃でしなります。
+* **オーディオ**：自作のサンプル精度のミキサー。ベロシティをスティックの実際の着地速度から取るマルチベロシティのサンプル、打点位置・共鳴・スネアワイヤーのためのモーダル合成レイヤー、表面ごとに合成する足音。オフライン書き出しはライブのミックスとサンプル単位で一致します。
+
+---
+
+## プロジェクト詳細
+
+動きは本物のカニの研究に基づいています。カニは交互に動く 4 本ずつ 2 組の脚で横に歩き、進行方向側と後ろ側で異なる脚を使い、走るときは後ろの脚を上げ、驚くと眼柄を眼窩へさっと倒します。見た目が第一で、すっきりと読み取りやすい動きを優先し、物理は補助に留めています。
+
+### 移動：交互四脚歩容
+
+* **4 本ずつ 2 組**：左の第 1・第 3 脚と右の第 2・第 4 脚が一緒に踏み出し、次に残りの 4 本が踏み出します。決まったリズムはありません。前の 4 本がすべて着地した瞬間に次の 4 本が上がり、それも足を動かす必要があるときだけです。組の中では脚が前から後ろへ少しずつずれて離れるので、一歩ごとに体の側面を波が伝わります。
+* **足の行き先**：足を上げた時点で決めます。その足の立脚期の半ばに体がどこにいるかから、加速中・減速中の速度も含めて求めます。足は振り出しの途中で行き先を変えず、着地後に滑ることもありません。
+* **踏み上がる**：石の横に着地しようとする足は少し内側に高い地面を探し、石の側面を突き抜けずにその上へ踏み上がります。甲羅の高さ・ピッチ・ロールは 8 本の足に当てはめ、臨界減衰のバネで追従させます。
+* **速さ**：忍び足では脚を 2 本ずつ、各側面を後ろから前へ波のように動かし、常に 6 本の足が地面に着いています。走りでは歩みが速く高くなり、波のずれはなくなります。全力疾走では最後の 1 対の脚を畳んで甲羅の前を上げ、残りの 6 本を 3 本ずつ 2 組で動かします。
+* **重さ**：甲羅は足のない角へ沈み、一歩ごとに前へ押し出されます。ぶつかりそうな脚は付け根から足先への線を軸に回して避け、なめらかに補間するので、片側からもう片側へ跳ぶことはありません。
+
+$$
+\mathbf p_k = \mathbf x\!\left(t + T_{\text{swing}} + \tfrac12 T_{\text{stance}}\right) + R(\psi)\,\mathbf h_k
+$$
+
+$\mathbf p_k$ は足 $k$ の着地点、$\mathbf x(t)$ は体の予測経路（目標の速度まで加速する過程を含む）、$R(\psi)$ は予測した向き、$\mathbf h_k$ は甲羅の下での足の定位置です。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={walkClip} poster={walkClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="横歩きと旋回"></video>
+        <figcaption>横歩き、急停止、その場での旋回</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={pacesClip} poster={pacesClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="4 段階の速さ"></video>
+        <figcaption>4 段階の速さ：忍び足、歩き、走り、全力疾走</figcaption>
+    </figure>
+</div>
+
+<figure>
+    <video class="clip" src={climbClip} poster={climbClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="岩を乗り越える"></video>
+    <figcaption>岩を乗り越える：予測した足場、踏み上がり、足に合わせた甲羅</figcaption>
+</figure>
+
+### 体、目、待機
+
+* **バネ**：歩き出すと甲羅は後ろへ傾き、急に止まると揺れます。眼柄は遅れて揺れ、はさみは後ろに残ってから振り出されます。歩き出す前には身構え、沈み込んで進む方向と逆へ体をずらします。旋回を終えるときは甲羅が行き過ぎます。
+* **視線**：各目は興味の重みに応じて、歩いていく先、持っている物、カメラ、近くの物など、世界の中から見る対象を選びます。瞳が先に向き、眼柄が後を追い、小さなサッカードとゆっくりした漂いが加わります。曲がろうとする方向を先に見ます。
+* **驚き**：急停止したときや、何かがはさみに入ってきたときは、両方の眼柄が 100 分の数秒で眼窩へぴたりと倒れます。片方がもう片方のすぐ後に続き、ゆっくりと再び立ち上がります。
+* **層状の待機**：下の層は呼吸、ゆっくり移る重心、ぱたぱた動く口器、ぴくっと動く触角。上の層は見回し、足の踏みかえ、かじる仕草、両方のはさみで交互に食べる動き、目の手入れ、地面をつつく動き。カメラが急に近づくと驚き、放っておくと眠たげになります。
+
+<figure>
+    <video class="clip" src={idleClip} poster={idleClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="層状の待機"></video>
+    <figcaption>層状の待機：つつく、食べる、目の手入れ、うとうとする</figcaption>
+</figure>
+
+### はさみ：手と威嚇
+
+* **伸ばす**：静止状態から、はさみはまず引き、それから弧に沿って伸びていきます。手のひらの向きは上限のある速さで回るので、大きな向き変えは緩やかに始まります。肘は手首より少し遅れて付いてきます。
+* **つかむ**：小道具は指の間に挟み、摩擦で保持できるよう慎重な速さで運びます。スティックは可動指を添えて挟み込みます。
+* **威嚇**：身をかがめてから、開いたはさみを掲げて立ち上がり、激しさを増し（より高く、より広く、震えながら）、横歩きで詰め寄って攻撃し、はさみを閉じたまま突き出して戻します。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={pickClip} poster={pickClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="小石を拾う"></video>
+        <figcaption>小石を拾う：引く、弧を描いて伸ばす、挟む、口元へ持ち上げる</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={menaceClip} poster={menaceClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="エスカレートする威嚇"></video>
+        <figcaption>エスカレートする威嚇：かがむ、立ち上がる、激昂、詰め寄る、攻撃</figcaption>
+    </figure>
+</div>
+
+### ドラム
+
+* **曲から譜面へ**：ドラム譜面は曲の MIDI トラックから作り、カニ向けに組み直します。はさみごと・足ごとに最小間隔を設け、重要な打音を先に配置し、各ドラムはそれを叩くはさみの届く範囲に収め、交差はドラマーが交差する場所でだけ許します。
+* **命中フレームからの逆算**：各打撃は着地するフレームから逆算するので、スティックの先はちょうどそのフレームで打面に当たります。遠いドラムには、脚の上で甲羅をひねり、ずらして届かせます。
+* **文脈による打ち分け**：打撃は時間の許す高さまでしか上がらないので、速いパッセージは低いフリーストロークとして流れます。跳ね返りは次の打撃の開始位置より高くならず、これによってアクセントの後はダウンストローク、前はアップストロークになります。叩いた面ごとに固有の弾みでスティックが跳ね返ります。
+* **支点としなり**：はさみはスティックより一瞬先に動いてグリップを支点に回り、スティックはその中で逆向きに回るので、はさみが先に止まり、スティックが後からしなるように振り下ろされます。スティックはグリップと先端の間で硬いバネによって曲がり、先端は打点にぴたりと留まります。
+* **体のほかの部分**：キックで甲羅が沈み、バックビートでうなずき、音の大きいセクションではより大きくグルーヴします。足はキックの前にペダルから浮き、バックビートでつま先を鳴らします。クラッシュは振り抜くまで追い、目はキットに留まり、遠いドラムへは先に視線を送ります。
+
+$$
+a_{\text{peak}} \le \max\!\left(a_{\min},\ \frac{\Delta t}{T_{\text{full}}}\right)
+
+h_{\text{bounce}} = \operatorname{lerp}\!\big(\min(b\,a_0,\ a_1),\ a_1,\ \phi(\Delta t)\big)
+$$
+
+$$
+y(s) = \tfrac{27}{4}\,B\,s^2(1-s)
+$$
+
+最初の二式は打撃の高さを決めます。$\Delta t$ は同じはさみの前の打撃からの時間、$a_0$ と $a_1$ はこの打撃と次の打撃の高さ、$b$ は叩いた面の弾みで、$\phi$ は打撃の間隔が詰まるにつれてフリーストロークへとブレンドします。最後の式はスティックのしなりで、グリップで固定され先端でピン支持された梁として扱います。$s$ はグリップから先端へ進み、$B$ はグリップに対する先端の動きで駆動される曲がりの量です。
+
+<figure>
+    <video class="clip" src={drumsClip} poster={drumsClipPoster} width="1280" height="720" controls playsinline preload="none" aria-label="「Wipe Out」を演奏する"></video>
+    <figcaption>「Wipe Out」を演奏（音あり）：すべての打撃がそのフレームに、音量はスティックの実際の着地速度から</figcaption>
+</figure>
+
+### オーディオ
+
+* **映像が音を駆動する**：スティックが実際に着地したときに音が鳴ります。音量は打面の法線方向に沿ったスティックの着地速度で、アーティキュレーション（センター、オフセンター、リムショット）は着地点で決まります。
+* **サンプラー**：最大 12 のベロシティレイヤーと、同じサンプルを 2 回続けて使わないラウンドロビン、わずかなランダムのピッチと音量の変化、ベロシティとともに開くローパス、画面上のドラムの位置によるパン、ハイハットのチョークグループ。
+* **モーダルレイヤー**：各ドラムの最も強いモードを録音から当てはめ、減衰する共振器として動かします。これにより打点位置に応じて音色が連続的に変わり、ドラムどうしが共鳴し、スネアワイヤーが鳴ります。
+* **足音**：各足が着地すると、足先と着地した面（床、石、段ボール、プラスチック、ぬいぐるみ）のモードを励起し、Hertz 接触で音量と明るさを決め、短い接触ノイズを加えます。
+* **エンジン**：曲のクロックはミキサーのサンプルクロックに一度だけロックし、イベントはロックフリーの単一プロデューサー・単一コンシューマーキューでオーディオスレッドへ渡り、正確なサンプルで開始します。ミキサーは素の C# なので、収録用のオフライン書き出しはライブのミックスとサンプル単位で同一です。
+
+$$
+y(t) = \sum_{m,n} A_{mn}\,J_m\!\left(j_{mn}\tfrac{r}{R}\right) e^{-t/\tau_{mn}} \sin(2\pi f_{mn} t)
+$$
+
+$$
+g \propto v^{6/5}
+\qquad
+t_c \propto v^{-1/5}
+\qquad
+w(f) = \frac{1}{1 + (2 f t_c)^2}
+$$
+
+一つ目はモーダルレイヤーです。$J_m$ はベッセル関数、$j_{mn}$ はその零点、$r/R$ は打面上の打点の半径比で、$f_{mn}$、$\tau_{mn}$、$A_{mn}$ は録音から当てはめます。二つ目は各接触の背後にある Hertz 接触です。音量 $g$ と接触時間 $t_c$ は衝突速度 $v$ に従い、$w(f)$ は接触パルスのスペクトルで各モードに重みを付けるので、硬く短い接触は明るく響き、柔らかく長い接触はこもった音になります。
+
+<figure>
+    <video class="clip" src={demoClip} poster={demoClipPoster} width="1280" height="720" controls playsinline preload="none" aria-label="サウンドデモ"></video>
+    <figcaption>サウンドデモ（音あり）：ドラムごとのベロシティレイヤーとアーティキュレーション</figcaption>
+</figure>
+
+### 参考文献
+
+* Barnes — *Leg co-ordination during walking in the crab, Uca pugnax*（1975）
+* Blickhan, Full — *Locomotion energetics of the ghost crab*（1987）
+* van den Doel, Kry, Pai — *FoleyAutomatic: Physically-based Sound Effects for Interactive Simulation and Animation*（2001）
+* Bilbao — *Numerical Sound Synthesis*（2009）
+* Hertz — *Über die Berührung fester elastischer Körper*（1882）

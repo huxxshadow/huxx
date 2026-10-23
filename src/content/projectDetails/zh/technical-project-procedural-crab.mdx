@@ -1,0 +1,155 @@
+---
+---
+
+import 'katex/dist/katex.min.css';
+import walkClip from '@/assets/projects/technical-project-procedural-crab/clips/walk.mp4?url';
+import walkClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/walk-poster.webp?url';
+import pacesClip from '@/assets/projects/technical-project-procedural-crab/clips/paces.mp4?url';
+import pacesClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/paces-poster.webp?url';
+import climbClip from '@/assets/projects/technical-project-procedural-crab/clips/climb.mp4?url';
+import climbClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/climb-poster.webp?url';
+import idleClip from '@/assets/projects/technical-project-procedural-crab/clips/idle.mp4?url';
+import idleClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/idle-poster.webp?url';
+import pickClip from '@/assets/projects/technical-project-procedural-crab/clips/pick.mp4?url';
+import pickClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/pick-poster.webp?url';
+import menaceClip from '@/assets/projects/technical-project-procedural-crab/clips/menace.mp4?url';
+import menaceClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/menace-poster.webp?url';
+import drumsClip from '@/assets/projects/technical-project-procedural-crab/clips/drums.mp4?url';
+import drumsClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/drums-poster.webp?url';
+import demoClip from '@/assets/projects/technical-project-procedural-crab/clips/demo.mp4?url';
+import demoClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/demo-poster.webp?url';
+
+## 我的工作
+
+个人项目：在 Unity 里实现的一只螃蟹，会走、会爬、会摆弄东西，还会跟着歌曲打鼓。所有动作都是程序化生成，没有关键帧；所有声音都在发生的那一刻实时产生：
+
+* **运动**：交替四足步态横着走，从慢爬到冲刺共四档速度；按身体将来的位置预测落脚点，遇到石头会迈上去，背甲贴合八只脚的位置。
+* **身体与表情**：二阶弹簧带出重量、预备和过冲；眼睛会挑世界里的东西看，受惊时折进眼窝；还有小触角、颚足和分层待机。
+* **钳子**：伸手前先回收、沿弧线伸出，能夹持物体，威吓会逐级升级到出钳攻击。
+* **打鼓**：鼓谱从歌曲的 MIDI 生成，再按两只钳子、两只脚重新编排；每一击从击中帧倒推，并由前后的击打决定形状；钳子绕握点领先鼓槌，鼓槌击打时受力弯曲。
+* **音频**：自研的采样级精确混音器。多力度层采样的力度取自鼓槌真实的落速；模态合成层负责击打位置、鼓间共鸣和军鼓响弦；脚步声按踩到的表面实时合成。离线渲染与实时混音逐样本一致。
+
+---
+
+## 项目细节
+
+动作参考了真实螃蟹的研究：螃蟹用两组交替的四条腿横着走，领先侧和尾随侧的腿分工不同，跑起来会抬起后腿，受惊时眼柄会猛地折进眼窝。视觉表现优先——动作干净、读得清，物理只做辅助。
+
+### 运动：交替四足
+
+* **两组四条腿**：左一、左三和右二、右四一起迈，然后换另外四条。没有固定节拍：上一组全部落地的那一刻下一组才抬起，而且只有脚需要挪动时才迈。同组的腿从前到后错开一点点离地，每一步沿着身体一侧涟漪般传过去。
+* **脚落在哪**：抬脚时就决定，看的是这只脚站立期过半时身体会在哪里，包括正在加速或减速的那部分。脚在摆动途中不改主意，落地后也不再滑动。
+* **迈上石头**：快落在石头旁边的脚会往里找更高的地面，直接踩上去，不会让腿穿过石头侧面；背甲的高度、俯仰、侧倾按八只脚拟合，再用临界阻尼弹簧跟随。
+* **四档速度**：慢爬时两条腿一组，沿每一侧从后往前波浪式迈步，始终有六只脚着地；跑步时步子更快更高、不再错开；冲刺时收起最后一对腿、身体前端上仰，其余六条腿分两组三足交替。
+* **重量感**：背甲朝缺了脚的那个角下沉，每一步向前一涌；快要相碰的两条腿绕"腿根到脚尖"的轴转开，并且平滑过渡，不会一帧跳到另一边。
+
+$$
+\mathbf p_k = \mathbf x\!\left(t + T_{\text{swing}} + \tfrac12 T_{\text{stance}}\right) + R(\psi)\,\mathbf h_k
+$$
+
+$\mathbf p_k$ 是第 $k$ 只脚的落点，$\mathbf x(t)$ 是身体预测的路径（含正在达到目标速度的过程），$R(\psi)$ 是预测的朝向，$\mathbf h_k$ 是这只脚在背甲下的静止位置。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={walkClip} poster={walkClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="横着走与原地转身"></video>
+        <figcaption>横着走、急停、原地转身</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={pacesClip} poster={pacesClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="四档步态"></video>
+        <figcaption>四档步态：慢爬、走、跑、冲刺</figcaption>
+    </figure>
+</div>
+
+<figure>
+    <video class="clip" src={climbClip} poster={climbClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="爬过石头"></video>
+    <figcaption>爬过石头：预测落点、迈上石头、背甲贴合脚的位置</figcaption>
+</figure>
+
+### 身体、眼睛与待机
+
+* **弹簧**：起步时背甲后仰，急停时前后晃；眼柄滞后再弹回；钳子先往后荡再往前甩。起步前会先蓄力——压低身体、往反方向挪一下；转身结束时背甲会转过头一点再回来。
+* **视线**：每只眼睛按兴趣挑世界里的东西看：要去的地方、手里的东西、镜头、附近的物体。眼珠先到、眼柄后跟，静止时有微扫视和慢漂移；转身前会先看向要转的方向。
+* **受惊**：急停或钳子突然夹到东西时，两根眼柄在几十毫秒内折进眼窝，一前一后，再慢慢升起来。
+* **分层待机**：底层是呼吸、重心漂移、颚足颤动和小触角弹动；上面一层是张望、挪脚、啃嘴、两只钳子轮流进食、理眼睛和戳地面；镜头冲过来会受惊，站久了会犯困。
+
+<figure>
+    <video class="clip" src={idleClip} poster={idleClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="分层待机"></video>
+    <figcaption>分层待机：戳地面、进食、理眼睛、渐渐犯困</figcaption>
+</figure>
+
+### 钳子：手与威吓
+
+* **伸手**：从静止出手时钳子先往回收，再沿弧线伸出去；手掌朝向的转速有上限，大转向会缓缓进入；手肘比手腕慢半拍。
+* **夹持**：物体夹在两指之间，搬运时放慢速度，靠摩擦夹稳；鼓槌由活动指压住夹紧。
+* **威吓**：先压低身体，再举起张开的双钳；愤怒升级时钳子更高、张得更大、抖得更厉害；侧身逼近后出钳，钳子猛地伸出夹紧再收回。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={pickClip} poster={pickClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="夹起石子"></video>
+        <figcaption>夹起石子：回收、弧线伸出、夹住、举到嘴边</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={menaceClip} poster={menaceClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="威吓升级"></video>
+        <figcaption>威吓升级：压低、举钳、愤怒、逼近、出钳</figcaption>
+    </figure>
+</div>
+
+### 打鼓
+
+* **从歌曲到鼓谱**：鼓谱从歌曲的 MIDI 分轨生成，再按螃蟹的身体重新编排：每只钳子、每只脚有最小间隔，重要的音先排，每面鼓只交给够得着的钳子，只在鼓手会交叉的地方允许交叉。
+* **从击中帧倒推**：每一击都从它落下的那一帧往回解，所以槌头恰好在那一帧落在鼓面上。够远处的鼓时，背甲在腿上扭转、平移去够。
+* **按上下文选击法**：抬槌高度只到时间允许的程度，所以快段落自然变成低空的自由击打；回弹不会高过下一击的起点，于是重音之后是下击、重音之前是上击；回弹高度按打中表面的弹性而定。
+* **支点与弯曲**：钳子比鼓槌领先一点，绕握点转动，鼓槌在钳子里反向转回——钳子先停，鼓槌随后甩下去。鼓槌在握点和槌头之间按一个刚性弹簧弯曲，槌头始终留在击打点上。
+* **身体其余部分**：底鼓时背甲下沉，反拍时点头，热闹段落律动更大；踩底鼓前脚先抬离踏板，空闲的脚在反拍点脚尖；打吊镲有随势动作；眼睛停在鼓组上，只在钳子去远处的鼓之前瞥过去。
+
+$$
+a_{\text{peak}} \le \max\!\left(a_{\min},\ \frac{\Delta t}{T_{\text{full}}}\right)
+
+h_{\text{bounce}} = \operatorname{lerp}\!\big(\min(b\,a_0,\ a_1),\ a_1,\ \phi(\Delta t)\big)
+$$
+
+$$
+y(s) = \tfrac{27}{4}\,B\,s^2(1-s)
+$$
+
+前两个式子决定一击的高度：$\Delta t$ 是距同一只钳子上一击的时间，$a_0$、$a_1$ 是这一击和下一击的高度，$b$ 是打中表面的弹性，$\phi$ 在击打越来越密时把回弹过渡成自由击打。最后一个是鼓槌的弯曲，看作握点固定、槌头铰支的梁：$s$ 从握点到槌头，$B$ 是由槌头相对握点的运动驱动的弯曲量。
+
+<figure>
+    <video class="clip" src={drumsClip} poster={drumsClipPoster} width="1280" height="720" controls playsinline preload="none" aria-label="演奏 Wipe Out"></video>
+    <figcaption>演奏《Wipe Out》（有声）：每一击都在点上，响度来自鼓槌真实的落速</figcaption>
+</figure>
+
+### 音频
+
+* **画面驱动声音**：鼓槌真正落下的那一刻才发声。响度取鼓槌沿鼓面法线的落速，奏法（鼓心、偏心、边击）取落点的位置。
+* **采样器**：最多 12 个力度层；轮换取样，绝不连续两次用同一条采样；每一击有微小的随机音高和电平差异；低通随力度打开；按鼓在画面上的位置定声像；踩镲有止音组。
+* **模态层**：从每面鼓的录音里拟合出最强的若干模态，作为衰减共振器运行。音色随击打位置连续变化，鼓与鼓之间互相共鸣，军鼓响弦也跟着沙沙作响。
+* **脚步声**：每只脚落地时，同时激发脚尖和踩到的表面（地面、石头、纸箱、塑料、毛绒）的模态；响度和亮度按 Hertz 接触计算，再加一小段接触噪声。
+* **引擎**：歌曲时钟和混音器的采样时钟只锁定一次，事件通过单生产者单消费者的无锁队列送进音频线程，在精确的那个采样上开始。混音器是纯 C#，所以录制时的离线渲染与实时混音逐样本一致。
+
+$$
+y(t) = \sum_{m,n} A_{mn}\,J_m\!\left(j_{mn}\tfrac{r}{R}\right) e^{-t/\tau_{mn}} \sin(2\pi f_{mn} t)
+$$
+
+$$
+g \propto v^{6/5}
+\qquad
+t_c \propto v^{-1/5}
+\qquad
+w(f) = \frac{1}{1 + (2 f t_c)^2}
+$$
+
+第一个式子是模态层：$J_m$ 是贝塞尔函数，$j_{mn}$ 是它的零点，$r/R$ 是击打点在鼓面上的半径比例，$f_{mn}$、$\tau_{mn}$、$A_{mn}$ 从录音拟合。第二组是每次触碰背后的 Hertz 接触：响度 $g$ 和接触时间 $t_c$ 随撞击速度 $v$ 变化，$w(f)$ 按接触脉冲的频谱给每个模态加权——又硬又快的触碰清脆，又软又慢的触碰发闷。
+
+<figure>
+    <video class="clip" src={demoClip} poster={demoClipPoster} width="1280" height="720" controls playsinline preload="none" aria-label="音色演示"></video>
+    <figcaption>音色演示（有声）：逐面鼓展示力度层与奏法</figcaption>
+</figure>
+
+### 参考文献
+
+* Barnes — *Leg co-ordination during walking in the crab, Uca pugnax* (1975)
+* Blickhan, Full — *Locomotion energetics of the ghost crab* (1987)
+* van den Doel, Kry, Pai — *FoleyAutomatic: Physically-based Sound Effects for Interactive Simulation and Animation* (2001)
+* Bilbao — *Numerical Sound Synthesis* (2009)
+* Hertz — *Über die Berührung fester elastischer Körper* (1882)

@@ -1,0 +1,155 @@
+---
+---
+
+import 'katex/dist/katex.min.css';
+import walkClip from '@/assets/projects/technical-project-procedural-crab/clips/walk.mp4?url';
+import walkClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/walk-poster.webp?url';
+import pacesClip from '@/assets/projects/technical-project-procedural-crab/clips/paces.mp4?url';
+import pacesClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/paces-poster.webp?url';
+import climbClip from '@/assets/projects/technical-project-procedural-crab/clips/climb.mp4?url';
+import climbClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/climb-poster.webp?url';
+import idleClip from '@/assets/projects/technical-project-procedural-crab/clips/idle.mp4?url';
+import idleClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/idle-poster.webp?url';
+import pickClip from '@/assets/projects/technical-project-procedural-crab/clips/pick.mp4?url';
+import pickClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/pick-poster.webp?url';
+import menaceClip from '@/assets/projects/technical-project-procedural-crab/clips/menace.mp4?url';
+import menaceClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/menace-poster.webp?url';
+import drumsClip from '@/assets/projects/technical-project-procedural-crab/clips/drums.mp4?url';
+import drumsClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/drums-poster.webp?url';
+import demoClip from '@/assets/projects/technical-project-procedural-crab/clips/demo.mp4?url';
+import demoClipPoster from '@/assets/projects/technical-project-procedural-crab/clips/demo-poster.webp?url';
+
+## My Role
+
+A personal project: a crab in Unity that walks, climbs, handles things and plays the drums to a song. Every movement is procedural, with no keyframes, and every sound is made as it happens:
+
+* **Locomotion**: a sideways scuttle on an alternating tetrapod gait, with four paces from a creep to a sprint; feet placed by predicting where the body will be, stepping up onto stones, and the shell fitted to the feet.
+* **Body and face**: second-order springs for weight, anticipation and overshoot; eyes that pick things in the world to look at and fold into their sockets when startled; feelers, mouthparts and a layered idle.
+* **Claws**: reaches that draw back first and travel on an arc, a grip that holds props, and a threat that escalates to a strike.
+* **Drumming**: a chart built from the song's MIDI and rescheduled for two claws and two feet; every stroke worked back from its hit frame and shaped by the strokes around it, the claw leading the stick about its grip, and the sticks flexing on impact.
+* **Audio**: a sample-accurate mixer of my own: multi-velocity samples with velocity taken from the stick's real landing speed, a modal-synthesis layer for strike position, sympathetic resonance and snare wires, and footsteps synthesized per surface. The offline render matches the live mix sample for sample.
+
+---
+
+## Project Details
+
+The motion follows research on real crabs: they walk sideways on two alternating sets of four legs, lead and trail with different legs, lift their back legs to run, and snap their eyestalks down into their sockets when startled. Looks come first: clean, readable motion, with physics only assisting.
+
+### Locomotion: An Alternating Tetrapod
+
+* **Two fours**: the left first and third legs step with the right second and fourth, then the other four. There is no clock: the next four lift the moment the last four are all down, and only if their feet need to move. Within a four the legs leave front to back a moment apart, so each step ripples down the side.
+* **Where a foot goes**: decided as it lifts, from where the body will be halfway through that foot's stance, including the speed it is getting up to or slowing from. A foot does not change its mind mid-swing and never slides once down.
+* **Stepping up**: a foot about to land beside a stone looks a little inward for higher ground and steps onto it rather than through its side; the shell's height, pitch and roll are fitted to the eight feet and followed on a critically damped spring.
+* **Paces**: a creep moves two legs at a time in a wave from back to front down each side, six feet always down; a run quickens and raises the steps with no ripple; a sprint tucks the last pair of legs and pitches the shell nose-up, the other six in two threes.
+* **Weight**: the shell sinks toward the corner left without a foot and surges with each step; legs that would meet are turned about the line from root to foot, eased so that they never jump from one side to the other.
+
+$$
+\mathbf p_k = \mathbf x\!\left(t + T_{\text{swing}} + \tfrac12 T_{\text{stance}}\right) + R(\psi)\,\mathbf h_k
+$$
+
+$\mathbf p_k$ is foot $k$'s landing point, $\mathbf x(t)$ the body's predicted path (getting up to the speed it means to go at), $R(\psi)$ the predicted heading and $\mathbf h_k$ the foot's home under the shell.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={walkClip} poster={walkClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Sideways walk and turn"></video>
+        <figcaption>Sideways scuttle, a dead stop and a turn on the spot</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={pacesClip} poster={pacesClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Four paces"></video>
+        <figcaption>Four paces: creep, walk, run, sprint</figcaption>
+    </figure>
+</div>
+
+<figure>
+    <video class="clip" src={climbClip} poster={climbClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Climbing over a rock"></video>
+    <figcaption>Over a rock: predicted footholds, stepping up, the shell fitted to the feet</figcaption>
+</figure>
+
+### Body, Eyes and Idle
+
+* **Springs**: the shell leans back as it sets off and rocks as it stops dead; the eyestalks lag and wobble; the claws hang back and swing on. Before it sets off it gathers itself, sinking and shifting away from where it goes, and its shell overshoots coming out of a turn.
+* **Gaze**: each eye picks something in the world to look at, weighted by interest: where it walks, what it holds, the camera, things nearby. The pupil gets there first and the stalk follows, with small saccades and a slow drift; it looks where it is about to turn.
+* **Startle**: stopping dead or something coming into a claw folds both eyestalks flat into their sockets in a few hundredths of a second, one just after the other; they rise again slowly.
+* **Layered idle**: breathing, a drifting weight, fluttering mouthparts and flicking feelers underneath; looks, foot shifts, nibbling, feeding with both claws in turn, grooming an eye and poking the ground on top; the camera rushing in startles it, and left alone it grows drowsy.
+
+<figure>
+    <video class="clip" src={idleClip} poster={idleClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Layered idle"></video>
+    <figcaption>Layered idle: poking, feeding, grooming an eye, growing drowsy</figcaption>
+</figure>
+
+### Claws: Hands and a Threat
+
+* **Reaching**: from rest a claw draws back first, then travels out along an arc; the way its palm points swings round at a capped rate, so big turns ease in; the elbow trails a little behind the wrist.
+* **Holding**: a prop is pinched between the fingers and carried at a careful pace so friction keeps it held; sticks are clamped with the moving finger lying on them.
+* **Threat**: it crouches before rearing up with its claws raised open, grows furious (higher, wider, trembling), sidles in and strikes, snapping a claw out shut and back.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={pickClip} poster={pickClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Picking up a pebble"></video>
+        <figcaption>Picking up a pebble: draw back, arc out, pinch, lift to the mouth</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={menaceClip} poster={menaceClipPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Escalating threat"></video>
+        <figcaption>Escalating threat: crouch, rear up, fury, sidle in, strike</figcaption>
+    </figure>
+</div>
+
+### Drumming
+
+* **From song to chart**: the drum chart comes from the song's MIDI tracks and is rescheduled for a crab: a minimum gap per claw and per foot, the important hits placed first, each drum within the reach of the claw that plays it, and crossings allowed only where a drummer would cross.
+* **Strokes from their hits**: each stroke is worked back from the frame it lands on, so the stick's head is on the drumhead exactly on that frame. Far drums are reached by twisting and shifting the shell over the legs.
+* **Strokes by context**: a stroke lifts only as high as there is time for, so fast passages flow as low free strokes; the bounce never rises above where the next stroke starts, which gives downstrokes after accents and upstrokes before them; each surface bounces the stick by its own liveliness.
+* **Fulcrum and flex**: the claw runs a moment ahead of its stick, turned about the grip with the stick turned back inside it, so the claw stops first and the stick whips down after. The sticks bend between grip and head under a stiff spring, so the head stays exactly where it strikes.
+* **The rest of the body**: the shell dips with kicks, nods with the backbeat and grooves harder in loud sections; feet lift off the pedals before a kick and tap the backbeat; crashes are followed through; the eyes rest on the kit and glance ahead to far drums.
+
+$$
+a_{\text{peak}} \le \max\!\left(a_{\min},\ \frac{\Delta t}{T_{\text{full}}}\right)
+
+h_{\text{bounce}} = \operatorname{lerp}\!\big(\min(b\,a_0,\ a_1),\ a_1,\ \phi(\Delta t)\big)
+$$
+
+$$
+y(s) = \tfrac{27}{4}\,B\,s^2(1-s)
+$$
+
+The first pair sets a stroke's height: $\Delta t$ is the time since the same claw's last stroke, $a_0$ and $a_1$ the heights of this stroke and the next, $b$ the bounce of what was struck and $\phi$ blending toward free strokes as strokes come closer. The last is the stick's bend, a beam clamped at the grip and pinned at its head: $s$ runs from grip to head and $B$ is the bend driven by the head's motion about the grip.
+
+<figure>
+    <video class="clip" src={drumsClip} poster={drumsClipPoster} width="1280" height="720" controls playsinline preload="none" aria-label="Playing Wipe Out"></video>
+    <figcaption>Playing "Wipe Out" (with sound): every stroke on its frame, loudness from the stick's real landing speed</figcaption>
+</figure>
+
+### Audio
+
+* **Picture drives sound**: a hit sounds when the stick actually lands. Its loudness is the stick's landing speed along the drumhead's normal, and its articulation (center, off-center, rimshot) is where it lands.
+* **The sampler**: up to 12 velocity layers with round-robin that never repeats a sample twice in a row, small random pitch and level changes, a low-pass that opens with velocity, panning from the drum's place on screen, and choke groups for the hi-hat.
+* **A modal layer**: the strongest modes of each drum are fitted from its recordings and run as decaying resonators, which make the tone change continuously with strike position, let drums resonate with each other, and rattle the snare wires.
+* **Footsteps**: each foot touching down excites the modes of the foot tip and of what it lands on (floor, stone, cardboard, plastic, plush), with Hertz contact setting loudness and brightness, plus a short burst of contact noise.
+* **The engine**: the song clock is locked once to the mixer's sample clock, and events cross to the audio thread through a lock-free single-producer single-consumer queue and start on their exact sample. The mixer is plain C#, so the offline render for recording is sample-identical to the live mix.
+
+$$
+y(t) = \sum_{m,n} A_{mn}\,J_m\!\left(j_{mn}\tfrac{r}{R}\right) e^{-t/\tau_{mn}} \sin(2\pi f_{mn} t)
+$$
+
+$$
+g \propto v^{6/5}
+\qquad
+t_c \propto v^{-1/5}
+\qquad
+w(f) = \frac{1}{1 + (2 f t_c)^2}
+$$
+
+The first is the modal layer: $J_m$ is a Bessel function, $j_{mn}$ its zero, $r/R$ the strike point's radius on the head, and $f_{mn}$, $\tau_{mn}$, $A_{mn}$ fitted from recordings. The second is the Hertz contact behind each touch: loudness $g$ and contact time $t_c$ follow the impact speed $v$, and $w(f)$ weighs each mode by the contact pulse's spectrum, so a hard, quick touch rings bright and a soft, long one sounds dull.
+
+<figure>
+    <video class="clip" src={demoClip} poster={demoClipPoster} width="1280" height="720" controls playsinline preload="none" aria-label="Sound demo"></video>
+    <figcaption>Sound demo (with sound): velocity layers and articulations, drum by drum</figcaption>
+</figure>
+
+### References
+
+* Barnes — *Leg co-ordination during walking in the crab, Uca pugnax* (1975)
+* Blickhan, Full — *Locomotion energetics of the ghost crab* (1987)
+* van den Doel, Kry, Pai — *FoleyAutomatic: Physically-based Sound Effects for Interactive Simulation and Animation* (2001)
+* Bilbao — *Numerical Sound Synthesis* (2009)
+* Hertz — *Über die Berührung fester elastischer Körper* (1882)

@@ -3029,5 +3029,73 @@
     "coverImage": "src/assets/projects/poster/ProceduralOctopusPoster.webp",
     "colorText": "#9A2E1E",
     "colorBackground": "#FBE6DE"
+  },
+  {
+    "id": "technical-project-procedural-crab",
+    "order": 45,
+    "category": "technical",
+    "title": {
+      "en": "Procedural Animation | Crab",
+      "zh": "程序化动画 | 螃蟹",
+      "ja": "プロシージャルアニメーション | カニ",
+      "ko": "절차적 애니메이션 | 게"
+    },
+    "roles": {
+      "en": [
+        "Technical Artist",
+        "Animation Programmer",
+        "Audio Programmer"
+      ],
+      "zh": [
+        "技术美术",
+        "动画程序",
+        "音频程序"
+      ],
+      "ja": [
+        "テクニカルアーティスト",
+        "アニメーションプログラマー",
+        "オーディオプログラマー"
+      ],
+      "ko": [
+        "테크니컬 아티스트",
+        "애니메이션 프로그래머",
+        "오디오 프로그래머"
+      ]
+    },
+    "desc": {
+      "en": "A crab in Unity that walks, climbs, handles things and plays the drums, every movement procedural with no keyframes and every sound made as it happens. It scuttles sideways on an alternating tetrapod gait with four paces, placing each foot where the body will be and stepping up onto stones; second-order springs give it weight, anticipation and overshoot, its eyes pick things in the world to look at and fold into their sockets when startled, and a layered idle keeps it alive. Its claws draw back before a reach and travel on an arc, pick things up, and escalate a threat to a strike. It drums to a chart built from the song's MIDI, every stroke worked back from its hit frame and shaped by the strokes around it, the claw leading the stick about its grip and the sticks flexing on impact. A sample-accurate mixer of my own plays multi-velocity samples at the stick's real landing speed, adds a modal layer for strike position, sympathetic resonance and snare wires, synthesizes footsteps per surface, and renders offline sample-identical to the live mix.",
+      "zh": "在 Unity 里实现的一只螃蟹，会走、会爬、会摆弄东西、会打鼓。所有动作程序化生成，没有关键帧；所有声音在发生的那一刻实时产生。它用交替四足步态横着走，有四档速度，按身体将来的位置预测落脚点，遇到石头会迈上去；二阶弹簧带出重量、预备和过冲，眼睛会挑世界里的东西看、受惊时折进眼窝，分层待机让它一直活着。钳子伸手前先回收、沿弧线伸出，能夹起东西，威吓会升级到出钳攻击。它按从歌曲 MIDI 生成的鼓谱打鼓，每一击从击中帧倒推、由前后的击打决定形状，钳子绕握点领先鼓槌，鼓槌受力弯曲。自研的采样级精确混音器按鼓槌真实落速播放多力度层采样，加一层模态合成负责击打位置、鼓间共鸣和军鼓响弦，按表面实时合成脚步声，离线渲染与实时混音逐样本一致。",
+      "ja": "Unity で作ったカニで、歩き、登り、物を扱い、ドラムを叩きます。動きはすべてプロシージャルでキーフレームはなく、音はすべてその瞬間に生成されます。交互四脚歩容で横歩きし、4 段階の速さを持ち、体の未来位置から足の着地点を予測して石に乗り上げます。二次バネが重さ、予備動作、オーバーシュートを生み、目は世界の物を選んで見つめ、驚くと眼窩に折りたたまれ、層状の待機で常に生きて見えます。ハサミは伸ばす前に引き、弧を描いて伸び、物をつまみ、威嚇は一撃まで段階的に高まります。曲の MIDI から作った譜面で演奏し、各打撃は打点のフレームから逆算され、前後の打撃で形が決まり、ハサミがグリップを支点にスティックを先導し、スティックは衝撃でしなります。自作のサンプル精度ミキサーがスティックの実際の落下速度でマルチベロシティのサンプルを鳴らし、打点位置、共鳴、スナッピーのモーダル層を加え、足音を面ごとに合成し、オフラインレンダリングはライブミックスとサンプル単位で一致します。",
+      "ko": "Unity로 만든 게로, 걷고, 오르고, 물건을 다루고, 드럼을 칩니다. 모든 동작은 절차적이며 키프레임이 없고, 모든 소리는 그 순간에 만들어집니다. 교대 사족 보행으로 옆걸음질하며 네 단계 속도를 갖고, 몸의 미래 위치로 발 착지점을 예측해 돌 위로 올라섭니다. 2차 스프링이 무게감, 예비 동작, 오버슈트를 만들고, 눈은 세상의 물체를 골라 바라보다 놀라면 눈구멍으로 접히며, 층별 대기 동작이 늘 살아 있게 합니다. 집게는 뻗기 전에 뒤로 당겼다 호를 그리며 뻗고, 물건을 집으며, 위협은 일격까지 단계적으로 고조됩니다. 곡의 MIDI로 만든 악보로 연주하며, 각 타격은 타격 프레임에서 거꾸로 풀고 앞뒤 타격으로 모양이 정해지며, 집게가 그립을 받침점 삼아 스틱을 앞서 이끌고 스틱은 충격에 휩니다. 직접 만든 샘플 단위 정확 믹서가 스틱의 실제 낙하 속도로 다중 벨로시티 샘플을 재생하고, 타격 위치·공명·스네어 와이어를 위한 모달 층을 더하며, 표면별로 발소리를 합성하고, 오프라인 렌더링은 라이브 믹스와 샘플 단위로 일치합니다."
+    },
+    "tags": {
+      "en": [
+        "Unity",
+        "Procedural Animation",
+        "Audio Programming",
+        "Modal Synthesis"
+      ],
+      "zh": [
+        "Unity",
+        "程序化动画",
+        "音频编程",
+        "模态合成"
+      ],
+      "ja": [
+        "Unity",
+        "プロシージャルアニメーション",
+        "オーディオプログラミング",
+        "モーダル合成"
+      ],
+      "ko": [
+        "Unity",
+        "절차적 애니메이션",
+        "오디오 프로그래밍",
+        "모달 합성"
+      ]
+    },
+    "coverImage": "src/assets/projects/poster/ProceduralCrabPoster.webp",
+    "colorText": "#8A3B12",
+    "colorBackground": "#FDEBD3"
   }
 ]
