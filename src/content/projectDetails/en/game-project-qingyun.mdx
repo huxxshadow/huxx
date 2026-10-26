@@ -1,0 +1,259 @@
+import { Image } from 'astro:assets';
+import imgCover from '@/assets/projects/game-project-qingyun/game-project-qingyun_Cover.webp';
+import imgLeafLabView from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabView.webp';
+import imgLeafLabSweep from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabSweep.webp';
+import imgLeafBench from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafBench.webp';
+import overviewClip from '@/assets/projects/game-project-qingyun/clips/overview.mp4?url';
+import overviewClipPoster from '@/assets/projects/game-project-qingyun/clips/overview-poster.webp?url';
+import bossBuildClip from '@/assets/projects/game-project-qingyun/clips/boss-build.mp4?url';
+import bossBuildClipPoster from '@/assets/projects/game-project-qingyun/clips/boss-build-poster.webp?url';
+import bossIntroClip from '@/assets/projects/game-project-qingyun/clips/boss-intro.mp4?url';
+import bossIntroClipPoster from '@/assets/projects/game-project-qingyun/clips/boss-intro-poster.webp?url';
+import hitZonesClip from '@/assets/projects/game-project-qingyun/clips/hit-zones.mp4?url';
+import hitZonesClipPoster from '@/assets/projects/game-project-qingyun/clips/hit-zones-poster.webp?url';
+import armBreakClip from '@/assets/projects/game-project-qingyun/clips/arm-break.mp4?url';
+import armBreakClipPoster from '@/assets/projects/game-project-qingyun/clips/arm-break-poster.webp?url';
+import pillarsClip from '@/assets/projects/game-project-qingyun/clips/pillars.mp4?url';
+import pillarsClipPoster from '@/assets/projects/game-project-qingyun/clips/pillars-poster.webp?url';
+import runeStormClip from '@/assets/projects/game-project-qingyun/clips/rune-storm.mp4?url';
+import runeStormClipPoster from '@/assets/projects/game-project-qingyun/clips/rune-storm-poster.webp?url';
+import vortexClip from '@/assets/projects/game-project-qingyun/clips/vortex.mp4?url';
+import vortexClipPoster from '@/assets/projects/game-project-qingyun/clips/vortex-poster.webp?url';
+import finaleClip from '@/assets/projects/game-project-qingyun/clips/finale.mp4?url';
+import finaleClipPoster from '@/assets/projects/game-project-qingyun/clips/finale-poster.webp?url';
+import lightningCompareClip from '@/assets/projects/game-project-qingyun/clips/lightning-compare.mp4?url';
+import lightningCompareClipPoster from '@/assets/projects/game-project-qingyun/clips/lightning-compare-poster.webp?url';
+import chargeClip from '@/assets/projects/game-project-qingyun/clips/charge.mp4?url';
+import chargeClipPoster from '@/assets/projects/game-project-qingyun/clips/charge-poster.webp?url';
+import impactSlowClip from '@/assets/projects/game-project-qingyun/clips/impact-slow.mp4?url';
+import impactSlowClipPoster from '@/assets/projects/game-project-qingyun/clips/impact-slow-poster.webp?url';
+import leapTelegraphClip from '@/assets/projects/game-project-qingyun/clips/leap-telegraph.mp4?url';
+import leapTelegraphClipPoster from '@/assets/projects/game-project-qingyun/clips/leap-telegraph-poster.webp?url';
+import leafKickClip from '@/assets/projects/game-project-qingyun/clips/leaf-kick.mp4?url';
+import leafKickClipPoster from '@/assets/projects/game-project-qingyun/clips/leaf-kick-poster.webp?url';
+import leafDebugClip from '@/assets/projects/game-project-qingyun/clips/leaf-debug.mp4?url';
+import leafDebugClipPoster from '@/assets/projects/game-project-qingyun/clips/leaf-debug-poster.webp?url';
+import leafGatherClip from '@/assets/projects/game-project-qingyun/clips/leaf-gather.mp4?url';
+import leafGatherClipPoster from '@/assets/projects/game-project-qingyun/clips/leaf-gather-poster.webp?url';
+import windFieldClip from '@/assets/projects/game-project-qingyun/clips/wind-field.mp4?url';
+import windFieldClipPoster from '@/assets/projects/game-project-qingyun/clips/wind-field-poster.webp?url';
+import perfectDodgeClip from '@/assets/projects/game-project-qingyun/clips/perfect-dodge.mp4?url';
+import perfectDodgeClipPoster from '@/assets/projects/game-project-qingyun/clips/perfect-dodge-poster.webp?url';
+import lockOnClip from '@/assets/projects/game-project-qingyun/clips/lock-on.mp4?url';
+import lockOnClipPoster from '@/assets/projects/game-project-qingyun/clips/lock-on-poster.webp?url';
+import skillCutinClip from '@/assets/projects/game-project-qingyun/clips/skill-cutin.mp4?url';
+import skillCutinClipPoster from '@/assets/projects/game-project-qingyun/clips/skill-cutin-poster.webp?url';
+import arenaBuildClip from '@/assets/projects/game-project-qingyun/clips/arena-build.mp4?url';
+import arenaBuildClipPoster from '@/assets/projects/game-project-qingyun/clips/arena-build-poster.webp?url';
+import lightingClip from '@/assets/projects/game-project-qingyun/clips/lighting.mp4?url';
+import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lighting-poster.webp?url';
+
+## About the Game
+
+*Qingyun* is a third-person action boss fight made in Unreal Engine 5. You play Wukong, facing a rock colossus built from a hundred-odd floating stones in a bamboo-forest clearing: knock the stones off its body, tear off both its arms, weather the rune storm, and finish it with the *Crimson Thunder* execution.
+
+<Image src={imgCover} alt="Qingyun: Wukong facing the leaping rock colossus" />
+
+<figure>
+    <video class="clip" src={overviewClip} poster={overviewClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Gameplay"></video>
+    <figcaption>Gameplay</figcaption>
+</figure>
+
+---
+
+## My Role
+
+This is a solo project. I built the following in Unreal Engine 5 with C++, Niagara, materials and Python editor scripts:
+
+* **Boss rework and stone system**: Paragon's Rampage turned into a rock colossus of procedural floating stones, with the stones carried through all three phases: they form the body, get knocked off, are drawn out as rune stones, drive into the ground, and finally all rise into a vortex.
+* **Three-phase boss AI**: move selection, disabled moves and a faster tempo after an arm is lost, twin pillars with their own AI, and a rune storm fired on a beat.
+* **Combat feel**: a light combo, a tiered charged heavy attack, a perfect-dodge time stop, part-based lock-on, hit stop and camera impact; every feel parameter is exposed in Project Settings and tunable at runtime.
+* **Realistic lightning VFX**: procedurally generated fractal lightning meshes plus Niagara particles, covering the charge, the impact discharge, telegraphs and shattering stones.
+* **Leaves and wind**: thousands of interactive instanced leaves on a procedural wind field, with debug views and an offline lab.
+* **Environment and lighting**: the bamboo clearing built in layers, lit by Ultra Dynamic Sky.
+* **Cameras and staging**: skill cut-ins, execution cameras and the final execution.
+* **Tools**: a recording director, a cover-shot script, offline tuning tools, and the project's trailer and devlog.
+
+---
+
+## Project Details
+
+### From a Paragon Asset to a Rock Colossus
+
+The boss starts from Paragon's stock Rampage (Elemental skin). Rather than remodelling it, I reworked it layer by layer:
+
+<figure>
+    <video class="clip" src={bossBuildClip} poster={bossBuildClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="The boss rework"></video>
+    <figcaption>The layers added one by one from the same camera: materials, floating stones, halo, tail fan, shoulder pillars, chains</figcaption>
+</figure>
+
+* **Materials**: the orange lava cracks became jade energy cracks, and the original shoulder rune was removed.
+* **Rocks cut out and replaced by procedural stones**: an editor tool cuts the rocks on the mesh into separate static meshes by connected region, hides those parts of the original mesh, and replaces them with procedural floating stones. Each stone follows its bone on a damped spring, with bobbing, drift and hit jolts, and carries rune decals.
+* **Halo, tail fan and shoulder pillars**: all built from the same stone system; the tail fan flies out in the intro and stands around the arena as a barrier.
+* **Chains**: strings of stones swimming around the body, the ammunition for the later rune stones.
+* **Chaos destruction**: geometry collections are pre-generated for the rocks, the forearms and every region of the body, used for knock-offs, arm breaks and the final shatter.
+
+### The Stones' Journey Through Three Phases
+
+The stone system is designed so that the same stones keep changing roles over the whole fight, and everything the player knocks off comes back.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={bossIntroClip} poster={bossIntroClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Boss intro"></video>
+        <figcaption>Intro: stones fly up off the ground and assemble the boss</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={hitZonesClip} poster={hitZonesClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Hit zone visualisation"></video>
+        <figcaption>Hit zones: white is the body, orange the armoured arms</figcaption>
+    </figure>
+</div>
+
+* **Phase one**: sweep, slam and leap slam. The hero's attacks knock small stones off the boss, and the pieces stay on the ground. The arms are armoured and hits are resolved per body part.
+* **Arm breaks**: an arm can be executed once it reaches its health threshold; its stones fall away and the forearm shatters. Losing one arm starts phase two: moves that need that hand are disabled and the whole move set speeds up.
+* **Twin pillars**: the two pillars on his back tear free and roam above the centre of the arena with their own AI, attacking alongside the boss; only a fully charged heavy attack can shatter them.
+* **Rune storm**: chain stones are drawn out into a ring above the boss and fired at the hero on a beat, each on its own flight path and with escort stones. Swinging on the beat breaks them one by one; stones that get through drive into the ground whole, return to the chains when the storm ends, and leave copies standing in the ground. The last stone can be batted back into the boss with a heavy attack.
+* **Vortex**: once both arms are gone, every broken piece on the ground, the planted copies and the stones at the arena's edge rise into a vortex around the arena.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={armBreakClip} poster={armBreakClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Arm break"></video>
+        <figcaption>Arm break: the arm's stones fall away and shatter</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={pillarsClip} poster={pillarsClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Twin pillars"></video>
+        <figcaption>Twin pillars: their own AI, attacking alongside the boss</figcaption>
+    </figure>
+</div>
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={runeStormClip} poster={runeStormClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Rune storm"></video>
+        <figcaption>Rune storm: broken on the beat, every rune stone carries a HUD mark</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={vortexClip} poster={vortexClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Stone vortex"></video>
+        <figcaption>Vortex: every stone scattered so far rises into the air</figcaption>
+    </figure>
+</div>
+
+### Combat Feel
+
+Everything about how the hero feels is a parameter, gathered in Chinese-labelled Project Settings panels and live while playing: combo timing, charge tiers, hit reach, hit stop, camera shake, FOV punch and more.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={perfectDodgeClip} poster={perfectDodgeClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Perfect dodge"></video>
+        <figcaption>Perfect dodge: dodging just before a hit stops time</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={lockOnClip} poster={lockOnClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Part lock-on"></video>
+        <figcaption>Lock-on switches between body parts (left arm / body / right arm)</figcaption>
+    </figure>
+</div>
+
+* **Impact**: on a hit the world slows for a beat, the hero's swing holds at the point of contact, and the camera shakes along the blow with an FOV punch. The boss never slows the hero down; all of the feel lives on the hero's side.
+* **Perfect dodge**: a curve-driven time stop, with the camera following the slow motion.
+* **Lock-on**: targets are found from where the camera looks, and the mouse wheel steps between the left arm, the body and the right arm.
+
+### Realistic Lightning
+
+A fully charged heavy attack carries lightning. The first version used thick glowing arcs that looked too cartoonish; the final version uses thin fractal bolts that discharge with the rhythm of real lightning.
+
+<figure>
+    <video class="clip" src={lightningCompareClip} poster={lightningCompareClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Lightning before and after"></video>
+    <figcaption>Left: the early cartoon arcs. Right: the realistic fractal lightning now</figcaption>
+</figure>
+
+* **Charge**: current flows along the staff and gathers at its tip, where a surge fans back along the staff; at full charge it bursts outward once.
+* **Impact discharge**: branching discharge channels shoot out from the point of impact, with leader, return stroke and re-strike in turn, then vanish quickly; the reach is up to half the screen.
+* **Implementation**: the bolt meshes are generated procedurally every frame (a random walk with finer jitter on top), together with Niagara sparks, grit and dust.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={chargeClip} poster={chargeClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Charge"></video>
+        <figcaption>Charge: current gathering, tip surge, full-charge burst</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={impactSlowClip} poster={impactSlowClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Impact discharge slow motion"></video>
+        <figcaption>Impact discharge (slow motion)</figcaption>
+    </figure>
+</div>
+
+<figure>
+    <video class="clip" src={leapTelegraphClip} poster={leapTelegraphClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Leap slam telegraph"></video>
+    <figcaption>Leap slam: the ground warning ring and the energy column</figcaption>
+</figure>
+
+### Leaves and Wind
+
+Thousands of fallen leaves cover the clearing, every one an individual instance that characters and attacks can disturb.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={leafKickClip} poster={leafKickClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Leaves kicked up"></video>
+        <figcaption>Disturbance tiered by the character's speed: walk, run, dodge</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={leafDebugClip} poster={leafDebugClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Leaf debug view"></video>
+        <figcaption>Debug view: leaves coloured by what moved them, with air trails drawn</figcaption>
+    </figure>
+</div>
+
+* **Interaction**: light attacks sample points along the staff and inject delayed gusts to sweep leaves; the charged heavy draws leaves in while charging and blasts them out on release; heavy hits also shake leaves down from the bamboo canopy; the skill drags a whirlwind along with the hero.
+* **Wind field**: global wind (with breathing and gusts), local eddies, air pushed by characters and whirlwinds add up to one field; each leaf has its own drag and flip, and the leaves use a two-sided material that glows through when flipped.
+* **Performance**: only disturbed instances are updated, distant leaves step less often, and every part is timed on the game thread against a 1 ms budget.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={leafGatherClip} poster={leafGatherClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Heavy attack gathering leaves"></video>
+        <figcaption>Heavy gather: drawn in while charging, blasted out on release</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={windFieldClip} poster={windFieldClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Wind field visualisation"></video>
+        <figcaption>Wind field visualisation: colour shows wind speed</figcaption>
+    </figure>
+</div>
+
+To tune the feel I built an offline lab: record one staff swing in the game, then replay it deterministically with different parameters and compare the results in batches; a benchmark measures cost against the number of leaves in flight.
+
+<Image src={imgLeafLabView} alt="Leaf lab: top-down trails, leaf paths and cost curves" />
+
+<div class="image-grid-2">
+    <Image src={imgLeafLabSweep} alt="The same swing's wind field and leaves at successive moments" />
+    <Image src={imgLeafBench} alt="Leaves in flight against game-thread cost; the red line is the 1 ms budget" />
+</div>
+
+### The Bamboo Arena
+
+The arena is a round clearing in a bamboo forest, built in layers: terrain, the central stone platform and boardwalks, giant bamboo (Megaplant) all around, understory, moss decals and ground materials, close-up details, the interactive leaf layer, local fill lights, and finally the boss. Ultra Dynamic Sky drives the time of day and brightness while exposure stays fixed.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={arenaBuildClip} poster={arenaBuildClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Arena built in layers"></video>
+        <figcaption>The arena built layer by layer (2x speed)</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={lightingClip} poster={lightingClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Lighting"></video>
+        <figcaption>Lighting: from noon into night</figcaption>
+    </figure>
+</div>
+
+### Cameras and Staging
+
+Skill cut-ins keep the current composition and cut in from the same side, with calligraphic captions. The final execution is a held charge: red lightning gathers, *Crimson Thunder* lands, and the boss shatters.
+
+<figure>
+    <video class="clip" src={skillCutinClip} poster={skillCutinClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Skill cut-in"></video>
+    <figcaption>Skill cut-in</figcaption>
+</figure>
+
+<figure>
+    <video class="clip" src={finaleClip} poster={finaleClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Final execution"></video>
+    <figcaption>Final execution: Crimson Thunder</figcaption>
+</figure>
+
+### Tools
+
+* **Recording director**: runs a timetable of commands in the game to stage positions, switch parameters, trigger moves and move cameras; most of the devlog's shots were captured with it automatically.
+* **Cover shots**: pauses on a chosen moment, places the camera for a given composition and writes high-resolution screenshots.
+* **Test commands**: a set of console commands triggers any boss move, arm break or phase change and any hero action, for self-testing and recording.

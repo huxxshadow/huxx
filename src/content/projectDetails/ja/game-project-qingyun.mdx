@@ -1,0 +1,259 @@
+import { Image } from 'astro:assets';
+import imgCover from '@/assets/projects/game-project-qingyun/game-project-qingyun_Cover.webp';
+import imgLeafLabView from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabView.webp';
+import imgLeafLabSweep from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabSweep.webp';
+import imgLeafBench from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafBench.webp';
+import overviewClip from '@/assets/projects/game-project-qingyun/clips/overview.mp4?url';
+import overviewClipPoster from '@/assets/projects/game-project-qingyun/clips/overview-poster.webp?url';
+import bossBuildClip from '@/assets/projects/game-project-qingyun/clips/boss-build.mp4?url';
+import bossBuildClipPoster from '@/assets/projects/game-project-qingyun/clips/boss-build-poster.webp?url';
+import bossIntroClip from '@/assets/projects/game-project-qingyun/clips/boss-intro.mp4?url';
+import bossIntroClipPoster from '@/assets/projects/game-project-qingyun/clips/boss-intro-poster.webp?url';
+import hitZonesClip from '@/assets/projects/game-project-qingyun/clips/hit-zones.mp4?url';
+import hitZonesClipPoster from '@/assets/projects/game-project-qingyun/clips/hit-zones-poster.webp?url';
+import armBreakClip from '@/assets/projects/game-project-qingyun/clips/arm-break.mp4?url';
+import armBreakClipPoster from '@/assets/projects/game-project-qingyun/clips/arm-break-poster.webp?url';
+import pillarsClip from '@/assets/projects/game-project-qingyun/clips/pillars.mp4?url';
+import pillarsClipPoster from '@/assets/projects/game-project-qingyun/clips/pillars-poster.webp?url';
+import runeStormClip from '@/assets/projects/game-project-qingyun/clips/rune-storm.mp4?url';
+import runeStormClipPoster from '@/assets/projects/game-project-qingyun/clips/rune-storm-poster.webp?url';
+import vortexClip from '@/assets/projects/game-project-qingyun/clips/vortex.mp4?url';
+import vortexClipPoster from '@/assets/projects/game-project-qingyun/clips/vortex-poster.webp?url';
+import finaleClip from '@/assets/projects/game-project-qingyun/clips/finale.mp4?url';
+import finaleClipPoster from '@/assets/projects/game-project-qingyun/clips/finale-poster.webp?url';
+import lightningCompareClip from '@/assets/projects/game-project-qingyun/clips/lightning-compare.mp4?url';
+import lightningCompareClipPoster from '@/assets/projects/game-project-qingyun/clips/lightning-compare-poster.webp?url';
+import chargeClip from '@/assets/projects/game-project-qingyun/clips/charge.mp4?url';
+import chargeClipPoster from '@/assets/projects/game-project-qingyun/clips/charge-poster.webp?url';
+import impactSlowClip from '@/assets/projects/game-project-qingyun/clips/impact-slow.mp4?url';
+import impactSlowClipPoster from '@/assets/projects/game-project-qingyun/clips/impact-slow-poster.webp?url';
+import leapTelegraphClip from '@/assets/projects/game-project-qingyun/clips/leap-telegraph.mp4?url';
+import leapTelegraphClipPoster from '@/assets/projects/game-project-qingyun/clips/leap-telegraph-poster.webp?url';
+import leafKickClip from '@/assets/projects/game-project-qingyun/clips/leaf-kick.mp4?url';
+import leafKickClipPoster from '@/assets/projects/game-project-qingyun/clips/leaf-kick-poster.webp?url';
+import leafDebugClip from '@/assets/projects/game-project-qingyun/clips/leaf-debug.mp4?url';
+import leafDebugClipPoster from '@/assets/projects/game-project-qingyun/clips/leaf-debug-poster.webp?url';
+import leafGatherClip from '@/assets/projects/game-project-qingyun/clips/leaf-gather.mp4?url';
+import leafGatherClipPoster from '@/assets/projects/game-project-qingyun/clips/leaf-gather-poster.webp?url';
+import windFieldClip from '@/assets/projects/game-project-qingyun/clips/wind-field.mp4?url';
+import windFieldClipPoster from '@/assets/projects/game-project-qingyun/clips/wind-field-poster.webp?url';
+import perfectDodgeClip from '@/assets/projects/game-project-qingyun/clips/perfect-dodge.mp4?url';
+import perfectDodgeClipPoster from '@/assets/projects/game-project-qingyun/clips/perfect-dodge-poster.webp?url';
+import lockOnClip from '@/assets/projects/game-project-qingyun/clips/lock-on.mp4?url';
+import lockOnClipPoster from '@/assets/projects/game-project-qingyun/clips/lock-on-poster.webp?url';
+import skillCutinClip from '@/assets/projects/game-project-qingyun/clips/skill-cutin.mp4?url';
+import skillCutinClipPoster from '@/assets/projects/game-project-qingyun/clips/skill-cutin-poster.webp?url';
+import arenaBuildClip from '@/assets/projects/game-project-qingyun/clips/arena-build.mp4?url';
+import arenaBuildClipPoster from '@/assets/projects/game-project-qingyun/clips/arena-build-poster.webp?url';
+import lightingClip from '@/assets/projects/game-project-qingyun/clips/lighting.mp4?url';
+import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lighting-poster.webp?url';
+
+## ゲーム紹介
+
+『青雲（Qingyun）』は Unreal Engine 5 で制作した三人称アクションのボス戦です。プレイヤーは悟空を操作し、竹林の空き地で百数十個の浮石でできた岩の巨像と戦います。体の石を打ち落とし、両腕をもぎ取り、符石の嵐をしのぎ、最後は「赤雷横天」でとどめを刺します。
+
+<Image src={imgCover} alt="青雲：跳びかかる岩の巨像に立ち向かう悟空" />
+
+<figure>
+    <video class="clip" src={overviewClip} poster={overviewClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="実機プレイ"></video>
+    <figcaption>実機プレイ</figcaption>
+</figure>
+
+---
+
+## 担当業務
+
+個人制作のプロジェクトです。C++、Niagara、マテリアル、Python エディタスクリプトを使い、Unreal Engine 5 で以下を実装しました：
+
+* **ボスの改造と石システム**：Paragon の Rampage をプロシージャルな浮石でできた岩の巨像に作り替えました。石は三つのフェーズを通じて役割を変えます。体を形作り、打ち落とされ、符石として引き抜かれ、地面に突き刺さり、最後はすべて渦に巻き上げられます。
+* **三フェーズのボス AI**：技の選択、腕を失った後の技の封印とテンポアップ、独自の AI を持つ双柱、拍に合わせて放たれる符石の嵐。
+* **戦闘の手触り**：通常攻撃のコンボ、段階式のため重攻撃、ジャスト回避の時間停止、部位ロックオン、ヒットストップとカメラインパクト。手触りのパラメータはすべてプロジェクト設定に公開し、実行中に調整できます。
+* **写実的な雷エフェクト**：プロシージャル生成のフラクタル稲妻メッシュと Niagara パーティクルで、ため・ヒット放電・予兆・石の破砕を表現。
+* **落ち葉と風**：数千枚のインタラクティブなインスタンス落ち葉とプロシージャルな風の場。デバッグビューとオフライン実験室付き。
+* **シーンとライティング**：竹林の空き地をレイヤーごとに構築し、Ultra Dynamic Sky でライティング。
+* **カメラと演出**：スキルのカットイン、処刑カメラ、最終処刑の演出。
+* **開発ツール**：録画ディレクター、カバー撮影スクリプト、オフライン調整ツール、そして本作のトレーラーと開発日誌。
+
+---
+
+## プロジェクト詳細
+
+### Paragon アセットから岩の巨像へ
+
+ボスの出発点は Paragon の素の Rampage（エレメンタルスキン）です。作り直すのではなく、一層ずつ改造して今の姿にしました：
+
+<figure>
+    <video class="clip" src={bossBuildClip} poster={bossBuildClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="ボスの改造過程"></video>
+    <figcaption>同じカメラで改造を一層ずつ追加：マテリアル、浮石、法輪、尾羽、肩の双柱、鎖石</figcaption>
+</figure>
+
+* **マテリアルの作り直し**：溶岩のオレンジのひびを翡翠色のエネルギーのひびに変え、肩の元のルーン模様を取り除きました。
+* **岩を切り出し、プロシージャルな浮石に置き換え**：エディタツールでメッシュ上の岩を連結領域ごとに個別のスタティックメッシュとして切り出し、元のメッシュの該当部分を隠して浮石に置き換えます。各浮石は減衰バネでボーンに追従し、上下の揺れ、漂い、被弾時の揺れを持ち、表面にルーンのデカールがあります。
+* **法輪、孔雀の尾羽、肩の双柱**：すべて同じ浮石システムから生成。尾羽は登場時に飛び出し、場の周りに立って障壁になります。
+* **鎖石**：体の周りを泳ぐ石の鎖で、後の符石の弾薬です。
+* **Chaos 破壊**：岩、前腕、体の各部位のジオメトリコレクションを事前生成し、打ち落とし・腕の破壊・最後の粉砕に使います。
+
+### 三つのフェーズを巡る石
+
+石システムは、同じ石が戦い全体を通じて役割を変え続け、プレイヤーが打ち落としたものが最後に戻ってくるように設計しました。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={bossIntroClip} poster={bossIntroClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="ボス登場"></video>
+        <figcaption>登場：地面の石が舞い上がり、ボスを組み上げる</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={hitZonesClip} poster={hitZonesClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="被弾判定の可視化"></video>
+        <figcaption>被弾判定の可視化：白が本体、オレンジが装甲付きの腕</figcaption>
+    </figure>
+</div>
+
+* **第一フェーズ**：薙ぎ払い、叩きつけ、跳躍叩きつけ。主人公の攻撃でボスの体から小石が打ち落とされ、破片は地面に残ります。腕は装甲付きで、被弾判定は部位ごとに分かれます。
+* **腕の破壊**：腕が体力の閾値に達すると処刑でき、石が剥がれ落ちて前腕が砕けます。片腕を失うと第二フェーズに入り、その手を使う技は封印され、技全体が速くなります。
+* **双柱**：肩の二本の石柱が引き剥がされて宙に浮き、場の中央上空を巡回します。独自の AI を持ちボスと並行して攻撃し、フルチャージの重攻撃でしか砕けません。
+* **符石の嵐**：鎖石が引き抜かれてボスの頭上で輪になり、拍に合わせて主人公へ放たれます。一つ一つが異なる軌道で飛来し、随伴する石も伴います。拍に合わせて振れば一つずつ砕けます。受け損ねた石は丸ごと地面に突き刺さり、嵐が終わると本体は鎖に戻り、地面には複製が残ります。最後の一つは重攻撃でボスへ打ち返せます。
+* **渦**：両腕を失うと、地面に散らばった破片、突き刺さった複製、場の縁の石がすべて舞い上がり、戦場を取り巻く石の渦になります。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={armBreakClip} poster={armBreakClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="腕の破壊"></video>
+        <figcaption>腕の破壊：腕の石が剥がれ落ちて砕ける</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={pillarsClip} poster={pillarsClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="双柱"></video>
+        <figcaption>双柱：独自の AI でボスと並行して攻撃</figcaption>
+    </figure>
+</div>
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={runeStormClip} poster={runeStormClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="符石の嵐"></video>
+        <figcaption>符石の嵐：拍に合わせて砕く。各符石に HUD マーク付き</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={vortexClip} poster={vortexClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="石の渦"></video>
+        <figcaption>渦：それまでに散らばった石がすべて舞い上がる</figcaption>
+    </figure>
+</div>
+
+### 戦闘の手触り
+
+主人公の手触りはすべてパラメータ化し、プロジェクト設定の中国語パネルにまとめました。実行中に変更すると即座に反映されます：コンボのテンポ、ための段階、攻撃判定の距離、ヒットストップ、カメラの揺れ、FOV インパクトなど。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={perfectDodgeClip} poster={perfectDodgeClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="ジャスト回避"></video>
+        <figcaption>ジャスト回避：被弾直前に回避すると時間が止まる</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={lockOnClip} poster={lockOnClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="部位ロックオン"></video>
+        <figcaption>ロックオン：部位ごとに対象を切り替え（左腕 / 本体 / 右腕）</figcaption>
+    </figure>
+</div>
+
+* **打撃感**：命中時に世界が一拍遅くなり、主人公の動きが命中点で止まり、カメラが攻撃方向に揺れて FOV インパクトが入ります。ボスが主人公を遅くすることはなく、手触りはすべて主人公側で処理します。
+* **ジャスト回避**：カーブで制御する時間停止。カメラもスローモーションに合わせて変化します。
+* **ロックオン**：カメラの注視方向から対象を探し、マウスホイールで左腕・本体・右腕を切り替えます。
+
+### 写実的な雷
+
+フルチャージの重攻撃は雷をまといます。最初は太く光る電弧で、アニメ調すぎました。最終版は細いフラクタルの稲妻で、本物の雷のリズムで放電します。
+
+<figure>
+    <video class="clip" src={lightningCompareClip} poster={lightningCompareClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="雷の比較"></video>
+    <figcaption>左：初期のアニメ調の電弧。右：現在の写実的なフラクタル稲妻</figcaption>
+</figure>
+
+* **ため**：電流が棒に沿って先端へ集まり、先端でサージが棒の方向へ後ろに流れます。フルチャージで一度外へ弾けます。
+* **ヒット放電**：命中点から枝分かれした放電路が何本も走り、先駆放電・主放電・再放電が順に起こって素早く消えます。範囲は画面の半分ほどに及びます。
+* **実装**：稲妻メッシュは毎フレームプロシージャルに生成（ランダムウォークに細かな揺らぎを重ねる）し、Niagara の火花・破片・砂埃と組み合わせています。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={chargeClip} poster={chargeClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="ため"></video>
+        <figcaption>ため：電流の集中、先端のサージ、フルチャージの放電</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={impactSlowClip} poster={impactSlowClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="ヒット放電のスロー"></video>
+        <figcaption>ヒット放電（スロー）</figcaption>
+    </figure>
+</div>
+
+<figure>
+    <video class="clip" src={leapTelegraphClip} poster={leapTelegraphClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="跳躍叩きつけの予兆"></video>
+    <figcaption>跳躍叩きつけ：地面の予兆リングとエネルギーの光柱</figcaption>
+</figure>
+
+### 落ち葉と風
+
+空き地には数千枚の落ち葉が敷き詰められ、一枚一枚が独立したインスタンスで、キャラクターや攻撃によって舞い上がります。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={leafKickClip} poster={leafKickClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="舞い上がる落ち葉"></video>
+        <figcaption>キャラクターの速度で段階的に乱れる：歩き、走り、回避</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={leafDebugClip} poster={leafDebugClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="落ち葉のデバッグビュー"></video>
+        <figcaption>デバッグビュー：乱した原因ごとに葉を色分けし、気流の軌跡を描画</figcaption>
+    </figure>
+</div>
+
+* **インタラクション**：通常攻撃は棒に沿ってサンプリングし、遅延して気流を注入して葉を払います。重攻撃はため中に葉を引き寄せ、放つと放射状に吹き飛ばします。重攻撃は竹の梢の葉も揺らし落とし、スキルは主人公についていく旋風を起こします。
+* **風の場**：全体風（呼吸のような揺らぎと突風付き）、局所的な渦、キャラクターが起こす気流、旋風を一つの場に重ねます。葉はそれぞれ固有の抵抗と回転を持ち、両面マテリアルで裏返ると光が透けます。
+* **パフォーマンス**：乱されたインスタンスだけを更新し、遠くの葉は計算頻度を下げ、ゲームスレッドの処理時間をモジュールごとに計測しています。全体の予算は 1 ミリ秒です。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={leafGatherClip} poster={leafGatherClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="重攻撃の葉集め"></video>
+        <figcaption>重攻撃の葉集め：ため中に引き寄せ、放つと吹き飛ばす</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={windFieldClip} poster={windFieldClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="風の場の可視化"></video>
+        <figcaption>風の場の可視化：色が風速を表す</figcaption>
+    </figure>
+</div>
+
+手触りを調整するためにオフライン実験室を作りました。ゲーム内で一振りを録画し、異なるパラメータで決定論的に再生してまとめて比較します。付属のベンチマークは、飛んでいる葉の数と処理時間の関係を計測します。
+
+<Image src={imgLeafLabView} alt="落ち葉実験室：俯瞰の軌跡、葉の経路、処理時間の曲線" />
+
+<div class="image-grid-2">
+    <Image src={imgLeafLabSweep} alt="同じ一振りの各時刻における風の場と葉の分布" />
+    <Image src={imgLeafBench} alt="飛んでいる葉の数とゲームスレッドの処理時間。赤線は 1 ミリ秒の予算" />
+</div>
+
+### 竹林の戦場
+
+戦場は竹林の中の円形の空き地で、レイヤーごとに構築しました：地形、中央の石の台と桟道、周囲を囲む巨竹（Megaplant）、下草、苔のデカールと地表マテリアル、近景の小物、インタラクティブな落ち葉の層、局所的な補助光、そして最後にボス。ライティングは Ultra Dynamic Sky が時刻と明るさを制御し、露出は固定しています。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={arenaBuildClip} poster={arenaBuildClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="シーンのレイヤー構築"></video>
+        <figcaption>シーンのレイヤー構築（2 倍速）</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={lightingClip} poster={lightingClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="ライティング"></video>
+        <figcaption>ライティング：正午から夜へ</figcaption>
+    </figure>
+</div>
+
+### カメラと演出
+
+スキルのカットインは現在の構図を保ったまま同じ側から切り込み、書道風の字幕を添えます。最終処刑は長押しでためる演出で、赤い雷が集まり「赤雷横天」を放ち、ボス全体が砕け散ります。
+
+<figure>
+    <video class="clip" src={skillCutinClip} poster={skillCutinClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="スキルのカットイン"></video>
+    <figcaption>スキルのカットイン</figcaption>
+</figure>
+
+<figure>
+    <video class="clip" src={finaleClip} poster={finaleClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="最終処刑"></video>
+    <figcaption>最終処刑：赤雷横天</figcaption>
+</figure>
+
+### 開発ツール
+
+* **録画ディレクター**：ゲーム内でタイムテーブルに沿ってコマンドを実行し、配置、パラメータの切り替え、技の発動、カメラの移動を自動で行います。開発日誌のショットの大半はこれで自動撮影しました。
+* **カバー撮影**：指定した瞬間で一時停止し、与えた構図にカメラを置いて高解像度のスクリーンショットを出力します。
+* **テストコマンド**：ボスの任意の技、腕の破壊、フェーズ移行、主人公の各種アクションを直接発動できるコンソールコマンド群。自己テストと録画に使います。

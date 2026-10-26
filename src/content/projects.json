@@ -3097,5 +3097,73 @@
     "coverImage": "src/assets/projects/poster/ProceduralCrabPoster.webp",
     "colorText": "#8A3B12",
     "colorBackground": "#FDEBD3"
+  },
+  {
+    "id": "game-project-qingyun",
+    "order": 46,
+    "category": "game",
+    "title": {
+      "en": "Qingyun",
+      "zh": "青云",
+      "ja": "青雲",
+      "ko": "청운"
+    },
+    "roles": {
+      "en": [
+        "Solo Developer",
+        "Gameplay Engineer",
+        "Technical Artist"
+      ],
+      "zh": [
+        "独立开发",
+        "游戏工程师",
+        "技术美术"
+      ],
+      "ja": [
+        "個人開発",
+        "ゲームプレイエンジニア",
+        "テクニカルアーティスト"
+      ],
+      "ko": [
+        "개인 개발",
+        "게임플레이 엔지니어",
+        "테크니컬 아티스트"
+      ]
+    },
+    "desc": {
+      "en": "Qingyun is a third-person action boss fight I made solo in Unreal Engine 5: Wukong against a rock colossus of a hundred-odd floating stones in a bamboo-forest clearing. I reworked Paragon's Rampage into a boss whose stones move through all three phases, built its AI, the hero's combat feel, procedural realistic lightning, thousands of interactive leaves on a wind field, the arena, the cameras and staging, and the tools that shot its trailer and devlog.",
+      "zh": "《青云》是我用 Unreal Engine 5 独立制作的第三人称动作 Boss 战：悟空在竹林空地中迎战一尊由上百块浮石组成的岩石巨像。我把 Paragon 的 Rampage 改造成一个石块在三个阶段间流转的 Boss，并完成了它的 AI、主角的战斗手感、程序化写实雷电、风场驱动的数千片交互落叶、战场搭建、镜头与演出，以及拍摄宣传片和开发日志用的工具。",
+      "ja": "『青雲』は Unreal Engine 5 で個人制作した三人称アクションのボス戦です。竹林の空き地で、悟空が百数十個の浮石でできた岩の巨像に挑みます。Paragon の Rampage を、石が三つのフェーズを巡るボスに作り替え、その AI、主人公の戦闘の手触り、プロシージャルな写実的な雷、風の場で動く数千枚のインタラクティブな落ち葉、戦場の構築、カメラと演出、そしてトレーラーと開発日誌を撮るためのツールを実装しました。",
+      "ko": "《청운》은 Unreal Engine 5로 혼자 만든 3인칭 액션 보스전입니다. 대나무 숲 공터에서 오공이 백여 개의 부유석으로 이루어진 바위 거상과 맞섭니다. Paragon의 Rampage를 돌이 세 단계를 도는 보스로 개조하고, 그 AI, 주인공의 전투 손맛, 절차적인 사실적 번개, 바람장으로 움직이는 수천 장의 상호작용 낙엽, 전장 구축, 카메라와 연출, 그리고 트레일러와 개발 일지를 찍는 도구를 구현했습니다."
+    },
+    "tags": {
+      "en": [
+        "Unreal Engine 5",
+        "Action",
+        "Boss Fight",
+        "VFX"
+      ],
+      "zh": [
+        "Unreal Engine 5",
+        "动作",
+        "Boss 战",
+        "特效"
+      ],
+      "ja": [
+        "Unreal Engine 5",
+        "アクション",
+        "ボス戦",
+        "VFX"
+      ],
+      "ko": [
+        "Unreal Engine 5",
+        "액션",
+        "보스전",
+        "VFX"
+      ]
+    },
+    "coverImage": "src/assets/projects/poster/QingyunPoster.webp",
+    "colorText": "#1E5A47",
+    "colorBackground": "#E2F0E9"
   }
 ]

@@ -1,0 +1,259 @@
+import { Image } from 'astro:assets';
+import imgCover from '@/assets/projects/game-project-qingyun/game-project-qingyun_Cover.webp';
+import imgLeafLabView from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabView.webp';
+import imgLeafLabSweep from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabSweep.webp';
+import imgLeafBench from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafBench.webp';
+import overviewClip from '@/assets/projects/game-project-qingyun/clips/overview.mp4?url';
+import overviewClipPoster from '@/assets/projects/game-project-qingyun/clips/overview-poster.webp?url';
+import bossBuildClip from '@/assets/projects/game-project-qingyun/clips/boss-build.mp4?url';
+import bossBuildClipPoster from '@/assets/projects/game-project-qingyun/clips/boss-build-poster.webp?url';
+import bossIntroClip from '@/assets/projects/game-project-qingyun/clips/boss-intro.mp4?url';
+import bossIntroClipPoster from '@/assets/projects/game-project-qingyun/clips/boss-intro-poster.webp?url';
+import hitZonesClip from '@/assets/projects/game-project-qingyun/clips/hit-zones.mp4?url';
+import hitZonesClipPoster from '@/assets/projects/game-project-qingyun/clips/hit-zones-poster.webp?url';
+import armBreakClip from '@/assets/projects/game-project-qingyun/clips/arm-break.mp4?url';
+import armBreakClipPoster from '@/assets/projects/game-project-qingyun/clips/arm-break-poster.webp?url';
+import pillarsClip from '@/assets/projects/game-project-qingyun/clips/pillars.mp4?url';
+import pillarsClipPoster from '@/assets/projects/game-project-qingyun/clips/pillars-poster.webp?url';
+import runeStormClip from '@/assets/projects/game-project-qingyun/clips/rune-storm.mp4?url';
+import runeStormClipPoster from '@/assets/projects/game-project-qingyun/clips/rune-storm-poster.webp?url';
+import vortexClip from '@/assets/projects/game-project-qingyun/clips/vortex.mp4?url';
+import vortexClipPoster from '@/assets/projects/game-project-qingyun/clips/vortex-poster.webp?url';
+import finaleClip from '@/assets/projects/game-project-qingyun/clips/finale.mp4?url';
+import finaleClipPoster from '@/assets/projects/game-project-qingyun/clips/finale-poster.webp?url';
+import lightningCompareClip from '@/assets/projects/game-project-qingyun/clips/lightning-compare.mp4?url';
+import lightningCompareClipPoster from '@/assets/projects/game-project-qingyun/clips/lightning-compare-poster.webp?url';
+import chargeClip from '@/assets/projects/game-project-qingyun/clips/charge.mp4?url';
+import chargeClipPoster from '@/assets/projects/game-project-qingyun/clips/charge-poster.webp?url';
+import impactSlowClip from '@/assets/projects/game-project-qingyun/clips/impact-slow.mp4?url';
+import impactSlowClipPoster from '@/assets/projects/game-project-qingyun/clips/impact-slow-poster.webp?url';
+import leapTelegraphClip from '@/assets/projects/game-project-qingyun/clips/leap-telegraph.mp4?url';
+import leapTelegraphClipPoster from '@/assets/projects/game-project-qingyun/clips/leap-telegraph-poster.webp?url';
+import leafKickClip from '@/assets/projects/game-project-qingyun/clips/leaf-kick.mp4?url';
+import leafKickClipPoster from '@/assets/projects/game-project-qingyun/clips/leaf-kick-poster.webp?url';
+import leafDebugClip from '@/assets/projects/game-project-qingyun/clips/leaf-debug.mp4?url';
+import leafDebugClipPoster from '@/assets/projects/game-project-qingyun/clips/leaf-debug-poster.webp?url';
+import leafGatherClip from '@/assets/projects/game-project-qingyun/clips/leaf-gather.mp4?url';
+import leafGatherClipPoster from '@/assets/projects/game-project-qingyun/clips/leaf-gather-poster.webp?url';
+import windFieldClip from '@/assets/projects/game-project-qingyun/clips/wind-field.mp4?url';
+import windFieldClipPoster from '@/assets/projects/game-project-qingyun/clips/wind-field-poster.webp?url';
+import perfectDodgeClip from '@/assets/projects/game-project-qingyun/clips/perfect-dodge.mp4?url';
+import perfectDodgeClipPoster from '@/assets/projects/game-project-qingyun/clips/perfect-dodge-poster.webp?url';
+import lockOnClip from '@/assets/projects/game-project-qingyun/clips/lock-on.mp4?url';
+import lockOnClipPoster from '@/assets/projects/game-project-qingyun/clips/lock-on-poster.webp?url';
+import skillCutinClip from '@/assets/projects/game-project-qingyun/clips/skill-cutin.mp4?url';
+import skillCutinClipPoster from '@/assets/projects/game-project-qingyun/clips/skill-cutin-poster.webp?url';
+import arenaBuildClip from '@/assets/projects/game-project-qingyun/clips/arena-build.mp4?url';
+import arenaBuildClipPoster from '@/assets/projects/game-project-qingyun/clips/arena-build-poster.webp?url';
+import lightingClip from '@/assets/projects/game-project-qingyun/clips/lighting.mp4?url';
+import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lighting-poster.webp?url';
+
+## 게임 소개
+
+《청운(Qingyun)》은 Unreal Engine 5로 만든 3인칭 액션 보스전입니다. 플레이어는 오공을 조작해 대나무 숲 공터에서 백여 개의 떠 있는 돌로 이루어진 바위 거상과 맞섭니다. 몸의 돌을 쳐내고, 두 팔을 뜯어내고, 부적돌 폭풍을 버텨 낸 뒤, 마지막에 「적뢰횡천(赤雷橫天)」으로 끝장냅니다.
+
+<Image src={imgCover} alt="청운: 뛰어오르는 바위 거상에 맞서는 오공" />
+
+<figure>
+    <video class="clip" src={overviewClip} poster={overviewClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="실제 플레이"></video>
+    <figcaption>실제 플레이</figcaption>
+</figure>
+
+---
+
+## 담당 업무
+
+개인 프로젝트입니다. C++, Niagara, 머티리얼, Python 에디터 스크립트로 Unreal Engine 5에서 다음을 구현했습니다:
+
+* **보스 개조와 돌 시스템**: Paragon의 Rampage를 절차적인 부유석으로 이루어진 바위 거상으로 개조했습니다. 돌은 세 단계에 걸쳐 역할을 바꿉니다. 몸을 이루고, 떨어져 나가고, 부적돌로 뽑혀 나가고, 땅에 박히고, 마지막에는 모두 소용돌이로 빨려 올라갑니다.
+* **3단계 보스 AI**: 기술 선택, 팔을 잃은 뒤의 기술 봉인과 템포 상승, 독자적인 AI를 가진 쌍기둥, 박자에 맞춰 발사되는 부적돌 폭풍.
+* **전투 손맛**: 일반 공격 콤보, 단계별 차지 강공격, 저스트 회피 시간 정지, 부위 록온, 히트스톱과 카메라 임팩트. 손맛 파라미터는 모두 프로젝트 설정에 공개되어 실행 중에 조정할 수 있습니다.
+* **사실적인 번개 이펙트**: 절차적으로 생성한 프랙탈 번개 메시와 Niagara 파티클로 차지, 적중 방전, 예고, 돌 파괴를 표현합니다.
+* **낙엽과 바람**: 수천 장의 상호작용 인스턴스 낙엽과 절차적 바람장, 디버그 뷰와 오프라인 실험실.
+* **장면과 라이팅**: 대나무 숲 공터를 레이어별로 구축하고 Ultra Dynamic Sky로 조명.
+* **카메라와 연출**: 스킬 컷인, 처형 카메라, 최종 처형 연출.
+* **개발 도구**: 녹화 디렉터, 커버 촬영 스크립트, 오프라인 튜닝 도구, 그리고 이 프로젝트의 트레일러와 개발 일지.
+
+---
+
+## 프로젝트 상세
+
+### Paragon 에셋에서 바위 거상으로
+
+보스의 출발점은 Paragon의 원본 Rampage(엘리멘탈 스킨)입니다. 새로 모델링하지 않고 한 층씩 개조해 지금의 모습을 만들었습니다:
+
+<figure>
+    <video class="clip" src={bossBuildClip} poster={bossBuildClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="보스 개조 과정"></video>
+    <figcaption>같은 카메라에서 개조를 한 층씩 추가: 머티리얼, 부유석, 법륜, 꼬리 부채, 어깨 쌍기둥, 사슬돌</figcaption>
+</figure>
+
+* **머티리얼 재작업**: 용암의 주황색 균열을 비취색 에너지 균열로 바꾸고, 어깨의 원래 룬 문양을 제거했습니다.
+* **바위를 잘라내 절차적 부유석으로 교체**: 에디터 도구로 메시 위의 바위를 연결 영역별로 개별 스태틱 메시로 잘라내고, 원본 메시의 해당 부분을 숨긴 뒤 부유석으로 대체합니다. 각 부유석은 감쇠 스프링으로 본을 따라가며 위아래 흔들림, 표류, 피격 진동을 갖고, 표면에 룬 데칼이 있습니다.
+* **법륜, 공작 꼬리 부채, 어깨 쌍기둥**: 모두 같은 부유석 시스템으로 생성합니다. 꼬리 부채는 등장할 때 날아가 경기장 주변에 서서 방벽이 됩니다.
+* **사슬돌**: 몸 주위를 헤엄치는 돌 사슬로, 이후 부적돌의 탄약입니다.
+* **Chaos 파괴**: 바위, 전완, 몸의 각 부위에 대한 지오메트리 컬렉션을 미리 생성해 떨어뜨리기, 팔 파괴, 최후의 산산조각에 사용합니다.
+
+### 세 단계를 도는 돌
+
+돌 시스템은 같은 돌이 전투 내내 역할을 바꾸고, 플레이어가 쳐낸 것이 결국 돌아오도록 설계했습니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={bossIntroClip} poster={bossIntroClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="보스 등장"></video>
+        <figcaption>등장: 땅의 돌이 날아올라 보스를 조립한다</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={hitZonesClip} poster={hitZonesClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="피격 판정 시각화"></video>
+        <figcaption>피격 판정 시각화: 흰색은 본체, 주황색은 장갑을 두른 팔</figcaption>
+    </figure>
+</div>
+
+* **1단계**: 휩쓸기, 내려찍기, 도약 내려찍기. 주인공의 공격은 보스의 몸에서 작은 돌을 떨어뜨리고, 파편은 땅에 남습니다. 팔은 장갑을 두르고 있으며 피격 판정은 부위별로 나뉩니다.
+* **팔 파괴**: 팔이 체력 기준에 도달하면 처형할 수 있으며, 돌이 떨어져 나가고 전완이 부서집니다. 한쪽 팔을 잃으면 2단계에 들어가고, 그 손을 쓰는 기술은 봉인되며 기술 전체가 빨라집니다.
+* **쌍기둥**: 어깨의 두 돌기둥이 뜯겨 나가 공중에 떠올라 경기장 중앙 상공을 순회합니다. 독자적인 AI로 보스와 함께 공격하며, 풀 차지 강공격으로만 부술 수 있습니다.
+* **부적돌 폭풍**: 사슬돌이 뽑혀 나와 보스 머리 위에서 고리를 이루고, 박자에 맞춰 주인공에게 발사됩니다. 하나하나 다른 궤적으로 날아오며 호위 돌도 함께합니다. 박자에 맞춰 휘두르면 하나씩 부서지고, 받아내지 못한 돌은 통째로 땅에 박히며, 폭풍이 끝나면 본체는 사슬로 돌아가고 땅에는 복제가 남습니다. 마지막 하나는 강공격으로 보스에게 되받아칠 수 있습니다.
+* **소용돌이**: 두 팔을 모두 잃으면 땅에 흩어진 파편, 박혀 있던 복제, 경기장 가장자리의 돌이 모두 떠올라 전장을 감싸는 돌 소용돌이가 됩니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={armBreakClip} poster={armBreakClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="팔 파괴"></video>
+        <figcaption>팔 파괴: 팔의 돌이 떨어져 나가 부서진다</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={pillarsClip} poster={pillarsClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="쌍기둥"></video>
+        <figcaption>쌍기둥: 독자적인 AI로 보스와 함께 공격</figcaption>
+    </figure>
+</div>
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={runeStormClip} poster={runeStormClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="부적돌 폭풍"></video>
+        <figcaption>부적돌 폭풍: 박자에 맞춰 부수기, 부적돌마다 HUD 표식</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={vortexClip} poster={vortexClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="돌 소용돌이"></video>
+        <figcaption>소용돌이: 그동안 흩어진 모든 돌이 떠오른다</figcaption>
+    </figure>
+</div>
+
+### 전투 손맛
+
+주인공의 손맛은 모두 파라미터로 만들어 프로젝트 설정의 중국어 패널에 모았고, 실행 중에 바꾸면 바로 반영됩니다: 콤보 템포, 차지 단계, 공격 판정 거리, 히트스톱, 카메라 흔들림, FOV 임팩트 등.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={perfectDodgeClip} poster={perfectDodgeClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="저스트 회피"></video>
+        <figcaption>저스트 회피: 맞기 직전에 피하면 시간이 멈춘다</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={lockOnClip} poster={lockOnClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="부위 록온"></video>
+        <figcaption>록온: 부위별로 대상 전환(왼팔 / 본체 / 오른팔)</figcaption>
+    </figure>
+</div>
+
+* **타격감**: 적중 시 세계가 한 박자 느려지고, 주인공의 동작이 적중 지점에서 멈추며, 카메라가 공격 방향으로 흔들리고 FOV 임팩트가 들어갑니다. 보스가 주인공을 느리게 만드는 일은 없으며, 손맛은 모두 주인공 쪽에서 처리합니다.
+* **저스트 회피**: 커브로 제어하는 시간 정지이며, 카메라도 슬로모션에 맞춰 변합니다.
+* **록온**: 카메라가 바라보는 방향으로 대상을 찾고, 마우스 휠로 왼팔·본체·오른팔을 전환합니다.
+
+### 사실적인 번개
+
+풀 차지 강공격은 번개를 두릅니다. 처음에는 굵고 빛나는 전호여서 너무 만화 같았고, 최종 버전은 가는 프랙탈 번개로 실제 번개의 리듬에 맞춰 방전합니다.
+
+<figure>
+    <video class="clip" src={lightningCompareClip} poster={lightningCompareClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="번개 비교"></video>
+    <figcaption>왼쪽: 초기의 만화풍 전호. 오른쪽: 현재의 사실적인 프랙탈 번개</figcaption>
+</figure>
+
+* **차지**: 전류가 봉을 따라 끝으로 모이고, 끝에서 서지가 봉 쪽으로 뒤로 퍼집니다. 풀 차지 때 한 번 바깥으로 터집니다.
+* **적중 방전**: 적중 지점에서 가지를 친 방전 경로가 여러 갈래로 뻗고, 선도 방전·주 방전·재방전이 차례로 일어난 뒤 빠르게 사라집니다. 범위는 화면의 절반에 이릅니다.
+* **구현**: 번개 메시는 매 프레임 절차적으로 생성(랜덤 워크에 더 미세한 흔들림을 얹음)하고, Niagara의 불꽃·파편·먼지와 결합합니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={chargeClip} poster={chargeClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="차지"></video>
+        <figcaption>차지: 전류 집중, 봉 끝의 서지, 풀 차지 방전</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={impactSlowClip} poster={impactSlowClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="적중 방전 슬로"></video>
+        <figcaption>적중 방전(슬로모션)</figcaption>
+    </figure>
+</div>
+
+<figure>
+    <video class="clip" src={leapTelegraphClip} poster={leapTelegraphClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="도약 내려찍기 예고"></video>
+    <figcaption>도약 내려찍기: 바닥의 예고 고리와 에너지 광주</figcaption>
+</figure>
+
+### 낙엽과 바람
+
+공터에는 수천 장의 낙엽이 깔려 있고, 한 장 한 장이 독립된 인스턴스로 캐릭터와 공격에 흩날립니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={leafKickClip} poster={leafKickClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="흩날리는 낙엽"></video>
+        <figcaption>캐릭터 속도에 따라 단계별로 흩날림: 걷기, 달리기, 회피</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={leafDebugClip} poster={leafDebugClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="낙엽 디버그 뷰"></video>
+        <figcaption>디버그 뷰: 흩뜨린 원인별로 잎을 색칠하고 기류 궤적을 그림</figcaption>
+    </figure>
+</div>
+
+* **상호작용**: 일반 공격은 봉을 따라 샘플링해 지연된 기류를 주입해 잎을 쓸고, 강공격은 차지하는 동안 잎을 끌어당겼다 놓으면 방사형으로 날려 보냅니다. 강공격은 대나무 우듬지의 잎도 흔들어 떨어뜨리고, 스킬은 주인공을 따라가는 회오리를 일으킵니다.
+* **바람장**: 전체 바람(숨 쉬듯 일렁임과 돌풍 포함), 국소 소용돌이, 캐릭터가 일으키는 기류, 회오리를 하나의 장으로 합칩니다. 잎마다 고유한 저항과 뒤집힘이 있고, 양면 머티리얼이라 뒤집히면 빛이 비칩니다.
+* **성능**: 흩뜨려진 인스턴스만 갱신하고, 먼 잎은 계산 빈도를 낮추며, 게임 스레드 처리 시간을 모듈별로 측정합니다. 전체 예산은 1밀리초입니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={leafGatherClip} poster={leafGatherClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="강공격 잎 모으기"></video>
+        <figcaption>강공격 잎 모으기: 차지 중 끌어당기고, 놓으면 날려 보냄</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={windFieldClip} poster={windFieldClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="바람장 시각화"></video>
+        <figcaption>바람장 시각화: 색이 풍속을 나타냄</figcaption>
+    </figure>
+</div>
+
+손맛을 조정하기 위해 오프라인 실험실을 만들었습니다. 게임에서 한 번의 휘두르기를 녹화한 뒤, 다른 파라미터로 결정론적으로 재생해 한꺼번에 비교합니다. 함께 만든 벤치마크는 날아다니는 잎의 수와 처리 시간의 관계를 측정합니다.
+
+<Image src={imgLeafLabView} alt="낙엽 실험실: 위에서 본 궤적, 잎의 경로, 처리 시간 곡선" />
+
+<div class="image-grid-2">
+    <Image src={imgLeafLabSweep} alt="같은 휘두르기의 시점별 바람장과 잎 분포" />
+    <Image src={imgLeafBench} alt="날아다니는 잎 수와 게임 스레드 처리 시간. 빨간 선은 1밀리초 예산" />
+</div>
+
+### 대나무 숲 전장
+
+전장은 대나무 숲 속 원형 공터로, 레이어별로 구축했습니다: 지형, 중앙 돌 단상과 잔도, 둘레를 감싸는 거대 대나무(Megaplant), 하층 식생, 이끼 데칼과 지표 머티리얼, 근경 소품, 상호작용 낙엽층, 국소 보조광, 그리고 마지막으로 보스. 라이팅은 Ultra Dynamic Sky가 시간과 밝기를 제어하고, 노출은 고정합니다.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={arenaBuildClip} poster={arenaBuildClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="장면 레이어 구축"></video>
+        <figcaption>장면의 레이어별 구축(2배속)</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={lightingClip} poster={lightingClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="라이팅"></video>
+        <figcaption>라이팅: 정오에서 밤으로</figcaption>
+    </figure>
+</div>
+
+### 카메라와 연출
+
+스킬 컷인은 현재 구도를 유지한 채 같은 쪽에서 끊어 들어가며 서예풍 자막을 곁들입니다. 최종 처형은 길게 눌러 차지하는 연출로, 붉은 번개가 모여 「적뢰횡천」을 내리치고 보스 전체가 산산조각 납니다.
+
+<figure>
+    <video class="clip" src={skillCutinClip} poster={skillCutinClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="스킬 컷인"></video>
+    <figcaption>스킬 컷인</figcaption>
+</figure>
+
+<figure>
+    <video class="clip" src={finaleClip} poster={finaleClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="최종 처형"></video>
+    <figcaption>최종 처형: 적뢰횡천</figcaption>
+</figure>
+
+### 개발 도구
+
+* **녹화 디렉터**: 게임 안에서 시간표에 따라 명령을 실행해 위치 배치, 파라미터 전환, 기술 발동, 카메라 이동을 자동으로 수행합니다. 개발 일지의 샷 대부분을 이것으로 자동 촬영했습니다.
+* **커버 촬영**: 지정한 순간에 일시정지하고, 주어진 구도로 카메라를 배치해 고해상도 스크린샷을 출력합니다.
+* **테스트 명령**: 보스의 모든 기술, 팔 파괴, 단계 전환, 주인공의 각종 동작을 바로 발동하는 콘솔 명령 모음으로, 자체 테스트와 녹화에 사용합니다.

@@ -1,0 +1,259 @@
+import { Image } from 'astro:assets';
+import imgCover from '@/assets/projects/game-project-qingyun/game-project-qingyun_Cover.webp';
+import imgLeafLabView from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabView.webp';
+import imgLeafLabSweep from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabSweep.webp';
+import imgLeafBench from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafBench.webp';
+import overviewClip from '@/assets/projects/game-project-qingyun/clips/overview.mp4?url';
+import overviewClipPoster from '@/assets/projects/game-project-qingyun/clips/overview-poster.webp?url';
+import bossBuildClip from '@/assets/projects/game-project-qingyun/clips/boss-build.mp4?url';
+import bossBuildClipPoster from '@/assets/projects/game-project-qingyun/clips/boss-build-poster.webp?url';
+import bossIntroClip from '@/assets/projects/game-project-qingyun/clips/boss-intro.mp4?url';
+import bossIntroClipPoster from '@/assets/projects/game-project-qingyun/clips/boss-intro-poster.webp?url';
+import hitZonesClip from '@/assets/projects/game-project-qingyun/clips/hit-zones.mp4?url';
+import hitZonesClipPoster from '@/assets/projects/game-project-qingyun/clips/hit-zones-poster.webp?url';
+import armBreakClip from '@/assets/projects/game-project-qingyun/clips/arm-break.mp4?url';
+import armBreakClipPoster from '@/assets/projects/game-project-qingyun/clips/arm-break-poster.webp?url';
+import pillarsClip from '@/assets/projects/game-project-qingyun/clips/pillars.mp4?url';
+import pillarsClipPoster from '@/assets/projects/game-project-qingyun/clips/pillars-poster.webp?url';
+import runeStormClip from '@/assets/projects/game-project-qingyun/clips/rune-storm.mp4?url';
+import runeStormClipPoster from '@/assets/projects/game-project-qingyun/clips/rune-storm-poster.webp?url';
+import vortexClip from '@/assets/projects/game-project-qingyun/clips/vortex.mp4?url';
+import vortexClipPoster from '@/assets/projects/game-project-qingyun/clips/vortex-poster.webp?url';
+import finaleClip from '@/assets/projects/game-project-qingyun/clips/finale.mp4?url';
+import finaleClipPoster from '@/assets/projects/game-project-qingyun/clips/finale-poster.webp?url';
+import lightningCompareClip from '@/assets/projects/game-project-qingyun/clips/lightning-compare.mp4?url';
+import lightningCompareClipPoster from '@/assets/projects/game-project-qingyun/clips/lightning-compare-poster.webp?url';
+import chargeClip from '@/assets/projects/game-project-qingyun/clips/charge.mp4?url';
+import chargeClipPoster from '@/assets/projects/game-project-qingyun/clips/charge-poster.webp?url';
+import impactSlowClip from '@/assets/projects/game-project-qingyun/clips/impact-slow.mp4?url';
+import impactSlowClipPoster from '@/assets/projects/game-project-qingyun/clips/impact-slow-poster.webp?url';
+import leapTelegraphClip from '@/assets/projects/game-project-qingyun/clips/leap-telegraph.mp4?url';
+import leapTelegraphClipPoster from '@/assets/projects/game-project-qingyun/clips/leap-telegraph-poster.webp?url';
+import leafKickClip from '@/assets/projects/game-project-qingyun/clips/leaf-kick.mp4?url';
+import leafKickClipPoster from '@/assets/projects/game-project-qingyun/clips/leaf-kick-poster.webp?url';
+import leafDebugClip from '@/assets/projects/game-project-qingyun/clips/leaf-debug.mp4?url';
+import leafDebugClipPoster from '@/assets/projects/game-project-qingyun/clips/leaf-debug-poster.webp?url';
+import leafGatherClip from '@/assets/projects/game-project-qingyun/clips/leaf-gather.mp4?url';
+import leafGatherClipPoster from '@/assets/projects/game-project-qingyun/clips/leaf-gather-poster.webp?url';
+import windFieldClip from '@/assets/projects/game-project-qingyun/clips/wind-field.mp4?url';
+import windFieldClipPoster from '@/assets/projects/game-project-qingyun/clips/wind-field-poster.webp?url';
+import perfectDodgeClip from '@/assets/projects/game-project-qingyun/clips/perfect-dodge.mp4?url';
+import perfectDodgeClipPoster from '@/assets/projects/game-project-qingyun/clips/perfect-dodge-poster.webp?url';
+import lockOnClip from '@/assets/projects/game-project-qingyun/clips/lock-on.mp4?url';
+import lockOnClipPoster from '@/assets/projects/game-project-qingyun/clips/lock-on-poster.webp?url';
+import skillCutinClip from '@/assets/projects/game-project-qingyun/clips/skill-cutin.mp4?url';
+import skillCutinClipPoster from '@/assets/projects/game-project-qingyun/clips/skill-cutin-poster.webp?url';
+import arenaBuildClip from '@/assets/projects/game-project-qingyun/clips/arena-build.mp4?url';
+import arenaBuildClipPoster from '@/assets/projects/game-project-qingyun/clips/arena-build-poster.webp?url';
+import lightingClip from '@/assets/projects/game-project-qingyun/clips/lighting.mp4?url';
+import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lighting-poster.webp?url';
+
+## 游戏简介
+
+《青云》是一款用 Unreal Engine 5 制作的第三人称动作 Boss 战。玩家操控悟空，在一片竹林空地中与一尊由上百块浮石组成的岩石巨像交手：打落它身上的石块，扯断它的双臂，躲过符石风暴，最后以一记「赤雷横天」终结它。
+
+<Image src={imgCover} alt="青云：悟空迎战跃起的岩石巨像" />
+
+<figure>
+    <video class="clip" src={overviewClip} poster={overviewClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="实机战斗"></video>
+    <figcaption>实机战斗</figcaption>
+</figure>
+
+---
+
+## 我的职责
+
+这是一个独立项目。我用 C++、Niagara、材质和 Python 编辑器脚本，在 Unreal Engine 5 中完成了以下内容：
+
+* **Boss 改造与石头系统**：把 Paragon 的 Rampage 改造成由程序化浮石组成的岩石巨像，石块在三个阶段之间流转：组成身体、被打落、被抽成符文石、插入地面，最后全部卷入漩涡。
+* **三阶段 Boss AI**：招式选择、断臂后的招式禁用与提速、拥有独立 AI 的双柱，以及按节拍发射的符石风暴。
+* **战斗手感**：轻击连段、分档蓄力重击、极限闪避时停、按部位锁定、顿帧与镜头冲击；所有手感参数都开放在项目设置中，运行时可调。
+* **写实雷电特效**：程序化生成的分形闪电网格加 Niagara 粒子，覆盖蓄力、命中电爆、预警和碎石。
+* **落叶与风场**：数千片可交互的实例化落叶，叠加程序化风场，并配一套调试视图和离线实验室。
+* **场景与光照**：竹林空地的分层搭建，Ultra Dynamic Sky 驱动的光照。
+* **镜头与演出**：技能特写、处决镜头和最终处决的演出。
+* **开发工具**：录制导演、封面拍摄脚本、离线调参工具，以及这个项目的宣传片和开发日志。
+
+---
+
+## 项目细节
+
+### 从 Paragon 资产到岩石巨像
+
+Boss 的起点是 Paragon 原版的 Rampage（元素皮肤）。我没有重新建模，而是把它一层层改造成现在的样子：
+
+<figure>
+    <video class="clip" src={bossBuildClip} poster={bossBuildClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Boss 改造过程"></video>
+    <figcaption>同一机位下逐层加上改造：材质、浮石、法环、尾屏、肩后双石柱、链石</figcaption>
+</figure>
+
+* **材质重制**：熔岩橙的裂纹改为青玉色的能量裂纹，肩部原有的符文贴图被去掉。
+* **切出岩石，换成程序化浮石**：用编辑器工具把模型上的岩石按连通区域切成独立的静态网格，原模型上对应的部分隐藏，再用程序化浮石代替。每块浮石用一个阻尼弹簧跟随骨骼，带起伏、漂移和受击抖动，石块表面有符文贴花。
+* **脑后法环、孔雀尾屏、肩后双石柱**：都由同一套浮石生成；尾屏在开场时飞出，立在场地四周成为屏障。
+* **链石**：环绕身体游动的石链，是后面符文石的弹药。
+* **Chaos 破碎**：岩石、前臂和身体的各个部位都预先生成了几何集合，用于打落、断臂和最终碎裂。
+
+### 石头的流转：贯穿三个阶段
+
+石头系统的设计是让同一批石头在整场战斗中不断改变用途，玩家打下来的东西最后都会回来。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={bossIntroClip} poster={bossIntroClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Boss 开场"></video>
+        <figcaption>开场：地上的石块飞起，组成 Boss</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={hitZonesClip} poster={hitZonesClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="受击判定可视化"></video>
+        <figcaption>受击判定可视化：白色为本体，橙色为带护甲的手臂</figcaption>
+    </figure>
+</div>
+
+* **第一阶段**：横扫、重砸、跳砸。主角的攻击会把小石块从 Boss 身上打落，碎块留在地上。手臂带护甲，命中判定按部位区分。
+* **断臂**：手臂达到血量阈值后可以处决，石块脱落、前臂碎裂。断掉一只手臂后进入第二阶段：需要那只手的招式被禁用，招式整体提速。
+* **双柱**：肩后的两根石柱撕下升空，在场地中央上空巡游，拥有独立 AI，与 Boss 并行进攻；只有满蓄力重击能击碎它们。
+* **符石风暴**：链石被抽出，在 Boss 头顶聚成石环，按节拍射向主角，每颗都沿不同的飞行轨迹命中，还带着随行石。主角在节拍上挥棍就能逐颗击碎；没接住的石块会整块插进地里，风暴结束后石块回归链条，地上留下复制体。最后一颗可以用重击击回 Boss。
+* **漩涡**：双臂都断后，此前散落在地上的碎石、插地的复制体和场地边缘的石块全部升空，形成环绕战场的石块漩涡。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={armBreakClip} poster={armBreakClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="断臂"></video>
+        <figcaption>断臂：手臂石块脱落并破碎</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={pillarsClip} poster={pillarsClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="双柱"></video>
+        <figcaption>双柱：独立 AI，与 Boss 并行进攻</figcaption>
+    </figure>
+</div>
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={runeStormClip} poster={runeStormClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="符石风暴"></video>
+        <figcaption>符石风暴：按节拍击碎，每颗符文石带 HUD 标记</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={vortexClip} poster={vortexClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="石块漩涡"></video>
+        <figcaption>漩涡：此前散落的所有碎石升空</figcaption>
+    </figure>
+</div>
+
+### 战斗手感
+
+主角的所有手感都做成了参数，集中在项目设置的中文面板里，运行时修改立即生效：连段节奏、蓄力档位、攻击判定距离、顿帧、镜头震动和 FOV 冲击等。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={perfectDodgeClip} poster={perfectDodgeClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="极限闪避"></video>
+        <figcaption>极限闪避：在攻击命中前一刻闪避，触发时停</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={lockOnClip} poster={lockOnClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="部位锁定"></video>
+        <figcaption>锁定：按部位切换目标（左臂 / 本体 / 右臂）</figcaption>
+    </figure>
+</div>
+
+* **打击感**：命中时世界放慢一拍，主角动作在命中点顿住，镜头沿攻击方向震动并做 FOV 冲击；Boss 永远不会让主角变慢，所有手感都放在主角一侧。
+* **极限闪避**：按时间曲线控制的时停，镜头随慢动作一起变化。
+* **锁定**：按镜头注视方向寻找目标，用滚轮在左臂、本体和右臂之间切换。
+
+### 写实雷电
+
+满蓄力重击带雷电。最初的版本是粗而发光的电弧，看起来太卡通；最终版本改成细的分形闪电，按真实闪电的节奏放电。
+
+<figure>
+    <video class="clip" src={lightningCompareClip} poster={lightningCompareClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="雷电前后对比"></video>
+    <figcaption>左：早期的卡通电弧；右：现在的写实分形闪电</figcaption>
+</figure>
+
+* **蓄力**：电流沿棍身流向棍尖汇聚，棍尖出现电涌并向棍身方向后掠；蓄满时向外爆开一次。
+* **命中电爆**：从命中点射出多条带分叉的放电通道，先导、主放电、回闪依次发生，然后迅速消失；范围可达半个屏幕。
+* **实现**：闪电网格每帧程序化生成（随机游走加细分抖动），配合 Niagara 的火花、碎屑和尘土。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={chargeClip} poster={chargeClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="蓄力"></video>
+        <figcaption>蓄力：电流汇聚、棍尖电涌、满蓄力电爆</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={impactSlowClip} poster={impactSlowClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="命中电爆慢放"></video>
+        <figcaption>命中电爆（慢放）</figcaption>
+    </figure>
+</div>
+
+<figure>
+    <video class="clip" src={leapTelegraphClip} poster={leapTelegraphClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="跳砸预警"></video>
+    <figcaption>跳砸：地面预警圈与能量光柱</figcaption>
+</figure>
+
+### 落叶与风场
+
+空地上铺满了数千片落叶，每一片都是独立的实例，会被角色和攻击扰动。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={leafKickClip} poster={leafKickClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="踢叶"></video>
+        <figcaption>按角色速度分级扰动：步行、奔跑、闪避</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={leafDebugClip} poster={leafDebugClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="落叶调试视图"></video>
+        <figcaption>调试视图：叶片按扰动来源着色，并绘制气流轨迹</figcaption>
+    </figure>
+</div>
+
+* **交互**：普攻沿棍身采样、延迟注入气流来扫叶；重击蓄力时把叶子向心吸附，释放时径向爆散；重击还会震落竹冠上的叶子；技能有跟随角色的旋风。
+* **风场**：全局风（带呼吸起伏和阵风）、局部涡流、角色带起的气流和旋风叠加成一张场；每片叶子有自己的阻力和翻转，叶子是双面材质，翻到背面会透光。
+* **性能**：只更新被扰动过的实例，远处的叶子降频计算，分模块统计游戏线程耗时，整体预算 1 毫秒。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={leafGatherClip} poster={leafGatherClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="重击聚叶"></video>
+        <figcaption>重击聚叶：蓄力时吸附，释放时爆散</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={windFieldClip} poster={windFieldClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="风场可视化"></video>
+        <figcaption>风场可视化：颜色表示风速</figcaption>
+    </figure>
+</div>
+
+为了调手感，我做了一个离线实验室：在游戏里录下一次挥棍，之后用不同参数确定性地重放，批量对比结果；配套的基准测试统计飞行叶片数量与耗时的关系。
+
+<Image src={imgLeafLabView} alt="落叶实验室：俯视轨迹、叶片路径与耗时曲线" />
+
+<div class="image-grid-2">
+    <Image src={imgLeafLabSweep} alt="同一次挥棍在不同时刻的风场与叶片分布" />
+    <Image src={imgLeafBench} alt="飞行叶片数量与游戏线程耗时，红线为 1 毫秒预算" />
+</div>
+
+### 竹林战场
+
+战场是竹林中的一片圆形空地，按层搭建：地形、中心石台与栈道、环绕的巨竹（Megaplant）、林下植被、苔藓贴花与地表材质、近景点缀、可交互的落叶层、局部补光，最后放入 Boss。光照交给 Ultra Dynamic Sky 驱动时间与亮度，曝光保持固定。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={arenaBuildClip} poster={arenaBuildClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="场景分层搭建"></video>
+        <figcaption>场景的分层搭建（2 倍速）</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={lightingClip} poster={lightingClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="光照"></video>
+        <figcaption>光照：从正午到入夜</figcaption>
+    </figure>
+</div>
+
+### 镜头与演出
+
+技能特写保持当前构图、从同一侧切入，配书法字幕；最终处决要长按蓄力，红色雷电汇聚，打出「赤雷横天」，Boss 整体碎裂。
+
+<figure>
+    <video class="clip" src={skillCutinClip} poster={skillCutinClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="技能特写"></video>
+    <figcaption>技能特写</figcaption>
+</figure>
+
+<figure>
+    <video class="clip" src={finaleClip} poster={finaleClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="最终处决"></video>
+    <figcaption>最终处决：赤雷横天</figcaption>
+</figure>
+
+### 开发工具
+
+* **录制导演**：在游戏里按时间表执行命令，自动摆位、切换参数、触发招式、移动镜头；开发日志里的大部分镜头都由它自动拍摄。
+* **封面拍摄**：暂停在指定瞬间，按给定构图摆相机，输出高分辨率截图。
+* **测试命令**：一组控制台命令可以直接触发 Boss 的任意招式、断臂、阶段跳转和主角的各种动作，用于自测和录制。
