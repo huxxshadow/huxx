@@ -47,6 +47,19 @@ import arenaBuildClipPoster from '@/assets/projects/game-project-qingyun/clips/a
 import lightingClip from '@/assets/projects/game-project-qingyun/clips/lighting.mp4?url';
 import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lighting-poster.webp?url';
 
+import imgExtractedRocks from '@/assets/projects/game-project-qingyun/game-project-qingyun_ExtractedRocks.webp';
+import imgDebugHitZones from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugHitZones.webp';
+import imgDebugAttackShape from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugAttackShape.webp';
+import imgDebugSwingAir from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugSwingAir.webp';
+import imgDebugSwingTrails from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugSwingTrails.webp';
+import imgDebugGather from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugGather.webp';
+import imgDebugWindLift from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugWindLift.webp';
+import imgDebugWindField from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugWindField.webp';
+import imgDebugLeafStat from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugLeafStat.webp';
+import imgLeafLabGather from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabGather.webp';
+import imgLeafLabCompare from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabCompare.webp';
+import imgLeafLabField from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabField.webp';
+
 ## 游戏简介
 
 《青云》是一款用 Unreal Engine 5 制作的第三人称动作 Boss 战。
@@ -90,6 +103,10 @@ Boss 的起点是 Paragon 原版的 Rampage（元素皮肤）。我没有重新�
 * **链石**：环绕身体游动的石链，是后面符文石的弹药。
 * **Chaos 破碎**：岩石、前臂和身体的各个部位都预先生成了几何集合，用于打落、断臂和最终碎裂。
 
+岩石的切分是一次性的编辑器工具：在 Rampage 的岩石材质槽上，按共享顶点做并查集，把每个连通的岩块分离出来；每块按主轴重新定朝向，保存为独立的静态网格，并记录它挂在哪根骨骼、相对偏移和初始旋转。最终切出 29 块，这些记录决定了每块浮石在运行时的目标位置。法环用了 29 块浮石，链石共 11 条、112 块。
+
+<Image src={imgExtractedRocks} alt="从 Rampage 模型中切出的 29 块岩石网格" />
+
 ### 石头的流转：贯穿三个阶段
 
 石头系统的设计是让同一批石头在整场战斗中不断改变用途，玩家打下来的东西最后都会回来。
@@ -110,6 +127,15 @@ Boss 的起点是 Paragon 原版的 Rampage（元素皮肤）。我没有重新�
 * **双柱**：肩后的两根石柱撕下升空，在场地中央上空巡游，拥有独立 AI，与 Boss 并行进攻；只有满蓄力重击能击碎它们。
 * **符石风暴**：链石被抽出，在 Boss 头顶聚成石环，按节拍射向主角，每颗都沿不同的飞行轨迹命中，还带着随行石。主角在节拍上挥棍就能逐颗击碎；没接住的石块会整块插进地里，风暴结束后石块回归链条，地上留下复制体。最后一颗可以用重击击回 Boss。
 * **漩涡**：双臂都断后，此前散落在地上的碎石、插地的复制体和场地边缘的石块全部升空，形成环绕战场的石块漩涡。
+
+<div class="image-grid-2">
+    <Image src={imgDebugHitZones} alt="受击判定调试视图：白色为本体，橙色为带护甲的手臂，右上角为 Boss 实时状态" />
+    <Image src={imgDebugAttackShape} alt="攻击判定调试视图：重砸的命中范围（红色线框）" />
+</div>
+
+* **受击判定**：每个部位由一组跟随骨骼的球体组成，命中结果按部位结算；带护甲的手臂会弹开轻击，只有重击和处决能造成伤害。调试视图右上角实时显示血量、破防值、双臂状态和剩余石块数。
+* **攻击判定**：每个招式的命中范围按动画时间开启和关闭，调试视图把当前生效的范围画成线框（上图右为重砸）。
+* **血量闸门**：每只手臂对应一道血量阈值，到达阈值后血量锁住，直到完成断臂处决才继续往下；最后一段血量同样锁住，只能用最终处决结束战斗，保证三个阶段按顺序推进。
 
 <div class="image-grid-2">
     <figure>
@@ -133,6 +159,9 @@ Boss 的起点是 Paragon 原版的 Rampage（元素皮肤）。我没有重新�
     </figure>
 </div>
 
+* **符石风暴的节拍**：发射节奏以真实时间计，每秒 3 颗逐渐加速到 9.5 颗；每轮齐射的数量从 1 颗增加到 8 颗，飞行时间随进度缩短。每颗石头沿二次贝塞尔曲线飞行，控制点随机偏向两侧和上下，所以轨迹各不相同，但终点都落在主角挥棍经过的位置上。
+* **棍与石对齐**：主角按下攻击时，系统锁定下一颗即将到达的石头，按它剩余的飞行时间调整挥棍动画的速度，并微调石头的飞行节奏，让棍子在画面上正好击中它，而不是在远处判定命中。
+
 ### 战斗手感
 
 主角的所有手感都做成了参数，集中在项目设置的中文面板里，运行时修改立即生效：连段节奏、蓄力档位、攻击判定距离、顿帧、镜头震动和 FOV 冲击等。
@@ -151,6 +180,8 @@ Boss 的起点是 Paragon 原版的 Rampage（元素皮肤）。我没有重新�
 * **打击感**：命中时世界放慢一拍，主角动作在命中点顿住，镜头沿攻击方向震动并做 FOV 冲击；Boss 永远不会让主角变慢，所有手感都放在主角一侧。
 * **极限闪避**：按时间曲线控制的时停，镜头随慢动作一起变化。
 * **锁定**：按镜头注视方向寻找目标，用滚轮在左臂、本体和右臂之间切换。
+
+* **顿帧数值**：轻击世界放慢约 0.06 秒，重击约 0.11 秒，恢复速度按顿帧长度缩放；主角的动画在命中点冻结一小段，镜头仍保持跟随。
 
 ### 写实雷电
 
@@ -180,6 +211,10 @@ Boss 的起点是 Paragon 原版的 Rampage（元素皮肤）。我没有重新�
     <video class="clip" src={leapTelegraphClip} poster={leapTelegraphClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="跳砸预警"></video>
     <figcaption>跳砸：地面预警圈与能量光柱</figcaption>
 </figure>
+
+* **放电的时间结构**：一次电爆约 0.6 秒。先导在约 0.035 秒内从命中点长出去，随后整条通道闪亮（主放电），之后在 0.11 和 0.19 秒附近各有一次较弱的回闪沿同一路径重现，通道形状在这段时间里保持不变。
+* **几何**：每条通道 22 段，用带方向偏置的随机游走生成，再做一层更细的抖动；沿途约 40% 的节点会长出分叉，部分分叉再分叉。所有线段生成为朝向相机的条带，白色细核心加一层柔光，整体线宽很细，远看不会糊成一团。
+* **复用**：同一套放电函数也用于符石被击碎时的青色电爆（10 条电弧、0.2 秒）。
 
 ### 落叶与风场
 
@@ -211,6 +246,23 @@ Boss 的起点是 Paragon 原版的 Rampage（元素皮肤）。我没有重新�
     </figure>
 </div>
 
+<div class="image-grid-2">
+    <Image src={imgDebugSwingAir} alt="普攻扫叶：沿棍身注入的气流体积（蓝色线框）与被吹起的叶片" />
+    <Image src={imgDebugSwingTrails} alt="普攻扫叶：被气流卷起的叶片轨迹，按来源着色" />
+</div>
+
+<div class="image-grid-2">
+    <Image src={imgDebugGather} alt="重击聚叶：蓄力时向心吸附（橙色）与释放时的径向爆散（紫色）" />
+    <Image src={imgDebugWindLift} alt="上升气流把叶片卷起（青色）" />
+</div>
+
+<div class="image-grid-2">
+    <Image src={imgDebugWindField} alt="风场箭头：主角周围的气流方向与强度" />
+    <Image src={imgDebugLeafStat} alt="实时耗时：叶片各模块的游戏线程耗时与引擎帧统计" />
+</div>
+
+调试视图里每种颜色对应一种扰动来源：绿色步行、浅绿奔跑、蓝色闪避、红色重击、紫色爆散、黄色阵风、青色上升气流。左上角的统计按模块列出模拟、上传、风、踢叶、天空、环境、调试各自的平均和最坏耗时；上图中有 2691 片叶子同时在飞，编辑器内约 3 毫秒。
+
 为了调手感，我做了一个离线实验室：在游戏里录下一次挥棍，之后用不同参数确定性地重放，批量对比结果；配套的基准测试统计飞行叶片数量与耗时的关系。
 
 <Image src={imgLeafLabView} alt="落叶实验室：俯视轨迹、叶片路径与耗时曲线" />
@@ -219,6 +271,16 @@ Boss 的起点是 Paragon 原版的 Rampage（元素皮肤）。我没有重新�
     <Image src={imgLeafLabSweep} alt="同一次挥棍在不同时刻的风场与叶片分布" />
     <Image src={imgLeafBench} alt="飞行叶片数量与游戏线程耗时，红线为 1 毫秒预算" />
 </div>
+
+<Image src={imgLeafLabGather} alt="重击聚叶在离线实验室中的逐时刻风场与叶片分布" />
+
+<Image src={imgLeafLabField} alt="一次挥棍过程中，风场在两个高度切片上的变化" />
+
+<Image src={imgLeafLabCompare} alt="参数扫描对比：同一次录制用三组参数重放，下方是逐项指标对比表" />
+
+* **实验室流程**：录制保存叶片、风场和事件的逐帧数据；重放时用固定随机种子和固定时间步，结果可重复；扫描一个参数的多个取值，自动生成并排的对比图和指标表（飞起数量、最大高度、平均距离、落地时间、耗时等），据此选定参数。
+* **渲染与更新**：落叶切成小块的实例化网格，只把这一帧动过的实例批量提交，并同时传入上一帧的变换，让 TSR 拿到正确的运动矢量，叶片不会拖影；每块实例网格使用固定包围盒，避免每帧重新计算。
+* **查找与分级**：用空间哈希查找某点附近静止的叶子；飞行中的叶子按距离分为近、中、远三档降低计算频率，远处的叶子隔帧更新。
 
 ### 竹林战场
 
@@ -254,3 +316,4 @@ Boss 的起点是 Paragon 原版的 Rampage（元素皮肤）。我没有重新�
 * **录制导演**：在游戏里按时间表执行命令，自动摆位、切换参数、触发招式、移动镜头；开发日志里的大部分镜头都由它自动拍摄。
 * **封面拍摄**：暂停在指定瞬间，按给定构图摆相机，输出高分辨率截图。
 * **测试命令**：一组控制台命令可以直接触发 Boss 的任意招式、断臂、阶段跳转和主角的各种动作，用于自测和录制。
+* **编辑器自动化**：场景搭建、材质和 Niagara 系统的批量生成、字体导入等都写成 Python 编辑器脚本，通过本地接口在编辑器里执行，修改可以重复、可追溯。

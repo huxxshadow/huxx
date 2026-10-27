@@ -47,6 +47,19 @@ import arenaBuildClipPoster from '@/assets/projects/game-project-qingyun/clips/a
 import lightingClip from '@/assets/projects/game-project-qingyun/clips/lighting.mp4?url';
 import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lighting-poster.webp?url';
 
+import imgExtractedRocks from '@/assets/projects/game-project-qingyun/game-project-qingyun_ExtractedRocks.webp';
+import imgDebugHitZones from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugHitZones.webp';
+import imgDebugAttackShape from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugAttackShape.webp';
+import imgDebugSwingAir from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugSwingAir.webp';
+import imgDebugSwingTrails from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugSwingTrails.webp';
+import imgDebugGather from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugGather.webp';
+import imgDebugWindLift from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugWindLift.webp';
+import imgDebugWindField from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugWindField.webp';
+import imgDebugLeafStat from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugLeafStat.webp';
+import imgLeafLabGather from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabGather.webp';
+import imgLeafLabCompare from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabCompare.webp';
+import imgLeafLabField from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabField.webp';
+
 ## ゲーム紹介
 
 『青雲（Qingyun）』は Unreal Engine 5 で制作した三人称アクションのボス戦です。
@@ -90,6 +103,10 @@ import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lig
 * **鎖石**：体の周りを泳ぐ石の鎖で、後の符石の弾薬です。
 * **Chaos 破壊**：岩、前腕、体の各部位のジオメトリコレクションを事前生成し、打ち落とし・腕の破壊・最後の粉砕に使います。
 
+岩の切り出しは一度きりのエディタツールです。Rampage の岩マテリアルスロットに対して共有頂点で Union-Find を行い、つながった岩を一つずつ分離します。各片を主軸に沿って向き直してスタティックメッシュとして保存し、どのボーンに付くか、オフセット、初期回転を記録します。切り出されたのは 29 個で、この記録が実行時に各浮石の目標位置になります。法輪には 29 個、鎖石は 11 本・計 112 個の石を使っています。
+
+<Image src={imgExtractedRocks} alt="Rampage のモデルから切り出した 29 個の岩メッシュ" />
+
 ### 三つのフェーズを巡る石
 
 石システムは、同じ石が戦い全体を通じて役割を変え続け、プレイヤーが打ち落としたものが最後に戻ってくるように設計しました。
@@ -110,6 +127,15 @@ import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lig
 * **双柱**：肩の二本の石柱が引き剥がされて宙に浮き、場の中央上空を巡回します。独自の AI を持ちボスと並行して攻撃し、フルチャージの重攻撃でしか砕けません。
 * **符石の嵐**：鎖石が引き抜かれてボスの頭上で輪になり、拍に合わせて主人公へ放たれます。一つ一つが異なる軌道で飛来し、随伴する石も伴います。拍に合わせて振れば一つずつ砕けます。受け損ねた石は丸ごと地面に突き刺さり、嵐が終わると本体は鎖に戻り、地面には複製が残ります。最後の一つは重攻撃でボスへ打ち返せます。
 * **渦**：両腕を失うと、地面に散らばった破片、突き刺さった複製、場の縁の石がすべて舞い上がり、戦場を取り巻く石の渦になります。
+
+<div class="image-grid-2">
+    <Image src={imgDebugHitZones} alt="被弾判定のデバッグビュー：白が本体、オレンジが装甲付きの腕。右上はボスのリアルタイム状態" />
+    <Image src={imgDebugAttackShape} alt="攻撃判定のデバッグビュー：叩きつけの命中範囲（赤いワイヤーフレーム）" />
+</div>
+
+* **被弾判定**：各部位はボーンに追従する球の集まりで、命中は部位ごとに処理します。装甲付きの腕は通常攻撃を弾き、ダメージを与えられるのは重攻撃と処刑だけです。デバッグビューの右上には体力、ブレイク値、両腕の状態、残りの石の数がリアルタイムで表示されます。
+* **攻撃判定**：各技の命中範囲はアニメーションの時間に沿って有効・無効が切り替わり、デバッグビューは有効な範囲をワイヤーフレームで描きます（右は叩きつけ）。
+* **体力ゲート**：腕ごとに体力の閾値があり、到達すると処刑が済むまで体力がロックされます。最後の体力もロックされ、最終処刑でしか戦いを終えられないため、三つのフェーズは必ず順番に進みます。
 
 <div class="image-grid-2">
     <figure>
@@ -133,6 +159,9 @@ import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lig
     </figure>
 </div>
 
+* **嵐の拍**：発射は実時間で刻み、毎秒 3 個から 9.5 個へ加速します。一斉射の数は 1 個から 8 個に増え、飛行時間も短くなります。各石は二次ベジェ曲線で飛び、制御点を左右と上下にランダムにずらすので軌道は一つ一つ違いますが、終点はすべて主人公の振りが通る位置です。
+* **棒と石の一致**：攻撃を押すと次に到着する石がロックされ、その残り飛行時間から振りのアニメーション速度を決め、石の進み具合も微調整します。そのため棒は画面上で実際に石を捉え、離れた位置で命中扱いになることはありません。
+
 ### 戦闘の手触り
 
 主人公の手触りはすべてパラメータ化し、プロジェクト設定の中国語パネルにまとめました。実行中に変更すると即座に反映されます：コンボのテンポ、ための段階、攻撃判定の距離、ヒットストップ、カメラの揺れ、FOV インパクトなど。
@@ -151,6 +180,8 @@ import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lig
 * **打撃感**：命中時に世界が一拍遅くなり、主人公の動きが命中点で止まり、カメラが攻撃方向に揺れて FOV インパクトが入ります。ボスが主人公を遅くすることはなく、手触りはすべて主人公側で処理します。
 * **ジャスト回避**：カーブで制御する時間停止。カメラもスローモーションに合わせて変化します。
 * **ロックオン**：カメラの注視方向から対象を探し、マウスホイールで左腕・本体・右腕を切り替えます。
+
+* **ヒットストップの値**：通常攻撃で約 0.06 秒、重攻撃で約 0.11 秒世界が遅くなり、復帰の速さは停止の長さに合わせます。主人公のアニメーションは命中点で少しの間止まり、カメラは追従を続けます。
 
 ### 写実的な雷
 
@@ -180,6 +211,10 @@ import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lig
     <video class="clip" src={leapTelegraphClip} poster={leapTelegraphClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="跳躍叩きつけの予兆"></video>
     <figcaption>跳躍叩きつけ：地面の予兆リングとエネルギーの光柱</figcaption>
 </figure>
+
+* **放電の時間構造**：一回の放電は約 0.6 秒です。先駆放電が約 0.035 秒で命中点から伸び、続いて経路全体が光り（主放電）、約 0.11 秒と 0.19 秒に弱い再放電が同じ経路をなぞります。経路の形はその間ずっと固定です。
+* **ジオメトリ**：各経路は方向にバイアスをかけたランダムウォークによる 22 セグメントで、その上に細かな揺らぎを重ねます。途中の約 40% の節点から枝が伸び、その一部はさらに枝分かれします。すべての線分はカメラを向いた帯として生成し、白く細い芯と柔らかなグローを持たせ、遠くからでも塊にぼやけない細さにしています。
+* **再利用**：同じ放電関数を、符石が砕けたときの青い放電（10 本、0.2 秒）にも使っています。
 
 ### 落ち葉と風
 
@@ -211,6 +246,23 @@ import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lig
     </figure>
 </div>
 
+<div class="image-grid-2">
+    <Image src={imgDebugSwingAir} alt="通常攻撃の葉払い：棒に沿って注入した気流ボリューム（青いワイヤーフレーム）と舞い上がる葉" />
+    <Image src={imgDebugSwingTrails} alt="通常攻撃の葉払い：原因ごとに色分けした葉の軌跡" />
+</div>
+
+<div class="image-grid-2">
+    <Image src={imgDebugGather} alt="重攻撃の葉集め：ため中の引き寄せ（オレンジ）と放ったときの放射状の吹き飛ばし（マゼンタ）" />
+    <Image src={imgDebugWindLift} alt="上昇気流が葉を巻き上げる（シアン）" />
+</div>
+
+<div class="image-grid-2">
+    <Image src={imgDebugWindField} alt="風の場の矢印：主人公の周りの気流の向きと強さ" />
+    <Image src={imgDebugLeafStat} alt="リアルタイムの処理時間：葉のモジュールごとのゲームスレッド時間とエンジンのフレーム統計" />
+</div>
+
+デバッグビューの色はそれぞれ乱した原因を表します：緑が歩き、黄緑が走り、青が回避、赤が重攻撃、マゼンタが爆散、黄が突風、シアンが上昇気流です。左上の統計はシミュレーション、アップロード、風、蹴り、空、環境、デバッグの平均と最悪の時間を個別に表示します。上の画面では 2691 枚の葉が同時に飛んでおり、エディタ内で約 3 ミリ秒です。
+
 手触りを調整するためにオフライン実験室を作りました。ゲーム内で一振りを録画し、異なるパラメータで決定論的に再生してまとめて比較します。付属のベンチマークは、飛んでいる葉の数と処理時間の関係を計測します。
 
 <Image src={imgLeafLabView} alt="落ち葉実験室：俯瞰の軌跡、葉の経路、処理時間の曲線" />
@@ -219,6 +271,16 @@ import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lig
     <Image src={imgLeafLabSweep} alt="同じ一振りの各時刻における風の場と葉の分布" />
     <Image src={imgLeafBench} alt="飛んでいる葉の数とゲームスレッドの処理時間。赤線は 1 ミリ秒の予算" />
 </div>
+
+<Image src={imgLeafLabGather} alt="オフライン実験室での重攻撃の葉集め：時刻ごとの風の場と葉の分布" />
+
+<Image src={imgLeafLabField} alt="一振りの間に二つの高さの断面で変化する風の場" />
+
+<Image src={imgLeafLabCompare} alt="パラメータスイープの比較：同じ録画を三つの設定で再生し、下に指標の比較表" />
+
+* **実験室のワークフロー**：録画は葉、風の場、イベントのフレームごとのデータを保存します。再生は固定の乱数シードと固定タイムステップで行うので結果は完全に再現でき、一つのパラメータを複数の値でスイープすると、並べた比較図と指標表（舞い上がった数、最高高度、平均移動距離、着地時間、処理時間など）が自動で作られ、それを見て値を決めます。
+* **描画と更新**：落ち葉は小さなインスタンスメッシュに分割し、そのフレームに動いたインスタンスだけを一括で送り、前フレームの変換も渡して TSR に正しいモーションベクトルを与えるので葉が尾を引きません。各インスタンスメッシュは固定のバウンズを持ち、毎フレームの再計算をしません。
+* **検索と段階**：空間ハッシュで一点の近くの静止した葉を探します。飛んでいる葉は距離で近・中・遠の三段階に分けて計算頻度を下げ、遠くの葉は 1 フレームおきに更新します。
 
 ### 竹林の戦場
 
@@ -254,3 +316,4 @@ import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lig
 * **録画ディレクター**：ゲーム内でタイムテーブルに沿ってコマンドを実行し、配置、パラメータの切り替え、技の発動、カメラの移動を自動で行います。開発日誌のショットの大半はこれで自動撮影しました。
 * **カバー撮影**：指定した瞬間で一時停止し、与えた構図にカメラを置いて高解像度のスクリーンショットを出力します。
 * **テストコマンド**：ボスの任意の技、腕の破壊、フェーズ移行、主人公の各種アクションを直接発動できるコンソールコマンド群。自己テストと録画に使います。
+* **エディタの自動化**：シーンの構築、マテリアルと Niagara システムの一括生成、フォントの取り込みなどはすべて Python エディタスクリプトにし、ローカルのインターフェース経由でエディタ内で実行するので、変更は再現でき、追跡できます。

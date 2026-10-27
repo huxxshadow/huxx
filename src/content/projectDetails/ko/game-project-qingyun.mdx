@@ -47,6 +47,19 @@ import arenaBuildClipPoster from '@/assets/projects/game-project-qingyun/clips/a
 import lightingClip from '@/assets/projects/game-project-qingyun/clips/lighting.mp4?url';
 import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lighting-poster.webp?url';
 
+import imgExtractedRocks from '@/assets/projects/game-project-qingyun/game-project-qingyun_ExtractedRocks.webp';
+import imgDebugHitZones from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugHitZones.webp';
+import imgDebugAttackShape from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugAttackShape.webp';
+import imgDebugSwingAir from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugSwingAir.webp';
+import imgDebugSwingTrails from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugSwingTrails.webp';
+import imgDebugGather from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugGather.webp';
+import imgDebugWindLift from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugWindLift.webp';
+import imgDebugWindField from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugWindField.webp';
+import imgDebugLeafStat from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugLeafStat.webp';
+import imgLeafLabGather from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabGather.webp';
+import imgLeafLabCompare from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabCompare.webp';
+import imgLeafLabField from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabField.webp';
+
 ## 게임 소개
 
 《청운(Qingyun)》은 Unreal Engine 5로 만든 3인칭 액션 보스전입니다.
@@ -90,6 +103,10 @@ import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lig
 * **사슬돌**: 몸 주위를 헤엄치는 돌 사슬로, 이후 부적돌의 탄약입니다.
 * **Chaos 파괴**: 바위, 전완, 몸의 각 부위에 대한 지오메트리 컬렉션을 미리 생성해 떨어뜨리기, 팔 파괴, 최후의 산산조각에 사용합니다.
 
+바위 분리는 한 번 실행하는 에디터 도구입니다. Rampage의 바위 머티리얼 슬롯에서 공유 정점으로 Union-Find를 수행해 연결된 바위를 하나씩 분리하고, 각 조각을 주축에 맞춰 다시 정렬해 개별 스태틱 메시로 저장하며, 어느 본에 붙는지와 오프셋, 초기 회전을 기록합니다. 잘라낸 바위는 29개이고, 이 기록이 실행 중 각 부유석의 목표 위치가 됩니다. 법륜에는 29개, 사슬돌은 11줄 총 112개의 돌을 씁니다.
+
+<Image src={imgExtractedRocks} alt="Rampage 모델에서 잘라낸 29개의 바위 메시" />
+
 ### 세 단계를 도는 돌
 
 돌 시스템은 같은 돌이 전투 내내 역할을 바꾸고, 플레이어가 쳐낸 것이 결국 돌아오도록 설계했습니다.
@@ -110,6 +127,15 @@ import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lig
 * **쌍기둥**: 어깨의 두 돌기둥이 뜯겨 나가 공중에 떠올라 경기장 중앙 상공을 순회합니다. 독자적인 AI로 보스와 함께 공격하며, 풀 차지 강공격으로만 부술 수 있습니다.
 * **부적돌 폭풍**: 사슬돌이 뽑혀 나와 보스 머리 위에서 고리를 이루고, 박자에 맞춰 주인공에게 발사됩니다. 하나하나 다른 궤적으로 날아오며 호위 돌도 함께합니다. 박자에 맞춰 휘두르면 하나씩 부서지고, 받아내지 못한 돌은 통째로 땅에 박히며, 폭풍이 끝나면 본체는 사슬로 돌아가고 땅에는 복제가 남습니다. 마지막 하나는 강공격으로 보스에게 되받아칠 수 있습니다.
 * **소용돌이**: 두 팔을 모두 잃으면 땅에 흩어진 파편, 박혀 있던 복제, 경기장 가장자리의 돌이 모두 떠올라 전장을 감싸는 돌 소용돌이가 됩니다.
+
+<div class="image-grid-2">
+    <Image src={imgDebugHitZones} alt="피격 판정 디버그 뷰: 흰색은 본체, 주황색은 장갑을 두른 팔. 오른쪽 위는 보스의 실시간 상태" />
+    <Image src={imgDebugAttackShape} alt="공격 판정 디버그 뷰: 내려찍기의 적중 범위(빨간 와이어프레임)" />
+</div>
+
+* **피격 판정**: 각 부위는 본을 따라가는 구체 묶음이며 적중은 부위별로 처리합니다. 장갑을 두른 팔은 일반 공격을 튕겨 내므로 피해를 줄 수 있는 것은 강공격과 처형뿐입니다. 디버그 뷰 오른쪽 위에 체력, 브레이크 수치, 두 팔의 상태, 남은 돌 수가 실시간으로 표시됩니다.
+* **공격 판정**: 각 기술의 적중 범위는 애니메이션 시간에 따라 켜지고 꺼지며, 디버그 뷰는 활성 범위를 와이어프레임으로 그립니다(오른쪽은 내려찍기).
+* **체력 게이트**: 팔마다 체력 기준이 있어, 도달하면 그 팔의 처형이 끝날 때까지 체력이 잠깁니다. 마지막 구간의 체력도 잠겨 최종 처형으로만 전투를 끝낼 수 있으므로, 세 단계는 항상 순서대로 진행됩니다.
 
 <div class="image-grid-2">
     <figure>
@@ -133,6 +159,9 @@ import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lig
     </figure>
 </div>
 
+* **폭풍의 박자**: 발사는 실제 시간 기준으로 초당 3개에서 9.5개로 빨라집니다. 일제 사격 수는 1개에서 8개로 늘고, 비행 시간도 짧아집니다. 각 돌은 2차 베지어 곡선으로 날아가며 제어점을 좌우와 위아래로 무작위로 밀어 궤적이 모두 다르지만, 끝점은 모두 주인공의 휘두르기가 지나가는 위치입니다.
+* **봉과 돌의 일치**: 공격을 누르면 다음에 도착할 돌이 잠기고, 그 돌의 남은 비행 시간으로 휘두르기 애니메이션 속도를 정하며 돌의 진행도 미세하게 조정합니다. 그래서 봉이 화면에서 실제로 돌을 맞히고, 멀리서 적중 처리되는 일이 없습니다.
+
 ### 전투 손맛
 
 주인공의 손맛은 모두 파라미터로 만들어 프로젝트 설정의 중국어 패널에 모았고, 실행 중에 바꾸면 바로 반영됩니다: 콤보 템포, 차지 단계, 공격 판정 거리, 히트스톱, 카메라 흔들림, FOV 임팩트 등.
@@ -151,6 +180,8 @@ import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lig
 * **타격감**: 적중 시 세계가 한 박자 느려지고, 주인공의 동작이 적중 지점에서 멈추며, 카메라가 공격 방향으로 흔들리고 FOV 임팩트가 들어갑니다. 보스가 주인공을 느리게 만드는 일은 없으며, 손맛은 모두 주인공 쪽에서 처리합니다.
 * **저스트 회피**: 커브로 제어하는 시간 정지이며, 카메라도 슬로모션에 맞춰 변합니다.
 * **록온**: 카메라가 바라보는 방향으로 대상을 찾고, 마우스 휠로 왼팔·본체·오른팔을 전환합니다.
+
+* **히트스톱 수치**: 일반 공격은 약 0.06초, 강공격은 약 0.11초 동안 세계가 느려지고, 회복 속도는 정지 길이에 맞춥니다. 주인공의 애니메이션은 적중 지점에서 잠시 멈추고 카메라는 계속 따라갑니다.
 
 ### 사실적인 번개
 
@@ -180,6 +211,10 @@ import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lig
     <video class="clip" src={leapTelegraphClip} poster={leapTelegraphClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="도약 내려찍기 예고"></video>
     <figcaption>도약 내려찍기: 바닥의 예고 고리와 에너지 광주</figcaption>
 </figure>
+
+* **방전의 시간 구조**: 한 번의 방전은 약 0.6초입니다. 선도 방전이 약 0.035초 만에 적중 지점에서 뻗어 나가고, 이어서 경로 전체가 번쩍이며(주 방전), 약 0.11초와 0.19초에 약한 재방전이 같은 경로를 다시 따라갑니다. 경로의 모양은 그동안 고정됩니다.
+* **지오메트리**: 각 경로는 방향 편향을 준 랜덤 워크로 만든 22개 구간이며, 그 위에 더 미세한 흔들림을 얹습니다. 경로 중 약 40%의 절점에서 가지가 돋고, 그중 일부는 다시 갈라집니다. 모든 구간은 카메라를 향한 띠로 생성해 흰색의 가는 심과 부드러운 글로를 주며, 멀리서도 뭉개지지 않을 만큼 가늘게 유지합니다.
+* **재사용**: 같은 방전 함수로 부적돌이 부서질 때의 청록색 방전(10갈래, 0.2초)도 만듭니다.
 
 ### 낙엽과 바람
 
@@ -211,6 +246,23 @@ import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lig
     </figure>
 </div>
 
+<div class="image-grid-2">
+    <Image src={imgDebugSwingAir} alt="일반 공격 잎 쓸기: 봉을 따라 주입한 기류 볼륨(파란 와이어프레임)과 날아오르는 잎" />
+    <Image src={imgDebugSwingTrails} alt="일반 공격 잎 쓸기: 원인별로 색칠한 잎의 궤적" />
+</div>
+
+<div class="image-grid-2">
+    <Image src={imgDebugGather} alt="강공격 잎 모으기: 차지 중 끌어당김(주황)과 놓을 때의 방사형 폭산(마젠타)" />
+    <Image src={imgDebugWindLift} alt="상승 기류가 잎을 감아올림(청록)" />
+</div>
+
+<div class="image-grid-2">
+    <Image src={imgDebugWindField} alt="바람장 화살표: 주인공 주변 기류의 방향과 세기" />
+    <Image src={imgDebugLeafStat} alt="실시간 처리 시간: 잎 모듈별 게임 스레드 시간과 엔진 프레임 통계" />
+</div>
+
+디버그 뷰의 색은 각각 흩뜨린 원인을 나타냅니다: 초록은 걷기, 연두는 달리기, 파랑은 회피, 빨강은 강공격, 마젠타는 폭산, 노랑은 돌풍, 청록은 상승 기류입니다. 왼쪽 위의 통계는 시뮬레이션, 업로드, 바람, 차기, 하늘, 환경, 디버그의 평균과 최악 시간을 따로 보여 줍니다. 위 화면에서는 2,691장의 잎이 동시에 날고 있으며 에디터에서 약 3밀리초입니다.
+
 손맛을 조정하기 위해 오프라인 실험실을 만들었습니다. 게임에서 한 번의 휘두르기를 녹화한 뒤, 다른 파라미터로 결정론적으로 재생해 한꺼번에 비교합니다. 함께 만든 벤치마크는 날아다니는 잎의 수와 처리 시간의 관계를 측정합니다.
 
 <Image src={imgLeafLabView} alt="낙엽 실험실: 위에서 본 궤적, 잎의 경로, 처리 시간 곡선" />
@@ -219,6 +271,16 @@ import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lig
     <Image src={imgLeafLabSweep} alt="같은 휘두르기의 시점별 바람장과 잎 분포" />
     <Image src={imgLeafBench} alt="날아다니는 잎 수와 게임 스레드 처리 시간. 빨간 선은 1밀리초 예산" />
 </div>
+
+<Image src={imgLeafLabGather} alt="오프라인 실험실의 강공격 잎 모으기: 시점별 바람장과 잎 분포" />
+
+<Image src={imgLeafLabField} alt="한 번의 휘두르기 동안 두 높이 단면에서 변하는 바람장" />
+
+<Image src={imgLeafLabCompare} alt="파라미터 스윕 비교: 같은 녹화를 세 가지 설정으로 재생하고 아래에 지표 비교표" />
+
+* **실험실 워크플로**: 녹화는 잎, 바람장, 이벤트의 프레임별 데이터를 저장합니다. 재생은 고정 난수 시드와 고정 타임스텝으로 하므로 결과가 그대로 재현되고, 한 파라미터를 여러 값으로 스윕하면 나란히 놓은 비교도와 지표표(날아오른 수, 최고 높이, 평균 이동 거리, 착지 시간, 처리 시간 등)가 자동으로 만들어져 이를 보고 값을 정합니다.
+* **렌더링과 갱신**: 낙엽은 작은 인스턴스 메시로 나누고, 그 프레임에 움직인 인스턴스만 일괄 전송하며 이전 프레임의 변환도 함께 넘겨 TSR이 올바른 모션 벡터를 얻게 해 잎이 번지지 않습니다. 각 인스턴스 메시는 고정 바운드를 써 매 프레임 다시 계산하지 않습니다.
+* **검색과 단계**: 공간 해시로 한 지점 근처의 정지한 잎을 찾습니다. 날고 있는 잎은 거리에 따라 근·중·원 세 단계로 나눠 계산 빈도를 낮추고, 먼 잎은 한 프레임 걸러 갱신합니다.
 
 ### 대나무 숲 전장
 
@@ -254,3 +316,4 @@ import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lig
 * **녹화 디렉터**: 게임 안에서 시간표에 따라 명령을 실행해 위치 배치, 파라미터 전환, 기술 발동, 카메라 이동을 자동으로 수행합니다. 개발 일지의 샷 대부분을 이것으로 자동 촬영했습니다.
 * **커버 촬영**: 지정한 순간에 일시정지하고, 주어진 구도로 카메라를 배치해 고해상도 스크린샷을 출력합니다.
 * **테스트 명령**: 보스의 모든 기술, 팔 파괴, 단계 전환, 주인공의 각종 동작을 바로 발동하는 콘솔 명령 모음으로, 자체 테스트와 녹화에 사용합니다.
+* **에디터 자동화**: 장면 구축, 머티리얼과 Niagara 시스템의 일괄 생성, 폰트 가져오기 등은 모두 Python 에디터 스크립트로 만들어 로컬 인터페이스를 통해 에디터 안에서 실행하므로, 변경을 반복하고 추적할 수 있습니다.

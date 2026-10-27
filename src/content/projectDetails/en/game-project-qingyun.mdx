@@ -47,6 +47,19 @@ import arenaBuildClipPoster from '@/assets/projects/game-project-qingyun/clips/a
 import lightingClip from '@/assets/projects/game-project-qingyun/clips/lighting.mp4?url';
 import lightingClipPoster from '@/assets/projects/game-project-qingyun/clips/lighting-poster.webp?url';
 
+import imgExtractedRocks from '@/assets/projects/game-project-qingyun/game-project-qingyun_ExtractedRocks.webp';
+import imgDebugHitZones from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugHitZones.webp';
+import imgDebugAttackShape from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugAttackShape.webp';
+import imgDebugSwingAir from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugSwingAir.webp';
+import imgDebugSwingTrails from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugSwingTrails.webp';
+import imgDebugGather from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugGather.webp';
+import imgDebugWindLift from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugWindLift.webp';
+import imgDebugWindField from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugWindField.webp';
+import imgDebugLeafStat from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugLeafStat.webp';
+import imgLeafLabGather from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabGather.webp';
+import imgLeafLabCompare from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabCompare.webp';
+import imgLeafLabField from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabField.webp';
+
 ## About the Game
 
 *Qingyun* is a third-person action boss fight made in Unreal Engine 5.
@@ -90,6 +103,10 @@ The boss starts from Paragon's stock Rampage (Elemental skin). Rather than remod
 * **Chains**: strings of stones swimming around the body, the ammunition for the later rune stones.
 * **Chaos destruction**: geometry collections are pre-generated for the rocks, the forearms and every region of the body, used for knock-offs, arm breaks and the final shatter.
 
+The cut is a one-off editor tool: over Rampage's rock material slots it runs a union-find on shared vertices to separate every connected rock, re-orients each piece along its principal axes, saves it as its own static mesh, and records which bone it hangs from, its offset and its rest rotation. It produces 29 rocks, and those records give every floating stone its target at runtime. The halo uses 29 stones; the chains are 11 strings with 112 stones in all.
+
+<Image src={imgExtractedRocks} alt="The 29 rock meshes cut out of the Rampage model" />
+
 ### The Stones' Journey Through Three Phases
 
 The stone system is designed so that the same stones keep changing roles over the whole fight, and everything the player knocks off comes back.
@@ -110,6 +127,15 @@ The stone system is designed so that the same stones keep changing roles over th
 * **Twin pillars**: the two pillars on his back tear free and roam above the centre of the arena with their own AI, attacking alongside the boss; only a fully charged heavy attack can shatter them.
 * **Rune storm**: chain stones are drawn out into a ring above the boss and fired at the hero on a beat, each on its own flight path and with escort stones. Swinging on the beat breaks them one by one; stones that get through drive into the ground whole, return to the chains when the storm ends, and leave copies standing in the ground. The last stone can be batted back into the boss with a heavy attack.
 * **Vortex**: once both arms are gone, every broken piece on the ground, the planted copies and the stones at the arena's edge rise into a vortex around the arena.
+
+<div class="image-grid-2">
+    <Image src={imgDebugHitZones} alt="Hit zone debug view: white is the body, orange the armoured arms; the boss's live state at the top right" />
+    <Image src={imgDebugAttackShape} alt="Attack debug view: the slam's hit volume (red wireframe)" />
+</div>
+
+* **Hit zones**: every body part is a set of spheres that follow the bones, and hits are resolved per part; the armoured arms deflect light attacks, so only heavy attacks and executions deal damage. The debug view shows health, break gauge, the state of both arms and the remaining stones live at the top right.
+* **Attack volumes**: each move's hit volume switches on and off along its animation time, and the debug view draws the active one as a wireframe (the slam, right).
+* **Health gates**: each arm has a health threshold; once it is reached, health locks until that arm's execution is done. The last stretch of health locks too, so only the final execution can end the fight and the three phases always come in order.
 
 <div class="image-grid-2">
     <figure>
@@ -133,6 +159,9 @@ The stone system is designed so that the same stones keep changing roles over th
     </figure>
 </div>
 
+* **The storm's beat**: firing runs on real time, rising from 3 to 9.5 stones a second; each volley grows from 1 to 8 stones and flight times shorten as it goes. Every stone flies a quadratic Bézier curve whose control point is pushed randomly to the sides and up or down, so each path differs while all of them end where the hero's swing passes.
+* **Staff meets stone**: when attack is pressed, the next stone about to arrive is locked; the swing's animation speed is set from that stone's remaining flight time and the stone's pace is nudged, so the staff visibly connects with it on screen rather than registering a hit at a distance.
+
 ### Combat Feel
 
 Everything about how the hero feels is a parameter, gathered in Chinese-labelled Project Settings panels and live while playing: combo timing, charge tiers, hit reach, hit stop, camera shake, FOV punch and more.
@@ -151,6 +180,8 @@ Everything about how the hero feels is a parameter, gathered in Chinese-labelled
 * **Impact**: on a hit the world slows for a beat, the hero's swing holds at the point of contact, and the camera shakes along the blow with an FOV punch. The boss never slows the hero down; all of the feel lives on the hero's side.
 * **Perfect dodge**: a curve-driven time stop, with the camera following the slow motion.
 * **Lock-on**: targets are found from where the camera looks, and the mouse wheel steps between the left arm, the body and the right arm.
+
+* **Hit stop values**: about 0.06 s of world slow for light hits and 0.11 s for heavy ones, with the recovery scaled to the stop's length; the hero's animation freezes briefly at the point of contact while the camera keeps following.
 
 ### Realistic Lightning
 
@@ -180,6 +211,10 @@ A fully charged heavy attack carries lightning. The first version used thick glo
     <video class="clip" src={leapTelegraphClip} poster={leapTelegraphClipPoster} width="1280" height="550" muted loop playsinline preload="none" data-autoplay aria-label="Leap slam telegraph"></video>
     <figcaption>Leap slam: the ground warning ring and the energy column</figcaption>
 </figure>
+
+* **Timing of a discharge**: one burst lasts about 0.6 s. The leader grows out of the impact point in about 0.035 s, the whole channel then flashes (the return stroke), and weaker re-strikes replay the same paths at about 0.11 s and 0.19 s; the channel shapes stay fixed throughout.
+* **Geometry**: each channel has 22 segments from a direction-biased random walk with finer jitter on top; about 40% of the nodes along it sprout branches, some of which branch again. Every segment becomes a camera-facing strip with a thin white core and a soft glow, kept fine enough that it never smears into a blob at a distance.
+* **Reuse**: the same discharge function drives the cyan burst when a rune stone is shattered (10 bolts, 0.2 s).
 
 ### Leaves and Wind
 
@@ -211,6 +246,23 @@ Thousands of fallen leaves cover the clearing, every one an individual instance 
     </figure>
 </div>
 
+<div class="image-grid-2">
+    <Image src={imgDebugSwingAir} alt="Light attack sweep: air volumes injected along the staff (blue wireframe) and the leaves they lift" />
+    <Image src={imgDebugSwingTrails} alt="Light attack sweep: leaf trails coloured by source" />
+</div>
+
+<div class="image-grid-2">
+    <Image src={imgDebugGather} alt="Heavy gather: inward pull while charging (orange) and the radial blast on release (magenta)" />
+    <Image src={imgDebugWindLift} alt="Rising air lifting leaves (cyan)" />
+</div>
+
+<div class="image-grid-2">
+    <Image src={imgDebugWindField} alt="Wind field arrows: direction and strength of the air around the hero" />
+    <Image src={imgDebugLeafStat} alt="Live cost: game-thread time per leaf module and engine frame stats" />
+</div>
+
+Each colour in the debug view is one source of disturbance: green walk, light green run, blue dodge, red heavy, magenta blast, yellow gust, cyan rising air. The stats at the top left list the average and worst time of simulation, upload, wind, kicks, sky, ambient and debug separately; with 2,691 leaves in flight in the shot above it is about 3 ms in the editor.
+
 To tune the feel I built an offline lab: record one staff swing in the game, then replay it deterministically with different parameters and compare the results in batches; a benchmark measures cost against the number of leaves in flight.
 
 <Image src={imgLeafLabView} alt="Leaf lab: top-down trails, leaf paths and cost curves" />
@@ -219,6 +271,16 @@ To tune the feel I built an offline lab: record one staff swing in the game, the
     <Image src={imgLeafLabSweep} alt="The same swing's wind field and leaves at successive moments" />
     <Image src={imgLeafBench} alt="Leaves in flight against game-thread cost; the red line is the 1 ms budget" />
 </div>
+
+<Image src={imgLeafLabGather} alt="The heavy gather in the offline lab: wind field and leaves at successive moments" />
+
+<Image src={imgLeafLabField} alt="The wind field on two height slices over one swing" />
+
+<Image src={imgLeafLabCompare} alt="Parameter sweep: one recording replayed with three settings, with a metrics table below" />
+
+* **Lab workflow**: a recording stores per-frame leaves, wind field and events; replays use a fixed random seed and a fixed time step, so results repeat exactly; sweeping one parameter over several values produces side-by-side plots and a metrics table (leaves lifted, peak height, mean travel, landing time, cost and so on) to choose from.
+* **Rendering and updates**: the carpet is split into small instanced meshes; only the instances moved this frame are submitted in a batch, together with their previous transforms so TSR gets correct motion vectors and the leaves don't smear; each instanced mesh has fixed bounds, so they are never recomputed per frame.
+* **Lookup and tiers**: a spatial hash finds the resting leaves near a point; leaves in flight are stepped less often by distance in near, mid and far tiers, with far ones updated every other frame.
 
 ### The Bamboo Arena
 
@@ -254,3 +316,4 @@ Skill cut-ins keep the current composition and cut in from the same side, with c
 * **Recording director**: runs a timetable of commands in the game to stage positions, switch parameters, trigger moves and move cameras; most of the devlog's shots were captured with it automatically.
 * **Cover shots**: pauses on a chosen moment, places the camera for a given composition and writes high-resolution screenshots.
 * **Test commands**: a set of console commands triggers any boss move, arm break or phase change and any hero action, for self-testing and recording.
+* **Editor automation**: building the arena, generating materials and Niagara systems in batches and importing fonts are all Python editor scripts run in the editor through a local interface, so every change is repeatable and traceable.
