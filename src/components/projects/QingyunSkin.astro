@@ -3,12 +3,15 @@
 //
 // 视觉照着游戏本身走：雾里的青叶林。底色是深竹绿，正文用游戏 HUD 的骨白，强调色取 Boss 身上青玉色的能量裂纹。
 // 装饰全部是游戏里的东西：
-// - hero 背景是成片（青金调色）里开场的一帧：悟空背对镜头，竹林空地中央是还没站起来的石像；
+// - 封面是上下结构：上面一条通栏的电影画幅（上下黑边），放成片（青金调色）开场那一镜的循环——悟空背对镜头，
+//   竹林空地中央是还没站起来的石像；书法标题压在画面左下，旁边一方朱印「青叶林」（游戏里这一关的名字）；
+//   标签、简介、链接排在画幅下面。模板右侧那张封面图在这一页藏起来（og 图仍用它）。
 //   整页背景是另一帧开场画面，模糊、压暗，像隔着一层雾。
+// - 正文 H2 上面一个大号书法章节号（壹 贰 叁；英文用罗马数字）。
 // - 游戏 HUD 的祥云素材（RawAssets/UI/CloudHUD，原图缩一半）：Boss 血条的祥云双线做 H2 下划线、分隔线和 hero 底边，
 //   玩家血条左边的龙纹徽记放在标题前，两枚技能环（棍 / 法）轮流做 H3 图标。
 // - 列表符号是风暴里每颗符文石上的 HUD 标记：外圈 + 同心实心圆。
-// - hero 里飘几片竹叶（游戏里的落叶系统）；系统设了减少动态效果时不动。
+// - 画幅里飘几片竹叶（游戏里的落叶系统）；系统设了减少动态效果时竹叶不动、视频不播（只显示首帧）。
 // - 标题字：中文用游戏里的钟齐志莽行书（细一档，只收这一页标题用到的字，src/assets/.../skin/zhimangxing-qy.woff2）；
 //   这套字没有假名、谚文，日文用 Yuji Syuku，韩文用 Nanum Myeongjo，英文用 Cormorant Garamond（Google Fonts）。
 // - 所有规则都限定在 .skin-qy / html:has(.skin-qy) 下（样式表是整条路由共用的）。
@@ -19,7 +22,8 @@ interface Props {
 }
 const { stickers = false } = Astro.props;
 
-import scene from "@/assets/projects/game-project-qingyun/skin/scene.webp";
+import coverLoop from "@/assets/projects/game-project-qingyun/skin/cover-loop.mp4?url";
+import coverPoster from "@/assets/projects/game-project-qingyun/skin/cover-loop-poster.webp";
 import mist from "@/assets/projects/game-project-qingyun/skin/mist.webp";
 import meter from "@/assets/projects/game-project-qingyun/skin/hud-meter.png";
 import dragon from "@/assets/projects/game-project-qingyun/skin/dragon.png";
@@ -34,7 +38,6 @@ const leaf = (fill: string, rib: string) =>
     )}")`;
 
 const vars = [
-    `--qy-scene: url("${scene.src}")`,
     `--qy-mist: url("${mist.src}")`,
     `--qy-meter: url("${meter.src}")`,
     `--qy-dragon: url("${dragon.src}")`,
@@ -42,10 +45,15 @@ const vars = [
     `--qy-ring-1: url("${ringMagic.src}")`,
     `--qy-leaf-0: ${leaf("#2c5a40", "#4f8a68")}`,
     `--qy-leaf-1: ${leaf("#9cc7a8", "#d8eadb")}`,
-].join("; ");
+];
+// 朱印的斑驳：噪声做 alpha 遮罩，印面上随机缺几处
+const sealGrain = `url("data:image/svg+xml,${encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' width='120' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='3' seed='7'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -4.2 3.25'/></filter><rect width='100%' height='100%' filter='url(#n)'/></svg>`,
+)}")`;
+vars.push(`--qy-seal-grain: ${sealGrain}`);
 const fontFace = `@font-face { font-family: "QY Brush"; src: url("${brush}") format("woff2"); font-display: swap; }`;
 
-// hero 里飘落的竹叶：横向位置、时长、延迟、大小、深浅
+// 画幅里飘落的竹叶：横向位置、时长、延迟、大小、深浅
 // （减少动态效果时停在 y、转 r 度）
 const LEAVES = [
     [6, 13, -2, 1.1, 0, 18, 32], [17, 17, -9, 0.8, 1, 62, -48], [29, 15, -5, 1.3, 0, 84, 70], [41, 19, -13, 0.9, 1, 8, -25],
@@ -55,13 +63,17 @@ const LEAVES = [
 ---
 
 {stickers ? (
-        <div class="qy-deco" aria-hidden="true">
-            {LEAVES.map(([x, dur, delay, s, tone, y, r]) => (
-                    <span
-                            class="qy-leaf"
-                            style={`--x: ${x}%; --dur: ${dur}s; --delay: ${delay}s; --s: ${s}; --y: ${y}%; --r: ${r}deg; background-image: var(--qy-leaf-${tone});`}
-                    ></span>
-            ))}
+        <div class="qy-cover" aria-hidden="true">
+            <div class="qy-cover-frame">
+                <video class="qy-cover-video" src={coverLoop} poster={coverPoster.src} width="1920" height="820" muted loop playsinline preload="auto"></video>
+                <div class="qy-cover-shade"></div>
+                {LEAVES.map(([x, dur, delay, s, tone, y, r]) => (
+                        <span
+                                class="qy-leaf"
+                                style={`--x: ${x}%; --dur: ${dur}s; --delay: ${delay}s; --s: ${s}; --y: ${y}%; --r: ${r}deg; background-image: var(--qy-leaf-${tone});`}
+                        ></span>
+                ))}
+            </div>
             <div class="qy-meter-line"></div>
         </div>
 ) : (
@@ -72,18 +84,28 @@ const LEAVES = [
                     rel="stylesheet"
                     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nanum+Myeongjo:wght@700;800&family=Yuji+Syuku&display=swap"
             />
-            <style is:inline set:html={`${fontFace} html:has(.skin-qy) { ${vars}; }`} />
+            <style is:inline set:html={`${fontFace} html:has(.skin-qy) { ${vars.join("; ")}; }`} />
         </>
 )}
+
+<script>
+    // 封面循环：减少动态效果时不播，停在首帧（poster）
+    document.addEventListener("astro:page-load", () => {
+        const v = document.querySelector<HTMLVideoElement>(".qy-cover-video");
+        if (!v || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        v.muted = true;
+        v.play().catch(() => {});
+    });
+</script>
 
 <style is:global>
     /* ========================================================= */
     /* 调色板：深竹绿 + HUD 骨白 + Boss 的青玉                      */
     /* ========================================================= */
     html:has(.skin-qy) {
-        --qy-night: #0b1813;      /* 页面底色 */
-        --qy-night-rgb: 11 24 19;
-        --qy-deep: #07110d;       /* 视频底 */
+        --qy-night: #173a30;      /* 页面底色：深青绿 */
+        --qy-night-rgb: 23 58 48;
+        --qy-deep: #0f2820;       /* 视频底 */
         --qy-bone: #e9ece2;       /* 游戏 HUD 的骨白：正文与线条 */
         --qy-mute: #a9bcb1;       /* 次要文字 */
         --qy-jade: #6fdcbf;       /* Boss 能量裂纹的青玉 */
@@ -99,7 +121,7 @@ const LEAVES = [
     html:has(.skin-qy) body {
         background-color: var(--qy-night);
         background-image:
-                linear-gradient(180deg, rgb(var(--qy-night-rgb) / .78) 0%, rgb(var(--qy-night-rgb) / .9) 40%, rgb(var(--qy-night-rgb) / .96) 100%),
+                linear-gradient(180deg, rgb(var(--qy-night-rgb) / .55) 0%, rgb(var(--qy-night-rgb) / .72) 40%, rgb(var(--qy-night-rgb) / .84) 100%),
                 var(--qy-mist);
         background-size: cover, cover;
         background-position: center, center top;
@@ -108,48 +130,159 @@ const LEAVES = [
     }
 
     /* ========================================================= */
-    /* HERO：开场画面做底，左侧压暗放文字                            */
+    /* HERO：上下结构。上面通栏电影画幅，下面标签 / 简介 / 链接        */
     /* ========================================================= */
     header.skin-qy {
+        --qy-bar: clamp(2.4rem, 4.2vw, 3.8rem);      /* 画幅上下黑边 */
+        --qy-letterbox: #0b2119;
         position: relative;
-        background:
-                linear-gradient(90deg, rgb(var(--qy-night-rgb) / .92) 0%, rgb(var(--qy-night-rgb) / .74) 38%, rgb(var(--qy-night-rgb) / .25) 70%, rgb(var(--qy-night-rgb) / .1) 100%),
-                linear-gradient(0deg, var(--qy-night) 0%, transparent 32%),
-                linear-gradient(180deg, rgb(var(--qy-night-rgb) / .55) 0%, transparent 22%),
-                var(--qy-scene) 62% 40% / cover no-repeat;
+        background: linear-gradient(180deg, transparent 0%, rgb(var(--qy-night-rgb) / .6) 100%);
         color: var(--qy-bone) !important;
         border-bottom: 0 !important;
-        padding-bottom: 5.5rem !important;
+        padding-top: 0 !important;
+        padding-bottom: 4rem !important;
         --theme-text: var(--qy-bone);
     }
     header.skin-qy > .absolute { display: none; }
 
-    /* 标题：前面是玩家血条上的龙纹徽记 */
-    .skin-qy .project-hero-screen h1 {
+    /* 模板的两层拆开排：返回按钮压在上黑边里，画幅，下面一行文字；右侧封面图藏起来 */
+    .skin-qy .project-hero-shell {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+    .skin-qy .project-hero-screen { display: contents; }
+    .skin-qy .project-hero-screen > div:first-child {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 3;
+        height: var(--qy-bar);
+        margin: 0 auto !important;
         display: flex;
         align-items: center;
-        gap: .3em;
+    }
+    .skin-qy .project-hero-screen > div:last-child {
+        order: 2;
+        width: 100%;
+    }
+    .skin-qy .project-hero-screen div:has(> .project-hero-image) { display: none; }
+
+    /* 画幅：通栏，上下黑边，开场时像眼睛一样从中间张开 */
+    .skin-qy .qy-cover {
+        order: 1;
+        position: relative;
+        width: 100vw;
+        margin-left: calc(50% - 50vw);
+        padding-block: var(--qy-bar);
+        background: var(--qy-letterbox);
+    }
+    .skin-qy .qy-cover-frame {
+        position: relative;
+        height: min(calc(100vw / 2.34), 72vh);
+        min-height: 14rem;
+        overflow: hidden;
+        background: var(--qy-deep);
+        animation: qy-open 1.4s cubic-bezier(.7, 0, .2, 1) both;
+    }
+    @keyframes qy-open {
+        from { clip-path: inset(50% 0); }
+        to   { clip-path: inset(0 0); }
+    }
+    .skin-qy .qy-cover-video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 50% 55%;
+        animation: qy-push 26s ease-in-out infinite alternate;
+    }
+    @keyframes qy-push {
+        from { scale: 1; }
+        to   { scale: 1.07; }
+    }
+    /* 压暗：左下给标题，四角一圈暗角 */
+    .skin-qy .qy-cover-shade {
+        position: absolute;
+        inset: 0;
+        background:
+                linear-gradient(0deg, rgb(11 33 25 / .82) 0%, rgb(11 33 25 / .3) 30%, transparent 55%),
+                radial-gradient(ellipse 60% 70% at 12% 100%, rgb(11 33 25 / .45), transparent 70%),
+                radial-gradient(ellipse 120% 100% at 50% 45%, transparent 60%, rgb(11 33 25 / .4) 100%);
+    }
+
+    /* 标题：压在画幅左下，前面是玩家血条上的龙纹徽记，后面一方朱印 */
+    .skin-qy .project-hero-screen h1 {
+        order: -1;
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        gap: .14em;
+        --qy-lift: calc(var(--qy-bar) + clamp(1.4rem, 3.2vw, 3rem));
+        margin-top: calc(-1em - var(--qy-lift)) !important;
+        margin-bottom: calc(var(--qy-lift) + 1.6rem) !important;
         font-family: var(--qy-head);
         font-weight: 400 !important;
-        font-size: clamp(3.4rem, 8vw, 6.4rem) !important;
+        font-size: clamp(4.2rem, 11vw, 9.5rem) !important;
         line-height: 1 !important;
         letter-spacing: .04em;
         color: var(--qy-bone);
-        text-shadow: 0 0 28px rgb(var(--qy-jade-rgb) / .35), 0 2px 0 rgb(0 0 0 / .35);
+        text-shadow: 0 0 36px rgb(var(--qy-jade-rgb) / .4), 0 4px 18px rgb(0 0 0 / .6);
     }
     .skin-qy .project-hero-screen h1::before {
         content: "";
         flex: none;
-        width: .95em;
-        height: .92em;
+        width: .78em;
+        height: .76em;
         background: var(--qy-dragon) center / contain no-repeat;
-        filter: drop-shadow(0 0 14px rgb(var(--qy-jade-rgb) / .35));
+        filter: drop-shadow(0 0 16px rgb(var(--qy-jade-rgb) / .45));
     }
-    html[lang="en"] .skin-qy .project-hero-screen h1 { font-weight: 600 !important; letter-spacing: .08em; }
+    .skin-qy .project-hero-screen h1::after {
+        content: "青叶林";
+        flex: none;
+        align-self: flex-end;
+        margin: 0 0 .06em .12em;
+        padding: .32em .2em;
+        writing-mode: vertical-rl;
+        font-family: "QY Brush", serif;
+        font-size: max(.16em, 1rem);
+        line-height: 1.02;
+        letter-spacing: 0;
+        color: #f6ecdc;
+        text-shadow: none;
+        background: #b0302a;
+        border-radius: .14em;
+        box-shadow: inset 0 0 0 .14em #b0302a, inset 0 0 0 .22em #f6ecdc;
+        rotate: -4deg;
+        opacity: .93;
+        -webkit-mask: var(--qy-seal-grain) center / cover;
+        mask: var(--qy-seal-grain) center / cover;
+    }
+    html[lang="en"] .skin-qy .project-hero-screen h1 { font-weight: 600 !important; letter-spacing: .06em; font-size: clamp(3.6rem, 9vw, 8rem) !important; }
     html[lang="ko"] .skin-qy .project-hero-screen h1 { font-weight: 800 !important; }
 
-    .skin-qy .back-btn { color: var(--qy-bone); }
-    .skin-qy .back-btn:hover { color: var(--qy-jade); }
+    .skin-qy .back-btn { color: var(--qy-bone); font-size: .9rem !important; letter-spacing: .2em; opacity: .7; }
+    .skin-qy .back-btn:hover { color: var(--qy-jade); opacity: 1; }
+
+    /* 画幅下面：左列 编号 / 职责 / 链接，右列简介 */
+    @media (min-width: 1024px) {
+        .skin-qy .project-hero-screen [data-reveal-children] {
+            display: grid;
+            grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+            column-gap: 4rem;
+            row-gap: 1.1rem;
+            align-items: start;
+        }
+        .skin-qy .project-hero-screen [data-reveal-children] > :not(h1) { margin-top: 0 !important; }
+        .skin-qy .project-hero-screen [data-reveal-children] > h1 { grid-column: 1 / -1; grid-row: 1; }
+        .skin-qy .project-hero-screen [data-reveal-children] > :nth-child(1) { grid-column: 1; grid-row: 2; }
+        .skin-qy .project-hero-screen [data-reveal-children] > :nth-child(3) { grid-column: 1; grid-row: 3; }
+        .skin-qy .project-hero-screen [data-reveal-children] > :nth-child(4) { grid-column: 2; grid-row: 2 / span 3; }
+        .skin-qy .project-hero-screen [data-reveal-children] > :nth-child(5) { grid-column: 1; grid-row: 4; }
+    }
 
     /* 徽章：雾里的半透明小牌，细骨白描边 */
     .skin-qy .brutalist-badge {
@@ -193,24 +326,7 @@ const LEAVES = [
         box-shadow: 0 0 18px rgb(var(--qy-jade-rgb) / .45) !important;
     }
 
-    /* 封面：细骨白边 + 青玉微光 */
-    .skin-qy .project-hero-shell .project-hero-image {
-        border-width: 1px !important;
-        border-style: solid !important;
-        border-color: rgb(233 236 226 / .45) !important;
-        border-radius: 3px !important;
-        background-color: var(--qy-deep) !important;
-        box-shadow: 0 24px 60px rgb(0 0 0 / .5), 0 0 40px rgb(var(--qy-jade-rgb) / .12) !important;
-    }
-
-    /* hero 装饰层：飘落的竹叶 + 底边的祥云双线 */
-    .skin-qy .qy-deco {
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        z-index: 1;
-        overflow: hidden;
-    }
+    /* 画幅里飘落的竹叶 + 下黑边里的祥云双线 */
     .skin-qy .qy-leaf {
         position: absolute;
         top: -6%;
@@ -232,19 +348,21 @@ const LEAVES = [
     }
     @media (prefers-reduced-motion: reduce) {
         .skin-qy .qy-leaf { animation: none; top: var(--y); rotate: var(--r); }
+        .skin-qy .qy-cover-frame,
+        .skin-qy .qy-cover-video { animation: none; }
     }
     .skin-qy .qy-meter-line {
         position: absolute;
         left: 50%;
-        bottom: 1.4rem;
-        translate: -50% 0;
+        bottom: calc(var(--qy-bar) / 2);
+        translate: -50% 50%;
         width: min(92%, 80rem);
-        height: 26px;
+        height: 22px;
         border-style: solid;
         border-color: transparent;
-        border-width: 0 64px;
-        border-image: var(--qy-meter) 0 176 fill / 0 64px / 0 stretch;
-        opacity: .7;
+        border-width: 0 54px;
+        border-image: var(--qy-meter) 0 176 fill / 0 54px / 0 stretch;
+        opacity: .55;
     }
 
     /* ========================================================= */
@@ -255,7 +373,7 @@ const LEAVES = [
         color: var(--qy-bone) !important;
         --theme-text: var(--qy-bone);
     }
-    .skin-qy .project-prose { color: var(--qy-bone); }
+    .skin-qy .project-prose { color: var(--qy-bone); counter-reset: qy-ch; }
     .skin-qy .project-prose p,
     .skin-qy .project-prose li { color: var(--qy-bone); }
     .skin-qy .project-prose strong { color: var(--qy-jade-hi); }
@@ -300,7 +418,30 @@ const LEAVES = [
         border-image: var(--qy-meter) 0 176 fill / 0 54px / 0 stretch;
         opacity: .85;
     }
-    .skin-qy .project-prose h2::before { display: none !important; }
+    /* H2 上面的章节号：书法 壹 贰 叁（英文罗马数字），青玉色，淡 */
+    .skin-qy .project-prose h2 { counter-increment: qy-ch; }
+    .skin-qy .project-prose h2::before {
+        content: counter(qy-ch, simp-chinese-formal) !important;
+        display: block !important;
+        position: static !important;
+        width: auto !important;
+        height: auto !important;
+        background: none !important;
+        margin: 0 auto .1em;
+        font-family: "QY Brush", serif;
+        font-size: 1.9em;
+        line-height: 1;
+        color: var(--qy-jade);
+        opacity: .55;
+        text-shadow: 0 0 30px rgb(var(--qy-jade-rgb) / .5);
+    }
+    html[lang="en"] .skin-qy .project-prose h2::before {
+        content: counter(qy-ch, upper-roman) !important;
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 500;
+        font-size: 1.4em;
+        letter-spacing: .1em;
+    }
 
     /* H3：前面一枚技能环（棍 / 法轮流），标题字同 H2 */
     .skin-qy .project-prose h3 {
@@ -328,6 +469,15 @@ const LEAVES = [
         filter: drop-shadow(0 0 8px rgb(var(--qy-jade-rgb) / .35));
     }
     .skin-qy .project-prose h3:nth-of-type(2n)::before { background-image: var(--qy-ring-1); }
+    /* 标题后面拉一条渐隐的青玉细线 */
+    .skin-qy .project-prose h3::after {
+        content: "";
+        flex: 1;
+        min-width: 2rem;
+        height: 1px;
+        margin-left: .6rem;
+        background: linear-gradient(90deg, rgb(var(--qy-jade-rgb) / .6), transparent);
+    }
     .skin-qy .project-prose h4 { color: var(--qy-jade-hi); }
 
     /* 列表符号：符文石上的 HUD 标记（外圈 + 同心实心圆） */
@@ -357,6 +507,26 @@ const LEAVES = [
         background: var(--qy-deep);
         box-shadow: 0 18px 48px rgb(0 0 0 / .45) !important;
     }
+    /* 演示片段四角：锁定框的角标 */
+    .skin-qy .project-prose figure { position: relative; }
+    .skin-qy .project-prose figure::before {
+        content: "";
+        position: absolute;
+        inset: -7px;
+        pointer-events: none;
+        --c: rgb(var(--qy-jade-rgb) / .7);
+        --l: 16px;
+        background:
+                linear-gradient(var(--c), var(--c)) left top / var(--l) 1.5px,
+                linear-gradient(var(--c), var(--c)) left top / 1.5px var(--l),
+                linear-gradient(var(--c), var(--c)) right top / var(--l) 1.5px,
+                linear-gradient(var(--c), var(--c)) right top / 1.5px var(--l),
+                linear-gradient(var(--c), var(--c)) left bottom / var(--l) 1.5px,
+                linear-gradient(var(--c), var(--c)) left bottom / 1.5px var(--l),
+                linear-gradient(var(--c), var(--c)) right bottom / var(--l) 1.5px,
+                linear-gradient(var(--c), var(--c)) right bottom / 1.5px var(--l);
+        background-repeat: no-repeat;
+    }
     .skin-qy .project-prose figcaption {
         color: var(--qy-mute) !important;
         letter-spacing: .04em;
@@ -381,12 +551,9 @@ const LEAVES = [
     /* ========================================================= */
     @media (max-width: 639px) {
         html:has(.skin-qy) body { background-attachment: scroll, scroll; }
-        header.skin-qy {
-            background:
-                    linear-gradient(0deg, var(--qy-night) 0%, rgb(var(--qy-night-rgb) / .78) 45%, rgb(var(--qy-night-rgb) / .45) 100%),
-                    var(--qy-scene) 40% 30% / cover no-repeat;
-        }
-        .skin-qy .qy-meter-line { height: 16px; border-width: 0 40px; border-image-width: 0 40px; }
+        .skin-qy .qy-cover-frame { height: 62vw; }
+        .skin-qy .qy-cover-video { object-position: 38% 55%; }
+        .skin-qy .qy-meter-line { height: 14px; border-width: 0 36px; border-image-width: 0 36px; }
         .skin-qy .project-prose h2::after { height: 16px; border-width: 0 40px; border-image-width: 0 40px; }
     }
 </style>
