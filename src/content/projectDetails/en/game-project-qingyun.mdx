@@ -1,7 +1,7 @@
 import { Image } from 'astro:assets';
-import imgLeafLabView from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabView.webp';
+import imgLeafLabView from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabView_en.webp';
 import imgLeafLabSweep from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabSweep.webp';
-import imgLeafBench from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafBench.webp';
+import imgLeafBench from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafBench_en.webp';
 import overviewClip from '@/assets/projects/game-project-qingyun/clips/overview.mp4?url';
 import overviewClipPoster from '@/assets/projects/game-project-qingyun/clips/overview-poster.webp?url';
 import bossBuildClip from '@/assets/projects/game-project-qingyun/clips/boss-build.mp4?url';
@@ -55,10 +55,10 @@ import imgDebugSwingTrails from '@/assets/projects/game-project-qingyun/game-pro
 import imgDebugGather from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugGather.webp';
 import imgDebugWindLift from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugWindLift.webp';
 import imgDebugWindField from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugWindField.webp';
-import imgDebugLeafStat from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugLeafStat.webp';
-import imgLeafLabGather from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabGather.webp';
-import imgLeafLabCompare from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabCompare.webp';
-import imgLeafLabField from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabField.webp';
+import imgDebugLeafStat from '@/assets/projects/game-project-qingyun/game-project-qingyun_DebugLeafStat_en.webp';
+import imgLeafLabGather from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabGather_en.webp';
+import imgLeafLabCompare from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabCompare_en.webp';
+import imgLeafLabField from '@/assets/projects/game-project-qingyun/game-project-qingyun_LeafLabField_en.webp';
 
 ## About the Game
 
@@ -261,7 +261,7 @@ Thousands of fallen leaves cover the clearing, every one an individual instance 
     <Image src={imgDebugLeafStat} alt="Live cost: game-thread time per leaf module and engine frame stats" />
 </div>
 
-Each colour in the debug view is one source of disturbance: green walk, light green run, blue dodge, red heavy, magenta blast, yellow gust, cyan rising air. The stats at the top left list the average and worst time of simulation, upload, wind, kicks, sky, ambient and debug separately; with 2,691 leaves in flight in the shot above it is about 3 ms in the editor.
+Each colour in the debug view is one source of disturbance: green walk, light green run, blue dodge, red heavy, magenta blast, yellow gust, cyan rising air. The stats at the top left list the average and worst time of simulation, upload, wind, kicks, sky, ambient and debug separately; with 3,672 leaves in flight in the shot above it is about 6 ms in the editor, well over the 1 ms budget, which holds up to about 500 leaves in flight.
 
 To tune the feel I built an offline lab: record one staff swing in the game, then replay it deterministically with different parameters and compare the results in batches; a benchmark measures cost against the number of leaves in flight.
 
