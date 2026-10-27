@@ -1,0 +1,392 @@
+---
+// 青云 项目页专属皮肤（projects.json 里 skin: "qy" 时由 [id].astro 挂载）
+//
+// 视觉照着游戏本身走：雾里的青叶林。底色是深竹绿，正文用游戏 HUD 的骨白，强调色取 Boss 身上青玉色的能量裂纹。
+// 装饰全部是游戏里的东西：
+// - hero 背景是成片（青金调色）里开场的一帧：悟空背对镜头，竹林空地中央是还没站起来的石像；
+//   整页背景是另一帧开场画面，模糊、压暗，像隔着一层雾。
+// - 游戏 HUD 的祥云素材（RawAssets/UI/CloudHUD，原图缩一半）：Boss 血条的祥云双线做 H2 下划线、分隔线和 hero 底边，
+//   玩家血条左边的龙纹徽记放在标题前，两枚技能环（棍 / 法）轮流做 H3 图标。
+// - 列表符号是风暴里每颗符文石上的 HUD 标记：外圈 + 同心实心圆。
+// - hero 里飘几片竹叶（游戏里的落叶系统）；系统设了减少动态效果时不动。
+// - 标题字：中文用游戏里的钟齐志莽行书（细一档，只收这一页标题用到的字，src/assets/.../skin/zhimangxing-qy.woff2）；
+//   这套字没有假名、谚文，日文用 Yuji Syuku，韩文用 Nanum Myeongjo，英文用 Cormorant Garamond（Google Fonts）。
+// - 所有规则都限定在 .skin-qy / html:has(.skin-qy) 下（样式表是整条路由共用的）。
+// - 边框只写 border-width / border-style / border-color：border 简写会把 border-image 重置成 none。
+interface Props {
+    /** true 时只输出 hero 里的装饰层（样式由页面顶部那次挂载负责） */
+    stickers?: boolean;
+}
+const { stickers = false } = Astro.props;
+
+import scene from "@/assets/projects/game-project-qingyun/skin/scene.webp";
+import mist from "@/assets/projects/game-project-qingyun/skin/mist.webp";
+import meter from "@/assets/projects/game-project-qingyun/skin/hud-meter.png";
+import dragon from "@/assets/projects/game-project-qingyun/skin/dragon.png";
+import ringStaff from "@/assets/projects/game-project-qingyun/skin/ring-staff.png";
+import ringMagic from "@/assets/projects/game-project-qingyun/skin/ring-magic.png";
+import brush from "@/assets/projects/game-project-qingyun/skin/zhimangxing-qy.woff2?url";
+
+// 竹叶：细长的披针形，一深一浅两种
+const leaf = (fill: string, rib: string) =>
+    `url("data:image/svg+xml,${encodeURIComponent(
+        `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16'><path d='M0 8 C18 1 58 0 100 8 C58 16 18 15 0 8Z' fill='${fill}'/><path d='M4 8 L96 8' stroke='${rib}' stroke-width='.8'/></svg>`,
+    )}")`;
+
+const vars = [
+    `--qy-scene: url("${scene.src}")`,
+    `--qy-mist: url("${mist.src}")`,
+    `--qy-meter: url("${meter.src}")`,
+    `--qy-dragon: url("${dragon.src}")`,
+    `--qy-ring-0: url("${ringStaff.src}")`,
+    `--qy-ring-1: url("${ringMagic.src}")`,
+    `--qy-leaf-0: ${leaf("#2c5a40", "#4f8a68")}`,
+    `--qy-leaf-1: ${leaf("#9cc7a8", "#d8eadb")}`,
+].join("; ");
+const fontFace = `@font-face { font-family: "QY Brush"; src: url("${brush}") format("woff2"); font-display: swap; }`;
+
+// hero 里飘落的竹叶：横向位置、时长、延迟、大小、深浅
+// （减少动态效果时停在 y、转 r 度）
+const LEAVES = [
+    [6, 13, -2, 1.1, 0, 18, 32], [17, 17, -9, 0.8, 1, 62, -48], [29, 15, -5, 1.3, 0, 84, 70], [41, 19, -13, 0.9, 1, 8, -25],
+    [52, 14, -7, 1.0, 0, 46, 55], [63, 18, -3, 0.7, 1, 12, -62], [72, 16, -11, 1.2, 0, 88, 28], [83, 20, -6, 0.85, 1, 30, -40],
+    [93, 15, -15, 1.05, 0, 66, 75], [36, 21, -17, 0.75, 1, 92, -15],
+];
+---
+
+{stickers ? (
+        <div class="qy-deco" aria-hidden="true">
+            {LEAVES.map(([x, dur, delay, s, tone, y, r]) => (
+                    <span
+                            class="qy-leaf"
+                            style={`--x: ${x}%; --dur: ${dur}s; --delay: ${delay}s; --s: ${s}; --y: ${y}%; --r: ${r}deg; background-image: var(--qy-leaf-${tone});`}
+                    ></span>
+            ))}
+            <div class="qy-meter-line"></div>
+        </div>
+) : (
+        <>
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+            <link
+                    rel="stylesheet"
+                    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nanum+Myeongjo:wght@700;800&family=Yuji+Syuku&display=swap"
+            />
+            <style is:inline set:html={`${fontFace} html:has(.skin-qy) { ${vars}; }`} />
+        </>
+)}
+
+<style is:global>
+    /* ========================================================= */
+    /* 调色板：深竹绿 + HUD 骨白 + Boss 的青玉                      */
+    /* ========================================================= */
+    html:has(.skin-qy) {
+        --qy-night: #0b1813;      /* 页面底色 */
+        --qy-night-rgb: 11 24 19;
+        --qy-deep: #07110d;       /* 视频底 */
+        --qy-bone: #e9ece2;       /* 游戏 HUD 的骨白：正文与线条 */
+        --qy-mute: #a9bcb1;       /* 次要文字 */
+        --qy-jade: #6fdcbf;       /* Boss 能量裂纹的青玉 */
+        --qy-jade-hi: #a8f0db;
+        --qy-jade-rgb: 111 220 191;
+        --qy-head: "Cormorant Garamond", var(--theme-font-active), serif;
+    }
+    html[lang="zh"]:has(.skin-qy) { --qy-head: "QY Brush", var(--theme-font-active), serif; }
+    html[lang="ja"]:has(.skin-qy) { --qy-head: "Yuji Syuku", var(--theme-font-active), serif; }
+    html[lang="ko"]:has(.skin-qy) { --qy-head: "Nanum Myeongjo", var(--theme-font-active), serif; }
+
+    /* 整页背景挂在 body 上（<main> 转场时是 transform 容器，里面的 fixed 会失效）：开场那帧，模糊压暗 */
+    html:has(.skin-qy) body {
+        background-color: var(--qy-night);
+        background-image:
+                linear-gradient(180deg, rgb(var(--qy-night-rgb) / .78) 0%, rgb(var(--qy-night-rgb) / .9) 40%, rgb(var(--qy-night-rgb) / .96) 100%),
+                var(--qy-mist);
+        background-size: cover, cover;
+        background-position: center, center top;
+        background-attachment: fixed, fixed;
+        overflow-x: clip;
+    }
+
+    /* ========================================================= */
+    /* HERO：开场画面做底，左侧压暗放文字                            */
+    /* ========================================================= */
+    header.skin-qy {
+        position: relative;
+        background:
+                linear-gradient(90deg, rgb(var(--qy-night-rgb) / .92) 0%, rgb(var(--qy-night-rgb) / .74) 38%, rgb(var(--qy-night-rgb) / .25) 70%, rgb(var(--qy-night-rgb) / .1) 100%),
+                linear-gradient(0deg, var(--qy-night) 0%, transparent 32%),
+                linear-gradient(180deg, rgb(var(--qy-night-rgb) / .55) 0%, transparent 22%),
+                var(--qy-scene) 62% 40% / cover no-repeat;
+        color: var(--qy-bone) !important;
+        border-bottom: 0 !important;
+        padding-bottom: 5.5rem !important;
+        --theme-text: var(--qy-bone);
+    }
+    header.skin-qy > .absolute { display: none; }
+
+    /* 标题：前面是玩家血条上的龙纹徽记 */
+    .skin-qy .project-hero-screen h1 {
+        display: flex;
+        align-items: center;
+        gap: .3em;
+        font-family: var(--qy-head);
+        font-weight: 400 !important;
+        font-size: clamp(3.4rem, 8vw, 6.4rem) !important;
+        line-height: 1 !important;
+        letter-spacing: .04em;
+        color: var(--qy-bone);
+        text-shadow: 0 0 28px rgb(var(--qy-jade-rgb) / .35), 0 2px 0 rgb(0 0 0 / .35);
+    }
+    .skin-qy .project-hero-screen h1::before {
+        content: "";
+        flex: none;
+        width: .95em;
+        height: .92em;
+        background: var(--qy-dragon) center / contain no-repeat;
+        filter: drop-shadow(0 0 14px rgb(var(--qy-jade-rgb) / .35));
+    }
+    html[lang="en"] .skin-qy .project-hero-screen h1 { font-weight: 600 !important; letter-spacing: .08em; }
+    html[lang="ko"] .skin-qy .project-hero-screen h1 { font-weight: 800 !important; }
+
+    .skin-qy .back-btn { color: var(--qy-bone); }
+    .skin-qy .back-btn:hover { color: var(--qy-jade); }
+
+    /* 徽章：雾里的半透明小牌，细骨白描边 */
+    .skin-qy .brutalist-badge {
+        border-width: 1px !important;
+        border-style: solid !important;
+        border-color: rgb(233 236 226 / .38) !important;
+        border-radius: 2px !important;
+        background: rgb(var(--qy-night-rgb) / .5) !important;
+        backdrop-filter: blur(6px);
+        color: var(--qy-bone) !important;
+        box-shadow: none !important;
+        transform: none !important;
+        padding: .3rem .75rem !important;
+        font-weight: 600 !important;
+        letter-spacing: .06em;
+    }
+    .skin-qy .brutalist-badge i { color: var(--qy-jade); }
+
+    /* 简介：左侧青玉竖线 */
+    .skin-qy .project-hero-screen .border-l-\[4px\] {
+        border-left-width: 2px !important;
+        border-color: var(--qy-jade) !important;
+        color: var(--qy-bone);
+        text-shadow: 0 1px 8px rgb(0 0 0 / .5);
+    }
+
+    /* 外链按钮：青玉描边，悬停发光 */
+    .skin-qy .project-links-wrapper .brutalist-tag {
+        border-width: 1px !important;
+        border-style: solid !important;
+        border-color: var(--qy-jade) !important;
+        border-radius: 2px !important;
+        background: rgb(var(--qy-night-rgb) / .55) !important;
+        color: var(--qy-jade-hi) !important;
+        box-shadow: none !important;
+        transform: none !important;
+        transition: box-shadow 160ms ease, background-color 160ms ease;
+    }
+    .skin-qy .project-links-wrapper .brutalist-tag:hover {
+        background: rgb(var(--qy-jade-rgb) / .14) !important;
+        box-shadow: 0 0 18px rgb(var(--qy-jade-rgb) / .45) !important;
+    }
+
+    /* 封面：细骨白边 + 青玉微光 */
+    .skin-qy .project-hero-shell .project-hero-image {
+        border-width: 1px !important;
+        border-style: solid !important;
+        border-color: rgb(233 236 226 / .45) !important;
+        border-radius: 3px !important;
+        background-color: var(--qy-deep) !important;
+        box-shadow: 0 24px 60px rgb(0 0 0 / .5), 0 0 40px rgb(var(--qy-jade-rgb) / .12) !important;
+    }
+
+    /* hero 装饰层：飘落的竹叶 + 底边的祥云双线 */
+    .skin-qy .qy-deco {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+    }
+    .skin-qy .qy-leaf {
+        position: absolute;
+        top: -6%;
+        left: var(--x);
+        width: calc(64px * var(--s));
+        height: calc(11px * var(--s));
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        opacity: .75;
+        animation: qy-fall var(--dur) linear var(--delay) infinite;
+    }
+    @keyframes qy-fall {
+        0%   { translate: 0 0;          rotate: 20deg; }
+        25%  { translate: 4vw 28vh;     rotate: -35deg; }
+        50%  { translate: -2vw 55vh;    rotate: 50deg; }
+        75%  { translate: 5vw 82vh;     rotate: -20deg; }
+        100% { translate: 1vw 112vh;    rotate: 40deg; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .skin-qy .qy-leaf { animation: none; top: var(--y); rotate: var(--r); }
+    }
+    .skin-qy .qy-meter-line {
+        position: absolute;
+        left: 50%;
+        bottom: 1.4rem;
+        translate: -50% 0;
+        width: min(92%, 80rem);
+        height: 26px;
+        border-style: solid;
+        border-color: transparent;
+        border-width: 0 64px;
+        border-image: var(--qy-meter) 0 176 fill / 0 64px / 0 stretch;
+        opacity: .7;
+    }
+
+    /* ========================================================= */
+    /* 正文                                                       */
+    /* ========================================================= */
+    section.skin-qy {
+        background: transparent !important;
+        color: var(--qy-bone) !important;
+        --theme-text: var(--qy-bone);
+    }
+    .skin-qy .project-prose { color: var(--qy-bone); }
+    .skin-qy .project-prose p,
+    .skin-qy .project-prose li { color: var(--qy-bone); }
+    .skin-qy .project-prose strong { color: var(--qy-jade-hi); }
+    .skin-qy .project-prose a { color: var(--qy-jade); text-decoration-color: rgb(var(--qy-jade-rgb) / .5); }
+    .skin-qy .project-prose a:hover { color: var(--qy-jade-hi); }
+    .skin-qy .project-prose code {
+        background: rgb(var(--qy-jade-rgb) / .1);
+        color: var(--qy-jade-hi);
+        border-radius: 3px;
+        padding: .05em .35em;
+    }
+
+    /* H2：Boss 血条的祥云双线做下划线 */
+    .skin-qy .project-prose h2 {
+        display: block;
+        width: 100%;
+        border: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        color: var(--qy-bone);
+        font-family: var(--qy-head);
+        font-weight: 400;
+        font-size: clamp(2.3rem, 4vw, 3.1rem);
+        line-height: 1.15;
+        letter-spacing: .06em;
+        text-align: center;
+        text-shadow: 0 0 22px rgb(var(--qy-jade-rgb) / .3);
+        transform: none !important;
+    }
+    html[lang="en"] .skin-qy .project-prose h2 { font-weight: 600; }
+    html[lang="ko"] .skin-qy .project-prose h2 { font-weight: 800; font-size: clamp(1.9rem, 3.4vw, 2.5rem); }
+    .skin-qy .project-prose h2::after {
+        content: "";
+        display: block;
+        width: min(100%, 44rem);
+        height: 22px;
+        margin: .55rem auto 0;
+        border-style: solid;
+        border-color: transparent;
+        border-width: 0 54px;
+        border-image: var(--qy-meter) 0 176 fill / 0 54px / 0 stretch;
+        opacity: .85;
+    }
+    .skin-qy .project-prose h2::before { display: none !important; }
+
+    /* H3：前面一枚技能环（棍 / 法轮流），标题字同 H2 */
+    .skin-qy .project-prose h3 {
+        display: flex;
+        align-items: center;
+        gap: .55rem;
+        border: 0 !important;
+        background: transparent !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        color: var(--qy-bone);
+        font-family: var(--qy-head);
+        font-weight: 400;
+        font-size: clamp(1.7rem, 2.6vw, 2.1rem);
+        letter-spacing: .04em;
+    }
+    html[lang="en"] .skin-qy .project-prose h3 { font-weight: 700; }
+    html[lang="ko"] .skin-qy .project-prose h3 { font-weight: 800; font-size: clamp(1.4rem, 2.2vw, 1.7rem); }
+    .skin-qy .project-prose h3::before {
+        content: "";
+        flex: none;
+        width: 1.5em;
+        height: 1.46em;
+        background: var(--qy-ring-0) center / contain no-repeat;
+        filter: drop-shadow(0 0 8px rgb(var(--qy-jade-rgb) / .35));
+    }
+    .skin-qy .project-prose h3:nth-of-type(2n)::before { background-image: var(--qy-ring-1); }
+    .skin-qy .project-prose h4 { color: var(--qy-jade-hi); }
+
+    /* 列表符号：符文石上的 HUD 标记（外圈 + 同心实心圆） */
+    .skin-qy .project-prose ul { list-style: none; padding-left: 0; }
+    .skin-qy .project-prose ul > li { position: relative; padding-left: 1.9rem; }
+    .skin-qy .project-prose ul > li::before {
+        content: "";
+        position: absolute;
+        left: .2rem;
+        top: .62em;
+        width: .78rem;
+        height: .78rem;
+        border-radius: 50%;
+        border: 1.5px solid var(--qy-bone);
+        background: radial-gradient(circle, var(--qy-bone) 0 28%, transparent 32%);
+        box-shadow: 0 0 8px rgb(var(--qy-jade-rgb) / .5);
+    }
+    .skin-qy .project-prose ol > li::marker { color: var(--qy-jade); font-weight: 700; }
+
+    /* 图片 / 演示片段：细骨白边，压在雾里 */
+    .skin-qy .project-prose img,
+    .skin-qy .project-prose video.clip {
+        border-width: 1px !important;
+        border-style: solid !important;
+        border-color: rgb(233 236 226 / .16) !important;
+        border-radius: 3px !important;
+        background: var(--qy-deep);
+        box-shadow: 0 18px 48px rgb(0 0 0 / .45) !important;
+    }
+    .skin-qy .project-prose figcaption {
+        color: var(--qy-mute) !important;
+        letter-spacing: .04em;
+        opacity: 1;
+    }
+
+    /* 分隔线：同一条祥云双线，淡一些 */
+    .skin-qy .project-prose hr {
+        height: 18px;
+        margin: 3rem auto;
+        width: min(100%, 36rem);
+        background: transparent;
+        border-style: solid !important;
+        border-color: transparent !important;
+        border-width: 0 44px !important;
+        border-image: var(--qy-meter) 0 176 fill / 0 44px / 0 stretch;
+        opacity: .4;
+    }
+
+    /* ========================================================= */
+    /* 手机                                                        */
+    /* ========================================================= */
+    @media (max-width: 639px) {
+        html:has(.skin-qy) body { background-attachment: scroll, scroll; }
+        header.skin-qy {
+            background:
+                    linear-gradient(0deg, var(--qy-night) 0%, rgb(var(--qy-night-rgb) / .78) 45%, rgb(var(--qy-night-rgb) / .45) 100%),
+                    var(--qy-scene) 40% 30% / cover no-repeat;
+        }
+        .skin-qy .qy-meter-line { height: 16px; border-width: 0 40px; border-image-width: 0 40px; }
+        .skin-qy .project-prose h2::after { height: 16px; border-width: 0 40px; border-image-width: 0 40px; }
+    }
+</style>

@@ -3111,22 +3111,22 @@
     "roles": {
       "en": [
         "Solo Developer",
-        "Gameplay Engineer",
+        "Technical Combat Designer",
         "Technical Artist"
       ],
       "zh": [
         "独立开发",
-        "游戏工程师",
+        "技术战策",
         "技术美术"
       ],
       "ja": [
         "個人開発",
-        "ゲームプレイエンジニア",
+        "戦闘テクニカルデザイナー",
         "テクニカルアーティスト"
       ],
       "ko": [
         "개인 개발",
-        "게임플레이 엔지니어",
+        "전투 테크니컬 디자이너",
         "테크니컬 아티스트"
       ]
     },
@@ -3163,7 +3163,8 @@
       ]
     },
     "coverImage": "src/assets/projects/poster/QingyunPoster.webp",
-    "colorText": "#1E5A47",
-    "colorBackground": "#E2F0E9"
+    "colorText": "#E9ECE2",
+    "colorBackground": "#0B1813",
+    "skin": "qy"
   }
 ]
