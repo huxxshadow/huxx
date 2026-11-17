@@ -64,8 +64,8 @@ export const designWorks: DesignWork[] = [
         projectId: "game-project-light-as-wind",
         tier: "selected",
         pillars: ["levels", "narrative"],
-        context: { en: "USC Games · That Game Jam · 2 weeks", zh: "USC Games · That Game Jam · 两周", ja: "USC Games · That Game Jam · 2 週間", ko: "USC Games · That Game Jam · 2주" },
-        role: { en: "Director · Designer · Lead Developer · Technical Artist", zh: "导演 · 游戏设计 · 主程序 · 技术美术", ja: "ディレクター · ゲームデザイナー · リードデベロッパー · テクニカルアーティスト", ko: "디렉터 · 게임 디자이너 · 리드 개발자 · 테크니컬 아티스트" },
+        context: { en: "That Game Jam", zh: "That Game Jam", ja: "That Game Jam", ko: "That Game Jam" },
+        role: { en: "Team Lead", zh: "队长", ja: "チームリーダー", ko: "팀 리더" },
         line: {
             en: "Directed a pixel-art ocean adventure, set its play and emotional arc across ten levels, and built its procedural creatures and its own pixel render pipeline.",
             zh: "导演一款像素风海洋冒险，定下十个关卡的玩法与情绪走向，并实现了程序化生物和自研的像素渲染管线。",
