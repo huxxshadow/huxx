@@ -1,0 +1,288 @@
+import { Image } from 'astro:assets';
+import trailer from '@/assets/projects/game-project-light-as-wind/clips/trailer-en.mp4?url';
+import trailerPoster from '@/assets/projects/game-project-light-as-wind/clips/trailer-en-poster.webp?url';
+import gardenClip from '@/assets/projects/game-project-light-as-wind/clips/garden-giant-jelly.mp4?url';
+import gardenPoster from '@/assets/projects/game-project-light-as-wind/clips/garden-giant-jelly-poster.webp?url';
+import crystalClip from '@/assets/projects/game-project-light-as-wind/clips/crystal-garden.mp4?url';
+import crystalPoster from '@/assets/projects/game-project-light-as-wind/clips/crystal-garden-poster.webp?url';
+import chainClip from '@/assets/projects/game-project-light-as-wind/clips/jelly-chain-en.mp4?url';
+import chainPoster from '@/assets/projects/game-project-light-as-wind/clips/jelly-chain-en-poster.webp?url';
+import swarmClip from '@/assets/projects/game-project-light-as-wind/clips/jelly-swarm.mp4?url';
+import swarmPoster from '@/assets/projects/game-project-light-as-wind/clips/jelly-swarm-poster.webp?url';
+import bubbleClip from '@/assets/projects/game-project-light-as-wind/clips/bubble-ride.mp4?url';
+import bubblePoster from '@/assets/projects/game-project-light-as-wind/clips/bubble-ride-poster.webp?url';
+import stepsClip from '@/assets/projects/game-project-light-as-wind/clips/breathing-steps.mp4?url';
+import stepsPoster from '@/assets/projects/game-project-light-as-wind/clips/breathing-steps-poster.webp?url';
+import patrolClip from '@/assets/projects/game-project-light-as-wind/clips/angler-patrol.mp4?url';
+import patrolPoster from '@/assets/projects/game-project-light-as-wind/clips/angler-patrol-poster.webp?url';
+import huntClip from '@/assets/projects/game-project-light-as-wind/clips/angler-hunt.mp4?url';
+import huntPoster from '@/assets/projects/game-project-light-as-wind/clips/angler-hunt-poster.webp?url';
+import harpClip from '@/assets/projects/game-project-light-as-wind/clips/harp-concert.mp4?url';
+import harpPoster from '@/assets/projects/game-project-light-as-wind/clips/harp-concert-poster.webp?url';
+import corridorClip from '@/assets/projects/game-project-light-as-wind/clips/coral-corridor.mp4?url';
+import corridorPoster from '@/assets/projects/game-project-light-as-wind/clips/coral-corridor-poster.webp?url';
+import schoolClip from '@/assets/projects/game-project-light-as-wind/clips/fish-school.mp4?url';
+import schoolPoster from '@/assets/projects/game-project-light-as-wind/clips/fish-school-poster.webp?url';
+import leapsClip from '@/assets/projects/game-project-light-as-wind/clips/surface-leaps.mp4?url';
+import leapsPoster from '@/assets/projects/game-project-light-as-wind/clips/surface-leaps-poster.webp?url';
+import vineClip from '@/assets/projects/game-project-light-as-wind/clips/vine-swing.mp4?url';
+import vinePoster from '@/assets/projects/game-project-light-as-wind/clips/vine-swing-poster.webp?url';
+import mantaClip from '@/assets/projects/game-project-light-as-wind/clips/manta-rescue.mp4?url';
+import mantaPoster from '@/assets/projects/game-project-light-as-wind/clips/manta-rescue-poster.webp?url';
+
+import imgViews from '@/assets/projects/game-project-light-as-wind/render-views.webp';
+import imgGlow from '@/assets/projects/game-project-light-as-wind/glow-lights.webp';
+import imgGlass from '@/assets/projects/game-project-light-as-wind/glass-jellies.webp';
+import imgDepth from '@/assets/projects/game-project-light-as-wind/depth-layers.webp';
+import imgMarks from '@/assets/projects/game-project-light-as-wind/scene-marks.webp';
+import imgSwarm from '@/assets/projects/game-project-light-as-wind/swarm-sequence.webp';
+import imgDash from '@/assets/projects/game-project-light-as-wind/dash-trace.webp';
+import imgPhys from '@/assets/projects/game-project-light-as-wind/phys-view.webp';
+import castStarfish from '@/assets/projects/game-project-light-as-wind/skin/cast-starfish.png';
+import castSlug from '@/assets/projects/game-project-light-as-wind/skin/cast-slug.png';
+import castScallop from '@/assets/projects/game-project-light-as-wind/skin/cast-scallop.png';
+import castSwordfish from '@/assets/projects/game-project-light-as-wind/skin/cast-swordfish.png';
+import castOctopus from '@/assets/projects/game-project-light-as-wind/skin/cast-octopus.png';
+
+## The Game
+
+*Light as Wind* is a pixel-art side-scrolling adventure. Three plush toys – a starfish, a swordfish and a crab – go to see the sea for a sleeping girl, in a dream: from the pitch-dark deep through glowing gardens, a harp theatre, the open surface and the shore, chasing a faraway sky. The story comes in two parts; the current version is Part I, *Beneath the Blue*.
+
+> They say that where the sea ends, there is a sky of deep blue.
+>
+> Every dream ends in waking. But not yet: the journey isn't over.
+>
+> So, before you wake, go a little further.
+
+<figure class="law-trailer">
+    <video src={trailer} poster={trailerPoster} width="1280" height="720" controls playsinline preload="none" aria-label="Light as Wind trailer"></video>
+    <figcaption>Trailer (79 s, all in-game footage)</figcaption>
+</figure>
+
+---
+
+## My Role
+
+Five of us from USC Games teamed up for That Game Jam and made this in about four weeks. I directed it and did the game design, lead programming and technical art; about nine in ten of the project's roughly five thousand commits are mine. In detail:
+
+* **Procedural creatures**: the three playable plush heroes and dozens of creatures and plants – jellyfish, an anglerfish, sardine schools, a manta, seabirds, seagrass – all driven by code, with no keyframed animation.
+* **A pixel render pipeline of my own**: it replaced URP – a low-resolution G-buffer, deferred toon lighting, light from glowing things, glass refraction and order-independent transparency, and one final quantisation to pixels.
+* **Levels and world**: the level tools for ten levels (three depth layers, brush dressing, scene marks), background loading between levels, and the cutscene system.
+* **Development tooling**: the Unity editor driven from the command line, with recording, stills, regression and tuning spread over several headless editors in parallel; performance logs from players' machines and automatic quality.
+* **Direction and design**: the emotional arc of the whole game and the play of each level; I also made the trailer and the official website.
+
+---
+
+## Every One of Them Is Alive
+
+There is not a single hand-keyed frame of animation in the game. Every character is split into the same layers: a brain decides what it wants, an intent turns that into targets, a control layer works out how the body moves, a physics layer handles contact and weight, and a skin layer rebuilds the mesh every frame. That is how the same starfish can walk, run and jump, reach out to grip a jellyfish's tentacle, or pull a plant out by the roots.
+
+<figure>
+    <video class="clip" src={gardenClip} poster={gardenPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Giant jellyfish in the glowing garden"></video>
+    <figcaption>The glowing garden of level 2: two giant jellyfish drift past the stone pillar in the foreground while the starfish walks through the grass</figcaption>
+</figure>
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={bubbleClip} poster={bubblePoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="The starfish riding a bubble column"></video>
+        <figcaption>The starfish steps into a vent's bubble column and is carried all the way up to a ledge</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={stepsClip} poster={stepsPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Breathing stone steps lifted by vents"></video>
+        <figcaption>Breathing steps: hot vents lift and lower the stone slabs while the starfish hops across</figcaption>
+    </figure>
+</div>
+
+### The starfish: where the feet land
+
+Each of the starfish's five arms is an independent leg. I built it a gait recorder that draws, frame by frame, whether each foot is standing, stepping or chasing its target. In the first version, running, the feet spent half their time chasing and slid 1.04 m for every metre walked; with the target pinned the moment a foot lands and the step easing halved, they slide 67 mm per metre and chase only 2.3% of the time.
+
+### The swordfish: how a dash feels
+
+Holding Shift makes the swordfish dash: it curls and flicks its tail to wind up, then stretches out and shoots off sword-first at up to 13 m/s; dashing at a wall, it eases off early and stops in front of it instead of going through. Here are the speed and path the shot wrote out:
+
+<figure class="law-narrow">
+    <Image src={imgDash} alt="Speed and path of the swordfish's dashes" widths={[640, 1100]} sizes="(min-width: 1024px) 736px, 100vw" />
+    <figcaption>Swordfish dashes: speed over time on top (orange while dashing), the x-y path below; the third dash is at a wall and eases off early</figcaption>
+</figure>
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={schoolClip} poster={schoolPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="The swordfish scattering a sardine school"></video>
+        <figcaption>The swordfish bursts into thousands of sardines: panic spreads outward in waves, the school fans apart, then gathers again</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={leapsClip} poster={leapsPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="The swordfish leaping out of the sea"></video>
+        <figcaption>Level 7: the swordfish leaps out of the water again and again under a purple sky</figcaption>
+    </figure>
+</div>
+
+### The crab: vines, nets and a manta
+
+The crab's chapter is all about grabbing: swinging across a pit from vine to vine; snipping the knots along a net bag one by one until it collapses and lets the little fish out; cutting the net off a trapped manta, which rises and carries the crab across a rift. Gliding low, the manta measures how far its underside is from the ground so its wings never cut into the rocks.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={vineClip} poster={vinePoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="The crab swinging on vines"></video>
+        <figcaption>The crab swings across a pit, one vine after another</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={mantaClip} poster={mantaPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="Cutting the net off the manta"></video>
+        <figcaption>Cut the net that pins the manta down; it rises, and the crab climbs on</figcaption>
+    </figure>
+</div>
+
+### Jellyfish: a swarm that swims for itself
+
+The jellyfish swarm surges upward like a school of fish, but each one moves by its own pulse: the bell tilts toward where it wants to go, contracts to jet forward, glides and sinks, then beats again. The flocking only gives them a direction; the route is drawn in the dressing tools. Another kind links up into a chain that spirals down from above and settles next to the starfish.
+
+<figure>
+    <Image src={imgSwarm} alt="Frames of the jellyfish swarm rising along its route" widths={[800, 1600]} sizes="(min-width: 1024px) 900px, 100vw" />
+    <figcaption>Twelve chibi jellyfish rise from behind the starfish along their route: lined up low before they set off, rising in streams, then gathering into a slow swirl at the end</figcaption>
+</figure>
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={swarmClip} poster={swarmPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="The jellyfish swarm rising"></video>
+        <figcaption>The swarm: each one swims by its own pulse; the flock only sets the heading</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={chainClip} poster={chainPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="A chain of jellyfish spiralling down"></video>
+        <figcaption>Dozens of small jellyfish linked into one chain, spiralling down from above</figcaption>
+    </figure>
+</div>
+
+### The anglerfish: a giant of the deep
+
+Levels 1 and 3 have an anglerfish more than ten metres long. It patrols the background and searches with its lure; while the starfish stays in a hiding zone behind a reef wall or coral it is safe, but step out into the light and the screen turns red and it lunges with its jaws open.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={patrolClip} poster={patrolPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="The giant anglerfish on patrol"></video>
+        <figcaption>Level 1's cutscene: the giant anglerfish swims past filling the frame, and the starfish hides behind the shale</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={huntClip} poster={huntPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="The anglerfish lunging at the starfish"></video>
+        <figcaption>Level 3: the lure finds the starfish, the screen locks red, and the giant lunges</figcaption>
+    </figure>
+</div>
+
+---
+
+## A Pixel Render Pipeline of My Own
+
+The game was first drawn with URP, but its 8-bit picture could not hold colours above 1 or real glow, dark water banded, the picture's alpha was taken up by pixel motion, and every new shader had to wire up parallax, pixel motion and depth all over again. So I wrote my own pipeline, **ProcAnimRP**, and removed URP entirely. Its core does not depend on Unity, and a frame is described by a frame graph:
+
+1. the game camera draws into a **low-resolution G-buffer** (base colour, octahedron-encoded normals, linear depth, object IDs);
+2. **deferred toon lighting**, water, fog, outlines and depth cues are all computed at that resolution, in HDR internally;
+3. one last step **quantises it to the pixel picture**, which is then scaled up to the screen by a whole number – so the pixels stay square and crisp.
+
+<figure class="law-narrow">
+    <Image src={imgViews} alt="Six debug views of the new pipeline" widths={[640, 1220]} sizes="(min-width: 1024px) 736px, 100vw" />
+    <figcaption>Six debug views from when the pipeline was first wired up: camera picture, base colour, normals, linear depth, geometry generated on the GPU by a compute shader, and the taken-over picture</figcaption>
+</figure>
+
+Everything added on top first had to match the old picture pixel for pixel, and only then gain new effects:
+
+* **Tiled deferred point lights**: 100 lights scattered across the view cost 1.28 ms of GPU time for the whole frame.
+* **Glowing things light their surroundings**: jellyfish, salps and vents cast their own colours on the sand and on their tentacles; the hero carries a real light, and grass and tube worms cast side-on 2D shadows along the ground.
+* **Glass**: a quantised Fresnel rim around each jellyfish bell, the oral arms inside offset by whole texels to read as refraction; overlapping glass uses weighted blended order-independent transparency (OIT).
+
+<figure>
+    <Image src={imgGlow} alt="Light from glowing things: off, on and difference" widths={[800, 1600]} sizes="(min-width: 1024px) 900px, 100vw" />
+    <figcaption>Glowing things light their surroundings: off on the left, on in the middle, the difference on the right – six kinds of jellyfish light their own tentacles and the sand below in their own colours</figcaption>
+</figure>
+
+<figure class="law-narrow">
+    <Image src={imgGlass} alt="Refraction and Fresnel rims on the jellyfish glass" widths={[640, 1090]} sizes="(min-width: 1024px) 736px, 100vw" />
+    <figcaption>Glass, off on the left, on on the right: a Fresnel rim on the bell, and the oral arms seen through it shifted by whole texels</figcaption>
+</figure>
+
+Pixel art's worst enemy is shimmer: when the camera moves less than a pixel per frame, edges jump back and forth between two pixels. I record the sub-pixel remainder of each object's motion separately and move whole cells in compositing, and every kind of asset is measured with a diagnostic shot that counts flickering pixels frame by frame. That is how the plants' shadows were caught: their shadow pass used the wrong view matrix, and fixing it cut the shimmer in the kelp-forest stretch by 61%.
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={crystalClip} poster={crystalPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="The crystal garden"></video>
+        <figcaption>Level 4's crystal garden: every crystal and every clump of coral is a light source</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={corridorClip} poster={corridorPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="The coral corridor"></video>
+        <figcaption>Level 6: the swordfish threads between cave roof and coral, past planks, a shell gate and hanging strands of light</figcaption>
+    </figure>
+</div>
+
+---
+
+## Levels, Cutscenes and the Climax
+
+The levels scroll sideways, but the world is 3D: every level has three depth layers – front, middle and back – and the hero walks the middle one. I made a "level hub" in the editor: the brush can paint plants and props into a single layer, and the scene marks the crab's walkable route, the strips that must stay flat and the game camera's framing. Our designers and artists dressed the levels there.
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={imgDepth} alt="A level tinted by depth layer" widths={[640, 1280]} sizes="(min-width: 1024px) 450px, 100vw" />
+        <figcaption>Each pixel tinted by its depth layer: front blue, middle green, back purple</figcaption>
+    </figure>
+    <figure>
+        <Image src={imgMarks} alt="Scene marks while dressing a level" widths={[640, 1280]} sizes="(min-width: 1024px) 450px, 100vw" />
+        <figcaption>Scene marks while dressing a level: the layer bands, the crab's route (yellow arrows), the strip that must stay flat (red hatching)</figcaption>
+    </figure>
+</div>
+
+Cutscenes are laid out in a timeline window of their own: cameras, subtitles, character poses and the 21:9 cinema bars all live on it. The emotional peak of the game is the harp theatre in level 5: the starfish sits down at the harp, a beam of light falls, and the whole hall of jellyfish glows with the beat – and players can plug in a MIDI keyboard and play it themselves.
+
+<figure>
+    <video class="clip" src={harpClip} poster={harpPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="The harp theatre"></video>
+    <figcaption>Level 5's harp theatre: the starfish plays as jellyfish and a whirlpool of sardines fill the sea</figcaption>
+</figure>
+
+---
+
+## Tools That Let Five People Finish in Four Weeks
+
+To finish ten levels in four weeks, I handed most of the checking and producing to tools:
+
+* **The editor driven from the command line**: compiling, stills, per-frame motion data and video recording are each one command, talking to the editor through file requests; when the editor stalls, it says why.
+* **Headless editors in parallel**: long jobs go to whichever headless editor is free; when tuning, several versions of the same change run on several editors at once, and one round of side-by-side stills and numbers takes about 40 seconds. I also pushed different modules forward at the same time in several parallel working copies (together with AI coding assistants), merging them back into the main line every day.
+* **Flight recordings and regression**: every frame's colliders, contacts, logs and probes can be recorded and replayed; regression checks are tiered by speed and cached, and reference pictures are only recorded after I sign off on them.
+* **Performance on players' machines**: the shipped game can keep a performance log, and the logs sent back turn into reports – that is how the hitches at the seams between levels were measured and removed. "Auto" quality in the settings picks a tier from the graphics card.
+
+<figure class="law-narrow">
+    <Image src={imgPhys} alt="Physics view of level 5" widths={[744]} sizes="(min-width: 1024px) 744px, 100vw" />
+    <figcaption>Physics view: collision (green) along a stretch of level 5, with the hero's path and its rays, drawn from the recorded simulation data</figcaption>
+</figure>
+
+---
+
+## The Team
+
+We're five students from USC Games, and *Light as Wind* is our entry for That Game Jam. On the official website, each of us "plays" one of the game's sea creatures:
+
+<div class="law-cast">
+    <figure class="law-me">
+        <Image src={castStarfish} alt="" width={72} height={72} />
+        <p class="law-name">Jeffery Hu</p>
+        <p class="law-role">as the Starfish<br />Director · Designer · Developer · Technical Artist</p>
+    </figure>
+    <figure>
+        <Image src={castSlug} alt="" width={72} height={72} />
+        <p class="law-name">Sheldon Xu</p>
+        <p class="law-role">as the Sea Slug<br />Designer · Concept Artist</p>
+    </figure>
+    <figure>
+        <Image src={castScallop} alt="" width={72} height={72} />
+        <p class="law-name">Haocheng Li</p>
+        <p class="law-role">as the Giant Scallop<br />Designer · Engineer</p>
+    </figure>
+    <figure>
+        <Image src={castSwordfish} alt="" width={72} height={72} />
+        <p class="law-name">Pb</p>
+        <p class="law-role">as the Swordfish<br />Designer · Environment Artist</p>
+    </figure>
+    <figure>
+        <Image src={castOctopus} alt="" width={72} height={72} />
+        <p class="law-name">Uesugi Atako</p>
+        <p class="law-role">as the Octopus<br />Designer · Environment Artist</p>
+    </figure>
+</div>
+
+Some of the songs in the game come from our friend EHSV – thank you for letting us use them. The game can be downloaded on [itch.io](https://huxxshadow.itch.io/light-as-wind), and the official website is [lightaswind.com](https://lightaswind.com).

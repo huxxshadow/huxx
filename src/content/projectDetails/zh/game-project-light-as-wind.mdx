@@ -1,0 +1,288 @@
+import { Image } from 'astro:assets';
+import trailer from '@/assets/projects/game-project-light-as-wind/clips/trailer-zh.mp4?url';
+import trailerPoster from '@/assets/projects/game-project-light-as-wind/clips/trailer-zh-poster.webp?url';
+import gardenClip from '@/assets/projects/game-project-light-as-wind/clips/garden-giant-jelly.mp4?url';
+import gardenPoster from '@/assets/projects/game-project-light-as-wind/clips/garden-giant-jelly-poster.webp?url';
+import crystalClip from '@/assets/projects/game-project-light-as-wind/clips/crystal-garden.mp4?url';
+import crystalPoster from '@/assets/projects/game-project-light-as-wind/clips/crystal-garden-poster.webp?url';
+import chainClip from '@/assets/projects/game-project-light-as-wind/clips/jelly-chain-zh.mp4?url';
+import chainPoster from '@/assets/projects/game-project-light-as-wind/clips/jelly-chain-zh-poster.webp?url';
+import swarmClip from '@/assets/projects/game-project-light-as-wind/clips/jelly-swarm.mp4?url';
+import swarmPoster from '@/assets/projects/game-project-light-as-wind/clips/jelly-swarm-poster.webp?url';
+import bubbleClip from '@/assets/projects/game-project-light-as-wind/clips/bubble-ride.mp4?url';
+import bubblePoster from '@/assets/projects/game-project-light-as-wind/clips/bubble-ride-poster.webp?url';
+import stepsClip from '@/assets/projects/game-project-light-as-wind/clips/breathing-steps.mp4?url';
+import stepsPoster from '@/assets/projects/game-project-light-as-wind/clips/breathing-steps-poster.webp?url';
+import patrolClip from '@/assets/projects/game-project-light-as-wind/clips/angler-patrol.mp4?url';
+import patrolPoster from '@/assets/projects/game-project-light-as-wind/clips/angler-patrol-poster.webp?url';
+import huntClip from '@/assets/projects/game-project-light-as-wind/clips/angler-hunt.mp4?url';
+import huntPoster from '@/assets/projects/game-project-light-as-wind/clips/angler-hunt-poster.webp?url';
+import harpClip from '@/assets/projects/game-project-light-as-wind/clips/harp-concert.mp4?url';
+import harpPoster from '@/assets/projects/game-project-light-as-wind/clips/harp-concert-poster.webp?url';
+import corridorClip from '@/assets/projects/game-project-light-as-wind/clips/coral-corridor.mp4?url';
+import corridorPoster from '@/assets/projects/game-project-light-as-wind/clips/coral-corridor-poster.webp?url';
+import schoolClip from '@/assets/projects/game-project-light-as-wind/clips/fish-school.mp4?url';
+import schoolPoster from '@/assets/projects/game-project-light-as-wind/clips/fish-school-poster.webp?url';
+import leapsClip from '@/assets/projects/game-project-light-as-wind/clips/surface-leaps.mp4?url';
+import leapsPoster from '@/assets/projects/game-project-light-as-wind/clips/surface-leaps-poster.webp?url';
+import vineClip from '@/assets/projects/game-project-light-as-wind/clips/vine-swing.mp4?url';
+import vinePoster from '@/assets/projects/game-project-light-as-wind/clips/vine-swing-poster.webp?url';
+import mantaClip from '@/assets/projects/game-project-light-as-wind/clips/manta-rescue.mp4?url';
+import mantaPoster from '@/assets/projects/game-project-light-as-wind/clips/manta-rescue-poster.webp?url';
+
+import imgViews from '@/assets/projects/game-project-light-as-wind/render-views.webp';
+import imgGlow from '@/assets/projects/game-project-light-as-wind/glow-lights.webp';
+import imgGlass from '@/assets/projects/game-project-light-as-wind/glass-jellies.webp';
+import imgDepth from '@/assets/projects/game-project-light-as-wind/depth-layers.webp';
+import imgMarks from '@/assets/projects/game-project-light-as-wind/scene-marks.webp';
+import imgSwarm from '@/assets/projects/game-project-light-as-wind/swarm-sequence.webp';
+import imgDash from '@/assets/projects/game-project-light-as-wind/dash-trace.webp';
+import imgPhys from '@/assets/projects/game-project-light-as-wind/phys-view.webp';
+import castStarfish from '@/assets/projects/game-project-light-as-wind/skin/cast-starfish.png';
+import castSlug from '@/assets/projects/game-project-light-as-wind/skin/cast-slug.png';
+import castScallop from '@/assets/projects/game-project-light-as-wind/skin/cast-scallop.png';
+import castSwordfish from '@/assets/projects/game-project-light-as-wind/skin/cast-swordfish.png';
+import castOctopus from '@/assets/projects/game-project-light-as-wind/skin/cast-octopus.png';
+
+## 游戏简介
+
+《愿此身如风》是一款像素风横版冒险。三只玩偶——海星、剑鱼和螃蟹——在一场梦里，替睡着的女孩去看海：从漆黑的深海一路走到发光的花园、竖琴剧场、海面和海岸，去追远方的天空。故事分两部，现在的版本是第一部「深蓝之下」。
+
+> 听说，海的尽头，是一片深蓝色的天空。
+>
+> 梦总有醒来的时候。但现在，旅途还没有结束。
+>
+> 所以啊，在醒来之前，再往前走一点吧。
+
+<figure class="law-trailer">
+    <video src={trailer} poster={trailerPoster} width="1280" height="720" controls playsinline preload="none" aria-label="《愿此身如风》宣传片"></video>
+    <figcaption>宣传片（79 秒，全部是实机画面）</figcaption>
+</figure>
+
+---
+
+## 我的职责
+
+这是我们五个 USC Games 学生为 That Game Jam 组队做的作品，大约四周。我是导演，负责游戏设计、主程序和技术美术，项目约五千次提交中的九成是我写的。具体来说：
+
+* **程序化生物**：三只可操作的玩偶主角，以及水母、安康鱼、沙丁鱼群、魔鬼鱼、海鸟、海草等几十种生物和植物，全部由代码驱动，没有关键帧动画。
+* **自研像素渲染管线**：用自己的管线换掉 URP：低分辨率 G-buffer、延迟卡通光照、发光体照明、玻璃折射与顺序无关透明，最后统一量化成像素画面。
+* **关卡与世界**：十个关卡的关卡工具（三层纵深、笔刷布景、场景标注），关卡之间的后台加载，以及过场系统。
+* **开发工具链**：从命令行驱动 Unity 编辑器，把录制、截图、回归和调参分到多台无界面编辑器上并行跑；玩家机器上的性能记录和自动画质。
+* **导演与设计**：整体的情绪曲线和每关的玩法，宣传片和官网也由我来做。
+
+---
+
+## 每一只都是活的
+
+游戏里没有一帧手 K 的动画。每个角色都分成同样的几层：大脑决定想做什么、意图把它变成目标、控制层算出身体怎么动、物理层处理接触和重量、皮肤层每帧重建网格。所以同一只海星既能走、跑、跳，也能伸手夹住水母的触须、把海草连根拔起。
+
+<figure>
+    <video class="clip" src={gardenClip} poster={gardenPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="发光花园里的巨型水母"></video>
+    <figcaption>第二关的发光花园：两只巨型水母从前景的石柱后漂过，海星在草里走</figcaption>
+</figure>
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={bubbleClip} poster={bubblePoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="海星乘着气泡柱上升"></video>
+        <figcaption>海星：踩进热泉的气泡柱，被一路托到高台上</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={stepsClip} poster={stepsPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="热泉托起的呼吸石阶"></video>
+        <figcaption>呼吸石阶：热泉托着石台起落，海星在上面跳</figcaption>
+    </figure>
+</div>
+
+### 海星：脚踩在哪里
+
+海星的五条腕都是独立的腿。我给它做了一个步态记录器，把每只脚每一帧在"站住""迈步""追落点"中的哪一种画成时间线。第一版跑起来，脚有一半时间在追落点，每走 1 米脚滑 1.04 米；把落点在落地那一刻定死、迈步的缓动减半之后，每米只滑 67 毫米，追步降到 2.3%。
+
+### 剑鱼：冲刺的手感
+
+剑鱼按住 Shift 冲刺：先缩身甩尾蓄力，再拉长身体、剑在前冲出去，最快 13 米/秒，冲向墙时会提前收力、停在墙前而不是穿过去。下面是镜头写出的速度和轨迹：
+
+<figure class="law-narrow">
+    <Image src={imgDash} alt="剑鱼冲刺的速度和轨迹曲线" widths={[640, 1100]} sizes="(min-width: 1024px) 900px, 100vw" />
+    <figcaption>剑鱼冲刺：上面是速度随时间（橙色是冲刺中），下面是 x-y 轨迹；第三次冲向墙，提前收力</figcaption>
+</figure>
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={schoolClip} poster={schoolPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="剑鱼冲散沙丁鱼群"></video>
+        <figcaption>剑鱼冲进几千条沙丁鱼：惊慌从近处一波波传开，鱼群扇形散开，再聚回去</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={leapsClip} poster={leapsPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="剑鱼跃出海面"></video>
+        <figcaption>第七关：剑鱼一次次冲出水面，紫色的天空</figcaption>
+    </figure>
+</div>
+
+### 螃蟹：荡藤、剪网、骑魔鬼鱼
+
+螃蟹篇的玩法都是"抓"：钳子抓住藤一根接一根荡过坑；沿着网兜剪断一个个绳结，网塌下来放出小鱼；剪开盖在魔鬼鱼身上的渔网，魔鬼鱼浮起来驮着螃蟹越过裂谷。魔鬼鱼贴地游的时候会量自己的底面离地多高，避免翼穿进石头。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={vineClip} poster={vinePoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="螃蟹荡藤"></video>
+        <figcaption>螃蟹抓着藤一根接一根荡过坑</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={mantaClip} poster={mantaPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="剪网救魔鬼鱼"></video>
+        <figcaption>剪断盖在魔鬼鱼身上的网，魔鬼鱼浮起来，螃蟹骑上它</figcaption>
+    </figure>
+</div>
+
+### 水母：会自己游的群
+
+水母群像鱼群一样往上涌，但每一只靠自己的搏动前进：伞朝想去的方向倾、急收喷水往前冲、滑行下沉，再一拍。鱼群算法只给它们方向，路线在布景工具里画。另一种是连成一条链的水母，从高处螺旋绕下来，落到海星身边。
+
+<figure>
+    <Image src={imgSwarm} alt="水母群沿路线涌上去的连续帧" widths={[800, 1600]} sizes="(min-width: 1024px) 900px, 100vw" />
+    <figcaption>十二只 Q 版水母从海星身后沿路线涌上去：出发前在低处排开，一股股往上，到终点聚成一团慢慢打转</figcaption>
+</figure>
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={swarmClip} poster={swarmPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="水母群上涌"></video>
+        <figcaption>水母群：每只靠自己的搏动游，鱼群只给方向</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={chainClip} poster={chainPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="水母链螺旋绕下"></video>
+        <figcaption>几十只小水母连成一条链，从高处螺旋绕下来</figcaption>
+    </figure>
+</div>
+
+### 安康鱼：深海的巨物
+
+第一关和第三关有一条十几米长的安康鱼。它在后景巡游、亮灯搜索；海星躲进礁墙或珊瑚后面的"躲避区"就不会被发现，走出去被灯扫到，画面转红，它张嘴扑上来。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={patrolClip} poster={patrolPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="巨型安康鱼巡游"></video>
+        <figcaption>第一关的过场：巨型安康鱼从后景压着画面游过，海星躲到页岩后</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={huntClip} poster={huntPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="安康鱼扑向海星"></video>
+        <figcaption>第三关：灯笼找到海星，画面转红锁定，巨鱼张嘴扑上来</figcaption>
+    </figure>
+</div>
+
+---
+
+## 自研像素渲染管线
+
+游戏一开始用 URP 画，但 8 位的画面存不下超过 1 的颜色、做不了真的发光，深色的水里有色阶，画面的 alpha 又被像素位移占着，加一个新着色器就要重复接一遍视差、像素位移和深度。所以我写了一条自己的管线 **ProcAnimRP**，把 URP 整个删掉。它的核心不依赖 Unity，一帧由帧图描述：
+
+1. 游戏相机画进**低分辨率 G-buffer**（底色、八面体编码的法线、线性深度、物体编号）；
+2. **延迟卡通光照**、水体、雾、描边和纵深都在这个分辨率上算，内部是 HDR；
+3. 最后一步统一**量化成像素画面**，再按整数倍放大到屏幕，所以像素永远是方的、硬的。
+
+<figure class="law-narrow">
+    <Image src={imgViews} alt="新管线的六张调试视图" widths={[640, 1220]} sizes="(min-width: 1024px) 900px, 100vw" />
+    <figcaption>管线刚接起来时的六张调试视图：相机画面、底色、法线、线性深度、显卡上用计算着色器生成的几何、接管后的画面</figcaption>
+</figure>
+
+在这之上加的东西，都先做到和旧画面逐像素一样，再加新效果：
+
+* **分块延迟点光**：视野里撒 100 盏光，整帧 GPU 合计 1.28 ms。
+* **发光体照亮周围**：水母、海樽、热泉口把自己的颜色打在沙地和触手上；主角身上带一盏真光，草和管虫会沿地面拖出侧视的 2D 影子。
+* **玻璃**：水母的伞边一圈量化过的菲涅耳亮边，伞里的口腕按整纹素错开表示折射；重叠的玻璃用加权混合的顺序无关透明（OIT）。
+
+<figure>
+    <Image src={imgGlow} alt="发光体照明的关、开、差" widths={[800, 1600]} sizes="(min-width: 1024px) 900px, 100vw" />
+    <figcaption>发光体照亮周围：左关、中开、右是两者之差——六种水母各自颜色的光照着自己的触手和下面的沙</figcaption>
+</figure>
+
+<figure class="law-narrow">
+    <Image src={imgGlass} alt="水母玻璃的折射和菲涅耳边" widths={[640, 1090]} sizes="(min-width: 1024px) 900px, 100vw" />
+    <figcaption>玻璃：左关、右开。伞边一圈菲涅耳亮边，透过伞看到的口腕按整纹素错开</figcaption>
+</figure>
+
+像素画最怕"闪"：相机每帧移动不到一个像素，边缘就在两个像素之间来回跳。我把每个物体移动的亚像素零头单独记下来，合成时整格移动，再用一个按帧统计闪烁像素数的诊断镜头去量每一种资产。植物的影子就是这样查出来的：它的阴影通道用错了视图矩阵，修掉之后海带林段的闪烁少了 61%。
+
+<div class="image-grid-2">
+    <figure>
+        <video class="clip" src={crystalClip} poster={crystalPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="晶体花园"></video>
+        <figcaption>第四关的晶体花园：每块晶体、每丛珊瑚都是发光体</figcaption>
+    </figure>
+    <figure>
+        <video class="clip" src={corridorClip} poster={corridorPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="珊瑚廊"></video>
+        <figcaption>第六关：剑鱼贴着洞顶和珊瑚穿行，过木板、贝壳门、垂下的光丝</figcaption>
+    </figure>
+</div>
+
+---
+
+## 关卡、过场和高潮
+
+关卡是横版的，但世界是三维的：每个关卡分前、中、后三层纵深，主角走在中间那层。我在编辑器里做了一个"关卡中心"：笔刷可以只往某一层刷植物和道具，场景里标出螃蟹能走的路线、必须保持平坦的地带和游戏相机的取景框，策划和美术同学都在这里搭景。
+
+<div class="image-grid-2">
+    <figure>
+        <Image src={imgDepth} alt="按纵深层着色的关卡" widths={[640, 1280]} sizes="(min-width: 1024px) 450px, 100vw" />
+        <figcaption>按纵深层逐像素着色：前景蓝、中景绿、后景紫</figcaption>
+    </figure>
+    <figure>
+        <Image src={imgMarks} alt="关卡的场景标注" widths={[640, 1280]} sizes="(min-width: 1024px) 450px, 100vw" />
+        <figcaption>搭景时的场景标注：分层的色带、螃蟹的路线（黄色箭头）、必须保持平坦的区域（红色斜线）</figcaption>
+    </figure>
+</div>
+
+过场用自己的时间线窗口来排：镜头、字幕、角色姿势和 21:9 的电影黑边都在上面。全片情绪最满的地方是第五关的竖琴剧场：海星坐上竖琴，一束光打下来，满场水母跟着节拍发光；玩家也可以接上 MIDI 键盘自己弹。
+
+<figure>
+    <video class="clip" src={harpClip} poster={harpPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="竖琴剧场"></video>
+    <figcaption>第五关的竖琴剧场：海星弹琴，水母和沙丁鱼的漩涡涌满整片海</figcaption>
+</figure>
+
+---
+
+## 让五个人、四周做完的工具
+
+为了在四周里做完十个关卡，我把大部分验证和产出交给工具：
+
+* **命令行驱动编辑器**：编译、截图、逐帧导出动作数据、录视频，都是一条命令，通过文件请求和编辑器通信；编辑器卡住时会说明原因。
+* **并行的无界面编辑器**：长任务自动挑一台空闲的无界面编辑器去跑；调参时同一处改动的几个版本同时在几台上跑，一轮约 40 秒就能看到并排的截图和数字。我也用几个并行的工作副本（配合 AI 编程助手）同时推进不同模块，每天合回主线。
+* **飞行记录和回归**：每一帧的碰撞体、接触、日志和探针都能录下来回放；回归检查按速度分级、带缓存，基准画面要我确认之后才录。
+* **玩家机器上的性能**：打包的游戏可以开性能记录，发回来的日志生成报告；关卡交接处的卡顿就是这样量出来、改掉的。设置里的"自动画质"会按显卡挑一档。
+
+<figure class="law-narrow">
+    <Image src={imgPhys} alt="第五关的物理视图" widths={[744]} sizes="(min-width: 1024px) 744px, 100vw" />
+    <figcaption>物理视图：第五关一段路上的碰撞（绿）、主角走过的路径和它的射线，由记录下来的模拟数据画出</figcaption>
+</figure>
+
+---
+
+## 团队
+
+我们是来自 USC Games 的五名学生，这是我们参加 That Game Jam 的作品。官网上，每个人都"饰演"游戏里的一只海洋生物：
+
+<div class="law-cast">
+    <figure class="law-me">
+        <Image src={castStarfish} alt="" width={72} height={72} />
+        <p class="law-name">Jeffery Hu</p>
+        <p class="law-role">饰 海星<br />导演 · 设计 · 开发 · 技术美术</p>
+    </figure>
+    <figure>
+        <Image src={castSlug} alt="" width={72} height={72} />
+        <p class="law-name">Sheldon Xu</p>
+        <p class="law-role">饰 海蛞蝓<br />设计 · 原画</p>
+    </figure>
+    <figure>
+        <Image src={castScallop} alt="" width={72} height={72} />
+        <p class="law-name">Haocheng Li</p>
+        <p class="law-role">饰 大扇贝<br />设计 · 工程师</p>
+    </figure>
+    <figure>
+        <Image src={castSwordfish} alt="" width={72} height={72} />
+        <p class="law-name">Pb</p>
+        <p class="law-role">饰 剑鱼<br />设计 · 环境美术</p>
+    </figure>
+    <figure>
+        <Image src={castOctopus} alt="" width={72} height={72} />
+        <p class="law-name">Uesugi Atako</p>
+        <p class="law-role">饰 章鱼<br />设计 · 环境美术</p>
+    </figure>
+</div>
+
+游戏里的部分歌曲来自我们的好友 EHSV，感谢他允许我们使用。游戏可以在 [itch.io](https://huxxshadow.itch.io/light-as-wind) 下载，官网是 [lightaswind.com](https://lightaswind.com)。

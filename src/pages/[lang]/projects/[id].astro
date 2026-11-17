@@ -15,6 +15,7 @@ import EmptyThroneSkin from "@/components/projects/EmptyThroneSkin.astro";
 import SpeedPixelSkin from "@/components/projects/SpeedPixelSkin.astro";
 import LostRealmSkin from "@/components/projects/LostRealmSkin.astro";
 import QingyunSkin from "@/components/projects/QingyunSkin.astro";
+import LightAsWindSkin from "@/components/projects/LightAsWindSkin.astro";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { projectCover } from "@/projectCover";
 
@@ -62,6 +63,7 @@ const SKINS: Record<string, any> = {
     sp: SpeedPixelSkin,
     lr: LostRealmSkin,
     qy: QingyunSkin,
+    law: LightAsWindSkin,
 };
 const skin = project.data.skin;
 const Skin = skin ? SKINS[skin] : undefined;

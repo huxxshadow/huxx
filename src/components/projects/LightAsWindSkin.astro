@@ -1,0 +1,266 @@
+---
+// 愿此身如风 Light as Wind 项目页专属皮肤（projects.json 里 skin: "law" 时由 [id].astro 挂载）
+//
+// 照着游戏官网 lightaswind.com 的样子：米白的纸、墨蓝的字、海报的天空蓝，手写的小赖字体做标题，
+// 标题前和分隔线上一只橙色的小海星（官网和 itch 页面上的那只）。
+// - 页头右侧不放模板的 4:3 封面图，换成官网首页那张分层海报：天空一层、女孩一层，各自慢慢漂一点（减少动态效果时不动）。
+// - 正文 H2 前是小海星，<hr> 是一条细线中间一只海星，图注用淡墨色。
+// - 团队名单用官网的五只像素小角色（MDX 里的 .law-cast）。
+// - 标题字：小赖字体（OFL），只收这一页四种语言的标题、引文、团队名字用到的字（skin/xiaolai-law.woff2，
+//   由 Trailer/fonts/Xiaolai-Regular.ttf 用 fontTools 截取）；改了这些文字要重新截取，否则缺的字退回站内字体。
+// - 所有规则都限定在 .skin-law / html:has(.skin-law) 下（样式表是整条路由共用的）。
+interface Props {
+    /** true 时只输出 hero 里的装饰层（样式由页面顶部那次挂载负责） */
+    stickers?: boolean;
+}
+const { stickers = false } = Astro.props;
+
+import sky from "@/assets/projects/game-project-light-as-wind/skin/hero-sky-1920.webp";
+import girl from "@/assets/projects/game-project-light-as-wind/skin/hero-girl-1920.webp";
+import star from "@/assets/projects/game-project-light-as-wind/skin/star-orange.png";
+import font from "@/assets/projects/game-project-light-as-wind/skin/xiaolai-law.woff2?url";
+
+const fontFace = `@font-face { font-family: "LAW Hand"; src: url("${font}") format("woff2"); font-display: swap; }`;
+const vars = [`--law-star: url("${star.src}")`];
+---
+
+{stickers ? (
+        <div class="law-cover" aria-hidden="true">
+            <div class="law-cover-frame">
+                <div class="law-sky" style={`background-image: url("${sky.src}")`}></div>
+                <div class="law-girl" style={`background-image: url("${girl.src}")`}></div>
+            </div>
+        </div>
+) : (
+        <style is:inline set:html={`${fontFace} html:has(.skin-law) { ${vars.join("; ")}; }`} />
+)}
+
+<style is:global>
+    /* ========================================================= */
+    /* 调色板：官网的纸、墨、天空                                     */
+    /* ========================================================= */
+    html:has(.skin-law) {
+        --law-paper: #fbfaf6;
+        --law-ink: #26354d;
+        --law-ink-soft: #6a7488;
+        --law-sky: #4381ef;
+        --law-teal: rgb(43 122 133 / .45);
+        --law-orange: #f08a4b;
+        --law-head: "LAW Hand", var(--theme-font-active), sans-serif;
+    }
+
+    html:has(.skin-law) body {
+        background-color: var(--law-paper);
+        background-image: radial-gradient(ellipse 60% 40% at 100% 0%, rgb(67 129 239 / .10), transparent 70%);
+        background-attachment: fixed;
+        overflow-x: clip;
+    }
+
+    /* ========================================================= */
+    /* HERO                                                       */
+    /* ========================================================= */
+    header.skin-law {
+        background: transparent !important;
+        color: var(--law-ink) !important;
+        border-bottom: 1.5px solid var(--law-teal) !important;
+        --theme-text: var(--law-ink);
+    }
+    header.skin-law > .absolute { display: none; }
+    /* 返回按钮在最上，下面是海报，再下面是标题和简介 */
+    .skin-law .project-hero-shell { position: relative; display: flex; flex-direction: column; }
+    .skin-law .project-hero-screen { display: contents; }
+    .skin-law .project-hero-screen > div:first-child { order: 0; width: 100%; }
+    .skin-law .project-hero-screen > div:last-child { order: 2; width: 100%; }
+    .skin-law .law-cover { order: 1; width: 100%; }
+    /* 模板右侧的 4:3 封面图换成分层海报 */
+    .skin-law .project-hero-screen div:has(> .project-hero-image) { display: none; }
+
+    .skin-law .law-cover {
+        position: relative;
+        z-index: 1;
+        max-width: 80rem;
+        margin: 0 auto 2.5rem;
+    }
+    .skin-law .law-cover-frame {
+        position: relative;
+        aspect-ratio: 21 / 9;
+        max-height: 54vh;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 1.25rem;
+        background: var(--law-sky);
+        box-shadow: 0 18px 50px -24px rgb(38 53 77 / .45);
+        animation: law-rise 1.1s cubic-bezier(.2, .7, .2, 1) both;
+    }
+    @keyframes law-rise {
+        from { opacity: 0; translate: 0 18px; }
+        to   { opacity: 1; translate: 0 0; }
+    }
+    .skin-law .law-sky,
+    .skin-law .law-girl {
+        position: absolute;
+        inset: 0;
+        background-position: 70% 40%;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    .skin-law .law-sky { scale: 1.08; animation: law-drift 18s ease-in-out infinite alternate; }
+    .skin-law .law-girl { scale: 1.04; transform-origin: 100% 50%; animation: law-breathe 11s ease-in-out infinite alternate; }
+    @keyframes law-drift {
+        from { translate: -1.6% 0.6%; }
+        to   { translate: 1.6% -0.6%; }
+    }
+    @keyframes law-breathe {
+        from { translate: 0 0; }
+        to   { translate: -0.6% -0.4%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .skin-law .law-sky, .skin-law .law-girl, .skin-law .law-cover-frame { animation: none; }
+    }
+
+    header.skin-law h1 {
+        font-family: var(--law-head);
+        font-weight: 400 !important;
+        letter-spacing: .02em;
+        color: var(--law-ink);
+    }
+    header.skin-law .brutalist-badge {
+        border-width: 1.5px !important;
+        border-color: var(--law-teal) !important;
+        border-radius: 999px;
+        background: rgb(255 255 255 / .7);
+        color: var(--law-ink);
+        box-shadow: none;
+        font-weight: 600 !important;
+    }
+    header.skin-law .border-l-\[4px\] {
+        border-left-width: 3px !important;
+        border-color: var(--law-sky) !important;
+    }
+    header.skin-law #back-btn { color: var(--law-ink); }
+    .skin-law .brutalist-tag {
+        border: 1.5px solid var(--law-ink) !important;
+        border-radius: 999px;
+        background: var(--law-paper);
+        color: var(--law-ink);
+        box-shadow: 0 3px 0 var(--law-ink);
+        text-transform: none;
+        letter-spacing: .02em;
+    }
+    .skin-law .brutalist-tag:hover { background: var(--law-sky); border-color: var(--law-sky) !important; color: #fff; box-shadow: 0 3px 0 #2b5fb8; }
+
+    /* ========================================================= */
+    /* 正文                                                        */
+    /* ========================================================= */
+    section.skin-law {
+        background: transparent !important;
+        color: var(--law-ink) !important;
+        --theme-text: var(--law-ink);
+    }
+    .skin-law .project-prose h2 {
+        display: flex;
+        align-items: center;
+        gap: .55em;
+        font-family: var(--law-head);
+        font-weight: 400 !important;
+        letter-spacing: .03em;
+        border: 0 !important;
+        box-shadow: none !important;
+        background: none !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+        color: var(--law-ink);
+    }
+    .skin-law .project-prose h2::before {
+        content: "";
+        flex: none;
+        width: 1.15em;
+        height: 1.15em;
+        background: var(--law-star) center / contain no-repeat;
+        rotate: -8deg;
+    }
+    .skin-law .project-prose h3 {
+        font-family: var(--law-head);
+        font-weight: 400 !important;
+        color: var(--law-ink);
+    }
+    .skin-law .project-prose hr {
+        position: relative;
+        height: 46px;
+        border: 0 !important;
+        background: none !important;
+        margin: 3rem auto;
+        max-width: 40rem;
+    }
+    .skin-law .project-prose hr::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        border-top: 1.5px solid var(--law-teal);
+    }
+    .skin-law .project-prose hr::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: 46px;
+        height: 46px;
+        margin-left: -23px;
+        background: var(--law-paper) var(--law-star) center / 34px no-repeat;
+    }
+    .skin-law .project-prose a { color: var(--law-sky); }
+    .skin-law .project-prose strong { color: var(--law-ink); }
+    .skin-law .project-prose figcaption { color: var(--law-ink-soft); }
+    .skin-law .project-prose figure img,
+    .skin-law .project-prose figure video {
+        border-radius: .75rem;
+        border: 0 !important;
+        box-shadow: 0 10px 30px -18px rgb(38 53 77 / .5);
+    }
+    /* 小的调试图、曲线图：不撑满整栏 */
+    .skin-law .project-prose figure.law-narrow { max-width: 46rem; margin-left: auto; margin-right: auto; }
+    .skin-law .project-prose ul li::marker { color: var(--law-orange); }
+    .skin-law .project-prose blockquote {
+        font-family: var(--law-head);
+        font-style: normal;
+        border-left: 3px solid var(--law-sky) !important;
+        color: var(--law-ink);
+        background: rgb(67 129 239 / .06);
+        border-radius: 0 .75rem .75rem 0;
+    }
+    .skin-law .project-prose blockquote p { margin: .2rem 0; font-size: 1.2rem; }
+
+    /* 预告片：带声音、带控件 */
+    .skin-law .law-trailer video {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        background: #000;
+    }
+
+    /* 团队：官网的像素小角色 */
+    .skin-law .law-cast {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 1rem;
+        margin: 1.5rem 0 2rem;
+    }
+    .skin-law .law-cast figure { margin: 0 !important; text-align: center; }
+    .skin-law .law-cast img {
+        width: 72px !important;
+        height: 72px !important;
+        margin: 0 auto .5rem;
+        image-rendering: pixelated;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+    }
+    .skin-law .law-cast .law-name { font-family: var(--law-head); font-size: 1.15rem; line-height: 1.3; margin: 0 !important; }
+    .skin-law .law-cast .law-role { font-size: .85rem !important; line-height: 1.4 !important; color: var(--law-ink-soft) !important; margin: .2rem 0 0 !important; }
+    .skin-law .law-cast .law-me .law-name { color: var(--law-sky); }
+    @media (max-width: 639px) {
+        .skin-law .law-cast { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .skin-law .law-cover { margin-bottom: 1.5rem; }
+        .skin-law .law-cover-frame { border-radius: .9rem; }
+    }
+</style>
