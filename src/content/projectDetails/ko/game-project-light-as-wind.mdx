@@ -1,288 +1,32 @@
-import { Image } from 'astro:assets';
 import trailer from '@/assets/projects/game-project-light-as-wind/clips/trailer-en.mp4?url';
 import trailerPoster from '@/assets/projects/game-project-light-as-wind/clips/trailer-en-poster.webp?url';
-import gardenClip from '@/assets/projects/game-project-light-as-wind/clips/garden-giant-jelly.mp4?url';
-import gardenPoster from '@/assets/projects/game-project-light-as-wind/clips/garden-giant-jelly-poster.webp?url';
-import crystalClip from '@/assets/projects/game-project-light-as-wind/clips/crystal-garden.mp4?url';
-import crystalPoster from '@/assets/projects/game-project-light-as-wind/clips/crystal-garden-poster.webp?url';
-import chainClip from '@/assets/projects/game-project-light-as-wind/clips/jelly-chain-en.mp4?url';
-import chainPoster from '@/assets/projects/game-project-light-as-wind/clips/jelly-chain-en-poster.webp?url';
-import swarmClip from '@/assets/projects/game-project-light-as-wind/clips/jelly-swarm.mp4?url';
-import swarmPoster from '@/assets/projects/game-project-light-as-wind/clips/jelly-swarm-poster.webp?url';
-import bubbleClip from '@/assets/projects/game-project-light-as-wind/clips/bubble-ride.mp4?url';
-import bubblePoster from '@/assets/projects/game-project-light-as-wind/clips/bubble-ride-poster.webp?url';
-import stepsClip from '@/assets/projects/game-project-light-as-wind/clips/breathing-steps.mp4?url';
-import stepsPoster from '@/assets/projects/game-project-light-as-wind/clips/breathing-steps-poster.webp?url';
-import patrolClip from '@/assets/projects/game-project-light-as-wind/clips/angler-patrol.mp4?url';
-import patrolPoster from '@/assets/projects/game-project-light-as-wind/clips/angler-patrol-poster.webp?url';
-import huntClip from '@/assets/projects/game-project-light-as-wind/clips/angler-hunt.mp4?url';
-import huntPoster from '@/assets/projects/game-project-light-as-wind/clips/angler-hunt-poster.webp?url';
-import harpClip from '@/assets/projects/game-project-light-as-wind/clips/harp-concert.mp4?url';
-import harpPoster from '@/assets/projects/game-project-light-as-wind/clips/harp-concert-poster.webp?url';
-import corridorClip from '@/assets/projects/game-project-light-as-wind/clips/coral-corridor.mp4?url';
-import corridorPoster from '@/assets/projects/game-project-light-as-wind/clips/coral-corridor-poster.webp?url';
-import schoolClip from '@/assets/projects/game-project-light-as-wind/clips/fish-school.mp4?url';
-import schoolPoster from '@/assets/projects/game-project-light-as-wind/clips/fish-school-poster.webp?url';
-import leapsClip from '@/assets/projects/game-project-light-as-wind/clips/surface-leaps.mp4?url';
-import leapsPoster from '@/assets/projects/game-project-light-as-wind/clips/surface-leaps-poster.webp?url';
-import vineClip from '@/assets/projects/game-project-light-as-wind/clips/vine-swing.mp4?url';
-import vinePoster from '@/assets/projects/game-project-light-as-wind/clips/vine-swing-poster.webp?url';
-import mantaClip from '@/assets/projects/game-project-light-as-wind/clips/manta-rescue.mp4?url';
-import mantaPoster from '@/assets/projects/game-project-light-as-wind/clips/manta-rescue-poster.webp?url';
-
-import imgViews from '@/assets/projects/game-project-light-as-wind/render-views.webp';
-import imgGlow from '@/assets/projects/game-project-light-as-wind/glow-lights.webp';
-import imgGlass from '@/assets/projects/game-project-light-as-wind/glass-jellies.webp';
-import imgDepth from '@/assets/projects/game-project-light-as-wind/depth-layers.webp';
-import imgMarks from '@/assets/projects/game-project-light-as-wind/scene-marks.webp';
-import imgSwarm from '@/assets/projects/game-project-light-as-wind/swarm-sequence.webp';
-import imgDash from '@/assets/projects/game-project-light-as-wind/dash-trace.webp';
-import imgPhys from '@/assets/projects/game-project-light-as-wind/phys-view.webp';
-import castStarfish from '@/assets/projects/game-project-light-as-wind/skin/cast-starfish.png';
-import castSlug from '@/assets/projects/game-project-light-as-wind/skin/cast-slug.png';
-import castScallop from '@/assets/projects/game-project-light-as-wind/skin/cast-scallop.png';
-import castSwordfish from '@/assets/projects/game-project-light-as-wind/skin/cast-swordfish.png';
-import castOctopus from '@/assets/projects/game-project-light-as-wind/skin/cast-octopus.png';
 
 ## 게임 소개
 
-《Light as Wind(愿此身如风)》은 픽셀 아트 횡스크롤 어드벤처입니다. 불가사리, 황새치, 게 세 인형이 잠든 소녀를 대신해 꿈속에서 바다를 보러 갑니다. 칠흑 같은 심해에서 빛나는 정원, 하프 극장, 바다 위와 해안까지――먼 하늘을 향해. 이야기는 두 부로 나뉘며, 현재 버전은 제1부 「Beneath the Blue」입니다.
+<div class="law-poem">
+    <p>바다의 끝에는 깊고 푸른 하늘이 있다고 해요.</p>
+    <p>꿈은 언젠가 깨기 마련이죠. 하지만 지금은, 여행이 아직 끝나지 않았어요.</p>
+    <p>그러니까, 깨어나기 전에 조금만 더 앞으로 가 봐요.</p>
+</div>
 
-> They say that where the sea ends, there is a sky of deep blue.
->
-> Every dream ends in waking. But not yet: the journey isn't over.
->
-> So, before you wake, go a little further.
+<svg class="law-wave" viewBox="0 0 120 14" aria-hidden="true"><path d="M2 8c9-6 15-6 22 0s14 6 22 0 15-6 22 0 14 6 22 0 15-6 26-1"/></svg>
 
-<figure class="law-trailer">
-    <video src={trailer} poster={trailerPoster} width="1280" height="720" controls playsinline preload="none" aria-label="Light as Wind 트레일러"></video>
-    <figcaption>트레일러(79초, 모두 실제 게임 화면)</figcaption>
-</figure>
+<p class="law-motto">이 몸 바람처럼, 깊고 푸른 하늘 저편으로.</p>
 
----
+## 트레일러
+
+<div class="law-story">
+    <figure class="law-clip">
+        <video src={trailer} poster={trailerPoster} width="1280" height="720" controls playsinline preload="none" aria-label="트레일러"></video>
+    </figure>
+    <p class="law-clip-cap">트레일러(모두 실제 게임 화면)</p>
+</div>
 
 ## 담당 역할
 
-USC Games 학생 다섯 명이 That Game Jam을 위해 팀을 꾸려 약 4주 동안 만들었습니다. 저는 디렉터로서 게임 디자인, 리드 프로그래밍, 테크니컬 아트를 맡았고, 약 5,000건의 커밋 중 90% 정도가 제 것입니다. 구체적으로는:
+USC Games 학생 다섯 명이 That Game Jam을 위해 팀을 꾸려 Unity 6로 2주 만에 만들었습니다. 저는 디렉터를 맡았고, 게임 디자인, 리드 프로그래밍, 테크니컬 아트도 담당했습니다.
 
-* **절차적 생물**: 조작 가능한 세 인형 주인공과 해파리, 아귀, 정어리 떼, 만타, 바닷새, 해초 등 수십 종의 생물과 식물. 모두 코드로 움직이며 키프레임 애니메이션은 없습니다.
-* **자체 픽셀 렌더 파이프라인**: URP를 대체했습니다. 저해상도 G-buffer, 지연 툰 라이팅, 발광체의 조명, 유리 굴절과 순서 독립 투명, 마지막에 한 번만 픽셀로 양자화.
-* **스테이지와 월드**: 10개 스테이지의 레벨 툴(세 겹의 깊이, 브러시 배치, 씬 표시), 스테이지 사이의 백그라운드 로딩, 컷신 시스템.
-* **개발 툴체인**: 명령줄에서 Unity 에디터를 구동하고, 녹화·스틸·회귀 테스트·파라미터 조정을 여러 헤드리스 에디터에서 병렬로 실행. 플레이어 기기의 성능 로그와 자동 화질.
-* **디렉팅과 디자인**: 게임 전체의 감정 흐름과 스테이지별 플레이. 트레일러와 공식 웹사이트도 제가 만들었습니다.
-
----
-
-## 하나하나가 살아 있다
-
-게임에는 손으로 잡은 애니메이션 프레임이 한 장도 없습니다. 모든 캐릭터는 같은 층으로 나뉩니다. 뇌가 무엇을 하고 싶은지 정하고, 의도가 그것을 목표로 바꾸고, 제어 층이 몸을 어떻게 움직일지 계산하고, 물리 층이 접촉과 무게를 다루며, 스킨 층이 매 프레임 메시를 다시 만듭니다. 그래서 같은 불가사리가 걷고, 달리고, 뛰고, 해파리 촉수를 붙잡고, 식물을 뿌리째 뽑을 수도 있습니다.
-
-<figure>
-    <video class="clip" src={gardenClip} poster={gardenPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="빛나는 정원의 거대 해파리"></video>
-    <figcaption>2스테이지의 빛나는 정원: 거대 해파리 두 마리가 앞쪽 돌기둥 뒤로 떠가고, 불가사리가 풀숲을 걷는다</figcaption>
-</figure>
-
-<div class="image-grid-2">
-    <figure>
-        <video class="clip" src={bubbleClip} poster={bubblePoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="거품 기둥을 타는 불가사리"></video>
-        <figcaption>불가사리: 열수구의 거품 기둥에 올라 높은 단까지 실려 간다</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={stepsClip} poster={stepsPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="열수구가 들어 올리는 숨 쉬는 돌계단"></video>
-        <figcaption>숨 쉬는 돌계단: 열수구가 돌판을 올렸다 내리고, 불가사리가 그 위를 뛰어 건넌다</figcaption>
-    </figure>
-</div>
-
-### 불가사리: 발은 어디에 닿는가
-
-불가사리의 다섯 팔은 각각 독립된 다리입니다. 발마다 매 프레임 '서 있음', '내딛는 중', '착지점을 쫓는 중' 중 어느 상태인지 시간축으로 그리는 보행 기록기를 만들었습니다. 첫 버전에서는 달릴 때 발이 절반의 시간 동안 착지점을 쫓았고, 1m를 갈 때마다 발이 1.04m 미끄러졌습니다. 착지하는 순간 착지점을 고정하고 내딛는 이징을 절반으로 줄이자 미끄러짐은 1m당 67mm, 쫓는 비율은 2.3%로 줄었습니다.
-
-### 황새치: 대시의 손맛
-
-Shift를 누르면 황새치가 대시합니다. 몸을 웅크리고 꼬리를 흔들어 힘을 모은 뒤, 몸을 쭉 펴고 칼을 앞세워 최대 13m/s로 튀어 나갑니다. 벽을 향해 대시하면 일찍 힘을 빼고 벽을 뚫지 않고 그 앞에 멈춥니다. 아래는 샷이 기록한 속도와 궤적입니다.
-
-<figure class="law-narrow">
-    <Image src={imgDash} alt="황새치 대시의 속도와 궤적" widths={[640, 1100]} sizes="(min-width: 1024px) 736px, 100vw" />
-    <figcaption>황새치 대시: 위는 시간에 따른 속도(주황색은 대시 중), 아래는 x-y 궤적. 세 번째는 벽을 향하므로 일찍 힘을 뺀다</figcaption>
-</figure>
-
-<div class="image-grid-2">
-    <figure>
-        <video class="clip" src={schoolClip} poster={schoolPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="정어리 떼를 흩뜨리는 황새치"></video>
-        <figcaption>황새치가 수천 마리 정어리 속으로 돌진: 놀람이 물결처럼 퍼지고, 떼가 부채꼴로 흩어졌다가 다시 모인다</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={leapsClip} poster={leapsPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="수면 위로 뛰어오르는 황새치"></video>
-        <figcaption>7스테이지: 보랏빛 하늘 아래 황새치가 몇 번이고 물 밖으로 뛰어오른다</figcaption>
-    </figure>
-</div>
-
-### 게: 덩굴, 그물, 그리고 만타
-
-게의 장은 모두 '붙잡기'입니다. 덩굴을 하나씩 붙잡아 구덩이를 건너고, 그물 자루의 매듭을 하나씩 끊어 작은 물고기를 풀어 주고, 갇힌 만타를 덮은 그물을 끊으면 만타가 떠올라 게를 태우고 협곡을 건넙니다. 낮게 헤엄치는 만타는 자기 배와 땅 사이의 거리를 재서 날개가 바위에 박히지 않게 합니다.
-
-<div class="image-grid-2">
-    <figure>
-        <video class="clip" src={vineClip} poster={vinePoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="덩굴을 타는 게"></video>
-        <figcaption>게가 덩굴을 하나씩 붙잡아 구덩이를 건넌다</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={mantaClip} poster={mantaPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="만타의 그물을 끊다"></video>
-        <figcaption>만타를 누르고 있는 그물을 끊으면, 만타가 떠오르고 게가 올라탄다</figcaption>
-    </figure>
-</div>
-
-### 해파리: 스스로 헤엄치는 무리
-
-해파리 무리는 물고기 떼처럼 위로 솟구치지만, 한 마리 한 마리는 자기 박동으로 나아갑니다. 갓을 가고 싶은 방향으로 기울이고, 세게 수축해 물을 뿜어 나아가고, 미끄러지며 가라앉았다가 다시 한 박자. 무리 알고리즘은 방향만 주고, 경로는 배치 툴에서 그립니다. 또 다른 종류는 사슬처럼 이어져 위에서 나선을 그리며 내려와 불가사리 곁에 내려앉습니다.
-
-<figure>
-    <Image src={imgSwarm} alt="경로를 따라 올라가는 해파리 무리의 연속 프레임" widths={[800, 1600]} sizes="(min-width: 1024px) 900px, 100vw" />
-    <figcaption>귀여운 해파리 열두 마리가 불가사리 뒤에서 경로를 따라 올라간다: 출발 전엔 낮게 늘어서고, 여러 줄기로 올라가, 끝에서 천천히 소용돌이친다</figcaption>
-</figure>
-
-<div class="image-grid-2">
-    <figure>
-        <video class="clip" src={swarmClip} poster={swarmPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="솟구치는 해파리 무리"></video>
-        <figcaption>해파리 무리: 한 마리씩 자기 박동으로 헤엄치고, 무리는 방향만 정한다</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={chainClip} poster={chainPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="나선을 그리며 내려오는 해파리 사슬"></video>
-        <figcaption>작은 해파리 수십 마리가 한 줄의 사슬이 되어 위에서 나선을 그리며 내려온다</figcaption>
-    </figure>
-</div>
-
-### 아귀: 심해의 거대한 존재
-
-1스테이지와 3스테이지에는 몸길이 10m가 넘는 아귀가 있습니다. 배경을 순찰하며 초롱으로 찾습니다. 불가사리가 바위벽이나 산호 뒤의 '숨는 곳'에 있으면 들키지 않지만, 빛 속으로 나서면 화면이 붉어지고 입을 벌리고 덮쳐 옵니다.
-
-<div class="image-grid-2">
-    <figure>
-        <video class="clip" src={patrolClip} poster={patrolPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="순찰하는 거대 아귀"></video>
-        <figcaption>1스테이지 컷신: 거대한 아귀가 화면을 덮으며 지나가고, 불가사리는 바위 뒤에 숨는다</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={huntClip} poster={huntPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="불가사리를 덮치는 아귀"></video>
-        <figcaption>3스테이지: 초롱이 불가사리를 찾아내고, 화면이 붉게 고정되며, 거대한 물고기가 입을 벌리고 덮친다</figcaption>
-    </figure>
-</div>
-
----
-
-## 자체 픽셀 렌더 파이프라인
-
-처음엔 URP로 그렸지만, 8비트 화면은 1을 넘는 색도 진짜 발광도 담지 못했고, 어두운 물에는 색 띠가 생겼으며, 화면의 알파는 픽셀 이동 정보가 차지하고 있었습니다. 새 셰이더를 추가할 때마다 시차, 픽셀 이동, 깊이를 다시 연결해야 했습니다. 그래서 제 파이프라인 **ProcAnimRP**를 작성하고 URP를 통째로 제거했습니다. 코어는 Unity에 의존하지 않으며, 한 프레임은 프레임 그래프로 기술됩니다.
-
-1. 게임 카메라가 **저해상도 G-buffer**(기본색, 팔면체 인코딩 노멀, 선형 깊이, 오브젝트 ID)에 그린다;
-2. **지연 툰 라이팅**, 물, 안개, 외곽선, 깊이 표현을 모두 그 해상도에서, 내부적으로는 HDR로 계산한다;
-3. 마지막 단계에서 **픽셀 화면으로 양자화**하고 정수배로 화면에 확대한다. 그래서 픽셀은 언제나 네모나고 선명하다.
-
-<figure class="law-narrow">
-    <Image src={imgViews} alt="새 파이프라인의 디버그 뷰 여섯 장" widths={[640, 1220]} sizes="(min-width: 1024px) 736px, 100vw" />
-    <figcaption>파이프라인을 처음 연결했을 때의 디버그 뷰 여섯 장: 카메라 화면, 기본색, 노멀, 선형 깊이, 컴퓨트 셰이더로 GPU에서 만든 지오메트리, 넘겨받은 화면</figcaption>
-</figure>
-
-그 위에 더한 것은 먼저 이전 화면과 픽셀 단위로 일치시킨 뒤에야 새 효과를 넣었습니다.
-
-* **타일 기반 지연 포인트 라이트**: 시야에 100개를 뿌려도 프레임 전체 GPU 시간은 1.28ms.
-* **발광체가 주변을 비춘다**: 해파리, 살파, 열수구가 자기 색을 모래와 촉수에 드리웁니다. 주인공은 진짜 빛을 지니고, 풀과 관벌레는 땅을 따라 옆에서 본 2D 그림자를 끕니다.
-* **유리**: 해파리 갓 가장자리에 양자화한 프레넬 테두리, 갓 속 구완은 정수 텍셀씩 어긋나게 해 굴절을 표현. 겹치는 유리는 가중 블렌딩 순서 독립 투명(OIT)을 씁니다.
-
-<figure>
-    <Image src={imgGlow} alt="발광체 조명: 끔, 켬, 차이" widths={[800, 1600]} sizes="(min-width: 1024px) 900px, 100vw" />
-    <figcaption>발광체가 주변을 비춘다: 왼쪽 끔, 가운데 켬, 오른쪽 차이. 여섯 종의 해파리가 각자의 색으로 자기 촉수와 아래 모래를 비춘다</figcaption>
-</figure>
-
-<figure class="law-narrow">
-    <Image src={imgGlass} alt="해파리 유리의 굴절과 프레넬 테두리" widths={[640, 1090]} sizes="(min-width: 1024px) 736px, 100vw" />
-    <figcaption>유리: 왼쪽 끔, 오른쪽 켬. 갓 가장자리의 프레넬 빛과, 갓 너머로 정수 텍셀만큼 어긋나 보이는 구완</figcaption>
-</figure>
-
-픽셀 아트의 천적은 '깜빡임'입니다. 카메라가 한 프레임에 1픽셀 미만으로 움직이면 외곽이 두 픽셀 사이를 오갑니다. 각 오브젝트 이동의 서브픽셀 나머지를 따로 기록해 합성할 때 칸 단위로 움직이고, 깜빡이는 픽셀 수를 프레임마다 세는 진단 샷으로 모든 에셋을 측정했습니다. 식물 그림자 문제도 이렇게 찾았습니다. 그림자 패스가 잘못된 뷰 행렬을 쓰고 있었고, 고치자 켈프 숲 구간의 깜빡임이 61% 줄었습니다.
-
-<div class="image-grid-2">
-    <figure>
-        <video class="clip" src={crystalClip} poster={crystalPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="수정 정원"></video>
-        <figcaption>4스테이지의 수정 정원: 수정 하나, 산호 덤불 하나하나가 광원</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={corridorClip} poster={corridorPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="산호 회랑"></video>
-        <figcaption>6스테이지: 황새치가 동굴 천장과 산호 사이를 누비며 판자, 조개 문, 늘어진 빛줄기를 지난다</figcaption>
-    </figure>
-</div>
-
----
-
-## 스테이지, 컷신, 클라이맥스
-
-스테이지는 횡스크롤이지만 세계는 3D입니다. 각 스테이지에는 앞·가운데·뒤 세 겹의 깊이가 있고, 주인공은 가운데 층을 걷습니다. 에디터에 '레벨 허브'를 만들어, 브러시로 식물과 소품을 한 층에만 칠할 수 있게 하고, 씬에는 게가 걸을 수 있는 경로, 평평하게 유지해야 하는 띠, 게임 카메라의 화각을 표시했습니다. 디자이너와 아티스트 팀원들이 여기서 스테이지를 꾸몄습니다.
-
-<div class="image-grid-2">
-    <figure>
-        <Image src={imgDepth} alt="깊이 층별로 색을 입힌 스테이지" widths={[640, 1280]} sizes="(min-width: 1024px) 450px, 100vw" />
-        <figcaption>픽셀마다 깊이 층별로 색칠: 앞은 파랑, 가운데는 초록, 뒤는 보라</figcaption>
-    </figure>
-    <figure>
-        <Image src={imgMarks} alt="스테이지를 꾸밀 때의 씬 표시" widths={[640, 1280]} sizes="(min-width: 1024px) 450px, 100vw" />
-        <figcaption>스테이지를 꾸밀 때의 씬 표시: 층별 띠, 게의 경로(노란 화살표), 평평하게 유지해야 하는 띠(빨간 빗금)</figcaption>
-    </figure>
-</div>
-
-컷신은 전용 타임라인 창에서 짭니다. 카메라, 자막, 캐릭터 포즈, 21:9 시네마 바가 모두 그 위에 있습니다. 감정이 가장 고조되는 곳은 5스테이지의 하프 극장입니다. 불가사리가 하프 앞에 앉고, 한 줄기 빛이 내려오고, 극장을 가득 채운 해파리가 박자에 맞춰 빛납니다. 플레이어는 MIDI 키보드를 연결해 직접 연주할 수도 있습니다.
-
-<figure>
-    <video class="clip" src={harpClip} poster={harpPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="하프 극장"></video>
-    <figcaption>5스테이지의 하프 극장: 불가사리가 연주하고, 해파리와 정어리의 소용돌이가 바다를 채운다</figcaption>
-</figure>
-
----
-
-## 다섯 명이 4주 만에 끝내게 해 준 도구
-
-4주 안에 10개 스테이지를 끝내기 위해, 확인과 제작의 대부분을 도구에 맡겼습니다.
-
-* **명령줄에서 에디터 구동**: 컴파일, 스틸, 프레임별 동작 데이터, 녹화가 각각 명령 하나이며, 파일을 통해 에디터와 주고받습니다. 에디터가 멈추면 이유를 알려 줍니다.
-* **병렬 헤드리스 에디터**: 긴 작업은 비어 있는 헤드리스 에디터로 자동으로 넘어갑니다. 튜닝할 때는 같은 변경의 여러 버전을 여러 에디터에서 동시에 돌려, 나란히 놓인 스틸과 수치를 한 라운드 약 40초 만에 봅니다. 또 여러 병렬 작업 사본(AI 코딩 어시스턴트와 함께)으로 서로 다른 모듈을 동시에 진행하고, 매일 메인 라인에 합쳤습니다.
-* **플라이트 기록과 회귀 테스트**: 매 프레임의 콜라이더, 접촉, 로그, 프로브를 기록해 재생할 수 있습니다. 회귀 검사는 속도별로 단계를 나누고 캐시하며, 기준 화면은 제가 확인한 뒤에만 기록합니다.
-* **플레이어 기기에서의 성능**: 배포한 게임은 성능 로그를 남길 수 있고, 보내온 로그로 리포트를 만듭니다. 스테이지 이음새의 끊김도 이렇게 측정해 없앴습니다. 설정의 '자동' 화질은 그래픽카드에 맞춰 단계를 고릅니다.
-
-<figure class="law-narrow">
-    <Image src={imgPhys} alt="5스테이지의 물리 뷰" widths={[744]} sizes="(min-width: 1024px) 744px, 100vw" />
-    <figcaption>물리 뷰: 5스테이지 한 구간의 충돌(초록), 주인공의 경로와 레이. 기록한 시뮬레이션 데이터로 그린 것</figcaption>
-</figure>
-
----
-
-## 팀
-
-저희는 USC Games 학생 다섯 명이고, 《Light as Wind》는 That Game Jam 참가작입니다. 공식 웹사이트에서는 한 사람 한 사람이 게임 속 바다 생물을 '연기'합니다.
-
-<div class="law-cast">
-    <figure class="law-me">
-        <Image src={castStarfish} alt="" width={72} height={72} />
-        <p class="law-name">Jeffery Hu</p>
-        <p class="law-role">불가사리 역<br />디렉터 · 디자이너 · 개발 · 테크니컬 아티스트</p>
-    </figure>
-    <figure>
-        <Image src={castSlug} alt="" width={72} height={72} />
-        <p class="law-name">Sheldon Xu</p>
-        <p class="law-role">갯민숭달팽이 역<br />디자이너 · 콘셉트 아티스트</p>
-    </figure>
-    <figure>
-        <Image src={castScallop} alt="" width={72} height={72} />
-        <p class="law-name">Haocheng Li</p>
-        <p class="law-role">큰 가리비 역<br />디자이너 · 엔지니어</p>
-    </figure>
-    <figure>
-        <Image src={castSwordfish} alt="" width={72} height={72} />
-        <p class="law-name">Pb</p>
-        <p class="law-role">황새치 역<br />디자이너 · 환경 아티스트</p>
-    </figure>
-    <figure>
-        <Image src={castOctopus} alt="" width={72} height={72} />
-        <p class="law-name">Uesugi Atako</p>
-        <p class="law-role">문어 역<br />디자이너 · 환경 아티스트</p>
-    </figure>
-</div>
-
-게임 속 곡 일부는 친구 EHSV의 곡입니다. 사용을 허락해 줘서 감사합니다. 게임은 [itch.io](https://huxxshadow.itch.io/light-as-wind)에서 내려받을 수 있고, 공식 웹사이트는 [lightaswind.com](https://lightaswind.com)입니다.
+* **디렉팅과 디자인**: 전체 플레이와 감정의 흐름을 정하고, 10개 스테이지를 하나의 여정으로 엮었습니다.
+* **절차적 생물**: 게임 속 생물 시스템을 모두 작성했습니다. 불가사리, 황새치, 게를 비롯한 바다 생물에는 키프레임 애니메이션이 없고, 모든 동작은 코드로 실시간 생성됩니다.
+* **픽셀 렌더링**: 3D 픽셀 아트를 위해 렌더 파이프라인을 직접 만들어 URP를 대체했고, 카메라가 움직여도 픽셀이 안정적이고 깜빡이지 않게 했습니다.
+* **도구**: 레벨 편집 도구와 자동 테스트·녹화 도구를 만들어, 다섯 명이 2주 안에 10개 스테이지를 완성할 수 있게 했습니다.

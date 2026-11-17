@@ -3174,8 +3174,8 @@
     "title": {
       "en": "Light as Wind",
       "zh": "愿此身如风",
-      "ja": "Light as Wind",
-      "ko": "Light as Wind"
+      "ja": "この身、風のごとく",
+      "ko": "이 몸 바람처럼"
     },
     "roles": {
       "en": [
@@ -3204,10 +3204,10 @@
       ]
     },
     "desc": {
-      "zh": "《愿此身如风》是我们五个 USC Games 的学生为 That Game Jam 做的像素风横版冒险：三只玩偶——海星、剑鱼、螃蟹——在一场梦里穿过大海，去追远方的天空。我担任导演，负责游戏设计、主程序和技术美术：游戏里每一只生物都由程序驱动，没有一帧关键帧动画；画面由我从零写的像素渲染管线绘制（低分辨率 G-buffer、延迟卡通光照、发光体照明、玻璃折射，最后统一量化成像素画面）；此外还有十个关卡的关卡工具、过场系统，以及一整套在无界面编辑器上并行跑的录制、回归和性能工具。",
-      "en": "Light as Wind is a pixel-art side-scrolling adventure that five of us at USC Games made for That Game Jam: three plush toys – a starfish, a swordfish and a crab – cross the ocean in a dream, chasing a faraway sky. I directed it and did the game design, lead programming and technical art: every creature in the game is driven by code with not a single keyframe; the picture is drawn by a pixel render pipeline I wrote from scratch (low-resolution G-buffer, deferred toon lighting, light from glowing creatures, glass refraction, one final quantisation to pixels); and around it sit the level tools for ten levels, a cutscene system, and a set of recording, regression and performance tools that run in parallel on headless editors.",
-      "ja": "『Light as Wind（愿此身如风）』は、USC Games の学生 5 人で That Game Jam のために作ったピクセルアートの横スクロールアドベンチャーです。ヒトデ、カジキ、カニの三体のぬいぐるみが夢の中で海を渡り、遠い空を目指します。私はディレクターとして、ゲームデザイン、リードプログラミング、テクニカルアートを担当しました。ゲーム内の生き物はすべてコードで動き、キーフレームアニメーションは一枚もありません。画面は私がゼロから書いたピクセル描画パイプライン（低解像度 G-buffer、遅延トゥーンライティング、発光生物による照明、ガラスの屈折、最後に一度だけピクセルへ量子化）で描かれ、さらに 10 ステージ分のレベルツール、カットシーンシステム、ヘッドレスエディタ上で並列に走る録画・回帰・性能ツール群を作りました。",
-      "ko": "《Light as Wind(愿此身如风)》은 USC Games 학생 다섯 명이 That Game Jam을 위해 만든 픽셀 아트 횡스크롤 어드벤처입니다. 불가사리, 황새치, 게 세 인형이 꿈속에서 바다를 건너 먼 하늘을 향해 갑니다. 저는 디렉터로서 게임 디자인, 리드 프로그래밍, 테크니컬 아트를 맡았습니다. 게임 속 생물은 모두 코드로 움직이며 키프레임 애니메이션은 한 장도 없습니다. 화면은 제가 처음부터 작성한 픽셀 렌더 파이프라인(저해상도 G-buffer, 지연 툰 라이팅, 발광 생물의 조명, 유리 굴절, 마지막에 한 번만 픽셀로 양자화)으로 그려지고, 그 밖에 10개 스테이지의 레벨 툴, 컷신 시스템, 헤드리스 에디터에서 병렬로 도는 녹화·회귀·성능 도구를 만들었습니다."
+      "zh": "在这款像素风横版冒险游戏中，你将踏上一段梦幻而有趣的旅程，穿过海洋，追寻远方的天空。",
+      "en": "In this pixel-art side-scrolling adventure, you set out on a dreamy, playful journey across the ocean, chasing a faraway sky.",
+      "ja": "このピクセルアートの横スクロールアドベンチャーで、あなたは海を越え、遠い空を追いかける、夢のように不思議で楽しい旅に出ます。",
+      "ko": "이 픽셀 아트 횡스크롤 어드벤처에서, 당신은 바다를 건너 먼 하늘을 좇는 꿈같고 즐거운 여정을 떠납니다."
     },
     "tags": {
       "en": [

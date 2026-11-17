@@ -1,288 +1,35 @@
-import { Image } from 'astro:assets';
 import trailer from '@/assets/projects/game-project-light-as-wind/clips/trailer-en.mp4?url';
 import trailerPoster from '@/assets/projects/game-project-light-as-wind/clips/trailer-en-poster.webp?url';
-import gardenClip from '@/assets/projects/game-project-light-as-wind/clips/garden-giant-jelly.mp4?url';
-import gardenPoster from '@/assets/projects/game-project-light-as-wind/clips/garden-giant-jelly-poster.webp?url';
-import crystalClip from '@/assets/projects/game-project-light-as-wind/clips/crystal-garden.mp4?url';
-import crystalPoster from '@/assets/projects/game-project-light-as-wind/clips/crystal-garden-poster.webp?url';
-import chainClip from '@/assets/projects/game-project-light-as-wind/clips/jelly-chain-en.mp4?url';
-import chainPoster from '@/assets/projects/game-project-light-as-wind/clips/jelly-chain-en-poster.webp?url';
-import swarmClip from '@/assets/projects/game-project-light-as-wind/clips/jelly-swarm.mp4?url';
-import swarmPoster from '@/assets/projects/game-project-light-as-wind/clips/jelly-swarm-poster.webp?url';
-import bubbleClip from '@/assets/projects/game-project-light-as-wind/clips/bubble-ride.mp4?url';
-import bubblePoster from '@/assets/projects/game-project-light-as-wind/clips/bubble-ride-poster.webp?url';
-import stepsClip from '@/assets/projects/game-project-light-as-wind/clips/breathing-steps.mp4?url';
-import stepsPoster from '@/assets/projects/game-project-light-as-wind/clips/breathing-steps-poster.webp?url';
-import patrolClip from '@/assets/projects/game-project-light-as-wind/clips/angler-patrol.mp4?url';
-import patrolPoster from '@/assets/projects/game-project-light-as-wind/clips/angler-patrol-poster.webp?url';
-import huntClip from '@/assets/projects/game-project-light-as-wind/clips/angler-hunt.mp4?url';
-import huntPoster from '@/assets/projects/game-project-light-as-wind/clips/angler-hunt-poster.webp?url';
-import harpClip from '@/assets/projects/game-project-light-as-wind/clips/harp-concert.mp4?url';
-import harpPoster from '@/assets/projects/game-project-light-as-wind/clips/harp-concert-poster.webp?url';
-import corridorClip from '@/assets/projects/game-project-light-as-wind/clips/coral-corridor.mp4?url';
-import corridorPoster from '@/assets/projects/game-project-light-as-wind/clips/coral-corridor-poster.webp?url';
-import schoolClip from '@/assets/projects/game-project-light-as-wind/clips/fish-school.mp4?url';
-import schoolPoster from '@/assets/projects/game-project-light-as-wind/clips/fish-school-poster.webp?url';
-import leapsClip from '@/assets/projects/game-project-light-as-wind/clips/surface-leaps.mp4?url';
-import leapsPoster from '@/assets/projects/game-project-light-as-wind/clips/surface-leaps-poster.webp?url';
-import vineClip from '@/assets/projects/game-project-light-as-wind/clips/vine-swing.mp4?url';
-import vinePoster from '@/assets/projects/game-project-light-as-wind/clips/vine-swing-poster.webp?url';
-import mantaClip from '@/assets/projects/game-project-light-as-wind/clips/manta-rescue.mp4?url';
-import mantaPoster from '@/assets/projects/game-project-light-as-wind/clips/manta-rescue-poster.webp?url';
-
-import imgViews from '@/assets/projects/game-project-light-as-wind/render-views.webp';
-import imgGlow from '@/assets/projects/game-project-light-as-wind/glow-lights.webp';
-import imgGlass from '@/assets/projects/game-project-light-as-wind/glass-jellies.webp';
-import imgDepth from '@/assets/projects/game-project-light-as-wind/depth-layers.webp';
-import imgMarks from '@/assets/projects/game-project-light-as-wind/scene-marks.webp';
-import imgSwarm from '@/assets/projects/game-project-light-as-wind/swarm-sequence.webp';
-import imgDash from '@/assets/projects/game-project-light-as-wind/dash-trace.webp';
-import imgPhys from '@/assets/projects/game-project-light-as-wind/phys-view.webp';
-import castStarfish from '@/assets/projects/game-project-light-as-wind/skin/cast-starfish.png';
-import castSlug from '@/assets/projects/game-project-light-as-wind/skin/cast-slug.png';
-import castScallop from '@/assets/projects/game-project-light-as-wind/skin/cast-scallop.png';
-import castSwordfish from '@/assets/projects/game-project-light-as-wind/skin/cast-swordfish.png';
-import castOctopus from '@/assets/projects/game-project-light-as-wind/skin/cast-octopus.png';
 
 ## ゲーム紹介
 
-『Light as Wind（愿此身如风）』はピクセルアートの横スクロールアドベンチャーです。ヒトデ、カジキ、カニの三体のぬいぐるみが、眠っている女の子の代わりに夢の中で海を見に行きます。真っ暗な深海から、光る庭、竪琴の劇場、海面、そして海岸へ――遠い空を目指して。物語は二部構成で、現在のバージョンは第一部「Beneath the Blue」です。
+<div class="law-poem">
+    <p>海の果てには、
+深い青色の空があるらしい。</p>
+    <p>夢はいつか覚めるもの。
+でも今は、旅はまだ終わっていない。</p>
+    <p>だから、目が覚める前に、
+もう少しだけ先へ進もう。</p>
+</div>
 
-> They say that where the sea ends, there is a sky of deep blue.
->
-> Every dream ends in waking. But not yet: the journey isn't over.
->
-> So, before you wake, go a little further.
+<svg class="law-wave" viewBox="0 0 120 14" aria-hidden="true"><path d="M2 8c9-6 15-6 22 0s14 6 22 0 15-6 22 0 14 6 22 0 15-6 26-1"/></svg>
 
-<figure class="law-trailer">
-    <video src={trailer} poster={trailerPoster} width="1280" height="720" controls playsinline preload="none" aria-label="Light as Wind トレーラー"></video>
-    <figcaption>トレーラー（79 秒、すべて実機映像）</figcaption>
-</figure>
+<p class="law-motto">この身、風のごとく。深く青い空の彼方へ。</p>
 
----
+## トレーラー
+
+<div class="law-story">
+    <figure class="law-clip">
+        <video src={trailer} poster={trailerPoster} width="1280" height="720" controls playsinline preload="none" aria-label="トレーラー"></video>
+    </figure>
+    <p class="law-clip-cap">トレーラー（すべて実機映像）</p>
+</div>
 
 ## 担当
 
-USC Games の学生 5 人で That Game Jam のためにチームを組み、約 4 週間で作りました。私はディレクターとして、ゲームデザイン、リードプログラミング、テクニカルアートを担当し、約 5,000 件のコミットのうち 9 割ほどが私のものです。具体的には：
+USC Games の学生 5 人で That Game Jam のためにチームを組み、Unity 6 で 2 週間で作りました。私はディレクターとして、ゲームデザイン、リードプログラミング、テクニカルアートも担当しました。
 
-* **プロシージャルな生き物**：操作できる三体のぬいぐるみ主人公と、クラゲ、チョウチンアンコウ、イワシの群れ、マンタ、海鳥、海草など数十種の生き物と植物。すべてコードで動き、キーフレームアニメーションはありません。
-* **自作のピクセル描画パイプライン**：URP を置き換えました。低解像度 G-buffer、遅延トゥーンライティング、発光体による照明、ガラスの屈折と順序非依存の半透明、最後に一度だけピクセルへ量子化。
-* **ステージとワールド**：10 ステージ分のレベルツール（三層の奥行き、ブラシでの配置、シーン上の注記）、ステージ間のバックグラウンド読み込み、カットシーンシステム。
-* **開発ツール**：コマンドラインから Unity エディタを操作し、録画、静止画、回帰テスト、パラメータ調整を複数のヘッドレスエディタで並列に実行。プレイヤーのマシンでの性能ログと自動画質。
-* **ディレクションとデザイン**：ゲーム全体の感情の流れと各ステージの遊び。トレーラーと公式サイトも私が作りました。
-
----
-
-## どの子も生きている
-
-ゲームには手付けのアニメーションが一コマもありません。どのキャラクターも同じ層に分かれています。脳が何をしたいかを決め、意図がそれを目標に変え、制御層が体の動かし方を計算し、物理層が接触と重さを扱い、スキン層が毎フレームメッシュを組み直します。だから同じヒトデが歩き、走り、跳び、クラゲの触手をつかみ、植物を根こそぎ引き抜くこともできます。
-
-<figure>
-    <video class="clip" src={gardenClip} poster={gardenPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="光る庭の巨大クラゲ"></video>
-    <figcaption>第 2 ステージの光る庭：二匹の巨大クラゲが手前の石柱の後ろを漂い、ヒトデが草の中を歩く</figcaption>
-</figure>
-
-<div class="image-grid-2">
-    <figure>
-        <video class="clip" src={bubbleClip} poster={bubblePoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="泡の柱に乗るヒトデ"></video>
-        <figcaption>ヒトデ：熱水噴出孔の泡の柱に乗り、高台まで運ばれる</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={stepsClip} poster={stepsPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="噴出孔に持ち上げられる呼吸する石段"></video>
-        <figcaption>呼吸する石段：噴出孔が石の台を上げ下げし、ヒトデがその上を跳ねていく</figcaption>
-    </figure>
-</div>
-
-### ヒトデ：足はどこに着くか
-
-ヒトデの五本の腕は、それぞれ独立した脚です。足ごとに毎フレーム「立っている」「踏み出している」「着地点を追っている」のどれかを時系列に描く歩容レコーダーを作りました。最初の版では走ると足の半分の時間が着地点を追いかけ、1 m 進むごとに足が 1.04 m 滑っていました。着地した瞬間に着地点を固定し、踏み出しのイージングを半分にすると、滑りは 1 m あたり 67 mm、追いかけは 2.3% まで下がりました。
-
-### カジキ：ダッシュの手触り
-
-Shift を押すとカジキがダッシュします。体を縮めて尾を振ってためを作り、体を伸ばして剣を先に最大 13 m/s で飛び出します。壁に向かってダッシュすると早めに力を抜き、すり抜けずに壁の前で止まります。下はショットが書き出した速度と軌跡です。
-
-<figure class="law-narrow">
-    <Image src={imgDash} alt="カジキのダッシュの速度と軌跡" widths={[640, 1100]} sizes="(min-width: 1024px) 736px, 100vw" />
-    <figcaption>カジキのダッシュ：上は時間ごとの速度（オレンジはダッシュ中）、下は x-y の軌跡。三回目は壁に向かうため早めに力を抜く</figcaption>
-</figure>
-
-<div class="image-grid-2">
-    <figure>
-        <video class="clip" src={schoolClip} poster={schoolPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="イワシの群れを蹴散らすカジキ"></video>
-        <figcaption>カジキが何千匹ものイワシに突っ込む：パニックが波のように広がり、群れが扇形に散って、また集まる</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={leapsClip} poster={leapsPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="海面から跳ぶカジキ"></video>
-        <figcaption>第 7 ステージ：紫の空の下、カジキが何度も水面から飛び出す</figcaption>
-    </figure>
-</div>
-
-### カニ：つる、網、そしてマンタ
-
-カニの章の遊びはすべて「つかむ」こと。つるを次々とつかんで穴を越え、網袋の結び目を一つずつ切って小魚を逃がし、閉じ込められたマンタを覆う網を切ると、マンタが浮き上がってカニを乗せ裂け目を越えます。低く泳ぐマンタは自分の腹と地面の距離を測り、翼が岩にめり込まないようにしています。
-
-<div class="image-grid-2">
-    <figure>
-        <video class="clip" src={vineClip} poster={vinePoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="つるで揺れるカニ"></video>
-        <figcaption>カニがつるを次々とつかんで穴を越える</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={mantaClip} poster={mantaPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="マンタの網を切る"></video>
-        <figcaption>マンタを押さえつける網を切ると、マンタが浮き上がりカニが乗る</figcaption>
-    </figure>
-</div>
-
-### クラゲ：自分で泳ぐ群れ
-
-クラゲの群れは魚群のように上へ押し寄せますが、一匹一匹は自分の拍動で進みます。傘を行きたい方向へ傾け、強く縮んで噴射し、滑空して沈み、また一拍。群れのアルゴリズムが与えるのは向きだけで、ルートは配置ツールで描きます。もう一種類は鎖のようにつながり、上から螺旋を描いて降りてきてヒトデのそばに落ち着きます。
-
-<figure>
-    <Image src={imgSwarm} alt="ルートに沿って上るクラゲの群れの連続フレーム" widths={[800, 1600]} sizes="(min-width: 1024px) 900px, 100vw" />
-    <figcaption>12 匹のデフォルメクラゲがヒトデの後ろからルートに沿って上っていく：出発前は低く並び、いくつもの流れになって上り、終点でゆっくり渦を巻く</figcaption>
-</figure>
-
-<div class="image-grid-2">
-    <figure>
-        <video class="clip" src={swarmClip} poster={swarmPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="上っていくクラゲの群れ"></video>
-        <figcaption>クラゲの群れ：一匹ずつ自分の拍動で泳ぎ、群れは向きだけを決める</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={chainClip} poster={chainPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="螺旋を描いて降りるクラゲの鎖"></video>
-        <figcaption>数十匹の小さなクラゲが一本の鎖になり、上から螺旋を描いて降りてくる</figcaption>
-    </figure>
-</div>
-
-### チョウチンアンコウ：深海の巨体
-
-第 1 ステージと第 3 ステージには体長 10 m を超えるチョウチンアンコウがいます。背景を巡回し、提灯で探します。ヒトデが岩壁やサンゴの陰の「隠れ場所」にいれば見つかりませんが、光の中に出ると画面が赤くなり、口を開けて襲いかかってきます。
-
-<div class="image-grid-2">
-    <figure>
-        <video class="clip" src={patrolClip} poster={patrolPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="巡回する巨大チョウチンアンコウ"></video>
-        <figcaption>第 1 ステージのカットシーン：巨大なチョウチンアンコウが画面を覆って泳ぎ過ぎ、ヒトデは岩の陰に隠れる</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={huntClip} poster={huntPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="ヒトデに襲いかかるチョウチンアンコウ"></video>
-        <figcaption>第 3 ステージ：提灯がヒトデを見つけ、画面が赤くロックされ、巨体が口を開けて迫る</figcaption>
-    </figure>
-</div>
-
----
-
-## 自作のピクセル描画パイプライン
-
-最初は URP で描いていましたが、8 ビットの画面では 1 を超える色も本物の発光も扱えず、暗い水には色の段差が出て、画面のアルファはピクセルの移動情報に使われていました。新しいシェーダーを足すたびに視差、ピクセル移動、深度の配線を繰り返す必要もありました。そこで自分のパイプライン **ProcAnimRP** を書き、URP を丸ごと削除しました。コアは Unity に依存せず、1 フレームはフレームグラフで記述されます。
-
-1. ゲームカメラが**低解像度の G-buffer**（ベースカラー、八面体エンコードの法線、線形深度、オブジェクト ID）に描く；
-2. **遅延トゥーンライティング**、水、霧、輪郭線、奥行き表現をすべてその解像度で、内部は HDR で計算する；
-3. 最後の一段で**ピクセル画面に量子化**し、整数倍で画面に拡大する。だからピクセルはいつも四角く、くっきりしている。
-
-<figure class="law-narrow">
-    <Image src={imgViews} alt="新しいパイプラインの 6 つのデバッグ表示" widths={[640, 1220]} sizes="(min-width: 1024px) 736px, 100vw" />
-    <figcaption>パイプラインをつないだ直後の 6 つのデバッグ表示：カメラ画面、ベースカラー、法線、線形深度、コンピュートシェーダーで GPU 上に生成したジオメトリ、引き継いだ後の画面</figcaption>
-</figure>
-
-その上に足すものは、まず旧画面とピクセル単位で一致させ、それから新しい効果を加えました。
-
-* **タイル化遅延ポイントライト**：視界に 100 灯を撒いても、フレーム全体の GPU 時間は 1.28 ms。
-* **発光体が周りを照らす**：クラゲ、サルパ、噴出孔が自分の色を砂や触手に落とします。主人公は本物の光を持ち、草やチューブワームは地面に沿って横からの 2D の影を引きます。
-* **ガラス**：クラゲの傘の縁に量子化したフレネルの光、傘の中の口腕は整数テクセルずつずらして屈折を表現。重なるガラスには重み付きブレンドの順序非依存半透明（OIT）を使います。
-
-<figure>
-    <Image src={imgGlow} alt="発光体の照明：オフ、オン、差分" widths={[800, 1600]} sizes="(min-width: 1024px) 900px, 100vw" />
-    <figcaption>発光体が周りを照らす：左がオフ、中央がオン、右が差分。6 種のクラゲがそれぞれの色で自分の触手と下の砂を照らす</figcaption>
-</figure>
-
-<figure class="law-narrow">
-    <Image src={imgGlass} alt="クラゲのガラスの屈折とフレネルの縁" widths={[640, 1090]} sizes="(min-width: 1024px) 736px, 100vw" />
-    <figcaption>ガラス：左がオフ、右がオン。傘の縁のフレネル光と、傘越しに整数テクセルずれて見える口腕</figcaption>
-</figure>
-
-ピクセルアートの天敵は「ちらつき」です。カメラが 1 フレームに 1 ピクセル未満しか動かないと、輪郭が 2 つのピクセルの間を行き来します。各オブジェクトの移動のサブピクセルの端数を別に記録し、合成時にマス単位で動かします。さらに、ちらつくピクセル数をフレームごとに数える診断ショットであらゆるアセットを測りました。植物の影の問題もこれで見つかりました。影のパスが間違ったビュー行列を使っていて、直すとケルプの森の区間のちらつきが 61% 減りました。
-
-<div class="image-grid-2">
-    <figure>
-        <video class="clip" src={crystalClip} poster={crystalPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="結晶の庭"></video>
-        <figcaption>第 4 ステージの結晶の庭：結晶もサンゴの茂みも一つ一つが光源</figcaption>
-    </figure>
-    <figure>
-        <video class="clip" src={corridorClip} poster={corridorPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="サンゴの回廊"></video>
-        <figcaption>第 6 ステージ：カジキが洞窟の天井とサンゴの間を縫い、板、貝の門、垂れ下がる光の糸を抜けていく</figcaption>
-    </figure>
-</div>
-
----
-
-## ステージ、カットシーン、クライマックス
-
-ステージは横スクロールですが、世界は 3D です。各ステージには手前・中・奥の三層の奥行きがあり、主人公は真ん中の層を歩きます。エディタに「レベルハブ」を作り、ブラシで植物や小物を一つの層だけに塗れるようにし、シーン上にはカニが歩けるルート、平らに保つべき帯、ゲームカメラの画角を表示しました。デザイナーやアーティストの仲間はここでステージを組みました。
-
-<div class="image-grid-2">
-    <figure>
-        <Image src={imgDepth} alt="奥行きの層で色分けしたステージ" widths={[640, 1280]} sizes="(min-width: 1024px) 450px, 100vw" />
-        <figcaption>ピクセルごとに奥行きの層で色分け：手前は青、中は緑、奥は紫</figcaption>
-    </figure>
-    <figure>
-        <Image src={imgMarks} alt="ステージを組むときのシーン注記" widths={[640, 1280]} sizes="(min-width: 1024px) 450px, 100vw" />
-        <figcaption>ステージを組むときのシーン注記：層ごとの帯、カニのルート（黄色の矢印）、平らに保つべき帯（赤い斜線）</figcaption>
-    </figure>
-</div>
-
-カットシーンは専用のタイムラインウィンドウで組みます。カメラ、字幕、キャラクターのポーズ、21:9 のシネマバーがすべてそこにあります。感情が最も高まるのは第 5 ステージの竪琴の劇場です。ヒトデが竪琴の前に座り、一筋の光が差し、会場いっぱいのクラゲが拍に合わせて光ります。プレイヤーは MIDI キーボードをつないで自分で弾くこともできます。
-
-<figure>
-    <video class="clip" src={harpClip} poster={harpPoster} width="1280" height="720" muted loop playsinline preload="none" data-autoplay aria-label="竪琴の劇場"></video>
-    <figcaption>第 5 ステージの竪琴の劇場：ヒトデが弾き、クラゲとイワシの渦が海を満たす</figcaption>
-</figure>
-
----
-
-## 5 人で 4 週間で作り切るためのツール
-
-4 週間で 10 ステージを作り切るために、確認と制作の多くをツールに任せました。
-
-* **コマンドラインからエディタを操作**：コンパイル、静止画、フレームごとの動作データ、録画がそれぞれ一つのコマンドで、ファイルを介してエディタとやり取りします。エディタが止まったときは理由を表示します。
-* **並列のヘッドレスエディタ**：長い作業は空いているヘッドレスエディタに自動で回ります。調整では同じ変更の複数の版を複数のエディタで同時に走らせ、並べた静止画と数値を 1 ラウンド約 40 秒で確認できます。また、複数の並行した作業コピー（AI コーディングアシスタントと一緒に）で別々のモジュールを同時に進め、毎日メインラインに統合しました。
-* **フライトレコードと回帰テスト**：毎フレームのコライダー、接触、ログ、プローブを記録して再生できます。回帰チェックは速さで段階分けしてキャッシュし、基準画像は私が確認してから記録します。
-* **プレイヤーのマシンでの性能**：配布版のゲームは性能ログを残せ、送られてきたログからレポートを作ります。ステージのつなぎ目でのカクつきもこうして測って取り除きました。設定の「自動」画質はグラフィックカードから段階を選びます。
-
-<figure class="law-narrow">
-    <Image src={imgPhys} alt="第 5 ステージの物理ビュー" widths={[744]} sizes="(min-width: 1024px) 744px, 100vw" />
-    <figcaption>物理ビュー：第 5 ステージの一区間のコリジョン（緑）、主人公の経路とレイ。記録したシミュレーションデータから描いたもの</figcaption>
-</figure>
-
----
-
-## チーム
-
-私たちは USC Games の学生 5 人で、『Light as Wind』は That Game Jam への参加作品です。公式サイトでは、一人一人がゲームの海の生き物を「演じて」います。
-
-<div class="law-cast">
-    <figure class="law-me">
-        <Image src={castStarfish} alt="" width={72} height={72} />
-        <p class="law-name">Jeffery Hu</p>
-        <p class="law-role">ヒトデ役<br />ディレクター · デザイナー · 開発 · テクニカルアーティスト</p>
-    </figure>
-    <figure>
-        <Image src={castSlug} alt="" width={72} height={72} />
-        <p class="law-name">Sheldon Xu</p>
-        <p class="law-role">ウミウシ役<br />デザイナー · コンセプトアーティスト</p>
-    </figure>
-    <figure>
-        <Image src={castScallop} alt="" width={72} height={72} />
-        <p class="law-name">Haocheng Li</p>
-        <p class="law-role">大きなホタテ役<br />デザイナー · エンジニア</p>
-    </figure>
-    <figure>
-        <Image src={castSwordfish} alt="" width={72} height={72} />
-        <p class="law-name">Pb</p>
-        <p class="law-role">カジキ役<br />デザイナー · 背景アーティスト</p>
-    </figure>
-    <figure>
-        <Image src={castOctopus} alt="" width={72} height={72} />
-        <p class="law-name">Uesugi Atako</p>
-        <p class="law-role">タコ役<br />デザイナー · 背景アーティスト</p>
-    </figure>
-</div>
-
-ゲーム中の楽曲の一部は友人の EHSV によるものです。使わせてくれたことに感謝します。ゲームは [itch.io](https://huxxshadow.itch.io/light-as-wind) でダウンロードでき、公式サイトは [lightaswind.com](https://lightaswind.com) です。
+* **ディレクションとデザイン**：全体の遊びと感情の流れを決め、10 のステージを一つの旅にまとめました。
+* **プロシージャルな生き物**：ゲーム内の生き物のシステムをすべて書きました。ヒトデ、カジキ、カニをはじめ海の生き物にはキーフレームアニメーションがなく、動きはすべてコードでリアルタイムに生成しています。
+* **ピクセル描画**：3D のピクセルアートのために描画パイプラインを自作して URP を置き換え、カメラが動いてもピクセルが安定してちらつかないようにしました。
+* **ツール**：レベル編集ツールと、自動テスト・録画ツールを作り、5 人で 2 週間のうちに 10 ステージを作り切れるようにしました。
