@@ -56,7 +56,8 @@ const projects = defineCollection({
         inDevelopment: z.boolean().optional(),
         links: z.array(
             z.object({
-                name: z.string(),
+                // 按钮文字：一个字符串，或按语言分开写（{ en, zh, ja, ko }）
+                name: z.union([z.string(), multilingualSchema]),
                 url: z.string(),
                 icon: z.string(),
             })

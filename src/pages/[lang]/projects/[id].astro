@@ -50,7 +50,10 @@ const showDevCover = !heroImage && project.data.inDevelopment;
 const ogImageResult = heroImage ? await getImage({ src: heroImage, width: 1200, format: "jpg", quality: 80 }) : undefined;
 const ogImage = ogImageResult?.src;
 const ogImageSize = ogImageResult ? [Number(ogImageResult.attributes.width), Number(ogImageResult.attributes.height)] as [number, number] : undefined;
-const projectLinks = project.data.links || [];
+const projectLinks = (project.data.links || []).map((l) => ({
+    ...l,
+    name: typeof l.name === "string" ? l.name : (l.name[currentLang] || l.name.en || l.name.zh || ""),
+}));
 const BACK_LABELS: Record<string, string> = { zh: "返回", en: "Back", ja: "戻る", ko: "뒤로" };
 const backLabel = BACK_LABELS[currentLang] ?? BACK_LABELS.en;
 // 专属皮肤：套皮的页面自己画底色/背景，这里就不再写内联 background-color

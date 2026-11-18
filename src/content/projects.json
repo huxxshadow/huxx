@@ -3165,7 +3165,39 @@
     "coverImage": "src/assets/projects/poster/QingyunPoster.webp",
     "colorText": "#1C2622",
     "colorBackground": "#EEF0E7",
-    "skin": "qy"
+    "skin": "qy",
+    "links": [
+      {
+        "name": {
+          "en": "Gameplay Demo (YouTube)",
+          "zh": "实机演示（YouTube）",
+          "ja": "実機デモ（YouTube）",
+          "ko": "실기 데모(YouTube)"
+        },
+        "url": "https://www.youtube.com/watch?v=70OFzCzWNrQ",
+        "icon": "fa-brands fa-youtube"
+      },
+      {
+        "name": {
+          "en": "Gameplay Demo (Bilibili)",
+          "zh": "实机演示（B 站）",
+          "ja": "実機デモ（Bilibili）",
+          "ko": "실기 데모(Bilibili)"
+        },
+        "url": "https://www.bilibili.com/video/BV1oVnt6fEsg/",
+        "icon": "fa-brands fa-bilibili"
+      },
+      {
+        "name": {
+          "en": "Dev Log (Bilibili)",
+          "zh": "开发日志（B 站）",
+          "ja": "開発日誌（Bilibili）",
+          "ko": "개발 일지(Bilibili)"
+        },
+        "url": "https://www.bilibili.com/video/BV14AnR6HEh9/",
+        "icon": "fa-brands fa-bilibili"
+      }
+    ]
   },
   {
     "id": "game-project-light-as-wind",
